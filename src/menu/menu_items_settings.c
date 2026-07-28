@@ -546,7 +546,7 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_settings_config_file,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_settings_config_file);
 
         menu_add_ESC_item(array_menu_settings_config_file);
 
@@ -1167,7 +1167,7 @@ void menu_change_video_driver(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_format(array_menu_change_video_driver,MENU_OPCION_NORMAL,menu_change_video_driver_apply,NULL,"Apply Driver" );
 
-                menu_add_item_menu(array_menu_change_video_driver,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_change_video_driver);
                 //menu_add_item_menu(array_menu_change_video_driver,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_change_video_driver);
 
@@ -1434,7 +1434,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
-        menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_window_settings);
 
         menu_add_ESC_item(array_menu_window_settings);
 
@@ -1543,7 +1543,7 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
                 "In fact, this palette is the same as a Spectrum issue 3, and almost the same as issue 1 and 2");
         }
 
-        menu_add_item_menu(array_menu_colour_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_colour_settings);
         menu_add_ESC_item(array_menu_colour_settings);
 
         menu_add_item_menu_index_full_path(array_menu_colour_settings,
@@ -2962,7 +2962,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
         //Con driver cocoa, no permitimos cambiar a otro driver
         if (strcmp(scr_new_driver_name,"cocoa")) {
-            menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_window_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
@@ -3641,7 +3641,7 @@ void menu_special_fx_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_special_fx_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_special_fx_settings);
 
         menu_add_ESC_item(array_menu_special_fx_settings);
 
@@ -4593,7 +4593,7 @@ void menu_osd_settings(MENU_ITEM_PARAMETERS)
     menu_add_item_menu_shortcut(array_menu_osd_settings,'p');
 
 
-    menu_add_item_menu(array_menu_osd_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_osd_settings);
 
     menu_add_ESC_item(array_menu_osd_settings);
 
@@ -4743,7 +4743,7 @@ void menu_external_tools_config(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_external_tools_config,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_external_tools_config);
         //menu_add_item_menu(array_menu_external_tools_config,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_external_tools_config);
 
@@ -5119,7 +5119,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
                                 "Never: never shows conditions\n" );
 
 
-        menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_debug);
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_address_basic,NULL,
@@ -5150,7 +5150,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
         }
 
-        menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_debug);
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose,NULL,
             "Verbose ~~level","Nive~~l Verbose","Nive~~ll Verbose");
@@ -5254,7 +5254,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_debug);
         //menu_add_item_menu(array_menu_settings_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_settings_debug);
 
@@ -5357,7 +5357,7 @@ void menu_change_audio_driver(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_format(array_menu_change_audio_driver,MENU_OPCION_NORMAL,menu_change_audio_driver_apply,NULL,"Apply Driver" );
 
-                menu_add_item_menu(array_menu_change_audio_driver,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_change_audio_driver);
                 //menu_add_item_menu(array_menu_change_audio_driver,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_change_audio_driver);
 
@@ -6365,7 +6365,7 @@ void menu_ula_advanced(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"    ");
 
 
-        menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_advanced);
 
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Info:");
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total line TLength: %d",screen_testados_linea);
@@ -6373,7 +6373,7 @@ void menu_ula_advanced(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total T-states: %d",screen_testados_total);
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total Hz: %d",screen_testados_total*50);
 
-        menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_advanced);
         //menu_add_item_menu(array_menu_hardware_advanced,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_hardware_advanced);
 
@@ -6475,7 +6475,7 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_ula_settings,'u');
         }
 
-        menu_add_item_menu(array_menu_ula_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_ula_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_advanced,menu_cond_realvideo,
             "~~Advanced timing settings","Ajustes ~~avanzados temporización","Ajustaments ~~avançats temporització");
@@ -6485,7 +6485,7 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_ula_settings);
 
 
-        menu_add_item_menu(array_menu_ula_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_ula_settings);
         //menu_add_item_menu(array_menu_ula_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_ula_settings);
 
@@ -7173,7 +7173,7 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_hardware_memory_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_memory_settings);
 
         menu_add_ESC_item(array_menu_hardware_memory_settings);
 
@@ -7361,7 +7361,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_hardware_printers,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_printers);
         //menu_add_item_menu(array_menu_hardware_printers,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_hardware_printers);
 
@@ -7533,7 +7533,7 @@ void menu_hardware_redefine_keys(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_hardware_redefine_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_hardware_redefine_keys);
                 //menu_add_item_menu(array_menu_hardware_redefine_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_hardware_redefine_keys);
 
@@ -7683,7 +7683,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-                menu_add_item_menu(array_menu_keyboard_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_keyboard_settings);
 
             //Redefine keys
         menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_redefine_keys,NULL,
@@ -7701,7 +7701,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_keyboard_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_keyboard_settings);
         menu_add_ESC_item(array_menu_keyboard_settings);
 
                 retorno_menu=menu_dibuja_menu_no_title_lang(&keyboard_settings_opcion_seleccionada,&item_seleccionado,array_menu_keyboard_settings,"Keyboard Settings" );
@@ -7798,13 +7798,13 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 
                 }
 
-                menu_add_item_menu(array_menu_tbblue_hardware_id,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_tbblue_hardware_id);
 
                 menu_add_item_menu_format(array_menu_tbblue_hardware_id,MENU_OPCION_NORMAL,NULL,NULL,"Custom");
                 //Decir que es custom
                 menu_add_item_menu_valor_opcion(array_menu_tbblue_hardware_id,1);
 
-                menu_add_item_menu(array_menu_tbblue_hardware_id,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_tbblue_hardware_id);
                 //menu_add_item_menu(array_menu_tbblue_hardware_id,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_tbblue_hardware_id);
 
@@ -8152,7 +8152,7 @@ void menu_hardware_joystick_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -8212,7 +8212,7 @@ void menu_hardware_settings_spectrum_next(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"    ");
         menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -8249,7 +8249,7 @@ void menu_hardware_settings_anticopy_devices(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1",(dinamic_sd1.v ? 'X' : ' '));
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -8287,7 +8287,7 @@ void menu_hardware_settings_dma(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -8332,7 +8332,7 @@ void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -8421,7 +8421,7 @@ void menu_hardware_settings_optical_input(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
@@ -8472,7 +8472,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
-            menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_hardware_settings);
         }
 
 
@@ -8617,7 +8617,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_settings);
 
         menu_add_ESC_item(array_menu_hardware_settings);
 
@@ -8718,7 +8718,7 @@ void menu_settings_storage(MENU_ITEM_PARAMETERS)
 
 
         if (!MACHINE_IS_Z88 && !MACHINE_IS_CHLOE && !MACHINE_IS_QL) {
-            menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_settings_storage);
 
             menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_settings_tape,NULL,
                 "~~Tape","Cin~~ta","Cin~~ta");
@@ -8729,7 +8729,7 @@ void menu_settings_storage(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_storage);
 
         menu_add_ESC_item(array_menu_settings_storage);
 
@@ -9477,7 +9477,7 @@ if (menu_display_aa_cond() ) {
 
 
 
-                menu_add_item_menu(array_menu_textdrivers_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_textdrivers_settings);
                 //menu_add_item_menu(array_menu_textdrivers_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_textdrivers_settings);
 
@@ -9671,7 +9671,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         }
 
         else {
-                    menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                    menu_add_item_menu_separator(array_menu_settings_display);
         }
 
 
@@ -10117,7 +10117,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_SPECTRUM && rainbow_enabled.v==0) {
-            menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_settings_display);
 
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_zx8081display_spec,menu_display_settings_disp_zx8081_spectrum,
@@ -10261,7 +10261,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_display);
         //menu_add_item_menu(array_menu_settings_display,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_settings_display);
 
@@ -10581,7 +10581,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
                             menu_add_item_menu_ayuda(array_menu_textspeech,"Specify a path to a program or script in charge of stopping the running speech program. If not specified, the current speech script can't be stopped");
 
 
-                menu_add_item_menu(array_menu_textspeech,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_textspeech);
 
 
 
@@ -10611,7 +10611,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
             //Estas opciones visibles aunque no este trap print activado
             //Porque por ejemplo textspeech_get_stdout puede alterar el funcionamiento del speech en menu
             //if (chardetect_printchar_enabled.v) {
-                menu_add_item_menu(array_menu_textspeech,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_textspeech);
 
                 menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,NULL,NULL,"--- Trap print to speech ---");
                 menu_add_item_menu_tooltip(array_menu_textspeech,"Settings for text coming from trap print and sent to speech");
@@ -10658,7 +10658,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
 
         }
 
-          menu_add_item_menu(array_menu_textspeech,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+          menu_add_item_menu_separator(array_menu_textspeech);
                 //menu_add_item_menu(array_menu_textspeech,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_textspeech);
 
@@ -10872,7 +10872,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Address of the third print routine");
             menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Address of the third print routine");
 
-            menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_chardetection_settings);
 
 
             menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_chardetect_char_filter,NULL,"Char ~~filter [%s]",chardetect_char_filter_names[chardetect_char_filter]);
@@ -10889,7 +10889,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
         }
 
-        menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_chardetection_settings);
 
 
 
@@ -10944,7 +10944,7 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_chardetection_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_chardetection_settings);
         //menu_add_item_menu(array_menu_chardetection_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_chardetection_settings);
 
@@ -11192,7 +11192,7 @@ void menu_accessibility_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_accessibility_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_accessibility_settings);
         //menu_add_item_menu(array_menu_accessibility_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_accessibility_settings);
 
@@ -12122,7 +12122,7 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_snapshot);
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_exit,NULL,
@@ -12157,7 +12157,7 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_snapshot);
 
 
 
@@ -12197,7 +12197,7 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_snapshot);
 
 
 
@@ -12301,7 +12301,7 @@ void menu_settings_smartload(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Defines a file to store the history of quickload");
 
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
 
 
         menu_add_ESC_item(array_menu_common);
@@ -12521,7 +12521,7 @@ int menu_joystick_event_list(void)
 
 
 
-        menu_add_item_menu(array_menu_joystick_event_list,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_joystick_event_list);
         menu_add_ESC_item(array_menu_joystick_event_list);
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&joystick_event_list_opcion_seleccionada,&item_seleccionado,array_menu_joystick_event_list,"Select event" );
@@ -12702,11 +12702,11 @@ void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
             "pressed the button/axis on the real joystick");
         }
 
-        menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_realjoystick_keys);
         menu_add_item_menu_format(array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_clear_keys,NULL,"Clear list");
 
 
-        menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_realjoystick_keys);
 
         menu_add_ESC_item(array_menu_hardware_realjoystick_keys);
 
@@ -13061,11 +13061,11 @@ void menu_hardware_realjoystick_event(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_hardware_realjoystick_event,"Redefine the action");
                 }
 
-                menu_add_item_menu(array_menu_hardware_realjoystick_event,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_hardware_realjoystick_event);
         menu_add_item_menu_format(array_menu_hardware_realjoystick_event,MENU_OPCION_NORMAL,menu_hardware_realjoystick_clear_events,NULL,"Clear list");
 
 
-                menu_add_item_menu(array_menu_hardware_realjoystick_event,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_hardware_realjoystick_event);
                 //menu_add_item_menu(array_menu_hardware_realjoystick_event,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_hardware_realjoystick_event);
 
@@ -13887,7 +13887,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_tape);
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_SEPARADOR,NULL,NULL,
@@ -13971,7 +13971,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         */
 
 
-        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_tape);
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
@@ -14015,7 +14015,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_tape);
 
 
         menu_add_ESC_item(array_menu_settings_tape);
@@ -14176,7 +14176,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     }
 
 
-    //menu_add_item_menu(array_menu_zxdesktop_set_userdef_button_func_action,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    //menu_add_item_menu_separator(array_menu_zxdesktop_set_userdef_button_func_action);
     menu_add_ESC_item(array_menu_zxdesktop_set_userdef_button_func_action);
     menu_add_item_menu_tabulado(array_menu_zxdesktop_set_userdef_button_func_action,1,i+1);
 
@@ -14483,7 +14483,7 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_zxdesktop_set_userdef_buttons_functions,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_zxdesktop_set_userdef_buttons_functions);
 
         menu_add_ESC_item(array_menu_zxdesktop_set_userdef_buttons_functions);
 
@@ -14596,7 +14596,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_hardware_set_f_functions,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_hardware_set_f_functions);
 
         menu_add_ESC_item(array_menu_hardware_set_f_functions);
 
@@ -15928,7 +15928,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_ZXUNO) {
-            //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            //menu_add_item_menu_separator(array_menu_cpu_settings);
             menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_zxuno_deny_turbo_bios_boot,NULL,
                 "~~Deny turbo on boot","~~Denegar turbo al inicio","~~Denegar turbo a l'inici");
             menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(zxuno_deny_turbo_bios_boot.v ? 'X' : ' ') );
@@ -15984,7 +15984,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
         }
 
         if (CPU_IS_Z80) {
-            menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_cpu_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_type,NULL,
                 "Z80 CPU Type","Tipo CPU Z80","Tipus CPU Z80");
@@ -16002,7 +16002,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_cpu_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_spectrum_core_reduced,NULL,
                 "Spectrum ~~core","~~Core Spectrum","~~Core Spectrum");
@@ -16016,7 +16016,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_cpu_settings);
 
         menu_add_ESC_item(array_menu_cpu_settings);
 

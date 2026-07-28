@@ -297,7 +297,7 @@ void menu_kartusho(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_kartusho,"Press button");
 
 
-                                menu_add_item_menu(array_menu_kartusho,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                                menu_add_item_menu_separator(array_menu_kartusho);
 
                 menu_add_ESC_item(array_menu_kartusho);
 
@@ -422,7 +422,7 @@ void menu_superupgrade(MENU_ITEM_PARAMETERS)
 
 
 
-                                menu_add_item_menu(array_menu_superupgrade,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                                menu_add_item_menu_separator(array_menu_superupgrade);
 
                 menu_add_ESC_item(array_menu_superupgrade);
 
@@ -550,7 +550,7 @@ void menu_ifrom(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_ifrom,"Press button");
 
 
-                                menu_add_item_menu(array_menu_ifrom,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                                menu_add_item_menu_separator(array_menu_ifrom);
 
                 menu_add_ESC_item(array_menu_ifrom);
 
@@ -3014,7 +3014,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_tape_settings);
 
 
         menu_tape_settings_trunc_name(tape_out_file,string_tape_save_shown,20);
@@ -3044,7 +3044,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_tape_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
@@ -3166,7 +3166,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_tape_settings);
 
 
         menu_add_ESC_item(array_menu_tape_settings);
@@ -3285,7 +3285,7 @@ void menu_timexcart(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_ayuda(array_menu_timexcart,"Eject Cartridge");
 
 
-                     menu_add_item_menu(array_menu_timexcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                     menu_add_item_menu_separator(array_menu_timexcart);
                 menu_add_ESC_item(array_menu_timexcart);
 
                 retorno_menu=menu_dibuja_menu_no_title_lang(&timexcart_opcion_seleccionada,&item_seleccionado,array_menu_timexcart,"Timex Cartridge" );
@@ -3429,7 +3429,7 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_dandanator,"Press button");
 
 
-                                menu_add_item_menu(array_menu_dandanator,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                                menu_add_item_menu_separator(array_menu_dandanator);
 
                 menu_add_ESC_item(array_menu_dandanator);
 
@@ -3565,7 +3565,7 @@ void menu_samram(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_samram,"Press button");
             */
 
-                                menu_add_item_menu(array_menu_samram,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                                menu_add_item_menu_separator(array_menu_samram);
 
                 menu_add_ESC_item(array_menu_samram);
 
@@ -10570,7 +10570,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_betadisk);
 
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
@@ -10588,7 +10588,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
 
-        menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_betadisk);
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
             "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
@@ -10611,7 +10611,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_betadisk);
         menu_add_item_menu_se_cerrara(array_menu_betadisk);
 
-        menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_betadisk);
 
         menu_add_ESC_item(array_menu_betadisk);
 
@@ -10838,7 +10838,7 @@ void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_esxdos_traps,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_esxdos_traps);
 
         menu_add_ESC_item(array_menu_esxdos_traps);
 
@@ -11450,7 +11450,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_plusthreedisk);
 
         if (MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
@@ -11477,7 +11477,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot LocoScript");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot LocoScript");
 
-            menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_plusthreedisk);
 
         }
 
@@ -11492,7 +11492,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable PD765 Disk controller used on +3, CPC and PCW machines");
 
 
-        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_plusthreedisk);
 
 
         //Esto que no aparezca en cpc ni en pcw
@@ -11549,7 +11549,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
 
 
-        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_plusthreedisk);
 
         menu_add_ESC_item(array_menu_plusthreedisk);
 
@@ -12333,7 +12333,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_mmc_divmmc);
 
         menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface,NULL,
             "~~DIVMMC paging","Paginación ~~DIVMMC","Paginació ~~DIVMMC");
@@ -12392,7 +12392,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC access ports. Requires enabling MMC Emulation");
 
 
-            menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_mmc_divmmc);
 
 
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,NULL,
@@ -12718,7 +12718,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
 
-            menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_ide_divide);
 
             menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_diviface,NULL,
                 "~~DIVIDE paging","Paginación ~~DIVIDE","Paginació ~~DIVIDE");
@@ -12767,7 +12767,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
 
 
-            menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_ide_divide);
 
             menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_eightbitsimple_enable,menu_storage_ide_if_enabled_cond,
                 "8-bit simple IDE","8-bit simple IDE","8-bit simple IDE");
@@ -12776,7 +12776,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_SAM) {
-            menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_ide_divide);
 
             menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_atomlite_enable,NULL,
                 "~~Atom Lite","~~Atom Lite","~~Atom Lite");
@@ -12809,7 +12809,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_se_cerrara(array_menu_ide_divide);
 
 
-        menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_ide_divide);
         //menu_add_item_menu(array_menu_ide_divide,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_ide_divide);
 

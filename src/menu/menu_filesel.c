@@ -3876,7 +3876,7 @@ void menu_filesel_cambiar_unidad_common(char *destino)
     }
 
 
-                menu_add_item_menu(array_menu_filesel_unidad,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_filesel_unidad);
                 menu_add_ESC_item(array_menu_filesel_unidad);
                 retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_filesel_unidad_opcion_seleccionada,&item_seleccionado,array_menu_filesel_unidad,"Select Drive" );
 
@@ -4023,10 +4023,10 @@ char *menu_filesel_recent_files_folders(int *tipo)
             menu_add_item_menu_es_sencillo(array_menu_recent_files);
         }
 
-        menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_recent_files);
         menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,menu_filesel_recent_files_clear,NULL,"Clear List");
 
-        menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_recent_files);
         menu_add_ESC_item(array_menu_recent_files);
 
         char nombre_ventana[30];

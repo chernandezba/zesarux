@@ -490,7 +490,7 @@ int menu_change_memory_zone_list_title(char *titulo)
                 } while (zone>=0);
 
 
-                menu_add_item_menu(array_menu_memory_zones,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_memory_zones);
 
                 menu_add_ESC_item(array_menu_memory_zones);
 
@@ -776,7 +776,7 @@ void menu_mem_breakpoints(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_mem_breakpoints,"Clear all memory breakpoints");
 
 
-                menu_add_item_menu(array_menu_mem_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_mem_breakpoints);
                 menu_add_ESC_item(array_menu_mem_breakpoints);
                 retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&mem_breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_mem_breakpoints,"Memory Breakpoints" );
 
@@ -1353,14 +1353,14 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
         }
 
-        //menu_add_item_menu(array_menu_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu_separator(array_menu_breakpoints);
 
 
 
 
 
 
-        menu_add_item_menu(array_menu_breakpoints,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_breakpoints);
         menu_add_ESC_item(array_menu_breakpoints);
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&breakpoints_opcion_seleccionada,&item_seleccionado,array_menu_breakpoints,"Breakpoints" );
 
@@ -6109,7 +6109,7 @@ void menu_debug_gac_view_messages_ask(void)
 
 
 
-        menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_daad_tipo_mensaje);
         menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
@@ -6178,7 +6178,7 @@ void menu_debug_daad_view_messages_ask(void)
         menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,5);
 
 
-        menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_daad_tipo_mensaje);
         menu_add_ESC_item(array_menu_daad_tipo_mensaje);
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
