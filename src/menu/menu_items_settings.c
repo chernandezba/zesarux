@@ -11906,10 +11906,11 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_zxvision_settings_advanced_enable,NULL,
-            "Advanced menu items","Items de menú avanzados","Items de menú avançats");
+            "Show advanced options","Mostrar opciones avanzadas","Mostra les opcions avançades");
         menu_add_item_menu_prefijo_format(array_menu_settings,"[%c] ",(menu_show_advanced_items.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_settings,"Shows advanced menu items");
-        menu_add_item_menu_ayuda(array_menu_settings,"Shows advanced menu items");
+        menu_add_item_menu_tooltip(array_menu_settings,"Show or hide advanced options in menus");
+        menu_add_item_menu_ayuda(array_menu_settings,"When enabled, additional options intended for advanced users are displayed throughout the application's menus. "
+                                "Disable this option to simplify the interface and show only the most commonly used commands");
 
 
         menu_add_item_menu_separator(array_menu_settings);
@@ -15414,9 +15415,9 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,
-                menu_ext_desktop_cond,"~~Custom Width");
+                menu_ext_desktop_cond,"Specify Width");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
+            //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
             menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
             menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
@@ -15431,9 +15432,9 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,
-                menu_ext_desktop_cond,"C~~ustom Height");
+                menu_ext_desktop_cond,"Specify Height");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
+            //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
             menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
             menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
