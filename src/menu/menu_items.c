@@ -32665,6 +32665,8 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
             if_zxvision_topbar_menu_will_not_have_title(array_menu_common);
+            menu_add_item_menu_tooltip(array_menu_common,"About ZEsarUX");
+            menu_add_item_menu_ayuda(array_menu_common,"About ZEsarUX emulator");
 
             menu_add_item_menu_separator(array_menu_common);
 
