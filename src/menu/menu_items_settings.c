@@ -5027,18 +5027,27 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_settings_debug,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Source code ---","--- Código fuente ---","--- Codi Font ---");
+
+
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_lprefix,NULL,
-            "Source code L Prefix","Código fuente prefijo L","Codi font prefix L");
+            "Source code \"L\" Prefix","Código fuente prefijo \"L\"","Codi font prefix \"L\"");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( remote_debug_settings & 4 ? ' ' : 'X') );
-        menu_add_item_menu_tooltip(array_menu_settings_debug,"Consider a L preffix when searching source code labels");
-        menu_add_item_menu_ayuda(array_menu_settings_debug,"Consider a L preffix when searching source code labels");
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Consider a L prefix when searching source code labels");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Consider a L prefix when searching source code labels");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_skipcols,NULL,
-            "Source code skip Cols","Código fuente saltar cols","Codi font saltar cols");
+            "Source code skip columns","Código fuente saltar columnas","Codi font saltar columnes");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",debug_load_source_code_skip_columns);
         menu_add_item_menu_prefijo(array_menu_settings_debug,"    ");
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");
+
+
+        menu_add_item_menu_separator(array_menu_settings_debug);
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Debug execution ---","--- Ejecución Debug ---","--- Execució Debug ---");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_configuration_stepover,NULL,
             "Step ~~over interrupt","Pas~~o a paso salta interrupción","Pas a pas salta interrupci~~ó");
@@ -5048,13 +5057,13 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_settings_debug,'o');
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_screen,NULL,
-            "Show display on debug","Ver pantalla al debugar","Veure pantalla al debugar");
+            "Show display while debugging","Ver pantalla al debugar","Veure pantalla al debugar");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_settings_show_screen.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_settings_debug,"If shows emulated screen on every key action on debug registers menu");
-        menu_add_item_menu_ayuda(array_menu_settings_debug,"If shows emulated screen on every key action on debug registers menu");
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"It shows emulated screen on every key action on debug registers menu");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"It shows emulated screen on every key action on debug registers menu");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_scanline,NULL,
-            "Show electron on debug","Ver electrón al debugar","Veure electró al debugar");
+            "Show CRT beam while debugging","Ver electrón del CRT al debugar","Veure electró del CRT al debugar");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( menu_debug_registers_if_showscan.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
@@ -5090,14 +5099,14 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_show_timing_opcodes,NULL,
-            "Show timing opcodes","Mostrar tiempos opcodes","Veure temps opcodes");
+            "Show opcode timings","Mostrar tiempos opcodes","Veure temps opcodes");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",
             (debug_show_timing_opcodes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Show timings of opcodes on Debug CPU window");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Show timings of opcodes on Debug CPU window");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
-            "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
+            "~~Breakpoint behaviour","Comportamiento ~~Breakpoints","Comportament ~~Breakpoints");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Indicates whether breakpoints are triggered always or only on change from false to true");
@@ -5114,7 +5123,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         else strcpy(show_fired_breakpoint_type,"Never");																	//						   OnlyNonPC
                                                                                                                             //  01234567890123456789012345678901
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,
-            "Show fired breakp.","Ver breakp. disparado","Veure breakp. disparat");
+            "Show triggered breakpoints","Ver breakpoints disparados","Veure breakpoints disparats");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",show_fired_breakpoint_type);
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired");
@@ -5127,9 +5136,11 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_settings_debug);
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Debug windows ---","--- Ventanas Debug ---","--- Finestres Debug ---");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_address_basic,NULL,
-            "Show address on View Basic","Ver dirección en Ver Basic","Veure adreça a Veure Basic");
+            "Show address in View Basic","Ver dirección en Ver Basic","Veure adreça a Veure Basic");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_view_basic_show_address.v ? 'X' : ' ') );
 
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows location address of every basic line on menu View Basic");
@@ -5146,7 +5157,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
         if (si_complete_video_driver() ) {
             menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_settings_visualmem_grafico,NULL,
-                "Show Visualmem","Ver Memoria Visual","Veure Memoria Visual");
+                "Visualmem type","Tipo Memoria Visual","Tipus Memoria Visual");
             menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
             menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(setting_mostrar_visualmem_grafico.v ? "Graphic" : "Text") );
 
@@ -5157,6 +5168,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_separator(array_menu_settings_debug);
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Debug messages ---","--- Mensajes Debug ---","--- Missatges Debug ---");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose,NULL,
             "Verbose ~~level","Nive~~l Verbose","Nive~~ll Verbose");
@@ -5195,7 +5209,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
             "There it shows the same messages as the ones shown on terminal console");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_always_console,NULL,
-            "Always debug in terminal","Siempre debug a terminal","Sempre debug a terminal");
+            "Always log debug to terminal","Siempre mostrar debug a terminal","Sempre mostrar debug a terminal");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_always_show_messages_in_console.v ? 'X' : ' ') );
 
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Always show messages in terminal console (using simple printf) additionally to the default video driver");
@@ -5203,11 +5217,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_dump_snap_panic,NULL,
-            "Dump snapshot on panic","Volcar snapshot cuando panic","Volcar snapshot quan panic");
-        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_dump_zsf_on_cpu_panic.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_settings_debug,"Dump .zsf snapshot when a cpu panic is fired");
-        menu_add_item_menu_ayuda(array_menu_settings_debug,"Dump .zsf snapshot when a cpu panic is fired");
+
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_registers_console,NULL,
             "View r~~egisters in terminal","Ver r~~egistros en terminal","Veure r~~egistres a la terminal");
@@ -5215,20 +5225,29 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_settings_debug,'e');
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_shows_invalid_opcode,NULL,
-            "Show ~~invalid opcode","Mostrar opcode ~~inválido","Mostrar opcode ~~invàlid");
+            "Show ~~invalid opcodes","Mostrar opcodes ~~inválidos","Mostrar opcodes ~~invàlids");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(debug_shows_invalid_opcode.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_settings_debug,'i');
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Show which opcodes are invalid (considering ED, DD, FD prefixes)");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Show which opcodes are invalid (considering ED, DD, FD prefixes). "
                                 "A message will be shown on console, when verbose level is 2 or higher");
 
+        menu_add_item_menu_separator(array_menu_settings_debug);
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Execution behaviour ---","--- Comportamiento de la ejecución ---","--- Comportament de l'execució ---");
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_dump_snap_panic,NULL,
+            "Dump snapshot on panic","Volcar snapshot cuando panic","Volcar snapshot quan panic");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_dump_zsf_on_cpu_panic.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Dump .zsf snapshot when a cpu panic is fired");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Dump .zsf snapshot when a cpu panic is fired");
 
         char ayuda_leyenda[32*10]; // para 10 lineas de ayuda, mas que suficiente
         sprintf(ayuda_leyenda,"Maximum items allowed on cpu history feature. Each item uses %d bytes of memory",CPU_HISTORY_REGISTERS_SIZE);
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_max_history,NULL,
-            "Max history items","Max items en historial","Max items a l'historial");
+            "Max CPU history items","Max items en historial de cpu","Max items a l'historial de cpu");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%d]",cpu_history_get_max_size() );
         menu_add_item_menu_tooltip(array_menu_settings_debug,ayuda_leyenda);
@@ -5237,6 +5256,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_separator(array_menu_settings_debug);
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Hardware Debug ---","--- Debug Hardware ---","--- Debug Hardware ---");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_hardware_debug_port,NULL,
             "Hardware ~~debug ports","Puertos ~~debug hardware","Ports ~~debug hardware");
