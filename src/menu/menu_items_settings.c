@@ -2184,7 +2184,7 @@ void menu_main_window_special_effects_group(MENU_ITEM_PARAMETERS)
             "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada-> Insertar grups d'efectes");*/
 
         retorno_menu=menu_dibuja_menu_dialogo(&main_window_special_effects_group_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Insert effects group Menu","Menú Insertar grupo de efectos","Menú Insertar grups d'efectes" );
+            "Insert effects group","Insertar grupo de efectos","Insertar grups d'efectes" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion

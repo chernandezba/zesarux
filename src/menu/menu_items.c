@@ -249,6 +249,7 @@ int menu_machine_selection_by_name_opcion_seleccionada=0;
 int licenses_opcion_seleccionada=0;
 int help_opcion_seleccionada=0;
 int help_documentation_opcion_seleccionada=0;
+int help_project_opcion_seleccionada=0;
 int send_text_as_keystrokes_opcion_seleccionada=0;
 int audio_opcion_seleccionada=0;
 int debug_opcion_seleccionada=0;
@@ -679,7 +680,7 @@ void menu_poke(MENU_ITEM_PARAMETERS)
                 menu_add_ESC_item(array_menu_poke);
 
                 retorno_menu=menu_dibuja_menu(&poke_opcion_seleccionada,&item_seleccionado,array_menu_poke,
-                    "Poke Menu","Menú Poke","Menú Poke" );
+                    "Poke","Poke","Poke" );
 
 
 
@@ -886,7 +887,7 @@ void menu_debug_cpu_stats(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_cpu_stats);
 
         retorno_menu=menu_dibuja_menu(&cpu_stats_opcion_seleccionada,&item_seleccionado,array_menu_cpu_stats,
-            "CPU Statistics Menu","Menú Estadísticas CPU","Menú Estadístiques CPU" );
+            "CPU Statistics","Estadísticas CPU","Estadístiques CPU" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -11174,7 +11175,7 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
                 menu_add_ESC_item(array_menu_cpu_transaction_log);
 
                 retorno_menu=menu_dibuja_menu(&cpu_transaction_log_opcion_seleccionada,&item_seleccionado,array_menu_cpu_transaction_log,
-                    "CPU Transaction Log Menu","Menú Registro Transacciones CPU","Menú Registre Transaccions CPU" );
+                    "CPU Transaction Log","Registro Transacciones CPU","Registre Transaccions CPU" );
 
 
 
@@ -32410,6 +32411,62 @@ void menu_first_start_wizard(void)
 }
 
 
+void menu_help_project(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+
+            menu_add_item_menu_inicial(&array_menu_common,"~~Features",MENU_OPCION_NORMAL,menu_about_features,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'f');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_exclusivefeatures,NULL,
+                "E~~xclusive features","Características e~~xclusivas","Característiques e~~xclusives");
+            menu_add_item_menu_shortcut(array_menu_common,'x');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu(array_menu_common,"H~~istory",MENU_OPCION_NORMAL,menu_about_history,NULL);
+            menu_add_item_menu_spanish(array_menu_common,"H~~istoria");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+            menu_add_item_menu(array_menu_common,"Cha~~ngelog",MENU_OPCION_NORMAL,menu_about_changelog,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'n');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_ESC_item(array_menu_common);
+
+            menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help-> Project","Menú Principal-> Help-> Proyecto","Menú Principal-> Help-> Projecte");
+
+            retorno_menu=menu_dibuja_menu(&help_project_opcion_seleccionada,&item_seleccionado,array_menu_common,
+                "Project","Proyecto","Projecte" );
+
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 void menu_help_documentation(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_common;
@@ -32445,7 +32502,7 @@ void menu_help_documentation(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help-> Documentation","Menú Principal-> Help-> Documentación","Menú Principal-> Help-> Documentació");
 
             retorno_menu=menu_dibuja_menu(&help_documentation_opcion_seleccionada,&item_seleccionado,array_menu_common,
-                "Documentation Menu","Menú Documentación","Menú Documentació" );
+                "Documentation","Documentación","Documentació" );
 
 
 
@@ -32482,6 +32539,9 @@ void menu_help(MENU_ITEM_PARAMETERS)
                 "Documentation","Documentación","Documentació");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_project,NULL,
+                "Project","Proyecto","Projecte");
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
             menu_add_item_menu(array_menu_common,"~~Keyboard Help",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
@@ -32489,23 +32549,6 @@ void menu_help(MENU_ITEM_PARAMETERS)
              menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-
-            menu_add_item_menu(array_menu_common,"~~Features",MENU_OPCION_NORMAL,menu_about_features,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'f');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_exclusivefeatures,NULL,
-                "E~~xclusive features","Características e~~xclusivas","Característiques e~~xclusives");
-            menu_add_item_menu_shortcut(array_menu_common,'x');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu(array_menu_common,"H~~istory",MENU_OPCION_NORMAL,menu_about_history,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"H~~istoria");
-            menu_add_item_menu_shortcut(array_menu_common,'i');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
@@ -32527,10 +32570,6 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
 
 
-            menu_add_item_menu(array_menu_common,"Cha~~ngelog",MENU_OPCION_NORMAL,menu_about_changelog,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'n');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_alternate_roms,NULL,
                 "Alternate RO~~MS","RO~~MS alternativas","RO~~MS alternatives");
@@ -33533,7 +33572,7 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
             "Menú Principal-> Audio-> Capturar Audio a Arxiu");
 
         retorno_menu=menu_dibuja_menu(&external_audio_source_to_disk_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Capture Audio to File Menu","Menú Capturar Audio a Archivo","Menú Capturar Audio a Arxiu" );
+            "Capture Audio to File","Capturar Audio a Archivo","Capturar Audio a Arxiu" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -42015,7 +42054,7 @@ void menu_lec_memory(MENU_ITEM_PARAMETERS)
             "Main Menu-> Storage-> LEC Memory","Menú Principal-> Almacenamiento-> LEC Memory","Menú Principal-> Emmagatzematge-> LEC Memory");
 
         retorno_menu=menu_dibuja_menu(&lec_memory_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "LEC Memory Menu","Menú LEC Memory","Menú LEC Memory" );
+            "LEC Memory","LEC Memory","LEC Memory" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -48109,7 +48148,7 @@ void menu_template_menu(MENU_ITEM_PARAMETERS)
             "Main Menu-> Storage-> Template","Menú Principal-> Almacenamiento-> Plantilla","Menú Principal-> Emmagatzematge-> Plantilla");
 
         retorno_menu=menu_dibuja_menu(&template_menu_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Template Menu","Menú Plantilla","Menú Plantilla" );
+            "Template","Plantilla","Plantilla" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
