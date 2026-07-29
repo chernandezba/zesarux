@@ -12047,42 +12047,24 @@ void menu_snapshot_automount_esxdos_nex(MENU_ITEM_PARAMETERS)
 void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 {
 
-        menu_item *array_menu_settings_snapshot;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_settings_snapshot;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        do {
+    do {
 
 
             //hotkeys usados: uvctslpinrh
-                    char string_autosave_interval_prefix[16];
-                    menu_tape_settings_trunc_name(snapshot_autosave_interval_quicksave_name,string_autosave_interval_prefix,16);
+            char string_autosave_interval_prefix[16];
+            menu_tape_settings_trunc_name(snapshot_autosave_interval_quicksave_name,string_autosave_interval_prefix,16);
 
-                    char string_autosave_interval_path[16];
-                    menu_tape_settings_trunc_name(snapshot_autosave_interval_quicksave_directory,string_autosave_interval_path,16);
-
-
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_permitir_versiones_desconocidas,
-            NULL,"Allow U~~nknown .ZX versions","Permitir versiones .ZX desco~~nocidas","Permetre versions .ZX desco~~negudes");
-        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(snap_zx_permitir_versiones_desconocidas.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'n');
-        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Allow loading ZX Snapshots of unknown versions");
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"This setting permits loading of ZX Snapshots files of unknown versions. "
-            "It can be used to load snapshots saved on higher emulator versions than this one");
+            char string_autosave_interval_path[16];
+            menu_tape_settings_trunc_name(snapshot_autosave_interval_quicksave_directory,string_autosave_interval_path,16);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_version,NULL,
-            "Save ZX Snapshot ~~version","Grabar ZX Snapshot ~~versión","Gravar ZX Snapshot ~~versió");
-        menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%d]",snap_zx_version_save);
-        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
-        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'v');
-        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Decide which kind of .ZX version file is saved");
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Version 1,2,3 works on ZEsarUX and ZXSpectr\n"
-            "Version 4 works on ZEsarUX V1.3 and higher\n"
-            "Version 5 works on ZEsarUX V2 and higher\n"
-        );
 
-        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_settings_compressed_zsf,NULL,
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_settings_compressed_zsf,NULL,
             "~~Compressed ZSF","ZSF ~~Comprimido","ZSF ~~Comprimit");
         menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_force_uncompressed ? ' ' : 'X') );
         menu_add_item_menu_shortcut(array_menu_settings_snapshot,'c');
@@ -12203,6 +12185,31 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Path to save quicksave (snapshot and screen) & continous autosave. If not set, will use current directory");
 
 
+        menu_add_item_menu_separator(array_menu_settings_snapshot);
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,NULL,NULL,
+        "--- Old .ZX format ---","--- Formato .ZX antiguo ---","--- Format .ZX antic ---");
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_permitir_versiones_desconocidas,
+            NULL,"Allow U~~nknown .ZX versions","Permitir versiones .ZX desco~~nocidas","Permetre versions .ZX desco~~negudes");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(snap_zx_permitir_versiones_desconocidas.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'n');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Allow loading ZX Snapshots of unknown versions");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"This setting permits loading of ZX Snapshots files of unknown versions. "
+            "It can be used to load snapshots saved on higher emulator versions than this one");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_version,NULL,
+            ".ZX ~~version on save","~~versión .ZX al grabar","~~versió .ZX al gravar");
+        menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%d]",snap_zx_version_save);
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"    ");
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'v');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Decide which kind of .ZX version file is saved");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Version 1,2,3 works on ZEsarUX and ZXSpectr\n"
+            "Version 4 works on ZEsarUX V1.3 and higher\n"
+            "Version 5 works on ZEsarUX V2 and higher\n"
+        );
+
 
         menu_add_item_menu_separator(array_menu_settings_snapshot);
 
@@ -12213,14 +12220,14 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         retorno_menu=menu_dibuja_menu(&settings_snapshot_opcion_seleccionada,&item_seleccionado,array_menu_settings_snapshot,
             "Snapshot Settings","Opciones Instantánea","Opcions Instantània");
 
-            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                    //llamamos por valor de funcion
-                    if (item_seleccionado.menu_funcion!=NULL) {
-                            //printf ("actuamos por funcion\n");
-                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-                    }
-            }
+                }
+        }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
