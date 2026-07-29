@@ -32668,37 +32668,42 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"Virtual ~~Keyboard",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'k');
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL,
+                "~~Virtual Keyboard","Teclado ~~Virtual","Teclat ~~Virtual");
+            menu_add_item_menu_shortcut(array_menu_common,'v');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_documentation,NULL,
-                "Documentation","Documentación","Documentació");
+                "~~Documentation","~~Documentación","~~Documentació");
+            menu_add_item_menu_shortcut(array_menu_common,'d');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_project,NULL,
-                "Project","Proyecto","Projecte");
+                "~~Project","~~Proyecto","~~Projecte");
+            menu_add_item_menu_shortcut(array_menu_common,'p');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_community,NULL,
-                "Community","Comunidad","Comunitat");
+                "~~Community","~~Comunidad","~~Comunitat");
+            menu_add_item_menu_shortcut(array_menu_common,'c');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_technical,NULL,
-                "Technical","Técnica","Tècnica");
+                "~~Technical","~~Técnica","~~Tècnica");
+            menu_add_item_menu_shortcut(array_menu_common,'t');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
-                "Lic~~enses","Lic~~encias","Llic~~ències");
-            menu_add_item_menu_shortcut(array_menu_common,'e');
+                "~~Licenses","~~Licencias","~~Llicències");
+            menu_add_item_menu_shortcut(array_menu_common,'l');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"In Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
-            //menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu(array_menu_common,"In ~~Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'m');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
