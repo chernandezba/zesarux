@@ -36518,54 +36518,54 @@ void menu_snapshot_quickload(MENU_ITEM_PARAMETERS)
 void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[30];
+    char *filtros[30];
 
-        filtros[0]="zx";
-        filtros[1]="sp";
-        filtros[2]="z80";
-        filtros[3]="sna";
+    filtros[0]="zx";
+    filtros[1]="sp";
+    filtros[2]="z80";
+    filtros[3]="sna";
 
-        filtros[4]="o";
-        filtros[5]="p";
-        filtros[6]="80";
-        filtros[7]="81";
-        filtros[8]="z81";
+    filtros[4]="o";
+    filtros[5]="p";
+    filtros[6]="80";
+    filtros[7]="81";
+    filtros[8]="z81";
 
-        filtros[9]="tzx";
-        filtros[10]="tap";
+    filtros[9]="tzx";
+    filtros[10]="tap";
 
-        filtros[11]="rwa";
-        filtros[12]="smp";
-        filtros[13]="wav";
+    filtros[11]="rwa";
+    filtros[12]="smp";
+    filtros[13]="wav";
 
-        filtros[14]="epr";
-        filtros[15]="63";
-        filtros[16]="eprom";
-        filtros[17]="flash";
+    filtros[14]="epr";
+    filtros[15]="63";
+    filtros[16]="eprom";
+    filtros[17]="flash";
 
-        filtros[18]="ace";
+    filtros[18]="ace";
 
-        filtros[19]="dck";
+    filtros[19]="dck";
 
-        filtros[20]="cdt";
+    filtros[20]="cdt";
 
-        filtros[21]="ay";
+    filtros[21]="ay";
 
-        filtros[22]="scr";
+    filtros[22]="scr";
 
-        filtros[23]="rzx";
+    filtros[23]="rzx";
 
-        filtros[24]="zsf";
+    filtros[24]="zsf";
 
-        filtros[25]="spg";
+    filtros[25]="spg";
 
-        filtros[26]="trd";
+    filtros[26]="trd";
 
-        filtros[27]="config";
+    filtros[27]="config";
 
-        filtros[28]="p81";
+    filtros[28]="p81";
 
-        filtros[29]=0;
+    filtros[29]=0;
 
     char source_file[PATH_MAX];
     char game_config_file[PATH_MAX];
@@ -36574,54 +36574,54 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
     //por defecto
     source_file[0]=0;
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
     int ret;
 
-        //Obtenemos directorio de quickload, para generar el .config en la ultima ruta que se haya hecho smartload
-        //si no hay directorio, vamos a rutas predefinidas
-        if (quickfile!=NULL)  {
-            debug_printf (VERBOSE_INFO,"Last smartload file: %s",quickfile);
+    //Obtenemos directorio de quickload, para generar el .config en la ultima ruta que se haya hecho smartload
+    //si no hay directorio, vamos a rutas predefinidas
+    if (quickfile!=NULL)  {
+        debug_printf (VERBOSE_INFO,"Last smartload file: %s",quickfile);
 
-            char nombre[PATH_MAX];
-            util_get_file_no_directory(quickfile,nombre);
-
-
-            int usar_nombre_autodetectado;
+        char nombre[PATH_MAX];
+        util_get_file_no_directory(quickfile,nombre);
 
 
-
-            //Si nombre vacio, no usar nombre autodetectado
-            if (nombre[0]==0) {
-                usar_nombre_autodetectado=0;
-            }
-
-            else {
-                //Nombre previo. El usuario quiere usarlo?
-                char nombre_shown[25];
-                menu_tape_settings_trunc_name(nombre,nombre_shown,25);
-                usar_nombre_autodetectado=menu_confirm_yesno_texto("Generate config for",nombre_shown);
-
-            }
-
-            if (usar_nombre_autodetectado) {
-                strcpy(source_file,quickfile);
-                ret=1;
-            }
+        int usar_nombre_autodetectado;
 
 
-            else {
-                //No seleccionamos ultimo quickfile como source. Cambiar a directorio quickfile
-                  char directorio[PATH_MAX];
-                    util_get_dir(quickfile,directorio);
-                    //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                    //cambiamos a ese directorio, siempre que no sea nulo
-                    if (directorio[0]!=0) {
-                            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                            zvfs_chdir(directorio);
+        //Si nombre vacio, no usar nombre autodetectado
+        if (nombre[0]==0) {
+            usar_nombre_autodetectado=0;
+        }
+
+        else {
+            //Nombre previo. El usuario quiere usarlo?
+            char nombre_shown[25];
+            menu_tape_settings_trunc_name(nombre,nombre_shown,25);
+            usar_nombre_autodetectado=menu_confirm_yesno_texto("Generate config for",nombre_shown);
+
+        }
+
+        if (usar_nombre_autodetectado) {
+            strcpy(source_file,quickfile);
+            ret=1;
+        }
+
+
+        else {
+            //No seleccionamos ultimo quickfile como source. Cambiar a directorio quickfile
+            char directorio[PATH_MAX];
+            util_get_dir(quickfile,directorio);
+            //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+            //cambiamos a ese directorio, siempre que no sea nulo
+            if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
             }
 
 
@@ -36632,9 +36632,9 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
     //Si no se selecciona source_file como ultimo archivo cargado
     if (source_file[0]==0) {
 
-            ret=menu_filesel("Source or dest file",filtros,source_file);
-            //volvemos a directorio inicial
-            zvfs_chdir(directorio_actual);
+        ret=menu_filesel("Source or dest file",filtros,source_file);
+        //volvemos a directorio inicial
+        zvfs_chdir(directorio_actual);
 
     }
 
@@ -36650,11 +36650,11 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
         debug_printf (VERBOSE_INFO,"Destination file will be %s",game_config_file);
 
          //Ver si archivo existe y preguntar
-                if (si_existe_archivo(game_config_file) ) {
+        if (si_existe_archivo(game_config_file) ) {
 
-                        if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
+            if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
 
-                }
+        }
 
 
 

@@ -146,3 +146,14 @@ ok -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece 
 ok *falta ver si se pulsa en menu visible o no, deberia contar el que esta mas arriba, como reproducir eso?
 ok *en algun sitio resetear menu_dibuja_menu_yendo_atras_sumenus a 0? puede que se quede a no 0 en algun caso y al abrir menu se cierre o se vaya atras sin querer?
 ok *probarlo con main menu->settings->hardware->audio->audio chip to midi output-> pulsar en menu audio settings (justo el anterior) pero se abrira hardware settings
+
+
+-en save game config el titulo de la ventana es confuso
+    //Si no se selecciona source_file como ultimo archivo cargado
+    if (source_file[0]==0) {
+
+        ret=menu_filesel("Source or dest file",filtros,source_file);
+        //volvemos a directorio inicial
+        zvfs_chdir(directorio_actual);
+
+    }
