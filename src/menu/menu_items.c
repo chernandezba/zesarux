@@ -32662,50 +32662,68 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_inicial(&array_menu_common,"~~About",MENU_OPCION_NORMAL,menu_about_about_which,NULL);
             menu_add_item_menu_spanish_catalan(array_menu_common,"~~Acerca de","Quant ~~a");
             menu_add_item_menu_shortcut(array_menu_common,'a');
+            menu_add_item_menu_tooltip(array_menu_common,"About ZEsarUX");
+            menu_add_item_menu_ayuda(array_menu_common,"About the ZEsarUX emulator.");
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
             if_zxvision_topbar_menu_will_not_have_title(array_menu_common);
-            menu_add_item_menu_tooltip(array_menu_common,"About ZEsarUX");
-            menu_add_item_menu_ayuda(array_menu_common,"About ZEsarUX emulator");
+
 
             menu_add_item_menu_separator(array_menu_common);
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL,
                 "~~Virtual Keyboard","Teclado ~~Virtual","Teclat ~~Virtual");
             menu_add_item_menu_shortcut(array_menu_common,'v');
+            menu_add_item_menu_tooltip(array_menu_common,"Virtual keyboard");
+            menu_add_item_menu_ayuda(array_menu_common,"Displays the virtual keyboard of the currently emulated machine.");
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
+
             menu_add_item_menu_separator(array_menu_common);
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_documentation,NULL,
                 "~~Documentation","~~Documentación","~~Documentació");
             menu_add_item_menu_shortcut(array_menu_common,'d');
+            menu_add_item_menu_tooltip(array_menu_common,"Documentation");
+            menu_add_item_menu_ayuda(array_menu_common,"Provides user documentation and information about the resources included with ZEsarUX.");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_project,NULL,
                 "~~Project","~~Proyecto","~~Projecte");
             menu_add_item_menu_shortcut(array_menu_common,'p');
+            menu_add_item_menu_tooltip(array_menu_common,"Project information");
+            menu_add_item_menu_ayuda(array_menu_common,"Displays information about the ZEsarUX project.");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_community,NULL,
                 "~~Community","~~Comunidad","~~Comunitat");
             menu_add_item_menu_shortcut(array_menu_common,'c');
+            menu_add_item_menu_tooltip(array_menu_common,"Community resources");
+            menu_add_item_menu_ayuda(array_menu_common,"Provides access to the ZEsarUX community and online resources.");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_technical,NULL,
                 "~~Technical","~~Técnica","~~Tècnica");
             menu_add_item_menu_shortcut(array_menu_common,'t');
+            menu_add_item_menu_tooltip(array_menu_common,"Technical information");
+            menu_add_item_menu_ayuda(array_menu_common,"Displays technical information about ZEsarUX.");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
                 "~~Licenses","~~Licencias","~~Llicències");
             menu_add_item_menu_shortcut(array_menu_common,'l');
+            menu_add_item_menu_tooltip(array_menu_common,"Software licenses");
+            menu_add_item_menu_ayuda(array_menu_common,"Displays software licenses and legal information.");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu(array_menu_common,"In ~~Memoriam",MENU_OPCION_NORMAL,menu_in_memoriam,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'m');
+            menu_add_item_menu_tooltip(array_menu_common,"In Memoriam");
+            menu_add_item_menu_ayuda(array_menu_common,"Dedicated to family members who inspired the creation of ZEsarUX.");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
 
