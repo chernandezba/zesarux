@@ -575,6 +575,7 @@ int zxvision_topmenu_was_open_by_left_mouse_button=0;
 int zxvision_topbar_menu_will_not_have_title=0;
 
 //Si ese menu no tendra titulo, activamos ese flag en la estructura del menu y luego desactivamos ese comportamiento
+//Esto se tiene que hacer en todos los menus raiz, para quitarle el titulo del menu en caso que se tenga topmenu activado
 void if_zxvision_topbar_menu_will_not_have_title(menu_item *m)
 {
     if (zxvision_topbar_menu_enabled.v==0) return;

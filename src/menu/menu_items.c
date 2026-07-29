@@ -247,7 +247,8 @@ int machine_selection_por_fabricante_opcion_seleccionada=0;
 int machine_selection_opcion_seleccionada=0;
 int menu_machine_selection_by_name_opcion_seleccionada=0;
 int licenses_opcion_seleccionada=0;
-int about_opcion_seleccionada=0;
+int help_opcion_seleccionada=0;
+int help_documentation_opcion_seleccionada=0;
 int send_text_as_keystrokes_opcion_seleccionada=0;
 int audio_opcion_seleccionada=0;
 int debug_opcion_seleccionada=0;
@@ -32409,6 +32410,59 @@ void menu_first_start_wizard(void)
 }
 
 
+void menu_help_documentation(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+            menu_add_item_menu_inicial(&array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'h');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu(array_menu_common,"~~Background Windows Help",MENU_OPCION_NORMAL,menu_help_background_windows,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'b');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu(array_menu_common,"~~Readme",MENU_OPCION_NORMAL,menu_about_readme,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'r');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu(array_menu_common,"FA~~Q",MENU_OPCION_NORMAL,menu_about_faq,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'q');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_ESC_item(array_menu_common);
+
+            menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help-> Documentation","Menú Principal-> Help-> Documentación","Menú Principal-> Help-> Documentació");
+
+            retorno_menu=menu_dibuja_menu(&help_documentation_opcion_seleccionada,&item_seleccionado,array_menu_common,
+                "Documentation Menu","Menú Documentación","Menú Documentació" );
+
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
 void menu_help(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_common;
@@ -32424,25 +32478,17 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'h');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_documentation,NULL,
+                "Documentation","Documentación","Documentació");
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"~~Background Windows Help",MENU_OPCION_NORMAL,menu_help_background_windows,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'b');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
+
 
             menu_add_item_menu(array_menu_common,"~~Keyboard Help",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'k');
              menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"~~Readme",MENU_OPCION_NORMAL,menu_about_readme,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'r');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu(array_menu_common,"~~Features",MENU_OPCION_NORMAL,menu_about_features,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'f');
@@ -32479,10 +32525,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"FA~~Q",MENU_OPCION_NORMAL,menu_about_faq,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'q');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
+
 
             menu_add_item_menu(array_menu_common,"Cha~~ngelog",MENU_OPCION_NORMAL,menu_about_changelog,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'n');
@@ -32557,7 +32600,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help","Menú Principal-> Help","Menú Principal-> Help");
 
-            retorno_menu=menu_dibuja_menu(&about_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            retorno_menu=menu_dibuja_menu(&help_opcion_seleccionada,&item_seleccionado,array_menu_common,
                 "Help Menu","Menú Help","Menú Help" );
 
 
@@ -35873,7 +35916,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL,
-            "View Sensors","Ver Sensores","Veure Sensors");
+            "Sensors","Sensores","Sensors");
         menu_add_item_menu_es_avanzado(array_menu_debug);
         menu_add_item_menu_se_cerrara(array_menu_debug);
         menu_add_item_menu_genera_ventana(array_menu_debug);
