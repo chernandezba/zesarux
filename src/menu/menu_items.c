@@ -31446,7 +31446,7 @@ void menu_about_statistics(MENU_ITEM_PARAMETERS)
         "Total .c files: %d\n"
         "Total .h files: %d\n"
         "Approximate TODOs: %d\n"
-        "Total time used on coding ZEsarUX: ^^%d^^ hours (and growing)\n"
+        "Estimated time spent developing ZEsarUX: ^^%d^^ hours since 2013, and counting\n"
         "ZEsarUX yesterday users: %s\n"
 
         "\n"
@@ -32591,13 +32591,7 @@ void menu_help_technical(MENU_ITEM_PARAMETERS)
         int retorno_menu;
         do {
 
-            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
-                "C~~ompile info","Información de c~~ompilación","Informació de c~~ompilació");
-            menu_add_item_menu_shortcut(array_menu_common,'o');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
+            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
                 "~~Statistics","E~~stadísticas","E~~stadístiques");
             menu_add_item_menu_shortcut(array_menu_common,'s');
             menu_add_item_menu_se_cerrara(array_menu_common);
@@ -32612,6 +32606,12 @@ void menu_help_technical(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_running_info,NULL,
                 "R~~unning info","Información de ejec~~ución","Informació d'exec~~ució");
             menu_add_item_menu_shortcut(array_menu_common,'u');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
+                "C~~ompile info","Información de c~~ompilación","Informació de c~~ompilació");
+            menu_add_item_menu_shortcut(array_menu_common,'o');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 

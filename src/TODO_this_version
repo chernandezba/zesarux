@@ -157,3 +157,15 @@ ok *probarlo con main menu->settings->hardware->audio->audio chip to midi output
         zvfs_chdir(directorio_actual);
 
     }
+
+-menus: agrupar opciones habituales arriba:
+¿Es la primera opción que un usuario buscaría?
+¿Tiene un nombre evidente?
+¿Está al lado de las opciones relacionadas?
+¿Depende de otra opción? Si sí, ¿está inmediatamente debajo?
+
+Sin mirar el código.
+
+Solo el menú.
+
+Eso suele descubrir pequeñas incoherencias.
