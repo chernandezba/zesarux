@@ -23400,7 +23400,7 @@ void menu_help_keyboard_overlay(void)
 void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,
     int ancho_antes_minimize,int alto_antes_minimize)
 {
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help","helpshowkeyboard",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Virtual Keyboard","helpshowkeyboard",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
     ventana->can_be_backgrounded=1;
 
@@ -32497,6 +32497,20 @@ void menu_help_documentation(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_common);
 
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_included_tapes,NULL,
+                "Included ~~tapes","Cin~~tas incluidas","Cin~~tes incloses");
+            menu_add_item_menu_shortcut(array_menu_common,'t');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_alternate_roms,NULL,
+                "Alternate RO~~MS","RO~~MS alternativas","RO~~MS alternatives");
+            menu_add_item_menu_shortcut(array_menu_common,'m');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
             menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
@@ -32654,6 +32668,13 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
+            menu_add_item_menu(array_menu_common,"Virtual ~~Keyboard",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'k');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_separator(array_menu_common);
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_documentation,NULL,
                 "Documentation","Documentación","Documentació");
             menu_add_item_menu_tiene_submenu(array_menu_common);
@@ -32669,27 +32690,6 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_technical,NULL,
                 "Technical","Técnica","Tècnica");
             menu_add_item_menu_tiene_submenu(array_menu_common);
-
-            menu_add_item_menu(array_menu_common,"~~Keyboard Help",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'k');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-
-
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_alternate_roms,NULL,
-                "Alternate RO~~MS","RO~~MS alternativas","RO~~MS alternatives");
-            menu_add_item_menu_shortcut(array_menu_common,'m');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_included_tapes,NULL,
-                "Included ~~tapes","Cin~~tas incluidas","Cin~~tes incloses");
-            menu_add_item_menu_shortcut(array_menu_common,'t');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
