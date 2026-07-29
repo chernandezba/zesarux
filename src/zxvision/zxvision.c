@@ -13450,7 +13450,7 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int disable_
 //disable_special_chars: a 1 si queremos desactivar el procesado de caracteres especiales ~~, $$ etc
 //volver_timeout: si vale 1, significa timeout normal como ventanas splash. Si vale 2, no finaliza, muestra franjas de color continuamente
 //return_after_print_text, si no es 0, se usa para que vuelva a la funcion que llama justo despues de escribir texto,
-//usado en opciones de mostrar First Aid y luego agregarle opciones de menu tabladas,
+//usado en opciones de mostrar First-use y luego agregarle opciones de menu tabladas,
 //por lo que agrega cierta altura a la ventana. Se agregan tantas lineas como diga el parametro return_after_print_text
 //no_trocear_lineas indica que las lineas no se cortaran en ancho. De momento solo Tape Viewer utiliza el no trocear lineas
 void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, int return_after_print_text,int volver_timeout, int tooltip_enabled,
@@ -22783,7 +22783,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
     }
 
-    printf("no hemos pulsado en menu anterior\n");
+    //printf("no hemos pulsado en menu anterior\n");
 
     return 0;
 
@@ -30278,10 +30278,10 @@ void menu_inicio(void)
 
 //printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
 
-    //Si first aid al inicio
+    //Si first-use al inicio
     if (menu_first_aid_must_show_startup) {
         menu_first_aid_must_show_startup=0;
-        menu_first_aid_title(string_config_key_aid_startup,"First aid of the day");
+        menu_first_aid_title(string_config_key_aid_startup,"First-use of the day");
         //No mostrara nada mas que esto y luego volvera del menu
     }
 
@@ -31337,7 +31337,7 @@ void reset_welcome_message(void)
 
 
 
-            //abrir el menu si hay first aid en startup disponible
+            //abrir el menu si hay first-use en startup disponible
             //Para que aparezca el mensaje del dia, tiene que estar habilitado el setting de welcome message
             //Si no, no llegara aqui nunca
             if (menu_first_aid_startup) menu_first_aid_random_startup();
@@ -31444,7 +31444,7 @@ void menu_first_aid_add(char *key_string,int *puntero_setting,char *texto_opcion
 
     //printf("total_first_aid %d\n",total_first_aid);
     if (total_first_aid==MAX_MENU_FIRST_AID) {
-        debug_printf(VERBOSE_ERR,"Can not add more first aid messages");
+        debug_printf(VERBOSE_ERR,"Can not add more first-use messages");
         return;
     }
 
@@ -31538,9 +31538,9 @@ char *first_aid_string_ext_audio_source="Audio is read from the current recordin
 //
 
 int first_aid_no_startup_aid=0;
-char *first_aid_string_startup_aid="This is a first aid help message. You will be shown some of these at the emulator startup, but also "
+char *first_aid_string_startup_aid="This is a first-use help message. You will be shown some of these at the emulator startup, but also "
     "when opening some menus. All of them are suggestions, advices and pieces of help of ZEsarUX. You can entirely disable them by going to Settings-> "
-    "ZX Vision-> First aid help";
+    "ZX Vision-> First-use help";
 
 int first_aid_no_multiplattform=0;
 char *first_aid_string_multiplattform="Do you know that ZEsarUX is multiplattform? There are main versions for Linux, Mac, Windows and Raspberry pi. "
@@ -31690,7 +31690,7 @@ void menu_first_aid_random_startup(void)
     //Si no hay autoguardado de config, no mostrarlo (pues no se podria desactivar)
     if (save_configuration_file_on_exit.v==0) return;
 
-    //Si desactivadas ayudas first aid
+    //Si desactivadas ayudas first-use
     if (menu_disable_first_aid.v) return;
 
     //Si desactivado multitask
@@ -31715,7 +31715,7 @@ void menu_first_aid_random_startup(void)
         }
     }
 
-    if (string_config_key_aid_startup!=NULL) debug_printf (VERBOSE_DEBUG,"Set first aid of the day to: %s",string_config_key_aid_startup);
+    if (string_config_key_aid_startup!=NULL) debug_printf (VERBOSE_DEBUG,"Set first-use of the day to: %s",string_config_key_aid_startup);
 
 }
 
@@ -31731,7 +31731,7 @@ int menu_first_aid_get_setting(char *texto)
     }
 
     if (encontrado==-1) {
-        debug_printf (VERBOSE_DEBUG,"Can not find first aid setting %s",texto);
+        debug_printf (VERBOSE_DEBUG,"Can not find first-use setting %s",texto);
         return -1;
     }
 
@@ -31745,7 +31745,7 @@ int menu_first_aid_get_setting(char *texto)
 
 }
 
-//Restaurar todos mensages first aid
+//Restaurar todos mensages first-use
 void menu_first_aid_restore_all(void)
 {
     int i;
@@ -31756,8 +31756,8 @@ void menu_first_aid_restore_all(void)
         }
 }
 
-//Deshabilitar first aid de lectura de config. Si no existe, volver sin decir nada
-//Asi evitamos que si en un futuro borro algun first aid y alguien lo tenga por config, no de error al no existir
+//Deshabilitar first-use de lectura de config. Si no existe, volver sin decir nada
+//Asi evitamos que si en un futuro borro algun first-use y alguien lo tenga por config, no de error al no existir
 void menu_first_aid_disable(char *texto)
 {
     int indice;
@@ -31779,14 +31779,15 @@ z80_bit menu_disable_first_aid={0};
 
 
 
- //Mostrar first aid si conviene. Retorna 1 si se ha mostrado. 0 si no
+ //Mostrar first-use si conviene. Retorna 1 si se ha mostrado. 0 si no
+ //First-use antes se llamaba First Aid
 int menu_first_aid_title(char *key_setting,char *title) //(enum first_aid_number_list indice)
 {
 
     //Si no hay autoguardado de config, no mostrarlo (pues no se podria desactivar)
     if (save_configuration_file_on_exit.v==0) return 0;
 
-    //Si desactivadas ayudas first aid
+    //Si desactivadas ayudas first-use
     if (menu_disable_first_aid.v) return 0;
 
     //Si driver no permite menu normal
@@ -31816,10 +31817,10 @@ int menu_first_aid_title(char *key_setting,char *title) //(enum first_aid_number
 }
 
 
-//Mostrar first aid si conviene. Retorna 1 si se ha mostrado. 0 si no
+//Mostrar first-use si conviene. Retorna 1 si se ha mostrado. 0 si no
 int menu_first_aid(char *key_setting) //(enum first_aid_number_list indice)
 {
-    return menu_first_aid_title(key_setting,"First aid");
+    return menu_first_aid_title(key_setting,"First-use");
 
 }
 

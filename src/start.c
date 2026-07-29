@@ -2001,8 +2001,8 @@ printf (
         //"--menu-darken-when-open    Darken layer below menu when menu open\n"
         "--menu-bw-multitask                      Grayscale layer below menu when menu opened and multitask is disabled\n"
         "--disabletooltips                        Disable tooltips on menu\n"
-        "--no-first-aid s                         Disable first aid message s. Do not throw any error if invalid\n"
-        "--disable-all-first-aid                  Disable all first aid messages\n"
+        "--no-first-aid s                         Disable first-use messages. Do not throw any error if invalid\n"
+        "--disable-all-first-aid                  Disable all first-use messages\n"
         "--forcevisiblehotkeys                    Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed\n"
         "--forceconfirmyes                        Force confirmation dialogs yes/no always to yes\n"
         "--gui-style s                            Set GUI style. Available: ");

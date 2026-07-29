@@ -3485,9 +3485,9 @@ void menu_interface_first_aid(MENU_ITEM_PARAMETERS)
 
 void menu_interface_restore_first_aid(MENU_ITEM_PARAMETERS)
 {
-    if (menu_confirm_yesno("Restore all first aid") ) {
+    if (menu_confirm_yesno("Restore all first-use") ) {
         menu_first_aid_restore_all();
-        zxvision_generic_message("Restore messages","OK. Restored all first aid messages");
+        zxvision_generic_message("Restore messages","OK. Restored all first-use messages");
     }
 }
 
@@ -4277,7 +4277,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "--- Menus Behaviour ---","--- Comportamiento menús ---","--- Comportament menús ---");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
-            "Enable Top Menu","Activar Menú Superior","Activar Menú Superior");
+            "Show Top Menu","Mostrar Menú Superior","Mostrar Menú Superior");
         menu_add_item_menu_tooltip(array_menu_common,"Enable a Top Menu");
         menu_add_item_menu_ayuda(array_menu_common,"Enable a Top Menu. It disables the upper buttons. "
             "Pressing F5 one opens the Top Menu, pressing F5 twice opens the Main Menu"
@@ -4309,7 +4309,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
-            "Use mouse on menu","Usar ratón en el menu","Usar ratolí al menu");
+            "Use mouse in menus","Usar ratón en los menús","Usar ratolí als menús");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
         menu_add_item_menu_es_avanzado(array_menu_common);
         //menu_add_item_menu_shortcut(array_menu_common,'u');
@@ -4324,7 +4324,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             }
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_ignore_click_open_menu,NULL,
-                "Cl~~icking mouse opens menu","Cl~~ick raton abre menú","Cl~~ick ratolí obre menú");
+                "Mouse Cl~~ick opens menu","Cl~~ick raton abre menú","Cl~~ick ratolí obre menú");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
             menu_add_item_menu_tooltip(array_menu_common,"Ignore mouse clicking to open menu or ZX Desktop buttons");
             menu_add_item_menu_shortcut(array_menu_common,'i');
@@ -4354,7 +4354,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Enable or disable tooltips");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "Force visible ~~hotkeys","Forzar visibilidad ~~hotkeys","Forçar visibilitat ~~hotkeys");
+            "Always show ~~hotkeys","Siempre mostrar ~~hotkeys","Sempre mostrar ~~hotkeys");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_force_writing_inverse_color.v ? 'X' : ' ') );
         menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_force_writing_inverse_color);
         menu_add_item_menu_shortcut(array_menu_common,'h');
@@ -4363,10 +4363,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,
-            "Force confirm yes","Forzar confirmaciones a si","Forçar confirmacions a si");
+            "Skip confirmation dialogs","Omitir diálogos de confirmación","Omet diàlegs de confirmació");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(force_confirm_yes.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Force confirmation dialogs yes/no always to yes");
-        menu_add_item_menu_ayuda(array_menu_common,"Force confirmation dialogs yes/no always to yes");
+        menu_add_item_menu_tooltip(array_menu_common,"Skip confirmation dialogs");
+        menu_add_item_menu_ayuda(array_menu_common,"Skips confirmation dialogs and automatically answers \"Yes\".");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,
@@ -4384,7 +4384,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_mouse_right_esc,NULL,
-            "Right mouse sends ESC","Botón derecho envia ESC","Botó dret envia ESC");
+            "Right mouse button sends ESC","Botón derecho envia ESC","Botó dret envia ESC");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_mouse_right_send_esc.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
@@ -4407,8 +4407,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         );
 
 
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Environment ---","--- Entorno ---","--- Entorn ---");
+
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
-            "M~~ultitask menu","Menú m~~ultitarea","Menú m~~ultitasca");
+            "M~~ultitask","M~~ultitarea","M~~ultitasca");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (menu_multitarea==1 ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'u');
         menu_add_item_menu_tooltip(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
@@ -4417,12 +4423,12 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (menu_multitarea) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
-                "Sto~~p emulation on menu","Sto~~p emulación en menú","Sto~~p emulació al menú");
+                "Sto~~p emulation in menus","Sto~~p emulación en los menús","Sto~~p emulació als menús");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
             menu_add_item_menu_es_avanzado(array_menu_common);
             menu_add_item_menu_shortcut(array_menu_common,'p');
-            menu_add_item_menu_tooltip(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
-            menu_add_item_menu_ayuda(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
+            menu_add_item_menu_tooltip(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menus");
+            menu_add_item_menu_ayuda(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menus");
         }
 
 
@@ -4444,19 +4450,19 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");
+            "First-use help","Ayuda de primer uso","Ajuda del primer ús");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );
         menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_disable_first_aid);
-        menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");
+        menu_add_item_menu_tooltip(array_menu_common,"First-use help");
+        menu_add_item_menu_ayuda(array_menu_common,"Displays help messages the first time a feature is used.");
 
 
         if (menu_disable_first_aid.v==0) {
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_first_aid,NULL,
-                "    Restore all 1st aid mess.","    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
-            menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
-            menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
+                "    Restore all first-use messages","    Restaurar todos mens. de primer uso","    Restaurar tots miss. primer ús");
+            menu_add_item_menu_tooltip(array_menu_common,"Restore first-use messages");
+            menu_add_item_menu_ayuda(array_menu_common,"Restores all first-use help messages so they are displayed again.");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
         }

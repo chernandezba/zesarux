@@ -8411,7 +8411,7 @@ void menu_debug_cpu_backwards_history_run(zxvision_window *ventana)
                 //TODO: el efecto inesperado de esto es que yendo hacia atras, si tienes real video, aqui se ira refrescando bien,
                 //pero cuando acabe de restaurar todo el historial, te refrescara la pantalla con rainbow y por tanto aparecera
                 //el estado inicial, hasta que salgas del menu y se vea bien el estado actual
-                //En este caso lo solvento con un mensaje tipo first aid
+                //En este caso lo solvento con un mensaje tipo first-use
                 int antes_rainbow=rainbow_enabled.v;
 
                 rainbow_enabled.v=0;
@@ -10398,7 +10398,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                 //backrun
                 if (tecla=='N' && cpu_history_enabled.v && cpu_history_started.v) {
-                    //Detener multitarea pues interesa que no se "mueva" la cpu si sale el aviso de first aid
+                    //Detener multitarea pues interesa que no se "mueva" la cpu si sale el aviso de first-use
                     int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
                     menu_emulation_paused_on_menu=1;
 

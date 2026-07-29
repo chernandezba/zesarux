@@ -16968,7 +16968,7 @@ void menu_online_browse_zxinfowos(MENU_ITEM_PARAMETERS)
     menu_error_message("You need to have SSL compiled to browse online speccy games");
     return;
 
-    //Este first aid ya no se usa
+    //Este first-use ya no se usa
     //menu_first_aid("no_ssl_wos");
 #endif
 
@@ -32176,7 +32176,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         "y también al abrir ciertos menús";
     char *mensaje_firstaid_catalan="Vols activar missatges d'ajuda de 'Primers Auxilis'? Son missatges d'ajuda que apareixen al iniciar ZEsarUX "
         "i també al obrir alguns menús";
-    char *mensaje_firstaid_english="Do you want to enable 'First aid' help messages? They are help messages that appear on starting ZEsarUX "
+    char *mensaje_firstaid_english="Do you want to enable 'First-use' help messages? They are help messages that appear on starting ZEsarUX "
         "and also when opening some menus";
 
     char *mensaje_tooltips_spanish="Quieres activar mensajes de ayuda 'Tooltips'? Son mensajes de ayuda que aparecen al elegir entradas de menús o botones";
@@ -32294,7 +32294,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     autoload_snapshot_on_start.v=opcion_autosnapshot;
 
 
-    //Preguntar si first aid
+    //Preguntar si first-use
     int opcion_activar_first_aid=1;
     sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
     zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_firstaid,
@@ -32365,7 +32365,7 @@ void menu_first_start_wizard_exit(MENU_ITEM_PARAMETERS)
 void menu_first_start_wizard(void)
 {
 
-    //al aparecer el wizard no mostramos el first aid para no molestar demasiado al usuario
+    //al aparecer el wizard no mostramos el first-use para no molestar demasiado al usuario
     menu_first_aid_must_show_startup=0;
 
     menu_item *array_menu_common;
