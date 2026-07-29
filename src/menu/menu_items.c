@@ -250,6 +250,8 @@ int licenses_opcion_seleccionada=0;
 int help_opcion_seleccionada=0;
 int help_documentation_opcion_seleccionada=0;
 int help_project_opcion_seleccionada=0;
+int help_community_opcion_seleccionada=0;
+int help_technical_opcion_seleccionada=0;
 int send_text_as_keystrokes_opcion_seleccionada=0;
 int audio_opcion_seleccionada=0;
 int debug_opcion_seleccionada=0;
@@ -32519,6 +32521,123 @@ void menu_help_documentation(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_help_community(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
+                "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");
+            menu_add_item_menu_shortcut(array_menu_common,'c');
+             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_donors,NULL,
+                "~~Donors","~~Donantes","~~Donants");
+            menu_add_item_menu_shortcut(array_menu_common,'d');
+             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu(array_menu_common,"Donate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
+            menu_add_item_menu_spanish(array_menu_common,"Donar");
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_ESC_item(array_menu_common);
+
+            menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help-> Community","Menú Principal-> Help-> Comunidad","Menú Principal-> Help-> Comunitat");
+
+            retorno_menu=menu_dibuja_menu(&help_community_opcion_seleccionada,&item_seleccionado,array_menu_common,
+                "Community","Comunidad","Comunitat");
+
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+void menu_help_technical(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
+                "C~~ompile info","Información de c~~ompilación","Informació de c~~ompilació");
+            menu_add_item_menu_shortcut(array_menu_common,'o');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
+                "~~Statistics","E~~stadísticas","E~~stadístiques");
+            menu_add_item_menu_shortcut(array_menu_common,'s');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_core_statistics,NULL,
+                "Core Statistics","Estadísticas del núcleo","Estadístiques del nucli");
+            //menu_add_item_menu_shortcut(array_menu_common,'r');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_running_info,NULL,
+                "R~~unning info","Información de ejec~~ución","Informació d'exec~~ució");
+            menu_add_item_menu_shortcut(array_menu_common,'u');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu(array_menu_common,"Insta~~ll",MENU_OPCION_NORMAL,menu_about_install,NULL);
+            menu_add_item_menu_spanish(array_menu_common,"Insta~~lar");
+            menu_add_item_menu_shortcut(array_menu_common,'l');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_installwindows,NULL,
+                "Install on ~~Windows","Instalar en ~~Windows","Instalar a ~~Windows");
+            menu_add_item_menu_shortcut(array_menu_common,'w');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_ESC_item(array_menu_common);
+
+            menu_add_item_menu_index_full_path(array_menu_common,"Main Menu-> Help-> Technical","Menú Principal-> Help-> Técnica","Menú Principal-> Help-> Tècnica");
+
+            retorno_menu=menu_dibuja_menu(&help_technical_opcion_seleccionada,&item_seleccionado,array_menu_common,
+                "Technical","Técnica","Tècnica");
+
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 
 void menu_help(MENU_ITEM_PARAMETERS)
 {
@@ -32543,29 +32662,17 @@ void menu_help(MENU_ITEM_PARAMETERS)
                 "Project","Proyecto","Projecte");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_community,NULL,
+                "Community","Comunidad","Comunitat");
+            menu_add_item_menu_tiene_submenu(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_technical,NULL,
+                "Technical","Técnica","Tècnica");
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu(array_menu_common,"~~Keyboard Help",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'k');
              menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
-                "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");
-            menu_add_item_menu_shortcut(array_menu_common,'c');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_donors,NULL,
-                "~~Donors","~~Donantes","~~Donants");
-            menu_add_item_menu_shortcut(array_menu_common,'d');
-             menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu(array_menu_common,"Donate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Donar");
-            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
 
@@ -32583,45 +32690,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"Insta~~ll",MENU_OPCION_NORMAL,menu_about_install,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Insta~~lar");
-            menu_add_item_menu_shortcut(array_menu_common,'l');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_installwindows,NULL,
-                "Install on ~~Windows","Instalar en ~~Windows","Instalar a ~~Windows");
-            menu_add_item_menu_shortcut(array_menu_common,'w');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_separator(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
-                "C~~ompile info","Información de c~~ompilación","Informació de c~~ompilació");
-            menu_add_item_menu_shortcut(array_menu_common,'o');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
-                "~~Statistics","E~~stadísticas","E~~stadístiques");
-            menu_add_item_menu_shortcut(array_menu_common,'s');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_core_statistics,NULL,
-                "Core Statistics","Estadísticas del núcleo","Estadístiques del nucli");
-            //menu_add_item_menu_shortcut(array_menu_common,'r');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_running_info,NULL,
-                "R~~unning info","Información de ejec~~ución","Informació d'exec~~ució");
-            menu_add_item_menu_shortcut(array_menu_common,'u');
-            menu_add_item_menu_se_cerrara(array_menu_common);
-            menu_add_item_menu_genera_ventana(array_menu_common);
-
-            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
                 "Lic~~enses","Lic~~encias","Llic~~ències");
