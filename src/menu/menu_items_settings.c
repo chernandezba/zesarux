@@ -9860,6 +9860,44 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
+        if (MACHINE_HAS_VDP_9918A) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,
+                "Unlimited sprites per line","Sprites Ilimitados por linea","Sprites ilimitats per línia");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (vdp_9918a_unlimited_sprites_line.v ? 'X' : ' ') );
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+        }
+
+        if (MACHINE_IS_SMS) {
+            //Corrige tambien el cuelgue del space harrier al iniciar
+            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_disable_raster_interrupt,NULL,"[%c] Disable raster interrupt", (sms_disable_raster_interrupt.v ? 'X' : ' ') );
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+            if (sms_disable_raster_interrupt.v==0) {
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_only_one_raster_int_frame,NULL,
+                    "[%c] One interrupt per frame", (sms_only_one_raster_int_frame.v ? 'X' : ' ') );
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            }
+
+            //wonder boy, astro flash
+            //Esto corrige tambien el cuelgue del space harrier al iniciar
+            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_wonderboy_scroll_hack,NULL,"[%c] Fix some scrolls",
+                (sms_wonderboy_scroll_hack.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+        }
+
+        if (MACHINE_IS_MSX) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_msx_loading_stripes,NULL,
+                "Loading stripes","Franjas de Carga","Franges de Càrrega");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (msx_loading_stripes.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+        }
+
+
+
         menu_add_item_menu_separator(array_menu_settings_display);
 
 
@@ -10022,20 +10060,6 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         if (menu_cond_zx8081_realvideo()) {
-            /*
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"Video min. vsync length [%d]",minimo_duracion_vsync);
-            menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Video minimum vsync length in t-states");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Video minimum vsync length in t-states");
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-            */
-
-            /*
-            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
-                "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
-            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-            */
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,
                 "Autodetect WRX","Autodetectar WRX","Autodetectar WRX");
@@ -10201,11 +10225,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         }
 
 
+       menu_add_item_menu_separator(array_menu_settings_display);
 
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
-            menu_add_item_menu_separator(array_menu_settings_display);
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,
                 "OSD Adv. key length","OSD Aven. tecl longitud","OSD Aven. tecl longitut");
@@ -10225,41 +10249,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (MACHINE_HAS_VDP_9918A) {
-            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,
-                "Unlimited sprites per line","Sprites Ilimitados por linea","Sprites ilimitats per línia");
-            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (vdp_9918a_unlimited_sprites_line.v ? 'X' : ' ') );
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-        }
 
-        if (MACHINE_IS_SMS) {
-            //Corrige tambien el cuelgue del space harrier al iniciar
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_disable_raster_interrupt,NULL,"[%c] Disable raster interrupt", (sms_disable_raster_interrupt.v ? 'X' : ' ') );
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
-            if (sms_disable_raster_interrupt.v==0) {
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_only_one_raster_int_frame,NULL,
-                    "[%c] One interrupt per frame", (sms_only_one_raster_int_frame.v ? 'X' : ' ') );
-                menu_add_item_menu_es_avanzado(array_menu_settings_display);
-            }
 
-            //wonder boy, astro flash
-            //Esto corrige tambien el cuelgue del space harrier al iniciar
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_wonderboy_scroll_hack,NULL,"[%c] Fix some scrolls",
-                (sms_wonderboy_scroll_hack.v ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-        }
-
-        if (MACHINE_IS_MSX) {
-            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_msx_loading_stripes,NULL,
-                "Loading stripes","Franjas de Carga","Franges de Càrrega");
-            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (msx_loading_stripes.v ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-        }
 
         /*
         if (MACHINE_IS_QL) {
@@ -10294,16 +10286,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_separator(array_menu_settings_display);
-        //menu_add_item_menu(array_menu_settings_display,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+
         menu_add_ESC_item(array_menu_settings_display);
-
-        /*
-        menu_add_item_menu_index_full_path(array_menu_settings_display,
-            "Main Menu-> Settings-> Emulated Display","Menú Principal-> Opciones-> Display emulado","Menú Principal-> Opcions-> Display emulat");
-
-        retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
-            "Emulated Display Settings","Opciones Display emulado","Opcions Display emulat");
-        */
 
 
         menu_add_item_menu_index_full_path(array_menu_settings_display,
