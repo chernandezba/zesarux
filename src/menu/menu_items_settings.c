@@ -894,7 +894,7 @@ void menu_interface_zoom(MENU_ITEM_PARAMETERS)
 
     int valor=zoom_x;
 
-    int retorno=menu_ventana_scanf_numero_enhanced("Window Zoom",&valor,2,+1,1,9,0);
+    int retorno=menu_ventana_scanf_numero_enhanced("Zoom",&valor,2,+1,1,9,0);
 
     if (retorno>=0) {
         //temp_zoom=parse_string_to_number(string_zoom);
@@ -8023,6 +8023,9 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_common,": [%3d %%]",tv_vsync_minimum_accepted_interval);
             menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
             menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_separator(array_menu_common);
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
