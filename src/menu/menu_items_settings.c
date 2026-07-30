@@ -9860,6 +9860,52 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
+        menu_add_item_menu_separator(array_menu_settings_display);
+
+
+        if (MACHINE_IS_SPECTRUM) {
+
+
+            if (!MACHINE_IS_PENTAGON) {
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video,NULL,
+                    "~~Timex video modes","Modos video ~~Timex","Modes video ~~Timex");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(timex_video_emulation.v ? 'X' : ' '));
+                menu_add_item_menu_shortcut(array_menu_settings_display,'t');
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Timex Video modes");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"The following Timex Video modes are emulated:\n"
+                "Mode 0: Video data at address 16384 and 8x8 color attributes at address 22528 (like on ordinary Spectrum)\n"
+                "Mode 1: Video data at address 24576 and 8x8 color attributes at address 30720\n"
+                "Mode 2: Multicolor mode: video data at address 16384 and 8x1 color attributes at address 24576\n"
+                "Mode 6: Hi-res mode 512x192, monochrome.");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+                if (timex_video_emulation.v && !MACHINE_IS_TBBLUE) {
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video_512192,NULL,"[%c] Timex Real 512x192",(timex_mode_512192_real.v ? 'X' : ' '));
+                    menu_add_item_menu_tooltip(array_menu_settings_display,"Selects between real 512x192 or scaled 256x192");
+                    menu_add_item_menu_ayuda(array_menu_settings_display,"Real 512x192 does not support scanline effects (it draws the display at once). "
+                                "If not enabled real, it draws scaled 256x192 but does support scanline effects");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+
+
+                    if (timex_mode_512192_real.v==0) {
+
+                        menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_ugly_hack,NULL,"[%c] Ugly hack",(timex_ugly_hack_enabled ? 'X' : ' ') );
+                        menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+                        if (timex_ugly_hack_enabled) {
+                        menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_force_line_512192,NULL,"[%d] Force 512x192 at",timex_ugly_hack_last_hires);
+                        menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
+                        }
+                    }
+
+                }
+            }
+        }
 
 
         if (!MACHINE_IS_Z88) {
@@ -9878,32 +9924,10 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_es_avanzado(array_menu_settings_display);
                 }
 
-                if (MACHINE_IS_SPECTRUM) {
-                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_flash_color,NULL,
-                        "[%c] Flash color",(spectrum_flash_color_mode.v ? 'X' : ' '));
-                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable flash color mode");
-                    menu_add_item_menu_ayuda(array_menu_settings_display,"Enable flash color mode. This mode has a total of 128 colors, "
-                        "but there are only a few games that support it, you may find them on the ZEsarUX extras package"
-
-                        );
-                }
 
 
-                if (MACHINE_IS_SPECTRUM && !MACHINE_IS_ZXEVO && !MACHINE_IS_TBBLUE)  {
 
-                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect,NULL,"[%c] Snow effect", (snow_effect_enabled.v==1 ? 'X' : ' '));
-                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable snow effect on Spectrum");
-                    menu_add_item_menu_ayuda(array_menu_settings_display,"Snow effect is a bug on some Spectrum models "
-                        "(models except +2A and +3) that draws corrupted pixels when I register is pointed to "
-                        "slow RAM.");
-                        // Even on 48k models it resets the machine after some seconds drawing corrupted pixels");
-                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
-                    if (snow_effect_enabled.v==1) {
-                        menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect_margin,NULL,"[%d] Snow effect threshold",snow_effect_min_value);
-                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
-                    }
-                }
 
 
                 if (MACHINE_IS_INVES) {
@@ -10081,48 +10105,19 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
         }
 
+        if (menu_cond_realvideo() && MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_flash_color,NULL,
+                "[%c] Flash color",(spectrum_flash_color_mode.v ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Enable flash color mode");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"Enable flash color mode. This mode has a total of 128 colors, "
+                "but there are only a few games that support it, you may find them on the ZEsarUX extras package"
+                );
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+        }
+
+
+
         if (MACHINE_IS_SPECTRUM) {
-
-
-            if (!MACHINE_IS_PENTAGON) {
-                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video,NULL,
-                    "~~Timex video modes","Modos video ~~Timex","Modes video ~~Timex");
-                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(timex_video_emulation.v ? 'X' : ' '));
-                menu_add_item_menu_shortcut(array_menu_settings_display,'t');
-                menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Timex Video modes");
-                menu_add_item_menu_ayuda(array_menu_settings_display,"The following Timex Video modes are emulated:\n"
-                "Mode 0: Video data at address 16384 and 8x8 color attributes at address 22528 (like on ordinary Spectrum)\n"
-                "Mode 1: Video data at address 24576 and 8x8 color attributes at address 30720\n"
-                "Mode 2: Multicolor mode: video data at address 16384 and 8x1 color attributes at address 24576\n"
-                "Mode 6: Hi-res mode 512x192, monochrome.");
-                menu_add_item_menu_es_avanzado(array_menu_settings_display);
-
-                if (timex_video_emulation.v && !MACHINE_IS_TBBLUE) {
-                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video_512192,NULL,"[%c] Timex Real 512x192",(timex_mode_512192_real.v ? 'X' : ' '));
-                    menu_add_item_menu_tooltip(array_menu_settings_display,"Selects between real 512x192 or scaled 256x192");
-                    menu_add_item_menu_ayuda(array_menu_settings_display,"Real 512x192 does not support scanline effects (it draws the display at once). "
-                                "If not enabled real, it draws scaled 256x192 but does support scanline effects");
-                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
-
-
-
-                    if (timex_mode_512192_real.v==0) {
-
-                        menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_ugly_hack,NULL,"[%c] Ugly hack",(timex_ugly_hack_enabled ? 'X' : ' ') );
-                        menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
-                        menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
-                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
-
-                        if (timex_ugly_hack_enabled) {
-                        menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_force_line_512192,NULL,"[%d] Force 512x192 at",timex_ugly_hack_last_hires);
-                        menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
-                        menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
-                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
-                        }
-                    }
-
-                }
-            }
 
 
             if (!MACHINE_IS_TBBLUE) {
@@ -10153,6 +10148,22 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Spectra video modes");
                 menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Spectra video modes. All video modes are fully emulated");
                 menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            }
+
+            if (menu_cond_realvideo() && MACHINE_IS_SPECTRUM && !MACHINE_IS_ZXEVO && !MACHINE_IS_TBBLUE)  {
+
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect,NULL,"[%c] Snow effect", (snow_effect_enabled.v==1 ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Enable snow effect on Spectrum");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"Snow effect is a bug on some Spectrum models "
+                    "(models except +2A and +3) that draws corrupted pixels when I register is pointed to "
+                    "slow RAM.");
+                    // Even on 48k models it resets the machine after some seconds drawing corrupted pixels");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+                if (snow_effect_enabled.v==1) {
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect_margin,NULL,"[%d] Snow effect threshold",snow_effect_min_value);
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
+                }
             }
 
 
@@ -10193,6 +10204,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
+            menu_add_item_menu_separator(array_menu_settings_display);
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,
                 "OSD Adv. key length","OSD Aven. tecl longitud","OSD Aven. tecl longitut");
             menu_add_item_menu_sufijo_format(array_menu_settings_display," [%d]",adventure_keyboard_key_length);
