@@ -1366,10 +1366,10 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_enable_index_search,NULL,
-        "Search index enabled","Indice búsqueda activado","Index recerca activat");
+        "Search indexing","Indice de búsqueda","Index de recerca");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(index_menu_enabled.v ? 'X' : ' ' ));
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Reset index of the search feature");
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Enable search feature");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Enable search feature");
 
         if (index_menu_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_reset_index_search,NULL,
@@ -1383,7 +1383,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             //El escaneo completo es incompatible con la manera antigua de gestionar ESC / flecha izquierda
             if (menu_old_behaviour_close_menus.v==0) {
                 menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_full_index_search,NULL,
-                "    Full scan search index","    Completo escaneo índice búsqueda","    Complet escaneig índex recerca");
+                "    Full index scan","    Completo escaneo índice búsqueda","    Complet escaneig índex recerca");
                 menu_add_item_menu_es_avanzado(array_menu_window_settings);
                 menu_add_item_menu_se_cerrara(array_menu_window_settings);
                 menu_add_item_menu_genera_ventana(array_menu_window_settings);
@@ -1414,7 +1414,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
 
            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_welcome_message,NULL,
-            "Show welcome logo & message","Mostrar logo bienvenida y mensaje","Mostrar logo benvinguda i missatge");
+            "Welcome logo and message","Logo bienvenida y mensaje","Logo benvinguda i missatge");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(opcion_no_welcome_message.v ? ' ' : 'X'));
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
@@ -2748,8 +2748,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_se_cerrara(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,menu_interface_border_cond,
-            "No ZX Desktop on Full Screen","No ZX Desktop en pantalla completa","No ZX Desktop a pantalla completa");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
+            "Show ZX Desktop in Full Screen","Mostrar ZX Desktop en pantalla completa","Mostrar ZX Desktop a pantalla completa");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? ' ' : 'X' ));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disable ZX Desktop when going to full screen");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disable ZX Desktop when going to full screen. "
             "It will be enabled again going back from full screen. Windows will be closed on full screen if this setting is enabled");
@@ -2757,7 +2757,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
         if (zxdesktop_disable_on_full_screen) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,menu_interface_border_cond,
-                " Restore windows after Full Screen"," Restaurar ventanas al volver"," Restaurar finestres al tornar");
+                " Restore windows after leaving Full Screen"," Restaurar ventanas al volver"," Restaurar finestres al tornar");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Restore windows after going from full screen");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Restore windows after disabling full screen, when 'Disable on Full Screen' setting is set");
@@ -2765,15 +2765,15 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,menu_interface_border_cond,
-            "No Border on Full Screen","No Border en pantalla completa","No Border a pantalla completa");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? 'X' : ' ' ));
+            "Show Border in Full Screen","Mostrar Border en pantalla completa","Mostrar Border a pantalla completa");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? ' ' : 'X' ));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Border when going to full screen");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Border when going to full screen");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,menu_interface_border_cond,
-            "No Footer on Full Screen","No Footer en pantalla completa","No Footer a pantalla completa");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? 'X' : ' ' ));
+            "Show Footer in Full Screen","Mostrar Footer en pantalla completa","Mostrar Footer a pantalla completa");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? ' ' : 'X' ));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Footer when going to full screen");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
@@ -2791,7 +2791,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
         if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
-                "~~Border enabled","~~Borde activado","~~Border activat");
+                "Show ~~Border","Mostrar ~~Borde","Mostrar ~~Border");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'b');
         }
@@ -2819,7 +2819,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip_draw_zxdesktop_background,NULL,
-            "Frameskip to ZX Desktop background","Frameskip en fondo ZX Desktop","Frameskip al fons del ZX Desktop");
+            "Frameskip on ZX Desktop background","Frameskip en fondo ZX Desktop","Frameskip al fons del ZX Desktop");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')  );
         menu_add_item_menu_tooltip(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
@@ -2867,7 +2867,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_window_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_both_zoom_equals,NULL,
-                "Zoom horizontal equal to vertical","Zoom horizontal y vertical iguales","Zoom horitzontal i vertical iguals");
+                "Keep horizontal and vertical zoom equal","Mantener Zoom horizontal y vertical iguales","Mantenir Zoom horitzontal i vertical iguals");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_keep_both_zoom_equals.v ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
@@ -2875,13 +2875,13 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
             if (screen_keep_both_zoom_equals.v) {
                 menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,
-                    "Window Size ~~Zoom","~~Zoom Tamaño Ventana","~~Zoom Tamany Finestra");
+                    "~~Zoom","~~Zoom","~~Zoom");
                 menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_x);
                 menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
                 //menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
                 menu_add_item_menu_shortcut(array_menu_window_settings,'z');
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Zoom (width and height)");
             }
 
             else {
@@ -2903,15 +2903,15 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
-                "Autochange Zoom big display","Autocambiar Zoom en pantalla grande","Autocanviar Zoom en pantalla gran");
+                "Auto-adjust zoom for large displays","Autoajustar Zoom en pantalla grande","Autoajustar Zoom en pantalla gran");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(autochange_zoom_big_display.v ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with large display (Next, QL, CPC, ...)");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with large display (Next, QL, CPC, ...)");
         }
 
+        menu_add_item_menu_separator(array_menu_window_settings);
 
-
-        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_border_cond,"[%c] Window F~~ooter",(menu_footer ? 'X' : ' ') );
+        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_border_cond,"[%c] F~~ooter",(menu_footer ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_window_settings,'o');
         menu_add_item_menu_tooltip(array_menu_window_settings,"Show on footer some machine information");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Show on footer some machine information, like tape loading");
@@ -2965,7 +2965,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_window_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
-                "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
+                "Video Driver","Driver Video","Driver Video");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
             //no decir que se cierre porque si no al pulsar en el video driver, se cerraria
             //menu_add_item_menu_se_cerrara(array_menu_window_settings);
@@ -5796,8 +5796,8 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_settings_audio,'v');
 
         if (!MACHINE_IS_QL && sn_chip_present.v==0) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"A~~utoenable AY Chip");
-            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"A~~utohabilitar Chip AY","A~~utohabilitar Xip AY");
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"A~~uto-enable AY Chip");
+            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"A~~uto-habilitar Chip AY","A~~uto-habilitar Xip AY");
             menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(autoenable_ay_chip.v==1 ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_settings_audio,'u');
             menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable AY Chip automatically when it is needed");

@@ -170,5 +170,24 @@ Solo el menú.
 
 Eso suele descubrir pequeñas incoherencias.
 
+-Checkbox → característica
+
+Welcome logo
+Quick exit
+Search indexing
+
+Valor configurable → sustantivo
+
+Language
+Emulator Speed
+Download Path
+Logo
+
+Acción → verbo
+
+Reset search index
+Rebuild search index
+Change language
+
 
 -tiene sentido desactivar multitask y dejar background windows? veo que zx eyes sigue funcionando en el menu al desactivar multitask
