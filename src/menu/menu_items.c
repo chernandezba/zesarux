@@ -32172,9 +32172,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_realvideo_english="Do you want to enable Real Video? It's an option to perfectly emulate the screen effects of the emulated machine. "
         "It may use a little more CPU, but it's generally a good idea to enable it";
 
-    char *mensaje_firstaid_spanish="Quieres activar mensajes de ayuda de 'Primeros Auxilios'? Son mensajes de ayuda que aparecen al iniciar ZEsarUX "
+    char *mensaje_firstaid_spanish="Quieres activar mensajes de ayuda de 'Primer Uso'? Son mensajes de ayuda que aparecen al iniciar ZEsarUX "
         "y también al abrir ciertos menús";
-    char *mensaje_firstaid_catalan="Vols activar missatges d'ajuda de 'Primers Auxilis'? Son missatges d'ajuda que apareixen al iniciar ZEsarUX "
+    char *mensaje_firstaid_catalan="Vols activar missatges d'ajuda de 'Primer Us'? Son missatges d'ajuda que apareixen al iniciar ZEsarUX "
         "i també al obrir alguns menús";
     char *mensaje_firstaid_english="Do you want to enable 'First-use' help messages? They are help messages that appear on starting ZEsarUX "
         "and also when opening some menus";

@@ -187,6 +187,38 @@ y restaurarlo al salir, porque el uso de menus tabulados cambia salir_todos_menu
 Ademas el menu que llama a esa ventana tiene que indicar al menos este flag: menu_add_item_menu_genera_ventana(
 
 -----------------------------------------
+
+Normas para menus:
+
+- menus: agrupar opciones habituales arriba:
+¿Es la primera opción que un usuario buscaría?
+¿Tiene un nombre evidente?
+¿Está al lado de las opciones relacionadas?
+¿Depende de otra opción? Si sí, ¿está inmediatamente debajo?
+
+
+- Uso de palabras:
+* Checkbox -> característica
+
+Welcome logo
+Quick exit
+Search indexing
+
+* Valor configurable -> sustantivo
+
+Language
+Emulator Speed
+Download Path
+Logo
+
+* Acción -> verbo
+
+Reset search index
+Rebuild search index
+Change language
+
+
+-----------------------------------------
 Sobre indexado de menus
 
 

@@ -158,11 +158,7 @@ ok *probarlo con main menu->settings->hardware->audio->audio chip to midi output
 
     }
 
--menus: agrupar opciones habituales arriba:
-¿Es la primera opción que un usuario buscaría?
-¿Tiene un nombre evidente?
-¿Está al lado de las opciones relacionadas?
-¿Depende de otra opción? Si sí, ¿está inmediatamente debajo?
+
 
 Sin mirar el código.
 
@@ -170,24 +166,12 @@ Solo el menú.
 
 Eso suele descubrir pequeñas incoherencias.
 
--Checkbox → característica
 
-Welcome logo
-Quick exit
-Search indexing
-
-Valor configurable → sustantivo
-
-Language
-Emulator Speed
-Download Path
-Logo
-
-Acción → verbo
-
-Reset search index
-Rebuild search index
-Change language
 
 
 -tiene sentido desactivar multitask y dejar background windows? veo que zx eyes sigue funcionando en el menu al desactivar multitask
+
+-quiza en el primer arranque de ZEsarUX:
+*alguna ventana abierta, como ZX Eyes. Eso si en el wizard ha decidido habilitar ZX Desktop y ademas está multitarea y even with menu closed.
+  también process switcher abajo a la izquierda (y con los settings de forzado ahi abajo a la izquierda), waveform
+*mas iconos en zx desktop: hexadecimal editor, sprite viewer, debug cpu

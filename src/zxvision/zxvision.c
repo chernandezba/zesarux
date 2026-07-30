@@ -1077,6 +1077,9 @@ void create_default_zxdesktop_configurable_icons(void)
     int indice_my_machine=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_MY_MACHINE);
     //Quicksave
     zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
+    zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
+    zxvision_add_configurable_icon_by_id_action(F_FUNCION_HEX_EDITOR);
+    zxvision_add_configurable_icon_by_id_action(F_FUNCION_VIEW_SPRITES);
 
 
     //Add Trash
