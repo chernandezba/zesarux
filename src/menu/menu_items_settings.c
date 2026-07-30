@@ -9859,8 +9859,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
             "Flash","Parpadeo","Parpelleig");
         menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
-        menu_add_item_menu_tooltip(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
-        menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_tooltip(array_menu_settings_display,"Enables or disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_ayuda(array_menu_settings_display,"Enables or disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
         if (MACHINE_HAS_VDP_9918A) {
@@ -11105,13 +11105,13 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
 
         if (screen_ext_desktop_enabled) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_clean,NULL,
-                "ZX Desktop c~~lean background","ZX Desktop fondo ~~limpio","ZX Desktop fons c~~lar");
+                "Set ZX Desktop p~~lain background","Definir fondo ~~limpio ZX Desktop","Definir fons c~~lar ZX Desktop");
             menu_add_item_menu_shortcut(array_menu_common,'l');
             menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
             menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_button_boxes,NULL,
-                "ZX Desktop ~~objects visibility","ZX Desktop visibilidad ~~objetos","ZX Desktop visibilitat ~~objectes");
+                "Improve ZX Desktop ~~object visibility","Mejorar visibilidad ~~objetos ZX Desktop ","Millorar visibilitat ~~objectes ZX Desktop");
             menu_add_item_menu_shortcut(array_menu_common,'o');
             menu_add_item_menu_tooltip(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
             menu_add_item_menu_ayuda(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
@@ -11138,13 +11138,13 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
             "Flash","Parpadeo","Parpelleig");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
-        menu_add_item_menu_tooltip(array_menu_common,"Disables flash for emulated machines and also for menu interface");
-        menu_add_item_menu_ayuda(array_menu_common,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_tooltip(array_menu_common,"Enables or disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_ayuda(array_menu_common,"Enables or disables flash for emulated machines and also for menu interface");
 
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_gui_sounds,NULL,
-            "GUI Sounds","Sonidos interfaz","Sons interfície");
+            "GUI sounds","Sonidos interfaz","Sons interfície");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(accessibility_enable_gui_sounds.v ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"Enable sounds for GUI events");
         menu_add_item_menu_ayuda(array_menu_common,"Enable sounds for GUI events");
