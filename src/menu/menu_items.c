@@ -7837,7 +7837,7 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
             buffer_puntero[0]=0;
         }
 
-        sprintf (buffer_linea,"%smemptr%s [%c] fo~~llow C%sopy ~~shiftbits",string_atajos,buffer_puntero,
+        sprintf (buffer_linea,"%smemptr%s [%c] fo~~llow C%sopy Bit~~Shift",string_atajos,buffer_puntero,
             (menu_hexdump_follow_mode ? 'X' : ' '),
             string_atajos);
 
