@@ -177,3 +177,5 @@ Eso suele descubrir pequeñas incoherencias.
 *mas iconos en zx desktop: hexadecimal editor, sprite viewer, debug cpu
 
 -hexeditor: tamaño por defecto no se ve texto entero de "shiftbits"
+
+-Wizard que abra también process switcher y además abra trozo de ZX desktop en vertical

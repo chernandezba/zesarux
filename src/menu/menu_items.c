@@ -32341,7 +32341,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         if (opcion_activar_zxdesktop) {
             //No esta habilitado, pero por si acaso recomprobar
             if (!screen_ext_desktop_enabled) {
-                enable_zxdesktop_and_background();
+                enable_zxdesktop_and_background(64);
             }
         }
     }
@@ -32359,6 +32359,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         zxvision_currently_restoring_windows_on_start=1;
 
         menu_toy_follow_mouse(0);
+
+        setting_process_switcher_immutable.v=1;
+        menu_process_switcher(0);
 
         zxvision_currently_restoring_windows_on_start=antes_zxvision_currently_restoring_windows_on_start;
     }

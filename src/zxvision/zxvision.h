@@ -1908,7 +1908,7 @@ extern int force_next_menu_position_y;
 extern void zxdesktop_switchdesktop_timer_event(void);
 
 
-extern void enable_zxdesktop_and_background(void);
+extern void enable_zxdesktop_and_background(int height);
 
 
 extern void zxdesktop_draw_scrfile_load(void);

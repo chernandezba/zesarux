@@ -29657,7 +29657,8 @@ void handle_menu_open_cpu_step(void)
 
 }
 
-void enable_zxdesktop_and_background(void)
+//Parametro height: Si se proporciona un alto de zx desktop
+void enable_zxdesktop_and_background(int height)
 {
     //No esta habilitado, habilitar
     if (!screen_ext_desktop_enabled) {
@@ -29667,6 +29668,8 @@ void enable_zxdesktop_and_background(void)
         //ideal para maquinas que usualmente usan zoom 1, como tbblue o ql
         zxdesktop_width=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON;
         //printf("Generando valor nuevo\n");
+
+        if (height) zxdesktop_height=height;
 
 
         //aparte de conmutar estado, decimos tambien que los menus se abriran en zona zx desktop
@@ -29842,7 +29845,7 @@ void menu_inicio(void)
                 //No esta habilitado, habilitar
                 if (!screen_ext_desktop_enabled) {
 
-                    enable_zxdesktop_and_background();
+                    enable_zxdesktop_and_background(0);
 
                 }
 
