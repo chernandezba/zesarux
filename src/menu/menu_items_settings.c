@@ -4011,12 +4011,12 @@ void menu_settings_windows_features(MENU_ITEM_PARAMETERS)
 
         //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
         menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> ZX Vision-> Windows features",
+            "Main Menu-> Settings-> ZX Vision-> Window features",
             "Menú Principal-> Opciones-> ZX Vision-> Características Ventanas",
             "Menú Principal-> Opcions-> ZX Vision-> Característiques Finestres");
 
         retorno_menu=menu_dibuja_menu(&settings_windows_features_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Windows features Settings","Opciones Características Ventanas","Opcions Característiques Finestres" );
+            "Window features Settings","Opciones Características Ventanas","Opcions Característiques Finestres" );
 
 
 
@@ -4274,7 +4274,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--- Menus Behaviour ---","--- Comportamiento menús ---","--- Comportament menús ---");
+            "--- Menu Behaviour ---","--- Comportamiento menús ---","--- Comportament menús ---");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
             "Show Top Menu","Mostrar Menú Superior","Mostrar Menú Superior");
@@ -4348,10 +4348,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_tooltip,NULL,"[%c] ~~Tooltips",(tooltip_enabled.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'t');
-        menu_add_item_menu_tooltip(array_menu_common,"Enable or disable tooltips");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable or disable tooltips");
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
             "Always show ~~hotkeys","Siempre mostrar ~~hotkeys","Sempre mostrar ~~hotkeys");
@@ -4410,7 +4407,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--- Environment ---","--- Entorno ---","--- Entorn ---");
+            "--- Task Management ---","--- Gestión de tareas ---","--- Gestió de tasques ---");
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
@@ -4448,6 +4445,15 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
            menu_add_item_menu_ayuda(array_menu_common,"Shows background window even when menu closed");
         }
 
+                menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Help ---","--- Ayuda ---","--- Ajuda ---");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_tooltip,NULL,"[%c] ~~Tooltips",(tooltip_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_common,'t');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable or disable tooltips");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable or disable tooltips");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
             "First-use help","Ayuda de primer uso","Ajuda del primer ús");
@@ -4485,7 +4491,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_windows_features,NULL,
-            "Windows features","Características ventanas","Característiques finestres");
+            "Window features","Características ventanas","Característiques finestres");
         menu_add_item_menu_tiene_submenu(array_menu_common);
         menu_add_item_menu_es_avanzado(array_menu_common);
 
