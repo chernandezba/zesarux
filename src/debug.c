@@ -8539,6 +8539,7 @@ z80_int debug_get_stack_z80_value(int i)
 
 //Retorna valores en el stack separados por espacios
 //Para Z80: retorna 16 bits
+//Para Motorola: retorna 32 bits
 //Para scmp: no implementado aun
 void debug_get_stack_values(int items, char *texto)
 {

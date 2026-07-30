@@ -3974,20 +3974,47 @@ int menu_debug_registers_subview_type=0;
                 if (CPU_IS_Z80 || CPU_IS_MOTOROLA) {
                     sprintf(buffer_linea,"(SP) ");
 
-                    int valores=10;
-                    if (CPU_IS_MOTOROLA) valores=5;
+                    //Solo mostrar los bytes de stack que caben en ancho
+                    //Obviamente podriamos enviar el comando de escribir con mas ancho del disponible y no pasaria nada si no cabe
+                    //pero en ese caso aparecería la marca en el redimensionado de "se ha excedido el tamaño" y es lo que quiero evitar
+                    int ancho_disponible=w->visible_width-6; //Restamos " (SP) "
+                    int ancho_por_valor=5; //16 bits y un espacio
+                    int max_valores=10;
+                    if (CPU_IS_MOTOROLA) {
+                        ancho_por_valor=9;
+                        max_valores=5;
+                    }
+
+                    int valores=ancho_disponible/ancho_por_valor;
+
+                    if (valores>max_valores) valores=max_valores;
+
+
+                    //int valores=10;
+                    //if (CPU_IS_MOTOROLA) valores=5;
+
                     debug_get_stack_values(valores,&buffer_linea[5]);
-                    //menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
+
                     zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_linea);
                 }
 
                 //Linea de user stack
                 if (CPU_IS_MOTOROLA) {
-                    int valores=5;
                     sprintf(buffer_linea,"(USP) ");
 
+                    //Solo mostrar los bytes de stack que caben en ancho
+                    int ancho_disponible=w->visible_width-6; //Restamos " (USP)"
+                    int ancho_por_valor=9; //32 bits y un espacio
+                    int max_valores=5;
+
+                    int valores=ancho_disponible/ancho_por_valor;
+
+                    if (valores>max_valores) valores=max_valores;
+
+                    //int valores=5;
+
                     debug_get_user_stack_values(valores,&buffer_linea[5]);
-                    //menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
+
                     zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_linea);
                 }
 
