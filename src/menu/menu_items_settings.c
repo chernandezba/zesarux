@@ -9831,34 +9831,43 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         }
 
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,
+                "Colours","Colores","Colors");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+
+            if (scr_refresca_sin_colores.v==0) {
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,NULL,NULL,
+                    "Show attribute grid","Mostrar rejilla atributos","Mostrar reixeta atributs");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_show_attribute_grid.v ? 'X' : ' '));
+                menu_add_item_menu_opcion_conmuta(array_menu_settings_display,&scr_refresca_show_attribute_grid);
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Show attribute grid for Spectrum display");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"Show attribute grid for Spectrum display");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            }
+
+        }
+
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
+            "Flash","Parpadeo","Parpelleig");
+        menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+
+
         if (!MACHINE_IS_Z88) {
 
 
 
             if (menu_cond_realvideo() ) {
-                /*
-                if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
-                    menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
-                        "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
-                    menu_add_item_menu_shortcut(array_menu_settings_display,'i');
-                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable interlaced mode");
-                    menu_add_item_menu_ayuda(array_menu_settings_display,"Interlaced mode draws the screen like the machine on a real TV: "
-                        "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
-                        "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
-                        "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
-                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
-                }
 
-
-                if (video_interlaced_mode.v) {
-                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace_scanlines,NULL,"[%c] S~~canlines", (video_interlaced_scanlines.v==1 ? 'X' : ' '));
-                    menu_add_item_menu_shortcut(array_menu_settings_display,'c');
-                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable scanlines on interlaced mode");
-                    menu_add_item_menu_ayuda(array_menu_settings_display,"Scanlines draws odd lines a bit darker than even lines");
-                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
-                }
-                */
 
                 if (MACHINE_IS_SPECTRUM) {
                     menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_gigascreen,NULL,"[%c] ~~Gigascreen",(gigascreen_enabled.v==1 ? 'X' : ' '));
@@ -10063,19 +10072,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TBBLUE) {
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ulaplus,NULL,"[%c] ULA~~plus",(ulaplus_presente.v ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_settings_display,'p');
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Enables ULAplus support");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"The following ULAplus modes are supported:\n"
-                        "Mode 1: Standard 256x192 64 colours\n"
-                        "Mode 3: Linear mode 128x96, 16 colours per pixel (radastan mode)\n"
-                        "Mode 5: Linear mode 256x96, 16 colours per pixel (ZEsarUX mode 0)\n"
-                        "Mode 7: Linear mode 128x192, 16 colours per pixel (ZEsarUX mode 1)\n"
-                        "Mode 9: Linear mode 256x192, 16 colours per pixel (ZEsarUX mode 2)\n"
-            );
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-        }
+
 
         if (MACHINE_IS_PENTAGON) {
             menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_16c_mode,NULL,"[%c] 16C mode",(pentagon_16c_mode_available.v ? 'X' : ' '));
@@ -10128,19 +10125,33 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             }
 
 
-            if (!MACHINE_IS_ZXEVO) {
-
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_spectra,NULL,"[%c] Sp~~ectra",(spectra_enabled.v ? 'X' : ' '));
-                menu_add_item_menu_shortcut(array_menu_settings_display,'e');
-                menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Spectra video modes");
-                menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Spectra video modes. All video modes are fully emulated");
+            if (!MACHINE_IS_TBBLUE) {
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ulaplus,NULL,"[%c] ULA~~plus",(ulaplus_presente.v ? 'X' : ' '));
+                menu_add_item_menu_shortcut(array_menu_settings_display,'p');
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Enables ULAplus support");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"The following ULAplus modes are supported:\n"
+                            "Mode 1: Standard 256x192 64 colours\n"
+                            "Mode 3: Linear mode 128x96, 16 colours per pixel (radastan mode)\n"
+                            "Mode 5: Linear mode 256x96, 16 colours per pixel (ZEsarUX mode 0)\n"
+                            "Mode 7: Linear mode 128x192, 16 colours per pixel (ZEsarUX mode 1)\n"
+                            "Mode 9: Linear mode 256x192, 16 colours per pixel (ZEsarUX mode 2)\n"
+                );
                 menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            }
 
+
+            if (!MACHINE_IS_ZXEVO) {
 
                 menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_spritechip,NULL,"[%c] ~~ZGX Sprite Chip",(spritechip_enabled.v ? 'X' : ' ') );
                 menu_add_item_menu_shortcut(array_menu_settings_display,'z');
                 menu_add_item_menu_tooltip(array_menu_settings_display,"Enables ZGX Sprite Chip");
                 menu_add_item_menu_ayuda(array_menu_settings_display,"Enables ZGX Sprite Chip");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_spectra,NULL,"[%c] Sp~~ectra",(spectra_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_shortcut(array_menu_settings_display,'e');
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Spectra video modes");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Spectra video modes. All video modes are fully emulated");
                 menu_add_item_menu_es_avanzado(array_menu_settings_display);
             }
 
@@ -10178,34 +10189,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,
-                "Colours","Colores","Colors");
-            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
-
-            if (scr_refresca_sin_colores.v==0) {
-                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,NULL,NULL,
-                    "Show attribute grid","Mostrar rejilla atributos","Mostrar reixeta atributs");
-                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_show_attribute_grid.v ? 'X' : ' '));
-                menu_add_item_menu_opcion_conmuta(array_menu_settings_display,&scr_refresca_show_attribute_grid);
-                menu_add_item_menu_tooltip(array_menu_settings_display,"Show attribute grid for Spectrum display");
-                menu_add_item_menu_ayuda(array_menu_settings_display,"Show attribute grid for Spectrum display");
-                menu_add_item_menu_es_avanzado(array_menu_settings_display);
-            }
-
-        }
-
-
-        menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
-            "Flash","Parpadeo","Parpelleig");
-        menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
-        menu_add_item_menu_tooltip(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
-        menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
-        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
