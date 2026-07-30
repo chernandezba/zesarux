@@ -140,12 +140,7 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 
-ok -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
-
--al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
-ok *falta ver si se pulsa en menu visible o no, deberia contar el que esta mas arriba, como reproducir eso?
-ok *en algun sitio resetear menu_dibuja_menu_yendo_atras_sumenus a 0? puede que se quede a no 0 en algun caso y al abrir menu se cierre o se vaya atras sin querer?
-ok *probarlo con main menu->settings->hardware->audio->audio chip to midi output-> pulsar en menu audio settings (justo el anterior) pero se abrira hardware settings
+ok -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
 
 -en save game config el titulo de la ventana es confuso
@@ -160,22 +155,4 @@ ok *probarlo con main menu->settings->hardware->audio->audio chip to midi output
 
 
 
-Sin mirar el código.
-
-Solo el menú.
-
-Eso suele descubrir pequeñas incoherencias.
-
-
-
-
 -tiene sentido desactivar multitask y dejar background windows? veo que zx eyes sigue funcionando en el menu al desactivar multitask
-
--quiza en el primer arranque de ZEsarUX:
-*alguna ventana abierta, como ZX Eyes. Eso si en el wizard ha decidido habilitar ZX Desktop y ademas está multitarea y even with menu closed.
-  también process switcher abajo a la izquierda (y con los settings de forzado ahi abajo a la izquierda), waveform
-*mas iconos en zx desktop: hexadecimal editor, sprite viewer, debug cpu
-
--hexeditor: tamaño por defecto no se ve texto entero de "shiftbits"
-
-ok -Wizard que abra también process switcher y además abra trozo de ZX desktop en vertical

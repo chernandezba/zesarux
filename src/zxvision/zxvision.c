@@ -22709,7 +22709,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
     //printf("menu_dibuja_submenu_mouse_en_menus_anteriores. mouse_is_dragging=%d\n",mouse_is_dragging);
 
     if (menu_dibuja_menu_yendo_atras_submenus>0) {
-        printf("Entramos en menu pero estamos yendo hacia atras. Cuantos quedan: %d\n",menu_dibuja_menu_yendo_atras_submenus);
+        DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: Entering on a menu but we are going to previous menu. Menus left: %d",menu_dibuja_menu_yendo_atras_submenus);
         menu_dibuja_menu_yendo_atras_submenus--;
         return 1;
     }
@@ -22770,9 +22770,11 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
                 menu_dibuja_menu_yendo_atras_submenus++;
 
                 if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) {
-                    printf("Pulsado en submenu [%s]\n",w->window_title);
+                    DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: Pressed on submenu [%s]",w->window_title);
+                    //printf("Pulsado en submenu [%s]\n",w->window_title);
 
-                    printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_submenus);
+                    DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: Distance from the current menu to the one pressed: %d",menu_dibuja_menu_yendo_atras_submenus);
+                    //printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_submenus);
 
                     menu_dibuja_menu_yendo_atras_submenus--;
                     return 1;
