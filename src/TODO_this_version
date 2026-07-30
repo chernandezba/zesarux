@@ -175,3 +175,5 @@ Eso suele descubrir pequeñas incoherencias.
 *alguna ventana abierta, como ZX Eyes. Eso si en el wizard ha decidido habilitar ZX Desktop y ademas está multitarea y even with menu closed.
   también process switcher abajo a la izquierda (y con los settings de forzado ahi abajo a la izquierda), waveform
 *mas iconos en zx desktop: hexadecimal editor, sprite viewer, debug cpu
+
+-hexeditor: tamaño por defecto no se ve texto entero de "shiftbits"
