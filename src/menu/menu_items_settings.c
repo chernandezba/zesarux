@@ -4364,7 +4364,6 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(force_confirm_yes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Skip confirmation dialogs");
         menu_add_item_menu_ayuda(array_menu_common,"Skips confirmation dialogs and automatically answers \"Yes\".");
-        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,
             "Submenu indicator","Indicador de submenu","Indicador de submenu");

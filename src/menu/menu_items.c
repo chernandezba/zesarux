@@ -42715,8 +42715,8 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("toyzxeyes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=19;
-            alto_ventana=19;
+            ancho_ventana=12;
+            alto_ventana=13;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -42742,7 +42742,7 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
     }
 
 
-zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
     //cambio overlay
 
@@ -42763,8 +42763,8 @@ zxvision_draw_window(ventana);
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
     if (zxvision_currently_restoring_windows_on_start) {
-            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
-            return;
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
     }
 
     do {
