@@ -32352,6 +32352,18 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     zxvision_generic_message(start_wizard_window_title,mensaje_fin);
     salir_todos_menus=1;
 
+    //Abrir alguna ventana por defecto si esta zx desktop y background windows
+    if (menu_multitarea && screen_ext_desktop_enabled && menu_allow_background_windows && always_force_overlay_visible_when_menu_closed) {
+        //Para que la ventana entre y salga
+        int antes_zxvision_currently_restoring_windows_on_start=zxvision_currently_restoring_windows_on_start;
+        zxvision_currently_restoring_windows_on_start=1;
+
+        menu_toy_follow_mouse(0);
+
+        zxvision_currently_restoring_windows_on_start=antes_zxvision_currently_restoring_windows_on_start;
+    }
+
+
 }
 
 /*
