@@ -5527,14 +5527,14 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
             char buffer_intermedio_long[128];
 
             if (cpu_step_mode.v) {
-                sprintf (buffer_intermedio_short,"ClTst~~Par Wr~~ite ~~VScr Ev~~t M~~Zn %d",menu_debug_memory_zone);
-                sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
+                sprintf (buffer_intermedio_short,"ClTst~~Par Wr~~ite ~~VScr Ev~~t M~~Zn:%d",menu_debug_memory_zone);
+                sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Evalua~~te Memory~~Zone:%d",menu_debug_memory_zone);
 
                 menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
             }
             else {
-                sprintf (buffer_intermedio_short,"ClTst~~Par Wr~~ite Ev~~t Mem~~Zone %d",menu_debug_memory_zone);
-                sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
+                sprintf (buffer_intermedio_short,"ClTst~~Par Wr~~ite Ev~~t Mem~~Zone:%d",menu_debug_memory_zone);
+                sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite Evalua~~te Memory~~Zone:%d",menu_debug_memory_zone);
 
                 menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
             }
