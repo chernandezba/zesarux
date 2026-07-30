@@ -11,6 +11,7 @@ Added support for triggering F-function actions from joystick (Reset CPU, Open w
 * Improvements:
 
 Improved ZX Vision:
+- Improved menu organization, wording and consistency across the user interface
 - Draw window frame on background windows
 - Main menus when top menu is enabled do not have window title
 - Allow to hide menus from top menu
