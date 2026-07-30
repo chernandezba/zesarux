@@ -2791,7 +2791,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
         if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
-                "Show ~~Border","Mostrar ~~Borde","Mostrar ~~Border");
+                "~~Border","~~Border","~~Border");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'b');
         }
@@ -2919,8 +2919,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
         if (menu_footer) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_fps,NULL,"[%c]  Show F~~PS",(screen_show_fps.v ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c]  Mostrar F~~PS",(screen_show_fps.v ? 'X' : ' ') );
+            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_fps,NULL,"[%c]  F~~PS",(screen_show_fps.v ? 'X' : ' ') );
+            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c]  F~~PS",(screen_show_fps.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'p');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Show FPS on footer");
             menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the current FPS");
@@ -2933,7 +2933,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 #ifndef MINGW
         if (menu_footer) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_usage,NULL,
-                "Show ~~CPU usage","Mostrar uso ~~CPU","Mostrar us ~~CPU");
+                "~~CPU usage","Uso ~~CPU","Us ~~CPU");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(screen_show_cpu_usage.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'c');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU usage on footer");
@@ -2946,8 +2946,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         //temperatura cpu solo se ve en Linux
 #ifdef __linux__
         if (menu_footer) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_temp,NULL,"[%c]  Show CPU temperature",(screen_show_cpu_temp.v ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c]  Mostrar temperatura CPU",(screen_show_cpu_temp.v ? 'X' : ' ') );
+            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_temp,NULL,"[%c]  CPU temperature",(screen_show_cpu_temp.v ? 'X' : ' ') );
+            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c]  Temperatura CPU",(screen_show_cpu_temp.v ? 'X' : ' ') );
             //menu_add_item_menu_shortcut(array_menu_window_settings,'c');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU temperature on footer");
             menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the temperature of the main CPU");
@@ -4565,7 +4565,7 @@ void menu_osd_settings(MENU_ITEM_PARAMETERS)
 
 
     menu_add_item_menu_en_es_ca_inicial(&array_menu_osd_settings,MENU_OPCION_NORMAL,menu_interface_show_splash_texts,NULL,
-        "~~Show splash texts","Mo~~strar textos splash","Mo~~strar textos splash");
+        "~~Splash texts","Textos ~~splash","Textos ~~splash");
     menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%c] ",(screen_show_splash_texts.v ? 'X' : ' ' ) );
     menu_add_item_menu_tooltip(array_menu_osd_settings,"Show on display some splash texts, like display mode change or watches");
     menu_add_item_menu_ayuda(array_menu_osd_settings,"Show on display some splash texts, like display mode change or watches");
@@ -9714,7 +9714,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_rainbow,NULL,
-                "Autodetect Real Video","Autodetectar Real Video","Autodetectar Real Video");
+                "Auto-detect Real Video","Autodetectar Real Video","Autodetectar Real Video");
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(autodetect_rainbow.v==1 ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_settings_display,"Autodetect the need to enable Real Video");
             menu_add_item_menu_ayuda(array_menu_settings_display,"This option detects whenever is needed to enable Real Video. "
@@ -9786,7 +9786,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
             */
 
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_tbblue_optimized_sprite_render,NULL,"[%c] Optimized render sprite",(tbblue_disable_optimized_sprites.v==0 ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_tbblue_optimized_sprite_render,NULL,"[%c] Optimized sprite rendering",(tbblue_disable_optimized_sprites.v==0 ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_settings_display,"Enable optimized sprite rendering. Usually you don't need to disable this");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Optimized render walks on the sprite list until the last visible sprite. "
                                     "Besides, non-optimized rendering walk on the whole sprite list all the time, no matter the last visible sprite. "
@@ -9949,14 +9949,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 }
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_allow_videomode_change,NULL,
-                    "Allow videomode changes by i/o","Permitir cambios de modo video por i/o","Permetre canvis de mode video per i/o");
+                    "Allow videomode changes via i/o","Permitir cambios de modo video por i/o","Permetre canvis de mode video per i/o");
                 menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c]  ",(pcw_allow_videomode_change.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_display,"Allow change video mode by i/o port");
                 menu_add_item_menu_ayuda(array_menu_settings_display,"Allow change video mode by i/o port");
 
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
-                    "Always on monitor","Monitor simpre activo","Monitor sempre actiu");
+                    "Monitor always on","Monitor simpre activo","Monitor sempre actiu");
                 menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(pcw_always_on_display.v ? 'X' : ' '));
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_inverse,NULL,
@@ -10180,7 +10180,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,
-                "Colours enabled","Colores activados","Colors activats");
+                "Colours","Colores","Colors");
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
@@ -10201,7 +10201,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
-            "Flash enabled","Parpadeo activado","Parpelleig activat");
+            "Flash","Parpadeo","Parpelleig");
         menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
@@ -10210,7 +10210,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,
-                "OSD Adv. KB length","OSD Aven. TECL longitud","OSD Aven. TECL longitut");
+                "OSD Adv. key length","OSD Aven. tecl longitud","OSD Aven. tecl longitut");
             menu_add_item_menu_sufijo_format(array_menu_settings_display," [%d]",adventure_keyboard_key_length);
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"    ");
             menu_add_item_menu_tooltip(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard");
@@ -10218,7 +10218,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_finalspc,NULL,
-                "OSD Adv. final space","OSD Aven. espacio final","OSD Aven. espai final");
+                "OSD Adv. auto-space","OSD Aven. auto-espacio","OSD Aven. auto-espai");
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(adventure_keyboard_send_final_spc ? 'X' : ' '));
             menu_add_item_menu_tooltip(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
@@ -10241,7 +10241,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
             if (sms_disable_raster_interrupt.v==0) {
                 menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_only_one_raster_int_frame,NULL,
-                    "[%c] One interrupt / frame", (sms_only_one_raster_int_frame.v ? 'X' : ' ') );
+                    "[%c] One interrupt per frame", (sms_only_one_raster_int_frame.v ? 'X' : ' ') );
                 menu_add_item_menu_es_avanzado(array_menu_settings_display);
             }
 
@@ -10280,7 +10280,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_ocr_23606,NULL,
-            "OCR Alternate chars","OCR Caracteres alternativos","OCR Caràcters alternatius");
+            "OCR Alternate charset","OCR Caracteres alternativos","OCR Caràcters alternatius");
         menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(ocr_settings_not_look_23606.v==0 ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_settings_display,"Tells to look for an alternate character set other than the ROM default on OCR functions");
         menu_add_item_menu_ayuda(array_menu_settings_display,"Tells to look for an alternate character set other than the ROM default on OCR functions. "
