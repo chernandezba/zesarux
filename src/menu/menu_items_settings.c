@@ -11136,7 +11136,7 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
-            "Flash enabled","Parpadeo activado","Parpelleig activat");
+            "Flash","Parpadeo","Parpelleig");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_common,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_common,"Disables flash for emulated machines and also for menu interface");
@@ -11144,7 +11144,7 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_gui_sounds,NULL,
-            "Enable GUI Sounds","Activar sonidos interfaz","Activar sons interfície");
+            "GUI Sounds","Sonidos interfaz","Sons interfície");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(accessibility_enable_gui_sounds.v ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"Enable sounds for GUI events");
         menu_add_item_menu_ayuda(array_menu_common,"Enable sounds for GUI events");

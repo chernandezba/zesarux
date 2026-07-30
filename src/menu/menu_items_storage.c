@@ -11485,7 +11485,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,
-            "~~PD765 enabled","~~PD765 activado","~~PD765 activat");
+            "~~PD765","~~PD765","~~PD765");
         menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(pd765_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'p');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable PD765 Disk controller used on +3, CPC and PCW machines");
