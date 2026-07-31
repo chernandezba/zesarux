@@ -40,7 +40,7 @@ And also:
 * Sega Master System
 
 ZEsarUX source code and binaries are distributed under GNU GPL license. 
-ZEsarUX also includes a folder, "my_soft", which has some programs and data made by me. The entire folder is also covered by the GNU GPL license.
+ZEsarUX also includes a folder, "my_soft", which has some programs, games and data created by me and other members of my family. The entire folder is also covered by the GNU GPL license.
 
 ZEsarUX also includes third-party roms, media, programs and games NOT covered by this license.
 
