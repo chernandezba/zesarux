@@ -902,17 +902,17 @@ You can also play zesarux.mp3 to hear how it sounds
 
 
 Q: What is the origin of the name of ZEsarUX?
-A: ZEsarUX comes from:
+A: The name ZEsarUX comes from:
 ZX Second-Emulator And Released for UniX.
-I write second-emulator with a hyphen because I changed the order of the two words to have the final name... If not, name would be:
-ZsEarUX :P
-Second because it's my second emulator. The first was ZXSpectr:
+The hyphen in Second-Emulator is intentional. I swapped the order of the words so the initials would spell ZEsarUX. Otherwise, the name would have been "ZsEarUX" :P
+Second because it's my second emulator. The first one was ZXSpectr:
 https://github.com/chernandezba/zxspectr
-Why the capital letters? Because one of the first names I thought was ZEUX, but there's another emulator called zeus... 
-Then I thought some name like mine (Cesar) and adding letters zx (for zx spectrum) and also UX for UNIX/Linux, so GNU/Linux was the first supported platform. Then I simply joined all these letters and have a translation for every letter to a word, on a phrase with sense: 
+Why the capital letters? Because one of the first names I considered was ZEUX, but I discovered there was already another emulator called Zeus... 
+I also liked the idea of a name that sounded a bit like my own name, César, while including ZX (for the ZX Spectrum) and UX (for Unix), since GNU/Linux was the first platform supported by the emulator. Eventually I combined all those ideas and assigned a meaning to every letter, resulting in the phrase:
 ZX Second-Emulator And Released for UniX.
-It's important to write lowercase and uppercase characters correctly. Uppercase letters refer to the most important part of the name: "ZX", "Emulator", "UniX"
-And lowercase letters refer to the less important part : "second", "and", "released".
+
+The capitalization is intentional. The uppercase letters represent the most important parts of the name: "ZX", "Emulator", "UniX" while the lowercase letters correspond to the connecting words: "second", "and", "released"
+
 Before the final ZEsarUX name, I thought on many other possible names:
 * zx + ....
 * zxsinclair emu
@@ -929,13 +929,8 @@ Before the final ZEsarUX name, I thought on many other possible names:
 * zxgo
 * zxnew : zx nonamed emulator w?
 * zgeckox: Z X, Gnu, Emulator, Computer, K, O
-* nuevo
-* segundo
-* zx (spectrum,80,81)
-* c
-* unix
-* sinclair
 * ZX Gecko: ZX, X Unix, General / Gnu, Emulator, Computer / Complete, K Known, Overall
+* and some other names combining ideas like: new, second, zx, c, unix, sinclair
 
 
 Q: I have seen a gecko in the About window. What does it mean?
