@@ -140,9 +140,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 
-ok -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
-
-
 -en save game config el titulo de la ventana es confuso
     //Si no se selecciona source_file como ultimo archivo cargado
     if (source_file[0]==0) {
