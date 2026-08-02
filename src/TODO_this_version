@@ -153,3 +153,9 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 -tiene sentido desactivar multitask y dejar background windows? veo que zx eyes sigue funcionando en el menu al desactivar multitask
+
+
+-sobre parche corrección rainbow
+* no acabo de entender como actualiza rainbow_pending_count
+* con el core reduced, acabará llamando a poke_byte_spectrum_sync_rainbow y funcionará bien?
+* ULA_PREFETCH_OFFSET_TSTATES: ya no se usa? tiene el valor 0
