@@ -18933,7 +18933,8 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
     int retorno_menu;
     do {
 
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Contents -- ","--- Contenido -- ","--- Contingut -- ");
 
 
         char buffer_texto[MAX_LENGTH_TEXT_ICON];
@@ -18946,12 +18947,8 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
 
             if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
 
-                //int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
-                //sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
                 strcpy (buffer_texto,zxdesktop_configurable_icons_list[i].text_icon);
 
-
-                //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_recover,NULL,buffer_texto);
 
                 menu_add_item_menu_valor_opcion(array_menu_common,i);

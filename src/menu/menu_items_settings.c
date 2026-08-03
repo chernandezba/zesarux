@@ -2740,9 +2740,10 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
     do {
 
 
-        //hotkeys usadas:
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Full Screen ---","--- Pantalla completa ---","--- Pantalla completa ---");
 
-        menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
+        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
         menu_add_item_menu_shortcut(array_menu_window_settings,'f');
         //necesario para que al salir de fullscreen se puedan restaurar correctamente las ventanas
         menu_add_item_menu_se_cerrara(array_menu_window_settings);
@@ -2785,18 +2786,76 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX, so on the configuration will be saved as full screen disabled");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
+
+        if (si_complete_video_driver() ) {
+
+            menu_add_item_menu_separator(array_menu_window_settings);
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "--- Zoom ---","--- Zoom ---","--- Zoom ---");
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_both_zoom_equals,NULL,
+                "Keep horizontal and vertical zoom equal","Mantener Zoom horizontal y vertical iguales","Mantenir Zoom horitzontal i vertical iguals");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_keep_both_zoom_equals.v ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+            if (screen_keep_both_zoom_equals.v) {
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,
+                    "~~Zoom","~~Zoom","~~Zoom");
+                menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_x);
+                menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
+                //menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
+                menu_add_item_menu_shortcut(array_menu_window_settings,'z');
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Zoom (width and height)");
+            }
+
+            else {
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_width,menu_interface_zoom_cond,
+                    "Window Size Width Zoom","Zoom Tamaño Ventana Ancho","Zoom Tamany Finestra Ample");
+                menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_x);
+                menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Changes Window Size Width Zoom");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Width Zoom");
+
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_height,menu_interface_zoom_cond,
+                    "Window Size Height Zoom","Zoom Tamaño Ventana Alto","Zoom Tamany Finestra Alt");
+                menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_y);
+                menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Changes Window Size Height Zoom");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Height Zoom");
+            }
+
+
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
+                "Auto-adjust zoom for large displays","Autoajustar Zoom en pantalla grande","Autoajustar Zoom en pantalla gran");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(autochange_zoom_big_display.v ? 'X' : ' ' ));
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with large display (Next, QL, CPC, ...)");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with large display (Next, QL, CPC, ...)");
+        }
+
         menu_add_item_menu_separator(array_menu_window_settings);
-        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+
 
 
         if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "--- Border ---","--- Border ---","--- Border ---");
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
                 "~~Border","~~Border","~~Border");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'b');
+
+            menu_add_item_menu_separator(array_menu_window_settings);
         }
 
-        menu_add_item_menu_separator(array_menu_window_settings);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Frameskip ---","--- Saltar Frames ---","--- Saltar Frames ---");
 
         int fps;
         int divisor=frameskip+1;
@@ -2860,56 +2919,11 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 #endif
 
 
-
-
-        if (si_complete_video_driver() ) {
-
-            menu_add_item_menu_separator(array_menu_window_settings);
-
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_both_zoom_equals,NULL,
-                "Keep horizontal and vertical zoom equal","Mantener Zoom horizontal y vertical iguales","Mantenir Zoom horitzontal i vertical iguals");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_keep_both_zoom_equals.v ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Keep zoom horizontal equal to vertical to have proportional window sizes");
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
-
-            if (screen_keep_both_zoom_equals.v) {
-                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,
-                    "~~Zoom","~~Zoom","~~Zoom");
-                menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_x);
-                menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
-                //menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
-                menu_add_item_menu_shortcut(array_menu_window_settings,'z');
-                menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Zoom (width and height)");
-            }
-
-            else {
-                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_width,menu_interface_zoom_cond,
-                    "Window Size Width Zoom","Zoom Tamaño Ventana Ancho","Zoom Tamany Finestra Ample");
-                menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_x);
-                menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
-                menu_add_item_menu_tooltip(array_menu_window_settings,"Changes Window Size Width Zoom");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Width Zoom");
-
-                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_height,menu_interface_zoom_cond,
-                    "Window Size Height Zoom","Zoom Tamaño Ventana Alto","Zoom Tamany Finestra Alt");
-                menu_add_item_menu_sufijo_format(array_menu_window_settings," [%d]",zoom_y);
-                menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
-                menu_add_item_menu_tooltip(array_menu_window_settings,"Changes Window Size Height Zoom");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Height Zoom");
-            }
-
-
-
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
-                "Auto-adjust zoom for large displays","Autoajustar Zoom en pantalla grande","Autoajustar Zoom en pantalla gran");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(autochange_zoom_big_display.v ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with large display (Next, QL, CPC, ...)");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with large display (Next, QL, CPC, ...)");
-        }
-
         menu_add_item_menu_separator(array_menu_window_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Footer ---","--- Footer ---","--- Footer ---");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_border_cond,"[%c] F~~ooter",(menu_footer ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_window_settings,'o');
@@ -4238,12 +4252,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "Permetre fixar tamany caràcter > 8");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_select_char_width_height_larger.v ? 'X' : ' ' ));
         menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_allow_select_char_width_height_larger);
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Char width");
         menu_add_item_menu_spanish_catalan(array_menu_common,"Ancho de caracter","Ample de caracter");
         menu_add_item_menu_sufijo_format(array_menu_common," [%d]",menu_char_width);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_es_avanzado(array_menu_common);
         //menu_add_item_menu_shortcut(array_menu_common,'i');
         menu_add_item_menu_tooltip(array_menu_common,"Character width");
         menu_add_item_menu_ayuda(array_menu_common,"Character width. You can reduce it so allowing more text columns in a window");
@@ -4253,6 +4269,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish_catalan(array_menu_common,"Altura de caracter","Alçada de caracter");
         menu_add_item_menu_sufijo_format(array_menu_common," [%d]",menu_char_height);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_es_avanzado(array_menu_common);
         menu_add_item_menu_tooltip(array_menu_common,"Character height");
         menu_add_item_menu_ayuda(array_menu_common,"Character height. You can reduce it so allowing more text rows in a window");
 

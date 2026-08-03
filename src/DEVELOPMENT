@@ -198,7 +198,7 @@ Normas para menus:
 
 
 - Uso de palabras:
-* Checkbox -> característica
+* Checkbox -> característica. sin verbos
 
 Welcome logo
 Quick exit
@@ -211,11 +211,25 @@ Emulator Speed
 Download Path
 Logo
 
-* Acción -> verbo
+* Acción -> verbo + objeto
 
 Reset search index
 Rebuild search index
 Change language
+
+* Submenús: sustantivo.
+
+Colour settings...
+Emulated Display FX...
+Audio settings...
+
+* Secciones: sustantivo o categoría.
+
+Fullscreen
+Zoom
+Frameskip
+Footer
+Border
 
 
 -----------------------------------------
