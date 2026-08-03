@@ -1635,6 +1635,7 @@ extern void create_default_zxdesktop_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons_if_auto(void);
 extern void zxvision_set_configurable_icon_position(int icon,int x,int y);
+extern void zxvision_if_configurable_icon_not_on_valid_position_set(int icon);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
 extern void zxvision_move_configurable_icon_to_trash(int indice_icono);

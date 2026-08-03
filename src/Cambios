@@ -21,6 +21,7 @@ Mejorado ZX Vision:
 
 Mejorado ZX Desktop:
 - Permitir ordenar iconos alfabéticamente
+- Comprobar si un item está en una posición inválida al recuperarlo de la Papelera
 
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario

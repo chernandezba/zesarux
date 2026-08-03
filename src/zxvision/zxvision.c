@@ -547,6 +547,24 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
     zxdesktop_configurable_icons_list[icon].pos_y=y;
 }
 
+//Si un icono no está en papelera y no tiene posición valida, le asigna la primera disponible
+void zxvision_if_configurable_icon_not_on_valid_position_set(int icon)
+{
+
+    if (zxdesktop_configurable_icons_list[icon].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+        int x=zxdesktop_configurable_icons_list[icon].pos_x;
+        int y=zxdesktop_configurable_icons_list[icon].pos_y;
+        if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+            debug_printf(VERBOSE_DEBUG,"Relocate icon %d (%s) because it is on an invalid position %d,%d",icon,zxdesktop_configurable_icons_list[icon].text_icon,x,y);
+            zxvision_get_next_free_icon_position(&x,&y);
+            debug_printf(VERBOSE_DEBUG,"Relocate icon %d to %d,%d",icon,x,y);
+            zxvision_set_configurable_icon_position(icon,x,y);
+        }
+    }
+
+}
+
+
 void zxvision_set_configurable_icon_text(int indice_icono,char *texto)
 {
     strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,texto);
@@ -813,17 +831,7 @@ void zxvision_check_all_configurable_icons_positions(void)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
-            int x=zxdesktop_configurable_icons_list[i].pos_x;
-            int y=zxdesktop_configurable_icons_list[i].pos_y;
-
-            if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
-                debug_printf(VERBOSE_DEBUG,"Relocate icon %d (%s) because it is on an invalid position %d,%d",i,zxdesktop_configurable_icons_list[i].text_icon,x,y);
-                zxvision_get_next_free_icon_position(&x,&y);
-                debug_printf(VERBOSE_DEBUG,"Relocate icon %d to %d,%d",i,x,y);
-                zxvision_set_configurable_icon_position(i,x,y);
-            }
-        }
+        zxvision_if_configurable_icon_not_on_valid_position_set(i);
     }
 
     zxvision_reorder_configurable_icons_if_auto();
@@ -1161,6 +1169,10 @@ void zxvision_move_configurable_icon_to_trash(int indice_icono)
 void zxvision_recover_configurable_icon_from_trash(int indice_icono)
 {
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+
+    //comprobar que posicion sea valida. Igualmente si es válida vuelve a asignar misma posición (es redundante) pero lo que interesa es que le ponga posición válida si no la tiene
+    zxvision_if_configurable_icon_not_on_valid_position_set(indice_icono);
+
 }
 
 void zxvision_empty_trash(void)

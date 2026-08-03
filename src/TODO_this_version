@@ -167,5 +167,5 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 -hacer Running info como ventana que se puede quedar en background? que se actualice continuamente?
 
--recover elemento de trash: deberia comprobar las coordenadas que no se salgan fuera de pantalla (por ejemplo si viene de un zx desktop mas grande que el actual)
+ok -recover elemento de trash: deberia comprobar las coordenadas que no se salgan fuera de pantalla (por ejemplo si viene de un zx desktop mas grande que el actual)
 ->ver también que sucede si se deja asi no visible y al iniciar ZEsarUX si se reasigna o se ve o que
