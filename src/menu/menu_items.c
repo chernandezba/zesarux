@@ -33651,7 +33651,7 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
             int minutos,segundos;
             audiorecord_input_write_to_disk_time_size(&minutos,&segundos);
 
-            menu_add_item_menu_sufijo_format(array_menu_common," %02d:%02d",minutos,segundos);
+            menu_add_item_menu_sufijo_format(array_menu_common,": %02d:%02d",minutos,segundos);
 
 
             long long tamanyo=audiorecord_input_write_to_disk_total_size();
@@ -39878,8 +39878,18 @@ line wave type
     else strcpy(tipo_onda,"Line");
 
 
-    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"[%s] Wave ~~type. [%c] ~~freeze. sh+e: empty buffer",
-        tipo_onda,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
+    char opcion_capture[20];
+    opcion_capture[0]=0;
+
+    if (audio_can_record_input() ) {
+        if (audio_is_recording_input) {
+            strcpy(opcion_capture,"~~file. ");
+        }
+    }
+
+
+    zxvision_print_string_defaults_fillspc_format(menu_realtape_record_input_window,1,linea++,"[%s] Wave ~~type. %s[%c] f~~reeze. sh+e: empty buffer",
+        tipo_onda,opcion_capture,(menu_realtape_record_input_onda_onda_congelada ? 'X' : ' '));
 
 
     //Restaurar comportamiento atajos
@@ -39981,7 +39991,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("externalaudiosource",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=55;
+            ancho_ventana=56;
             alto_ventana=27;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -40041,7 +40051,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
             break;
 
 
-            case 'f':
+            case 'r':
                 menu_realtape_record_input_onda_onda_congelada ^=1;
             break;
 
@@ -40066,6 +40076,14 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
                     if (!audio_is_recording_input) {
                         //printf("start recording\n");
                         audiodriver_start_record_input();
+                    }
+                }
+            break;
+
+            case 'f':
+                if (audio_can_record_input() ) {
+                    if (audio_is_recording_input) {
+                        menu_external_audio_source_to_disk(0);
                     }
                 }
             break;

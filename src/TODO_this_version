@@ -37,8 +37,7 @@ Este lógicamente usa rutinas propias de grabación (y carga) para poder usar lo
 los traps que tenemos ahora
 
 
--Captura sonido a archivo de disco
-*opcion para archivo de salida en ventana de captura
+
 
 -alguna manera que desde external audio source:
 abra hexedit con expresión follow de ix
@@ -167,5 +166,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 -hacer Running info como ventana que se puede quedar en background? que se actualice continuamente?
 
-ok -recover elemento de trash: deberia comprobar las coordenadas que no se salgan fuera de pantalla (por ejemplo si viene de un zx desktop mas grande que el actual)
-->ver también que sucede si se deja asi no visible y al iniciar ZEsarUX si se reasigna o se ve o que
+-Captura sonido a archivo de disco
+*opcion para archivo de salida en ventana de captura
+*no sale menu centrado sino pegado arriba del todo con topbar -> creo que como se trata de un menu, tiene que salir ahi pegado. si fuese un dialogo, saldria centrado
