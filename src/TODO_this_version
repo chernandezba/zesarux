@@ -166,6 +166,10 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 -hacer Running info como ventana que se puede quedar en background? que se actualice continuamente?
 
--Captura sonido a archivo de disco
+ok -Captura sonido a archivo de disco
 *opcion para archivo de salida en ventana de captura
 *no sale menu centrado sino pegado arriba del todo con topbar -> creo que como se trata de un menu, tiene que salir ahi pegado. si fuese un dialogo, saldria centrado
+
+
+
+-con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
