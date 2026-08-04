@@ -36733,7 +36733,7 @@ void menu_snapshot_quickload(MENU_ITEM_PARAMETERS)
 void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 {
 
-    char *filtros[30];
+    char *filtros[29];
 
     filtros[0]="zx";
     filtros[1]="sp";
@@ -36776,11 +36776,14 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 
     filtros[26]="trd";
 
-    filtros[27]="config";
+    filtros[27]="p81";
 
-    filtros[28]="p81";
+    filtros[28]=0;
 
-    filtros[29]=0;
+
+    char *filtros_config[]={"config",0};
+
+
 
     char source_file[PATH_MAX];
     char game_config_file[PATH_MAX];
@@ -36847,7 +36850,21 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
     //Si no se selecciona source_file como ultimo archivo cargado
     if (source_file[0]==0) {
 
-        ret=menu_filesel("Source or dest file",filtros,source_file);
+        //Realmente este selector lo unico que cambia es el titulo del file selector y los filtros de listado para que no sea confuso para el usuario
+        //Luego se actua de manera inteligente segun si se ha seleccionado un .config o un archivo de diferente extensión
+        char titulo_fileselector[40];
+        int opcion=menu_simple_two_choices("Save game config","Where do you want to save it?","Create .config from snapshot/tape","Select .config file");
+        if (opcion==1) {
+            strcpy(titulo_fileselector,"Select snapshot/tape");
+            ret=menu_filesel(titulo_fileselector,filtros,source_file);
+        }
+        else if (opcion==2) {
+            strcpy(titulo_fileselector,"Select .config");
+            ret=menu_filesel(titulo_fileselector,filtros_config,source_file);
+        }
+        else return;
+
+
         //volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 
