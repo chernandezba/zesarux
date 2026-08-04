@@ -31506,7 +31506,7 @@ void menu_about_running_info_print(zxvision_window *w)
     //Uso cpu no se ve en windows
 #ifndef MINGW
     if (screen_show_cpu_usage.v) {
-        sprintf(mensaje_cpu_usage,"CPU usage since startup: %d%%\n",media_cpu);
+        sprintf(mensaje_cpu_usage,"Session CPU usage:         %d%%\n",media_cpu);
     }
 #endif
 
@@ -31514,7 +31514,7 @@ void menu_about_running_info_print(zxvision_window *w)
 
     //tiempo total de uso del emulador solo si esta guardado de config
     if (save_configuration_file_on_exit.v) {
-        sprintf (mensaje_total_uptime,"Total usage time: %d mins\n",
+        sprintf (mensaje_total_uptime,"Total usage time:          %d mins\n",
           stats_get_current_total_minutes_use() );
     }
     else {
@@ -31530,15 +31530,16 @@ void menu_about_running_info_print(zxvision_window *w)
     char *output_text=util_malloc_max_texto_generic_message("Can not allocate memory for running info");
 
     sprintf(output_text,
-        "ZEsarUX version: %s\n"
-        "ZENG Online Protocol version: %d\n"
-        "OS: %s on %s\n"
-        "Start time: %s\n"
-        "Uptime: %d secs (%d mins)\n"
+        "ZEsarUX version:           %s\n"
+        "ZENG Online Protocol ver.: %d\n"
+        "Operating System:          %s on %s\n"
+        "Start time:                %s\n"
+        "Uptime:                    %d secs (%d mins)\n"
         "%s"
         "%s"
         "\n"
-        "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
+        "Current Video Driver: %s\nAvailable video drivers: %s\n\n"
+        "Current Audio Driver: %s\nAvailable audio drivers: %s\n\n"
         "Current directory: %s\n\n"
         "Executable path: %s\n\n"
 
@@ -31593,7 +31594,7 @@ void menu_about_running_info_print(zxvision_window *w)
     zxvision_cls(w);
 
     for (i=0;i<total_lineas;i++) {
-        //printf("linea %d : %s\n",i,punteros_lineas[i]);
+        printf("linea %d : [%s]\n",i,punteros_lineas[i]);
         zxvision_print_string_defaults_fillspc(w,1,i,punteros_lineas[i]);
     }
 
