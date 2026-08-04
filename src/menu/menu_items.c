@@ -31473,7 +31473,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
     int i;
 
     i=0;
-        for (driver=0;driver<num_scr_driver_array;driver++) {
+    for (driver=0;driver<num_scr_driver_array;driver++) {
         sprintf(&string_video_drivers[i],"%s ",scr_driver_array[driver].driver_name);
         i=i+strlen(scr_driver_array[driver].driver_name)+1;
     }
@@ -31481,19 +31481,18 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
 
 
     i=0;
-        for (driver=0;driver<num_audio_driver_array;driver++) {
-                sprintf(&string_audio_drivers[i],"%s ",audio_driver_array[driver].driver_name);
-                i=i+strlen(audio_driver_array[driver].driver_name)+1;
-        }
-        string_audio_drivers[i]=0;
+    for (driver=0;driver<num_audio_driver_array;driver++) {
+        sprintf(&string_audio_drivers[i],"%s ",audio_driver_array[driver].driver_name);
+        i=i+strlen(audio_driver_array[driver].driver_name)+1;
+    }
+    string_audio_drivers[i]=0;
 
 
 
-                int uptime_seconds=timer_get_uptime_seconds();
+    int uptime_seconds=timer_get_uptime_seconds();
 
-                char hora_inicio[100];
-                timer_get_texto_time(&zesarux_start_time,hora_inicio);
-
+    char hora_inicio[100];
+    timer_get_texto_time(&zesarux_start_time,hora_inicio);
 
 
 
@@ -31554,9 +31553,6 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
     );
 
     //Average CPU use solo sale si screen_show_cpu_usage.v
-
-
-
 
 }
 
