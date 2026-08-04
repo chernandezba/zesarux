@@ -31463,7 +31463,7 @@ void menu_about_statistics(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_about_running_info(MENU_ITEM_PARAMETERS)
+void menu_about_running_info_print(zxvision_window *w)
 {
 
     char string_video_drivers[1024];
@@ -31506,7 +31506,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
     //Uso cpu no se ve en windows
 #ifndef MINGW
     if (screen_show_cpu_usage.v) {
-        sprintf(mensaje_cpu_usage,"Total Average CPU Use: %d%%\n",media_cpu);
+        sprintf(mensaje_cpu_usage,"Total Average CPU Use: %d%%",media_cpu);
     }
 #endif
 
@@ -31514,7 +31514,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
 
     //tiempo total de uso del emulador solo si esta guardado de config
     if (save_configuration_file_on_exit.v) {
-        sprintf (mensaje_total_uptime,"Total minutes use %d mins\n",
+        sprintf (mensaje_total_uptime,"Total minutes use %d mins",
           stats_get_current_total_minutes_use() );
     }
     else {
@@ -31525,34 +31525,176 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
     char directorio_actual[PATH_MAX];
     getcwd(directorio_actual,PATH_MAX);
 
-    menu_generic_message_format("Running info",
-        "ZEsarUX version: %s\n"
-        "ZENG Online Protocol version: %d\n"
-        "OS: %s on %s\n"
-        "Start time: %s\n"
-        "Uptime %d secs (%d mins)\n"
-        "%s"
-        "%s"
 
-        "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
-        "Current directory: %s\n\n"
-        "Executable path: %s\n\n"
+    int linea=0;
 
-        ,
-        EMULATOR_VERSION,
-        ZENG_ONLINE_PROTOCOL_VERSION,
-        os_release_name,running_machine_hardware_name,
-        hora_inicio,
-        uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage,
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"ZEsarUX version: %s",EMULATOR_VERSION);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"ZENG Online Protocol version: %d",ZENG_ONLINE_PROTOCOL_VERSION);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"OS: %s on %s",os_release_name,running_machine_hardware_name);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Start time: %s",hora_inicio);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Uptime %d secs (%d mins)",uptime_seconds,uptime_seconds/60);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"%s",mensaje_total_uptime);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"%s",mensaje_cpu_usage);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Video Driver: %s",scr_new_driver_name);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Available video drivers: %s",string_video_drivers);
+    linea++;
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio Driver: %s",audio_new_driver_name);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Available audio drivers: %s",string_audio_drivers);
+    linea++;
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Current directory: %s",directorio_actual);
+    linea++;
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Executable path: %s",zesarux_path_location);
 
-        scr_new_driver_name,string_video_drivers,audio_new_driver_name,string_audio_drivers,
-        directorio_actual,
-        zesarux_path_location
-
-
-    );
 
     //Average CPU use solo sale si screen_show_cpu_usage.v
+
+}
+
+
+
+zxvision_window *menu_about_running_info_window;
+
+int menu_about_running_info_segundo_anterior=0;
+
+void menu_about_running_info_overlay(void)
+{
+
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_about_running_info_window->is_minimized) return;
+
+
+
+    //esto hara ejecutar esto 2 veces por segundo
+    if ( ((contador_segundo%500) == 0 && menu_about_running_info_segundo_anterior!=contador_segundo) ) {
+
+        menu_about_running_info_segundo_anterior=contador_segundo;
+
+        menu_about_running_info_print(menu_about_running_info_window);
+
+
+    }
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_about_running_info_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_about_running_info;
+
+
+void menu_about_running_info(MENU_ITEM_PARAMETERS)
+{
+    menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_about_running_info;
+
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("aboutrunninginfo",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Running Info",
+            "aboutrunninginfo",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+    zxvision_draw_window(ventana);
+
+    z80_byte tecla;
+
+
+    int salir=0;
+
+
+    menu_about_running_info_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_about_running_info_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
+    }
+
+    do {
+
+
+        tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+
+            default:
+                //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
+                //aqui no entrará alguna
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+
+                //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
+                //zxvision_handle_opqa_wskl(ventana,tecla);
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+    util_add_window_geometry_compact(ventana);
+
+    if (tecla==3) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+        zxvision_destroy_window(ventana);
+    }
+
 
 }
 
