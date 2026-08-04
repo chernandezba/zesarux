@@ -31538,11 +31538,12 @@ void menu_about_running_info_print(zxvision_window *w)
         "%s"
         "%s"
         "\n"
-        "Current Video Driver: %s\nAvailable video drivers: %s\n\n"
-        "Current Audio Driver: %s\nAvailable audio drivers: %s\n\n"
+        "Current Video Driver:    %s\n"
+        "Available video drivers: %s\n\n"
+        "Current Audio Driver:    %s\n"
+        "Available audio drivers: %s\n\n"
         "Current directory: %s\n\n"
         "Executable path: %s\n\n"
-
 
         ,
         EMULATOR_VERSION,
@@ -31550,7 +31551,6 @@ void menu_about_running_info_print(zxvision_window *w)
         os_release_name,running_machine_hardware_name,
         hora_inicio,
         uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage,
-
 
         scr_new_driver_name,string_video_drivers,audio_new_driver_name,string_audio_drivers,
         directorio_actual,
