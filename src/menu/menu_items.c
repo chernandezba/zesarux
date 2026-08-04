@@ -31527,9 +31527,6 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
     getcwd(directorio_actual,PATH_MAX);
 
     menu_generic_message_format("Running info",
-        "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
-        "Current directory: %s\n\n"
-        "Executable path: %s\n\n"
         "ZEsarUX version: %s\n"
         "ZENG Online Protocol version: %d\n"
         "OS: %s on %s\n"
@@ -31537,15 +31534,24 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
         "Uptime %d secs (%d mins)\n"
         "%s"
         "%s"
+
+        "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
+        "Current directory: %s\n\n"
+        "Executable path: %s\n\n"
+
         ,
-        scr_new_driver_name,string_video_drivers,audio_new_driver_name,string_audio_drivers,
-        directorio_actual,
-        zesarux_path_location,
         EMULATOR_VERSION,
         ZENG_ONLINE_PROTOCOL_VERSION,
         os_release_name,running_machine_hardware_name,
         hora_inicio,
-        uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage);
+        uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage,
+
+        scr_new_driver_name,string_video_drivers,audio_new_driver_name,string_audio_drivers,
+        directorio_actual,
+        zesarux_path_location
+
+
+    );
 
     //Average CPU use solo sale si screen_show_cpu_usage.v
 
