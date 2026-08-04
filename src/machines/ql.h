@@ -67,7 +67,10 @@ extern unsigned char ql_readbyte_no_ports_vacio(unsigned int Address);
 //Resolucion maxima es 512*256. Para que sea pantalla cuadrada, haremos 512x512 poniendo pixeles doble de alto
 #define QL_DISPLAY_WIDTH 512
 #define QL_DISPLAY_HEIGHT 512
+//Para cumplir proporcion 4:3 -> (512/3)*4=682.66666
+#define QL_MEASURED_DISPLAY_WIDTH 683
 
+extern int ql_pantalla_proporcion_real;
 
 #define m68k_read_memory_8 GetMemB
 #define m68k_read_memory_16 GetMemW

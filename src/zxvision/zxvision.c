@@ -4842,7 +4842,8 @@ void menu_clear_footer(void)
 
         if (MACHINE_IS_QL) {
             //Pegado a la derecha casi, dejando espacio a la derecha del todo para los botones de switch zxdesktop
-            xlogo=zoom_x*(QL_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v-ZESARUX_ASCII_LOGO_ANCHO-8*3);
+            if (ql_pantalla_proporcion_real) xlogo=zoom_x*(QL_MEASURED_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v-ZESARUX_ASCII_LOGO_ANCHO-8*3);
+            else xlogo=zoom_x*(QL_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v-ZESARUX_ASCII_LOGO_ANCHO-8*3);
 
             //engañamos para decir que si que dibuje el logo
             margenx_izq=1;

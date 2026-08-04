@@ -51,6 +51,7 @@ unsigned char *memoria_ql;
 //128k de rom + 128k de ram por defecto
 unsigned int ql_mem_limit=(1024*(128+128))-1;
 
+int ql_pantalla_proporcion_real=0;
 
 //Define el total de RAM del QL
 void ql_set_memory_size(int kb_ram)

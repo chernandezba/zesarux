@@ -1,5 +1,5 @@
 
--osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
+
 
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
@@ -144,7 +144,7 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 
--en save game config el titulo de la ventana es confuso
+ok -en save game config el titulo de la ventana es confuso
     //Si no se selecciona source_file como ultimo archivo cargado
     if (source_file[0]==0) {
 
@@ -157,6 +157,10 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 -tiene sentido desactivar multitask y dejar background windows? veo que zx eyes sigue funcionando en el menu al desactivar multitask
+->funcionan ventanas pero al pulsar una tecla o mover raton por ejemplo. no se refrescan sin no se pulsa teclado/ratón porque no hay multitask
+->en background windows help se menciona al final pero no le acabo de ver el sentido "You can have background windows enabled but multitasking disabled (not recommended, but allowed). "
+->cuantas ventanas que se pueden ir a background no necesitan multitask? Por ejemplo debug cpu, cpu compact statistics, waveform, io ports, hexadecimal editor, view sprites, visual memory
+->lo contrario: multitask sin background windows, pues el menu funciona a la vez que la emulacion, pero solo se tiene una ventana activaa
 
 
 -sobre parche corrección rainbow
@@ -171,3 +175,7 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
+
+--osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
+
+-ql permitir formato proporcion real 4:3. de ancho en vez de 512 deberia ser 682.6666666

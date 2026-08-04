@@ -1105,8 +1105,6 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-    //prueba no mostrar barra de titulo
-    //ventana->do_not_have_title_bar=1;
 
     //Y dibujar la ventana
     zxvision_draw_window(ventana);
@@ -1120,8 +1118,6 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
     cpu_stats_valor_contador_segundo_anterior=contador_segundo;
 
     //Cambiamos funcion overlay de texto de menu
-    //Se establece a la de funcion de onda + texto
-    //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_cpu_resumen_stats_overlay);
 
 
@@ -31990,8 +31986,6 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
             "When menu is open, pressing on the emulated machine section (usually on the left) and shift key, the keyboard focus is lost from the menu "
             "and goes to the emulated machine. To return the keyboard focus to the menu, press on any of the background windows, "
             "or in the ZEsarUX logo, or press F5. \n"
-            "\n"
-            "Keep in mind that F-keys are only read when menu is closed (except F4, F5 and F6, which are also read with menu open). "
             "\n"
             "You can enable a setting to restore windows when ZEsarUX is opened (from Settings-> ZX Vision-> "
             "Reopen windows on start). \n"
