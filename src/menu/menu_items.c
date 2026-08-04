@@ -31506,7 +31506,7 @@ void menu_about_running_info_print(zxvision_window *w)
     //Uso cpu no se ve en windows
 #ifndef MINGW
     if (screen_show_cpu_usage.v) {
-        sprintf(mensaje_cpu_usage,"Total Average CPU Use: %d%%",media_cpu);
+        sprintf(mensaje_cpu_usage,"Total Average CPU Use: %d%%\n",media_cpu);
     }
 #endif
 
@@ -31514,7 +31514,7 @@ void menu_about_running_info_print(zxvision_window *w)
 
     //tiempo total de uso del emulador solo si esta guardado de config
     if (save_configuration_file_on_exit.v) {
-        sprintf (mensaje_total_uptime,"Total minutes use %d mins",
+        sprintf (mensaje_total_uptime,"Total minutes use %d mins\n",
           stats_get_current_total_minutes_use() );
     }
     else {
@@ -31525,7 +31525,7 @@ void menu_about_running_info_print(zxvision_window *w)
     char directorio_actual[PATH_MAX];
     getcwd(directorio_actual,PATH_MAX);
 
-
+    /*
     int linea=0;
 
     zxvision_print_string_defaults_fillspc_format(w,1,linea++,"ZEsarUX version: %s",EMULATOR_VERSION);
@@ -31544,9 +31544,85 @@ void menu_about_running_info_print(zxvision_window *w)
     zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Current directory: %s",directorio_actual);
     linea++;
     zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Executable path: %s",zesarux_path_location);
+    */
 
+    char *output_text=util_malloc_max_texto_generic_message("Can not allocate memory for running info");
+
+    sprintf(output_text,
+        "ZEsarUX version: %s\n"
+        "ZENG Online Protocol version: %d\n"
+        "OS: %s on %s\n"
+        "Start time: %s\n"
+        "Uptime %d secs (%d mins)\n"
+        "%s"
+        "%s"
+
+        "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
+        "Current directory: %s\n\n"
+        "Executable path: %s\n\n"
+
+
+        ,
+        EMULATOR_VERSION,
+        ZENG_ONLINE_PROTOCOL_VERSION,
+        os_release_name,running_machine_hardware_name,
+        hora_inicio,
+        uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage,
+
+
+        scr_new_driver_name,string_video_drivers,audio_new_driver_name,string_audio_drivers,
+        directorio_actual,
+        zesarux_path_location
+    );
 
     //Average CPU use solo sale si screen_show_cpu_usage.v
+
+
+    #define RUNNING_INFO_MAX_LINES 100
+    int line_length=w->visible_width-2;
+
+    //un minimo de ancho
+    //considerar que al minimo de ancho no se generan mas de RUNNING_INFO_MAX_LINES lineas
+    if (line_length<20) line_length=20;
+
+    //trocear
+    //Punteros a cada linea de esas
+    //Esto es muy maximo, pero podria pasar
+    //Un maximo de RUNNING_INFO_MAX_LINES lineas
+    char *punteros_lineas[RUNNING_INFO_MAX_LINES];
+
+
+
+    char *buffer_lineas=util_malloc(RUNNING_INFO_MAX_LINES*(line_length+1),"Can not allocate memory location messages");
+
+
+    //Inicializar punteros a lineas
+    for (i=0;i<RUNNING_INFO_MAX_LINES;i++) {
+        int offset_linea=i*line_length;
+        punteros_lineas[i]=&buffer_lineas[offset_linea];
+    }
+
+
+    //no uso zxvision_trocear_string_lineas porque quiero controlar el ancho visible
+    //int total_lineas=zxvision_trocear_string_lineas(texto_localidad,punteros_lineas);
+
+
+    int total_lineas=zxvision_generic_message_aux_justificar_lineas(output_text,strlen(output_text),line_length,punteros_lineas);
+    //printf("lineas: %d\n",total_lineas);
+    zxvision_cls(w);
+
+    for (i=0;i<total_lineas;i++) {
+        //printf("linea %d : %s\n",i,punteros_lineas[i]);
+        zxvision_print_string_defaults_fillspc(w,1,i,punteros_lineas[i]);
+    }
+
+
+    free(buffer_lineas);
+    free(output_text);
+
+
+
+
 
 }
 
@@ -31610,8 +31686,8 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("aboutrunninginfo",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=56;
+            alto_ventana=23;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
