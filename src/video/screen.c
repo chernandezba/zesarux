@@ -11970,6 +11970,8 @@ Bit	Purpose
     for (y=0;y<total_alto;y++){
         //Al principio de cada linea, flash es siempre 0
         int ql_linea_flashing=0;
+        int xdestino=0;
+
         for (x=0;x<total_ancho;) {
 
 /*
@@ -12048,8 +12050,14 @@ const int ql_colortable_original[8]={
 
                     if (pantalla_apagada) color1=0;
 
-                      ql_putpixel_zoom(x++,y*2,color1);
-                      ql_putpixel_zoom(x++,y*2,color1);
+                      ql_putpixel_zoom(xdestino++,y*2,color1);
+                      ql_putpixel_zoom(xdestino++,y*2,color1);
+                      x++;
+                      if (ql_pantalla_proporcion_real && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+
+                      x++;
+                      if (ql_pantalla_proporcion_real && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+
 
                     //Ver si cambia valor bit flash
                     int bit_flashing=((byte_leido_h)>>(npixel-1))&1;
@@ -12089,7 +12097,11 @@ const int ql_colortable_original[8]={
 
                     if (pantalla_apagada) color1=0;
 
-                    ql_putpixel_zoom(x++,y*2,color1);
+                    ql_putpixel_zoom(xdestino++,y*2,color1);
+
+                    x++;
+
+                    if (ql_pantalla_proporcion_real && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
 
                 }
 
