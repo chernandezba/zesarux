@@ -32439,20 +32439,20 @@ void menu_help_project(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_exclusivefeatures,NULL,
-                "E~~xclusive features","Características e~~xclusivas","Característiques e~~xclusives");
-            menu_add_item_menu_shortcut(array_menu_common,'x');
+                "~~Exclusive features","Características ~~exclusivas","Característiques ~~exclusives");
+            menu_add_item_menu_shortcut(array_menu_common,'e');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"H~~istory",MENU_OPCION_NORMAL,menu_about_history,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"H~~istoria");
-            menu_add_item_menu_shortcut(array_menu_common,'i');
+            menu_add_item_menu(array_menu_common,"~~History",MENU_OPCION_NORMAL,menu_about_history,NULL);
+            menu_add_item_menu_spanish(array_menu_common,"~~Historia");
+            menu_add_item_menu_shortcut(array_menu_common,'h');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
 
-            menu_add_item_menu(array_menu_common,"Cha~~ngelog",MENU_OPCION_NORMAL,menu_about_changelog,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'n');
+            menu_add_item_menu(array_menu_common,"~~Changelog",MENU_OPCION_NORMAL,menu_about_changelog,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'c');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
@@ -32503,22 +32503,22 @@ void menu_help_documentation(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"FA~~Q",MENU_OPCION_NORMAL,menu_about_faq,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'q');
+            menu_add_item_menu(array_menu_common,"~~FAQ",MENU_OPCION_NORMAL,menu_about_faq,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'f');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_included_tapes,NULL,
-                "Included ~~tapes","Cin~~tas incluidas","Cin~~tes incloses");
-            menu_add_item_menu_shortcut(array_menu_common,'t');
+                "~~Included tapes","Cintas ~~incluidas","Cintes ~~incloses");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_alternate_roms,NULL,
-                "Alternate RO~~MS","RO~~MS alternativas","RO~~MS alternatives");
-            menu_add_item_menu_shortcut(array_menu_common,'m');
+                "~~Alternate ROMS","ROMS ~~alternativas","ROMS ~~alternatives");
+            menu_add_item_menu_shortcut(array_menu_common,'a');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
@@ -32555,19 +32555,20 @@ void menu_help_community(MENU_ITEM_PARAMETERS)
         do {
 
             menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
-                "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");
-            menu_add_item_menu_shortcut(array_menu_common,'c');
-             menu_add_item_menu_se_cerrara(array_menu_common);
+                "~~Acknowledgements","~~Agradecimientos","~~Agraïments");
+            menu_add_item_menu_shortcut(array_menu_common,'a');
+            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_donors,NULL,
                 "~~Donors","~~Donantes","~~Donants");
             menu_add_item_menu_shortcut(array_menu_common,'d');
-             menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
-            menu_add_item_menu(array_menu_common,"Donate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Donar");
+            menu_add_item_menu(array_menu_common,"D~~onate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
+            menu_add_item_menu_spanish(array_menu_common,"D~~onar");
+            menu_add_item_menu_shortcut(array_menu_common,'o');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
@@ -32610,8 +32611,8 @@ void menu_help_technical(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_core_statistics,NULL,
-                "Core Statistics","Estadísticas del núcleo","Estadístiques del nucli");
-            //menu_add_item_menu_shortcut(array_menu_common,'r');
+                "~~Core Statistics","Estadísticas del nú~~cleo","Estadístiques del nu~~cli");
+            menu_add_item_menu_shortcut(array_menu_common,'c');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
