@@ -647,6 +647,43 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
 
 
 
+void menu_interface_ql_display_proportion(MENU_ITEM_PARAMETERS)
+{
+
+
+
+    debug_printf(VERBOSE_INFO,"End Screen");
+
+    //Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
+    //mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
+  void (*previous_function)(void);
+  int menu_antes;
+
+    screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
+
+
+    ql_pantalla_proporcion_real ^=1;
+
+
+    screen_init_pantalla_and_others_and_realjoystick();
+
+
+    debug_printf(VERBOSE_INFO,"Creating Screen");
+
+    clear_putpixel_cache();
+
+    if (menu_footer) menu_init_footer();
+
+    screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
+
+
+    debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing ql display proportion settings");
+    zxvision_rearrange_background_windows(0,1);
+
+    zxvision_check_all_configurable_icons_positions();
+
+}
+
 
 
 //Para guardar las ventanas que estaban abiertas antes de pasar a full screen
@@ -9878,6 +9915,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings_display,"Enables or disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_settings_display,"Enables or disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+        if (MACHINE_IS_QL) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_ql_display_proportion,NULL,
+                "QL real 4:3 proportion","QL proporción real 4:3","QL proporció real 4:3");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(ql_pantalla_proporcion_real ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Enables or disables real display proportion 4:3 for QL");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"Enables or disables real display proportion 4:3 for QL");
+        }
 
         if (MACHINE_HAS_VDP_9918A) {
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,

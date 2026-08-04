@@ -179,3 +179,6 @@ ok -en save game config el titulo de la ventana es confuso
 --osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
 
 -ql permitir formato proporcion real 4:3. de ancho en vez de 512 deberia ser 682.6666666
+*que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
+*al dibujar el borde derecho quedan rastros (probar con Batman)
+*opcion de configuracion por linea comandos/config file
