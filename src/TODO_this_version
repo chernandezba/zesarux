@@ -164,7 +164,7 @@ ok - probar joystick "nes" en Windows, joystick logic3
 * Probar con una instrucción que es un prefijo repetido muchas veces. Eso creará un opcode muy grande
 
 
--hacer Running info como ventana que se puede quedar en background? que se actualice continuamente?
+ok -hacer Running info como ventana que se puede quedar en background? que se actualice continuamente?
 
 
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
