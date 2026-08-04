@@ -180,7 +180,7 @@ ok -en save game config el titulo de la ventana es confuso
 
 -ql permitir formato proporcion real 4:3. de ancho en vez de 512 deberia ser 682.6666666
 *que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
-*al dibujar el borde derecho quedan rastros (probar con Batman)
+*al dibujar el borde derecho quedan rastros (probar con Batman) -> porque el border no lo esta dibujando bien la parte de la derecha? probar con color rojo por ejemplo en border para que destaque
 *opcion de configuracion por linea comandos/config file
 *al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
 *agregar a changelog
