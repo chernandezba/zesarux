@@ -627,7 +627,8 @@ pues de una octava a la otra es el doble de valor
     },
 
     {
-    "total_avg_cpu","CPU usage since startup","TotalCPU",
+    //media de uso de cpu desde que se inicio ZEsarUX
+    "total_avg_cpu","Session CPU usage","SessionCPU",
     0,100,
     84,-9999,
     9999,-9999,
