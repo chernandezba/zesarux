@@ -627,7 +627,7 @@ pues de una octava a la otra es el doble de valor
     },
 
     {
-    "total_avg_cpu","Total average cpu use","TotalCPU",
+    "total_avg_cpu","CPU usage since startup","TotalCPU",
     0,100,
     84,-9999,
     9999,-9999,

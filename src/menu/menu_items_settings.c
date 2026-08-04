@@ -16269,7 +16269,7 @@ void menu_settings_statistics(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Compilation Machine Hardware Name: %s",COMPILATION_MACHINE_HARDWARE_NAME);
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Minutes: %d",stats_get_current_total_minutes_use() );
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Total usage time: %d",stats_get_current_total_minutes_use() );
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Speccy queries: %d",stats_total_speccy_browser_queries);
 

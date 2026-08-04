@@ -31506,7 +31506,7 @@ void menu_about_running_info_print(zxvision_window *w)
     //Uso cpu no se ve en windows
 #ifndef MINGW
     if (screen_show_cpu_usage.v) {
-        sprintf(mensaje_cpu_usage,"Total Average CPU Use: %d%%\n",media_cpu);
+        sprintf(mensaje_cpu_usage,"CPU usage since startup: %d%%\n",media_cpu);
     }
 #endif
 
@@ -31514,7 +31514,7 @@ void menu_about_running_info_print(zxvision_window *w)
 
     //tiempo total de uso del emulador solo si esta guardado de config
     if (save_configuration_file_on_exit.v) {
-        sprintf (mensaje_total_uptime,"Total minutes use %d mins\n",
+        sprintf (mensaje_total_uptime,"Total usage time: %d mins\n",
           stats_get_current_total_minutes_use() );
     }
     else {
@@ -31534,7 +31534,7 @@ void menu_about_running_info_print(zxvision_window *w)
         "ZENG Online Protocol version: %d\n"
         "OS: %s on %s\n"
         "Start time: %s\n"
-        "Uptime %d secs (%d mins)\n"
+        "Uptime: %d secs (%d mins)\n"
         "%s"
         "%s"
         "\n"
