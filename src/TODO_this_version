@@ -182,3 +182,5 @@ ok -en save game config el titulo de la ventana es confuso
 *que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
 *al dibujar el borde derecho quedan rastros (probar con Batman)
 *opcion de configuracion por linea comandos/config file
+*al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
+*agregar a changelog

@@ -664,13 +664,13 @@ void menu_interface_ql_display_proportion(MENU_ITEM_PARAMETERS)
 
     ql_pantalla_proporcion_real ^=1;
 
+    recalcular_get_total_ancho_rainbow();
+
 
     screen_init_pantalla_and_others_and_realjoystick();
 
 
     debug_printf(VERBOSE_INFO,"Creating Screen");
-
-    clear_putpixel_cache();
 
     if (menu_footer) menu_init_footer();
 
