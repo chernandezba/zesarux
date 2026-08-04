@@ -15946,6 +15946,7 @@ void zxvision_check_print_beyond_limits(zxvision_window *w,int x,int y)
 
 
         w->tried_write_beyond_size=1;
+        //printf("se trato de escribir mas alla del limite en ventana [%s] x %d y %d\n",w->window_title,x,y);
 
         //Si es la ventana actual, avisar al momento
         if (zxvision_current_window==w) {

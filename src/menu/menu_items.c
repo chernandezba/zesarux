@@ -31561,7 +31561,7 @@ void menu_about_running_info_print(zxvision_window *w)
 
 
     #define RUNNING_INFO_MAX_LINES 100
-    int line_length=w->visible_width-2;
+    int line_length=w->visible_width-1;
 
     //un minimo de ancho
     //considerar que al minimo de ancho no se generan mas de RUNNING_INFO_MAX_LINES lineas
@@ -31575,7 +31575,7 @@ void menu_about_running_info_print(zxvision_window *w)
 
 
 
-    char *buffer_lineas=util_malloc(RUNNING_INFO_MAX_LINES*(line_length+1),"Can not allocate memory location messages");
+    char *buffer_lineas=util_malloc(RUNNING_INFO_MAX_LINES*line_length,"Can not allocate memory location messages");
 
 
     //Inicializar punteros a lineas
@@ -31588,13 +31588,13 @@ void menu_about_running_info_print(zxvision_window *w)
     //no uso zxvision_trocear_string_lineas porque quiero controlar el ancho visible
     //int total_lineas=zxvision_trocear_string_lineas(texto_localidad,punteros_lineas);
 
-
-    int total_lineas=zxvision_generic_message_aux_justificar_lineas(output_text,strlen(output_text),line_length,punteros_lineas);
+    //line_length-2 porque hay que dejar espacio para el 0 del final de linea y un espacio
+    int total_lineas=zxvision_generic_message_aux_justificar_lineas(output_text,strlen(output_text),line_length-2,punteros_lineas);
     //printf("lineas: %d\n",total_lineas);
     zxvision_cls(w);
 
     for (i=0;i<total_lineas;i++) {
-        printf("linea %d : [%s]\n",i,punteros_lineas[i]);
+        //printf("linea %d : [%s] longitud: %ld (max: %d)\n",i,punteros_lineas[i],strlen(punteros_lineas[i]),line_length-2);
         zxvision_print_string_defaults_fillspc(w,1,i,punteros_lineas[i]);
     }
 
