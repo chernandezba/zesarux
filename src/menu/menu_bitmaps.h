@@ -95,6 +95,7 @@ extern char *bitmap_button_ext_desktop_geneneralsoundregisters[];
 extern char *bitmap_button_ext_desktop_nextdac[];
 extern char *bitmap_button_ext_desktop_cpustatistics[];
 extern char *bitmap_button_ext_desktop_corestatistics[];
+extern char *bitmap_button_ext_desktop_runninginfo[];
 extern char *bitmap_button_ext_desktop_debugcpu_view_adventure[];
 extern char *bitmap_button_ext_desktop_text_adventure_map[];
 extern char *bitmap_button_ext_desktop_hexeditor[];

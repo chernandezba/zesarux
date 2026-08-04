@@ -4062,6 +4062,37 @@ char *bitmap_button_ext_desktop_corestatistics[EXT_DESKTOP_BUTTONS_ANCHO]={
     " xxxxxxxxxxxxxxxxxxxxxxxxx"   //25
 };
 
+char *bitmap_button_ext_desktop_runninginfo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",	//0
+    "       xxxxxxxxxxxx       ",
+    "       xxxxxxxxxxxx       ",
+    "               xx         ",
+    "               xx r       ",
+    "             xx  rr       ",
+    "             xx rry       ",
+    "           xx  rryy       ",
+    "           xx rryyg       ",
+    "         xx  rryygg       ",
+    "         xx rryyggc       ",  //10
+    "       xxxxxxxxxxxx       ",
+    "       xxxxxxxxxxxx       ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "         xxxxxxxxxxxxxxx  ",
+    "                          ",
+    "wwwwww   xxxxxxxxxxxxxxx  ",
+    "wwbbww                    ",
+    "wwwwww   xxxxxxxxxx       ",    //20
+    "wbbbww                    ",
+    "wwbbww   xxxxxxxxxxxxx    ",
+    "wwbbww                    ",
+    "wbbbbw   xxxxxxxxxxx      ",
+    "wwwwww                    " 	 //25
+};
+
+
 char *bitmap_button_ext_desktop_ioports[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "  x   x   x   x   x   x   ",	//0

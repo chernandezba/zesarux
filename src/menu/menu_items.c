@@ -31525,26 +31525,7 @@ void menu_about_running_info_print(zxvision_window *w)
     char directorio_actual[PATH_MAX];
     getcwd(directorio_actual,PATH_MAX);
 
-    /*
-    int linea=0;
 
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"ZEsarUX version: %s",EMULATOR_VERSION);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"ZENG Online Protocol version: %d",ZENG_ONLINE_PROTOCOL_VERSION);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"OS: %s on %s",os_release_name,running_machine_hardware_name);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Start time: %s",hora_inicio);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Uptime %d secs (%d mins)",uptime_seconds,uptime_seconds/60);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"%s",mensaje_total_uptime);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"%s",mensaje_cpu_usage);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Video Driver: %s",scr_new_driver_name);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Available video drivers: %s",string_video_drivers);
-    linea++;
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Audio Driver: %s",audio_new_driver_name);
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Available audio drivers: %s",string_audio_drivers);
-    linea++;
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Current directory: %s",directorio_actual);
-    linea++;
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Executable path: %s",zesarux_path_location);
-    */
 
     char *output_text=util_malloc_max_texto_generic_message("Can not allocate memory for running info");
 
@@ -31556,7 +31537,7 @@ void menu_about_running_info_print(zxvision_window *w)
         "Uptime %d secs (%d mins)\n"
         "%s"
         "%s"
-
+        "\n"
         "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
         "Current directory: %s\n\n"
         "Executable path: %s\n\n"

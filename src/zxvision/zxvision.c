@@ -11052,7 +11052,7 @@ int total_restore_window_array_elements=0;
 //no la reconocera con el nombre anterior
 //El nombre corto ("nombre_corto") se puede cambiar sin afectar a nada
 zxvision_known_window_names zxvision_known_window_names_array[]={
-    {"aboutrunninginfo",    "abo runinfo",  menu_about_running_info,bitmap_button_ext_desktop_userdefined},
+    {"aboutrunninginfo",    "abo runinfo",  menu_about_running_info,bitmap_button_ext_desktop_runninginfo},
     {"textadvlocimage",     "adv locimg",   menu_textadv_loc_image,bitmap_button_ext_desktop_textadvlocimage},
     {"asciitable",          "asciitable",   menu_ascii_table,bitmap_button_ext_desktop_asciitable},
     {"aypiano",             "audiopiano",menu_ay_pianokeyboard,bitmap_button_ext_desktop_audiopiano},
