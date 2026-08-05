@@ -1795,7 +1795,7 @@ Calculando ese tiempo: 12% cpu
 
 
             sprintf(texto_buffer,"Average CPU Use: %d%% [%s]",media_cpu,buf_barra_cpu);
-            zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
+            zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
         }
 #endif
 
