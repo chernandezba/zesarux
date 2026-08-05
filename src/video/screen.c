@@ -11866,8 +11866,8 @@ void screen_text_repinta_pantalla_ace(void)
 void ql_putpixel_zoom(int x,int y,unsigned int color)
 {
 
-        scr_putpixel_zoom(x,y,QL_INDEX_FIRST_COLOR+color);
-        scr_putpixel_zoom(x,y+1,QL_INDEX_FIRST_COLOR+color);
+    scr_putpixel_zoom(x,y,QL_INDEX_FIRST_COLOR+color);
+    scr_putpixel_zoom(x,y+1,QL_INDEX_FIRST_COLOR+color);
 
 }
 
@@ -11876,17 +11876,18 @@ void scr_refresca_pantalla_ql_putpixel_aspect_ratio(int x,int y,int color,int *x
 {
     //Para proporcion 1.476
     //1.476=369/250
-    //Por cada 250 píxeles de entrada, produces 369 píxeles de salida.
-    //Debes insertar 119 píxeles extra por cada 250 originales.
+    //Por cada 1000 píxeles de entrada, produces 1476 píxeles de salida.
+    //Debes insertar 476 píxeles extra por cada 1000 originales.
 
 
     if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom((*xdestino)++,y*2,color);
-    (*acumulado_escala_1476) +=119;
 
+
+    (*acumulado_escala_1476) +=476;
     if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
-        while (*acumulado_escala_1476 >= 250) {
+        while (*acumulado_escala_1476 >= 1000) {
             ql_putpixel_zoom((*xdestino)++,y*2,color);
-            (*acumulado_escala_1476) -= 250;
+            (*acumulado_escala_1476) -= 1000;
         }
     }
 }
