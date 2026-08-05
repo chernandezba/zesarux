@@ -11871,6 +11871,7 @@ void ql_putpixel_zoom(int x,int y,unsigned int color)
 
 }
 
+//Para poder escalar en ancho a las relaciones de aspecto que no son 1:1
 void scr_refresca_pantalla_ql_putpixel_aspect_ratio(int x,int y,int color,int *xdestino,int *acumulado_escala_1476)
 {
     //Para proporcion 1.476
@@ -11890,8 +11891,6 @@ void scr_refresca_pantalla_ql_putpixel_aspect_ratio(int x,int y,int color,int *x
     }
 }
 
-//int temp_offset_ql_pan=131072;
-//int temp_offset_cuando=0;
 
 //Refresco de pantalla ql sin rainbow
 void scr_refresca_pantalla_ql(void)
@@ -12003,19 +12002,19 @@ reserved and may have unpredictable results in future versions of the QL hardwar
                     blue=((byte_leido_l)>>(npixel-1))&1;
 
 
-/*
-//colores para QL
-const int ql_colortable_original[8]={
-0x000000, //Negro
-0x0000ff, //Azul
-0xff0000, //Rojo
-0xff00ff, //Magenta
-0x00ff00, //Verde
-0x00ffff, //Cyan
-0xffff00, //Amarillo
-0xffffff  //Blanco
-};
-*/
+                    /*
+                    //colores para QL
+                    const int ql_colortable_original[8]={
+                    0x000000, //Negro
+                    0x0000ff, //Azul
+                    0xff0000, //Rojo
+                    0xff00ff, //Magenta
+                    0x00ff00, //Verde
+                    0x00ffff, //Cyan
+                    0xffff00, //Amarillo
+                    0xffffff  //Blanco
+                    };
+                    */
 
                     color1=green*4+red*2+blue;	// GRB
                     //printf ("estado parpadeo: %d\n",estado_parpadeo.v);
@@ -12026,18 +12025,16 @@ const int ql_colortable_original[8]={
 
                     if (pantalla_apagada) color1=0;
 
-                      ql_putpixel_zoom(xdestino++,y*2,color1);
-                      ql_putpixel_zoom(xdestino++,y*2,color1);
-                      x++;
+                    ql_putpixel_zoom(xdestino++,y*2,color1);
+                    ql_putpixel_zoom(xdestino++,y*2,color1);
 
-                        scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
+                    x++;
 
+                    scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
 
+                    x++;
 
-                      x++;
-
-                      scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
-
+                    scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
 
 
 
@@ -12084,8 +12081,6 @@ const int ql_colortable_original[8]={
                     x++;
 
                     scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
-
-
 
                 }
 
