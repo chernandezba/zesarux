@@ -51,11 +51,8 @@ unsigned char *memoria_ql;
 //128k de rom + 128k de ram por defecto
 unsigned int ql_mem_limit=(1024*(128+128))-1;
 
-//
-//#define QL_SIZE_TYPE_1_1 0
-//#define QL_SIZE_TYPE_133 1
-//#define QL_SIZE_TYPE_1476 2
-int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1_1;
+
+int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 
 
 int ql_get_display_width_with_proportion(void)
