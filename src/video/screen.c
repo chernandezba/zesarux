@@ -11661,48 +11661,6 @@ void scr_refresca_border_sam(unsigned int color)
 
 }
 
-void scr_refresca_border_ql(unsigned int color)
-{
-
-
-        int x,y;
-
-        int ancho=QL_DISPLAY_WIDTH;
-
-        if (ql_pantalla_proporcion_real) ancho=QL_MEASURED_DISPLAY_WIDTH;
-
-
-        //parte superior
-        for (y=0;y<QL_TOP_BORDER;y++) {
-                for (x=0;x<ancho*zoom_x+QL_LEFT_BORDER*2;x++) {
-                                scr_putpixel(x,y,color);
-
-
-                }
-        }
-
-        //parte inferior
-        for (y=0;y<QL_TOP_BORDER;y++) {
-                for (x=0;x<ancho*zoom_x+QL_LEFT_BORDER*2;x++) {
-                                scr_putpixel(x,QL_TOP_BORDER+y+QL_DISPLAY_HEIGHT*zoom_y,color);
-
-
-                }
-        }
-
-
-        //laterales
-        for (y=0;y<QL_DISPLAY_HEIGHT*zoom_y;y++) {
-                for (x=0;x<QL_LEFT_BORDER;x++) {
-                        scr_putpixel(x,QL_TOP_BORDER+y,color);
-                        scr_putpixel(QL_LEFT_BORDER+ancho*zoom_x+x,QL_TOP_BORDER+y,color);
-                }
-
-        }
-
-
-}
-
 
 
 //Refresco de pantalla SAM sin rainbow
@@ -12021,7 +11979,6 @@ reserved and may have unpredictable results in future versions of the QL hardwar
 
                     //G3 F3 G2 F2 G1 F1 G0 F0                 R3 B3 R2 B2 R1 B1 R0 B0         256-pixel
 
-
                     green=((byte_leido_h)>>npixel)&1;
                     red=((byte_leido_l)>>npixel)&1;
                     blue=((byte_leido_l)>>(npixel-1))&1;
@@ -12114,24 +12071,63 @@ const int ql_colortable_original[8]={
 }
 
 
+void scr_refresca_border_ql(unsigned int color)
+{
+
+
+    int x,y;
+
+    int ancho=QL_DISPLAY_WIDTH;
+
+    if (ql_pantalla_proporcion_real) ancho=QL_MEASURED_DISPLAY_WIDTH;
+
+
+    //parte superior
+    for (y=0;y<QL_TOP_BORDER;y++) {
+        for (x=0;x<ancho*zoom_x+QL_LEFT_BORDER*2;x++) {
+            scr_putpixel(x,y,color);
+        }
+    }
+
+    //parte inferior
+    for (y=0;y<QL_TOP_BORDER;y++) {
+        for (x=0;x<ancho*zoom_x+QL_LEFT_BORDER*2;x++) {
+            scr_putpixel(x,QL_TOP_BORDER+y+QL_DISPLAY_HEIGHT*zoom_y,color);
+        }
+    }
+
+
+    //laterales
+    for (y=0;y<QL_DISPLAY_HEIGHT*zoom_y;y++) {
+        for (x=0;x<QL_LEFT_BORDER;x++) {
+            scr_putpixel(x,QL_TOP_BORDER+y,color);
+            scr_putpixel(QL_LEFT_BORDER+ancho*zoom_x+x,QL_TOP_BORDER+y,color);
+        }
+
+    }
+
+
+}
+
+
 void scr_refresca_pantalla_y_border_ql(void)
 {
 
-        //Refrescar border si conviene
-        if (border_enabled.v) {
-                if (modificado_border.v) {
-                        //Dibujar border. Color 0
-                        unsigned int color=0;
+    //Refrescar border si conviene
+    if (border_enabled.v) {
+        if (modificado_border.v) {
+            //Dibujar border. Color 0
+            unsigned int color=0;
 
 
-                        scr_refresca_border_ql(color);
-                        modificado_border.v=0;
-                }
-
+            scr_refresca_border_ql(color);
+            modificado_border.v=0;
         }
 
+    }
 
-        scr_refresca_pantalla_ql();
+
+    scr_refresca_pantalla_ql();
 }
 
 
