@@ -11663,7 +11663,7 @@ void scr_refresca_border_sam(unsigned int color)
 
 void scr_refresca_border_ql(unsigned int color)
 {
-//      printf ("Refresco border sam\n");
+
 
         int x,y;
 
@@ -12108,6 +12108,8 @@ const int ql_colortable_original[8]={
             }
 
         }
+
+        //if (y==0) printf ("final x: %d\n",xdestino);
     }
 }
 
@@ -12120,8 +12122,7 @@ void scr_refresca_pantalla_y_border_ql(void)
                 if (modificado_border.v) {
                         //Dibujar border. Color 0
                         unsigned int color=0;
-                        //color=sam_palette_table[color];
-                        //color +=SAM_INDEX_FIRST_COLOR;
+
 
                         scr_refresca_border_ql(color);
                         modificado_border.v=0;

@@ -177,6 +177,7 @@ ok -en save game config el titulo de la ventana es confuso
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
 
 --osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
+->revisarlo porque parece que genera segfault
 
 -ql permitir formato proporcion real 4:3. de ancho en vez de 512 deberia ser 682.6666666
 *que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
