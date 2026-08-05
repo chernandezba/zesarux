@@ -185,3 +185,14 @@ ok -en save game config el titulo de la ventana es confuso
 *opcion de configuracion por linea comandos/config file
 *al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
 *agregar a changelog
+
+1340x905
+
+1.48 deberia ser el factor (aprox) para que el circle se vea con las proporciones correctas
+1.33 deberia ser lo logico (4:3) pero no parece ser así
+
+
+"The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
+Combined with the 2:1 ratio of the 512×256 resolution, the aspect ratio of the QL screen will then be 2/1.355 ≈ 1.476.
+This is wider than 4:3 due to the overscan."
+https://theqlforum.com/viewtopic.php?start=20&t=2799

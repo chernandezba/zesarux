@@ -1066,8 +1066,7 @@ void recalcular_get_total_ancho_rainbow(void)
         }
 
                 else if (MACHINE_IS_QL) {
-                            if (ql_pantalla_proporcion_real) get_total_ancho_rainbow_cached=2*QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+QL_MEASURED_DISPLAY_WIDTH;
-                            else get_total_ancho_rainbow_cached=2*QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+QL_DISPLAY_WIDTH;
+                            get_total_ancho_rainbow_cached=2*QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+ql_get_display_width_with_proportion();
                     }
 
 
@@ -11872,6 +11871,24 @@ void ql_putpixel_zoom(int x,int y,unsigned int color)
 
 }
 
+void scr_refresca_pantalla_ql_putpixel_aspect_ratio(int x,int y,int color,int *xdestino,int *acumulado_escala_1476)
+{
+    //Para proporcion 1.476
+    //1.476=369/250
+    //Por cada 250 píxeles de entrada, produces 369 píxeles de salida.
+    //Debes insertar 119 píxeles extra por cada 250 originales.
+
+
+    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom((*xdestino)++,y*2,color);
+    (*acumulado_escala_1476) +=119;
+
+    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
+        while (*acumulado_escala_1476 >= 250) {
+            ql_putpixel_zoom((*xdestino)++,y*2,color);
+            (*acumulado_escala_1476) -= 250;
+        }
+    }
+}
 
 //int temp_offset_ql_pan=131072;
 //int temp_offset_cuando=0;
@@ -11929,6 +11946,8 @@ Bit	Purpose
         //Al principio de cada linea, flash es siempre 0
         int ql_linea_flashing=0;
         int xdestino=0;
+
+        int acumulado_escala_1476=0;
 
         for (x=0;x<total_ancho;) {
 
@@ -12010,10 +12029,38 @@ const int ql_colortable_original[8]={
                       ql_putpixel_zoom(xdestino++,y*2,color1);
                       ql_putpixel_zoom(xdestino++,y*2,color1);
                       x++;
-                      if (ql_pantalla_proporcion_real && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+
+                        scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
+
+                        /*
+
+                      if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+                      acumulado_escala_1476 +=119;
+
+                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
+                        while (acumulado_escala_1476 >= 250) {
+                            ql_putpixel_zoom(xdestino++,y*2,color1);
+                            acumulado_escala_1476 -= 250;
+                        }
+                    }
+                        */
 
                       x++;
-                      if (ql_pantalla_proporcion_real && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+
+                      scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
+
+                      /*
+                      if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+
+                      acumulado_escala_1476 +=119;
+
+                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
+                        while (acumulado_escala_1476 >= 250) {
+                            ql_putpixel_zoom(xdestino++,y*2,color1);
+                            acumulado_escala_1476 -= 250;
+                        }
+                    }
+                        */
 
 
                     //Ver si cambia valor bit flash
@@ -12058,7 +12105,23 @@ const int ql_colortable_original[8]={
 
                     x++;
 
-                    if (ql_pantalla_proporcion_real && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+                    scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
+
+                    /*
+
+                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
+
+
+                      acumulado_escala_1476 +=119;
+
+                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
+                        while (acumulado_escala_1476 >= 250) {
+                            ql_putpixel_zoom(xdestino++,y*2,color1);
+                            acumulado_escala_1476 -= 250;
+                        }
+                    }
+
+                    */
 
                 }
 
@@ -12077,10 +12140,7 @@ void scr_refresca_border_ql(unsigned int color)
 
     int x,y;
 
-    int ancho=QL_DISPLAY_WIDTH;
-
-    if (ql_pantalla_proporcion_real) ancho=QL_MEASURED_DISPLAY_WIDTH;
-
+    int ancho=ql_get_display_width_with_proportion();
 
     //parte superior
     for (y=0;y<QL_TOP_BORDER;y++) {
@@ -12165,8 +12225,7 @@ int screen_get_emulated_display_width_no_zoom(void)
         }
 
         else if (MACHINE_IS_QL) {
-            if (ql_pantalla_proporcion_real) return QL_MEASURED_DISPLAY_WIDTH+QL_LEFT_BORDER_NO_ZOOM*2;
-            else return QL_DISPLAY_WIDTH+QL_LEFT_BORDER_NO_ZOOM*2;
+            return ql_get_display_width_with_proportion()+QL_LEFT_BORDER_NO_ZOOM*2;
         }
 
         else {
@@ -12253,8 +12312,7 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
         }
 
                 else if (MACHINE_IS_QL) {
-                    if (ql_pantalla_proporcion_real) return QL_MEASURED_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
-                    else return QL_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
+                    return ql_get_display_width_with_proportion()+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
                 }
 
 

@@ -662,7 +662,8 @@ void menu_interface_ql_display_proportion(MENU_ITEM_PARAMETERS)
     screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
 
-    ql_pantalla_proporcion_real ^=1;
+    ql_pantalla_proporcion_real++;
+    if (ql_pantalla_proporcion_real>2) ql_pantalla_proporcion_real=0;
 
     recalcular_get_total_ancho_rainbow();
 
@@ -9917,11 +9918,18 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
         if (MACHINE_IS_QL) {
+            char string_proporcion[30];
+
+            if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1_1) strcpy(string_proporcion,"1:1");
+            else if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133) strcpy(string_proporcion,"4:3");
+            else strcpy(string_proporcion,"1.476 (real)");
+
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_ql_display_proportion,NULL,
-                "QL real 4:3 proportion","QL proporción real 4:3","QL proporció real 4:3");
-            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(ql_pantalla_proporcion_real ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Enables or disables real display proportion 4:3 for QL");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Enables or disables real display proportion 4:3 for QL");
+                "QL aspect ratio","QL relación aspecto","QL relació aspecte");
+            menu_add_item_menu_sufijo_format(array_menu_settings_display," [%s]",string_proporcion);
+            menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
+            menu_add_item_menu_tooltip(array_menu_settings_display,"Changes aspect ratio");
+            menu_add_item_menu_ayuda(array_menu_settings_display,"Changes aspect ratio");
         }
 
         if (MACHINE_HAS_VDP_9918A) {

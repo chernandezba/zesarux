@@ -68,9 +68,15 @@ extern unsigned char ql_readbyte_no_ports_vacio(unsigned int Address);
 #define QL_DISPLAY_WIDTH 512
 #define QL_DISPLAY_HEIGHT 512
 //Para cumplir proporcion 4:3 -> (512/3)*4=682.66666
-#define QL_MEASURED_DISPLAY_WIDTH 682
+#define QL_133_DISPLAY_WIDTH 682
+#define QL_1476_DISPLAY_WIDTH 755
+
+#define QL_SIZE_TYPE_1_1 0
+#define QL_SIZE_TYPE_1476 1
+#define QL_SIZE_TYPE_133 2
 
 extern int ql_pantalla_proporcion_real;
+extern int ql_get_display_width_with_proportion(void);
 
 #define m68k_read_memory_8 GetMemB
 #define m68k_read_memory_16 GetMemW
