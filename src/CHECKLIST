@@ -392,6 +392,7 @@ pruebas Z88:
 -probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
 pruebas QL
+-probar diferentes proporciones 1.476, 4:3, 1:1
 -teclado:
 
 the main thing to check is the character codes - use:

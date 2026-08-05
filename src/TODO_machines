@@ -114,7 +114,6 @@ Quizá no funciona bien en ql en el momento que se activa debug
 NO. Dado que no usa peek byte y poke normales sino que tiene funciones propias a las que no le afecta el nested de peek y poke.
 Solo le afecta el nested del core cpu
 
--resolucion esta ok pero tamanyo pantalla deberia ser 4:3. hacer escalado chungo...
 
 -algunos archivos de juegos vienen con QDOS file header:
 http://foro.speccy.org/viewtopic.php?f=15&t=2008&start=4
@@ -185,8 +184,6 @@ y en la doc de uqlx:
 
 Q: How do you manage the 50 hz interrupt of the 8049 and the Keyboard interrupt?
 
-
--QL: Gestión de teclado QL quizá sufre de lectura de teclas desde emulación (que va a ráfagas cada frame de pantalla). Gestionarlo mejor todo desde timer?
 
 -------------
 

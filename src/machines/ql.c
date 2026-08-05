@@ -171,21 +171,21 @@ unsigned char (*ql_readbyte_no_ports_function)(unsigned int Address);
 
 unsigned char ql_readbyte_no_ports_vacio(unsigned int Address GCC_UNUSED)
 {
-	return 0;
+    return 0;
 }
 
 unsigned char ql_readbyte_no_ports(unsigned int Address)
 {
-	Address %=(ql_mem_limit+1);
-	unsigned char valor=memoria_ql[Address];
-	return valor;
+    Address %=(ql_mem_limit+1);
+    unsigned char valor=memoria_ql[Address];
+    return valor;
 
 }
 
 void ql_writebyte_no_ports(unsigned int Address,unsigned char valor)
 {
-	Address %=(ql_mem_limit+1);
-	memoria_ql[Address]=valor;
+    Address %=(ql_mem_limit+1);
+    memoria_ql[Address]=valor;
 
 }
 
@@ -248,13 +248,13 @@ void SetMemL(unsigned int address, unsigned int value)
 
 unsigned int m68k_read_disassembler_16 (unsigned int address)
 {
-	return GetMemW(address);
+    return GetMemW(address);
 }
 
 
 unsigned int m68k_read_disassembler_32 (unsigned int address)
 {
-	return GetMemL(address);
+    return GetMemL(address);
 }
 
 
@@ -265,41 +265,41 @@ unsigned int m68k_read_disassembler_32 (unsigned int address)
 
 void poke_byte_legacy_ql(z80_int dir GCC_UNUSED,z80_byte valor GCC_UNUSED)
 {
-	debug_printf(VERBOSE_ERR,"Calling poke_byte function on a QL machine. TODO fix it!");
+    debug_printf(VERBOSE_ERR,"Calling poke_byte function on a QL machine. TODO fix it!");
 }
 
 void poke_byte_no_time_legacy_ql(z80_int dir GCC_UNUSED,z80_byte valor GCC_UNUSED)
 {
-	debug_printf(VERBOSE_ERR,"Calling poke_byte_no_time function on a QL machine. TODO fix it!");
+    debug_printf(VERBOSE_ERR,"Calling poke_byte_no_time function on a QL machine. TODO fix it!");
 }
 
 z80_byte peek_byte_legacy_ql(z80_int dir GCC_UNUSED)
 {
-	debug_printf(VERBOSE_ERR,"Calling peek_byte function on a QL machine. TODO fix it!");
-	return 0;
+    debug_printf(VERBOSE_ERR,"Calling peek_byte function on a QL machine. TODO fix it!");
+    return 0;
 }
 
 z80_byte peek_byte_no_time_legacy_ql(z80_int dir GCC_UNUSED)
 {
-	//debug_printf(VERBOSE_ERR,"Calling peek_byte_no_time function on a QL machine. TODO fix it!");
-	return 0;
+    //debug_printf(VERBOSE_ERR,"Calling peek_byte_no_time function on a QL machine. TODO fix it!");
+    return 0;
 }
 
 z80_byte lee_puerto_legacy_ql(z80_byte h GCC_UNUSED,z80_byte l GCC_UNUSED)
 {
-	debug_printf(VERBOSE_ERR,"Calling lee_puerto function on a QL machine. TODO fix it!");
-	return 0;
+    debug_printf(VERBOSE_ERR,"Calling lee_puerto function on a QL machine. TODO fix it!");
+    return 0;
 }
 
 void out_port_legacy_ql(z80_int puerto GCC_UNUSED,z80_byte value GCC_UNUSED)
 {
-	debug_printf(VERBOSE_ERR,"Calling out_port function on a QL machine. TODO fix it!");
+    debug_printf(VERBOSE_ERR,"Calling out_port function on a QL machine. TODO fix it!");
 }
 
 z80_byte fetch_opcode_legacy_ql(void)
 {
-	debug_printf(VERBOSE_ERR,"Calling fetch_opcode function on a QL machine. TODO fix it!");
-	return 0;
+    debug_printf(VERBOSE_ERR,"Calling fetch_opcode function on a QL machine. TODO fix it!");
+    return 0;
 }
 
 
