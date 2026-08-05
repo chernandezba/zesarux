@@ -12032,35 +12032,13 @@ const int ql_colortable_original[8]={
 
                         scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
 
-                        /*
 
-                      if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
-                      acumulado_escala_1476 +=119;
-
-                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
-                        while (acumulado_escala_1476 >= 250) {
-                            ql_putpixel_zoom(xdestino++,y*2,color1);
-                            acumulado_escala_1476 -= 250;
-                        }
-                    }
-                        */
 
                       x++;
 
                       scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
 
-                      /*
-                      if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
 
-                      acumulado_escala_1476 +=119;
-
-                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
-                        while (acumulado_escala_1476 >= 250) {
-                            ql_putpixel_zoom(xdestino++,y*2,color1);
-                            acumulado_escala_1476 -= 250;
-                        }
-                    }
-                        */
 
 
                     //Ver si cambia valor bit flash
@@ -12107,21 +12085,7 @@ const int ql_colortable_original[8]={
 
                     scr_refresca_pantalla_ql_putpixel_aspect_ratio(x,y,color1,&xdestino,&acumulado_escala_1476);
 
-                    /*
 
-                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_133 && (x%3)==0) ql_putpixel_zoom(xdestino++,y*2,color1);
-
-
-                      acumulado_escala_1476 +=119;
-
-                    if (ql_pantalla_proporcion_real==QL_SIZE_TYPE_1476) {
-                        while (acumulado_escala_1476 >= 250) {
-                            ql_putpixel_zoom(xdestino++,y*2,color1);
-                            acumulado_escala_1476 -= 250;
-                        }
-                    }
-
-                    */
 
                 }
 
