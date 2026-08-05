@@ -80,6 +80,8 @@ extern unsigned char ql_readbyte_no_ports_vacio(unsigned int Address);
 extern int ql_pantalla_proporcion_real;
 extern int ql_get_display_width_with_proportion(void);
 
+extern void scr_refresca_pantalla_y_border_ql(void);
+
 #define m68k_read_memory_8 GetMemB
 #define m68k_read_memory_16 GetMemW
 #define m68k_read_memory_32 GetMemL
