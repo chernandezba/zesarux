@@ -55,7 +55,7 @@ extern unsigned char (*ql_readbyte_no_ports_function)(unsigned int Address);
 extern unsigned char ql_readbyte_no_ports_vacio(unsigned int Address);
 
 
-//En principio no hay border. ponemos solo de ejemplo
+//QL no tiene border como tal. Pero ponemos algo para dejar margen y porque ademas es requisito de ZEsarUX que todas las máquinas tengan border
 #define QL_LEFT_BORDER_NO_ZOOM 8
 #define QL_TOP_BORDER_NO_ZOOM 8
 
