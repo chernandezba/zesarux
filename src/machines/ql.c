@@ -195,7 +195,7 @@ void ql_writebyte_no_ports(unsigned int Address,unsigned char valor)
 
 unsigned int GetMemB(unsigned int address)
 {
-        return(ql_readbyte(address));
+    return(ql_readbyte(address));
 }
 
 
@@ -205,7 +205,7 @@ unsigned int  GetMemW(unsigned int address)
 #ifdef CHKADDRESSERR
     if (address & 0x1) ExceptionGroup0(ADDRESSERR, address, 1);
 #endif
-        return((ql_readbyte(address)<<8)|ql_readbyte(address+1));
+    return((ql_readbyte(address)<<8)|ql_readbyte(address+1));
 }
 
 
@@ -215,7 +215,7 @@ unsigned int GetMemL(unsigned int address)
 #ifdef CHKADDRESSERR
     if (address & 0x1) ExceptionGroup0(ADDRESSERR, address, 1);
 #endif
-        return((GetMemW(address)<<16) | GetMemW(address+2));
+    return((GetMemW(address)<<16) | GetMemW(address+2));
 }
 
 
@@ -230,10 +230,10 @@ void SetMemB (unsigned int address, unsigned int value)
 void SetMemW(unsigned int address, unsigned int value)
 {
 #ifdef CHKADDRESSERR
-if (address & 0x1) ExceptionGroup0(ADDRESSERR, address, 0);
+    if (address & 0x1) ExceptionGroup0(ADDRESSERR, address, 0);
 #endif
-        ql_writebyte(address,(value>>8)&255);
-        ql_writebyte(address+1, (value&255));
+    ql_writebyte(address,(value>>8)&255);
+    ql_writebyte(address+1, (value&255));
 }
 /* Write dword, address may not be dword-aligned */
 void SetMemL(unsigned int address, unsigned int value)
@@ -241,8 +241,8 @@ void SetMemL(unsigned int address, unsigned int value)
 #ifdef CHKADDRESSERR
     if (address & 0x1) ExceptionGroup0(ADDRESSERR, address, 0);
 #endif
-        SetMemW(address, (value>>16)&65535);
-        SetMemW(address+2, (value&65535));
+    SetMemW(address, (value>>16)&65535);
+    SetMemW(address+2, (value&65535));
 }
 
 
@@ -339,7 +339,7 @@ void ql_putpixel_zoom(int x,int y,unsigned int color)
 void scr_refresca_pantalla_ql_putpixel_aspect_ratio(int x,int y,int color,int *xdestino,int *acumulado_escala_1476)
 {
     //Para proporcion 1.476
-    //1.476=369/250
+    //1.476=1476/1000
     //Por cada 1000 píxeles de entrada, produces 1476 píxeles de salida.
     //Debes insertar 476 píxeles extra por cada 1000 originales.
 
@@ -389,7 +389,7 @@ Bit	Purpose
     int x,y;
 
     unsigned int color1;
-    //unsigned int color2;
+
 
     z80_byte green,red,blue;
 
@@ -601,15 +601,11 @@ void scr_refresca_pantalla_y_border_ql(void)
     if (border_enabled.v) {
         if (modificado_border.v) {
             //Dibujar border. Color 0
-            unsigned int color=0;
-
-
-            scr_refresca_border_ql(color);
+            scr_refresca_border_ql(0);
             modificado_border.v=0;
         }
 
     }
-
 
     scr_refresca_pantalla_ql();
 }
