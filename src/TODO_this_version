@@ -1,7 +1,5 @@
 
 
-
-
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 -> en teoria esto no deberia pasar. Ese limite es para sistemas de 32 bits al asignar:
 time_t tiempo = time(NULL);
@@ -180,7 +178,7 @@ ok -en save game config el titulo de la ventana es confuso
 ->revisarlo porque parece que genera segfault
 
 
--ql permitir formato proporcion real
+ok -ql permitir formato proporcion real
 ok *que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
 ok *al dibujar el borde derecho quedan rastros (probar con Batman) -> porque el border no lo esta dibujando bien la parte de la derecha? probar con color rojo por ejemplo en border para que destaque
 ok *opcion de configuracion por linea comandos/config file

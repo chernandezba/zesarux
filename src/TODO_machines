@@ -12,7 +12,7 @@ Así además en todos esos se podrá usar el zoom 0.75, 0.5, 0.25
 -Que QL, cuando busque un archivo, lo haga todo en minusculas y tambien todo en mayusculas
 -Soft QL
 http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Computer&lang=en
--Mirar uqlx a ver cómo hace el load
+
 
 
 -ql_return_full_path: gestionar retorno valor 1 en todos los casos?
@@ -92,8 +92,7 @@ Pero dado que aún no se los otros parámetros cómo funcionan (step, fuzziness 
 es problema de esto:
 ql_audio_pitch_counter_initial=(FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2)/frecuencia;
 que acaba generando mismo valor entero
-Chip de sonido QL se debería hacer como el AY o el SN, para evitar ciertas frecuencias que se repiten
-Pero dado que aún no se los otros parámetros cómo funcionan (step, fuzziness etc) de momento lo dejo como está
+
 
 
 -Agregar ipc
