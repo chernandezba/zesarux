@@ -4790,6 +4790,8 @@ int util_write_configfile(void)
 
     //if (tsconf_si_render_spritetile_rapido.v)   ADD_STRING_CONFIG,"--tsconf-fast-render");
 
+                                                    ADD_STRING_CONFIG,"--ql-aspect-ratio %d",ql_pantalla_proporcion_real);
+
 
     if (gigascreen_enabled.v)                       ADD_STRING_CONFIG,"--enablegigascreen");
     if (video_interlaced_mode.v)                    ADD_STRING_CONFIG,"--enableinterlaced");

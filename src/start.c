@@ -1752,6 +1752,8 @@ screen_effect_print_names();
         "--tbblue-legacy-border                  Allow legacy border effects on tbblue machine\n"
         "--tbblue-no-sprite-optimization         Disable tbblue sprite render optimization\n"
 
+        "--ql-aspect-ratio n                     Sets QL display aspect ratio. Possible values: 0=Real (1.476), 1=4:3, 2=1:1\n"
+
         //"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
 
         "--snoweffect                            Enable snow effect support for Spectrum\n"
@@ -6460,6 +6462,20 @@ int parse_cmdline_options(int desde_commandline)
                 tsconf_si_render_spritetile_rapido.v=1;
             }*/
 
+            else if (!strcmp(argv[puntero_parametro],"--ql-aspect-ratio")) {
+                int valor;
+
+                siguiente_parametro_argumento();
+                valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor>2 || valor<0) {
+                    debug_printf (VERBOSE_ERR,"Invalid QL aspect ratio");
+
+                }
+
+                else ql_pantalla_proporcion_real=valor;
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--enableulaplus")) {
                 command_line_ulaplus.v=1;
@@ -6529,7 +6545,7 @@ int parse_cmdline_options(int desde_commandline)
                 valor=atoi(argv[puntero_parametro]);
 
                 if (valor>MAX_AY_CHIPS || valor<1) {
-                    debug_printf (VERBOSE_ERR,"Invalid ay chip value\n");
+                    debug_printf (VERBOSE_ERR,"Invalid ay chip value");
 
                 }
 
@@ -6548,7 +6564,7 @@ int parse_cmdline_options(int desde_commandline)
                 valor=atoi(argv[puntero_parametro]);
 
                 if (valor>5 || valor<0) {
-                    debug_printf (VERBOSE_ERR,"Invalid ay stereo mode value\n");
+                    debug_printf (VERBOSE_ERR,"Invalid ay stereo mode value");
 
                 }
                 else ay3_stereo_mode=valor;

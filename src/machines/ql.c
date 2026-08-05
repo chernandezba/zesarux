@@ -54,6 +54,12 @@ unsigned int ql_mem_limit=(1024*(128+128))-1;
 
 int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 
+/*
+"The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
+Combined with the 2:1 ratio of the 512×256 resolution, the aspect ratio of the QL screen will then be 2/1.355 ≈ 1.476.
+This is wider than 4:3 due to the overscan."
+https://theqlforum.com/viewtopic.php?start=20&t=2799
+*/
 
 int ql_get_display_width_with_proportion(void)
 {

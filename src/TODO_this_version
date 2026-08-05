@@ -180,19 +180,9 @@ ok -en save game config el titulo de la ventana es confuso
 ->revisarlo porque parece que genera segfault
 
 -ql permitir formato proporcion real 4:3. de ancho en vez de 512 deberia ser 682.6666666
-*que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
-*al dibujar el borde derecho quedan rastros (probar con Batman) -> porque el border no lo esta dibujando bien la parte de la derecha? probar con color rojo por ejemplo en border para que destaque
-*opcion de configuracion por linea comandos/config file
-*al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
-*agregar a changelog
+ok *que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
+ok *al dibujar el borde derecho quedan rastros (probar con Batman) -> porque el border no lo esta dibujando bien la parte de la derecha? probar con color rojo por ejemplo en border para que destaque
+ok *opcion de configuracion por linea comandos/config file
+ok *al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
+ok *agregar a changelog
 
-1340x905
-
-1.48 deberia ser el factor (aprox) para que el circle se vea con las proporciones correctas
-1.33 deberia ser lo logico (4:3) pero no parece ser así
-
-
-"The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
-Combined with the 2:1 ratio of the 512×256 resolution, the aspect ratio of the QL screen will then be 2/1.355 ≈ 1.476.
-This is wider than 4:3 due to the overscan."
-https://theqlforum.com/viewtopic.php?start=20&t=2799
