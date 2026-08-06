@@ -174,7 +174,7 @@ ok -en save game config el titulo de la ventana es confuso
 
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
 
---osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
+ok --osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
 ->revisarlo porque parece que genera segfault
 ->no salia porque estaba realvideo habilitado, y como ql no tiene realvideo, peta
 
