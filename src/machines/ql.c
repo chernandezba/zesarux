@@ -347,8 +347,8 @@ void ql_putpixel_zoom(int x,int y,unsigned int color)
 {
 
     if (rainbow_enabled.v) {
-        ql_putpixel_rainbow(x+QL_LEFT_BORDER_NO_ZOOM,y+QL_TOP_BORDER_NO_ZOOM,QL_INDEX_FIRST_COLOR+color);
-        ql_putpixel_rainbow(x+QL_LEFT_BORDER_NO_ZOOM,y+QL_TOP_BORDER_NO_ZOOM+1,QL_INDEX_FIRST_COLOR+color);
+        ql_putpixel_rainbow(x+QL_LEFT_BORDER_NO_ZOOM*border_enabled.v,y+QL_TOP_BORDER_NO_ZOOM*border_enabled.v,QL_INDEX_FIRST_COLOR+color);
+        ql_putpixel_rainbow(x+QL_LEFT_BORDER_NO_ZOOM*border_enabled.v,y+QL_TOP_BORDER_NO_ZOOM*border_enabled.v+1,QL_INDEX_FIRST_COLOR+color);
     }
     else {
         scr_putpixel_zoom(x,y,QL_INDEX_FIRST_COLOR+color);
