@@ -79,23 +79,23 @@ char **zxdesktop_buttons_bitmaps[EXT_DESKTOP_TOTAL_BUTTONS]={
 char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww",     //0
-      "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wwwwwwwwwwwwwwwwwxxxxwwwww",
     "                wxxxxw   w",
     "                wxxxxw  rw",
-    "             wwwwxxxxw rrw",
-    "            wxxxxwwww rrrw",
+    "            wwwwwxxxxw rrw",
+    "            wxxxxwwwwwrrrw",
     "            wxxxxw   rrrrw",	//10
     "            wxxxxw  rrrryw",
-    "         wwwwxxxxw rrrryyw",
-    "        wxxxxwwww rrrryyyw",
+    "        wwwwwxxxxw rrrryyw",
+    "        wxxxxwwwwwrrrryyyw",
     "        wxxxxw   rrrryyyyw",
     "        wxxxxw  rrrryyyygw",
-    "     wwwwxxxxw rrrryyyyggw",
-    "    wxxxxwwww rrrryyyygggw",
+    "    wwwwwxxxxw rrrryyyyggw",
+    "    wxxxxwwwwwrrrryyyygggw",
     "    wxxxxw   rrrryyyyggggw",
     "    wxxxxw  rrrryyyyggggcw",
     "wwwwwxxxxw rrrryyyyggggccw",    //20
