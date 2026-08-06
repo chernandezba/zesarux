@@ -179,11 +179,4 @@ ok --osd watermark no se ve en QL. quiza porque no tiene borde suficientemente g
 ->no salia porque estaba realvideo habilitado, y como ql no tiene realvideo, peta
 
 
-ok -ql permitir formato proporcion real
-ok *que al cambiar dicha proporcion se reinicie la ventana entera de ZEsarUX (lo mismo por ejemplo que al desactivar o activar border)
-ok *al dibujar el borde derecho quedan rastros (probar con Batman) -> porque el border no lo esta dibujando bien la parte de la derecha? probar con color rojo por ejemplo en border para que destaque
-ok *opcion de configuracion por linea comandos/config file
-ok *al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
-ok *agregar a changelog
-
 -grabar bmp de pantalla QL no lo hace bien: con gimp sale imagen en diagonal
