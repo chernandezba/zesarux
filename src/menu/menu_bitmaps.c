@@ -111,7 +111,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 char *zesarux_ascii_logo_xanniversary[ZESARUX_ASCII_LOGO_ALTO]={
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww",     //0
-      "wxxrrrrrrrrrrrrrrrrrrrrxxw",
+    "wxxrrrrrrrrrrrrrrrrrrrrxxw",
     "wxxrrrrrrrrrrrrrrrrrrrrxxw",
     "wccxxrrrrrrrrrrrrrrrrxxyyw",
     "wccxxrrrrrrrrrrrrrrrrxxyyw",
@@ -159,23 +159,23 @@ char **alter_zesarux_ascii_logo(char **p)
 char *zesarux_ascii_logo_whitebright[ZESARUX_ASCII_LOGO_ALTO]={
     //01234567890123456789012345
     "WWWWWWWWWWWWWWWWWWWWWWWWWW",     //0
-      "WxxxxxxxxxxxxxxxxxxxxxxxxW",
+    "WxxxxxxxxxxxxxxxxxxxxxxxxW",
     "WxxxxxxxxxxxxxxxxxxxxxxxxW",
     "WxxxxxxxxxxxxxxxxxxxxxxxxW",
     "WxxxxxxxxxxxxxxxxxxxxxxxxW",
     "WWWWWWWWWWWWWWWWWxxxxWWWWW",
     "                WxxxxW    ",
     "                WxxxxW  r ",
-    "             WWWWxxxxW rr ",
-    "            WxxxxWWWW rrr ",
+    "            WWWWWxxxxW rr ",
+    "            WxxxxWWWWWrrr ",
     "            WxxxxW   rrrr ",	//10
     "            WxxxxW  rrrry ",
-    "         WWWWxxxxW rrrryy ",
-    "        WxxxxWWWW rrrryyy ",
+    "        WWWWWxxxxW rrrryy ",
+    "        WxxxxWWWWWrrrryyy ",
     "        WxxxxW   rrrryyyy ",
     "        WxxxxW  rrrryyyyg ",
-    "     WWWWxxxxW rrrryyyygg ",
-    "    WxxxxWWWW rrrryyyyggg ",
+    "    WWWWWxxxxW rrrryyyygg ",
+    "    WxxxxWWWWWrrrryyyyggg ",
     "    WxxxxW   rrrryyyygggg ",
     "    WxxxxW  rrrryyyyggggc ",
     "WWWWWxxxxW rrrryyyyggggcc ",    //20
