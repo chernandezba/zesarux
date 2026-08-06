@@ -1058,6 +1058,8 @@ extern void timer_watermark_device_activity_decrement_counter(void);
 
 extern void watermark_tell_device_activity(void);
 
+extern void screen_add_watermark_rainbow(void);
+
 extern int screen_colores_rainbow[];
 extern int screen_colores_rainbow_nobrillo[];
 

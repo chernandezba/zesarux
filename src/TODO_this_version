@@ -176,6 +176,7 @@ ok -en save game config el titulo de la ventana es confuso
 
 --osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
 ->revisarlo porque parece que genera segfault
+->no salia porque estaba realvideo habilitado, y como ql no tiene realvideo, peta
 
 
 ok -ql permitir formato proporcion real
@@ -185,3 +186,4 @@ ok *opcion de configuracion por linea comandos/config file
 ok *al cambiarlo desde menu falta algo, init de video o que se yo... -> recalcular_get_total_ancho_rainbow. ya va?
 ok *agregar a changelog
 
+-grabar bmp de pantalla QL no lo hace bien: con gimp sale imagen en diagonal

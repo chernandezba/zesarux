@@ -325,13 +325,37 @@ void motorola_get_flags_string(char *texto)
 }
 
 
+void ql_putpixel_zoom_rainbow(int x,int y,int color)
+{
+    int ancho=get_total_ancho_rainbow();
+    int alto=get_total_alto_rainbow();
+
+
+
+    if (x>=0 && y>=0 && x<ancho && y<alto) {
+        int indice;
+
+        indice=(ancho*y)+x;
+
+        rainbow_buffer[indice]=color;
+
+    }
+
+}
+
 
 //Hace putpixel en x,y doblando en alto
 void ql_putpixel_zoom(int x,int y,unsigned int color)
 {
 
-    scr_putpixel_zoom(x,y,QL_INDEX_FIRST_COLOR+color);
-    scr_putpixel_zoom(x,y+1,QL_INDEX_FIRST_COLOR+color);
+    if (rainbow_enabled.v) {
+        ql_putpixel_zoom_rainbow(x+QL_LEFT_BORDER,y+QL_TOP_BORDER,QL_INDEX_FIRST_COLOR+color);
+        ql_putpixel_zoom_rainbow(x+QL_LEFT_BORDER,y+QL_TOP_BORDER+1,QL_INDEX_FIRST_COLOR+color);
+    }
+    else {
+        scr_putpixel_zoom(x,y,QL_INDEX_FIRST_COLOR+color);
+        scr_putpixel_zoom(x,y+1,QL_INDEX_FIRST_COLOR+color);
+    }
 
 }
 
@@ -596,17 +620,41 @@ void scr_refresca_border_ql(unsigned int color)
 
 void scr_refresca_pantalla_y_border_ql(void)
 {
+    if (rainbow_enabled.v) {
+        //De momento es un falso realvideo. Las mismas rutinas de render escriben en pixeles o buffer rainbow segun si rainbow enabled o no
+        //Refrescar border si conviene
+        if (border_enabled.v) {
+            if (modificado_border.v) {
+                //Dibujar border. Color 0
+                scr_refresca_border_ql(0);
+                modificado_border.v=0;
+            }
 
-    //Refrescar border si conviene
-    if (border_enabled.v) {
-        if (modificado_border.v) {
-            //Dibujar border. Color 0
-            scr_refresca_border_ql(0);
-            modificado_border.v=0;
         }
 
+        scr_refresca_pantalla_ql();
+
+        //Y si conviene watermark
+        //Lo hacemos aqui tambien porque habitualmente se hace desde cpu_loop_refresca_pantalla pero eso seguramente va antes de este refresco y se sobreescribe
+        screen_add_watermark_rainbow();
+
+
+        scr_refresca_pantalla_rainbow_comun();
     }
 
-    scr_refresca_pantalla_ql();
+    else {
+
+        //Refrescar border si conviene
+        if (border_enabled.v) {
+            if (modificado_border.v) {
+                //Dibujar border. Color 0
+                scr_refresca_border_ql(0);
+                modificado_border.v=0;
+            }
+
+        }
+
+        scr_refresca_pantalla_ql();
+    }
 }
 
