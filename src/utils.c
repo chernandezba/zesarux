@@ -1037,12 +1037,13 @@ unsigned int util_stats_sum_all_counters(void)
 
 //Obtiene la extension de filename y la guarda en extension. Extension sin el punto
 //filename debe ser nombre de archivo, sin incluir directorio
-void util_get_file_extension(char *filename,char *extension)
+void util_get_file_extension_aux(char *filename,char *extension,char caracter_separador_extension)
 {
 
     //obtener extension del nombre
     //buscar ultimo punto
     //parar si se encuentra / o \ de division de carpeta
+
 
     char caracter_carpeta='/';
 #ifdef MINGW
@@ -1058,7 +1059,7 @@ void util_get_file_extension(char *filename,char *extension)
 
     if (j>0) {
         //Empezar desde el ultimo caracter y recorremos hacia el inicio, buscando un punto o el caracter de division de carpeta
-        for (;j>=0 && filename[j]!='.' && filename[j]!=caracter_carpeta;j--);
+        for (;j>=0 && filename[j]!=caracter_separador_extension && filename[j]!=caracter_carpeta;j--);
 
         //si j=-1, es que hemos recorrido sin encontrar ni punto ni caracter carpeta
 
@@ -1068,7 +1069,7 @@ void util_get_file_extension(char *filename,char *extension)
             //Si se ha leido punto, hay extension
             //Si se ha leido caracter de carpeta, no hay extension
 
-            if (filename[j]=='.') {
+            if (filename[j]==caracter_separador_extension) {
                 //Se ha leido un punto. hay extension
                 strcpy(extension,&filename[j+1]);
             }
@@ -1078,6 +1079,13 @@ void util_get_file_extension(char *filename,char *extension)
     }
 
     debug_printf (VERBOSE_DEBUG,"Filename: [%s] Extension: [%s]",filename,extension);
+}
+
+//Obtiene la extension de filename y la guarda en extension. Extension sin el punto
+//filename debe ser nombre de archivo, sin incluir directorio
+void util_get_file_extension(char *filename,char *extension)
+{
+    util_get_file_extension_aux(filename,extension,'.');
 }
 
 //Obtiene el nombre de filename sin extension y la guarda en filename_without_extension.

@@ -33,6 +33,7 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
 Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
 los traps que tenemos ahora
+Quiza en vez de byte a byte que envie un bloque de tap entero detectando cuando acaba?
 
 
 
@@ -63,12 +64,6 @@ Ademas en algunos casos (no recuerdo que combinacion ahora), al hacer reinsert (
 veces
 
 
-
--Zeng opción para enviar mensaje a un usuario concreto
-*requiere comando para obtener mensaje de un usuario concreto, esto o bien se mantiene solo un mensaje a la vez y se quita al obtenerlo,
-o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
-*mensaje que se obtenga y se envie por uuid o por nickname?
-*pull continuamente por ver si hay mensajes? igual que se hace para leer broadcast messages?
 
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre.
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
@@ -142,18 +137,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 
-ok -en save game config el titulo de la ventana es confuso
-    //Si no se selecciona source_file como ultimo archivo cargado
-    if (source_file[0]==0) {
-
-        ret=menu_filesel("Source or dest file",filtros,source_file);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
-
-    }
-
-
-
 -tiene sentido desactivar multitask y dejar background windows? veo que zx eyes sigue funcionando en el menu al desactivar multitask
 ->funcionan ventanas pero al pulsar una tecla o mover raton por ejemplo. no se refrescan sin no se pulsa teclado/ratón porque no hay multitask
 ->en background windows help se menciona al final pero no le acabo de ver el sentido "You can have background windows enabled but multitasking disabled (not recommended, but allowed). "
@@ -174,9 +157,22 @@ ok -en save game config el titulo de la ventana es confuso
 
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
 
-ok --osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
-->revisarlo porque parece que genera segfault
-->no salia porque estaba realvideo habilitado, y como ql no tiene realvideo, peta
-
 
 -grabar bmp de pantalla QL no lo hace bien: con gimp sale imagen en diagonal
+
+
+-Zeng opción para enviar mensaje a un usuario concreto
+*requiere comando para obtener mensaje de un usuario concreto, esto o bien se mantiene solo un mensaje a la vez y se quita al obtenerlo,
+o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
+*mensaje que se obtenga y se envie por uuid o por nickname? hacerlo igual que hace el kill (si este lo hace por uuid, pues uuid, sino por nickname)
+*pull continuamente por ver si hay mensajes? igual que se hace para leer broadcast messages?
+*si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
+
+
+-.config de ql que permita aumentar la RAM. Como para Batman y 640kb RAM
+
+
+-poder cargar un ejecutable directamente en QL con smartload:
+*cargar en direccion (RAMTOP-Tamaño archivo-data size for headerless exe)
+*cambiar registro PC a esa direccion de carga
+*asumir archivos executables con sufijo _exe
