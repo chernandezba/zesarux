@@ -196,7 +196,7 @@ char *zesarux_ascii_logo_whitebright[ZESARUX_ASCII_LOGO_ALTO]={
 char *zesarux_ascii_logo_whitebright_xanniversary[ZESARUX_ASCII_LOGO_ALTO]={
     //01234567890123456789012345
     "WWWWWWWWWWWWWWWWWWWWWWWWWW",     //0
-      "WxxrrrrrrrrrrrrrrrrrrrrxxW",
+    "WxxrrrrrrrrrrrrrrrrrrrrxxW",
     "WxxrrrrrrrrrrrrrrrrrrrrxxW",
     "WccxxrrrrrrrrrrrrrrrrxxyyW",
     "WccxxrrrrrrrrrrrrrrrrxxyyW",
@@ -283,7 +283,7 @@ char *bitmap_button_ext_desktop_help[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "        xxxxxxxx          ",  //0
     "       xbbbbbbbbx         ",
-      "      xbbbbbbbbbbx        ",
+     "      xbbbbbbbbbbx        ",
     "     xbbbxxxxxxbbbx       ",
     "    xbbbx      xbbbx      ",
     "   xbbbx        xbbbx     ",
@@ -313,7 +313,7 @@ char *bitmap_button_ext_desktop_help[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_debug[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                      RR  ",     //0
-      "                     RR   ",
+    "                     RR   ",
     "                    RR    ",
     "                   RR     ",
     "                  RRR     ",
@@ -344,7 +344,7 @@ char *bitmap_button_ext_desktop_debug[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_display[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-      "                          ",
+    "                          ",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RrrrrrrrrrrrrrrrrrrrrrrrrR",
     "Rr                      rR",
@@ -376,7 +376,7 @@ char *bitmap_button_ext_desktop_display[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_network[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "    x                x    ",     //0
-      "   xx   x        x   xx   ",
+    "   xx   x        x   xx   ",
     "  xx   xx        xx   xx  ",
     "  xx   x          x   xx  ",
     " xx   xx    xx    xx   xx ",
@@ -408,7 +408,7 @@ char *bitmap_button_ext_desktop_network[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_audio[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "        xxx               ",     //0
-      "        xxxxx             ",
+    "        xxxxx             ",
     "        xxxxxxx           ",
     "        xx  xxxx          ",
     "        xx    xxxx        ",
@@ -439,7 +439,7 @@ char *bitmap_button_ext_desktop_audio[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-      "                          ",
+    "                          ",
     "                          ",
     "         xxxxxxxx         ",
     "        xbbbbbbbbx        ",
@@ -473,7 +473,7 @@ char *bitmap_button_ext_desktop_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_windows[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "          xxxxxx          ",     //0
-      "        xxxxxxxxxx        ",
+    "        xxxxxxxxxx        ",
     "       xxcccxxcccxx       ",
     "       xxcccxxcccxx       ",
     "      xxccccxxccccxx      ",
@@ -565,7 +565,7 @@ char *bitmap_button_ext_desktop_close_all_menus[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_storage[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " xxxxxxxxxxx              ",
@@ -599,7 +599,7 @@ char *bitmap_button_ext_desktop_storage[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_smartload[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                x         ",     //0
-      "           x    x     x   ",
+    "           x    x     x   ",
     "            x   x    x    ",
     "             x      x     ",
     "               xxxx       ",
@@ -630,7 +630,7 @@ char *bitmap_button_ext_desktop_smartload[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_settings[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "   xxx      xxx      xxx  ",     //0
-      "   xxx      xxx      xxx  ",
+    "   xxx      xxx      xxx  ",
     "   xxx      xxx      xxx  ",
     "   xxx      xxx      xxx  ",
     "   xxx      xxx      xxx  ",
@@ -662,7 +662,7 @@ char *bitmap_button_ext_desktop_settings[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "          xxx             ",     //0
-      "         xxxxx            ",
+    "         xxxxx            ",
     "        xx   xx           ",
     "             xx           ",
     "            xx            ",
@@ -694,7 +694,7 @@ char *bitmap_button_ext_desktop_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_set_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-      "              xx          ",
+    "              xx          ",
     "              xgx         ",
     "       xxxxxxxxggx        ",
     "       xggggggggggx       ",
@@ -725,7 +725,7 @@ char *bitmap_button_ext_desktop_set_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_set_machine_only_arrow[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "             www          ",     //0
-      "             wxxw         ",
+    "             wxxw         ",
     "      wwwwwwwwxgxw        ",
     "      wxxxxxxxxggxw       ",
     "      wxggggggggggxw      ",
@@ -759,7 +759,7 @@ char *bitmap_button_ext_desktop_set_machine_only_arrow[EXT_DESKTOP_BUTTONS_ANCHO
 char *bitmap_lowericon_ext_desktop_cassette_std_active[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",//0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -790,7 +790,7 @@ char *bitmap_lowericon_ext_desktop_cassette_std_active[EXT_DESKTOP_BUTTONS_ANCHO
 char *bitmap_lowericon_ext_desktop_cassette_std_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -821,7 +821,7 @@ char *bitmap_lowericon_ext_desktop_cassette_std_inactive[EXT_DESKTOP_BUTTONS_ANC
 char *bitmap_lowericon_ext_desktop_cassette_active[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",//0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -855,7 +855,7 @@ char *bitmap_lowericon_ext_desktop_cassette_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_lowericon_ext_desktop_cassette_active_frametwo[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",//0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -888,7 +888,7 @@ char *bitmap_lowericon_ext_desktop_cassette_active_frametwo[EXT_DESKTOP_BUTTONS_
 char *bitmap_lowericon_ext_desktop_cassette_active_framethree[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",//0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -921,7 +921,7 @@ char *bitmap_lowericon_ext_desktop_cassette_active_framethree[EXT_DESKTOP_BUTTON
 char *bitmap_lowericon_ext_desktop_cassette_active_framefour[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",//0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -1016,7 +1016,7 @@ char *bitmap_lowericon_ext_desktop_cassette_active_framefour[EXT_DESKTOP_BUTTONS
 char *bitmap_lowericon_ext_desktop_cassette_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     " wwwwwwwwwwwwwwwwwwwwwwww ",
@@ -1049,7 +1049,7 @@ char *bitmap_lowericon_ext_desktop_cassette_inactive[EXT_DESKTOP_BUTTONS_ANCHO]=
 char *bitmap_lowericon_ext_desktop_mmc_active[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "           wwwwwwwwwwww   ",     //0
-      "          wbbbbbbbbbbbw   ",
+    "          wbbbbbbbbbbbw   ",
     "         wbbbbbbbbbbbbw   ",
     "        wbbbbbbbbbbbbbw   ",
     "       wbbyybbyybbyybbw   ",
@@ -1081,7 +1081,7 @@ char *bitmap_lowericon_ext_desktop_mmc_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_lowericon_ext_desktop_mmc_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "           wwwwwwwwwwww   ",     //0
-      "          wxxxxxxxxxxxw   ",
+    "          wxxxxxxxxxxxw   ",
     "         wx          xw   ",
     "        wx           xw   ",
     "       wx xx  xx  xx xw   ",
@@ -1144,7 +1144,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_nonumber_inactive[EXT_DESKTOP_BUTTON
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w x                    x w",
+    "w x                    x w",
     "wxx xxx x   xxx xxx    xxw",
     "w x x   x   x x  x     x w",
     "wxx xxx x   x x  x     xxw",
@@ -1174,7 +1174,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_one_active[EXT_DESKTOP_BUTTONS_ANCHO
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w xwwwwwwwwwwwwwwwwwwwwx w",
+    "w xwwwwwwwwwwwwwwwwwwwwx w",
     "wxxwxxxwxwwwxxxwxxxwwxwxxw",
     "w xwxwwwxwwwxwxwwxwwxxwx w",
     "wxxwxxxwxwwwxwxwwxwxwxwxxw",
@@ -1205,7 +1205,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_one_inactive[EXT_DESKTOP_BUTTONS_ANC
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w x                    x w",
+    "w x                    x w",
     "wxx xxx x   xxx xxx  x xxw",
     "w x x   x   x x  x  xx x w",
     "wxx xxx x   x x  x x x xxw",
@@ -1235,7 +1235,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_two_active[EXT_DESKTOP_BUTTONS_ANCHO
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w xwwwwwwwwwwwwwwwwwwwwx w",
+    "w xwwwwwwwwwwwwwwwwwwwwx w",
     "wxxwxxxwxwwwxxxwxxxwxxwxxw",
     "w xwxwwwxwwwxwxwwxwwwxwx w",
     "wxxwxxxwxwwwxwxwwxwwxxwxxw",
@@ -1266,7 +1266,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_two_inactive[EXT_DESKTOP_BUTTONS_ANC
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w x                    x w",
+    "w x                    x w",
     "wxx xxx x   xxx xxx xx xxw",
     "w x x   x   x x  x   x x w",
     "wxx xxx x   x x  x  xx xxw",
@@ -1297,7 +1297,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_three_active[EXT_DESKTOP_BUTTONS_ANC
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w xwwwwwwwwwwwwwwwwwwwwx w",
+    "w xwwwwwwwwwwwwwwwwwwwwx w",
     "wxxwxxxwxwwwxxxwxxxwxxwxxw",
     "w xwxwwwxwwwxwxwwxwwwxwx w",
     "wxxwxxxwxwwwxwxwwxwwxxwxxw",
@@ -1328,7 +1328,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_three_inactive[EXT_DESKTOP_BUTTONS_A
     //01234567890123456789012345
     "wwwwwwwwwwwwwwwwwwwwwwwwww", //0
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-      "w x                    x w",
+    "w x                    x w",
     "wxx xxx x   xxx xxx xx xxw",
     "w x x   x   x x  x   x x w",
     "wxx xxx x   x x  x  xx xxw",
@@ -1359,7 +1359,7 @@ char *bitmap_lowericon_ext_desktop_z88_slot_three_inactive[EXT_DESKTOP_BUTTONS_A
 char *bitmap_lowericon_ext_desktop_mdv_active[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     " wwwwwww            wwwww ",     //0
-      " wxxxxxww          wxxxxw ",
+    " wxxxxxww          wxxxxw ",
     " wxxxxxxxwwwwwwwwwwxxxxxw ",
     " wxxxxxxxxxxxxxxxxxxxxxxw ",
     " wxxxxxxxxxxxxxxxxxxxxxxw ",
