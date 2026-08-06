@@ -1088,6 +1088,13 @@ void util_get_file_extension(char *filename,char *extension)
     util_get_file_extension_aux(filename,extension,'.');
 }
 
+//Obtener la "extension" de ql, mirando el ultimo _
+void util_get_file_extension_ql(char *filename,char *extension)
+{
+    util_get_file_extension_aux(filename,extension,'_');
+}
+
+
 //Obtiene el nombre de filename sin extension y la guarda en filename_without_extension.
 //filename debe ser nombre de archivo, sin incluir directorio
 //TODO: busca hasta el primer punto. quiza deberia tener en cuenta el punto desde el final... o no..
@@ -1130,6 +1137,15 @@ int util_compare_file_extension(char *filename,char *extension_compare)
     char extension[NAME_MAX];
 
     util_get_file_extension(filename,extension);
+
+    return strcasecmp(extension,extension_compare);
+}
+
+int util_compare_file_extension_ql(char *filename,char *extension_compare)
+{
+    char extension[NAME_MAX];
+
+    util_get_file_extension_ql(filename,extension);
 
     return strcasecmp(extension,extension_compare);
 }
@@ -6755,6 +6771,20 @@ int quickload_continue(char *nombre) {
         return 0;
     }
 
+    //Ejecutables de QL
+    else if (MACHINE_IS_QL &&
+        (
+                   !util_compare_file_extension_ql(nombre,"exe") ||
+                   !util_compare_file_extension(nombre,"exe")
+        )
+
+        ) {
+
+        ql_load_and_execute(nombre);
+
+
+        return 0;
+    }
 
     //Archivos de menus
     else if (

@@ -175,4 +175,9 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 -poder cargar un ejecutable directamente en QL con smartload:
 *cargar en direccion (RAMTOP-Tamaño archivo-data size for headerless exe)
 *cambiar registro PC a esa direccion de carga
-*asumir archivos executables con sufijo _exe
+*asumir archivos executables con sufijo _exe o .exe
+->falta que smartload sea capaz de mostrar archivos _exe
+*que ponga ruta mdv1 a la carpeta donde este el ejecutable que se carga
+->de momento solo me he encontrado el psion chess que carga como _exe sin problemas
+
+-smartload de ql: que tambien muestre archivos "boot" y en  ese caso lo interprete como montar esa carpeta como mdv1 y reset+autoload (si esta autoload claro)

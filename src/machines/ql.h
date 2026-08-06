@@ -114,6 +114,6 @@ extern z80_byte fetch_opcode_legacy_ql(void);
 extern void motorola_get_flags_string(char *texto);
 
 
-
+extern void ql_load_and_execute(char *nombre);
 
 #endif

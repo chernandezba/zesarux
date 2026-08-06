@@ -694,3 +694,54 @@ void scr_refresca_pantalla_y_border_ql(void)
     }
 }
 
+
+void ql_load_and_execute(char *filename)
+{
+
+    int valor_leido_longitud=get_file_size(filename);
+
+
+
+    if (!si_existe_archivo(filename)) return;
+
+    if (valor_leido_longitud==0) valor_leido_longitud=4194304; //4 MB max
+
+    int direccion=QL_MAXIMUM_MEM_LIMIT-valor_leido_longitud-4096; //4096 de reserva
+
+
+    m68k_set_reg(M68K_REG_PC,direccion);
+
+    FILE *ptr_binaryfile_load;
+    ptr_binaryfile_load=fopen(filename,"rb");
+    if (!ptr_binaryfile_load) {
+
+        debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
+
+
+    }
+
+    else {
+
+        int leidos=1;
+        z80_byte byte_leido;
+        while (valor_leido_longitud>0 && leidos>0) {
+            leidos=fread(&byte_leido,1,1,ptr_binaryfile_load);
+            if (leidos>0) {
+
+                    ql_writebyte(direccion,byte_leido);
+
+                    direccion++;
+                    valor_leido_longitud--;
+            }
+        }
+
+
+        fclose(ptr_binaryfile_load);
+
+    }
+
+
+
+
+
+}
