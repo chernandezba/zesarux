@@ -325,12 +325,10 @@ void motorola_get_flags_string(char *texto)
 }
 
 
-void ql_putpixel_zoom_rainbow(int x,int y,int color)
+void ql_putpixel_rainbow(int x,int y,int color)
 {
     int ancho=get_total_ancho_rainbow();
     int alto=get_total_alto_rainbow();
-
-
 
     if (x>=0 && y>=0 && x<ancho && y<alto) {
         int indice;
@@ -349,8 +347,8 @@ void ql_putpixel_zoom(int x,int y,unsigned int color)
 {
 
     if (rainbow_enabled.v) {
-        ql_putpixel_zoom_rainbow(x+QL_LEFT_BORDER,y+QL_TOP_BORDER,QL_INDEX_FIRST_COLOR+color);
-        ql_putpixel_zoom_rainbow(x+QL_LEFT_BORDER,y+QL_TOP_BORDER+1,QL_INDEX_FIRST_COLOR+color);
+        ql_putpixel_rainbow(x+QL_LEFT_BORDER_NO_ZOOM,y+QL_TOP_BORDER_NO_ZOOM,QL_INDEX_FIRST_COLOR+color);
+        ql_putpixel_rainbow(x+QL_LEFT_BORDER_NO_ZOOM,y+QL_TOP_BORDER_NO_ZOOM+1,QL_INDEX_FIRST_COLOR+color);
     }
     else {
         scr_putpixel_zoom(x,y,QL_INDEX_FIRST_COLOR+color);
@@ -581,6 +579,40 @@ reserved and may have unpredictable results in future versions of the QL hardwar
     }
 }
 
+void scr_refresca_border_rainbow_ql(unsigned int color)
+{
+
+
+    int x,y;
+
+    int ancho=ql_get_display_width_with_proportion();
+
+    //parte superior
+    for (y=0;y<QL_TOP_BORDER;y++) {
+        for (x=0;x<ancho+QL_LEFT_BORDER*2;x++) {
+            ql_putpixel_rainbow(x,y,color);
+        }
+    }
+
+    //parte inferior
+    for (y=0;y<QL_TOP_BORDER;y++) {
+        for (x=0;x<ancho+QL_LEFT_BORDER*2;x++) {
+            ql_putpixel_rainbow(x,QL_TOP_BORDER+y+QL_DISPLAY_HEIGHT,color);
+        }
+    }
+
+
+    //laterales
+    for (y=0;y<QL_DISPLAY_HEIGHT;y++) {
+        for (x=0;x<QL_LEFT_BORDER;x++) {
+            ql_putpixel_rainbow(x,QL_TOP_BORDER+y,color);
+            ql_putpixel_rainbow(QL_LEFT_BORDER+ancho+x,QL_TOP_BORDER+y,color);
+        }
+
+    }
+
+
+}
 
 void scr_refresca_border_ql(unsigned int color)
 {
@@ -622,11 +654,12 @@ void scr_refresca_pantalla_y_border_ql(void)
 {
     if (rainbow_enabled.v) {
         //De momento es un falso realvideo. Las mismas rutinas de render escriben en pixeles o buffer rainbow segun si rainbow enabled o no
+
         //Refrescar border si conviene
         if (border_enabled.v) {
             if (modificado_border.v) {
                 //Dibujar border. Color 0
-                scr_refresca_border_ql(0);
+                scr_refresca_border_rainbow_ql(6);
                 modificado_border.v=0;
             }
 
@@ -648,7 +681,7 @@ void scr_refresca_pantalla_y_border_ql(void)
         if (border_enabled.v) {
             if (modificado_border.v) {
                 //Dibujar border. Color 0
-                scr_refresca_border_ql(0);
+                scr_refresca_border_ql(6);
                 modificado_border.v=0;
             }
 
