@@ -4791,6 +4791,7 @@ int util_write_configfile(void)
     //if (tsconf_si_render_spritetile_rapido.v)   ADD_STRING_CONFIG,"--tsconf-fast-render");
 
                                                     ADD_STRING_CONFIG,"--ql-aspect-ratio %d",ql_pantalla_proporcion_real);
+                                                    ADD_STRING_CONFIG,"--ql-border-color %d",ql_border_color);
 
 
     if (gigascreen_enabled.v)                       ADD_STRING_CONFIG,"--enablegigascreen");

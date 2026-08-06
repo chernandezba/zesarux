@@ -1753,6 +1753,7 @@ screen_effect_print_names();
         "--tbblue-no-sprite-optimization         Disable tbblue sprite render optimization\n"
 
         "--ql-aspect-ratio n                     Sets QL display aspect ratio. Possible values: 0=Real (1.476), 1=4:3, 2=1:1\n"
+        "--ql-border-color n                     QL border color (0..15)\n"
 
         //"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
 
@@ -6474,6 +6475,18 @@ int parse_cmdline_options(int desde_commandline)
                 }
 
                 else ql_pantalla_proporcion_real=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-border-color")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor<0 || valor>15) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for QL border color");
+                }
+                else {
+                    ql_border_color=valor;
+                }
             }
 
 
