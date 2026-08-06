@@ -588,25 +588,25 @@ void scr_refresca_border_rainbow_ql(unsigned int color)
     int ancho=ql_get_display_width_with_proportion();
 
     //parte superior
-    for (y=0;y<QL_TOP_BORDER;y++) {
-        for (x=0;x<ancho+QL_LEFT_BORDER*2;x++) {
+    for (y=0;y<QL_TOP_BORDER_NO_ZOOM;y++) {
+        for (x=0;x<ancho+QL_LEFT_BORDER_NO_ZOOM*2;x++) {
             ql_putpixel_rainbow(x,y,color);
         }
     }
 
     //parte inferior
-    for (y=0;y<QL_TOP_BORDER;y++) {
-        for (x=0;x<ancho+QL_LEFT_BORDER*2;x++) {
-            ql_putpixel_rainbow(x,QL_TOP_BORDER+y+QL_DISPLAY_HEIGHT,color);
+    for (y=0;y<QL_TOP_BORDER_NO_ZOOM;y++) {
+        for (x=0;x<ancho+QL_LEFT_BORDER_NO_ZOOM*2;x++) {
+            ql_putpixel_rainbow(x,QL_TOP_BORDER_NO_ZOOM+y+QL_DISPLAY_HEIGHT,color);
         }
     }
 
 
     //laterales
     for (y=0;y<QL_DISPLAY_HEIGHT;y++) {
-        for (x=0;x<QL_LEFT_BORDER;x++) {
-            ql_putpixel_rainbow(x,QL_TOP_BORDER+y,color);
-            ql_putpixel_rainbow(QL_LEFT_BORDER+ancho+x,QL_TOP_BORDER+y,color);
+        for (x=0;x<QL_LEFT_BORDER_NO_ZOOM;x++) {
+            ql_putpixel_rainbow(x,QL_TOP_BORDER_NO_ZOOM+y,color);
+            ql_putpixel_rainbow(QL_LEFT_BORDER_NO_ZOOM+ancho+x,QL_TOP_BORDER_NO_ZOOM+y,color);
         }
 
     }
