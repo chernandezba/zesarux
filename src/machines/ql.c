@@ -657,11 +657,11 @@ void scr_refresca_pantalla_y_border_ql(void)
 
         //Refrescar border si conviene
         if (border_enabled.v) {
-            if (modificado_border.v) {
-                //Dibujar border. Color 0
-                scr_refresca_border_rainbow_ql(6);
-                modificado_border.v=0;
-            }
+
+            //Dibujar border. Color 0
+            scr_refresca_border_rainbow_ql(6);
+            modificado_border.v=0;
+
 
         }
 
