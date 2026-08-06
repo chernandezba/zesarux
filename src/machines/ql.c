@@ -53,6 +53,9 @@ unsigned char *memoria_ql;
 unsigned int ql_mem_limit=(1024*(128+128))-1;
 
 
+//Aunque el ql no tiene realmente border, metemos uno pequeño artificial y le asignamos un color
+int ql_border_color=0;
+
 int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 
 /*
@@ -659,7 +662,7 @@ void scr_refresca_pantalla_y_border_ql(void)
         if (border_enabled.v) {
 
             //Dibujar border. Color 0
-            scr_refresca_border_rainbow_ql(6);
+            scr_refresca_border_rainbow_ql(ql_border_color);
             modificado_border.v=0;
 
 
@@ -681,7 +684,7 @@ void scr_refresca_pantalla_y_border_ql(void)
         if (border_enabled.v) {
             if (modificado_border.v) {
                 //Dibujar border. Color 0
-                scr_refresca_border_ql(6);
+                scr_refresca_border_ql(ql_border_color);
                 modificado_border.v=0;
             }
 

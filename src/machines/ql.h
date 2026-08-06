@@ -82,6 +82,8 @@ extern int ql_get_display_width_with_proportion(void);
 
 extern void scr_refresca_pantalla_y_border_ql(void);
 
+extern int ql_border_color;
+
 #define m68k_read_memory_8 GetMemB
 #define m68k_read_memory_16 GetMemW
 #define m68k_read_memory_32 GetMemL
