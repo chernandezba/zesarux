@@ -1550,6 +1550,12 @@ void menu_filesel_select_filters(void)
             if (filesel_filtros_iniciales[i][0]==0) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*.*");
             }
+            else if (filesel_filtros_iniciales[i][0]=='^') {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"%s",filesel_filtros_iniciales[i]);
+            }
+            else if (filesel_filtros_iniciales[i][0]=='_') {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*%s",filesel_filtros_iniciales[i]);
+            }
             else {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_filesel_select_filters_independientes,NULL,"*.%s",filesel_filtros_iniciales[i]);
             }
