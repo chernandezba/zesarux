@@ -172,14 +172,11 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 -.config de ql que permita aumentar la RAM. Como para Batman y 640kb RAM
 
 
--poder cargar un ejecutable directamente en QL con smartload:
-ok *cargar en direccion (RAMTOP-Tamaño archivo-data size for headerless exe)
-ok *cambiar registro PC a esa direccion de carga
-ok *asumir archivos executables con sufijo _exe o .exe
-->falta que smartload sea capaz de mostrar archivos _exe
-
 ok *que ponga ruta mdv1 a la carpeta donde este el ejecutable que se carga
-->de momento solo me he encontrado el psion chess que carga como _exe sin problemas
+->de momento solo me he encontrado el psion chess que carga como _exe aunque luego esta bloqueado. quiza algun tema de interrupciones o algo asi??
 
 -smartload de ql: que tambien muestre archivos "boot" y en  ese caso lo interprete como montar esa carpeta como mdv1 y reset+autoload (si esta autoload claro)
 ->faltaria que pudiera hacer "lrun mdv1_archivo" siendo archivo el seleccionado (algo "boot" o ".boot")
+
+-smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
+Quizá habria que tener alguna herramienta para expandir cualquier mdv

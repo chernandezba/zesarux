@@ -20,8 +20,7 @@ http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Com
 -ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
 
 
--smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
-Quizá habria que tener alguna herramienta para expandir cualquier mdv
+
 
 
 Acciones sobre los dos microdrive y el floppy separar en menús

@@ -712,6 +712,9 @@ void ql_load_and_execute(char *filename)
 
     m68k_set_reg(M68K_REG_PC,direccion);
 
+    //algo por debajo del inicio de carga del programa
+    m68k_set_reg(M68K_REG_USP,direccion-8192);
+
     FILE *ptr_binaryfile_load;
     ptr_binaryfile_load=fopen(filename,"rb");
     if (!ptr_binaryfile_load) {
