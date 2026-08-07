@@ -305,23 +305,8 @@ int menu_file_filter(const char *name,char *filtros[])
         //._0186.tap
         if (name[0]=='.') return 0;
 
-
         if (menu_file_filter_one_file(f,(char *)name,extension,ql_extension)) return 1;
 
-        /*
-        //comparamos extension
-        //Si es de tipo ql (con _) comparacion diferente
-        if (f[0]=='_') {
-            if (!strcasecmp(ql_extension,&f[1])) return 1;
-        }
-        //Si empieza con ^, es palabra entera
-        else if (f[0]=='^') {
-            if (!strcasecmp(name,&f[1])) return 1;
-        }
-        else {
-            if (!strcasecmp(extension,f)) return 1;
-        }
-        */
     }
 
     //Otros archivos que siempre cumplen el filtro
@@ -370,25 +355,6 @@ int menu_file_filter(const char *name,char *filtros[])
     if (!strcasecmp(name,"README")) return 1;
 
 
-    //Filtro smartload de QL. Permitidos archivos boot, .exe y _exe
-    /*
-    if (!strcasecmp(filtros[0],"QLsmartload")) {
-        if (!strcasecmp(extension,"exe")) return 1;
-        if (!strcasecmp(extension,"boot")) return 1;
-
-        char ql_extension[PATH_MAX];
-        util_get_file_extension_ql((char *) name, ql_extension);
-
-        if (!strcasecmp(ql_extension,"exe")) return 1;
-        if (!strcasecmp(ql_extension,"exec")) return 1;
-        if (!strcasecmp(ql_extension,"boot")) return 1;
-
-        if (!strcasecmp(name,"boot")) return 1;
-
-        //en caso contrario, no cumple el filtro
-        return 0;
-    }
-    */
 
 
     return 0;
@@ -757,7 +723,6 @@ int menu_avisa_si_extension_no_habitual(char *filtros[],char *archivo)
 
 
     for (i=0;filtros[i];i++) {
-        //if (!util_compare_file_extension(archivo,filtros[i])) return 1;
 
         if (menu_file_filter_one_file(filtros[i],archivo,extension,ql_extension)) return 1;
 
@@ -766,10 +731,6 @@ int menu_avisa_si_extension_no_habitual(char *filtros[],char *archivo)
 
     }
 
-
-    /*if (!strcmp(filtros[0],"QLsmartload")) {
-        return menu_file_filter(archivo,filtros);
-    }*/
 
     //no es extension habitual. Avisar
     return menu_confirm_yesno_texto("Unusual file extension","Do you want to use this file?");
