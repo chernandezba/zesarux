@@ -7137,6 +7137,15 @@ int menu_filesel_all_parameters(char *titulo,char *filtros[],char *archivo,int s
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
 //Si seleccionado archivo, lo guarda en variable *archivo
 //Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
+//filtros tienen el formato:
+//Si primer caracter es ^, es nombre de archivo entero. ejemplo "^boot" mostrará archivos que se llamen "boot"
+//Si primer caracter es _, indica extension "tipo" QL, o sea, guion bajo separador para extension. ejemplo "_exe" mostrará archivos que sean *_exe, como "prueba_exe"
+//Si filtro es "nofiles" no muestra ningun archivo
+//Si filtro es "autosnap", mostrara archivos de nombre (variable snapshot_autosave_interval_quicksave_name)*.zsf",
+//por defecto snapshot_autosave_interval_quicksave_name tiene "autosnap", por tanto mostraria archivos como autosnap-0708206.zsf,etc
+//si filtro es "", significa todo (*)
+//En cualquier otro caso, indica extension tal cual. Ejemplo "scr" mostrará archivos *.scr, como "pantalla.scr"
+//De todas maneras consultar funcion menu_file_filter para ver todas las combinaciones
 int menu_filesel(char *titulo,char *filtros[],char *archivo)
 {
     return menu_filesel_all_parameters(titulo,filtros,archivo,0,0);
