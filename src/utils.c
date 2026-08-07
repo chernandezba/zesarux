@@ -6582,10 +6582,27 @@ int quickload_continue(char *nombre) {
     else if (
         !util_compare_file_extension(nombre,"scr")
     ) {
-        quickload_common_set_spectrum();
+        //Si es QL, cargar como QL y no conmutar a spectrum
+        if (!MACHINE_IS_QL) {
+            quickload_common_set_spectrum();
+        }
         load_screen(nombre);
         return 0;
 
+    }
+
+    //Extension de pantalla _scr de ql tal cual
+    else if (MACHINE_IS_QL &&
+        (
+            !util_compare_file_extension_ql(nombre,"scr")
+
+        )
+
+        ) {
+
+        load_screen(nombre);
+
+        return 0;
     }
 
 
