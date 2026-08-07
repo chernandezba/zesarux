@@ -38,6 +38,7 @@
 #include "ql_zx8302.h"
 #include "compileoptions.h"
 #include "ula.h"
+#include "ql_qdos_handler.h"
 
 
 #if defined(__APPLE__)
@@ -728,7 +729,7 @@ void ql_load_and_execute(char *filename)
             leidos=fread(&byte_leido,1,1,ptr_binaryfile_load);
             if (leidos>0) {
 
-                    ql_writebyte(direccion,byte_leido);
+                    poke_byte_z80_moto(direccion,byte_leido);
 
                     direccion++;
                     valor_leido_longitud--;
@@ -740,8 +741,30 @@ void ql_load_and_execute(char *filename)
 
     }
 
+    char dir[PATH_MAX];
+    util_get_dir(filename,dir);
+    ql_microdrive_floppy_emulation=1;
 
+    //que no haga reset etc
+    int antes_no_autoload=noautoload.v;
+    noautoload.v=1;
 
+    ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
+    noautoload.v=antes_no_autoload;
 
 
 }
+
+
+
+void ql_handle_boot_file(char *filename)
+{
+
+    char dir[PATH_MAX];
+    util_get_dir(filename,dir);
+    ql_microdrive_floppy_emulation=1;
+
+    ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
+
+}
+

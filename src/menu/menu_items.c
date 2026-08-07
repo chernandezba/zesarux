@@ -45106,6 +45106,19 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         "zsf","zx", 0
     };
 
+    if (MACHINE_IS_QL) {
+        filtros[0]="^boot";
+        filtros[1]="exe";
+        filtros[2]="exec";
+        filtros[3]="boot";
+        filtros[4]="_exe";
+        filtros[5]="_exec";
+        filtros[6]="_boot";
+
+        filtros[7]=0;
+    }
+
+
     //Como se lanza desde menu principal (como botón directo arriba del todo o desde top menu),
     //se quedaria fijada la posición de la siguiente ventana, que afectaria a Recent Files
     zxvision_reset_set_next_menu_position();

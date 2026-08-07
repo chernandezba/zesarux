@@ -26,6 +26,7 @@ Mejorado ZX Desktop:
 
 Permitir cambiar color de border de QL
 Mejorada la relación de aspecto de la pantalla del Sinclair QL. Los gráficos ahora reproducen la geometría del hardware original (1.476:1). Permitir también 4:3 y 1:1
+Mejorada la carga de QL: permitir ejecutar un archivo exe, permitir insertar una carpeta como microdrive seleccionando un archivo de boot
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
 Agregado registros de General Sound registers a la ventana de Ver Sensores

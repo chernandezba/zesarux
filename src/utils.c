@@ -6775,12 +6775,30 @@ int quickload_continue(char *nombre) {
     else if (MACHINE_IS_QL &&
         (
                    !util_compare_file_extension_ql(nombre,"exe") ||
-                   !util_compare_file_extension(nombre,"exe")
+                   !util_compare_file_extension_ql(nombre,"exec") ||
+                   !util_compare_file_extension(nombre,"exe") ||
+                   !util_compare_file_extension(nombre,"exec")
         )
 
         ) {
 
         ql_load_and_execute(nombre);
+
+
+        return 0;
+    }
+
+    //boot de QL. insertar como carpeta en mdv1
+    else if (MACHINE_IS_QL &&
+        (
+                   !strcasecmp(buffer_nombre,"boot") ||
+                   !util_compare_file_extension(nombre,"boot") ||
+                   !util_compare_file_extension_ql(nombre,"boot")
+        )
+
+        ) {
+
+        ql_handle_boot_file(nombre);
 
 
         return 0;
