@@ -17998,10 +17998,16 @@ void menu_display_load_screen(MENU_ITEM_PARAMETERS)
 
     char screen_load_file[PATH_MAX];
 
-    char *filtros[2];
+    char *filtros[3];
 
     filtros[0]="scr";
     filtros[1]=0;
+
+    if (MACHINE_IS_QL) {
+        filtros[0]="scr";
+        filtros[1]="_scr";
+        filtros[2]=0;
+    }
 
 
     if (menu_filesel("Select Screen File",filtros,screen_load_file)==1) {
@@ -45106,6 +45112,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         "zsf","zx", 0
     };
 
+    //En el caso de tener maquina QL, cambiamos todos los filtros por estos
     if (MACHINE_IS_QL) {
         filtros[0]="^boot";
         filtros[1]="exe";
@@ -45114,8 +45121,10 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         filtros[4]="_exe";
         filtros[5]="_exec";
         filtros[6]="_boot";
+        filtros[7]="_scr";
+        filtros[8]="scr";
 
-        filtros[7]=0;
+        filtros[9]=0;
     }
 
 

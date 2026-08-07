@@ -237,23 +237,6 @@ int menu_file_filter(const char *name,char *filtros[])
     int i;
 
 
-    /*
-    //obtener extension del nombre
-    //buscar ultimo punto
-
-    int j;
-    j=strlen(name);
-    if (j==0) extension[0]=0;
-    else {
-        for (;j>=0 && name[j]!='.';j--);
-
-        if (j>=0) strcpy(extension,&name[j+1]);
-        else extension[0]=0;
-    }
-
-    //printf ("Extension: %s\n",extension);
-
-    */
 
     //El archivo MENU_LAST_DIR_FILE_NAME zesarux_last_dir.txt usado para abrir archivos comprimidos, no lo mostrare nunca
     if (!strcmp(name,MENU_LAST_DIR_FILE_NAME)) return 0;
