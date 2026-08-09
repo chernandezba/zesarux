@@ -1131,7 +1131,7 @@ void util_get_file_no_directory(char *filename,char *file_no_dir)
 
 
 //Obtiene la subcarpeta mas interior (lo de mas a la "derecha" en una ruta)
-//La subcarpeta retornada no tendra la / del final
+//La subcarpeta retornada no tendra la / del final ni del principio
 //Nota: se le debe pasar una ruta a carpeta, si se pasa ruta a archivo retornara erroneamente el archivo
 void util_get_subfolder_in_path(char *folder,char *subfolder)
 {
