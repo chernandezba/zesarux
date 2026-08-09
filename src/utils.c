@@ -1129,6 +1129,38 @@ void util_get_file_no_directory(char *filename,char *file_no_dir)
     }
 }
 
+
+//Obtiene la subcarpeta mas interior (lo de mas a la "derecha" en una ruta)
+//La subcarpeta retornada no tendra la / del final
+//Nota: se le debe pasar una ruta a carpeta, si se pasa ruta a archivo retornara erroneamente el archivo
+void util_get_subfolder_in_path(char *folder,char *subfolder)
+{
+    //buscamos / o barra invertida windows
+
+    int j;
+    j=strlen(folder);
+    if (j==0) subfolder[0]=0;
+    else {
+        //ignorar todas las barras del final
+        j--;
+        while (j>=0 && (folder[j]=='/' || folder[j]=='\\')) j--;
+        //if (folder[j]=='/' || folder[j]=='\\') j--;
+
+        for (;j>=0 && folder[j]!='/' && folder[j]!='\\' ;j--);
+
+        strcpy(subfolder,&folder[j+1]);
+
+        //quitar / del final
+        int k=strlen(subfolder);
+        while (k>0 && (subfolder[k-1]=='/' || subfolder[k-1]=='\\')) {
+            subfolder[k-1]=0;
+            k=strlen(subfolder);
+        }
+
+        //if (subfolder[k-1]=='/' || subfolder[k-1]=='\\') subfolder[k-1]=0;
+    }
+}
+
 //Compara la extension indicada con la del archivo, sin distinguir mayusculas
 //Devuelve valor de strcasecmp -> 0 igual, otros->diferente
 //Extension sin el punto
@@ -6814,6 +6846,19 @@ int quickload_continue(char *nombre) {
         )
 
         ) {
+
+        //Cambiamos para que en el titulo de menu aparezca el nombre de la carpeta en vez de archivo "boot"
+        char buffer_carpeta[PATH_MAX];
+        util_get_dir(nombre,buffer_carpeta);
+        printf("carpeta [%s]\n",buffer_carpeta);
+
+        //Y de ahi la subcarpeta actual
+        char buffer_subcarpeta[PATH_MAX];
+        util_get_subfolder_in_path(buffer_carpeta,buffer_subcarpeta);
+        printf("subcarpeta [%s]\n",buffer_subcarpeta);
+
+        set_window_title_and_update(buffer_subcarpeta);
+
 
         ql_handle_boot_file(nombre);
 

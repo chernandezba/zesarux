@@ -180,3 +180,8 @@ ok *que ponga ruta mdv1 a la carpeta donde este el ejecutable que se carga
 
 -smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
 Quizá habria que tener alguna herramienta para expandir cualquier mdv
+
+
+-Emulación CST Thor, Q40, Q60, Q68
+
+-Apps calculadora, reloj

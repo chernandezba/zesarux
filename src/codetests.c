@@ -2939,6 +2939,82 @@ void codetests_midi_notes(void)
     }
 }
 
+void codetests_subfolder_tests_check(char *folder1,char *expected_subfolder1)
+{
+    char buffer_subfolder[PATH_MAX];
+
+
+    util_get_subfolder_in_path(folder1,buffer_subfolder);
+    if (strcmp(buffer_subfolder,expected_subfolder1)) {
+        printf("ERROR getting subfolder in [%s]. Got [%s] Expected [%s]\n",folder1,buffer_subfolder,expected_subfolder1);
+        exit(1);
+    }
+}
+
+void codetests_subfolder_tests(void)
+{
+
+
+    char *folder1="/ruta/a/carpeta";
+    char *expected_subfolder1="carpeta";
+    codetests_subfolder_tests_check(folder1,expected_subfolder1);
+
+    char *folder2="/ruta/a/carpeta/";
+    char *expected_subfolder2="carpeta";
+    codetests_subfolder_tests_check(folder2,expected_subfolder2);
+
+
+    char *folder3="/ruta/a/carpeta.ext";
+    char *expected_subfolder3="carpeta.ext";
+    codetests_subfolder_tests_check(folder3,expected_subfolder3);
+
+    char *folder4="/ruta/a/carpeta.ext/";
+    char *expected_subfolder4="carpeta.ext";
+    codetests_subfolder_tests_check(folder4,expected_subfolder4);
+
+
+    char *folder5="/ruta/carpeta";
+    char *expected_subfolder5="carpeta";
+    codetests_subfolder_tests_check(folder5,expected_subfolder5);
+
+
+    char *folder6="/carpeta";
+    char *expected_subfolder6="carpeta";
+    codetests_subfolder_tests_check(folder6,expected_subfolder6);
+
+
+    char *folder7="carpeta";
+    char *expected_subfolder7="carpeta";
+    codetests_subfolder_tests_check(folder7,expected_subfolder7);
+
+
+    char *folder8="c";
+    char *expected_subfolder8="c";
+    codetests_subfolder_tests_check(folder8,expected_subfolder8);
+
+    char *folder9="";
+    char *expected_subfolder9="";
+    codetests_subfolder_tests_check(folder9,expected_subfolder9);
+
+
+    char *folder10="/ruta/a/carpeta//";
+    char *expected_subfolder10="carpeta";
+    codetests_subfolder_tests_check(folder10,expected_subfolder10);
+
+    char *folder11="/ruta/a/carpeta///////";
+    char *expected_subfolder11="carpeta";
+    codetests_subfolder_tests_check(folder11,expected_subfolder11);
+
+
+    char *folder12="/ruta/a\\carpeta.ext\\";
+    char *expected_subfolder12="carpeta.ext";
+    codetests_subfolder_tests_check(folder12,expected_subfolder12);
+
+    char *folder13="C:\\ruta\\a\\carpeta.ext\\";
+    char *expected_subfolder13="carpeta.ext";
+    codetests_subfolder_tests_check(folder13,expected_subfolder13);
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -3081,6 +3157,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning midi notes tests\n");
     codetests_midi_notes();
+
+    printf("\nRunning get subfolder tests\n");
+    codetests_subfolder_tests();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();

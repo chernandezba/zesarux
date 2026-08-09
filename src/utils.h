@@ -43,6 +43,7 @@ extern void util_get_file_no_directory(char *filename,char *file_no_dir);
 extern void util_get_file_without_extension(char *filename,char *filename_without_extension);
 extern void util_get_complete_path(char *dir,char *name,char *fullpath);
 extern void util_get_file_extension_ql(char *filename,char *extension);
+extern void util_get_subfolder_in_path(char *folder,char *subfolder);
 
 
 extern int util_compare_file_extension(char *filename,char *extension_compare);
