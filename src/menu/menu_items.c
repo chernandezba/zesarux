@@ -36854,7 +36854,7 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
         //Realmente este selector lo unico que cambia es el titulo del file selector y los filtros de listado para que no sea confuso para el usuario
         //Luego se actua de manera inteligente segun si se ha seleccionado un .config o un archivo de diferente extensión
         char titulo_fileselector[40];
-        int opcion=menu_simple_two_choices("Save game config","Where do you want to save it?","Create .config from snapshot/tape","Select .config file");
+        int opcion=menu_simple_two_choices("Save game config","Where do you want to save it?","Create .config from snapshot/tape","Select new/existing .config file");
         if (opcion==1) {
             strcpy(titulo_fileselector,"Select snapshot/tape");
             ret=menu_filesel(titulo_fileselector,filtros,source_file);
