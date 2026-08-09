@@ -13341,6 +13341,16 @@ void parse_customfile_options(void)
                                 enable_ram_in_49152();
                 }
 
+            else if (!strcmp(argv[puntero_parametro],"--qlrammem")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<128 || valor>ql_get_maximum_ram_kb()) {
+                    debug_printf (VERBOSE_ERR,"Invalid QL RAM Mem value\n");
+
+                }
+                else ql_set_memory_size(valor);
+            }
+
         else if (!strcmp(argv[puntero_parametro],"--gigascreen")) {
                                 enable_gigascreen();
         }
@@ -13436,6 +13446,7 @@ void customconfig_help(void)
     "--zx8081ram16K8000\n"
     "--zx8081ram16KC000\n"
     "--zx8081vsyncsound\n"
+    "--qlrammem\n"
     "--realvideo\n"
     "--snoweffect\n"
     "--enableinterlace                 Enable interlace video mode\n"
@@ -23099,6 +23110,11 @@ void util_save_game_config(char *filename)
         if (ulaplus_presente.v)                     ADD_STRING_CONFIG,"--enableulaplus");
         if (spectra_enabled.v)                      ADD_STRING_CONFIG,"--enablespectra");
         if (timex_video_emulation.v)                ADD_STRING_CONFIG,"--enabletimexvideo");
+  }
+
+  if (MACHINE_IS_QL) {
+    int current_ram_kb=ql_get_current_ram_kb();
+    if (current_ram_kb!=128) ADD_STRING_CONFIG,"--qlrammem %d",current_ram_kb);
   }
 
 

@@ -169,7 +169,7 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
 
 
--.config de ql que permita aumentar la RAM. Como para Batman y 640kb RAM
+ok -.config de ql que permita aumentar la RAM. Como para Batman y 640kb RAM
 
 
 ok *que ponga ruta mdv1 a la carpeta donde este el ejecutable que se carga

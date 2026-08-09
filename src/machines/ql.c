@@ -39,6 +39,7 @@
 #include "compileoptions.h"
 #include "ula.h"
 #include "ql_qdos_handler.h"
+#include "autoselectoptions.h"
 
 
 #if defined(__APPLE__)
@@ -703,7 +704,12 @@ void ql_load_and_execute(char *filename)
 
 
 
-    if (!si_existe_archivo(filename)) return;
+    if (!si_existe_archivo(filename)) {
+        debug_printf(VERBOSE_ERR,"Can't find file %s",filename);
+        return;
+    }
+
+
 
     if (valor_leido_longitud==0) valor_leido_longitud=4194304; //4 MB max
 
@@ -755,6 +761,8 @@ void ql_load_and_execute(char *filename)
     ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
     noautoload.v=antes_no_autoload;
 
+    set_snaptape_fileoptions(filename);
+
 
 }
 
@@ -768,6 +776,8 @@ void ql_handle_boot_file(char *filename)
     ql_microdrive_floppy_emulation=1;
 
     ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
+
+    set_snaptape_fileoptions(filename);
 
 }
 
