@@ -6850,14 +6850,18 @@ int quickload_continue(char *nombre) {
         //Cambiamos para que en el titulo de menu aparezca el nombre de la carpeta en vez de archivo "boot"
         char buffer_carpeta[PATH_MAX];
         util_get_dir(nombre,buffer_carpeta);
-        printf("carpeta [%s]\n",buffer_carpeta);
+        //printf("carpeta [%s]\n",buffer_carpeta);
 
         //Y de ahi la subcarpeta actual
         char buffer_subcarpeta[PATH_MAX];
         util_get_subfolder_in_path(buffer_carpeta,buffer_subcarpeta);
-        printf("subcarpeta [%s]\n",buffer_subcarpeta);
+        //printf("subcarpeta [%s]\n",buffer_subcarpeta);
 
-        set_window_title_and_update(buffer_subcarpeta);
+        //Y quitamos extension de subcarpeta (por si por ejemplo es carpeta juego.zip)
+        char buffer_subcarpeta_sin_extension[PATH_MAX];
+        util_get_file_without_extension(buffer_subcarpeta,buffer_subcarpeta_sin_extension);
+
+        set_window_title_and_update(buffer_subcarpeta_sin_extension);
 
 
         ql_handle_boot_file(nombre);

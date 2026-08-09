@@ -2992,6 +2992,10 @@ void codetests_subfolder_tests(void)
     char *expected_subfolder8="c";
     codetests_subfolder_tests_check(folder8,expected_subfolder8);
 
+    char *folder81="/c";
+    char *expected_subfolder81="c";
+    codetests_subfolder_tests_check(folder81,expected_subfolder81);
+
     char *folder9="";
     char *expected_subfolder9="";
     codetests_subfolder_tests_check(folder9,expected_subfolder9);
