@@ -284,12 +284,12 @@ return 0;
 
 void set_tape_file_options(char *filename)
 {
-        set_snaptape_fileoptions(filename);
+    set_snaptape_fileoptions(filename);
 }
 
 void set_tape_file_machine(char *filename)
 {
-        set_snaptape_filemachine(filename);
+    set_snaptape_filemachine(filename);
 }
 
 
