@@ -1658,6 +1658,52 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
             break;
 
+
+            case '=':
+            case '+':
+                if (pressrelease) {
+                    if (tecla=='+') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    //igual
+                    ql_keyboard_table[3] &= 255-32;
+                }
+                else  {
+                    if (tecla=='+') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    //igual
+                    ql_keyboard_table[3] |= 32;
+                }
+
+            break;
+
+
+            case '`':
+            case '~':
+                if (pressrelease) {
+                    if (tecla=='~') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    //pound
+                    ql_keyboard_table[2] &=255-32;
+                }
+                else  {
+                    if (tecla=='~') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    //pound
+                    ql_keyboard_table[2] |=32;
+                }
+
+            break;
+
+
+
         }
     }
 
