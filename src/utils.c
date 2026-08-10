@@ -6202,78 +6202,77 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
     tecla_redefinida=util_redefinir_tecla(tecla);
     if (tecla_redefinida) tecla=tecla_redefinida;
 
-  if (tecla>='a' && tecla<='z') {
-      int indice=tecla-'a';
+    if (tecla>='a' && tecla<='z') {
+        int indice=tecla-'a';
 
-      z80_byte *puerto;
-      puerto=tabla_teclado_letras[indice].puerto;
+        z80_byte *puerto;
+        puerto=tabla_teclado_letras[indice].puerto;
 
-      z80_byte mascara;
-      mascara=tabla_teclado_letras[indice].mascara;
+        z80_byte mascara;
+        mascara=tabla_teclado_letras[indice].mascara;
 
                                         //printf ("asignamos tecla mediante array indice=%d puerto=%x mascara=%d - ",indice,puerto,mascara);
 
-      if (pressrelease) *puerto &=255-mascara;
-      else *puerto |=mascara;
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
 
 
         if (MACHINE_IS_Z88) {
-                puerto=z88_tabla_teclado_letras[indice].puerto;
-                mascara=z88_tabla_teclado_letras[indice].mascara;
+            puerto=z88_tabla_teclado_letras[indice].puerto;
+            mascara=z88_tabla_teclado_letras[indice].mascara;
 
-                if (pressrelease) *puerto &=255-mascara;
-                else *puerto |=mascara;
+            if (pressrelease) *puerto &=255-mascara;
+            else *puerto |=mascara;
         }
 
         if (MACHINE_IS_CPC) {
-                puerto=cpc_tabla_teclado_letras[indice].puerto;
-                mascara=cpc_tabla_teclado_letras[indice].mascara;
+            puerto=cpc_tabla_teclado_letras[indice].puerto;
+            mascara=cpc_tabla_teclado_letras[indice].mascara;
 
-                if (pressrelease) *puerto &=255-mascara;
-                else *puerto |=mascara;
-         }
+            if (pressrelease) *puerto &=255-mascara;
+            else *puerto |=mascara;
+        }
 
         if (MACHINE_IS_PCW) {
-                puerto=pcw_tabla_teclado_letras[indice].puerto;
-                mascara=pcw_tabla_teclado_letras[indice].mascara;
+            puerto=pcw_tabla_teclado_letras[indice].puerto;
+            mascara=pcw_tabla_teclado_letras[indice].mascara;
 
-                if (pressrelease) *puerto &=255-mascara;
-                else *puerto |=mascara;
-
-         }
+            if (pressrelease) *puerto &=255-mascara;
+            else *puerto |=mascara;
+        }
 
         if (MACHINE_IS_MSX) {
-                puerto=msx_tabla_teclado_letras[indice].puerto;
-                mascara=msx_tabla_teclado_letras[indice].mascara;
+            puerto=msx_tabla_teclado_letras[indice].puerto;
+            mascara=msx_tabla_teclado_letras[indice].mascara;
 
-                if (pressrelease) *puerto &=255-mascara;
-                else *puerto |=mascara;
-         }
+            if (pressrelease) *puerto &=255-mascara;
+            else *puerto |=mascara;
+        }
 
         if (MACHINE_IS_SVI) {
-                puerto=svi_tabla_teclado_letras[indice].puerto;
-                mascara=svi_tabla_teclado_letras[indice].mascara;
+            puerto=svi_tabla_teclado_letras[indice].puerto;
+            mascara=svi_tabla_teclado_letras[indice].mascara;
 
-                if (pressrelease) *puerto &=255-mascara;
-                else *puerto |=mascara;
-         }
+            if (pressrelease) *puerto &=255-mascara;
+            else *puerto |=mascara;
+        }
 
-          if (MACHINE_IS_QL) {
+        if (MACHINE_IS_QL) {
             printf("Convert numeros_letras etc for QL tecla=%d\n",tecla);
             puerto=ql_tabla_teclado_letras[indice].puerto;
             mascara=ql_tabla_teclado_letras[indice].mascara;
 
             if (pressrelease) *puerto &=255-mascara;
             else *puerto |=mascara;
-          }
+        }
 
-          if (MACHINE_IS_MK14) {
+        if (MACHINE_IS_MK14) {
             //Solo algunas letras
             /*
             mk14_keystatus
 
-               Matriz teclado
-               128 64  32  16
+                Matriz teclado
+                128 64  32  16
 
                 0  8   -   A	mk14_keystatus[0]
                 1  9   -   B	mk14_keystatus[1]
@@ -6296,68 +6295,68 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
             mascara=255;
 
             if (tecla=='a') {
-              puerto=&mk14_keystatus[0];
-              mascara=16>>4;
+                puerto=&mk14_keystatus[0];
+                mascara=16>>4;
             }
 
             if (tecla=='b') {
-              puerto=&mk14_keystatus[1];
-              mascara=16>>4;
+                puerto=&mk14_keystatus[1];
+                mascara=16>>4;
             }
 
             if (tecla=='c') {
-              puerto=&mk14_keystatus[2];
-              mascara=16>>4;
+                puerto=&mk14_keystatus[2];
+                mascara=16>>4;
             }
 
             if (tecla=='d') {
-              puerto=&mk14_keystatus[3];
-              mascara=16>>4;
+                puerto=&mk14_keystatus[3];
+                mascara=16>>4;
             }
 
             if (tecla=='e') {
-              puerto=&mk14_keystatus[6];
-              mascara=16>>4;
+                puerto=&mk14_keystatus[6];
+                mascara=16>>4;
             }
 
             if (tecla=='f') {
-              puerto=&mk14_keystatus[7];
-              mascara=16>>4;
+                puerto=&mk14_keystatus[7];
+                mascara=16>>4;
             }
 
             if (tecla=='g') {
-              puerto=&mk14_keystatus[2];
-              mascara=32>>4;
+                puerto=&mk14_keystatus[2];
+                mascara=32>>4;
             }
 
             if (tecla=='m') {
-              puerto=&mk14_keystatus[3];
-              mascara=32>>4;
+                puerto=&mk14_keystatus[3];
+                mascara=32>>4;
             }
 
             if (tecla=='z') {
-              puerto=&mk14_keystatus[4];
-              mascara=32>>4;
+                puerto=&mk14_keystatus[4];
+                mascara=32>>4;
             }
 
             if (tecla=='t') {
-              puerto=&mk14_keystatus[7];
-              mascara=32>>4;
+                puerto=&mk14_keystatus[7];
+                mascara=32>>4;
             }
 
 
             if (mascara!=255) {
-              if (pressrelease) *puerto &=255-mascara;
-              else *puerto |=mascara;
+                if (pressrelease) *puerto &=255-mascara;
+                else *puerto |=mascara;
             }
-          }
+        }
 
 
     }
 
-  if (tecla>='0' && tecla<='9') {
-    convert_numeros_puerto_teclado(tecla,pressrelease);
- }
+    if (tecla>='0' && tecla<='9') {
+        convert_numeros_puerto_teclado(tecla,pressrelease);
+    }
 
 }
 
