@@ -1933,7 +1933,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
                 }
 
-                convert_numeros_letras_puerto_teclado(tecla_numero,pressrelease);
+                convert_numeros_puerto_teclado(tecla_numero,pressrelease);
 
             break;
 
@@ -6116,7 +6116,83 @@ void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pressrele
        convert_numeros_letras_puerto_teclado_continue_after_recreated(tecla,pressrelease);
 }
 
+void convert_numeros_puerto_teclado(z80_byte tecla,int pressrelease)
+{
+    int indice=tecla-'0';
 
+    z80_byte *puerto;
+    puerto=tabla_teclado_numeros[indice].puerto;
+
+    z80_byte mascara;
+    mascara=tabla_teclado_numeros[indice].mascara;
+
+
+
+    //printf ("asignamos tecla mediante array indice=%d puerto=%x mascara=%d - ",indice,puerto,mascara);
+
+    if (pressrelease) *puerto &=255-mascara;
+    else *puerto |=mascara;
+
+
+
+    if (MACHINE_IS_Z88) {
+        puerto=z88_tabla_teclado_numeros[indice].puerto;
+        mascara=z88_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+    if (MACHINE_IS_CPC) {
+        puerto=cpc_tabla_teclado_numeros[indice].puerto;
+        mascara=cpc_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+    if (MACHINE_IS_PCW) {
+        puerto=pcw_tabla_teclado_numeros[indice].puerto;
+        mascara=pcw_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+    if (MACHINE_IS_MSX) {
+        puerto=msx_tabla_teclado_numeros[indice].puerto;
+        mascara=msx_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+    if (MACHINE_IS_SVI) {
+        puerto=svi_tabla_teclado_numeros[indice].puerto;
+        mascara=svi_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+    if (MACHINE_IS_QL) {
+        puerto=ql_tabla_teclado_numeros[indice].puerto;
+        mascara=ql_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+    if (MACHINE_IS_MK14) {
+        puerto=mk14_tabla_teclado_numeros[indice].puerto;
+        mascara=mk14_tabla_teclado_numeros[indice].mascara;
+
+        if (pressrelease) *puerto &=255-mascara;
+        else *puerto |=mascara;
+    }
+
+
+}
 
 void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tecla,int pressrelease)
 {
@@ -6280,79 +6356,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
     }
 
   if (tecla>='0' && tecla<='9') {
-  int indice=tecla-'0';
-
-  z80_byte *puerto;
-  puerto=tabla_teclado_numeros[indice].puerto;
-
-  z80_byte mascara;
-  mascara=tabla_teclado_numeros[indice].mascara;
-
-                                        //printf ("asignamos tecla mediante array indice=%d puerto=%x mascara=%d - ",indice,puerto,mascara);
-
-                                        if (pressrelease) *puerto &=255-mascara;
-                                        else *puerto |=mascara;
-
-
-
-  if (MACHINE_IS_Z88) {
-                                                puerto=z88_tabla_teclado_numeros[indice].puerto;
-                                                mascara=z88_tabla_teclado_numeros[indice].mascara;
-
-                                                if (pressrelease) *puerto &=255-mascara;
-                                                else *puerto |=mascara;
-  }
-
-    if (MACHINE_IS_CPC) {
-                                                puerto=cpc_tabla_teclado_numeros[indice].puerto;
-                                                mascara=cpc_tabla_teclado_numeros[indice].mascara;
-
-                                                if (pressrelease) *puerto &=255-mascara;
-                                                else *puerto |=mascara;
-  }
-
-    if (MACHINE_IS_PCW) {
-                                                puerto=pcw_tabla_teclado_numeros[indice].puerto;
-                                                mascara=pcw_tabla_teclado_numeros[indice].mascara;
-
-                                                if (pressrelease) *puerto &=255-mascara;
-                                                else *puerto |=mascara;
-
-  }
-
-    if (MACHINE_IS_MSX) {
-                                                puerto=msx_tabla_teclado_numeros[indice].puerto;
-                                                mascara=msx_tabla_teclado_numeros[indice].mascara;
-
-                                                if (pressrelease) *puerto &=255-mascara;
-                                                else *puerto |=mascara;
-  }
-
-    if (MACHINE_IS_SVI) {
-                                                puerto=svi_tabla_teclado_numeros[indice].puerto;
-                                                mascara=svi_tabla_teclado_numeros[indice].mascara;
-
-                                                if (pressrelease) *puerto &=255-mascara;
-                                                else *puerto |=mascara;
-  }
-
-  if (MACHINE_IS_QL) {
-                                          puerto=ql_tabla_teclado_numeros[indice].puerto;
-                                          mascara=ql_tabla_teclado_numeros[indice].mascara;
-
-                                          if (pressrelease) *puerto &=255-mascara;
-                                          else *puerto |=mascara;
-  }
-
-  if (MACHINE_IS_MK14) {
-                                                puerto=mk14_tabla_teclado_numeros[indice].puerto;
-                                                mascara=mk14_tabla_teclado_numeros[indice].mascara;
-
-                                                if (pressrelease) *puerto &=255-mascara;
-                                                else *puerto |=mascara;
-  }
-
-
+    convert_numeros_puerto_teclado(tecla,pressrelease);
  }
 
 }

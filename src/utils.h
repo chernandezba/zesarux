@@ -729,6 +729,7 @@ extern void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
 extern void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrelease);
 
 extern void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pressrelease);
+extern void convert_numeros_puerto_teclado(z80_byte tecla,int pressrelease);
 
 
 
