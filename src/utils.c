@@ -1858,6 +1858,85 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
             break;
 
+            //shift + tecla 1234567890
+            case '!':
+            case '@':
+            case '#':
+            case '$':
+            case '%':
+            case '^':
+            case '&':
+            case '*':
+            case '(':
+            case ')':
+
+                //Shift
+                if (pressrelease) {
+                    ql_keyboard_table[7] &= (255-1);
+                }
+                else  {
+                    ql_keyboard_table[7] |= 1;
+                }
+
+                //Y luego la tecla numero. Preasignar para que no se queje el compilador
+                z80_byte tecla_numero='1';
+
+                switch(tecla) {
+                    case '!':
+                        tecla_numero='1';
+                    break;
+
+                    case '@':
+                        tecla_numero='2';
+                    break;
+
+
+                    case '#':
+                        tecla_numero='3';
+                    break;
+
+
+                    case '$':
+                        tecla_numero='4';
+                    break;
+
+
+                    case '%':
+                        tecla_numero='5';
+                    break;
+
+
+                    case '^':
+                        tecla_numero='6';
+                    break;
+
+
+                    case '&':
+                        tecla_numero='7';
+                    break;
+
+
+                    case '*':
+                        tecla_numero='8';
+                    break;
+
+
+                    case '(':
+                        tecla_numero='9';
+                    break;
+
+
+                    case ')':
+                        tecla_numero='0';
+                    break;
+
+
+                }
+
+                convert_numeros_letras_puerto_teclado(tecla_numero,pressrelease);
+
+            break;
+
         }
 
     }
