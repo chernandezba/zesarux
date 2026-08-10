@@ -1702,9 +1702,75 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
             break;
 
+            case '\\':
+            case '|':
+                if (pressrelease) {
+                    if (tecla=='|') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // contrabarra
+                    ql_keyboard_table[1] &=255-32;
+                }
+                else  {
+                    if (tecla=='|') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // contrabarra
+                    ql_keyboard_table[1] |=32;
+                }
+
+            break;
+
+// 5|     ]      z      .      c      b  Pound      m      '     ql_keyboard_table[2]
+
+            case ']':
+            case '}':
+                if (pressrelease) {
+                    if (tecla=='}') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // ]
+                    ql_keyboard_table[2] &=255-1;
+                }
+                else  {
+                    if (tecla=='}') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // ]
+                    ql_keyboard_table[2] |=1;
+                }
+
+            break;
+
+
+// 4|     [   Caps      k      s      f      =      g      ;     ql_keyboard_table[3]
+
+            case '[':
+            case '{':
+                if (pressrelease) {
+                    if (tecla=='{') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // [
+                    ql_keyboard_table[3] &=255-1;
+                }
+                else  {
+                    if (tecla=='{') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // [
+                    ql_keyboard_table[3] |=1;
+                }
 
 
         }
+
     }
 
     //simbolos para ZX Spectrum
