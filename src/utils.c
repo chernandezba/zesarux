@@ -3284,7 +3284,7 @@ void send_text_as_keystrokes_eject(void)
 }
 
 //Enviar texto en el buffer de keystrokes
-//texto tiene que ser una direccion estatica
+//texto tiene que ser un puntero asignado con malloc (porque en algun momento se hara free)
 //Nota: el texto debe incluir byte 0 al final y ese 0 cuenta en el total de longitud
 void send_text_as_keystrokes_init(char *texto,int longitud)
 {
@@ -3301,6 +3301,21 @@ void send_text_as_keystrokes_init(char *texto,int longitud)
 
 
     send_text_as_keystrokes_insert();
+}
+
+//Enviar texto como pulsaciones de tecla
+void send_text_as_keystrokes_simple(char *texto_entrada)
+{
+    int longitud_asignar=strlen(texto_entrada)+1;
+    char *texto=util_malloc(longitud_asignar,"Can not allocate memory for send text as keystrokes");
+    strcpy(texto,texto_entrada);
+    send_text_as_keystrokes_init(texto,longitud_asignar);
+
+    printf("Enviar keystrokes para [%s]\n",texto);
+
+    send_text_as_keystrokes_playing.v=1;
+
+    util_send_text_as_keystrokes_setreset_nested_turbo();
 }
 
 int input_file_keyboard_init(void)

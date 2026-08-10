@@ -87,6 +87,7 @@ extern void send_text_as_keystrokes_get_from_clipboard(void);
 extern void send_text_as_keystrokes_insert(void);
 extern void send_text_as_keystrokes_eject(void);
 extern int input_file_keyboard_init(void);
+extern void send_text_as_keystrokes_simple(char *texto_entrada);
 
 extern void reset_keyboard_ports(void);
 extern void ascii_to_keyboard_port(unsigned tecla);

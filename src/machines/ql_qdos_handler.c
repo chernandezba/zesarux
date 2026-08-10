@@ -2348,6 +2348,9 @@ void ql_rom_traps(void)
                 if (ql_nombre_autorun[0]) {
                     //temporal
                     //char *texto="DIR mdv1-_\x0a";
+                    send_text_as_keystrokes_simple(ql_nombre_autorun);
+
+                    /*
 
                     send_text_as_keystrokes_memory=NULL;
                     int longitud_asignar=strlen(ql_nombre_autorun)+1;
@@ -2360,6 +2363,7 @@ void ql_rom_traps(void)
                     send_text_as_keystrokes_playing.v=1;
 
                     util_send_text_as_keystrokes_setreset_nested_turbo();
+                    */
                 }
             }
         }
