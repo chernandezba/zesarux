@@ -767,6 +767,7 @@ void ql_load_and_execute(char *filename)
 }
 
 
+char ql_nombre_autorun[1024]="";
 
 void ql_handle_boot_file(char *filename)
 {
@@ -778,6 +779,20 @@ void ql_handle_boot_file(char *filename)
     ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
 
     set_snaptape_fileoptions(filename);
+
+    //Indicar archivo boot para hacer lrun mdv1_archivo
+    if (noautoload.v==0) {
+        char nombre_boot[PATH_MAX];
+        util_get_file_no_directory(filename,nombre_boot);
+        //Si no es boot automatico, meter nombre a cargar
+        if (strcasecmp(nombre_boot,"boot")) {
+            printf("Autocargar %s\n",nombre_boot);
+            sprintf(ql_nombre_autorun,"lrun mdv1_%s\x0a",nombre_boot);
+        }
+        else {
+            ql_nombre_autorun[0]=0;
+        }
+    }
 
 }
 

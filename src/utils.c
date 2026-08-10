@@ -3150,6 +3150,7 @@ void send_text_as_keystrokes_eject(void)
 }
 
 //Enviar texto en el buffer de keystrokes
+//texto tiene que ser una direccion estatica
 //Nota: el texto debe incluir byte 0 al final y ese 0 cuenta en el total de longitud
 void send_text_as_keystrokes_init(char *texto,int longitud)
 {
