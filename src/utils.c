@@ -1636,6 +1636,28 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                 }
 
             break;
+
+            case '.':
+            case '>':
+                if (pressrelease) {
+                    if (tecla=='>') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    //punto
+                    ql_keyboard_table[2] &=(255-4);
+                }
+                else  {
+                    if (tecla=='>') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    //punto
+                    ql_keyboard_table[2] |=4;
+                }
+
+            break;
+
         }
     }
 

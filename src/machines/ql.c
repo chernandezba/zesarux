@@ -787,6 +787,13 @@ void ql_handle_boot_file(char *filename)
         //Si no es boot automatico, meter nombre a cargar
         if (strcasecmp(nombre_boot,"boot")) {
             printf("Autocargar %s\n",nombre_boot);
+
+            //Si archivo tiene . cambiar por "_"
+            int i;
+            for (i=0;nombre_boot[i];i++) {
+                if (nombre_boot[i]=='.') nombre_boot[i]='_';
+            }
+
             sprintf(ql_nombre_autorun,"lrun mdv1_%s\x0a",nombre_boot);
         }
         else {

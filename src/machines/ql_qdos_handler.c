@@ -2350,9 +2350,12 @@ void ql_rom_traps(void)
                     //char *texto="DIR mdv1-_\x0a";
 
                     send_text_as_keystrokes_memory=NULL;
-                    send_text_as_keystrokes_init(ql_nombre_autorun,strlen(ql_nombre_autorun)+1);
+                    int longitud_asignar=strlen(ql_nombre_autorun)+1;
+                    char *texto=util_malloc(longitud_asignar,"Can not allocate memory for autorun sentence");
+                    strcpy(texto,ql_nombre_autorun);
+                    send_text_as_keystrokes_init(texto,longitud_asignar);
 
-                    printf("Enviar keystrokes para [%s]\n",ql_nombre_autorun);
+                    printf("Enviar keystrokes para [%s]\n",texto);
 
                     send_text_as_keystrokes_playing.v=1;
 
