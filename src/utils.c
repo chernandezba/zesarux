@@ -1537,6 +1537,15 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
             }
         }
 
+        if (MACHINE_IS_QL) {
+            if (pressrelease) {
+                ql_keyboard_table[7] &= (255-1);
+            }
+            else  {
+                ql_keyboard_table[7] |= 1;
+            }
+        }
+
         tecla=tecla+('a'-'A');
     }
 
@@ -1551,11 +1560,6 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
 
 
-
-
-
-
-
         case 32:
             if (pressrelease) {
                 puerto_32766 &=255-1;
@@ -1563,6 +1567,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                 cpc_keyboard_table[5] &= (255-128);
                 msx_keyboard_table[8] &= (255-1);
                 svi_keyboard_table[8] &= (255-1);
+                ql_keyboard_table[1] &= (255-64);
             }
             else {
                 puerto_32766 |=1;
@@ -1570,36 +1575,39 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                 cpc_keyboard_table[5] |= 128;
                 msx_keyboard_table[8] |= 1;
                 svi_keyboard_table[8] |= 1;
+                ql_keyboard_table[1] |= 64;
             }
 
         break;
 
 
-                            case 13:
-                            case 10:
-                                    if (pressrelease) {
-                        puerto_49150 &=255-1;
-                        blink_kbd_a8 &= (255-64);
-                        //Enter "grande" del cpc
-                        cpc_keyboard_table[2] &= (255-4);
-                                                msx_keyboard_table[7] &= (255-128);
-                                                svi_keyboard_table[6] &= (255-64);
-                    }
+        case 13:
+        case 10:
+            if (pressrelease) {
+                puerto_49150 &=255-1;
+                blink_kbd_a8 &= (255-64);
+                //Enter "grande" del cpc
+                cpc_keyboard_table[2] &= (255-4);
+                msx_keyboard_table[7] &= (255-128);
+                svi_keyboard_table[6] &= (255-64);
+                ql_keyboard_table[1] &= (255-1);
+            }
 
-                                    else {
-                        puerto_49150 |=1;
-                        blink_kbd_a8 |= 64;
-                        cpc_keyboard_table[2] |= 4;
-                                                msx_keyboard_table[7] |= 128;
-                                                svi_keyboard_table[6] |= 64;
-                    }
+            else {
+                puerto_49150 |=1;
+                blink_kbd_a8 |= 64;
+                cpc_keyboard_table[2] |= 4;
+                msx_keyboard_table[7] |= 128;
+                svi_keyboard_table[6] |= 64;
+                ql_keyboard_table[1] |= 1;
+            }
 
 
-                            break;
+        break;
 
-                                default:
-                    convert_numeros_letras_puerto_teclado(tecla,pressrelease);
-                                break;
+        default:
+            convert_numeros_letras_puerto_teclado(tecla,pressrelease);
+        break;
     }
 
 
