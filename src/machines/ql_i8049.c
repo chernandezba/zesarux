@@ -431,6 +431,37 @@ int ql_last_tecla_columna=-1;
 int ql_last_tecla_fila=-1;
 
 //int temp_flag_reves=0;
+
+void ql_ipc_write_ipc_teclado_keystrokes_turbo_mode(void)
+{
+    int leidos;
+
+    if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) {
+        leidos=0;
+        send_text_as_keystrokes_last_key=0;
+    }
+    else {
+        leidos=1;
+        send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+        //printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
+    }
+
+
+    if (leidos==0) {
+        debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
+        send_text_as_keystrokes_eject();
+        reset_keyboard_ports();
+    }
+
+    //conversion de salto de linea
+    if (send_text_as_keystrokes_last_key==10) send_text_as_keystrokes_last_key=13;
+
+    //printf("poke lastk con %d\n",send_text_as_keystrokes_last_key);
+    ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
+    //poke_byte_no_time(lastk,send_text_as_keystrokes_last_key);
+}
+
+
 void ql_ipc_write_ipc_teclado(void)
 {
 	/*
@@ -471,6 +502,21 @@ void ql_ipc_write_ipc_teclado(void)
 	00 001 000
 
 	*/
+
+    //Si esta spool file activo, generar siguiente tecla
+    if (send_text_as_keystrokes_is_playing() ) {
+        printf("Generar siguiente tecla QL\n");
+        if (send_text_as_keystrokes_turbo_mode.v==0) {
+            send_text_as_keystrokes_get_key();
+        }
+
+        else {
+            //ql_ipc_write_ipc_teclado_keystrokes_turbo_mode();
+
+            //de momento modo turbo hace lo mismo
+            send_text_as_keystrokes_get_key();
+        }
+    }
 
 
 	int columna;
@@ -551,7 +597,7 @@ void ql_ipc_write_ipc_teclado(void)
             //printf ("------fila %d columna %d\n",fila,columna);
             unsigned char byte_tecla=((fila&7)<<3) | (columna&7);
 
-
+            printf("%d\n",byte_tecla);
 
             ql_ipc_last_nibble_to_read[2]=(byte_tecla>>4)&15;
             ql_ipc_last_nibble_to_read[3]=(byte_tecla&15);
@@ -721,6 +767,14 @@ int ql_pulsado_tecla(void)
 
 	//Si backspace
 	//if (ql_pressed_backspace && !zxvision_key_not_sent_emulated_mach() ) return 1;
+
+    //Si esta spool file activo, generar siguiente tecla
+    if (send_text_as_keystrokes_is_playing() ) {
+        if (!zxvision_key_not_sent_emulated_mach()) {
+            return 1;
+            //if (send_text_as_keystrokes_is_pause.v==0) return 1;
+        }
+    }
 
 	unsigned char acumulado;
 

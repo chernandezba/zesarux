@@ -5821,6 +5821,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
          }
 
           if (MACHINE_IS_QL) {
+            printf("Convert numeros_letras etc for QL tecla=%d\n",tecla);
             puerto=ql_tabla_teclado_letras[indice].puerto;
             mascara=ql_tabla_teclado_letras[indice].mascara;
 

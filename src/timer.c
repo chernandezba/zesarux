@@ -1212,6 +1212,7 @@ void timer_check_interrupt(void)
         //Input file keyboard
         if (send_text_as_keystrokes_is_playing() ) {
             send_text_as_keystrokes_delay_counter++;
+            //printf("timer send_text_as_keystrokes_delay_counter %d send_text_as_keystrokes_is_pause.v %d\n",send_text_as_keystrokes_delay_counter,send_text_as_keystrokes_is_pause.v);
             if (send_text_as_keystrokes_delay_counter>=send_text_as_keystrokes_delay) {
                 send_text_as_keystrokes_delay_counter=0;
                 send_text_as_keystrokes_pending_next.v=1;

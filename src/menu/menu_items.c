@@ -33062,6 +33062,7 @@ void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
 int menu_send_text_as_keystrokes_turbo_mode_cond(void)
 {
     if (MACHINE_IS_SPECTRUM) return 1;
+    if (MACHINE_IS_QL) return 1;
     //if (MACHINE_IS_ACE) return 1;
     return 0;
 }
@@ -36444,7 +36445,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_debug);
 
 
-        if (!CPU_IS_MOTOROLA) {
+        //if (!CPU_IS_MOTOROLA) {
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,
                 "Send Text as Keystrokes" ,"Enviar texto como teclas","Enviar text com tecles");
 
@@ -36456,7 +36457,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 "Note: symbol | means Shift+1 (Edit)");
             menu_add_item_menu_tiene_submenu(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
-        }
+        //}
 
 
         menu_add_item_menu_separator(array_menu_debug);
