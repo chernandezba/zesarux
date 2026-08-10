@@ -1478,93 +1478,101 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
     //printf ("ascii_to_keyboard_port_set_clear: tecla: %d pressrelease: %d\n",tecla,pressrelease);
 
     if (tecla>='A' && tecla<='Z') {
-                    if (MACHINE_IS_SPECTRUM || MACHINE_IS_ACE) {
-                                            //mayus. para Spectrum
-                        if (pressrelease) {
-                                                puerto_65278 &=255-1;
-                        }
-                        else {
-                            puerto_65278 |=1;
-                        }
-                    }
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ACE) {
+                                //mayus. para Spectrum
+            if (pressrelease) {
+                                    puerto_65278 &=255-1;
+            }
+            else {
+                puerto_65278 |=1;
+            }
+        }
 
-                    if (MACHINE_IS_Z88) {
-                        //mayus. para Z88
-                        //A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
-                        if (pressrelease) {
-                            blink_kbd_a14 &=255-64;
-                        }
-                        else {
-                            blink_kbd_a14 |=64;
-                        }
-                    }
+        if (MACHINE_IS_Z88) {
+            //mayus. para Z88
+            //A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
+            if (pressrelease) {
+                blink_kbd_a14 &=255-64;
+            }
+            else {
+                blink_kbd_a14 |=64;
+            }
+        }
 
-                                        //mayus para MSX
-                    if (MACHINE_IS_MSX) {
-                        if (pressrelease) {
-                            msx_keyboard_table[6] &=255-1;
-                        }
-                        else {
-                            msx_keyboard_table[6] |=1;
-                        }
-                    }
+                            //mayus para MSX
+        if (MACHINE_IS_MSX) {
+            if (pressrelease) {
+                msx_keyboard_table[6] &=255-1;
+            }
+            else {
+                msx_keyboard_table[6] |=1;
+            }
+        }
 
-                    if (MACHINE_IS_SVI) {
-                        if (pressrelease) {
-                            svi_keyboard_table[6] &=255-1;
-                        }
-                        else {
-                            svi_keyboard_table[6] |=1;
-                        }
-                    }
+        if (MACHINE_IS_SVI) {
+            if (pressrelease) {
+                svi_keyboard_table[6] &=255-1;
+            }
+            else {
+                svi_keyboard_table[6] |=1;
+            }
+        }
 
-                    if (MACHINE_IS_CPC) {
-                        if (pressrelease) {
-                            cpc_keyboard_table[2] &=255-32;
-                        }
-                        else {
-                            cpc_keyboard_table[2] |=32;
-                        }
-                    }
+        if (MACHINE_IS_CPC) {
+            if (pressrelease) {
+                cpc_keyboard_table[2] &=255-32;
+            }
+            else {
+                cpc_keyboard_table[2] |=32;
+            }
+        }
 
-                    if (MACHINE_IS_PCW) {
-                        if (pressrelease) {
-                            pcw_keyboard_table[2] &=255-32;
+        if (MACHINE_IS_PCW) {
+            if (pressrelease) {
+                pcw_keyboard_table[2] &=255-32;
 
-                        }
-                        else {
-                            pcw_keyboard_table[2] |=32;
-                        }
-                    }
+            }
+            else {
+                pcw_keyboard_table[2] |=32;
+            }
+        }
 
-                                           tecla=tecla+('a'-'A');
+        tecla=tecla+('a'-'A');
     }
 
 
         //printf ("Tecla buena: %d  \n",c);
     switch(tecla) {
 
-                                case 27:
-                                        //printf ("Alt\n");
-                                break;
+        case 27:
+                //printf ("Alt\n");
+        break;
 
-                case 32:
-                                    if (pressrelease) {
-                        puerto_32766 &=255-1;
-                                            blink_kbd_a13 &= (255-64);
-                        cpc_keyboard_table[5] &= (255-128);
-                                                msx_keyboard_table[8] &= (255-1);
-                                                svi_keyboard_table[8] &= (255-1);
-                    }
-                                    else {
-                        puerto_32766 |=1;
-                                            blink_kbd_a13 |= 64;
-                        cpc_keyboard_table[5] |= 128;
-                                                msx_keyboard_table[8] |= 1;
-                                                svi_keyboard_table[8] |= 1;
-                    }
 
-                            break;
+
+
+
+
+
+
+
+        case 32:
+            if (pressrelease) {
+                puerto_32766 &=255-1;
+                blink_kbd_a13 &= (255-64);
+                cpc_keyboard_table[5] &= (255-128);
+                msx_keyboard_table[8] &= (255-1);
+                svi_keyboard_table[8] &= (255-1);
+            }
+            else {
+                puerto_32766 |=1;
+                blink_kbd_a13 |= 64;
+                cpc_keyboard_table[5] |= 128;
+                msx_keyboard_table[8] |= 1;
+                svi_keyboard_table[8] |= 1;
+            }
+
+        break;
 
 
                             case 13:
@@ -8802,7 +8810,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
             else {
                     puerto_32766 |=1;
                     blink_kbd_a13 |= 64;
-                                cpc_keyboard_table[5] |= 128;
+                    cpc_keyboard_table[5] |= 128;
                     ql_keyboard_table[1] |= 64;
                     msx_keyboard_table[8] |= 1;
                     svi_keyboard_table[8] |= 1;

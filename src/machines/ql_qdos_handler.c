@@ -2340,6 +2340,16 @@ void ql_rom_traps(void)
                 //ql_keyboard_table[0] |= 2;
                 ql_initial_autoload_counter=0;
                 ql_initial_autoload=0;
+
+
+                //Enviar sentencia de carga si es un archivo diferente a boot
+                //temporal
+                char *texto="dir mdv1_\x10";
+                send_text_as_keystrokes_init(texto,strlen(texto)+1);
+
+                send_text_as_keystrokes_playing.v=1;
+
+                util_send_text_as_keystrokes_setreset_nested_turbo();
             }
         }
 
