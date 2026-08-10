@@ -131,6 +131,7 @@
 #include "svi.h"
 #include "ql_qdos_handler.h"
 #include "ql_i8049.h"
+#include "ql_zx8302.h"
 #include "gs.h"
 #include "zvfs.h"
 #include "vdp_9918a_sms.h"
@@ -247,6 +248,7 @@ int main_window_special_effects_group_opcion_seleccionada=0;
 int settings_smartload_opcion_seleccionada=0;
 int topmenu_items_visibility_opcion_seleccionada=0;
 int hardware_realjoystick_actions_opcion_seleccionada=0;
+int hardware_rtc_settings_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -7286,6 +7288,56 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
 
 
+void menu_hardware_rtc_offset(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced_dynamic("Time zone",&ql_zx8032_rtc_timezone,4,+1,-12,+14,0);
+}
+
+void menu_hardware_rtc_settings(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_rtc_offset,NULL,"    Time zone [UTC%+03d:00]",
+            //(ql_zx8032_rtc_timezone>=0 ? '+' : '-'),util_get_absolute(ql_zx8032_rtc_timezone));
+            ql_zx8032_rtc_timezone);
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> RTC","Menú Principal-> Opciones-> Hardware-> RTC","Menú Principal-> Opcions-> Hardware-> RTC");
+
+        retorno_menu=menu_dibuja_menu(&hardware_rtc_settings_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "RTC","RTC","RTC" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
 
 
 void menu_hardware_printers_zxprinter_enable(MENU_ITEM_PARAMETERS)
@@ -8660,6 +8712,14 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Settings for the real joystick");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
+        if (MACHINE_IS_QL) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_rtc_settings,NULL,
+                "RTC","RTC","RTC");
+
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Settings for the real time clock");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Settings for the real time clock");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
 
         if (MACHINE_IS_TBBLUE) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_spectrum_next,NULL,

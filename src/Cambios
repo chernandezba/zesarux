@@ -16,6 +16,7 @@ Mejorada emulación de Sinclair QL:
 - Mejorada la relación de aspecto de la pantalla del Sinclair QL. Los gráficos ahora reproducen la geometría del hardware original (1.476:1). Permitir también 4:3 y 1:1
 - Mejorada la carga de QL: autogenerar sentencia lrun_, permitir ejecutar un archivo exe, permitir insertar una carpeta como microdrive seleccionando un archivo de boot o un archivo de basic
 - Permitir enviar pulsaciones de teclas (copy-paste o leer de archivo de texto) a QL
+- Permitir cambiar la zona horaria del RTC
 
 Mejorado ZX Vision:
 - Mejorada la organización, redacción y coherencia de los menús de la interfaz de usuario

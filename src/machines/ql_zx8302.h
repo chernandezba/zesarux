@@ -28,5 +28,6 @@ extern moto_byte ql_zx8032_readbyte(unsigned int Address);
 extern void ql_zx8032_write(unsigned int Address, unsigned char Data);
 extern unsigned char ql_pc_intr;
 extern unsigned char ql_mc_stat;
+extern int ql_zx8032_rtc_timezone;
 
 #endif

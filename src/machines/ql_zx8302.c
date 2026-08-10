@@ -332,6 +332,9 @@ The bit assignments correspond to the ones when the register is read:
 }
 
 
+//Sumar o restar horas al reloj. si es 0 , es UTC
+int ql_zx8032_rtc_timezone=0;
+
 moto_byte ql_zx8032_readbyte(unsigned int Address)
 {
 
@@ -375,6 +378,12 @@ moto_byte ql_zx8032_readbyte(unsigned int Address)
 
             //Son 283.996.800 segundos
             timer_seconds += 283996800;
+
+            //Sumar zona horaria
+            int sumar_horas=ql_zx8032_rtc_timezone;
+            int sumar_segundos=sumar_horas*3600;
+
+            timer_seconds +=sumar_segundos;
 
             int offset_byte=Address-0x18000;
 
