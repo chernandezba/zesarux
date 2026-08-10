@@ -14,7 +14,7 @@ Allow to select output file from the External Audio Source window
 Improved Sinclair QL emulation:
 - Allow to change QL border color
 - Improved display aspect ratio. Graphics now match the original hardware geometry (1.476:1). Allow also 4:3 and 1:1
-- Improved load: autogenerate lrun_ sentence, allow to run an exe file, allow to insert a folder as microdrive selecting a boot file
+- Improved load: autogenerate lrun_ sentence, allow to run an exe file, allow to insert a folder as microdrive selecting a boot file or a basic file
 - Allow to send keystrokes (copy-paste or read from text file) to QL
 
 Improved ZX Vision:

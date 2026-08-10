@@ -2346,24 +2346,10 @@ void ql_rom_traps(void)
 
 
                 if (ql_nombre_autorun[0]) {
-                    //temporal
-                    //char *texto="DIR mdv1-_\x0a";
+                    //Alteramos los parametros para que se envie rapidamente
+                    send_text_as_keystrokes_delay=1;
+                    send_text_as_keystrokes_send_pause.v=1;
                     send_text_as_keystrokes_simple(ql_nombre_autorun);
-
-                    /*
-
-                    send_text_as_keystrokes_memory=NULL;
-                    int longitud_asignar=strlen(ql_nombre_autorun)+1;
-                    char *texto=util_malloc(longitud_asignar,"Can not allocate memory for autorun sentence");
-                    strcpy(texto,ql_nombre_autorun);
-                    send_text_as_keystrokes_init(texto,longitud_asignar);
-
-                    printf("Enviar keystrokes para [%s]\n",texto);
-
-                    send_text_as_keystrokes_playing.v=1;
-
-                    util_send_text_as_keystrokes_setreset_nested_turbo();
-                    */
                 }
             }
         }

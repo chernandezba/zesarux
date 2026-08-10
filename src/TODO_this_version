@@ -173,13 +173,15 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 ok *que ponga ruta mdv1 a la carpeta donde este el ejecutable que se carga
 ->de momento solo me he encontrado el psion chess que carga como _exe aunque luego esta bloqueado. quiza algun tema de interrupciones o algo asi??
 
--smartload de ql: que tambien muestre archivos "boot" y en  ese caso lo interprete como montar esa carpeta como mdv1 y reset+autoload (si esta autoload claro)
+ok-smartload de ql: que tambien muestre archivos "boot" y en  ese caso lo interprete como montar esa carpeta como mdv1 y reset+autoload (si esta autoload claro)
 ->faltaria que pudiera hacer "lrun mdv1_archivo" siendo archivo el seleccionado (algo "boot" o ".boot")
+->que escriba el lrun mas rapido. a 20 ms. quiza alterar el valor siempre?
+->agregar boot, exe etc a quickload_valid_extension. todas combinaciones de QL
 
 -smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
 Quizá habria que tener alguna herramienta para expandir cualquier mdv
 
--allow to send keystrokes (copy-paste or read from text file) to QL: completar teclas
+ok -allow to send keystrokes (copy-paste or read from text file) to QL: completar teclas
 
 -Emulación CST Thor, Q40, Q60, Q68
 

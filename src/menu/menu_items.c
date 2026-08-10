@@ -45122,10 +45122,12 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         filtros[4]="_exe";
         filtros[5]="_exec";
         filtros[6]="_boot";
-        filtros[7]="_scr";
-        filtros[8]="scr";
+        filtros[7]="_bas";
+        filtros[8]="bas";
+        filtros[9]="_scr";
+        filtros[10]="scr";
 
-        filtros[9]=0;
+        filtros[11]=0;
     }
 
 

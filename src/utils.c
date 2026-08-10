@@ -7208,7 +7208,9 @@ int quickload_continue(char *nombre) {
         (
                    !strcasecmp(buffer_nombre,"boot") ||
                    !util_compare_file_extension(nombre,"boot") ||
-                   !util_compare_file_extension_ql(nombre,"boot")
+                   !util_compare_file_extension_ql(nombre,"boot") ||
+                   !util_compare_file_extension(nombre,"bas") ||
+                   !util_compare_file_extension_ql(nombre,"bas")
         )
 
         ) {
