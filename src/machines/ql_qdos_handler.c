@@ -2344,7 +2344,7 @@ void ql_rom_traps(void)
 
                 //Enviar sentencia de carga si es un archivo diferente a boot
                 //temporal
-                char *texto="DIR mdv1_\x0a";
+                char *texto="DIR mdv1-_\x0a";
                 send_text_as_keystrokes_init(texto,strlen(texto)+1);
 
                 send_text_as_keystrokes_playing.v=1;

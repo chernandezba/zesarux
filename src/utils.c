@@ -1611,6 +1611,34 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
     }
 
 
+    //simbolos para QL
+    if (MACHINE_IS_QL)
+    {
+        switch(tecla) {
+
+            case '-':
+            case '_':
+                if (pressrelease) {
+                    if (tecla=='_') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    //guion
+                    ql_keyboard_table[5] &= 255-32;
+                }
+                else  {
+                    if (tecla=='_') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    //guion
+                    ql_keyboard_table[5] |= 32;
+                }
+
+            break;
+        }
+    }
+
     //simbolos para ZX Spectrum
     if (MACHINE_IS_SPECTRUM) {
         switch (tecla) {
