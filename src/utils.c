@@ -1767,7 +1767,96 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                     // [
                     ql_keyboard_table[3] |=1;
                 }
+            break;
 
+// 4|     [   Caps      k      s      f      =      g      ;     ql_keyboard_table[3]
+
+            case ';':
+            case ':':
+                if (pressrelease) {
+                    if (tecla==':') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // ;
+                    ql_keyboard_table[3] &=255-128;
+                }
+                else  {
+                    if (tecla==':') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // ;
+                    ql_keyboard_table[3] |=128;
+                }
+            break;
+
+// 5|     ]      z      .      c      b  Pound      m      '     ql_keyboard_table[2]
+
+            case '\'':
+            case '"':
+                if (pressrelease) {
+                    if (tecla=='"') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // '
+                    ql_keyboard_table[2] &=255-128;
+                }
+                else  {
+                    if (tecla=='"') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // '
+                    ql_keyboard_table[2] |=128;
+                }
+            break;
+
+// 0| Shift   Ctrl    Alt      x      v      /      n      ,     ql_keyboard_table[7]
+            case ',':
+            case '<':
+                if (pressrelease) {
+                    if (tecla=='<') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // ,
+                    ql_keyboard_table[7] &=(255-128);
+                }
+                else  {
+                    if (tecla=='<') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // ,
+                    ql_keyboard_table[7] |=128;
+                }
+
+            break;
+
+
+// 0| Shift   Ctrl    Alt      x      v      /      n      ,     ql_keyboard_table[7]
+            case '/':
+            case '?':
+                if (pressrelease) {
+                    if (tecla=='?') {
+                        //shift
+                        ql_keyboard_table[7] &= (255-1);
+                    }
+                    // /
+                    ql_keyboard_table[7] &=(255-32);
+                }
+                else  {
+                    if (tecla=='?') {
+                        //shift
+                        ql_keyboard_table[7] |= 1;
+                    }
+                    // /
+                    ql_keyboard_table[7] |=32;
+                }
+
+            break;
 
         }
 
