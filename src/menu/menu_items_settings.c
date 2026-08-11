@@ -668,6 +668,10 @@ void menu_interface_ql_display_proportion(MENU_ITEM_PARAMETERS)
     if (ql_pantalla_proporcion_real>2) ql_pantalla_proporcion_real=0;
 
     recalcular_get_total_ancho_rainbow();
+    recalcular_get_total_alto_rainbow();
+
+    init_rainbow();
+
 
 
     screen_init_pantalla_and_others_and_realjoystick();
