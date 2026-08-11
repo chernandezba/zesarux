@@ -16,7 +16,7 @@ Improved Sinclair QL emulation:
 - Improved display aspect ratio. Graphics now match the original hardware geometry (1.476:1). Allow also 4:3 and 1:1
 - Added Vision-QL color palette
 - Improved load: autogenerate lrun_ sentence, allow to run an exe file, allow to insert a folder as microdrive selecting a boot file or a basic file
-- Allow to send keystrokes (copy-paste or read from text file) to QL
+- Allow to send keystrokes (read clipboard or read from text file) to QL
 - Allow to use PC real-time clock or QL internal
 - Allow to change timezone for RTC
 - Save real time internal QL clock on ZSF snapshots
