@@ -1593,7 +1593,9 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_visionql_palette,NULL,"[%c] Vision-QL palette",
                 (ql_use_visionql_color_palette ? 'X' : ' ') );
             menu_add_item_menu_tooltip(array_menu_colour_settings,"Use Vision-QL color palette");
-            menu_add_item_menu_ayuda(array_menu_colour_settings,"Use Vision-QL color palette. Vision-QL was the official monitor for the Sinclair QL");
+            menu_add_item_menu_ayuda(array_menu_colour_settings,"Use Vision-QL color palette. Vision-QL was the official monitor for the Sinclair QL. "
+                "This is a colourimetric approximation based on measured P22 phosphor characteristics from a contemporary CRT; "
+                "P22 is a common colour CRT phosphor type, used here as a Vision-QL approximation.");
         }
 
         menu_add_item_menu_separator(array_menu_colour_settings);
