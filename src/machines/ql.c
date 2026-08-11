@@ -697,8 +697,65 @@ void scr_refresca_pantalla_y_border_ql(void)
 }
 
 
+
+
+
+char ql_nombre_autorun[1024]="";
+
+void ql_handle_boot_file(char *filename)
+{
+
+    char dir[PATH_MAX];
+    util_get_dir(filename,dir);
+    ql_microdrive_floppy_emulation=1;
+
+    ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
+
+    set_snaptape_fileoptions(filename);
+
+    //Indicar archivo boot para hacer lrun mdv1_archivo
+    if (noautoload.v==0) {
+        char nombre_boot[PATH_MAX];
+        util_get_file_no_directory(filename,nombre_boot);
+        //Si no es boot automatico, meter nombre a cargar
+        if (strcasecmp(nombre_boot,"boot")) {
+            printf("Autocargar %s\n",nombre_boot);
+
+            //Si archivo tiene . cambiar por "_"
+            int i;
+            for (i=0;nombre_boot[i];i++) {
+                if (nombre_boot[i]=='.') nombre_boot[i]='_';
+            }
+
+            if (
+                   !util_compare_file_extension_ql(filename,"exe") ||
+                   !util_compare_file_extension_ql(filename,"exec") ||
+                   !util_compare_file_extension(filename,"exe") ||
+                   !util_compare_file_extension(filename,"exec") ) {
+                        sprintf(ql_nombre_autorun,"exec mdv1_%s\x0a",nombre_boot);
+
+            }
+
+
+            else sprintf(ql_nombre_autorun,"lrun mdv1_%s\x0a",nombre_boot);
+        }
+        else {
+            ql_nombre_autorun[0]=0;
+        }
+    }
+
+}
+
+
+
+
 void ql_load_and_execute(char *filename)
 {
+
+    //de momento hacer un exec tal cual, parecido a lrun
+    ql_handle_boot_file(filename);
+    return;
+
 
     int valor_leido_longitud=get_file_size(filename);
 
@@ -765,41 +822,3 @@ void ql_load_and_execute(char *filename)
 
 
 }
-
-
-char ql_nombre_autorun[1024]="";
-
-void ql_handle_boot_file(char *filename)
-{
-
-    char dir[PATH_MAX];
-    util_get_dir(filename,dir);
-    ql_microdrive_floppy_emulation=1;
-
-    ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,dir);
-
-    set_snaptape_fileoptions(filename);
-
-    //Indicar archivo boot para hacer lrun mdv1_archivo
-    if (noautoload.v==0) {
-        char nombre_boot[PATH_MAX];
-        util_get_file_no_directory(filename,nombre_boot);
-        //Si no es boot automatico, meter nombre a cargar
-        if (strcasecmp(nombre_boot,"boot")) {
-            printf("Autocargar %s\n",nombre_boot);
-
-            //Si archivo tiene . cambiar por "_"
-            int i;
-            for (i=0;nombre_boot[i];i++) {
-                if (nombre_boot[i]=='.') nombre_boot[i]='_';
-            }
-
-            sprintf(ql_nombre_autorun,"lrun mdv1_%s\x0a",nombre_boot);
-        }
-        else {
-            ql_nombre_autorun[0]=0;
-        }
-    }
-
-}
-
