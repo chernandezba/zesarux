@@ -3239,7 +3239,7 @@ Byte fields:
 
 void load_zsf_ql_rtc(z80_byte *header)
 {
-    ql_last_clock_set=header[0] | (header[1]<<8) | (header[2]<<16) | (header[3]<<24);
+    ql_rtc_seconds_counter=header[0] | (header[1]<<8) | (header[2]<<16) | (header[3]<<24);
 }
 
 void load_zsf_i8049_audio(z80_byte *header)
@@ -6601,10 +6601,10 @@ Byte fields:
 
 
     z80_byte qlrtcblock[4];
-    qlrtcblock[0]=ql_last_clock_set & 0xFF;
-    qlrtcblock[1]=(ql_last_clock_set >>8) & 0xFF;
-    qlrtcblock[2]=(ql_last_clock_set >>16) & 0xFF;
-    qlrtcblock[3]=(ql_last_clock_set >>24) & 0xFF;
+    qlrtcblock[0]=ql_rtc_seconds_counter & 0xFF;
+    qlrtcblock[1]=(ql_rtc_seconds_counter >>8) & 0xFF;
+    qlrtcblock[2]=(ql_rtc_seconds_counter >>16) & 0xFF;
+    qlrtcblock[3]=(ql_rtc_seconds_counter >>24) & 0xFF;
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, qlrtcblock,ZSF_QL_RTC, 4);
 

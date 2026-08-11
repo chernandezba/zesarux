@@ -320,7 +320,7 @@ void core_ql_trap_one(void)
 
       case 0x14:
         //debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.SCLCK. D1=%02XH",m68k_get_reg(NULL,M68K_REG_D1));
-        ql_last_clock_set=m68k_get_reg(NULL,M68K_REG_D1);
+        ql_rtc_seconds_counter=m68k_get_reg(NULL,M68K_REG_D1);
       break;
 
       case 0x15:

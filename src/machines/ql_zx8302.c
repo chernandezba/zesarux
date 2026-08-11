@@ -335,13 +335,13 @@ The bit assignments correspond to the ones when the register is read:
 //Sumar o restar horas al reloj. si es 0 , es UTC
 int ql_zx8032_rtc_timezone=0;
 
-unsigned int ql_last_clock_set=0;
+unsigned int ql_rtc_seconds_counter=0;
 
 int ql_use_pc_realtime_clock=1;
 
 void ql_rtc_second_timer(void)
 {
-    ql_last_clock_set++;
+    ql_rtc_seconds_counter++;
 }
 
 moto_byte ql_zx8032_readbyte(unsigned int Address)
@@ -400,7 +400,7 @@ moto_byte ql_zx8032_readbyte(unsigned int Address)
             else {
 
                 //Sacar del contador interno del ZX8302 en vez del reloj real del PC
-                timer_seconds=ql_last_clock_set;
+                timer_seconds=ql_rtc_seconds_counter;
             }
 
             int offset_byte=Address-0x18000;
