@@ -76,6 +76,7 @@
 #include "zxvision_topbar.h"
 #include "microdrive.h"
 #include "zxmmcplus.h"
+#include "ql_zx8302.h"
 
 #include "autoselectoptions.h"
 
@@ -1366,7 +1367,7 @@ void timer_check_interrupt(void)
             }*/
 
 
-
+            ql_rtc_second_timer();
 
             //temporizador de impresion para escribir generico footer en pantalla
             if (generic_footertext_operating_counter) {

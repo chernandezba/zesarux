@@ -269,7 +269,7 @@ void ql_restore_d_registers(unsigned int *origen, int ultimo)
 }
 
 
-unsigned int ql_last_clock_set=0;
+
 
 void core_ql_trap_one(void)
 {

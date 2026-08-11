@@ -74,7 +74,6 @@ extern z80_byte ql_last_trap;
 
 extern int ql_previous_trap_was_4;
 
-extern unsigned int ql_last_clock_set;
 
 extern moto_long ql_task_default_data_size;
 
