@@ -100,9 +100,10 @@
 #define ZSF_TBBLUE_CLIPWINDOWS 73
 #define ZSF_DATAGEAR_DMA 74
 #define ZSF_TEXT_NOTE 75
+#define ZSF_QL_RTC 76
 
 //Id maximo de nombres
-#define MAX_ZSF_BLOCK_ID_NAMES 75
+#define MAX_ZSF_BLOCK_ID_NAMES 76
 
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar

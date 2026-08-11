@@ -897,6 +897,13 @@ datagear_dma_block[21]=datagear_dma_tbblue_prescaler;
 char snap_zsf_note_save[SNAP_ZSF_NOTE_LENGTH]
 
 
+-Block ID 35: ZSF_QL_RTC
+RTC of the QL
+Byte fields:
+
+0-3: seconds since 00:00 1 January 1961, stored as 4 bytes, lsb first
+
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -986,6 +993,7 @@ char *zsf_block_id_names[]={
   "ZSF_TBBLUE_CLIPWINDOWS",
   "ZSF_DATAGEAR_DMA",
   "ZSF_TEXT_NOTE",
+  "ZSF_QL_RTC",
 
   "Unknown"  //Este siempre al final
 };
@@ -3229,6 +3237,11 @@ Byte fields:
 
 }
 
+void load_zsf_ql_rtc(z80_byte *header)
+{
+    ql_last_clock_set=header[0] | (header[1]<<8) | (header[2]<<16) | (header[3]<<24);
+}
+
 void load_zsf_i8049_audio(z80_byte *header)
 {
 
@@ -3590,6 +3603,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_QL_CONF:
         load_zsf_ql_conf(block_data);
+      break;
+
+      case ZSF_QL_RTC:
+        load_zsf_ql_rtc(block_data);
       break;
 
       case ZSF_I8049_AUDIO:
@@ -6582,6 +6599,14 @@ Byte fields:
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, qlconfblock,ZSF_QL_CONF, 2);
 
+
+    z80_byte qlrtcblock[4];
+    qlrtcblock[0]=ql_last_clock_set & 0xFF;
+    qlrtcblock[1]=(ql_last_clock_set >>8) & 0xFF;
+    qlrtcblock[2]=(ql_last_clock_set >>16) & 0xFF;
+    qlrtcblock[3]=(ql_last_clock_set >>24) & 0xFF;
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, qlrtcblock,ZSF_QL_RTC, 4);
 
 
 
