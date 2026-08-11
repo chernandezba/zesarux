@@ -7330,8 +7330,10 @@ void menu_hardware_rtc_settings(MENU_ITEM_PARAMETERS)
             "Use PC real-time clock","Usar reloj en tiempo real del PC","Usar rellotge en temps real del PC");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_use_pc_realtime_clock ? 'X' : ' ' ));
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_rtc_offset,NULL,"    Time zone [UTC%+03d:00]",
-            ql_zx8032_rtc_timezone);
+        if (ql_use_pc_realtime_clock) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_rtc_offset,NULL,"     Time zone [UTC%+03d:00]",
+                ql_zx8032_rtc_timezone);
+        }
 
 
         menu_add_item_menu_separator(array_menu_common);

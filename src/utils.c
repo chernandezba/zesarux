@@ -4805,6 +4805,7 @@ int util_write_configfile(void)
 
 
                                                     ADD_STRING_CONFIG,"--ql-rtc-timezone %d",ql_zx8032_rtc_timezone);
+    if (!ql_use_pc_realtime_clock)                  ADD_STRING_CONFIG,"--ql-no-rtc-pc");
 
 
 

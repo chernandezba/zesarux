@@ -1197,6 +1197,7 @@ printf (
         printf (
         "--tbblue-machine-id n           Set machine id n for Spectrum Next\n"
         "--ql-rtc-timezone n             Sets timezone offset for QL RTC\n"
+        "--ql-no-rtc-pc                  Do not use PC real-time clock\n"
 
 
 
@@ -4898,6 +4899,10 @@ int parse_cmdline_options(int desde_commandline)
                 else {
                     ql_zx8032_rtc_timezone=timezone;
                 }
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-no-rtc-pc")) {
+                ql_use_pc_realtime_clock=0;
             }
 
 
