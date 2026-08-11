@@ -44,6 +44,7 @@ Corregido ZX Vision:
 
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo
 Corregido el desactivado del menú de Búsqueda
+Corregido al salvar archivos bmp que no tienen ancho multiple de 4
 Corregido efecto de video Fade Out
 Corregida descarga de ZEsarUX extras desde menú Network
 Corregido al mostrar valores de botones de joystick real en ventana de Real Joystick information al usar SDL

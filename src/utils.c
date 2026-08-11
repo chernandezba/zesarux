@@ -24285,14 +24285,24 @@ void util_get_home_dir(char *homedir)
 
  #define UTIL_BMP_HEADER_SIZE (14+40)
 
+ static int util_bmp_get_line_size(int ancho)
+{
+    //En un BMP de 24 bits cada píxel ocupa 3 bytes, pero cada fila debe ocupar un número de bytes múltiplo de 4.
+    int tamanyo=ancho*3;
+
+    while (tamanyo % 4 != 0) tamanyo++;
+
+    return tamanyo;
+}
+
 int util_bmp_get_file_size(int ancho,int alto)
 {
-        //File size
-        //cabecera + ancho*alto*3 (*3 porque es 24 bit de color)
-        int file_size=(ancho*alto*3)+UTIL_BMP_HEADER_SIZE;
+    int tamanyo_linea=util_bmp_get_line_size(ancho);
 
-        return file_size;
+    return (tamanyo_linea * alto) + UTIL_BMP_HEADER_SIZE;
 }
+
+
 
 //Asignar memoria para un archivo bmp de 24 bits y meter algunos valores en cabecera
 z80_byte *util_bmp_new(int ancho,int alto)
@@ -24301,7 +24311,7 @@ z80_byte *util_bmp_new(int ancho,int alto)
         //http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm
 
 
-        int memoria_necesaria=(ancho*alto*3)+UTIL_BMP_HEADER_SIZE;
+        int memoria_necesaria=util_bmp_get_line_size(ancho)*alto+UTIL_BMP_HEADER_SIZE;
 
         z80_byte *puntero;
 
@@ -24328,7 +24338,7 @@ z80_byte *util_bmp_new(int ancho,int alto)
         file_size >>=8;
 
         //Unused
-        puntero[6]=puntero[7]=puntero[8]=puntero[9];
+        puntero[6]=puntero[7]=puntero[8]=puntero[9]=0;
 
         //Data offset
         puntero[10]=value_16_to_8l(UTIL_BMP_HEADER_SIZE);
@@ -24393,9 +24403,9 @@ void util_bmp_putpixel(z80_byte *puntero,int x,int y,int r,int g,int b)
         //Se dibuja de abajo a arriba
         int yfinal=(alto-1)-y;
 
-        int tamanyo_linea=ancho*3;
+        int tamanyo_linea=util_bmp_get_line_size(ancho);
         int offset_x=x*3;
-//TODO: determinados anchos de imagen parece que el offset de linea no siempre es este
+
         int offset=(yfinal*tamanyo_linea)+offset_x+UTIL_BMP_HEADER_SIZE;
 
         //Each 3-byte triplet in the bitmap array represents the relative intensities of blue, green, and red, respectively, for a pixel.

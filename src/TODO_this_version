@@ -169,10 +169,6 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
 
 
-
-ok *que ponga ruta mdv1 a la carpeta donde este el ejecutable que se carga
-->de momento solo me he encontrado el psion chess que carga como _exe aunque luego esta bloqueado. quiza algun tema de interrupciones o algo asi??
-
 ok-smartload de ql: que tambien muestre archivos "boot" y en  ese caso lo interprete como montar esa carpeta como mdv1 y reset+autoload (si esta autoload claro)
 ok ->faltaria que pudiera hacer "lrun mdv1_archivo" siendo archivo el seleccionado (algo "boot" o ".boot")
 ok ->que escriba el lrun mas rapido. a 20 ms. quiza alterar el valor siempre?
@@ -184,14 +180,12 @@ fives_exec funciona con exec mdv1_...., gunner tambien, qpuzzle (aunque va raro)
 Quizá habria que tener alguna herramienta para expandir cualquier mdv
 
 
-
 ok -opciones rtc ql
 *que se guarde en configuracion, setting config
 
--revisar paleta colores QL que sea correcta
 
 -Emulación CST Thor, Q40, Q60, Q68
 
 -Apps calculadora, reloj
 
-
+-cambiar relacion aspecto QL con realvideo activado genera segfault
