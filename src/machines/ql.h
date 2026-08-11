@@ -119,4 +119,6 @@ extern void ql_handle_boot_file(char *filename);
 
 extern char ql_nombre_autorun[];
 
+extern int ql_use_visionql_color_palette;
+
 #endif

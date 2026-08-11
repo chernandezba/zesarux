@@ -60,6 +60,8 @@ int ql_border_color=0;
 
 int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 
+int ql_use_visionql_color_palette=0;
+
 /*
 "The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
 Combined with the 2:1 ratio of the 512×256 resolution, the aspect ratio of the QL screen will then be 2/1.355 ≈ 1.476.

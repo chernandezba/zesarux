@@ -5312,6 +5312,7 @@ int util_write_configfile(void)
     if (screen_rgb_8bit)                            ADD_STRING_CONFIG,"--rgb8bit-color");
     if (video_dither_mode.v)                        ADD_STRING_CONFIG,"--dithering");
     if (spectrum_1648_use_real_palette.v)           ADD_STRING_CONFIG,"--realpalette");
+    if (ql_use_visionql_color_palette)              ADD_STRING_CONFIG,"--visionql-palette");
 
     if (tooltip_enabled.v==0)                       ADD_STRING_CONFIG,"--disabletooltips");
 

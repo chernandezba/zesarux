@@ -443,7 +443,7 @@ const int vdp9918_colortable_original[16]={
 
 
 //colores para QL
-const int ql_colortable_original[8]={
+int ql_colortable_original[8]={
 0x000000, //Negro
 0x0000ff, //Azul
 0xff0000, //Rojo
@@ -455,7 +455,81 @@ const int ql_colortable_original[8]={
 };
 
 //Paleta experimental Vision QL
-const int ql_colortable_visionql_original[8]={
+/*
+
+* QL colour palette approximation
+*
+* The QL generates 8 colours from three digital RGB signals. The
+* original Sinclair Vision-QL monitor was an RGB CRT intended for
+* the QL, so its displayed colours were determined by the CRT
+* phosphors rather than by the ideal RGB primaries used by modern
+* displays.
+*
+* The exact chromaticity data for the Vision-QL CRT have not been
+* found. Therefore this palette is a colourimetric approximation
+* based on measured P22 phosphor data from a contemporary CRT:
+*
+* NEC MultiSync C400, P22 phosphor
+*
+* CIE 1931 chromaticity coordinates:
+*
+* Red   x=0.610  y=0.350
+* Green x=0.307  y=0.595
+* Blue  x=0.150  y=0.065
+*
+* White point:
+*
+* x=0.280  y=0.315
+* approximately 9300 K
+*
+* Gamma:
+*
+* 2.2
+*
+* Source:
+* "Chromaticity Coordinates of Phosphors"
+* University of Central Florida
+* https://www.cs.ucf.edu/courses/cap5725/spring2003/Chromaticity.htm
+*
+* Method:
+*
+* 1. The CIE 1931 xy chromaticity coordinates of the three P22
+* phosphors were converted to XYZ tristimulus values, using
+* Y=1 for each primary.
+*
+* 2. The resulting RGB-to-XYZ matrix was scaled so that RGB=(1,1,1)
+* corresponds to the measured P22 white point (9300 K).
+*
+* 3. The resulting XYZ values were chromatically adapted to the
+* D65 white point used by sRGB.
+*
+* 4. XYZ was converted to linear sRGB.
+*
+* 5. The sRGB transfer function was applied and values outside the
+* sRGB gamut were clipped to the [0,255] range.
+*
+* The resulting 8-bit RGB values are therefore an approximation of
+* how the eight QL RGB combinations could be represented in sRGB
+* when using P22 CRT phosphor characteristics.
+*
+* This is NOT intended to reproduce the exact colours of an original
+* Vision-QL monitor, since the exact CRT tube characteristics,
+* analogue video amplifier levels, brightness/contrast settings and
+* phosphor measurements of the Vision-QL have not been found.
+*
+* QL logical colours:
+*
+* 0 BLACK
+* 1 BLUE
+* 2 RED
+* 3 MAGENTA
+* 4 GREEN
+* 5 CYAN
+* 6 YELLOW
+* 7 WHITE
+*/
+
+int ql_visionql_colortable_original[8]={
 0x000000, //Negro
 0x1C20FF, //Azul
 0xE12A00, //Rojo
@@ -465,6 +539,13 @@ const int ql_colortable_visionql_original[8]={
 0xFEFD00, //Amarillo
 0xFFFFFF  //Blanco
 };
+
+
+int *get_ql_color_palette(void)
+{
+    if (ql_use_visionql_color_palette) return ql_visionql_colortable_original;
+    else return ql_colortable_original;
+}
 
 
 //Tabla con colores para tema de GUI Solarized.
@@ -9691,8 +9772,9 @@ Bit 6 GRN1 most  significant bit of green.
     }
 
     //Colores QL
+    int *ql_palette=get_ql_color_palette();
     for (i=0;i<QL_TOTAL_PALETTE_COLOURS;i++) {
-        screen_set_colour_normal(QL_INDEX_FIRST_COLOR+i,ql_colortable_original[i]);
+        screen_set_colour_normal(QL_INDEX_FIRST_COLOR+i,ql_palette[i]);
     }
 
     //Colores Turbovision

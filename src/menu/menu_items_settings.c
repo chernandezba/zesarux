@@ -1528,6 +1528,12 @@ void menu_interface_real_1648_palette(MENU_ITEM_PARAMETERS)
     menu_interface_rgb_inverse_common();
 }
 
+void menu_interface_visionql_palette(MENU_ITEM_PARAMETERS)
+{
+    ql_use_visionql_color_palette ^=1;
+    menu_interface_rgb_inverse_common();
+}
+
 void menu_interface_video_dither_mode(MENU_ITEM_PARAMETERS)
 {
     video_dither_mode.v ^=1;
@@ -1581,6 +1587,13 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_colour_settings,"Use real Spectrum 16/48/+ colour palette");
             menu_add_item_menu_ayuda(array_menu_colour_settings,"Use real Spectrum 16/48/+ colour palette. "
                 "In fact, this palette is the same as a Spectrum issue 3, and almost the same as issue 1 and 2");
+        }
+
+        if (MACHINE_IS_QL) {
+            menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_visionql_palette,NULL,"[%c] Vision-QL palette",
+                (ql_use_visionql_color_palette ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_colour_settings,"Use Vision-QL color palette");
+            menu_add_item_menu_ayuda(array_menu_colour_settings,"Use Vision-QL color palette. Vision-QL was the official monitor for the Sinclair QL");
         }
 
         menu_add_item_menu_separator(array_menu_colour_settings);

@@ -1820,6 +1820,7 @@ printf("\n"
         "--rgb8bit-color                         Draw colours using RGB 8 bit, but the internal palette still uses RGB 24 bit, it's just pixel colors are drawn using 8 bit\n"
         "--dithering                             Only black and white colors with dithering, and requires zoom >=2\n"
         "--realpalette                           Use real Spectrum colour palette according to info by Richard Atkinson\n"
+        "--visionql-palette                      Use Vision-QL color palette on the Sinclair QL. Vision-QL was the official monitor for the Sinclair QL\n"
 
 #ifdef COMPILE_AA
         "--aaslow                                Use slow rendering on aalib\n"
@@ -7060,6 +7061,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--realpalette")) {
                                 spectrum_1648_use_real_palette.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--visionql-palette")) {
+                ql_use_visionql_color_palette=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--disabletooltips")) {
