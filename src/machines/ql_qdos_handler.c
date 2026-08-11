@@ -268,6 +268,9 @@ void ql_restore_d_registers(unsigned int *origen, int ultimo)
   if (ultimo>=7) m68k_set_reg(M68K_REG_D7,origen[7]);
 }
 
+
+unsigned int ql_last_clock_set=0;
+
 void core_ql_trap_one(void)
 {
 
@@ -309,6 +312,19 @@ void core_ql_trap_one(void)
 
       case 0x11:
         debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.IPCOM");
+      break;
+
+      case 0x13:
+        //debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.RCLCK");
+      break;
+
+      case 0x14:
+        //debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.SCLCK. D1=%02XH",m68k_get_reg(NULL,M68K_REG_D1));
+        ql_last_clock_set=m68k_get_reg(NULL,M68K_REG_D1);
+      break;
+
+      case 0x15:
+        //debug_printf (VERBOSE_PARANOID,"QDOS handler: Trap 1: MT.ACLCK");
       break;
 
       case 0x16:
