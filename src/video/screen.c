@@ -454,6 +454,18 @@ const int ql_colortable_original[8]={
 0xffffff  //Blanco
 };
 
+//Paleta experimental Vision QL
+const int ql_colortable_visionql_original[8]={
+0x000000, //Negro
+0x1C20FF, //Azul
+0xE12A00, //Rojo
+0xE237FF, //Magenta
+0x85FB00, //Verde
+0x88FCFF, //Cyan
+0xFEFD00, //Amarillo
+0xFFFFFF  //Blanco
+};
+
 
 //Tabla con colores para tema de GUI Solarized.
 /*

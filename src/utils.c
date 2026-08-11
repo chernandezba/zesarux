@@ -169,6 +169,7 @@
 #include "zxmmcplus.h"
 #include "enhanced_zx81_read.h"
 #include "tv.h"
+#include "ql_zx8302.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
@@ -4801,6 +4802,11 @@ int util_write_configfile(void)
     //TODO redefinekey
 
                                                     ADD_STRING_CONFIG,"--tbblue-machine-id %d",tbblue_machine_id);
+
+
+                                                    ADD_STRING_CONFIG,"--ql-rtc-timezone %d",ql_zx8032_rtc_timezone);
+
+
 
     if (recreated_zx_keyboard_support.v)	        ADD_STRING_CONFIG,"--recreatedzx");
     if (recreated_zx_keyboard_support_also_on_menu.v)     ADD_STRING_CONFIG,"--recreatedzx-also-on-menu");

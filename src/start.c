@@ -165,6 +165,8 @@
 #include "debug_nested_functions.h"
 #include "zxmmcplus.h"
 #include "tv.h"
+#include "ql_zx8302.h"
+
 
 
 #ifdef COMPILE_STDOUT
@@ -1194,6 +1196,7 @@ printf (
         "--kempstonmouse-sens n          Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
         printf (
         "--tbblue-machine-id n           Set machine id n for Spectrum Next\n"
+        "--ql-rtc-timezone n             Sets timezone offset for QL RTC\n"
 
 
 
@@ -4885,6 +4888,18 @@ int parse_cmdline_options(int desde_commandline)
                 tbblue_machine_id=parse_string_to_number(argv[puntero_parametro]);
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--ql-rtc-timezone")) {
+                siguiente_parametro_argumento();
+                int timezone=parse_string_to_number(argv[puntero_parametro]);
+                if (timezone<-12 || timezone >+14) {
+                    debug_printf (VERBOSE_ERR,"Invalid QL RTC timezone");
+                }
+                else {
+                    ql_zx8032_rtc_timezone=timezone;
+                }
+            }
+
+
             else if (!strcmp(argv[puntero_parametro],"--printertextfile")) {
                                 siguiente_parametro_argumento();
                                 zxprinter_enabled.v=1;
@@ -4925,7 +4940,7 @@ int parse_cmdline_options(int desde_commandline)
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0 || valor>1) {
-                       debug_printf (VERBOSE_ERR,"Invalid Keymap value\n");
+                       debug_printf (VERBOSE_ERR,"Invalid Keymap value");
 
                 }
                 else z88_cpc_keymap_type=valor;
