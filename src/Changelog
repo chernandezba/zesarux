@@ -46,7 +46,7 @@ Fixed ZX Vision:
 
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
 Fixed disabling Search menu
-Fixed saving bmp files with width not multiple of 4
+Fixed BMP saving for widths not divisible by 4
 Fixed Fade Out video effect
 Fixed downloading ZEsarUX extras from menu Network
 Fixed showing joystick button values on Real Joystick information window when using SDL

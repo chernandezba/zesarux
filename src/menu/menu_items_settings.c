@@ -10027,7 +10027,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_settings_display,"Changes aspect ratio");
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_ql_border_color,NULL,
-                "QL border color","QL color border","QL color boder");
+                "QL border color","QL color border","QL color border");
             menu_add_item_menu_sufijo_format(array_menu_settings_display," [%s]",spectrum_colour_names[ql_border_color]);
             menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
             menu_add_item_menu_tooltip(array_menu_settings_display,"Changes border color");
