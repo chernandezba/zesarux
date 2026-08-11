@@ -187,3 +187,6 @@ ok -opciones rtc ql
 -Emulación CST Thor, Q40, Q60, Q68
 
 -Apps calculadora, reloj
+
+
+"Use PC real-time clock"

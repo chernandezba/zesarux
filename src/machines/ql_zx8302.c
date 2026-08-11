@@ -337,6 +337,8 @@ int ql_zx8032_rtc_timezone=0;
 
 unsigned int ql_last_clock_set=0;
 
+int ql_use_pc_realtime_clock=1;
+
 void ql_rtc_second_timer(void)
 {
     ql_last_clock_set++;
@@ -377,23 +379,29 @@ moto_byte ql_zx8032_readbyte(unsigned int Address)
 * It gets reset to one of $0w0x0y0z, where w/x/y/z are small, typically 0.
             */
 
-            timer_seconds=timer_get_current_seconds();
+            if (ql_use_pc_realtime_clock) {
 
-            //En QL: Time starts at 00:00 1 January 1961
-            //En Unix, empieza en 1970
-            //Hay que sumar los segundos entre esas dos fechas
+                timer_seconds=timer_get_current_seconds();
 
-            //Son 283.996.800 segundos
-            timer_seconds += 283996800;
+                //En QL: Time starts at 00:00 1 January 1961
+                //En Unix, empieza en 1970
+                //Hay que sumar los segundos entre esas dos fechas
 
-            //Sumar zona horaria
-            int sumar_horas=ql_zx8032_rtc_timezone;
-            int sumar_segundos=sumar_horas*3600;
+                //Son 283.996.800 segundos
+                timer_seconds += 283996800;
 
-            timer_seconds +=sumar_segundos;
+                //Sumar zona horaria
+                int sumar_horas=ql_zx8032_rtc_timezone;
+                int sumar_segundos=sumar_horas*3600;
 
-            //Prueba no real RTC. Sacar del contador interno del ZX8302 en vez del reloj real del sistema operativo
-            //timer_seconds=ql_last_clock_set;
+                timer_seconds +=sumar_segundos;
+            }
+
+            else {
+
+                //Sacar del contador interno del ZX8302 en vez del reloj real del PC
+                timer_seconds=ql_last_clock_set;
+            }
 
             int offset_byte=Address-0x18000;
 

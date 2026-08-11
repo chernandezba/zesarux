@@ -7312,6 +7312,11 @@ void menu_hardware_rtc_offset(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced_dynamic("Time zone",&ql_zx8032_rtc_timezone,4,+1,-12,+14,0);
 }
 
+void menu_hardware_rtc_use_pc(MENU_ITEM_PARAMETERS)
+{
+    ql_use_pc_realtime_clock ^=1;
+}
+
 void menu_hardware_rtc_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -7321,8 +7326,11 @@ void menu_hardware_rtc_settings(MENU_ITEM_PARAMETERS)
 
     do {
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_rtc_offset,NULL,"    Time zone [UTC%+03d:00]",
-            //(ql_zx8032_rtc_timezone>=0 ? '+' : '-'),util_get_absolute(ql_zx8032_rtc_timezone));
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_rtc_use_pc,NULL,
+            "Use PC real-time clock","Usar reloj en tiempo real del PC","Usar rellotge en temps real del PC");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_use_pc_realtime_clock ? 'X' : ' ' ));
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_rtc_offset,NULL,"    Time zone [UTC%+03d:00]",
             ql_zx8032_rtc_timezone);
 
 

@@ -17,6 +17,7 @@ Improved Sinclair QL emulation:
 - Added Vision-QL color palette
 - Improved load: autogenerate lrun_ sentence, allow to run an exe file, allow to insert a folder as microdrive selecting a boot file or a basic file
 - Allow to send keystrokes (copy-paste or read from text file) to QL
+- Allow to use PC real-time clock or QL internal
 - Allow to change timezone for RTC
 
 Improved ZX Vision:

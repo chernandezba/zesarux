@@ -31,5 +31,6 @@ extern unsigned char ql_mc_stat;
 extern int ql_zx8032_rtc_timezone;
 extern unsigned int ql_last_clock_set;
 extern void ql_rtc_second_timer(void);
+extern int ql_use_pc_realtime_clock;
 
 #endif
