@@ -721,7 +721,7 @@ void ql_handle_boot_file(char *filename)
         util_get_file_no_directory(filename,nombre_boot);
         //Si no es boot automatico, meter nombre a cargar
         if (strcasecmp(nombre_boot,"boot")) {
-            printf("Autocargar %s\n",nombre_boot);
+            debug_printf(VERBOSE_INFO,"Autoload %s",nombre_boot);
 
             //Si archivo tiene . cambiar por "_"
             int i;

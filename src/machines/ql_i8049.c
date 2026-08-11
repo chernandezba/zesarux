@@ -505,7 +505,7 @@ void ql_ipc_write_ipc_teclado(void)
 
     //Si esta spool file activo, generar siguiente tecla
     if (send_text_as_keystrokes_is_playing() ) {
-        printf("Generar siguiente tecla QL\n");
+        //printf("Generar siguiente tecla QL\n");
         if (send_text_as_keystrokes_turbo_mode.v==0) {
             send_text_as_keystrokes_get_key();
         }
@@ -597,7 +597,7 @@ void ql_ipc_write_ipc_teclado(void)
             //printf ("------fila %d columna %d\n",fila,columna);
             unsigned char byte_tecla=((fila&7)<<3) | (columna&7);
 
-            printf("%d\n",byte_tecla);
+            //printf("%d\n",byte_tecla);
 
             ql_ipc_last_nibble_to_read[2]=(byte_tecla>>4)&15;
             ql_ipc_last_nibble_to_read[3]=(byte_tecla&15);

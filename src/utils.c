@@ -3480,7 +3480,7 @@ void send_text_as_keystrokes_simple(char *texto_entrada)
     strcpy(texto,texto_entrada);
     send_text_as_keystrokes_init(texto,longitud_asignar);
 
-    printf("Enviar keystrokes para [%s]\n",texto);
+    //printf("Enviar keystrokes para [%s]\n",texto);
 
     send_text_as_keystrokes_playing.v=1;
 
@@ -6265,7 +6265,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
         }
 
         if (MACHINE_IS_QL) {
-            printf("Convert numeros_letras etc for QL tecla=%d\n",tecla);
+            //printf("Convert numeros_letras etc for QL tecla=%d\n",tecla);
             puerto=ql_tabla_teclado_letras[indice].puerto;
             mascara=ql_tabla_teclado_letras[indice].mascara;
 
