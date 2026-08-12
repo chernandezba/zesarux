@@ -302,6 +302,8 @@ pc_intr equ     $18021  bits 4..0 set as pending level 2 interrupts
                 m68k_set_irq(2);
 
 
+                ql_qimi_handle_irq();
+
                 core_end_frame_check_zrcp_zeng_snap.v=1;
 
                 //snapshot en ram

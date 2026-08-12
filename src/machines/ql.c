@@ -108,9 +108,14 @@ int ql_get_maximum_ram_kb(void)
 
 
 
-int ql_qimi_mouse_enabled=1;
+int ql_qimi_mouse_enabled=0;
 
 int ql_qimi_irq_enabled=0;
+
+unsigned char ql_qimi_movement_register_114620=0;
+
+int ql_qimi_mouse_x_antes=0;
+int ql_qimi_mouse_y_antes=0;
 
 /*
 
@@ -151,8 +156,61 @@ void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
     if (Address==114622) ql_qimi_irq_enabled=1;
 }
 
+
+void ql_qimi_handle_irq(void)
+{
+    if (!ql_qimi_mouse_enabled) return;
+
+    if (!ql_qimi_irq_enabled) return;
+
+
+
+    ql_qimi_movement_register_114620=0;
+
+    int hay_movimiento=0;
+
+    if (mouse_x!=ql_qimi_mouse_x_antes) {
+
+        ql_qimi_movement_register_114620 |=4; //movimiento horizontal
+
+        if (mouse_x>ql_qimi_mouse_x_antes) ql_qimi_movement_register_114620 |=16; //derecha bit 4
+
+        //ql_qimi_movement_register_114620 |=32; //direccion arriba-abajo bit 5
+        //ql_qimi_movement_register_114620 |=1; //arriba
+
+        hay_movimiento=1;
+    }
+
+    if (mouse_y!=ql_qimi_mouse_y_antes) {
+
+        ql_qimi_movement_register_114620 |=32; //movimiento vertical
+
+        if (mouse_y<ql_qimi_mouse_y_antes) ql_qimi_movement_register_114620 |=1; //arriba
+
+        //ql_qimi_movement_register_114620 |=32; //direccion arriba-abajo bit 5
+        //ql_qimi_movement_register_114620 |=1; //arriba
+
+        hay_movimiento=1;
+    }
+
+    if (hay_movimiento) {
+            printf("enviada irq mouse\n");
+
+            //mouse
+            ql_pc_intr |=16;
+
+            m68k_set_irq(2);
+    }
+
+
+    ql_qimi_mouse_x_antes=mouse_x;
+    ql_qimi_mouse_y_antes=mouse_y;
+}
+
 unsigned char ql_qimi_readbyte(unsigned int Address)
 {
+
+
 
     if (Address==0x1BFBC || Address==0x1BFBE) {
         printf("QIMI read Address %X %d\n",Address,Address);
@@ -166,8 +224,10 @@ unsigned char ql_qimi_readbyte(unsigned int Address)
         }
         return return_value;
     }
+    else if (Address==114620) return ql_qimi_movement_register_114620;
     else if (Address==114622) ql_qimi_irq_enabled=1;
-    else return 255;
+
+    return 255;
 }
 
 
