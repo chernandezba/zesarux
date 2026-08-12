@@ -110,6 +110,8 @@ int ql_get_maximum_ram_kb(void)
 
 int ql_qimi_mouse_enabled=0;
 
+
+
 int ql_qimi_irq_enabled=0;
 
 unsigned char ql_qimi_movement_register_114620=0;
@@ -163,9 +165,9 @@ void ql_qimi_handle_irq(void)
 
     if (!ql_qimi_irq_enabled) return;
 
-
-
     ql_qimi_movement_register_114620=0;
+
+    if (zxvision_key_not_sent_emulated_mach()) return;
 
     int hay_movimiento=0;
 
