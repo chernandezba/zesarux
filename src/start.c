@@ -1198,8 +1198,10 @@ printf (
         "--tbblue-machine-id n           Set machine id n for Spectrum Next\n"
         "--ql-rtc-timezone n             Sets timezone offset for QL RTC\n"
         "--ql-no-rtc-pc                  Do not use PC real-time clock\n"
+        "--ql-qimi-mouse                 Enable QL QIMI mouse emulation\n"
+        "--ql-qimi-mouse-sensitivity n   Sets QL QIMI mouse sensitivity (1-%d)\n",QL_QIMI_MOUSE_MAX_SENSIBILITY);
 
-
+        printf (
 
         "\n"
         "\n"
@@ -4903,6 +4905,21 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--ql-no-rtc-pc")) {
                 ql_use_pc_realtime_clock=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-qimi-mouse")) {
+                ql_qimi_mouse_enabled=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-qimi-mouse-sensitivity")) {
+                siguiente_parametro_argumento();
+                int sens=parse_string_to_number(argv[puntero_parametro]);
+                if (sens<1 || sens>QL_QIMI_MOUSE_MAX_SENSIBILITY) {
+                    debug_printf(VERBOSE_ERR,"Invalid QL QIMI sensitivity value: %d",sens);
+                }
+                else {
+                    ql_qimi_mouse_sensibilidad=sens;
+                }
             }
 
 

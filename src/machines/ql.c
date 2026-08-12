@@ -203,6 +203,9 @@ void ql_qimi_handle_irq(int scanline)
 
         int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
         printf("division %d\n",factor_division);
+
+        //por si acaso, aunque esto no deberia pasar, evitar division por 0
+        if (!factor_division) factor_division=1;
         ql_qimi_delta_x_acumulado/=factor_division;
     }
 
@@ -231,6 +234,8 @@ void ql_qimi_handle_irq(int scanline)
 
         int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
         printf("division %d\n",factor_division);
+        //por si acaso, aunque esto no deberia pasar, evitar division por 0
+        if (!factor_division) factor_division=1;
         ql_qimi_delta_y_acumulado/=factor_division;
     }
 

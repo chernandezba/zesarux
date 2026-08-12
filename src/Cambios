@@ -15,6 +15,7 @@ Mejorada emulación de Sinclair QL:
 - Permitir cambiar color de border de QL
 - Mejorada la relación de aspecto de la pantalla del Sinclair QL. Los gráficos ahora reproducen la geometría del hardware original (1.476:1). Permitir también 4:3 y 1:1
 - Agregada paleta de colores de Vision-QL
+- Agregada emulación de Ratón QL QIMI
 - Mejorada la carga de QL: autogenerar sentencia lrun_, permitir ejecutar un archivo exe, permitir insertar una carpeta como microdrive seleccionando un archivo de boot o un archivo de basic
 - Permitir enviar pulsaciones de teclas (leer del portapapeles o leer de archivo de texto) a QL
 - Permitir usar reloj en tiempo real del PC o el interno del QL

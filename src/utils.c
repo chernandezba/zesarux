@@ -4807,6 +4807,8 @@ int util_write_configfile(void)
                                                     ADD_STRING_CONFIG,"--ql-rtc-timezone %d",ql_zx8032_rtc_timezone);
     if (!ql_use_pc_realtime_clock)                  ADD_STRING_CONFIG,"--ql-no-rtc-pc");
 
+    if (ql_qimi_mouse_enabled)                      ADD_STRING_CONFIG,"--ql-qimi-mouse");
+                                                    ADD_STRING_CONFIG,"--ql-qimi-mouse-sensitivity %d",ql_qimi_mouse_sensibilidad);
 
 
     if (recreated_zx_keyboard_support.v)	        ADD_STRING_CONFIG,"--recreatedzx");
