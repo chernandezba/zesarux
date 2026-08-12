@@ -341,7 +341,9 @@ int ql_use_pc_realtime_clock=1;
 
 void ql_rtc_second_timer(void)
 {
-    ql_rtc_seconds_counter++;
+    if (MACHINE_IS_QL) {
+        ql_rtc_seconds_counter++;
+    }
 }
 
 moto_byte ql_zx8032_readbyte(unsigned int Address)

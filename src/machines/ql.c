@@ -40,6 +40,7 @@
 #include "ula.h"
 #include "ql_qdos_handler.h"
 #include "autoselectoptions.h"
+#include "joystick.h"
 
 
 #if defined(__APPLE__)
@@ -104,9 +105,72 @@ int ql_get_maximum_ram_kb(void)
     return ((QL_MAXIMUM_MEM_LIMIT+1)/1024)-128;
 }
 
+
+
+
+int ql_qimi_mouse_enabled=0;
+
+/*
+
+QIMI Mouse
+
+QIMI Mouse Interface document
+
+Updated: 26.04.00
+
+Dave Westbury has kindly supplied some programming information and register details for the QIMI mouse interface. His notes are reproduced below.
+
+Circuit Diagram - Click here to download the circuit diagram (a 512x256 QL _PIC graphics file)
+
+QIMI interrupts are enabled by reading or writing to address 114622
+
+Mouse buttons read from address 114588:
+bit 4 = right button
+bit 5 = left button
+0 = button on.
+
+Movement read from address 114620:
+bit 0 = up/down direction
+bit 2 = right/left movement
+bit 4 = right/left direction
+bit 5 = up/down movement
+0=left & down, 1=right & up.
+
+
+*/
+
+void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
+{
+}
+
+unsigned char ql_qimi_readbyte(unsigned int Address)
+{
+    if (Address==114588) {
+        unsigned char return_value=255;
+        if (!zxvision_key_not_sent_emulated_mach() ) {
+            if (mouse_left) return_value -=32;
+            if (mouse_right) return_value -=16;
+        }
+        return return_value;
+    }
+    else return 255;
+}
+
+
 void ql_writebyte(unsigned int Address, unsigned char Data)
 {
     Address %=(ql_mem_limit+1);
+
+    //QIMI 114622=0x1BFBE
+    //QIMI 114620=0x1BFBC)
+    //QIMI 114588=0x1BF9C)
+    if (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE) {
+        printf("QIMI write Address %XH %d value %02X\n",Address,Address,Data);
+        if (ql_qimi_mouse_enabled) {
+            ql_qimi_writebyte(Address,Data);
+            return;
+        }
+    }
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
         ql_zx8032_write(Address,Data);
@@ -141,6 +205,16 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
 unsigned char ql_readbyte(unsigned int Address)
 {
     Address %=(ql_mem_limit+1);
+
+    //QIMI 114622=0x1BFBE
+    //QIMI 114620=0x1BFBC)
+    //QIMI 114588=0x1BF9C)
+    if (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE) {
+        printf("QIMI read Address %X %d\n",Address,Address);
+        if (ql_qimi_mouse_enabled) {
+            return ql_qimi_readbyte(Address);
+        }
+    }
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
 

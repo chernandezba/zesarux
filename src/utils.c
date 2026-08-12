@@ -8316,7 +8316,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
 
                             //Si no está ni kempston ni lightgun, se abre menu pulsando en cualquier sitio
-                            if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
+                            if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled==0) {
                                 abrir_menu=1;
                             }
 
@@ -8386,7 +8386,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                 if (si_menu_mouse_activado()) {
                     //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
                     if (menu_abierto==0) {
-                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
+                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled==0) {
                             if (mouse_menu_ignore_click_open.v==0) {
                                 menu_fire_event_open_menu();
 
