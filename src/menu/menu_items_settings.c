@@ -8484,6 +8484,11 @@ void menu_hardware_settings_dma(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_qimi_mouse(MENU_ITEM_PARAMETERS)
+{
+    ql_qimi_mouse_enabled ^=1;
+}
+
 void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -8491,16 +8496,26 @@ void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
     int retorno_menu;
     do {
 
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,"");
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se",(kempston_mouse_emulation.v==1 ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_common,'s');
+        if (MACHINE_IS_SPECTRUM) {
 
-        if (kempston_mouse_emulation.v) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,
-                "Mouse Sensitivity");
-            menu_add_item_menu_sufijo_format(array_menu_common," [%2d]",kempston_mouse_factor_sensibilidad);
-            menu_add_item_menu_prefijo_format(array_menu_common,"    ");
-            menu_add_item_menu_es_avanzado(array_menu_common);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se",(kempston_mouse_emulation.v==1 ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_common,'s');
+
+            if (kempston_mouse_emulation.v) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,
+                    "Mouse Sensitivity");
+                menu_add_item_menu_sufijo_format(array_menu_common," [%2d]",kempston_mouse_factor_sensibilidad);
+                menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+            }
+        }
+
+        if (MACHINE_IS_QL) {
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_qimi_mouse,NULL,"[%c] QIMI Mou~~se",(ql_qimi_mouse_enabled ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_common,'s');
         }
 
 
@@ -8513,7 +8528,7 @@ void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
             "Main Menu-> Settings-> Hardware-> Mouse","Menú Principal-> Opciones-> Hardware-> Mouse","Menú Principal-> Opcions-> Hardware-> Mouse");
 
         retorno_menu=menu_dibuja_menu(&hardware_settings_mouse_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Mouse Settings","Opciones Mouse","Opciones Mouse" );
+            "Mouse Settings","Opciones Mouse","Opcions Mouse" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -8709,7 +8724,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (MACHINE_IS_SPECTRUM) {
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_QL) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_mouse,NULL,
                 "Mouse","Mouse","Mouse");
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
