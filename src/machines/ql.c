@@ -29,6 +29,7 @@
 #include "m68k.h"
 #include "debug.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "zxvision.h"
 #include "operaciones.h"
 #include "screen.h"
@@ -110,7 +111,10 @@ int ql_get_maximum_ram_kb(void)
 //Si la emulacion esta habilitada
 int ql_qimi_mouse_enabled=0;
 
-//mayor numero, menor sensibilidad
+
+
+//mayor numero, mayor sensibilidad
+//Va desde 1 hasta QL_QIMI_MOUSE_MAX_SENSIBILITY
 int ql_qimi_mouse_sensibilidad=1;
 
 int ql_qimi_irq_enabled=0;
@@ -172,8 +176,8 @@ void ql_qimi_handle_irq(int scanline)
 
     if (!ql_qimi_irq_enabled) return;
 
-    //if (scanline % (15*ql_qimi_mouse_sensibilidad)) return;
-
+    //enviar IRQ como maximo cada 15 scanlines
+    //lo minimo para que por ejemplo qpac2 no se cuelgue es cada 8 scanlines. con 7 o menos se cuelga
     if (scanline % 15) return;
 
     ql_qimi_movement_register_114620=0;
@@ -183,6 +187,21 @@ void ql_qimi_handle_irq(int scanline)
     int hay_movimiento=0;
 
     int delta_x=mouse_x-ql_qimi_mouse_x_antes;
+
+    //acumular desplazamientos para que se mueva mas rapidamente
+    if (ql_qimi_delta_x_acumulado) {
+        delta_x=ql_qimi_delta_x_acumulado;
+        if (ql_qimi_delta_x_acumulado>0) ql_qimi_delta_x_acumulado--;
+        else if (ql_qimi_delta_x_acumulado<0) ql_qimi_delta_x_acumulado++;
+    }
+
+    else {
+        ql_qimi_delta_x_acumulado=delta_x;
+
+        int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
+        printf("division %d\n",factor_division);
+        ql_qimi_delta_x_acumulado/=factor_division;
+    }
 
     if (delta_x) {
 
@@ -197,6 +216,21 @@ void ql_qimi_handle_irq(int scanline)
 
     int delta_y=mouse_y-ql_qimi_mouse_y_antes;
 
+    //acumular desplazamientos para que se mueva mas rapidamente
+    if (ql_qimi_delta_y_acumulado) {
+        delta_y=ql_qimi_delta_y_acumulado;
+        if (ql_qimi_delta_y_acumulado>0) ql_qimi_delta_y_acumulado--;
+        else if (ql_qimi_delta_y_acumulado<0) ql_qimi_delta_y_acumulado++;
+    }
+
+    else {
+        ql_qimi_delta_y_acumulado=delta_y;
+
+        int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
+        printf("division %d\n",factor_division);
+        ql_qimi_delta_y_acumulado/=factor_division;
+    }
+
     if (delta_y) {
 
         ql_qimi_movement_register_114620 |=32; //movimiento vertical
@@ -208,7 +242,7 @@ void ql_qimi_handle_irq(int scanline)
     }
 
     if (hay_movimiento) {
-        printf("hay movimiento. enviada irq mouse\n");
+        //printf("hay movimiento. enviada irq mouse\n");
 
         //mouse
         ql_pc_intr |=16;
@@ -217,7 +251,7 @@ void ql_qimi_handle_irq(int scanline)
     }
 
     else {
-        printf("NO hay movimiento\n");
+        //printf("NO hay movimiento\n");
     }
 
 

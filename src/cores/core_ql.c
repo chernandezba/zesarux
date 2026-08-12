@@ -221,12 +221,6 @@ void cpu_core_loop_ql(void)
             audio_send_mono_sample(audio_valor_enviar_sonido);
 
 
-            //cada X scanlines examinar el mouse
-            //reducir esto puede aumentar la sensibilidad
-            //5 mal
-            //6 mal
-            //8 ok
-            //7 ok
             ql_qimi_handle_irq(t_scanline);
 
             ql_audio_next_cycle();

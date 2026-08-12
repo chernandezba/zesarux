@@ -1619,7 +1619,7 @@ zxuno.o: machines/zxuno.c machines/zxuno.h cpu.h debug.h contend.h mem128.h util
 #ql.o: 68000.c 68000_debug.c op68kadd.c op68karith.c op68ksub.c op68klogop.c op68kmisc.c op68kmove.c op68kshift.c 68000_additional.c machines/ql.c
 #	\$(CC) \$(CFLAGS) -c 68000.c 68000_debug.c op68kadd.c op68karith.c op68ksub.c op68klogop.c op68kmisc.c op68kmove.c op68kshift.c 68000_additional.c machines/ql.c
 
-ql.o: machines/ql.c machines/ql.h debug.h cpus/m68k.h utils.h zxvision/zxvision.h operaciones.h settings.h machines/ql_i8049.h machines/ql_zx8302.h compileoptions.h ula.h machines/ql_qdos_handler.h autoselectoptions.h joystick.h
+ql.o: machines/ql.c machines/ql.h debug.h cpus/m68k.h utils.h zxvision/zxvision.h operaciones.h settings.h machines/ql_i8049.h machines/ql_zx8302.h compileoptions.h ula.h machines/ql_qdos_handler.h autoselectoptions.h joystick.h utils_math.h
 	\$(CC) \$(CFLAGS) -c machines/ql.c
 
 ql_qdos_handler.o: machines/ql_qdos_handler.c machines/ql_qdos_handler.h machines/ql.h debug.h cpus/m68k.h utils.h zxvision/zxvision.h operaciones.h settings.h machines/ql_i8049.h machines/ql_zx8302.h menu/menu_items.h timer.h

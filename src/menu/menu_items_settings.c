@@ -8492,7 +8492,7 @@ void menu_hardware_qimi_mouse(MENU_ITEM_PARAMETERS)
 void menu_hardware_qimi_mouse_sensibilidad(MENU_ITEM_PARAMETERS)
 {
     ql_qimi_mouse_sensibilidad++;
-    if (ql_qimi_mouse_sensibilidad>5) ql_qimi_mouse_sensibilidad=1;
+    if (ql_qimi_mouse_sensibilidad>QL_QIMI_MOUSE_MAX_SENSIBILITY) ql_qimi_mouse_sensibilidad=1;
 }
 
 
