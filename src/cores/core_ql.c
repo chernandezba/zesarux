@@ -221,7 +221,13 @@ void cpu_core_loop_ql(void)
             audio_send_mono_sample(audio_valor_enviar_sonido);
 
 
-            //ql_qimi_handle_irq();
+            //cada X scanlines examinar el mouse
+            //reducir esto puede aumentar la sensibilidad
+            //5 mal
+            //6 mal
+            //8 ok
+            //7 ok
+            if ((t_scanline % 15)==0) ql_qimi_handle_irq();
 
             ql_audio_next_cycle();
 
@@ -302,7 +308,7 @@ pc_intr equ     $18021  bits 4..0 set as pending level 2 interrupts
                 m68k_set_irq(2);
 
 
-                ql_qimi_handle_irq();
+                //ql_qimi_handle_irq();
 
                 core_end_frame_check_zrcp_zeng_snap.v=1;
 
