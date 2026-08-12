@@ -8489,6 +8489,13 @@ void menu_hardware_qimi_mouse(MENU_ITEM_PARAMETERS)
     ql_qimi_mouse_enabled ^=1;
 }
 
+void menu_hardware_qimi_mouse_sensibilidad(MENU_ITEM_PARAMETERS)
+{
+    ql_qimi_mouse_sensibilidad++;
+    if (ql_qimi_mouse_sensibilidad>5) ql_qimi_mouse_sensibilidad=1;
+}
+
+
 void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -8516,6 +8523,15 @@ void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_qimi_mouse,NULL,"[%c] QIMI Mou~~se",(ql_qimi_mouse_enabled ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_common,'s');
+
+            if (ql_qimi_mouse_enabled) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_qimi_mouse_sensibilidad,NULL,
+                    "Mouse Sensitivity");
+                menu_add_item_menu_sufijo_format(array_menu_common," [%2d]",ql_qimi_mouse_sensibilidad);
+                menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+            }
+
         }
 
 

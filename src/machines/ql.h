@@ -125,6 +125,8 @@ extern int ql_qimi_mouse_enabled;
 
 extern void ql_qimi_reset(void);
 
-extern void ql_qimi_handle_irq(void);
+extern void ql_qimi_handle_irq(int scanline);
+
+extern int ql_qimi_mouse_sensibilidad;
 
 #endif

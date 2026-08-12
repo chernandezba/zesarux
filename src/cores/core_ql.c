@@ -227,7 +227,7 @@ void cpu_core_loop_ql(void)
             //6 mal
             //8 ok
             //7 ok
-            if ((t_scanline % 15)==0) ql_qimi_handle_irq();
+            ql_qimi_handle_irq(t_scanline);
 
             ql_audio_next_cycle();
 

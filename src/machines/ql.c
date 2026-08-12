@@ -110,7 +110,8 @@ int ql_get_maximum_ram_kb(void)
 //Si la emulacion esta habilitada
 int ql_qimi_mouse_enabled=0;
 
-
+//mayor numero, menor sensibilidad
+int ql_qimi_mouse_sensibilidad=1;
 
 int ql_qimi_irq_enabled=0;
 
@@ -118,6 +119,9 @@ unsigned char ql_qimi_movement_register_114620=0;
 
 int ql_qimi_mouse_x_antes=0;
 int ql_qimi_mouse_y_antes=0;
+
+int ql_qimi_delta_x_acumulado=0;
+int ql_qimi_delta_y_acumulado=0;
 
 /*
 
@@ -162,11 +166,15 @@ void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
 }
 
 
-void ql_qimi_handle_irq(void)
+void ql_qimi_handle_irq(int scanline)
 {
     if (!ql_qimi_mouse_enabled) return;
 
     if (!ql_qimi_irq_enabled) return;
+
+    //if (scanline % (15*ql_qimi_mouse_sensibilidad)) return;
+
+    if (scanline % 15) return;
 
     ql_qimi_movement_register_114620=0;
 
@@ -174,33 +182,42 @@ void ql_qimi_handle_irq(void)
 
     int hay_movimiento=0;
 
-    if (mouse_x!=ql_qimi_mouse_x_antes) {
+    int delta_x=mouse_x-ql_qimi_mouse_x_antes;
+
+    if (delta_x) {
 
         ql_qimi_movement_register_114620 |=4; //movimiento horizontal
 
-        if (mouse_x>ql_qimi_mouse_x_antes) ql_qimi_movement_register_114620 |=16; //derecha
+
+        if (delta_x>0) ql_qimi_movement_register_114620 |=16; //derecha
 
 
         hay_movimiento=1;
     }
 
-    if (mouse_y!=ql_qimi_mouse_y_antes) {
+    int delta_y=mouse_y-ql_qimi_mouse_y_antes;
+
+    if (delta_y) {
 
         ql_qimi_movement_register_114620 |=32; //movimiento vertical
 
-        if (mouse_y<ql_qimi_mouse_y_antes) ql_qimi_movement_register_114620 |=1; //arriba
+        if (delta_y<0) ql_qimi_movement_register_114620 |=1; //arriba
 
 
         hay_movimiento=1;
     }
 
     if (hay_movimiento) {
-            printf("enviada irq mouse\n");
+        printf("hay movimiento. enviada irq mouse\n");
 
-            //mouse
-            ql_pc_intr |=16;
+        //mouse
+        ql_pc_intr |=16;
 
-            m68k_set_irq(2);
+        m68k_set_irq(2);
+    }
+
+    else {
+        printf("NO hay movimiento\n");
     }
 
 
@@ -214,7 +231,7 @@ unsigned char ql_qimi_readbyte(unsigned int Address)
 
 
     if (Address==0x1BFBC || Address==0x1BFBE) {
-        printf("QIMI read Address %X %d\n",Address,Address);
+        //printf("QIMI read Address %X %d\n",Address,Address);
     }
 
     if (Address==114588) {
