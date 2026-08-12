@@ -108,7 +108,9 @@ int ql_get_maximum_ram_kb(void)
 
 
 
-int ql_qimi_mouse_enabled=0;
+int ql_qimi_mouse_enabled=1;
+
+int ql_qimi_irq_enabled=0;
 
 /*
 
@@ -139,12 +141,23 @@ bit 5 = up/down movement
 
 */
 
+void ql_qimi_reset(void)
+{
+    ql_qimi_irq_enabled=0;
+}
+
 void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
 {
+    if (Address==114622) ql_qimi_irq_enabled=1;
 }
 
 unsigned char ql_qimi_readbyte(unsigned int Address)
 {
+
+    if (Address==0x1BFBC || Address==0x1BFBE) {
+        printf("QIMI read Address %X %d\n",Address,Address);
+    }
+
     if (Address==114588) {
         unsigned char return_value=255;
         if (!zxvision_key_not_sent_emulated_mach() ) {
@@ -153,6 +166,7 @@ unsigned char ql_qimi_readbyte(unsigned int Address)
         }
         return return_value;
     }
+    else if (Address==114622) ql_qimi_irq_enabled=1;
     else return 255;
 }
 
@@ -164,12 +178,10 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
     //QIMI 114622=0x1BFBE
     //QIMI 114620=0x1BFBC)
     //QIMI 114588=0x1BF9C)
-    if (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE) {
+    if (ql_qimi_mouse_enabled && (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE)) {
         printf("QIMI write Address %XH %d value %02X\n",Address,Address,Data);
-        if (ql_qimi_mouse_enabled) {
-            ql_qimi_writebyte(Address,Data);
-            return;
-        }
+        ql_qimi_writebyte(Address,Data);
+        return;
     }
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
@@ -209,11 +221,8 @@ unsigned char ql_readbyte(unsigned int Address)
     //QIMI 114622=0x1BFBE
     //QIMI 114620=0x1BFBC)
     //QIMI 114588=0x1BF9C)
-    if (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE) {
-        printf("QIMI read Address %X %d\n",Address,Address);
-        if (ql_qimi_mouse_enabled) {
-            return ql_qimi_readbyte(Address);
-        }
+    if (ql_qimi_mouse_enabled && (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE)) {
+        return ql_qimi_readbyte(Address);
     }
 
     if (Address>=0x18000 && Address<=0x1BFFF) {

@@ -123,4 +123,6 @@ extern int ql_use_visionql_color_palette;
 
 extern int ql_qimi_mouse_enabled;
 
+extern void ql_qimi_reset(void);
+
 #endif

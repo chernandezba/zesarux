@@ -1270,6 +1270,8 @@ util_stats_init();
         ql_ipc_reset();
         ql_stop_sound();
         qltraps_init_fopen_files_array();
+
+        ql_qimi_reset();
     }
 
     if (MACHINE_IS_MK14) {
