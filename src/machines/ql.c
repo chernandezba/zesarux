@@ -186,7 +186,10 @@ void ql_qimi_handle_irq(int scanline)
 
     int hay_movimiento=0;
 
-    int delta_x=mouse_x-ql_qimi_mouse_x_antes;
+    int raton_x_pos=mouse_x/zoom_x;
+    int raton_y_pos=mouse_y/zoom_y;
+
+    int delta_x=raton_x_pos-ql_qimi_mouse_x_antes;
 
     //acumular desplazamientos para que se mueva mas rapidamente
     if (ql_qimi_delta_x_acumulado) {
@@ -214,7 +217,7 @@ void ql_qimi_handle_irq(int scanline)
         hay_movimiento=1;
     }
 
-    int delta_y=mouse_y-ql_qimi_mouse_y_antes;
+    int delta_y=raton_y_pos-ql_qimi_mouse_y_antes;
 
     //acumular desplazamientos para que se mueva mas rapidamente
     if (ql_qimi_delta_y_acumulado) {
@@ -255,8 +258,8 @@ void ql_qimi_handle_irq(int scanline)
     }
 
 
-    ql_qimi_mouse_x_antes=mouse_x;
-    ql_qimi_mouse_y_antes=mouse_y;
+    ql_qimi_mouse_x_antes=raton_x_pos;
+    ql_qimi_mouse_y_antes=raton_y_pos;
 }
 
 unsigned char ql_qimi_readbyte(unsigned int Address)
