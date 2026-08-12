@@ -8491,8 +8491,8 @@ void menu_hardware_qimi_mouse(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_qimi_mouse_sensibilidad(MENU_ITEM_PARAMETERS)
 {
-    ql_qimi_mouse_sensibilidad++;
-    if (ql_qimi_mouse_sensibilidad>QL_QIMI_MOUSE_MAX_SENSIBILITY) ql_qimi_mouse_sensibilidad=1;
+    menu_ventana_scanf_numero_enhanced_default_dynamic("Sensitivity",&ql_qimi_mouse_sensibilidad,3,+1,1,QL_QIMI_MOUSE_MAX_SENSIBILITY,0,1);
+
 }
 
 

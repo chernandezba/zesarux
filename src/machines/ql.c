@@ -108,7 +108,7 @@ int ql_get_maximum_ram_kb(void)
 
 
 
-//Si la emulacion esta habilitada
+//Si la emulacion de QIMI Mouse esta habilitada
 int ql_qimi_mouse_enabled=0;
 
 
@@ -128,8 +128,6 @@ int ql_qimi_delta_x_acumulado=0;
 int ql_qimi_delta_y_acumulado=0;
 
 /*
-
-QIMI Mouse
 
 QIMI Mouse Interface document
 
@@ -191,6 +189,13 @@ void ql_qimi_handle_irq(int scanline)
 
     int delta_x=raton_x_pos-ql_qimi_mouse_x_antes;
 
+    //Para el ajuste de sensibilidad
+    int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
+    //printf("division %d\n",factor_division);
+
+    //por si acaso, aunque esto no deberia pasar, evitar division por 0
+    if (!factor_division) factor_division=1;
+
     //acumular desplazamientos para que se mueva mas rapidamente
     if (ql_qimi_delta_x_acumulado) {
         delta_x=ql_qimi_delta_x_acumulado;
@@ -199,24 +204,12 @@ void ql_qimi_handle_irq(int scanline)
     }
 
     else {
-        ql_qimi_delta_x_acumulado=delta_x;
-
-        int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
-        printf("division %d\n",factor_division);
-
-        //por si acaso, aunque esto no deberia pasar, evitar division por 0
-        if (!factor_division) factor_division=1;
-        ql_qimi_delta_x_acumulado/=factor_division;
+        ql_qimi_delta_x_acumulado=delta_x/factor_division;
     }
 
     if (delta_x) {
-
         ql_qimi_movement_register_114620 |=4; //movimiento horizontal
-
-
         if (delta_x>0) ql_qimi_movement_register_114620 |=16; //derecha
-
-
         hay_movimiento=1;
     }
 
@@ -230,22 +223,12 @@ void ql_qimi_handle_irq(int scanline)
     }
 
     else {
-        ql_qimi_delta_y_acumulado=delta_y;
-
-        int factor_division=QL_QIMI_MOUSE_MAX_SENSIBILITY+1-ql_qimi_mouse_sensibilidad;
-        printf("division %d\n",factor_division);
-        //por si acaso, aunque esto no deberia pasar, evitar division por 0
-        if (!factor_division) factor_division=1;
-        ql_qimi_delta_y_acumulado/=factor_division;
+        ql_qimi_delta_y_acumulado=delta_y/factor_division;
     }
 
     if (delta_y) {
-
         ql_qimi_movement_register_114620 |=32; //movimiento vertical
-
         if (delta_y<0) ql_qimi_movement_register_114620 |=1; //arriba
-
-
         hay_movimiento=1;
     }
 

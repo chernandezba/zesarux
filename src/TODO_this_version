@@ -189,3 +189,6 @@ ok *setting por linea comandos/config file
 ok *que lea movimiento
 ok *lee botones
 ok *sensibilidad
+
+
+-poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
