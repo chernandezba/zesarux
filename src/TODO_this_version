@@ -186,5 +186,6 @@ Quizá habria que tener alguna herramienta para expandir cualquier mdv
 -QIMI ql mouse
 *setting en menu.
 *setting por linea comandos/config file
-*que lea movimiento
+ok *que lea movimiento
 ok *lee botones
+*sensibilidad

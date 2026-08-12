@@ -107,7 +107,7 @@ int ql_get_maximum_ram_kb(void)
 
 
 
-
+//Si la emulacion esta habilitada
 int ql_qimi_mouse_enabled=0;
 
 
@@ -155,7 +155,10 @@ void ql_qimi_reset(void)
 
 void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
 {
-    if (Address==114622) ql_qimi_irq_enabled=1;
+    if (Address==114622) {
+        printf("Enabled IRQ\n");
+        ql_qimi_irq_enabled=1;
+    }
 }
 
 
@@ -175,10 +178,8 @@ void ql_qimi_handle_irq(void)
 
         ql_qimi_movement_register_114620 |=4; //movimiento horizontal
 
-        if (mouse_x>ql_qimi_mouse_x_antes) ql_qimi_movement_register_114620 |=16; //derecha bit 4
+        if (mouse_x>ql_qimi_mouse_x_antes) ql_qimi_movement_register_114620 |=16; //derecha
 
-        //ql_qimi_movement_register_114620 |=32; //direccion arriba-abajo bit 5
-        //ql_qimi_movement_register_114620 |=1; //arriba
 
         hay_movimiento=1;
     }
@@ -189,8 +190,6 @@ void ql_qimi_handle_irq(void)
 
         if (mouse_y<ql_qimi_mouse_y_antes) ql_qimi_movement_register_114620 |=1; //arriba
 
-        //ql_qimi_movement_register_114620 |=32; //direccion arriba-abajo bit 5
-        //ql_qimi_movement_register_114620 |=1; //arriba
 
         hay_movimiento=1;
     }

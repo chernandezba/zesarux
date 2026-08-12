@@ -221,7 +221,7 @@ void cpu_core_loop_ql(void)
             audio_send_mono_sample(audio_valor_enviar_sonido);
 
 
-
+            //ql_qimi_handle_irq();
 
             ql_audio_next_cycle();
 
