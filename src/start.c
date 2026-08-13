@@ -1671,6 +1671,9 @@ screen_effect_print_names();
         "--ql-flp1-read-only             Mark flp1 as read only\n"
         "--ql-win1-no-alias-mdv1         Do not handle win1_ device as an alias to mdv1_\n"
         "--ql-flp1-dir-copied-mdv1       flp1 path parameter is copied from mdv1 path parameter\n"
+        "--ql-data-size-headerless-exe n Data size for headerless exe\n"
+
+
 
 
         "\n"
@@ -6128,6 +6131,20 @@ int parse_cmdline_options(int desde_commandline)
                         else if (!strcmp(argv[puntero_parametro],"--ide-write-protection")) {
                 ide_write_protection.v=1;
             }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-data-size-headerless-exe")) {
+                siguiente_parametro_argumento();
+
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<0 || valor>131072) {
+                    debug_printf(VERBOSE_ERR,"Invalid value for QL data size for headerless exe: %d",valor);
+                }
+                else {
+                    ql_task_default_data_size=valor;
+                }
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--ide-no-persistent-writes")) {
                 ide_persistent_writes.v=0;

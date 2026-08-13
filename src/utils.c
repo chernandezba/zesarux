@@ -5014,6 +5014,9 @@ int util_write_configfile(void)
 
     if (ql_flp1_follow_mdv1.v)                      ADD_STRING_CONFIG,"--ql-flp1-dir-copied-mdv1");
 
+                                                    ADD_STRING_CONFIG,"--ql-data-size-headerless-exe %d",ql_task_default_data_size);
+
+
     if (dandanator_rom_file_name[0]!=0)             ADD_STRING_CONFIG,"--dandanator-rom \"%s\"",dandanator_rom_file_name);
     if (dandanator_enabled.v)                       ADD_STRING_CONFIG,"--enable-dandanator");
     if (kartusho_rom_file_name[0]!=0)               ADD_STRING_CONFIG,"--kartusho-rom \"%s\"",kartusho_rom_file_name);

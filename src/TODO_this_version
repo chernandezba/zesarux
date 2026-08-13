@@ -195,5 +195,6 @@ ok *sensibilidad
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 
 -carga roms adicionales
-*en c0000
-*parametros config
+ok *en c0000
+ok *parametros config
+*icono dispositivo rom

@@ -54,6 +54,8 @@
 //file error
 #define QDOS_ERROR_CODE_FE -16
 
+#define QL_TASK_DEFAULT_DATA_SIZE_DEFAULT 8192
+
 extern void ql_rom_traps(void);
 
 extern char ql_mdv1_root_dir[];

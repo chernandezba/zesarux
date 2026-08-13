@@ -59,7 +59,7 @@ int ql_microdrive_floppy_emulation=0;
 
 
 //Parametro que deducimos cuando el archivo ejecutable no tiene cabecera
-moto_long ql_task_default_data_size=8192;
+moto_long ql_task_default_data_size=QL_TASK_DEFAULT_DATA_SIZE_DEFAULT;
 
 int ql_device_mdv1_readonly=0;
 int ql_device_mdv2_readonly=0;
@@ -688,7 +688,7 @@ https://qlforum.co.uk/viewtopic.php?t=113
 
   */
 
-  debug_printf(VERBOSE_DEBUG,"QDOS handler: Returning header for file on address %05XH",destino);
+  debug_printf(VERBOSE_DEBUG,"QDOS handler: Returning header for file on address %05XH channel id %d file [%s]",destino,indice_canal,qltraps_fopen_files[indice_canal].ql_file_name);
 
   //Inicializamos cabecera a 0
   int i;
