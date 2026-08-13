@@ -3149,14 +3149,7 @@ void set_machine(char *romfile)
 
 
 
-//Punto de entrada para error al cargar rom de cualquier modelo de spectrum, dado que se lee longitud de la rom diferente de la esperada
-//panic
-//void rom_load_cpu_panic(char *romfilename,int leidos)
-//{
-//	debug_printf(VERBOSE_ERR,"Error loading ROM");
-//}
-
-
+//Punto de entrada para error al cargar rom de cualquier maquina, dado que se lee longitud de la rom diferente de la esperada
 void rom_load(char *romfilename)
 {
     FILE *ptr_romfile;
