@@ -2459,29 +2459,59 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
-char *bitmap_lowericon_ext_desktop_ql_external_rom[EXT_DESKTOP_BUTTONS_ANCHO]={
+char *bitmap_lowericon_ext_desktop_ql_external_rom_active[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-    "wwwwwwwwwwwwwwwwwwwwwwwwww",
-    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWxxWWWWWWyyyyyWWccWWWxxWw",
-    "wWxxWWWWWWyxxxyWWccWWWxxWw",
-    "wWWWWWWWRWyxxxyWWWWWWWWWWw",
-    "wWWWWWWWWWyxxxyWRWWWWWWWWw",
-    "wWWWWWWWWWyyyyyWWWWWWWWWWw",
-    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWWxxxxxxxxWWWWxxxxxxxxWWw",
-    "wWWWxxxxxxxWWWWWxxxxxxxWWw",//10
-    "wWWxxxxxxxxWWWWxxxxxxxxWWw",
-    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWWxWxxxWxxWWxxxWxWWWxWWWw",
-    "wWWWWxWWWxWxWxWxWxxWxxWWWw",
-    "wWWxWxxxWxxWWxWxWxWxWxWWWw",
-    "wWWxWxWWWxWxWxWxWxWWWxWWWw",
-    "wWWxWxWWWxWxWxxxWxWWWxWWWw",
-    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWWWWWWWWWWWwwwwwwWWWWWWWw",//20
+    "  wwwwwwwwwwwwwwwwwwwwww  ",
+    " wxxxxxxxxxxxxxxxxxxxxxxw ",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxwwwwwwwwwwwwwwwwwwwxxxw",
+    "wxxwxxxxwwwxxxwwxwwwxwxxxw",
+    "wxxwxwwwxwxwwwxwxxwxxwxxxw",
+    "wxxwxxxxwwxwwwxwxwxwxwxxxw",
+    "wxxwxwwxwwxwwwxwxwwwxwxxxw",//10
+    "wxxwxwwwxwwxxxwwxwwwxwxxxw",
+    "wxxwwwwwwwwwwwwwwwwwwwxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wgWWggWWggWWw    wWWggWWgw",
+    "wgWWggWWggWWw    wWWggWWgw",
+    "wgWWggWWggWWw    wWWggWWgw",
+    "wgWWggWWggWWw    wWWggWWgw",//20
+    "wgWWggWWggWWw    wWWggWWgw",
+    "wgWWggWWggWWw    wWWggWWgw",
+    "wgWWggWWggWWw    wWWggWWgw",
+    "wwwwwwwwwwwww    wwwwwwwww",
+    "                          " //25
+};
+
+char *bitmap_lowericon_ext_desktop_ql_external_rom_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "  wwwwwwwwwwwwwwwwwwwwww  ",
+    " wxxxxxxxxxxxxxxxxxxxxxxw ",
+    "wx                      xw",
+    "wx                      xw",
+    "wx                      xw",
+    "wx                      xw",
+    "wx  xxxx   xxx  x   x   xw",
+    "wx  x   x x   x xx xx   xw",
+    "wx  xxxx  x   x x x x   xw",
+    "wx  x  x  x   x x   x   xw",//10
+    "wx  x   x  xxx  x   x   xw",
+    "wx                      xw",
+    "wx                      xw",
+    "wx                      xw",
+    "wx                      xw",
+    "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",//20
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",

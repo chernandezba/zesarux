@@ -48360,7 +48360,7 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
     //QL external rom. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_ql_external_rom_is_visible, zxdesktop_lowericon_ql_external_rom_is_active, zxdesktop_lowericon_ql_external_rom_accion,NULL,
-        bitmap_lowericon_ext_desktop_ql_external_rom,bitmap_lowericon_ext_desktop_ql_external_rom,&zxdesktop_icon_ql_external_rom_inverse,TOOLTIP_QL_EXTERNAL_ROM},
+        bitmap_lowericon_ext_desktop_ql_external_rom_active,bitmap_lowericon_ext_desktop_ql_external_rom_inactive,&zxdesktop_icon_ql_external_rom_inverse,TOOLTIP_QL_EXTERNAL_ROM},
 
     //lec memory. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_lec_memory_is_visible, zxdesktop_lowericon_lec_memory_is_active, zxdesktop_lowericon_lec_memory_accion,NULL,
