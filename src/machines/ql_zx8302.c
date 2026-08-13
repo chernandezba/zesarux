@@ -197,6 +197,15 @@ pc.intrt equ    1<<2    transmit interrupt register
 pc.intri equ    1<<1    interface interrupt register
 pc.intrg equ    1<<0    gap interrupt register
 
+
+| Bit | Fuente            | Significado                          |
+| --: | ----------------- | ------------------------------------ |
+|   4 | **EXTINT**        | Interrupción externa del ZX8302      |
+|   3 | **VSYNC/frame**   | Flanco ascendente de VSYNC           |
+|   2 | **TX**            | Transmisión terminada                |
+|   1 | **IPC/interface** | Interrupción de comunicación con IPC |
+|   0 | **GAP**           | Interrupción por GAP de Microdrive   |
+
         list
 
 */

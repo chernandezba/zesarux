@@ -236,6 +236,7 @@ void ql_qimi_handle_irq(int scanline)
         //printf("hay movimiento. enviada irq mouse\n");
 
         //mouse
+        //pc.intre equ    1<<4    external interrupt register
         ql_pc_intr |=16;
 
         m68k_set_irq(2);
