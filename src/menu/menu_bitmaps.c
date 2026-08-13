@@ -2478,13 +2478,13 @@ char *bitmap_lowericon_ext_desktop_ql_external_rom_active[EXT_DESKTOP_BUTTONS_AN
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-    "wgWWggWWggWWw    wWWggWWgw",
-    "wgWWggWWggWWw    wWWggWWgw",
-    "wgWWggWWggWWw    wWWggWWgw",
-    "wgWWggWWggWWw    wWWggWWgw",//20
-    "wgWWggWWggWWw    wWWggWWgw",
-    "wgWWggWWggWWw    wWWggWWgw",
-    "wgWWggWWggWWw    wWWggWWgw",
+    "wwggwwggwwggw    wggwwggww",
+    "wwggwwggwwggw    wggwwggww",
+    "wwggwwggwwggw    wggwwggww",
+    "wwWWwwWWwwWWw    wWWwwWWww",//20
+    "wwWWwwWWwwWWw    wWWwwWWww",
+    "wwWWwwWWwwWWw    wWWwwWWww",
+    "wwWWwwWWwwWWw    wWWwwWWww",
     "wwwwwwwwwwwww    wwwwwwwww",
     "                          " //25
 };
