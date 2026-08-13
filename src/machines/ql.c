@@ -1021,16 +1021,24 @@ char ql_extra_rom_c000[PATH_MAX]="";
 //De momento soporte para una rom de 16k en C000
 void ql_load_extra_roms(void)
 {
+
+    //Primero, por si se ha quitado la rom, vaciar esa zona de memoria
+    memset(&memoria_ql[0xc000],0,16384);
+
     if (ql_extra_rom_c000_enabled) {
         FILE *ptr_extra_romfile=fopen(ql_extra_rom_c000,"rb");
 
-        fread(&memoria_ql[0xc000],1,16384,ptr_extra_romfile);
+        if (!ptr_extra_romfile) {
+            debug_printf (VERBOSE_ERR,"Unable to load extra rom %s",ql_extra_rom_c000);
+        }
+        else {
+
+            fread(&memoria_ql[0xc000],1,16384,ptr_extra_romfile);
+
+            fclose(ptr_extra_romfile);
+        }
     }
 
-    else {
-        //Si se ha quitado la rom, vaciar esa zona de memoria
-        memset(&memoria_ql[0xc000],0,16384);
-    }
 
 
 }
