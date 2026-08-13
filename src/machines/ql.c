@@ -1011,3 +1011,20 @@ void ql_load_and_execute(char *filename)
 
 
 }
+
+int ql_extra_rom_c000_enabled=0;
+
+//ejemplo tkii220.rom
+char ql_extra_rom_c000[PATH_MAX]="";
+
+//De momento soporte para una rom de 16k en C000
+void ql_load_extra_roms(void)
+{
+    if (ql_extra_rom_c000_enabled) {
+        FILE *ptr_extra_romfile=fopen(ql_extra_rom_c000,"rb");
+
+        fread(&memoria_ql[0xc000],1,16384,ptr_extra_romfile);
+    }
+
+
+}

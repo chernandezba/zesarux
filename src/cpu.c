@@ -3750,6 +3750,12 @@ Total 20 pages=320 Kb
 
     fclose(ptr_romfile);
 
+
+    //Extra ROMS de QL
+    if (MACHINE_IS_QL) {
+        ql_load_extra_roms();
+    }
+
 }
 
 

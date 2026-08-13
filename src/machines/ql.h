@@ -131,4 +131,6 @@ extern int ql_qimi_mouse_sensibilidad;
 
 #define QL_QIMI_MOUSE_MAX_SENSIBILITY 10
 
+extern void ql_load_extra_roms(void);
+
 #endif
