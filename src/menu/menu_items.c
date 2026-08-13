@@ -42347,12 +42347,44 @@ void menu_cpc_additional_roms(MENU_ITEM_PARAMETERS)
 
 }
 
+int menu_ql_additional_roms_c000_enable_cond(void)
+{
+    if (ql_extra_rom_c000[0]) return 1;
+    else return 0;
+}
+
+void menu_ql_additional_roms_c000_enable_reset(void)
+{
+    //y carga de rom y reset para que se aplique
+    rom_load(NULL);
+    cold_start_cpu_registers();
+    reset_cpu();
+}
+
 void menu_ql_additional_roms_c000_enable(MENU_ITEM_PARAMETERS)
 {
+    ql_extra_rom_c000_enabled ^=1;
+    menu_ql_additional_roms_c000_enable_reset();
 }
 
 void menu_ql_additional_roms_c000_load(MENU_ITEM_PARAMETERS)
 {
+
+    char *filtros[2];
+
+    filtros[0]="rom";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select ROM File",filtros,ql_extra_rom_c000)==1) {
+
+        //habilitamos esa rom
+        ql_extra_rom_c000_enabled=1;
+
+        menu_ql_additional_roms_c000_enable_reset();
+
+    }
+
 }
 
 void menu_ql_additional_roms(MENU_ITEM_PARAMETERS)
@@ -42368,7 +42400,7 @@ void menu_ql_additional_roms(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Rom at C000 ---");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_additional_roms_c000_enable,NULL,
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_additional_roms_c000_enable,menu_ql_additional_roms_c000_enable_cond,
             "[%c] Enabled",(ql_extra_rom_c000_enabled ? 'X' : ' '));
 
         char string_rom_file_shown[13];

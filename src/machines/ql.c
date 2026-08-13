@@ -117,6 +117,7 @@ int ql_qimi_mouse_enabled=0;
 //Va desde 1 hasta QL_QIMI_MOUSE_MAX_SENSIBILITY
 int ql_qimi_mouse_sensibilidad=1;
 
+//QIMI interrupts are enabled by reading or writing to address 114622
 int ql_qimi_irq_enabled=0;
 
 unsigned char ql_qimi_movement_register_114620=0;
@@ -162,7 +163,7 @@ void ql_qimi_reset(void)
 void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
 {
     if (Address==114622) {
-        printf("Enabled IRQ\n");
+        //printf("Enabled IRQ\n");
         ql_qimi_irq_enabled=1;
     }
 }
@@ -283,7 +284,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
     //QIMI 114620=0x1BFBC)
     //QIMI 114588=0x1BF9C)
     if (ql_qimi_mouse_enabled && (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE)) {
-        printf("QIMI write Address %XH %d value %02X\n",Address,Address,Data);
+        //printf("QIMI write Address %XH %d value %02X\n",Address,Address,Data);
         ql_qimi_writebyte(Address,Data);
         return;
     }
@@ -1024,6 +1025,11 @@ void ql_load_extra_roms(void)
         FILE *ptr_extra_romfile=fopen(ql_extra_rom_c000,"rb");
 
         fread(&memoria_ql[0xc000],1,16384,ptr_extra_romfile);
+    }
+
+    else {
+        //Si se ha quitado la rom, vaciar esa zona de memoria
+        memset(&memoria_ql[0xc000],0,16384);
     }
 
 
