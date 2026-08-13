@@ -761,13 +761,31 @@ https://qlforum.co.uk/viewtopic.php?t=113
 
     //printf("assuming default data size: %d\n",ql_task_default_data_size);
 
-    ql_writebyte(destino+6,(ql_task_default_data_size>>24)&255);
-    ql_writebyte(destino+7,(ql_task_default_data_size>>16)&255);
-    ql_writebyte(destino+8,(ql_task_default_data_size>>8)&255);
-    ql_writebyte(destino+9,ql_task_default_data_size&255);
+    moto_long data_size=ql_task_default_data_size;
 
     //Tipo. Asumimos siempre ejecutable 1
-    ql_writebyte(destino+5,1); //ejecutable 1
+    unsigned char file_type=1;
+
+    //TODO: Esto puede dar problemas con archivos que no sean ejecutables, por ejemplo con el programa Launchpad
+    //pide la cabecera de un archivo que no es ejecutable (LAUNCHPAD_pwl) aunque si le hago el "apaño" que esta comentado
+    //abajo, sigue fallando
+    /*
+    //prueba temporal
+    if (!strcasecmp(qltraps_fopen_files[indice_canal].ql_file_name,"flp1_win1_launchpad_LAUNCHPAD_pwl")) {
+        printf("Tratamiento especial para archivo flp1_win1_launchpad_LAUNCHPAD_pwl\n");
+        file_type=0; //archivo normal, no ejecutable
+        data_size=0;
+    }
+    */
+
+    ql_writebyte(destino+6,(data_size>>24)&255);
+    ql_writebyte(destino+7,(data_size>>16)&255);
+    ql_writebyte(destino+8,(data_size>>8)&255);
+    ql_writebyte(destino+9,data_size&255);
+
+
+    ql_writebyte(destino+5,file_type);
+
 
 
 
