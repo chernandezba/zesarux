@@ -1512,6 +1512,16 @@ screen_effect_print_names();
         "--dsk-pcw-no-boot-reinsert-previous-dsk  Do not reinsert previous dsk after booting CP/M\n"
         "--dsk-pcw-no-failback-cpm-when-no-boot   Do not insert CP/M disk if selected disk is not bootable\n"
 
+
+        "\n"
+        "\n"
+        "Storage - Additional ROMS\n"
+        "-------------------------\n"
+        "\n"
+
+        "--ql-rom-c000-file f       Sets additional rom file for C000 address on QL\n"
+
+
         "\n"
         "\n"
         "Storage - Betadisk Settings\n"
@@ -5563,6 +5573,34 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--dsk-pcw-no-failback-cpm-when-no-boot")) {
                 pcw_failback_cpm_when_no_boot.v=0;
+            }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-rom-c000-file")) {
+
+                siguiente_parametro_argumento();
+
+                //Si es ruta relativa, poner ruta absoluta
+                if (!si_ruta_absoluta(argv[puntero_parametro])) {
+                        //printf ("es ruta relativa\n");
+
+                        //TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
+                        //no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
+                        //directorio de archivo
+                        char directorio_actual[PATH_MAX];
+                        getcwd(directorio_actual,PATH_MAX);
+
+                        sprintf (ql_extra_rom_c000,"%s/%s",directorio_actual,argv[puntero_parametro]);
+
+                }
+
+                else {
+                    sprintf (ql_extra_rom_c000,"%s",argv[puntero_parametro]);
+                }
+
+                //habilitamos esa rom
+                ql_extra_rom_c000_enabled=1;
+
             }
 
 
