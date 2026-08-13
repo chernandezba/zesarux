@@ -4754,6 +4754,9 @@ int util_write_configfile(void)
     }
 
 
+    if (ql_extra_rom_c000_enabled)                  ADD_STRING_CONFIG,"--ql-rom-c000-file \"%s\"",ql_extra_rom_c000);
+
+
     if (quickload_file[0]!=0) {
         util_get_dir(quickload_file,buffer_temp);
         ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
