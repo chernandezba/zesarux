@@ -31,6 +31,7 @@
 #include "utils.h"
 #include "utils_math.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "operaciones.h"
 #include "screen.h"
 #include "settings.h"
@@ -319,6 +320,29 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
 
 }
 
+
+
+void ql_footer_extra_rom_c000(void)
+{
+
+
+
+
+    generic_footertext_print_operating("ROM");
+    watermark_tell_device_activity();
+
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_ql_external_rom_inverse) {
+        zxdesktop_icon_ql_external_rom_inverse=1;
+        menu_draw_ext_desktop();
+    }
+
+
+
+
+}
+
+
 unsigned char ql_readbyte(unsigned int Address)
 {
     Address %=(ql_mem_limit+1);
@@ -329,6 +353,12 @@ unsigned char ql_readbyte(unsigned int Address)
     if (ql_qimi_mouse_enabled && (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE)) {
         return ql_qimi_readbyte(Address);
     }
+
+    if (ql_extra_rom_c000_enabled && Address==0x0c000) {
+        //No es del todo real, el cartucho siempre esta en uso, pero parpadeara al inicializarlo (al leer la direccion c000)
+        ql_footer_extra_rom_c000();
+    }
+
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
 

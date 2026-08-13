@@ -197,7 +197,7 @@ ok *sensibilidad
 -carga roms adicionales
 ok *en c0000
 ok *parametros config
-*icono dispositivo rom
+ok *icono dispositivo rom
 
 
 -Poder cambiar bitmap de un icono. Que sea bitmap de una acción o de ventana. Esto puede servir por ejemplo en icono de enviar teclas y que el usuario diga qué bitmap quiere
