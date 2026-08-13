@@ -8742,7 +8742,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_QL) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_mouse,NULL,
-                "Mouse","Mouse","Mouse");
+                "Mou~~se","Mou~~se","Mou~~se");
+            menu_add_item_menu_shortcut(array_menu_hardware_settings,'s');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
         }
 

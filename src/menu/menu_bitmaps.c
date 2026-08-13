@@ -2459,6 +2459,36 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_lowericon_ext_desktop_ql_external_rom[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "wwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
+    "wWxxWWWWWWyyyyyWWccWWWxxWw",
+    "wWxxWWWWWWyxxxyWWccWWWxxWw",
+    "wWWWWWWWRWyxxxyWWWWWWWWWWw",
+    "wWWWWWWWWWyxxxyWRWWWWWWWWw",
+    "wWWWWWWWWWyyyyyWWWWWWWWWWw",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
+    "wWWxxxxxxxxWWWWxxxxxxxxWWw",
+    "wWWWxxxxxxxWWWWWxxxxxxxWWw",//10
+    "wWWxxxxxxxxWWWWxxxxxxxxWWw",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
+    "wWWxWxxxWxxWWxxxWxWWWxWWWw",
+    "wWWWWxWWWxWxWxWxWxxWxxWWWw",
+    "wWWxWxxxWxxWWxWxWxWxWxWWWw",
+    "wWWxWxWWWxWxWxWxWxWWWxWWWw",
+    "wWWxWxWWWxWxWxxxWxWWWxWWWw",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
+    "wWWWWWWWWWWWwwwwwwWWWWWWWw",//20
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wwwwwwwwwwwww    wwwwwwwww",
+    "                          " //25
+};
+
 char *bitmap_lowericon_ext_desktop_lec_memory[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "  x   x   x   x   x   x   ",	//0

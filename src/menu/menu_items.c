@@ -42402,6 +42402,7 @@ void menu_ql_additional_roms(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_additional_roms_c000_enable,menu_ql_additional_roms_c000_enable_cond,
             "[%c] Enabled",(ql_extra_rom_c000_enabled ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_common,menu_inicio_retorna_tooltip(TOOLTIP_QL_EXTERNAL_ROM));
 
         char string_rom_file_shown[13];
 
@@ -46044,6 +46045,7 @@ char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
 char *tooltips_devices_esxdoshandler="Enables emulator to handle ESXDOS calls";
 char *tooltips_devices_kartusho="Kartusho settings";
 char *tooltips_devices_ifrom="iFrom settings";
+char *tooltips_devices_ql_external_rom="QL External ROM settings";
 char *tooltips_devices_lec_memory="LEC memory extension";
 char *tooltips_devices_superupgrade="Superupgrade settings";
 char *tooltips_devices_samram="Samram settings";
@@ -46166,6 +46168,10 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 
         case TOOLTIP_IFROM:
             return tooltips_devices_ifrom;
+        break;
+
+        case TOOLTIP_QL_EXTERNAL_ROM:
+            return tooltips_devices_ql_external_rom;
         break;
 
         case TOOLTIP_LEC_MEMORY:
@@ -47919,6 +47925,25 @@ void zxdesktop_lowericon_ifrom_accion(void)
     menu_ifrom(0);
 }
 
+//Funciones para ql external rom
+int zxdesktop_lowericon_ql_external_rom_is_visible(void)
+{
+    if (MACHINE_IS_QL) return 1;
+
+    else return 0;
+}
+
+int zxdesktop_lowericon_ql_external_rom_is_active(void)
+{
+    if (MACHINE_IS_QL && ql_extra_rom_c000_enabled) return 1;
+    else return 0;
+}
+
+void zxdesktop_lowericon_ql_external_rom_accion(void)
+{
+    menu_ql_additional_roms(0);
+}
+
 //Funciones para lec memory
 int zxdesktop_lowericon_lec_memory_is_visible(void)
 {
@@ -48216,6 +48241,7 @@ int zxdesktop_icon_zxmmcplusflash_inverse=0;
 int zxdesktop_icon_esxdoshandler_inverse=0;
 int zxdesktop_icon_kartusho_inverse=0;
 int zxdesktop_icon_ifrom_inverse=0;
+int zxdesktop_icon_ql_external_rom_inverse=0;
 int zxdesktop_icon_lec_memory_inverse=0;
 int zxdesktop_icon_superupgrade_inverse=0;
 int zxdesktop_icon_samram_inverse=0;
@@ -48331,6 +48357,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //ifrom. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_ifrom_is_visible, zxdesktop_lowericon_ifrom_is_active, zxdesktop_lowericon_ifrom_accion,NULL,
         bitmap_lowericon_ext_desktop_ifrom,bitmap_lowericon_ext_desktop_ifrom,&zxdesktop_icon_ifrom_inverse,TOOLTIP_IFROM},
+
+    //QL external rom. En este caso no hay distincion entre icono insertado y no insertado
+    { zxdesktop_lowericon_ql_external_rom_is_visible, zxdesktop_lowericon_ql_external_rom_is_active, zxdesktop_lowericon_ql_external_rom_accion,NULL,
+        bitmap_lowericon_ext_desktop_ql_external_rom,bitmap_lowericon_ext_desktop_ql_external_rom,&zxdesktop_icon_ql_external_rom_inverse,TOOLTIP_QL_EXTERNAL_ROM},
 
     //lec memory. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_lec_memory_is_visible, zxdesktop_lowericon_lec_memory_is_active, zxdesktop_lowericon_lec_memory_accion,NULL,

@@ -226,6 +226,7 @@ extern char *bitmap_lowericon_ext_desktop_samram[];
 extern char *bitmap_lowericon_ext_desktop_esxdoshandler[];
 extern char *bitmap_lowericon_ext_desktop_kartusho[];
 extern char *bitmap_lowericon_ext_desktop_ifrom[];
+extern char *bitmap_lowericon_ext_desktop_ql_external_rom[];
 extern char *bitmap_lowericon_ext_desktop_lec_memory[];
 extern char *bitmap_lowericon_ext_desktop_superupgrade[];
 

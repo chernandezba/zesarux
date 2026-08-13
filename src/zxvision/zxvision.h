@@ -1988,7 +1988,8 @@ enum tooltips_menus_inicio_storage {
     TOOLTIP_LEC_MEMORY,
     TOOLTIP_SUPERUPGRADE,
     TOOLTIP_SAMRAM,
-    TOOLTIP_HILOW
+    TOOLTIP_HILOW,
+    TOOLTIP_QL_EXTERNAL_ROM
 };
 
 struct s_zxdesktop_lowericons_info {
@@ -2005,7 +2006,7 @@ struct s_zxdesktop_lowericons_info {
 
 
 
-#define TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS 32
+#define TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS 33
 
 //Cada 12 frames de pantalla lanzar las funciones de print y condicion
 #define ZXVISION_SIMPLE_PROGRESS_WINDOW_FRAMES_REFRESH 12
