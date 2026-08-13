@@ -133,4 +133,8 @@ extern int ql_qimi_mouse_sensibilidad;
 
 extern void ql_load_extra_roms(void);
 
+extern int ql_extra_rom_c000_enabled;
+
+extern char ql_extra_rom_c000[];
+
 #endif
