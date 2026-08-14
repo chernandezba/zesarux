@@ -48119,6 +48119,13 @@ int zxdesktop_lowericon_flp1_is_visible(void)
     else return 0;
 }
 
+int zxdesktop_lowericon_flp2_is_visible(void)
+{
+    if (MACHINE_IS_QL) return 1;
+
+    else return 0;
+}
+
 int zxdesktop_lowericon_mdv1_is_active(void)
 {
     if (MACHINE_IS_QL) {
@@ -48159,6 +48166,12 @@ int zxdesktop_lowericon_mdv4_is_active(void)
 int zxdesktop_lowericon_flp1_is_active(void)
 {
     if (ql_microdrive_floppy_emulation && ql_device_flp1_enabled) return 1;
+    else return 0;
+}
+
+int zxdesktop_lowericon_flp2_is_active(void)
+{
+    if (ql_microdrive_floppy_emulation && ql_device_flp2_enabled) return 1;
     else return 0;
 }
 
@@ -48235,6 +48248,7 @@ int zxdesktop_icon_mdv2_inverse=0;
 int zxdesktop_icon_mdv3_inverse=0;
 int zxdesktop_icon_mdv4_inverse=0;
 int zxdesktop_icon_flp1_inverse=0;
+int zxdesktop_icon_flp2_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_zxmmcplusflash_inverse=0;
@@ -48278,6 +48292,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //Floppy QL.
     { zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse,TOOLTIP_FLOPPY_QL},
+
+    //Floppy QL.
+    { zxdesktop_lowericon_flp2_is_visible, zxdesktop_lowericon_flp2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+        bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp2_inverse,TOOLTIP_FLOPPY_QL},
 
     //floppy +3
     { zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,

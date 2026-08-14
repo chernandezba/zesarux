@@ -15090,6 +15090,7 @@ void delete_generic_footertext(void)
     zxdesktop_icon_mdv3_inverse=0;
     zxdesktop_icon_mdv4_inverse=0;
     zxdesktop_icon_flp1_inverse=0;
+    zxdesktop_icon_flp2_inverse=0;
     zxdesktop_icon_dandanator_inverse=0;
     zxdesktop_icon_zxunoflash_inverse=0;
     zxdesktop_icon_zxmmcplusflash_inverse=0;

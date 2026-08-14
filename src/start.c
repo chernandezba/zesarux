@@ -1663,12 +1663,15 @@ screen_effect_print_names();
         "--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
         "--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
         "--ql-flp1-root-dir p            Set QL flp1 root directory\n"
+        "--ql-flp2-root-dir p            Set QL flp2 root directory\n"
         "--ql-mdv1-enable                Enable QL mdv1\n"
         "--ql-mdv2-enable                Enable QL mdv2\n"
         "--ql-flp1-enable                Enable QL flp1\n"
+        "--ql-flp2-enable                Enable QL flp2\n"
         "--ql-mdv1-read-only             Mark mdv1 as read only\n"
         "--ql-mdv2-read-only             Mark mdv2 as read only\n"
         "--ql-flp1-read-only             Mark flp1 as read only\n"
+        "--ql-flp2-read-only             Mark flp2 as read only\n"
         "--ql-win1-no-alias-mdv1         Do not handle win1_ device as an alias to mdv1_\n"
         "--ql-flp1-dir-copied-mdv1       flp1 path parameter is copied from mdv1 path parameter\n"
         "--ql-data-size-headerless-exe n Data size for headerless exe\n"
@@ -6015,12 +6018,7 @@ int parse_cmdline_options(int desde_commandline)
               command_line_esxdos_local_dir.v=1;
             }
 
-/*
-                "--enable-ql-mdv-flp        Enable QL Microdrive & Floppy emulation\n"
-                "--ql-mdv1-root-dir p       Set QL mdv1 root directory\n"
-                "--ql-mdv2-root-dir p       Set QL mdv2 root directory\n"
-                "--ql-flp1-root-dir p       Set QL flp1 root directory\n"
-                */
+
             else if (!strcmp(argv[puntero_parametro],"--enable-ql-mdv-flp")) {
                 ql_microdrive_floppy_emulation=1;
             }
@@ -6067,6 +6065,20 @@ int parse_cmdline_options(int desde_commandline)
                 }
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--ql-flp2-root-dir")) {
+              siguiente_parametro_argumento();
+
+              //Si es ruta relativa, poner ruta absoluta
+              if (!si_ruta_absoluta(argv[puntero_parametro])) {
+                //printf ("es ruta relativa\n");
+                convert_relative_to_absolute(argv[puntero_parametro],ql_flp2_root_dir);
+              }
+
+              else {
+                sprintf (ql_flp2_root_dir,"%s",argv[puntero_parametro]);
+                }
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--ql-mdv1-enable")) {
                 ql_device_mdv1_enabled=1;
             }
@@ -6077,6 +6089,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--ql-flp1-enable")) {
                 ql_device_flp1_enabled=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-flp2-enable")) {
+                ql_device_flp2_enabled=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ql-mdv1-read-only")) {
@@ -6093,6 +6109,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--ql-flp1-read-only")) {
                 ql_device_flp1_readonly=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-flp2-read-only")) {
+                ql_device_flp2_readonly=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ql-flp1-dir-copied-mdv1")) {

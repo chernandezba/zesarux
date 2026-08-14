@@ -53,6 +53,7 @@ Functions to handle QDOS calls
 char ql_mdv1_root_dir[PATH_MAX]="";
 char ql_mdv2_root_dir[PATH_MAX]="";
 char ql_flp1_root_dir[PATH_MAX]="";
+char ql_flp2_root_dir[PATH_MAX]="";
 
 int ql_microdrive_floppy_emulation=0;
 
@@ -64,6 +65,7 @@ moto_long ql_task_default_data_size=QL_TASK_DEFAULT_DATA_SIZE_DEFAULT;
 int ql_device_mdv1_readonly=0;
 int ql_device_mdv2_readonly=0;
 int ql_device_flp1_readonly=0;
+int ql_device_flp2_readonly=0;
 //Fin Parametros de config
 
 void ql_post_trap_two(void);
@@ -76,6 +78,7 @@ int ql_previous_trap_was_4=0;
 //0: mdv1
 //1: mdv2
 //2: flp1
+//3: flp2
 int ql_qdos_last_unit_used=0;
 
 //Si asumimos mdv1_ cuando una ruta no contiene dispositivo
@@ -85,7 +88,7 @@ z80_bit ql_qdos_handler_assume_mdv1_if_no_device={0};
 
 void ql_footer_mdflp_operating(void)
 {
-
+    //printf("ql_footer_mdflp_operating ql_qdos_last_unit_used=%d\n",ql_qdos_last_unit_used);
 
     if (ql_qdos_last_unit_used==0) {
 
@@ -121,6 +124,19 @@ void ql_footer_mdflp_operating(void)
         //Y poner icono en inverso
         if (!zxdesktop_icon_flp1_inverse) {
                 zxdesktop_icon_flp1_inverse=1;
+                menu_draw_ext_desktop();
+        }
+
+    }
+
+    if (ql_qdos_last_unit_used==3) {
+
+        generic_footertext_print_operating("FLP2");
+        watermark_tell_device_activity();
+
+        //Y poner icono en inverso
+        if (!zxdesktop_icon_flp2_inverse) {
+                zxdesktop_icon_flp2_inverse=1;
                 menu_draw_ext_desktop();
         }
 
@@ -1042,6 +1058,7 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
 int ql_device_mdv1_enabled=0;
 int ql_device_mdv2_enabled=0;
 int ql_device_flp1_enabled=0;
+int ql_device_flp2_enabled=0;
 
 //Dado un device y un nombre de archivo, retorna ruta a archivo en filesystem final
 //Retorna 1 si error
@@ -1076,6 +1093,11 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
         ql_qdos_last_unit_used=2;
         if (!ql_device_flp1_enabled) return 1;
         sourcepath=ql_flp1_root_dir;
+    }
+    else if (!strcasecmp(device,"flp2")) {
+        ql_qdos_last_unit_used=3;
+        if (!ql_device_flp2_enabled) return 1;
+        sourcepath=ql_flp2_root_dir;
     }
     else {
         //TODO: si un archivo tiene un punto en el nombre (.) el usuario puede acceder como ejemplo "EXEC crazy_exe"
@@ -1113,6 +1135,11 @@ void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
         case QL_QDOS_UNIT_FLP1:
             sprintf (ql_flp1_root_dir,"%s",dir_to_mount);
             ql_device_flp1_enabled=1;
+        break;
+
+        case QL_QDOS_UNIT_FLP2:
+            sprintf (ql_flp2_root_dir,"%s",dir_to_mount);
+            ql_device_flp2_enabled=1;
         break;
 
         case QL_QDOS_UNIT_MDV1:
@@ -1153,7 +1180,7 @@ void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount)
 }
 
 
-//Dice si la ruta que se le ha pasado corresponde a un mdv1_, o mdv2_, o flp1_
+//Dice si la ruta que se le ha pasado corresponde a un mdv1_, o mdv2_, o flp1_ o flp2_
 int ql_si_ruta_parametro(char *texto,char *ruta)
 {
   char *encontrado;
@@ -1164,7 +1191,7 @@ int ql_si_ruta_parametro(char *texto,char *ruta)
   return 0;
 }
 
-//Dice si la ruta que se le ha pasado corresponde a un mdv1_, o mdv2_, o flp1_
+//Dice si la ruta que se le ha pasado corresponde a un mdv1_, o mdv2_, o flp1_ o flp2_
 int ql_si_ruta_mdv_flp(char *texto)
 {
     //printf("ql_si_ruta_mdv_flp (%s)\n",texto);
@@ -1186,6 +1213,10 @@ int ql_si_ruta_mdv_flp(char *texto)
 
   char *buscar_flp1="flp1_";
   encontrado=util_strcasestr(texto, buscar_flp1);
+  if (encontrado) return 1;
+
+  char *buscar_flp2="flp2_";
+  encontrado=util_strcasestr(texto, buscar_flp2);
   if (encontrado) return 1;
 
   if (ql_qdos_handler_assume_mdv1_if_no_device.v) {
@@ -1950,7 +1981,8 @@ void handle_trap_fs_mdinf(void)
         //D1.L empty/good sectors. The number of empty sectors is in the most significant word (msw) of D1,
         //the total available on the medium is in the least significant word (lsw). A sector is 512 bytes.
         //de momento ,MDV files in QLAY format. The files must be exactly 174930 bytes 174930/512->aprox 341
-        m68k_set_reg(M68K_REG_D1,32*65536+341); //32 sectores libres, 341 sectores ocupados
+        m68k_set_reg(M68K_REG_D1,32*65536+341);
+        //32 sectores libres, 341 sectores ocupados
         //Por qué 32 sectores libres? Nada, por probar, porque no diga 0 simplemente
 
 
@@ -1985,7 +2017,7 @@ void handle_trap_fs_mdinf(void)
         ql_writebyte(puntero++,' '); //10
 
 
-        }
+    }
 }
 
 
@@ -2338,6 +2370,7 @@ int ql_qdos_check_device_readonly(char *device)
 
     if (!strcasecmp(device,"mdv2")) return ql_device_mdv2_readonly;
     if (!strcasecmp(device,"flp1")) return ql_device_flp1_readonly;
+    if (!strcasecmp(device,"flp2")) return ql_device_flp2_readonly;
 
     //Cualquier otra cosa, asumimos read only
     return 1;
@@ -2692,7 +2725,7 @@ D3.L: code:
       int hacer_trap=0;
 
 
-        //Si tiene prefijo mdv1, mdv2 o flp1
+        //Si tiene prefijo mdv1, mdv2 o flp1 o flp2
       if (ql_si_ruta_mdv_flp(ql_nombre_archivo_load)) {
           //printf("hacer trap\n");
           hacer_trap=1;
@@ -2711,12 +2744,13 @@ D3.L: code:
       }
       */
 
-     //Ver si ruta es tal cual mdv1_,mdv2_ o flp1_ que indica que se abre el dispositivo entero
+     //Ver si ruta es tal cual mdv1_,mdv2_ o flp1_ o flp2_ que indica que se abre el dispositivo entero
      if (
          !strcasecmp(ql_nombre_archivo_load,"mdv1_") ||
          (!strcasecmp(ql_nombre_archivo_load,"win1_") && ql_win1_alias_mdv1.v) ||
          !strcasecmp(ql_nombre_archivo_load,"mdv2_") ||
-         !strcasecmp(ql_nombre_archivo_load,"flp1_")
+         !strcasecmp(ql_nombre_archivo_load,"flp1_") ||
+         !strcasecmp(ql_nombre_archivo_load,"flp2_")
      )
      {
             //printf("hacer trap y es dispositivo\n");
@@ -2734,7 +2768,7 @@ D3.L: code:
 
       if (hacer_trap) {
 
-        //debug_printf (VERBOSE_PARANOID,"Returning from trap without opening anything because file is mdv1, mdv2 or flp1");
+        //debug_printf (VERBOSE_PARANOID,"Returning from trap without opening anything because file is mdv1, mdv2 or flp1 or flp2");
 
         //ql_debug_force_breakpoint("En IO.OPEN");
 
@@ -3122,7 +3156,7 @@ A0: 00000D88 A1: 00000D88 A2: 00006906 A3: 00000668 A4: 00000012 A5: 00000670 A6
 
 
 
-        //Si tiene prefijo mdv1, mdv2 o flp1
+        //Si tiene prefijo mdv1, mdv2 o flp1 o flp2
       if (ql_si_ruta_mdv_flp(ql_nombre_archivo_delet)) {
 
 

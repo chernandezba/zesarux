@@ -201,3 +201,9 @@ ok *icono dispositivo rom
 
 
 -Poder cambiar bitmap de un icono. Que sea bitmap de una acción o de ventana. Esto puede servir por ejemplo en icono de enviar teclas y que el usuario diga qué bitmap quiere
+
+
+-si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
+
+
+-quiza va algo lento leyendo datos el QL de microdrive porque hay muchos VERBOSE_PARANOID?

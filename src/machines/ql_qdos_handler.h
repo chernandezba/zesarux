@@ -61,16 +61,19 @@ extern void ql_rom_traps(void);
 extern char ql_mdv1_root_dir[];
 extern char ql_mdv2_root_dir[];
 extern char ql_flp1_root_dir[];
+extern char ql_flp2_root_dir[];
 
 extern int ql_device_mdv1_readonly;
 extern int ql_device_mdv2_readonly;
 extern int ql_device_flp1_readonly;
+extern int ql_device_flp2_readonly;
 
 extern int ql_microdrive_floppy_emulation;
 
 extern int ql_device_mdv1_enabled;
 extern int ql_device_mdv2_enabled;
 extern int ql_device_flp1_enabled;
+extern int ql_device_flp2_enabled;
 
 extern z80_byte ql_last_trap;
 
@@ -148,7 +151,8 @@ extern struct s_qltraps_fopen qltraps_fopen_files[];
 enum ql_qdos_unidades {
     QL_QDOS_UNIT_MDV1,
     QL_QDOS_UNIT_MDV2,
-    QL_QDOS_UNIT_FLP1
+    QL_QDOS_UNIT_FLP1,
+    QL_QDOS_UNIT_FLP2
 };
 
 extern void ql_insert_mdv_flp(enum ql_qdos_unidades unidad,char *dir_to_mount);

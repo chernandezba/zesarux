@@ -5000,15 +5000,18 @@ int util_write_configfile(void)
     if (ql_mdv1_root_dir[0]!=0)                     ADD_STRING_CONFIG,"--ql-mdv1-root-dir \"%s\"",ql_mdv1_root_dir);
     if (ql_mdv2_root_dir[0]!=0)                     ADD_STRING_CONFIG,"--ql-mdv2-root-dir \"%s\"",ql_mdv2_root_dir);
     if (ql_flp1_root_dir[0]!=0)                     ADD_STRING_CONFIG,"--ql-flp1-root-dir \"%s\"",ql_flp1_root_dir);
+    if (ql_flp2_root_dir[0]!=0)                     ADD_STRING_CONFIG,"--ql-flp2-root-dir \"%s\"",ql_flp2_root_dir);
 
     if (ql_device_mdv1_enabled)                     ADD_STRING_CONFIG,"--ql-mdv1-enable");
     if (ql_device_mdv2_enabled)                     ADD_STRING_CONFIG,"--ql-mdv2-enable");
     if (ql_device_flp1_enabled)                     ADD_STRING_CONFIG,"--ql-flp1-enable");
+    if (ql_device_flp2_enabled)                     ADD_STRING_CONFIG,"--ql-flp2-enable");
 
 
     if (ql_device_mdv1_readonly)                    ADD_STRING_CONFIG,"--ql-mdv1-read-only");
     if (ql_device_mdv2_readonly)                    ADD_STRING_CONFIG,"--ql-mdv2-read-only");
     if (ql_device_flp1_readonly)                    ADD_STRING_CONFIG,"--ql-flp1-read-only");
+    if (ql_device_flp2_readonly)                    ADD_STRING_CONFIG,"--ql-flp2-read-only");
 
     if (ql_win1_alias_mdv1.v==0)                    ADD_STRING_CONFIG,"--ql-win1-no-alias-mdv1");
 

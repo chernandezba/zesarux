@@ -12904,6 +12904,11 @@ void menu_ql_flp1(MENU_ITEM_PARAMETERS)
     menu_storage_ql_mdv_flp(ql_flp1_root_dir,QL_QDOS_UNIT_FLP1);
 }
 
+void menu_ql_flp2(MENU_ITEM_PARAMETERS)
+{
+    menu_storage_ql_mdv_flp(ql_flp2_root_dir,QL_QDOS_UNIT_FLP2);
+}
+
 
 /*
 void menu_ql_replace_underscore(MENU_ITEM_PARAMETERS)
@@ -12962,6 +12967,11 @@ void menu_ql_flp1_readonly(MENU_ITEM_PARAMETERS)
     ql_device_flp1_readonly ^= 1;
 }
 
+void menu_ql_flp2_readonly(MENU_ITEM_PARAMETERS)
+{
+    ql_device_flp2_readonly ^= 1;
+}
+
 void menu_ql_mdv1_enable(MENU_ITEM_PARAMETERS)
 {
     ql_device_mdv1_enabled ^=1;
@@ -12975,6 +12985,11 @@ void menu_ql_mdv2_enable(MENU_ITEM_PARAMETERS)
 void menu_ql_flp1_enable(MENU_ITEM_PARAMETERS)
 {
     ql_device_flp1_enabled ^=1;
+}
+
+void menu_ql_flp2_enable(MENU_ITEM_PARAMETERS)
+{
+    ql_device_flp2_enabled ^=1;
 }
 
 int menu_ql_mdv1_emulation_cond(void)
@@ -12992,6 +13007,12 @@ int menu_ql_mdv2_emulation_cond(void)
 int menu_ql_flp1_emulation_cond(void)
 {
     if (ql_flp1_root_dir[0]==0) return 0;
+    else return 1;
+}
+
+int menu_ql_flp2_emulation_cond(void)
+{
+    if (ql_flp2_root_dir[0]==0) return 0;
     else return 1;
 }
 
@@ -13021,9 +13042,11 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
             char string_ql_mdv1_root_dir_shown[28];
             char string_ql_mdv2_root_dir_shown[28];
             char string_ql_flp1_root_dir_shown[28];
+            char string_ql_flp2_root_dir_shown[28];
             menu_tape_settings_trunc_name(ql_mdv1_root_dir,string_ql_mdv1_root_dir_shown,28);
             menu_tape_settings_trunc_name(ql_mdv2_root_dir,string_ql_mdv2_root_dir_shown,28);
             menu_tape_settings_trunc_name(ql_flp1_root_dir,string_ql_flp1_root_dir_shown,28);
+            menu_tape_settings_trunc_name(ql_flp2_root_dir,string_ql_flp2_root_dir_shown,28);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv1 root dir:");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
@@ -13110,6 +13133,30 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
+
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp2 root dir:");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp2,NULL,"[%s]",string_ql_flp2_root_dir_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_tooltip(array_menu_common,"Directory used for flp2 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Directory used for flp2 emulation");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_GENERA_VENTANA);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp2_enable,menu_ql_flp2_emulation_cond,
+                "Enabled","Activado","Activat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_flp2_enabled ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Enable flp2 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Enable flp2 emulation");
+
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp2_readonly,NULL,"[%c] Read only",
+                (ql_device_flp2_readonly ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Only allow read operations on flp2, not writing");
+            menu_add_item_menu_ayuda(array_menu_common,"Only allow read operations on flp2, not writing");
+
+            menu_add_item_menu_separator(array_menu_common);
 
             /*
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_replace_underscore,NULL,"[%c] Replace _ to . in filename",
