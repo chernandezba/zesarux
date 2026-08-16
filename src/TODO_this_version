@@ -208,6 +208,9 @@ ok *permitir bitmaps de iconos de acciones
 *permitir bitmaps de iconos de dispositivos, como cinta, etc. requerira tenerlos indexados
 *permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor)
 *o quiza indice de todos que incluya acciones, ventanas, dispositivos y botones superiores
+* que se grabe en la config --zxdesktop-add-icon-ext
+* que se pueda cambiar bitmap desde el menu
+
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
