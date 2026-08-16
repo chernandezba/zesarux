@@ -825,6 +825,9 @@ enum zxdesktop_custom_icon_status_ids {
 
 extern void print_defined_direct_functions(void);
 
+//Texto para indicar bitmap alternativo de un icono, de base es el texto de una funcion con algo mas de margen
+#define ALTERNATE_BITMAP_NAME_LENGTH (MAX_DEFINED_F_FUNCION_NAME_LENGTH+10)
+
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {
     enum zxdesktop_custom_icon_status_ids status; //Existe, no existe, o borrado
@@ -840,6 +843,8 @@ struct s_zxdesktop_configurable_icon {
 
     //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
     char extra_info[PATH_MAX];
+
+    char alternate_bitmap[ALTERNATE_BITMAP_NAME_LENGTH];
 
 };
 
@@ -1649,6 +1654,7 @@ extern void zxvision_check_all_configurable_icons_positions(void);
 extern int zxvision_add_configurable_icon_no_add_position(int indice_funcion);
 extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
 extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);
+extern void zxvision_set_configurable_icon_alternate_bitmap(int indice_icono,char *alternate_bitmap);
 extern int zxdesktop_configurable_icons_enabled_and_visible(void);
 extern void zxvision_create_configurable_icon(enum defined_f_function_ids id_funcion,char *nombre,char *extra_info);
 extern void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre);

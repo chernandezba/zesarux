@@ -175,15 +175,14 @@ fives_exec funciona con exec mdv1_...., gunner tambien, qpuzzle (aunque va raro)
 -smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
 Quizá habria que tener alguna herramienta para expandir cualquier mdv
 
--probar TK2 en version rom
 
--agregar dispositivo flp2 a QL?
+ok -agregar dispositivo flp2 a QL
 
 -Emulación CST Thor, Q40, Q60, Q68
 
 -Apps calculadora, reloj
 
--QIMI ql mouse
+ok -QIMI ql mouse
 ok *setting en menu.
 ok *setting por linea comandos/config file
 ok *que lea movimiento
@@ -201,7 +200,9 @@ ok *icono dispositivo rom
 
 
 -Poder cambiar bitmap de un icono. Que sea bitmap de una acción o de ventana. Esto puede servir por ejemplo en icono de enviar teclas y que el usuario diga qué bitmap quiere
-
+*uso get_alternate_bitmap_for_configurable_icon
+*--zxdesktop-add-icon-ext (ext por extended, nombre de parametro temporal)
+ejemplo --zxdesktop-add-icon-ext 1335 392 "OpenWindow" "ZXLife" "zxlife" "existse" "prueba"
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 

@@ -15278,6 +15278,8 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
         //Resetear parametros para no heredar parametros de accion anterior
         zxdesktop_configurable_icons_list[icono_seleccionado].extra_info[0]=0;
 
+        zxdesktop_configurable_icons_list[icono_seleccionado].alternate_bitmap[0]=0;
+
         //Si ya existia, conservar posicion. Si no, poner una nueva
         if (zxdesktop_configurable_icons_list[icono_seleccionado].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
             //printf("no existe\n");

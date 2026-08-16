@@ -575,6 +575,11 @@ void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info
     strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,extra_info);
 }
 
+void zxvision_set_configurable_icon_alternate_bitmap(int indice_icono,char *alternate_bitmap)
+{
+    strcpy(zxdesktop_configurable_icons_list[indice_icono].alternate_bitmap,alternate_bitmap);
+}
+
 //Ver cuantos iconos hay cerca para saber si se puede posicionar uno o no
 int zxvision_si_icono_cerca(int x,int y)
 {
@@ -1032,6 +1037,9 @@ void init_zxdesktop_configurable_icons(void)
 
         //text icon en blanco
         zxdesktop_configurable_icons_list[i].text_icon[0]=0;
+
+        //alternate bitmap en blanco
+        zxdesktop_configurable_icons_list[i].alternate_bitmap[0]=0;
     }
 }
 
@@ -6562,6 +6570,15 @@ char **get_direct_function_icon_bitmap_final(int id_accion)
     return bitmap;
 }
 
+
+char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
+{
+    int indice=get_defined_direct_functions(texto_bitmap);
+    if (indice<0) return bitmap_button_ext_desktop_userdefined;
+
+    return defined_direct_functions_array[indice].bitmap_button;
+}
+
 void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 {
     int x,y;
@@ -6628,9 +6645,8 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     }
 
 
-    //temp
-    //Primer pixel en negro
-    //bitmap[0][0]='x';
+    //Bitmap alternativo para un icono
+    if (zxdesktop_configurable_icons_list[index_icon].alternate_bitmap[0]) bitmap=get_alternate_bitmap_for_configurable_icon(zxdesktop_configurable_icons_list[index_icon].alternate_bitmap);
 
     menu_draw_ext_desktop_one_icon(x,y,bitmap);
 
