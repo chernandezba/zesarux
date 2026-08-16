@@ -6525,8 +6525,8 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
     if (MACHINE_IS_QL) {
         int value_rtc=(ql_zx8032_readbyte(0x18000)<<24) | (ql_zx8032_readbyte(0x18001)<<16) | (ql_zx8032_readbyte(0x18002)<<8) | ql_zx8032_readbyte(0x18003);
-          sprintf (buf_linea,"PC_CLOCK: %0d\n",value_rtc);
-          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea,"PC_CLOCK: %0d\n",value_rtc);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"PC_INTR: %02X\n",ql_pc_intr);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -6540,6 +6540,17 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             (ql_mc_stat & 0x08 ? 8 : 4)
         );
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        if (ql_qimi_mouse_enabled) {
+            strcpy (buf_linea,"QIMI Mouse\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea," IRQ: %s\n",(ql_qimi_irq_enabled ? "On " : "Off"));
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea," Buttons: %02X\n",ql_qimi_buttons_register_114588);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea," Movement: %02X\n",ql_qimi_movement_register_114620);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
 
 /*
 $18063	MC_STAT		Master chip status register

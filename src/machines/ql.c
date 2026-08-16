@@ -122,6 +122,7 @@ int ql_qimi_mouse_sensibilidad=1;
 int ql_qimi_irq_enabled=0;
 
 unsigned char ql_qimi_movement_register_114620=0;
+unsigned char ql_qimi_buttons_register_114588=0;
 
 int ql_qimi_mouse_x_antes=0;
 int ql_qimi_mouse_y_antes=0;
@@ -268,6 +269,7 @@ unsigned char ql_qimi_readbyte(unsigned int Address)
             if (mouse_left) return_value -=32;
             if (mouse_right) return_value -=16;
         }
+        ql_qimi_buttons_register_114588=return_value;
         return return_value;
     }
     else if (Address==114620) return ql_qimi_movement_register_114620;

@@ -127,6 +127,11 @@ extern void ql_qimi_reset(void);
 
 extern void ql_qimi_handle_irq(int scanline);
 
+extern int ql_qimi_irq_enabled;
+
+extern unsigned char ql_qimi_movement_register_114620;
+extern unsigned char ql_qimi_buttons_register_114588;
+
 extern int ql_qimi_mouse_sensibilidad;
 
 #define QL_QIMI_MOUSE_MAX_SENSIBILITY 10

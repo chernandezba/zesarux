@@ -189,7 +189,7 @@ ok *setting por linea comandos/config file
 ok *que lea movimiento
 ok *lee botones
 ok *sensibilidad
-*debug puertos en ventana i/o
+ok *debug puertos en ventana i/o
 
 
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
