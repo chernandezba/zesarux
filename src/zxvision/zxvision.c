@@ -6574,6 +6574,9 @@ char **get_direct_function_icon_bitmap_final(int id_accion)
 char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
 {
     int indice=get_defined_direct_functions(texto_bitmap);
+
+    //Si no encontrado, bitmap de user defined
+    //TODO: quiza quedaria mejor un bitmap que diga error o not found o algo asi
     if (indice<0) return bitmap_button_ext_desktop_userdefined;
 
     return defined_direct_functions_array[indice].bitmap_button;

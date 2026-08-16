@@ -203,6 +203,11 @@ ok *icono dispositivo rom
 *uso get_alternate_bitmap_for_configurable_icon
 *--zxdesktop-add-icon-ext (ext por extended, nombre de parametro temporal)
 ejemplo --zxdesktop-add-icon-ext 1335 392 "OpenWindow" "ZXLife" "zxlife" "existse" "prueba"
+ok *permitir bitmaps de iconos de acciones
+*permitir bitmaps de iconos de ventanas. quiza con prefijo "w ", ejemplo "w timemachine"
+*permitir bitmaps de iconos de dispositivos, como cinta, etc. requerira tenerlos indexados
+*permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor)
+*o quiza indice de todos que incluya acciones, ventanas, dispositivos y botones superiores
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
