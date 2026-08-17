@@ -15486,6 +15486,17 @@ void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PAR
     //menu_ventana_scanf("Bitmap",zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,ALTERNATE_BITMAP_NAME_LENGTH);
     int indice=menu_zxdesktop_set_alternate_bitmap_icon(0);
 
+    //Quiza retornar:
+    //entre 0-999 bitmaps de acciones
+    //entre 0-999 bitmaps de ventanas
+    //entre 0-999 bitmaps de devices
+    //entre 0-999 bitmaps de botones
+    //entre 0-999 bitmaps de otros
+    //O tambien quiza que menu_zxdesktop_set_alternate_bitmap_icon retorne tal cual la string adecuada
+    //segun parametro de menu item si 0 es accion, 1 ventana, 2 devices etc
+    //Ese mismo parametro servira a la funcion de overlay para saber que redibujar
+
+
     if (indice>=0) {
 
         printf("indice %d bitmap de : [%s]\n",indice,defined_direct_functions_array[indice].texto_funcion);
