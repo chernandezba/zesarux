@@ -825,8 +825,8 @@ enum zxdesktop_custom_icon_status_ids {
 
 extern void print_defined_direct_functions(void);
 
-//Texto para indicar bitmap alternativo de un icono, de base es el texto de una funcion con algo mas de margen
-#define ALTERNATE_BITMAP_NAME_LENGTH (MAX_DEFINED_F_FUNCION_NAME_LENGTH+10)
+//Texto para indicar bitmap alternativo de un icono, MAX_NAME_WINDOW_GEOMETRY es la longitud mayor
+#define ALTERNATE_BITMAP_NAME_LENGTH (MAX_NAME_WINDOW_GEOMETRY)
 
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {

@@ -6575,13 +6575,26 @@ char **get_direct_function_icon_bitmap_final(int id_accion)
 
 char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
 {
+
+    char **bitmap_unknown=bitmap_button_ext_desktop_userdefined;
+
+    //Si texto empieza por "w " es icono de ventana
+    if (strlen(texto_bitmap)>2) {
+        if ((texto_bitmap[0]=='w' || texto_bitmap[0]=='W') && texto_bitmap[1]==' ') {
+            //buscar ventana con ese icono
+            char **bitmap=zxvision_find_icon_for_known_window(&texto_bitmap[2]);
+            if (bitmap==NULL) return bitmap_unknown;
+            else return bitmap;
+        }
+    }
+
     int indice=get_defined_direct_functions(texto_bitmap);
 
     //Si no encontrado, bitmap de user defined
     //TODO: quiza quedaria mejor un bitmap que diga error o not found o algo asi
-    if (indice<0) return bitmap_button_ext_desktop_userdefined;
+    if (indice<0) return bitmap_unknown;
 
-    return defined_direct_functions_array[indice].bitmap_button;
+    else return defined_direct_functions_array[indice].bitmap_button;
 }
 
 void zxdesktop_configurable_icons_clear_cache_bitmap(int indice)
