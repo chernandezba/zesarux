@@ -213,6 +213,8 @@ ok * que se grabe en la config --zxdesktop-append-icon
 ok * que se pueda cambiar bitmap desde el menu
 ok *cache bitmap
 *tooltip en selector de alternate bitmap tiene sentido?
+*que al entrar en selector de bitmap el cursor se ubique donde corresponde
+*poder eliminar el alternate bitmap y que indique el suyo correspondiente
 
 ejemplos config alternate bitmaps:
 --zxdesktop-append-icon 1419 392 "Reset" "Reset" "" "exists" "quickload"
