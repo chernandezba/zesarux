@@ -15484,7 +15484,16 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PARAMETERS)
 {
     //menu_ventana_scanf("Bitmap",zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,ALTERNATE_BITMAP_NAME_LENGTH);
-    menu_zxdesktop_set_alternate_bitmap_icon(0);
+    int indice=menu_zxdesktop_set_alternate_bitmap_icon(0);
+
+    if (indice>=0) {
+
+        printf("indice %d bitmap de : [%s]\n",indice,defined_direct_functions_array[indice].texto_funcion);
+        //TODO: de momento solo permitir cambiar a bitmap de accion
+        strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,defined_direct_functions_array[indice].texto_funcion);
+    }
+
+
     zxdesktop_configurable_icons_clear_cache_bitmap(valor_opcion);
 }
 
