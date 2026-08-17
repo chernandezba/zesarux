@@ -15318,6 +15318,12 @@ void menu_zxdesktop_set_configurable_icons_change_parameters(MENU_ITEM_PARAMETER
     zxdesktop_configurable_icons_clear_cache_bitmap(valor_opcion);
 }
 
+void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Bitmap",zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,ALTERNATE_BITMAP_NAME_LENGTH);
+    zxdesktop_configurable_icons_clear_cache_bitmap(valor_opcion);
+}
+
 void menu_zxdesktop_set_configurable_icons_move_trash(MENU_ITEM_PARAMETERS)
 {
     zxvision_move_configurable_icon_to_trash(valor_opcion);
@@ -15378,6 +15384,11 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
             "~~Parameters","~~Parámetros","~~Paràmetres");
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
         menu_add_item_menu_shortcut(array_menu_common,'p');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_change_alternate_bitmap,NULL,
+            "Change ~~Bitmap","Cambiar ~~Bitmap","Canviar ~~Bitmap");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'b');
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_move_trash,NULL,

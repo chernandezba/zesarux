@@ -209,8 +209,8 @@ ok *permitir bitmaps de iconos de acciones
 *permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor). prefijo "b "
 *permitir otros bitmaps varios no usados, para el futuro. prefijo "o "
 *o quiza indice de todos que incluya acciones, ventanas, dispositivos y botones superiores
-* que se grabe en la config --zxdesktop-append-icon
-* que se pueda cambiar bitmap desde el menu
+ok * que se grabe en la config --zxdesktop-append-icon
+* que se pueda cambiar bitmap desde el menu. de momento con campo de texto
 Quizá en custom bitmaps para que no se tenga que localizar cada vez comparando strings, la primera vez cuando se encuentra se guarda en un nuevo atributo el icono en memoria con el bitmap
 Ese atributo cacheado tendrá NULL al crearse el icono y al editarse
 Esto además también acelerará la búsqueda de iconos de acción openwindow
