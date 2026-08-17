@@ -589,6 +589,7 @@ extern char **zxvision_find_icon_for_known_window(char *nombre);
 extern int zxvision_known_window_is_valid_by_index(int indice);
 
 extern int zxvision_find_known_window(char *nombre);
+extern int zxvision_count_known_windows(void);
 
 extern int total_restore_window_array_elements;
 

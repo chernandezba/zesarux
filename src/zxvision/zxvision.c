@@ -11273,6 +11273,16 @@ int zxvision_find_known_window(char *nombre)
     return -1;
 }
 
+int zxvision_count_known_windows(void)
+{
+    int i;
+
+
+    for (i=0;zxvision_known_window_names_array[i].start!=NULL;i++);
+
+    return i;
+}
+
 //Retorna posicion a indice de zxvision_known_window_names_array si es valido
 int zxvision_known_window_is_valid_by_index(int indice)
 {

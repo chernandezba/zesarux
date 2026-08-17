@@ -15463,9 +15463,16 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     ventana=&menu_zxdesktop_set_alternate_bitmap_icon_ventana;
 
-    //TODO: calcular alto necesario de ventana . de momento 300
+    int total_alto=MAX_F_FUNCTIONS+zxvision_count_known_windows()+TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS*2+EXT_DESKTOP_TOTAL_BUTTONS+zxdesktop_other_icons_count_list();
+
+    //Separadores
+    total_alto +=5*2;
+
+    //Item ESC
+    total_alto ++;
+
     zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,
-                            ancho_ventana-1,300,"Set Bitmap");
+                            ancho_ventana-1,total_alto,"Set Bitmap");
 
     //Decir que siempre hay que borrar cache al refrescar, especial en el caso de accion por defecto y que no tiene dibujo
     ventana->must_clear_cache_on_draw=1;
@@ -15508,6 +15515,10 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
     }
 
     //Ventanas
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Windows ---");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
@@ -15524,6 +15535,10 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
 
     //Dispositivos
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Devices ---");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
@@ -15547,6 +15562,10 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
     }
 
     //Botones
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Buttons ---");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
@@ -15562,6 +15581,10 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
     }
 
     //Otros
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Others ---");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
@@ -15576,7 +15599,9 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
 
-
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
     menu_add_ESC_item(array_menu_common);
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);

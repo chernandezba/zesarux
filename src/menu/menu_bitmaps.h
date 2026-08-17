@@ -319,4 +319,6 @@ struct s_zxdesktop_other_icons {
 
 extern struct s_zxdesktop_other_icons zxdesktop_other_icons_list[];
 
+extern int zxdesktop_other_icons_count_list(void);
+
 #endif

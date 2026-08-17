@@ -8080,3 +8080,12 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"",NULL} //Siempre finalizar asi
 };
 
+
+int zxdesktop_other_icons_count_list(void)
+{
+    int i;
+
+    for (i=0;zxdesktop_other_icons_list[i].bitmap!=NULL;i++);
+
+    return i;
+}
