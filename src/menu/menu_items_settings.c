@@ -15592,12 +15592,12 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
 
     //Asumimos que se pulsa ESC
-    int indice_retorno=-1;
+    int valor_retorno=-1;
 
 
     if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
         //Si se pulsa Enter
-        indice_retorno=opcion_seleccionada;
+        valor_retorno=item_seleccionado.valor_opcion;
 
     }
 
@@ -15605,9 +15605,7 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
     //En caso de menus tabulados, es responsabilidad de este de liberar ventana
     zxvision_destroy_window(ventana);
 
-    //temp
-    return -1;
-    return indice_retorno;
+    return valor_retorno;
 
 }
 
@@ -15615,7 +15613,7 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PARAMETERS)
 {
     //menu_ventana_scanf("Bitmap",zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,ALTERNATE_BITMAP_NAME_LENGTH);
-    int indice=menu_zxdesktop_set_alternate_bitmap_icon(0);
+    int valor_retorno=menu_zxdesktop_set_alternate_bitmap_icon(0);
 
     //Quiza retornar:
     //entre 0-999 bitmaps de acciones
@@ -15627,12 +15625,49 @@ void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PAR
     //segun parametro de menu item si 0 es accion, 1 ventana, 2 devices etc
     //Ese mismo parametro servira a la funcion de overlay para saber que redibujar
 
+    char alternate_bitmap_string[ALTERNATE_BITMAP_NAME_LENGTH]="";
 
-    if (indice>=0) {
+    if (valor_retorno>=0) {
 
-        printf("indice %d bitmap de : [%s]\n",indice,defined_direct_functions_array[indice].texto_funcion);
+        int tipo_opcion=(valor_retorno) & 0xFF;
+        int indice_opcion=(valor_retorno) >> 8;
+
+        //Acciones
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_ACCION) {
+            if (indice_opcion>0 && indice_opcion<MAX_F_FUNCTIONS) {
+                strcpy(alternate_bitmap_string,defined_direct_functions_array[indice_opcion].texto_funcion);
+            }
+        }
+
+        //Ventanas
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_VENTANA) {
+            sprintf(alternate_bitmap_string,"w %s",zxvision_known_window_names_array[indice_opcion].nombre);
+        }
+
+        //Dispositivos
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_DISPOSITIVOS) {
+            int indice_device=indice_opcion/2;
+            int device_activo=0;
+            if (indice_opcion %2) device_activo=1;
+
+            sprintf(alternate_bitmap_string,"d %d%s",device_activo,zdesktop_lowericons_array[indice_device].device_name);
+        }
+
+        //Botones
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_BOTON) {
+            sprintf(alternate_bitmap_string,"b %d",indice_opcion);
+        }
+
+        //Otros
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS) {
+            sprintf(alternate_bitmap_string,"o %s",zxdesktop_other_icons_list[indice_opcion].name);
+        }
+
+
+        if (alternate_bitmap_string[0]) strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,alternate_bitmap_string);
+        //printf("indice %d bitmap de : [%s]\n",indice,defined_direct_functions_array[indice].texto_funcion);
         //TODO: de momento solo permitir cambiar a bitmap de accion
-        strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,defined_direct_functions_array[indice].texto_funcion);
+        //strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,defined_direct_functions_array[indice].texto_funcion);
     }
 
 
