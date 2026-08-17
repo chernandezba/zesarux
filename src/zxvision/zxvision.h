@@ -846,6 +846,9 @@ struct s_zxdesktop_configurable_icon {
 
     char alternate_bitmap[ALTERNATE_BITMAP_NAME_LENGTH];
 
+    //bitmap final que se usa, para cachearlo y acelerar el dibujado, usado por ejemplo con iconos tipo openwindow o con alternate bitmap
+    char **cached_bitmap;
+
 };
 
 typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
@@ -1635,12 +1638,15 @@ extern z80_bit menu_pressed_close_all_menus;
 extern z80_bit menu_pressed_open_menu_while_in_menu;
 extern z80_bit menu_pressed_f9_with_menu_open;
 
+extern long draw_zxdesktop_icons_media;
+
 extern void init_zxdesktop_configurable_icons(void);
 extern void create_default_zxdesktop_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons_if_auto(void);
 extern void zxvision_set_configurable_icon_position(int icon,int x,int y);
 extern void zxvision_if_configurable_icon_not_on_valid_position_set(int icon);
+extern void zxdesktop_configurable_icons_clear_cache_bitmap(int indice);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
 extern void zxvision_move_configurable_icon_to_trash(int indice_icono);

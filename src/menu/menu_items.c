@@ -1688,6 +1688,11 @@ Calculando ese tiempo: 12% cpu
         zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
 
+        int tiempo_iconos=sensor_get_value("avg_zxdesktop_draw_icons");
+        sprintf (texto_buffer,"ZX Desktop render icons: %6d us",tiempo_iconos);
+        //printf("media %d %ld\n",tiempo_iconos,draw_zxdesktop_icons_media);
+        zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
+
 
         //Dejamos hueco para estadisticas de chars
         core_statistics_linea_mostrar_estadisticas_chars=linea;
@@ -1918,7 +1923,7 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
 
         //Recuperar geometria
         if (!util_find_window_geometry("corestatistics",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            alto_ventana=18;
+            alto_ventana=19;
             ancho_ventana=32;
 
             x_ventana=menu_center_x()-ancho_ventana/2;

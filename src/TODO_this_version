@@ -205,14 +205,22 @@ ok *icono dispositivo rom
 ejemplo --zxdesktop-add-icon-ext 1335 392 "OpenWindow" "ZXLife" "zxlife" "existse" "prueba"
 ok *permitir bitmaps de iconos de acciones
 *permitir bitmaps de iconos de ventanas. quiza con prefijo "w ", ejemplo "w timemachine"
-*permitir bitmaps de iconos de dispositivos, como cinta, etc. requerira tenerlos indexados
-*permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor)
+*permitir bitmaps de iconos de dispositivos, como cinta, etc. requerira tenerlos indexados. pregijo "d "
+*permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor). prefijo "b "
+*permitir otros bitmaps varios no usados, para el futuro. prefijo "o "
 *o quiza indice de todos que incluya acciones, ventanas, dispositivos y botones superiores
 * que se grabe en la config --zxdesktop-add-icon-ext
 * que se pueda cambiar bitmap desde el menu
+Quizá en custom bitmaps para que no se tenga que localizar cada vez comparando strings, la primera vez cuando se encuentra se guarda en un nuevo atributo el icono en memoria con el bitmap
+Ese atributo cacheado tendrá NULL al crearse el icono y al editarse
+Esto además también acelerará la búsqueda de iconos de acción openwindow
+Poner una sonda de cuánto tiempo tarda en dibujarse los iconos del desktop sin caché y con caché
+*quiza en vez de --zxdesktop-add-icon-ext algo sinonimo, --zxdesktop-insert-icon etc
 
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
 -quiza va algo lento leyendo datos el QL de microdrive porque hay muchos VERBOSE_PARANOID?
+
+-si icono de escritorio es openwindow y esa ventana esta abierta, que con boton derecho se pueda cerrar la ventana desde el icono

@@ -15249,6 +15249,8 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
                 zxdesktop_configurable_icons_list[indice_icono].extra_info,
                 zxdesktop_configurable_icons_list[indice_icono].text_icon);
 
+            zxdesktop_configurable_icons_clear_cache_bitmap(indice_icono);
+
         }
     }
 }
@@ -15279,6 +15281,8 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
         zxdesktop_configurable_icons_list[icono_seleccionado].extra_info[0]=0;
 
         zxdesktop_configurable_icons_list[icono_seleccionado].alternate_bitmap[0]=0;
+
+        zxdesktop_configurable_icons_clear_cache_bitmap(icono_seleccionado);
 
         //Si ya existia, conservar posicion. Si no, poner una nueva
         if (zxdesktop_configurable_icons_list[icono_seleccionado].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
@@ -15311,6 +15315,7 @@ void menu_zxdesktop_set_configurable_icons_rename(MENU_ITEM_PARAMETERS)
 void menu_zxdesktop_set_configurable_icons_change_parameters(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
+    zxdesktop_configurable_icons_clear_cache_bitmap(valor_opcion);
 }
 
 void menu_zxdesktop_set_configurable_icons_move_trash(MENU_ITEM_PARAMETERS)

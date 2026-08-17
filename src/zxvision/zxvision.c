@@ -1040,6 +1040,8 @@ void init_zxdesktop_configurable_icons(void)
 
         //alternate bitmap en blanco
         zxdesktop_configurable_icons_list[i].alternate_bitmap[0]=0;
+
+        zxdesktop_configurable_icons_clear_cache_bitmap(i);
     }
 }
 
@@ -6582,6 +6584,12 @@ char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
     return defined_direct_functions_array[indice].bitmap_button;
 }
 
+void zxdesktop_configurable_icons_clear_cache_bitmap(int indice)
+{
+    zxdesktop_configurable_icons_list[indice].cached_bitmap=NULL;
+}
+
+
 void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 {
     int x,y;
@@ -6620,11 +6628,32 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     //Dibujar el icono
     //Si icono es OPEN_WINDOW, adoptar icono de la ventana que se va a abrir
     if (defined_direct_functions_array[id_accion].id_funcion==F_FUNCION_OPEN_WINDOW) {
-        char *geometry_name;
-        geometry_name=zxdesktop_configurable_icons_list[index_icon].extra_info;
-        char **possible_bitmap=zxvision_find_icon_for_known_window(geometry_name);
-        if (possible_bitmap!=NULL) bitmap=possible_bitmap;
+        //Si no esta cacheado
+        if (zxdesktop_configurable_icons_list[index_icon].cached_bitmap==NULL) {
+            //printf("No Cacheado\n");
+            char *geometry_name;
+            geometry_name=zxdesktop_configurable_icons_list[index_icon].extra_info;
+            char **possible_bitmap=zxvision_find_icon_for_known_window(geometry_name);
+            if (possible_bitmap!=NULL) bitmap=possible_bitmap;
+        }
+        else {
+            //printf("Cacheado\n");
+            bitmap=zxdesktop_configurable_icons_list[index_icon].cached_bitmap;
+        }
     }
+
+    //Bitmap alternativo para un icono
+    if (zxdesktop_configurable_icons_list[index_icon].alternate_bitmap[0]) {
+        if (zxdesktop_configurable_icons_list[index_icon].cached_bitmap==NULL) {
+            //printf("No Cacheado\n");
+            bitmap=get_alternate_bitmap_for_configurable_icon(zxdesktop_configurable_icons_list[index_icon].alternate_bitmap);
+        }
+        else {
+            //printf("Cacheado\n");
+            bitmap=zxdesktop_configurable_icons_list[index_icon].cached_bitmap;
+        }
+    }
+
 
     //Si icono es F_FUNCION_SET_MACHINE y tiene parametro de set machine, dibujamos el icono de la maquina y luego la "flechita"
     //De tal manera que estamos dibujando un icono sobre el otro. Este es el unico caso de momento que hago eso
@@ -6648,8 +6677,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     }
 
 
-    //Bitmap alternativo para un icono
-    if (zxdesktop_configurable_icons_list[index_icon].alternate_bitmap[0]) bitmap=get_alternate_bitmap_for_configurable_icon(zxdesktop_configurable_icons_list[index_icon].alternate_bitmap);
+    zxdesktop_configurable_icons_list[index_icon].cached_bitmap=bitmap;
 
     menu_draw_ext_desktop_one_icon(x,y,bitmap);
 
@@ -6729,11 +6757,23 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     menu_draw_ext_desktop_one_icon_text(x,y_texto_icono,texto_mostrado);
 }
 
+
+long draw_zxdesktop_icons_media_suma=0;
+
+int draw_zxdesktop_icons_media_suma_medidas=0;
+
+long draw_zxdesktop_icons_media=0;
+
 //Dibujar los iconos configurables por el usuario
 void menu_draw_ext_desktop_configurable_icons(void)
 {
 
     if (!zxdesktop_configurable_icons_enabled_and_visible()) return;
+
+    //Sonda de tiempo para saber cuanto tarda en ejecutarse esto
+    struct timeval draw_zxdesktop_icons_antes,draw_zxdesktop_icons_despues;
+
+    timer_stats_current_time(&draw_zxdesktop_icons_antes);
 
     int i;
 
@@ -6744,6 +6784,27 @@ void menu_draw_ext_desktop_configurable_icons(void)
             menu_ext_desktop_draw_configurable_icon(i,0);
         }
     }
+
+    long difftime;
+
+    difftime=timer_stats_diference_time(&draw_zxdesktop_icons_antes,&draw_zxdesktop_icons_despues);
+
+    //media de tiempo
+    draw_zxdesktop_icons_media_suma +=difftime;
+    draw_zxdesktop_icons_media_suma_medidas++;
+
+    long media;
+
+    if (draw_zxdesktop_icons_media_suma_medidas!=0) {
+        media=draw_zxdesktop_icons_media_suma/draw_zxdesktop_icons_media_suma_medidas;
+    }
+    else {
+        media=0;
+    }
+
+    draw_zxdesktop_icons_media=media;
+
+    printf("difftime: %ld media: %ld microsegundos\n",difftime,media);
 }
 
 

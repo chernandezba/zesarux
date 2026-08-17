@@ -287,6 +287,12 @@ int sensor_avg_menu_overlay_render_get_value(int id GCC_UNUSED)
     return core_render_menu_overlay_media;
 }
 
+int sensor_avg_zxdesktop_draw_icons_get_value(int id GCC_UNUSED)
+{
+    //printf("sensor %ld\n",draw_zxdesktop_icons_media);
+    return draw_zxdesktop_icons_media;
+}
+
 int sensor_last_zeng_online_uncompress_get_value(int id GCC_UNUSED)
 {
     return zeng_online_uncompress_difftime;
@@ -689,6 +695,15 @@ pues de una octava a la otra es el doble de valor
     9999,-9999,
     10000,-9999,
     sensor_avg_menu_overlay_render_get_value,0
+    },
+
+    //En este el tiempo maximo y los porcentajes no tienen mucho sentido
+   {
+    "avg_zxdesktop_draw_icons","Average ZX Desktop render icons","AZXDIcnRnd",
+    0,20000,
+    9999,-9999,
+    10000,-9999,
+    sensor_avg_zxdesktop_draw_icons_get_value,0
     },
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
