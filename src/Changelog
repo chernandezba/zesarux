@@ -35,6 +35,7 @@ Improved ZX Vision:
 
 Improved ZX Desktop:
 - Allow to sort icons alphabetically
+- Allow to change bitmap of an icon
 - Check if item is on an invalid position when recovering it from Trash
 
 Special effects for video output are applied dynamically when moving cursor

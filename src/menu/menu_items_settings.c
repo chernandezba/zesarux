@@ -15490,8 +15490,7 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
     menu_item item_seleccionado;
     int retorno_menu;
 
-    //TODO: ver tamaño necesario de este buffer
-    char buffer_texto[40];
+    char buffer_texto[MAX_NAME_WINDOW_GEOMETRY]; //Este MAX_NAME_WINDOW_GEOMETRY es el nombre mas grande de todos los usados
 
     int linea=0;
 
@@ -15690,9 +15689,7 @@ void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PAR
 
 
         if (alternate_bitmap_string[0]) strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,alternate_bitmap_string);
-        //printf("indice %d bitmap de : [%s]\n",indice,defined_direct_functions_array[indice].texto_funcion);
-        //TODO: de momento solo permitir cambiar a bitmap de accion
-        //strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,defined_direct_functions_array[indice].texto_funcion);
+
     }
 
 

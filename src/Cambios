@@ -35,6 +35,7 @@ Mejorado ZX Vision:
 
 Mejorado ZX Desktop:
 - Permitir ordenar iconos alfabéticamente
+- Permitir cambiar el bitmap de un icono
 - Comprobar si un item está en una posición inválida al recuperarlo de la Papelera
 
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
