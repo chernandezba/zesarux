@@ -15410,6 +15410,12 @@ void menu_zxdesktop_set_alternate_bitmap_icon_overlay(void)
         puntero_bitmap=zxdesktop_buttons_bitmaps[indice_opcion];
     }
 
+    //Otros
+    if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS) {
+        puntero_bitmap=zxdesktop_other_icons_list[indice_opcion].bitmap;
+    }
+
+
 
     if (puntero_bitmap!=NULL) {
 
@@ -15555,7 +15561,20 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
 
-        //zxdesktop_buttons_bitmaps[numero_boton];
+    //Otros
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Others ---");
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+
+    for (i=0;zxdesktop_other_icons_list[i].bitmap!=NULL;i++) {
+        sprintf (buffer_texto,"%s",zxdesktop_other_icons_list[i].name);
+        //printf("Agregando ventana %s\n",buffer_texto);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+        menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
+        menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS+256*i);
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+    }
 
 
 
