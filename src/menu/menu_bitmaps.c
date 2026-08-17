@@ -19,6 +19,9 @@
 
 */
 
+#include <stdio.h>
+
+
 #include "menu_bitmaps.h"
 #include "settings.h"
 
@@ -8069,3 +8072,11 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",
     "                          " 	 //25
 };
+
+
+struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
+    {"prueba",bitmap_button_ext_desktop_midi_output_status},
+    {"prueba2",bitmap_button_ext_desktop_paste_keystrokes},
+    {"",NULL} //Siempre finalizar asi
+};
+

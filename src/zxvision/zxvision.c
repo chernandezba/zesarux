@@ -6598,6 +6598,20 @@ char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
             else return zxdesktop_buttons_bitmaps[numero_boton];
         }
 
+        //si texto empieza por "o " son otros iconos
+        //ejemplo "o prueba"
+        if ((texto_bitmap[0]=='o' || texto_bitmap[0]=='O') && texto_bitmap[1]==' ') {
+
+            int i;
+            for (i=0;zxdesktop_other_icons_list[i].bitmap!=NULL;i++) {
+                if (!strcasecmp(&texto_bitmap[2],zxdesktop_other_icons_list[i].name)) {
+                    return zxdesktop_other_icons_list[i].bitmap;
+                }
+            }
+            return bitmap_unknown;
+        }
+
+
         //si texto empieza por "d " es icono de dispositivo. le sigue al espacio un 0 o 1 (para elegir el dispositivo inactivo o activo) y el nombre
         //ejemplo "d 1real_tape"
         if (strlen(texto_bitmap)>3) {

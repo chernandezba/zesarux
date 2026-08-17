@@ -307,4 +307,16 @@ extern char *bitmap_button_ext_desktop_paste_keystrokes[];
 
 #define EXT_DESKTOP_BUTTON_CLOSE_ALL_ID 12
 
+
+#define OTHER_ICONS_NAME_MAX_LENGHT 30
+
+struct s_zxdesktop_other_icons {
+    //usado de momento para alternate bitmaps
+    //nombre sin espacios
+    char name[OTHER_ICONS_NAME_MAX_LENGHT];
+    char **bitmap;
+};
+
+extern struct s_zxdesktop_other_icons zxdesktop_other_icons_list[];
+
 #endif
