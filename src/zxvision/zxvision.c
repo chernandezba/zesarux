@@ -6576,7 +6576,7 @@ char **get_direct_function_icon_bitmap_final(int id_accion)
 char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
 {
 
-    char **bitmap_unknown=bitmap_button_ext_desktop_userdefined;
+    char **bitmap_unknown=bitmap_button_ext_desktop_nothing;
 
 
     if (strlen(texto_bitmap)>2) {

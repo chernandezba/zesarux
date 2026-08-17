@@ -15384,10 +15384,8 @@ void menu_zxdesktop_set_alternate_bitmap_icon_overlay(void)
 
     //Acciones
     if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_ACCION) {
-        if (indice_opcion>0 && indice_opcion<MAX_F_FUNCTIONS) {
-            puntero_bitmap=defined_direct_functions_array[indice_opcion].bitmap_button;
-            puntero_bitmap=alter_zesarux_ascii_logo(puntero_bitmap);
-        }
+        puntero_bitmap=defined_direct_functions_array[indice_opcion].bitmap_button;
+        puntero_bitmap=alter_zesarux_ascii_logo(puntero_bitmap);
     }
 
     //Ventanas
@@ -15604,6 +15602,7 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     menu_add_ESC_item(array_menu_common);
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 
@@ -15658,9 +15657,7 @@ void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PAR
 
         //Acciones
         if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_ACCION) {
-            if (indice_opcion>0 && indice_opcion<MAX_F_FUNCTIONS) {
-                strcpy(alternate_bitmap_string,defined_direct_functions_array[indice_opcion].texto_funcion);
-            }
+            strcpy(alternate_bitmap_string,defined_direct_functions_array[indice_opcion].texto_funcion);
         }
 
         //Ventanas
