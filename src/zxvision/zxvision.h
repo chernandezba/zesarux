@@ -2004,7 +2004,13 @@ enum tooltips_menus_inicio_storage {
     TOOLTIP_QL_EXTERNAL_ROM
 };
 
+
+#define DEVICE_NAME_MAX_LENGHT 30
+
 struct s_zxdesktop_lowericons_info {
+    //usado de momento para alternate bitmaps
+    //nombre sin espacios
+    char device_name[DEVICE_NAME_MAX_LENGHT];
     int (*is_visible)(void);
     int (*is_active)(void);
     void (*accion)(void);

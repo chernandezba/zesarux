@@ -6827,7 +6827,7 @@ void menu_draw_ext_desktop_configurable_icons(void)
 
     draw_zxdesktop_icons_media=media;
 
-    printf("difftime: %ld media: %ld microsegundos\n",difftime,media);
+    //printf("difftime: %ld media: %ld microsegundos\n",difftime,media);
 }
 
 

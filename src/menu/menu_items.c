@@ -48269,142 +48269,142 @@ int zxdesktop_icon_hilow_inverse=0;
 
 struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS]={
     //cinta standard
-    { zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
+    { "std_tape",zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
         zxdesktop_lowericon_cassete_std_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse,TOOLTIP_STANDARD_TAPE},
 
     //cinta real
-    { zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
+    { "real_tape",zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
         zxdesktop_lowericon_cassete_real_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse,TOOLTIP_REAL_TAPE},
 
     //MDV1
-    { zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+    { "mdv1",zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse,TOOLTIP_MICRODRIVE},
 
     //MDV2
-    { zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+    { "mdv2",zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse,TOOLTIP_MICRODRIVE},
 
     //MDV3
-    { zxdesktop_lowericon_mdv3_is_visible, zxdesktop_lowericon_mdv3_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+    { "mdv3",zxdesktop_lowericon_mdv3_is_visible, zxdesktop_lowericon_mdv3_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv3_inverse,TOOLTIP_MICRODRIVE},
 
     //MDV4
-    { zxdesktop_lowericon_mdv4_is_visible, zxdesktop_lowericon_mdv4_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+    { "mdv4",zxdesktop_lowericon_mdv4_is_visible, zxdesktop_lowericon_mdv4_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv4_inverse,TOOLTIP_MICRODRIVE},
 
     //Floppy QL.
-    { zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+    { "flp1",zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse,TOOLTIP_FLOPPY_QL},
 
     //Floppy QL.
-    { zxdesktop_lowericon_flp2_is_visible, zxdesktop_lowericon_flp2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
+    { "flp2",zxdesktop_lowericon_flp2_is_visible, zxdesktop_lowericon_flp2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
         bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp2_inverse,TOOLTIP_FLOPPY_QL},
 
     //floppy +3
-    { zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
+    { "+3flp",zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
     zxdesktop_lowericon_plus3_flp_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse,TOOLTIP_COMPACT_FLOPPY},
 
     //betadisk
-    { zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,
+    { "betadisk",zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,
         zxdesktop_lowericon_betadisk_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse,TOOLTIP_BETADISK},
 
     //MMC
-    { zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
+    { "mmc1",zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
         zxdesktop_lowericon_mmc_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse,TOOLTIP_MMC},
 
     //MMC segunda tarjeta
-    { zxdesktop_lowericon_mmc_is_visible_second, zxdesktop_lowericon_mmc_is_active_second, zxdesktop_lowericon_mmc_accion,
+    { "mmc2",zxdesktop_lowericon_mmc_is_visible_second, zxdesktop_lowericon_mmc_is_active_second, zxdesktop_lowericon_mmc_accion,
         zxdesktop_lowericon_mmc_accion_boton_derecho_second,
         bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse_second,TOOLTIP_MMC},
 
     //IDE
-    { zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,
+    { "ide",zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,
         zxdesktop_lowericon_ide_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_ide_active,bitmap_lowericon_ext_desktop_ide_inactive,&zxdesktop_icon_ide_inverse,TOOLTIP_IDE},
 
     //ZXPand
-    { zxdesktop_lowericon_zxpand_is_visible, zxdesktop_lowericon_zxpand_is_active, zxdesktop_lowericon_zxpand_accion,NULL,
+    { "zxpand",zxdesktop_lowericon_zxpand_is_visible, zxdesktop_lowericon_zxpand_is_active, zxdesktop_lowericon_zxpand_accion,NULL,
         bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_zxpand_inverse,TOOLTIP_ZXPAND},
 
     //Cartuchos msx, coleco, svi, sg1000, sms
-    { zxdesktop_lowericon_cartridge_msx_is_visible, zxdesktop_lowericon_cartridge_msx_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
+    { "msxcart",zxdesktop_lowericon_cartridge_msx_is_visible, zxdesktop_lowericon_cartridge_msx_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
         bitmap_lowericon_ext_desktop_msx_cart_active,bitmap_lowericon_ext_desktop_msx_cart_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_MSX},
 
-    { zxdesktop_lowericon_cartridge_svi_is_visible, zxdesktop_lowericon_cartridge_svi_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
+    { "svicart",zxdesktop_lowericon_cartridge_svi_is_visible, zxdesktop_lowericon_cartridge_svi_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
         bitmap_lowericon_ext_desktop_svi_active,bitmap_lowericon_ext_desktop_svi_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_SVI},
 
-    { zxdesktop_lowericon_cartridge_coleco_is_visible, zxdesktop_lowericon_cartridge_coleco_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
+    { "colecocart",zxdesktop_lowericon_cartridge_coleco_is_visible, zxdesktop_lowericon_cartridge_coleco_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
         bitmap_lowericon_ext_desktop_coleco_active,bitmap_lowericon_ext_desktop_coleco_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_COLECO},
 
-    { zxdesktop_lowericon_cartridge_sg1000_is_visible, zxdesktop_lowericon_cartridge_sg1000_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
+    { "sg1000cart",zxdesktop_lowericon_cartridge_sg1000_is_visible, zxdesktop_lowericon_cartridge_sg1000_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
         bitmap_lowericon_ext_desktop_sg1000_active,bitmap_lowericon_ext_desktop_sg1000_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_SG1000},
 
-    { zxdesktop_lowericon_cartridge_sms_is_visible, zxdesktop_lowericon_cartridge_sms_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
+    { "smscart",zxdesktop_lowericon_cartridge_sms_is_visible, zxdesktop_lowericon_cartridge_sms_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
         bitmap_lowericon_ext_desktop_sms_active,bitmap_lowericon_ext_desktop_sms_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_SMS},
 
     //Cartuchos Timex TS2068
-    { zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,NULL,
+    { "ts2068cart",zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,NULL,
         bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_TS2068},
 
     //3 Cartuchos de Z88.
-    { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,NULL,
+    { "z88slot1",zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,NULL,
         bitmap_lowericon_ext_desktop_z88_slot_one_active,bitmap_lowericon_ext_desktop_z88_slot_one_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_Z88},
 
-    { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,NULL,
+    { "z88slot2",zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,NULL,
         bitmap_lowericon_ext_desktop_z88_slot_two_active,bitmap_lowericon_ext_desktop_z88_slot_two_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_Z88},
 
-    { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,NULL,
+    { "z88slot3",zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,NULL,
         bitmap_lowericon_ext_desktop_z88_slot_three_active,bitmap_lowericon_ext_desktop_z88_slot_three_inactive,&z88_slot3_activity_indicator,TOOLTIP_CARTRIDGE_Z88},
 
     //zxuno flash. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,NULL,
+    { "zxunoflash",zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,NULL,
         bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse,TOOLTIP_ZXUNO_FLASH},
 
     //zxmmc+ flash. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
+    { "zxmmc+flash",zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
         bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse,TOOLTIP_ZXMMCPLUS_FLASH},
 
     //esxdos handler. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_esxdoshandler_is_visible, zxdesktop_lowericon_esxdoshandler_is_active, zxdesktop_lowericon_esxdoshandler_accion,NULL,
+    { "esxdos",zxdesktop_lowericon_esxdoshandler_is_visible, zxdesktop_lowericon_esxdoshandler_is_active, zxdesktop_lowericon_esxdoshandler_accion,NULL,
         bitmap_lowericon_ext_desktop_esxdoshandler,bitmap_lowericon_ext_desktop_esxdoshandler,&zxdesktop_icon_esxdoshandler_inverse,TOOLTIP_ESXDOS_HANDLER},
 
     //kartusho. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_kartusho_is_visible, zxdesktop_lowericon_kartusho_is_active, zxdesktop_lowericon_kartusho_accion,NULL,
+    { "kartusho",zxdesktop_lowericon_kartusho_is_visible, zxdesktop_lowericon_kartusho_is_active, zxdesktop_lowericon_kartusho_accion,NULL,
         bitmap_lowericon_ext_desktop_kartusho,bitmap_lowericon_ext_desktop_kartusho,&zxdesktop_icon_kartusho_inverse,TOOLTIP_KARTUSHO},
 
     //ifrom. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_ifrom_is_visible, zxdesktop_lowericon_ifrom_is_active, zxdesktop_lowericon_ifrom_accion,NULL,
+    { "ifrom",zxdesktop_lowericon_ifrom_is_visible, zxdesktop_lowericon_ifrom_is_active, zxdesktop_lowericon_ifrom_accion,NULL,
         bitmap_lowericon_ext_desktop_ifrom,bitmap_lowericon_ext_desktop_ifrom,&zxdesktop_icon_ifrom_inverse,TOOLTIP_IFROM},
 
     //QL external rom. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_ql_external_rom_is_visible, zxdesktop_lowericon_ql_external_rom_is_active, zxdesktop_lowericon_ql_external_rom_accion,NULL,
+    { "qlextrom",zxdesktop_lowericon_ql_external_rom_is_visible, zxdesktop_lowericon_ql_external_rom_is_active, zxdesktop_lowericon_ql_external_rom_accion,NULL,
         bitmap_lowericon_ext_desktop_ql_external_rom_active,bitmap_lowericon_ext_desktop_ql_external_rom_inactive,&zxdesktop_icon_ql_external_rom_inverse,TOOLTIP_QL_EXTERNAL_ROM},
 
     //lec memory. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_lec_memory_is_visible, zxdesktop_lowericon_lec_memory_is_active, zxdesktop_lowericon_lec_memory_accion,NULL,
+    { "lecmem",zxdesktop_lowericon_lec_memory_is_visible, zxdesktop_lowericon_lec_memory_is_active, zxdesktop_lowericon_lec_memory_accion,NULL,
         bitmap_lowericon_ext_desktop_lec_memory,bitmap_lowericon_ext_desktop_lec_memory,&zxdesktop_icon_lec_memory_inverse,TOOLTIP_LEC_MEMORY},
 
     //superupgrade. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_superupgrade_is_visible, zxdesktop_lowericon_superupgrade_is_active, zxdesktop_lowericon_superupgrade_accion,NULL,
+    { "superupgrade",zxdesktop_lowericon_superupgrade_is_visible, zxdesktop_lowericon_superupgrade_is_active, zxdesktop_lowericon_superupgrade_accion,NULL,
         bitmap_lowericon_ext_desktop_superupgrade,bitmap_lowericon_ext_desktop_superupgrade,&zxdesktop_icon_superupgrade_inverse,TOOLTIP_SUPERUPGRADE},
 
     //cartucho dandanator
-    { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
+    { "dandanator",zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
         zxdesktop_lowericon_dandanator_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse,TOOLTIP_DANDANATOR},
 
     //cinta HiLow
-    { zxdesktop_lowericon_hilow_is_visible, zxdesktop_lowericon_hilow_is_active,zxdesktop_lowericon_hilow_accion,
+    { "hilodatadrive",zxdesktop_lowericon_hilow_is_visible, zxdesktop_lowericon_hilow_is_active,zxdesktop_lowericon_hilow_accion,
         zxdesktop_lowericon_hilow_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_hilow_active,bitmap_lowericon_ext_desktop_hilow_inactive,&zxdesktop_icon_hilow_inverse,TOOLTIP_HILOW},
 
     //samram. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_samram_is_visible, zxdesktop_lowericon_samram_is_active, zxdesktop_lowericon_samram_accion,NULL,
+    { "samram",zxdesktop_lowericon_samram_is_visible, zxdesktop_lowericon_samram_is_active, zxdesktop_lowericon_samram_accion,NULL,
         bitmap_lowericon_ext_desktop_samram,bitmap_lowericon_ext_desktop_samram,&zxdesktop_icon_samram_inverse,TOOLTIP_SAMRAM},
 
 };
