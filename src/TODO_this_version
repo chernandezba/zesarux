@@ -211,10 +211,13 @@ ok *permitir bitmaps de botones superiores. quiza simplemente un numero de boton
 *o quiza indice de todos que incluya acciones, ventanas, dispositivos y botones superiores
 ok * que se grabe en la config --zxdesktop-append-icon
 * que se pueda cambiar bitmap desde el menu. de momento con campo de texto
-Quizá en custom bitmaps para que no se tenga que localizar cada vez comparando strings, la primera vez cuando se encuentra se guarda en un nuevo atributo el icono en memoria con el bitmap
-Ese atributo cacheado tendrá NULL al crearse el icono y al editarse
-Esto además también acelerará la búsqueda de iconos de acción openwindow
-Poner una sonda de cuánto tiempo tarda en dibujarse los iconos del desktop sin caché y con caché
+ok *cache bitmap
+
+ejemplos config alternate bitmaps:
+--zxdesktop-append-icon 1419 392 "Reset" "Reset" "" "exists" "quickload"
+--zxdesktop-append-icon 1523 392 "Settings" "Settings" "" "exists" "w processmanagement"
+--zxdesktop-append-icon 1627 392 "HexEditor" "HexEditor" "" "exists" "b 0"
+--zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "d 1real_tape"
 
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_

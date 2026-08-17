@@ -6581,6 +6581,7 @@ char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
 
     if (strlen(texto_bitmap)>2) {
         //Si texto empieza por "w " es icono de ventana
+        //ejemplo "w toyzxeyes"
         if ((texto_bitmap[0]=='w' || texto_bitmap[0]=='W') && texto_bitmap[1]==' ') {
             //buscar ventana con ese icono
             char **bitmap=zxvision_find_icon_for_known_window(&texto_bitmap[2]);
@@ -6589,11 +6590,29 @@ char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
         }
 
         //si texto empieza por "b " es icono de boton
+        //ejemplo "b 3"
         if ((texto_bitmap[0]=='b' || texto_bitmap[0]=='B') && texto_bitmap[1]==' ') {
             int numero_boton=parse_string_to_number(&texto_bitmap[2]);
 
             if (numero_boton<0 || numero_boton>EXT_DESKTOP_TOTAL_BUTTONS) return bitmap_unknown;
             else return zxdesktop_buttons_bitmaps[numero_boton];
+        }
+
+        //si texto empieza por "d " es icono de dispositivo. le sigue al espacio un 0 o 1 (para elegir el dispositivo inactivo o activo) y el nombre
+        //ejemplo "d 1real_tape"
+        if (strlen(texto_bitmap)>3) {
+            if ((texto_bitmap[0]=='d' || texto_bitmap[0]=='D') && texto_bitmap[1]==' ') {
+
+                int activo=(texto_bitmap[2]=='1' ? 1 : 0);
+                int i;
+                for (i=0;i<TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS;i++) {
+                    if (!strcasecmp(&texto_bitmap[3],zdesktop_lowericons_array[i].device_name)) {
+                        if (activo) return zdesktop_lowericons_array[i].bitmap_active;
+                        else return zdesktop_lowericons_array[i].bitmap_inactive;
+                    }
+                }
+                return bitmap_unknown;
+            }
         }
 
     }
