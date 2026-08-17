@@ -6578,14 +6578,24 @@ char **get_alternate_bitmap_for_configurable_icon(char *texto_bitmap)
 
     char **bitmap_unknown=bitmap_button_ext_desktop_userdefined;
 
-    //Si texto empieza por "w " es icono de ventana
+
     if (strlen(texto_bitmap)>2) {
+        //Si texto empieza por "w " es icono de ventana
         if ((texto_bitmap[0]=='w' || texto_bitmap[0]=='W') && texto_bitmap[1]==' ') {
             //buscar ventana con ese icono
             char **bitmap=zxvision_find_icon_for_known_window(&texto_bitmap[2]);
             if (bitmap==NULL) return bitmap_unknown;
             else return bitmap;
         }
+
+        //si texto empieza por "b " es icono de boton
+        if ((texto_bitmap[0]=='b' || texto_bitmap[0]=='B') && texto_bitmap[1]==' ') {
+            int numero_boton=parse_string_to_number(&texto_bitmap[2]);
+
+            if (numero_boton<0 || numero_boton>EXT_DESKTOP_TOTAL_BUTTONS) return bitmap_unknown;
+            else return zxdesktop_buttons_bitmaps[numero_boton];
+        }
+
     }
 
     int indice=get_defined_direct_functions(texto_bitmap);
