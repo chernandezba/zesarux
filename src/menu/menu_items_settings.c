@@ -249,6 +249,7 @@ int settings_smartload_opcion_seleccionada=0;
 int topmenu_items_visibility_opcion_seleccionada=0;
 int hardware_realjoystick_actions_opcion_seleccionada=0;
 int hardware_rtc_settings_opcion_seleccionada=0;
+int alternate_bitmap_icon_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -15318,11 +15319,176 @@ void menu_zxdesktop_set_configurable_icons_change_parameters(MENU_ITEM_PARAMETER
     zxdesktop_configurable_icons_clear_cache_bitmap(valor_opcion);
 }
 
+
+
+
+
+zxvision_window menu_zxdesktop_set_alternate_bitmap_icon_ventana;
+
+
+
+//Para hacer un preview del boton
+void menu_zxdesktop_set_alternate_bitmap_icon_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
+{
+    zxvision_putpixel(&menu_zxdesktop_set_alternate_bitmap_icon_ventana,x,y,color);
+}
+
+
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_ANCHO_VENTANA 29
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_ALTO_VENTANA 20
+
+//Ubicar el boton hacia la derecha de la ventana
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_OFFSET_BUTTON (ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_ANCHO_VENTANA-(ZESARUX_ASCII_LOGO_ANCHO/menu_char_width)-2)
+
+
+
+void menu_zxdesktop_set_alternate_bitmap_icon_overlay(void)
+{
+
+
+    zxvision_window *ventana;
+    ventana=&menu_zxdesktop_set_alternate_bitmap_icon_ventana;
+
+
+
+
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (ventana->is_minimized) return;
+
+
+    char **puntero_bitmap;
+
+    int numero_boton=alternate_bitmap_icon_opcion_seleccionada;
+
+    //Que el número del botón esté dentro del rango total y ademas evitamos el 0 (default)
+    if (numero_boton>0 && numero_boton<MAX_F_FUNCTIONS) {
+        puntero_bitmap=defined_direct_functions_array[numero_boton].bitmap_button;
+        puntero_bitmap=alter_zesarux_ascii_logo(puntero_bitmap);
+
+        int offset_x=ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_OFFSET_BUTTON*menu_char_width;
+        int offset_y=ventana->offset_y;
+
+        //Desplazar putpixel segun el offset de scroll
+        offset_y *=menu_char_height;
+
+        //Primero poner todo el fondo del botón en color blanco
+        int x,y;
+
+        for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
+            for (y=0;y<ZESARUX_ASCII_LOGO_ALTO;y++) {
+                zxvision_putpixel(ventana,offset_x+x,offset_y+y,7);
+            }
+        }
+
+        //Y dibujar dicho botón
+        int nivel_zoom=1;
+        screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+            0,0,menu_zxdesktop_set_alternate_bitmap_icon_putpixel,nivel_zoom,0,1);
+    }
+
+    //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
+    //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
+    //En ventanas que no escriben siempre su contenido, siempre deberia estar zxvision_draw_window_contents que lo haga siempre
+    zxvision_draw_window_contents(ventana);
+}
+
+
+int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
+{
+
+    int alto_ventana=ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_ALTO_VENTANA;
+    int ancho_ventana=ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_ANCHO_VENTANA;
+
+    int x_ventana=menu_center_x()-ancho_ventana/2;
+    int y_ventana=menu_center_y()-alto_ventana/2;
+
+
+    //En este caso creamos un menu tabulado porque necesitamos crear nosotros la ventana antes para
+    //poderla hacer mas ancha para ubicar el dibujo del boton seleccionado
+    zxvision_window *ventana;
+
+    ventana=&menu_zxdesktop_set_alternate_bitmap_icon_ventana;
+
+    zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,
+                            ancho_ventana-1,MAX_F_FUNCTIONS+2,"Set Bitmap");
+
+    //Decir que siempre hay que borrar cache al refrescar, especial en el caso de accion por defecto y que no tiene dibujo
+    ventana->must_clear_cache_on_draw=1;
+    zxvision_draw_window(ventana);
+
+
+
+    alternate_bitmap_icon_opcion_seleccionada=accion_inicial_seleccionada;
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_zxdesktop_set_alternate_bitmap_icon_overlay);
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    char buffer_texto[40];
+
+    int i;
+    for (i=0;i<MAX_F_FUNCTIONS;i++) {
+
+
+
+        sprintf (buffer_texto,"%s",defined_direct_functions_array[i].texto_funcion);
+
+
+        if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+        else menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+        menu_add_item_menu_tabulado(array_menu_common,1,i);
+        menu_add_item_menu_tooltip(array_menu_common,defined_direct_functions_array[i].texto_tooltip);
+
+    }
+
+
+    //menu_add_item_menu_separator(array_menu_common);
+    menu_add_ESC_item(array_menu_common);
+    menu_add_item_menu_tabulado(array_menu_common,1,i+1);
+
+    retorno_menu=menu_dibuja_menu_no_title_lang(&alternate_bitmap_icon_opcion_seleccionada,&item_seleccionado,array_menu_common,"Set Bitmap" );
+
+    //restauramos modo normal de texto de menu
+
+
+    //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
+
+
+    //Asumimos que se pulsa ESC
+    int indice_retorno=-1;
+
+
+    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+        //Si se pulsa Enter
+        indice_retorno=alternate_bitmap_icon_opcion_seleccionada;
+
+    }
+
+
+    //En caso de menus tabulados, es responsabilidad de este de liberar ventana
+    zxvision_destroy_window(ventana);
+
+    return indice_retorno;
+
+}
+
+
 void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf("Bitmap",zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,ALTERNATE_BITMAP_NAME_LENGTH);
+    //menu_ventana_scanf("Bitmap",zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,ALTERNATE_BITMAP_NAME_LENGTH);
+    menu_zxdesktop_set_alternate_bitmap_icon(0);
     zxdesktop_configurable_icons_clear_cache_bitmap(valor_opcion);
 }
+
+
 
 void menu_zxdesktop_set_configurable_icons_move_trash(MENU_ITEM_PARAMETERS)
 {
