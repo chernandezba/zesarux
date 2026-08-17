@@ -212,12 +212,14 @@ ok *permitir iconos de máquinas
 ok * que se grabe en la config --zxdesktop-append-icon
 ok * que se pueda cambiar bitmap desde el menu
 ok *cache bitmap
+*tooltip en selector de alternate bitmap tiene sentido?
 
 ejemplos config alternate bitmaps:
 --zxdesktop-append-icon 1419 392 "Reset" "Reset" "" "exists" "quickload"
 --zxdesktop-append-icon 1523 392 "Settings" "Settings" "" "exists" "w processmanagement"
 --zxdesktop-append-icon 1627 392 "HexEditor" "HexEditor" "" "exists" "b 0"
 --zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "d 1real_tape"
+--zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "m inves"
 
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_

@@ -15329,8 +15329,9 @@ zxvision_window menu_zxdesktop_set_alternate_bitmap_icon_ventana;
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_VENTANA 2
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_DISPOSITIVOS 3
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_BOTON 4
-#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS 5
-#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS 6
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS 5
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS 6
+
 
 
 int menu_zxdesktop_set_alternate_bitmap_icon_overlay_tipo_opcion=0;
@@ -15468,6 +15469,8 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     int total_alto=MAX_F_FUNCTIONS+zxvision_count_known_windows()+TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS*2+EXT_DESKTOP_TOTAL_BUTTONS+zxdesktop_other_icons_count_list()+count_total_machine_id();
 
+    //printf("total_alto %d\n",total_alto);
+
     //Separadores
     total_alto +=6*2;
 
@@ -15582,23 +15585,7 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
 
-    //Otros
-    menu_add_item_menu_separator(array_menu_common);
-    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
-    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
-    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Others ---");
-    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
-    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
-
-
-    for (i=0;zxdesktop_other_icons_list[i].bitmap!=NULL;i++) {
-        sprintf (buffer_texto,"%s",zxdesktop_other_icons_list[i].name);
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-        menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
-        menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS+256*i);
-        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
-    }
 
     //Maquinas
     menu_add_item_menu_separator(array_menu_common);
@@ -15619,6 +15606,24 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
         i++;
+    }
+
+    //Otros
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Others ---");
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+
+    for (i=0;zxdesktop_other_icons_list[i].bitmap!=NULL;i++) {
+        sprintf (buffer_texto,"%s",zxdesktop_other_icons_list[i].name);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+        menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
+        menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS+256*i);
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
 
 
