@@ -15395,6 +15395,17 @@ void menu_zxdesktop_set_alternate_bitmap_icon_overlay(void)
         puntero_bitmap=zxvision_known_window_names_array[indice_opcion].bitmap_button;
     }
 
+    //Dispositivos
+    if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_DISPOSITIVOS) {
+        int indice_device=indice_opcion/2;
+        int device_activo=0;
+        if (indice_opcion %2) device_activo=1;
+
+        if (device_activo) puntero_bitmap=zdesktop_lowericons_array[indice_device].bitmap_active;
+        else puntero_bitmap=zdesktop_lowericons_array[indice_device].bitmap_inactive;
+    }
+
+
     if (puntero_bitmap!=NULL) {
 
         int offset_x=ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_OFFSET_BUTTON*menu_char_width;
@@ -15466,11 +15477,14 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     int linea=0;
 
+     //Acciones
     menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Actions ---");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
     int i;
+
+
     for (i=0;i<MAX_F_FUNCTIONS;i++) {
 
         sprintf (buffer_texto,"%s",defined_direct_functions_array[i].texto_funcion);
@@ -15482,18 +15496,45 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
         menu_add_item_menu_tooltip(array_menu_common,defined_direct_functions_array[i].texto_tooltip);
     }
 
+    //Ventanas
     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Windows ---");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
+
     for (i=0;zxvision_known_window_names_array[i].start!=NULL;i++) {
         sprintf (buffer_texto,"%s",zxvision_known_window_names_array[i].nombre);
-        printf("Agregando ventana %s\n",buffer_texto);
+        //printf("Agregando ventana %s\n",buffer_texto);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
         menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
         menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_VENTANA+256*i);
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
+
+
+    //Dispositivos
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Devices ---");
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+
+    for (i=0;i<TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS;i++) {
+        sprintf (buffer_texto,"%s inactive",zdesktop_lowericons_array[i].device_name);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+        menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
+        //i*2 porque el valor par es device inactivo, el impar el activo
+        menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_DISPOSITIVOS+256*(i*2));
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+        sprintf (buffer_texto,"%s active",zdesktop_lowericons_array[i].device_name);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+        menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
+        //i*2 porque el valor par es device inactivo, el impar el activo
+        menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_DISPOSITIVOS+256*(i*2+1));
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+    }
+
 
 
     menu_add_ESC_item(array_menu_common);
