@@ -775,9 +775,20 @@ extern int util_parse_commands_argvc(char *texto, char *parm_argv[], int maximo)
 
 extern int util_parse_commands_argvc_comillas(char *texto, char *parm_argv[], int maximo);
 
+
+//Nombres cortos de maquinas y sus id y su icono
+struct s_machines_short_names_id {
+        char machine_name[32];
+        int machine_id;
+        char **bitmap;
+};
+
+extern struct s_machines_short_names_id machines_short_names_id[];
+
 extern int get_machine_id_by_name(char *machine_name);
 extern char **get_machine_icon_by_name(char *machine_name);
 extern void get_machine_list_whitespace(void);
+extern int count_total_machine_id(void);
 
 extern void util_truncate_file(char *filename);
 

@@ -15330,6 +15330,8 @@ zxvision_window menu_zxdesktop_set_alternate_bitmap_icon_ventana;
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_DISPOSITIVOS 3
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_BOTON 4
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS 5
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS 6
+
 
 int menu_zxdesktop_set_alternate_bitmap_icon_overlay_tipo_opcion=0;
 int menu_zxdesktop_set_alternate_bitmap_icon_overlay_indice_opcion=0;
@@ -15338,7 +15340,7 @@ void menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada(struct s_menu_item
 {
     int tipo_opcion=(m->valor_opcion) & 0xFF;
     int indice_opcion=(m->valor_opcion) >> 8;
-    printf("%s tipo: %d indice: %d\n",m->texto_opcion,tipo_opcion,indice_opcion);
+    //printf("%s tipo: %d indice: %d\n",m->texto_opcion,tipo_opcion,indice_opcion);
 
     //Pasamos estos parametros a variables globales para que las pueda leer la funcion de overlay
     menu_zxdesktop_set_alternate_bitmap_icon_overlay_tipo_opcion=tipo_opcion;
@@ -15413,6 +15415,9 @@ void menu_zxdesktop_set_alternate_bitmap_icon_overlay(void)
         puntero_bitmap=zxdesktop_other_icons_list[indice_opcion].bitmap;
     }
 
+    if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS) {
+        puntero_bitmap=machines_short_names_id[indice_opcion].bitmap;
+    }
 
 
     if (puntero_bitmap!=NULL) {
@@ -15461,10 +15466,10 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     ventana=&menu_zxdesktop_set_alternate_bitmap_icon_ventana;
 
-    int total_alto=MAX_F_FUNCTIONS+zxvision_count_known_windows()+TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS*2+EXT_DESKTOP_TOTAL_BUTTONS+zxdesktop_other_icons_count_list();
+    int total_alto=MAX_F_FUNCTIONS+zxvision_count_known_windows()+TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS*2+EXT_DESKTOP_TOTAL_BUTTONS+zxdesktop_other_icons_count_list()+count_total_machine_id();
 
     //Separadores
-    total_alto +=5*2;
+    total_alto +=6*2;
 
     //Item ESC
     total_alto ++;
@@ -15589,12 +15594,33 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     for (i=0;zxdesktop_other_icons_list[i].bitmap!=NULL;i++) {
         sprintf (buffer_texto,"%s",zxdesktop_other_icons_list[i].name);
-        //printf("Agregando ventana %s\n",buffer_texto);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
         menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
         menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS+256*i);
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
+
+    //Maquinas
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Machines ---");
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+    i=0;
+
+    while (machines_short_names_id[i].machine_id>=0) {
+        sprintf (buffer_texto,"%s",machines_short_names_id[i].machine_name);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+        menu_add_item_menu_seleccionado(array_menu_common,menu_zxdesktop_set_alternate_bitmap_funcion_seleccionada);
+        menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS+256*i);
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+        i++;
+    }
+
 
     menu_add_item_menu_separator(array_menu_common);
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
@@ -15684,6 +15710,10 @@ void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PAR
             sprintf(alternate_bitmap_string,"o %s",zxdesktop_other_icons_list[indice_opcion].name);
         }
 
+        //Maquinas
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS) {
+            sprintf(alternate_bitmap_string,"m %s",machines_short_names_id[indice_opcion].machine_name);
+        }
 
         if (alternate_bitmap_string[0]) strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,alternate_bitmap_string);
 

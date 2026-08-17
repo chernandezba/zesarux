@@ -208,7 +208,7 @@ ok *permitir bitmaps de iconos de ventanas. quiza con prefijo "w ", ejemplo "w t
 ok *permitir bitmaps de iconos de dispositivos, como cinta, etc. requerira tenerlos indexados. prefijo "d "
 ok *permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor). prefijo "b "
 ok *permitir otros bitmaps varios no usados, para el futuro. prefijo "o "
-*permitir iconos de máquinas
+ok *permitir iconos de máquinas
 ok * que se grabe en la config --zxdesktop-append-icon
 ok * que se pueda cambiar bitmap desde el menu
 ok *cache bitmap

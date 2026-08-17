@@ -13929,12 +13929,7 @@ void customconfig_help(void)
     );
 }
 
-//Nombres cortos de maquinas y sus id y su icono
-struct s_machines_short_names_id {
-        char machine_name[32];
-        int machine_id;
-        char **bitmap;
-};
+
 
 //Finaliza con machine_id -1
 struct s_machines_short_names_id machines_short_names_id[]={
@@ -14036,6 +14031,20 @@ int get_machine_id_by_name(char *machine_name)
         //no encontrado
         debug_printf (VERBOSE_ERR,"Unknown machine %s",machine_name);
         return -1;
+
+}
+
+//Devuelve -1 si desconocida
+int count_total_machine_id(void)
+{
+
+    int i=0;
+
+    while (machines_short_names_id[i].machine_id>=0) {
+            i++;
+    }
+
+    return i;
 
 }
 
