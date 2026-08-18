@@ -8112,7 +8112,7 @@ char *bitmap_button_ext_desktop_other_sad_mac[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
-char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
+char *bitmap_button_ext_desktop_old_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
     "                          ",
@@ -8124,10 +8124,11 @@ char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     "       xx      xx         ",
     "      x          x        ",
     "      x          x        ",
+    "      x          x        ",
     "     x xxxx xxxx xx       ",	//10
-    "     xx    x    x x       ",
-    "     xxxxx xxxx x x       ",
-    "     x xxxx xxxxx x       ",
+    "    x x    x    x  x      ",
+    "    x xxxx xxxx x  x      ",
+    "    x  xxxx xxxxx  x      ",
     "     x            x       ",
     "      x    xx    x        ",
     "      x  xxxxxx  x        ",
@@ -8136,13 +8137,41 @@ char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     "          xxxx            ",
     "                          ",    //20
     "                          ",
-    "                          ",
+
     "                          ",
     "                          ",
     "                          " 	 //25
 };
 
-
+char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx       xx        ",
+    "      x           x       ",
+    "     x             x      ",
+    "    x               x     ",
+    "    x               x     ",
+    "    x               x     ",
+    "    x               x     ",
+    "    x               x     ",
+    "   x   xxxx   xxxx   x    ",
+    "  x   x    x x    x   x   ",	//10
+    "  x   x    x x    x   x   ",
+    "  x   x    x x    x   x   ",
+    "  x   xxxx x xxxx x   x   ",
+    "   x   xxxx x xxxx   x    ",
+    "    x       x       x     ",
+    "    x      xx       x     ",
+    "    x               x     ",
+    "    x      xxx      x     ",
+    "    x   xxxxxxxxx   x     ",
+    "     x xx xxxxx xx x      ",    //20
+    "      xxxx     xxxx       ",
+    "       xxxxxxxxxxx        ",
+    "        xxxxxxxxx         ",
+    "                          ",
+    "                          " 	 //25
+};
 
 
 int zxdesktop_other_icons_count_list(void)
