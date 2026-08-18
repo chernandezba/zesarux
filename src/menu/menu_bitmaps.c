@@ -8165,8 +8165,8 @@ char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr             rx     ",
     "    xr     rrr     rx     ",
     "    xr  rrrrrrrrr  rx     ",
-    "    xrrrrwrrrrrwrrrrx     ",    //20
-    "     xrrrrwwwwwrrrrx      ",
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "     xrrrrWWWWWrrrrx      ",
     "      xrrrrrrrrrrrx       ",
     "       xrrrrrrrrrx        ",
     "        xxxxxxxxx         ",
