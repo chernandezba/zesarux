@@ -298,6 +298,8 @@ extern char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[];
 extern char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[];
 extern char *bitmap_button_ext_desktop_paste_keystrokes[];
 
+extern char *bitmap_button_ext_desktop_other_sad_mac[];
+
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
 #define EXT_DESKTOP_BUTTONS_ANCHO 26
