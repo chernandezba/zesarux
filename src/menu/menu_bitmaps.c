@@ -8249,10 +8249,10 @@ char *bitmap_button_ext_desktop_other_clive_laugh[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr             rx     ",
     "    xr             rx     ",
     "   xr  xxxx   xxxx  rx    ",
-    "  x   xWWWWx xWWWWx   x   ",	//10
-    "  x   xWWWWx xWWWWx   x   ",
-    "  x   xWxxWx xWxxWx   x   ",
-    "  x   xWWWWx xWWWWx   x   ",
+    "  x   x    x x    x   x   ",	//10
+    "  x   xxxxxx xxxxxx   x   ",
+    "  x   x    x x    x   x   ",
+    "  x   x    x x    x   x   ",
     "   xr  xxxx x xxxx  rx    ",
     "    xr      x      rx     ",
     "    xr      xx     rx     ",
@@ -8260,9 +8260,9 @@ char *bitmap_button_ext_desktop_other_clive_laugh[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr     rrr     rx     ",
     "    xr  rxxxxxxxr  rx     ",
     "    xrrrxWWWWWWWxrrrx     ",    //20
+    "    xrrrxWWWWWWWxrrrx     ",
     "    xrrrrxWWWWWxrrrrx     ",
-    "    xrrrrrxxxxxrrrrrx     ",
-    "     xrrrrrrrrrrrrrx      ",
+    "     xrrrrxxxxxrrrrx      ",
     "      xxrrrrrrrrrxx       ",
     "        xxxxxxxxx         " 	 //25
 };
