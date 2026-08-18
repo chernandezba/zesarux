@@ -8083,34 +8083,32 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
 
 char *bitmap_button_ext_desktop_other_sad_mac[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-
-
+    "     xxxxxxxxxxxxxxxx     ",
+    "    xWWWWWWWWWWWWWWWWx    ",
+    "   xWWWWWWWWWWWWWWWWWWx   ",
+    "   xWWWxxxxxxxxxxxxWWWx   ",
+    "   xWWxWWWWWWWWWWWWxWWx   ",
+    "   xWWxWxWxWWWWxWxWxWWx   ",
+    "   xWWxWWxWWWWWWxWWxWWx   ",
+    "   xWWxWxWxWWWWxWxWxWWx   ",
+    "   xWWxWWWWWWWWWWWWxWWx   ",
+    "   xWWxWWWWxWWxWWWWxWWx   ",
+    "   xWWxWWWWWxxWWWWWxWWx   ", //10
+    "   xWWxWWWWWWWWWWWWxWWx   ",
+    "   xWWxWWWxxxxWWWWWxWWx   ",
+    "   xWWxWWxWWWWxxWWWxWWx   ",
+    "   xWWxWWWWWWWWWWWWxWWx   ",
+    "   xWWWxxxxxxxxxxxxWWWx   ",
+    "   xWWWWWWWWWWWWWWWWWWx   ",
+    "   xWWWWWWWWWWWWWWWWWWx   ",
+    "   xWWWWWWWWWWWWWWWWWWx   ",
+    "   xWWWWWWWWWWxxxxxWWWx   ",
+    "   xWWxxWWWWWWWWWWWWWWx   ",//20
+    "   xWWWWWWWWWWWWWWWWWWx   ",
     "    xxxxxxxxxxxxxxxxxx    ",
-    "   x                  x   ",
-    "   x                  x   ",
-    "   x   xxxxxxxxxxxx   x   ",
-    "   x  x            x  x   ",
-    "   x  x x x    x x x  x   ",
-    "   x  x  x      x  x  x   ",
-    "   x  x x x    x x x  x   ",
-    "   x  x            x  x   ", //10
-    "   x  x    x  x    x  x   ",
-    "   x  x     xx     x  x   ",
-    "   x  x            x  x   ",
-    "   x  x   xxxx     x  x   ",
-    "   x  x  x    xx   x  x   ",
-    "   x  x            x  x   ",
-    "   x   xxxxxxxxxxxx   x   ",
-    "   x                  x   ",
-    "   x                  x   ",
-    "   x                  x   ",
-    "   x          xxxxx   x   ",
-    "   x  xx              x   ",//20
-    "   x                  x   ",
-    "    xxxxxxxxxxxxxxxxxx    ",
-    "    x                x    ",
-    "    x                x    ",
-    "    xxxxxxxxxxxxxxxxxx    "  //25
+    "    xWWWWWWWWWWWWWWWWx    ",
+    "    xWWWWWWWWWWWWWWWWx    ",
+    "    xxxxxxxxxxxxxxxxxx    "//25
 };
 
 
