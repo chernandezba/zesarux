@@ -8077,6 +8077,8 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
 struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
     {"clive",bitmap_button_ext_desktop_other_clive},
+    {"sadclive",bitmap_button_ext_desktop_other_clive_sad},
+    {"surprisedclive",bitmap_button_ext_desktop_other_clive_surprised},
     {"",NULL} //Siempre finalizar asi
 };
 
@@ -8173,6 +8175,65 @@ char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     "        xxxxxxxxx         " 	 //25
 };
 
+char *bitmap_button_ext_desktop_other_clive_sad[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx       xx        ",
+    "      x           x       ",
+    "     x    x        x      ",
+    "    xr       x     rx     ",
+    "    xr             rx     ",
+    "    xr      x      rx     ",
+    "    xr             rx     ",
+    "    xr             rx     ",
+    "   xr  xxxx   xxxx  rx    ",
+    "  x   xWWWWx xWWWWx   x   ",	//10
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xxxxWx xxxxWx   x   ",
+    "   xr  xxxx x xxxx  rx    ",
+    "    xr      x      rx     ",
+    "    xr      xx     rx     ",
+    "    xr             rx     ",
+    "    xr     rrr     rx     ",
+    "    xr  rrrrrrrrr  rx     ",
+    "    xrrrrrrrrrrrrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrWrrrrrWrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_surprised[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx       xx        ",
+    "      x           x       ",
+    "     x    x        x      ",
+    "    xr       x     rx     ",
+    "    xr             rx     ",
+    "    xr      x      rx     ",
+    "    xr             rx     ",
+    "    xr             rx     ",
+    "   xr  xxxx   xxxx  rx    ",
+    "  x   xWWWWx xWWWWx   x   ",	//10
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xxxxWx xxxxWx   x   ",
+    "   xr  xxxx x xxxx  rx    ",
+    "    xr      x      rx     ",
+    "    xr      xx     rx     ",
+    "    xr             rx     ",
+    "    xr     rrr     rx     ",
+    "    xr  rrrrrrrrr  rx     ",
+    "    xrrrrrrWWWrrrrrrx     ",    //20
+    "    xrrrrrWrrrWrrrrrx     ",
+    "    xrrrrrWrrrWrrrrrx     ",
+    "     xrrrrrWWWrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
 
 int zxdesktop_other_icons_count_list(void)
 {
