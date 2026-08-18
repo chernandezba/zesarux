@@ -8076,7 +8076,7 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
-    {"prueba2",bitmap_button_ext_desktop_paste_keystrokes},
+    {"clive",bitmap_button_ext_desktop_other_clive},
     {"",NULL} //Siempre finalizar asi
 };
 
@@ -8110,6 +8110,39 @@ char *bitmap_button_ext_desktop_other_sad_mac[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xWWWWWWWWWWWWWWWWx    ",
     "    xxxxxxxxxxxxxxxxxx    "//25
 };
+
+
+char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "         xxxxxx           ",
+    "       xx      xx         ",
+    "      x          x        ",
+    "      x          x        ",
+    "     x xxxx xxxx xx       ",	//10
+    "     xx    x    x x       ",
+    "     xxxxx xxxx x x       ",
+    "     x xxxx xxxxx x       ",
+    "     x            x       ",
+    "      x    xx    x        ",
+    "      x  xxxxxx  x        ",
+    "      xxxx    xxxx        ",
+    "       xxxxxxxxxx         ",
+    "          xxxx            ",
+    "                          ",    //20
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          " 	 //25
+};
+
+
 
 
 int zxdesktop_other_icons_count_list(void)

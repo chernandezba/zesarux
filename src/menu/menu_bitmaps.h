@@ -299,6 +299,7 @@ extern char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[];
 extern char *bitmap_button_ext_desktop_paste_keystrokes[];
 
 extern char *bitmap_button_ext_desktop_other_sad_mac[];
+extern char *bitmap_button_ext_desktop_other_clive[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
