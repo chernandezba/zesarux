@@ -302,6 +302,7 @@ extern char *bitmap_button_ext_desktop_other_sad_mac[];
 extern char *bitmap_button_ext_desktop_other_clive[];
 extern char *bitmap_button_ext_desktop_other_clive_sad[];
 extern char *bitmap_button_ext_desktop_other_clive_surprised[];
+extern char *bitmap_button_ext_desktop_other_clive_laugh[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
