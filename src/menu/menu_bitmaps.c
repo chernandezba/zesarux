@@ -8515,8 +8515,8 @@ char *bitmap_button_ext_desktop_other_c5[EXT_DESKTOP_BUTTONS_ANCHO]={
     "       xWWx          x    ",
     "    xxxWWx          xWx   ",
     "   xwxWWx          xWWWx  ",
-    "  xwxWWx          xWWWWWx ",
-    "  xxWWx          xWWWWWWWx",
+    "  xwxWWx  x xx    xWWWWWx ",
+    "  xxWWx    x     xWWWWWWWx",
     "  xWWxxxxxxxxxxxxWWWxxxWWx",    //20
     " xWWWWxxxxxxxxxxWWWxWWWxWx",
     "xxxWWWWWWWWWWWWWWWxWWWWWx ",
