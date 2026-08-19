@@ -7982,7 +7982,7 @@ Template
 char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-      "                          ",
+    "                          ",
     "                          ",
     "                          ",
     "                          ",
@@ -8075,7 +8075,7 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 
 struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
-    {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
+    {"c5",bitmap_button_ext_desktop_other_c5},
     {"clive",bitmap_button_ext_desktop_other_clive},
     {"clive_angel",bitmap_button_ext_desktop_other_clive_angel},
     {"clive_angry",bitmap_button_ext_desktop_other_clive_angry},
@@ -8088,6 +8088,7 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_surprised",bitmap_button_ext_desktop_other_clive_surprised},
     {"clive_tongue",bitmap_button_ext_desktop_other_clive_tongue},
     {"clive_wink",bitmap_button_ext_desktop_other_clive_wink},
+    {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
     {"scope",bitmap_button_ext_desktop_mirilla_lightgun},
     {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
 
@@ -8491,6 +8492,37 @@ char *bitmap_button_ext_desktop_other_clive_speccy[EXT_DESKTOP_BUTTONS_ANCHO]={
     "     xrrrrrrrrrrrrxrryyggb",
     "      xxrrrrrrrrrxrryyggbb",
     "        xxxxxxxxxrryyggbbb" 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_other_c5[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "           xxxx           ",
+    "          x  x            ",
+    "         x  x             ",
+    "        x  x              ",
+    "       x  x          x    ",
+    "    xxx  x          x x   ",
+    "   xWx  x          x   x  ",
+    "  xWx  x          x     x ",
+    "  xx  xxxxxxxxxxxx       x",
+    "  x  x          x   xxx  x",    //20
+    " x    x        x   x   x x",
+    "xxx    xxxxxxxx   x     x ",
+    "x  xx             x     x ",
+    "x  x x            xx   x  ",
+    " xx   xxxxxxxxxxxxx xxx   " 	 //25
 };
 
 
