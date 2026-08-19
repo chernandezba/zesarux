@@ -8547,15 +8547,15 @@ char *bitmap_button_ext_desktop_other_sinclair[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",
     "                          ",
     "                          ",
-    "                          ",
-    "     x         x     x    ",
-    "               x          ",
-    " xxx x xxx xxx x xxx x xxx",    //20
-    " x   x x x x   x   x x x  ",
-    " xxx x x x x   x xxx x x  ",
-    "   x x x x x   x x x x x  ",
-    " xxx x x x xxx x xxx x x  ",
-    "                          " 	 //25
+    "..........................",
+    ".....x.........x.....x....",
+    "...............x..........",
+    ".xxx.x.xxx.xxx.x.xxx.x.xxx",//20
+    ".x...x.x.x.x...x...x.x.x..",
+    ".xxx.x.x.x.x...x.xxx.x.x..",
+    "...x.x.x.x.x...x.x.x.x.x..",
+    ".xxx.x.x.x.xxx.x.xxx.x.x..",
+    ".........................."//25
 };
 
 
