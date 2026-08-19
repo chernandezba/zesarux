@@ -8508,21 +8508,21 @@ char *bitmap_button_ext_desktop_other_c5[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",
     "                          ",
     "                          ",	//10
-    "           xxxx           ",
-    "          x  x            ",
-    "         x  x             ",
-    "        x  x              ",
-    "       x  x          x    ",
-    "    xxx  x          x x   ",
-    "   xWx  x          x   x  ",
-    "  xWx  x          x     x ",
-    "  xx  xxxxxxxxxxxx       x",
-    "  x  x          x   xxx  x",    //20
-    " x    x        x   x   x x",
-    "xxx    xxxxxxxx   x     x ",
-    "x  xx             x     x ",
-    "x  x x            xx   x  ",
-    " xx   xxxxxxxxxxxxx xxx   " 	 //25
+    "                          ",
+    "                          ",
+    "         xxxx             ",
+    "        xWWx              ",
+    "       xWWx          x    ",
+    "    xxxWWx          xWx   ",
+    "   xwxWWx          xWWWx  ",
+    "  xwxWWx          xWWWWWx ",
+    "  xxWWx          xWWWWWWWx",
+    "  xWWxxxxxxxxxxxxWWWxxxWWx",    //20
+    " xWWWWxxxxxxxxxxWWWxWWWxWx",
+    "xxxWWWWWWWWWWWWWWWxWWWWWx ",
+    "xWWxxWWWWWWWWWWWWWxWWWWWx ",
+    "xWWx xxxxxxxxxxxxx xWWWx  ",
+    " xx   xxxxxxxxxxx   xxx   " 	 //25
 };
 
 
