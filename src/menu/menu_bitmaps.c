@@ -8422,11 +8422,11 @@ char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr     rrr     rx     ",
     "    xr  rrrrrrrrr  rx     ",
     "    xrrrxxxxxxxxxrrrx     ",    //20
-    "    xrrrxWWWWWWWxrrrx     ",
-    "    xrrrrxWmmmWxrrrrx     ",
-    "     xrrrrxmmmxrrrrx      ",
+    "    xrrrxxmmxmmxxrrrx     ",
+    "    xrrrrxmmxmmxrrrrx     ",
+    "     xrrrxmmxmmxrrrx      ",
     "      xxrrxmmmxrrxx       ",
-    "        xxxxmxxxx         " 	 //25
+    "        xxxxxxxxx         " 	 //25
 };
 
 
