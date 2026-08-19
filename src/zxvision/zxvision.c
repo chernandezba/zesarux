@@ -31081,6 +31081,7 @@ void set_splash_zesarux_logo_paso(int paso)
 
 //Retorna color de paleta spectrum segun letra color logo ascii W: white, X: Black, etc
 //en mayusculas es con brillo, sin mayusculas es sin brillo
+//El punto "." tambien es blanco
 int return_color_zesarux_ascii(char c)
 {
 
@@ -31133,6 +31134,7 @@ int return_color_zesarux_ascii(char c)
 
         //White
         case 'w':
+        case '.':
             color=7;
         break;
 

@@ -8495,15 +8495,15 @@ char *bitmap_button_ext_desktop_other_clive_angry[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_other_clive_speccy[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "         xxxxxxx          ",     //0
-    "       xx       xx        ",
-    "      x           x       ",
-    "     x    x        x      ",
-    "    xr       x     rx     ",
-    "   xr               rx    ",
-    "   xr       x       rx    ",
-    "   xr               rx    ",
-    "   xr               rx    ",
-    "   xr  xxxx   xxxx  rx    ",
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr...............rx    ",
+    "   xr...............rx    ",
+    "   xr..xxxx...xxxx..rx    ",
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
     "  x   xWWWWx xWWWWx   x   ",
     "  x   xWWWWx xWWWWx   x   ",
