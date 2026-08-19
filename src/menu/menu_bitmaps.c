@@ -8091,6 +8091,7 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
     {"scope",bitmap_button_ext_desktop_mirilla_lightgun},
     {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
+    {"sinclair",bitmap_button_ext_desktop_other_sinclair},
 
     {"",NULL} //Siempre finalizar asi
 };
@@ -8523,6 +8524,38 @@ char *bitmap_button_ext_desktop_other_c5[EXT_DESKTOP_BUTTONS_ANCHO]={
     "xWWxxWWWWWWWWWWWWWxWWWWWx ",
     "xWWx xxxxxxxxxxxxx xWWWx  ",
     " xx   xxxxxxxxxxx   xxx   " 	 //25
+};
+
+
+
+char *bitmap_button_ext_desktop_other_sinclair[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "     x         x     x    ",
+    "               x          ",
+    " xxx x xxx xxx x xxx x xxx",    //20
+    " x   x x x x   x   x x x  ",
+    " xxx x x x x   x xxx x x  ",
+    "   x x x x x   x x x x x  ",
+    " xxx x x x xxx x xxx x x  ",
+    "                          " 	 //25
 };
 
 
