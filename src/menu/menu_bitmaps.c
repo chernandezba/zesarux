@@ -8562,32 +8562,32 @@ char *bitmap_button_ext_desktop_other_sinclair[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_other_spectrum[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "                         r",     //0
-    "                        rr",
-    "                       rrr",
-    "                      rrrr",
-    "                     rrrrr",
-    "                    rrrrrr",
-    "                   rrrrrry",
-    "                  rrrrrryy",
-    "                 rrrrrryyy",
-    "                rrrrrryyyy",
-    "               rrrrrryyyyy",	//10
-    "              rrrrrryyyyyy",
-    "             rrrrrryyyyyyg",
-    "            rrrrrryyyyyygg",
-    "           rrrrrryyyyyyggg",
-    "          rrrrrryyyyyygggg",
-    "         rrrrrryyyyyyggggg",
-    "        rrrrrryyyyyygggggg",
-    "       rrrrrryyyyyyggggggc",
-    "      rrrrrryyyyyyggggggcc",
-    "     rrrrrryyyyyyggggggccc",    //20
-    "    rrrrrryyyyyyggggggcccc",
-    "   rrrrrryyyyyyggggggccccc",
-    "  rrrrrryyyyyyggggggcccccc",
-    " rrrrrryyyyyyggggggccccccc",
-    "rrrrrryyyyyyggggggcccccccc" 	 //25  rryyggccc
+    "                        ww",
+    "                       wrw",
+    "                      wrrw",
+    "                     wrrrw",
+    "                    wrrrrw",
+    "                   wrrrrrw",
+    "                  wrrrrrrw",
+    "                 wrrrrrryw",
+    "                wrrrrrryyw",
+    "               wrrrrrryyyw",	//10
+    "              wrrrrrryyyyw",
+    "             wrrrrrryyyyyw",
+    "            wrrrrrryyyyyyw",
+    "           wrrrrrryyyyyygw",
+    "          wrrrrrryyyyyyggw",
+    "         wrrrrrryyyyyygggw",
+    "        wrrrrrryyyyyyggggw",
+    "       wrrrrrryyyyyygggggw",
+    "      wrrrrrryyyyyyggggggw",
+    "     wrrrrrryyyyyyggggggBw",    //20
+    "    wrrrrrryyyyyyggggggBBw",
+    "   wrrrrrryyyyyyggggggBBBw",
+    "  wrrrrrryyyyyyggggggBBBBw",
+    " wrrrrrryyyyyyggggggBBBBBw",
+    "wrrrrrryyyyyyggggggBBBBBBw", 	 //25  rryyggBBB
+    "wwwwwwwwwwwwwwwwwwwwwwwwww",
 };
 
 
