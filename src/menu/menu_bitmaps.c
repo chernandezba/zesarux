@@ -8443,9 +8443,9 @@ char *bitmap_button_ext_desktop_other_clive_angel[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   xr               rx    ",
     "   xr  xxxx   xxxx  rx    ",
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x   xWxxWx xWxxWx   x   ",
     "  x   xWWWWx xWWWWx   x   ",
     "  x   xWWWWx xWWWWx   x   ",
-    "  x   xxxxWx xxxxWx   x   ",
     "   xr  xxxx x xxxx  rx    ",
     "    xr      x      rx     ",
     "    xr      xx     rx     ",
