@@ -8077,6 +8077,7 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
 struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
     {"clive",bitmap_button_ext_desktop_other_clive},
+    {"clive_angel",bitmap_button_ext_desktop_other_clive_angel},
     {"clive_cry",bitmap_button_ext_desktop_other_clive_cry},
     {"clive_heart",bitmap_button_ext_desktop_other_clive_heart},
     {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
@@ -8426,6 +8427,36 @@ char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xrrrrxmmxmmxrrrrx     ",
     "     xrrrxmmxmmxrrrx      ",
     "      xxrrxmmmxrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_angel[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "     bbbbxxxxxxxbbbb      ",     //0
+    "    bbbxx       xxbbb     ",
+    "   b  x           x  b    ",
+    "  b  x    x        x  b   ",
+    "  b xr       x     rx b   ",
+    "   br               rb    ",
+    "   xbbbbbbbbbbbbbbbbbx    ",
+    "   xr bbbbbbbbbbbbb rx    ",
+    "   xr               rx    ",
+    "   xr  xxxx   xxxx  rx    ",
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xxxxWx xxxxWx   x   ",
+    "   xr  xxxx x xxxx  rx    ",
+    "    xr      x      rx     ",
+    "    xr      xx     rx     ",
+    "    xr             rx     ",
+    "    xr     rrr     rx     ",
+    "    xr  rrrrrrrrr  rx     ",
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
     "        xxxxxxxxx         " 	 //25
 };
 
