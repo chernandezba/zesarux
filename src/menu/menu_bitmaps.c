@@ -8507,19 +8507,19 @@ char *bitmap_button_ext_desktop_other_clive_speccy[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
     "  x   xWWWWx xWWWWx   x   ",
     "  x   xWWWWx xWWWWx   x   ",
-    "  x   xxxxWx xxxxWx   x   ",
+    "  x   xWxxxx xWxxxx   x   ",
     "   xr  xxxx x xxxx  rx    ",
     "    xr      x      rx     ",
     "    xr      xx     rx     ",
-    "    xr             rx     ",
-    "    xr     rrr     rx    r",
-    "    xr  rrrrrrrrr  rx   ry",
-    "    xrrrrWrrrrrWrrrrx  ryg",    //20
-    "    xrrrrrWWWWWrrrrrx rygb",
-    "    xrrrrrrrrrrrrrrrxrygb ",
-    "     xrrrrrrrrrrrrrxrygb  ",
-    "      xxrrrrrrrrrxxrygb   ",
-    "        xxxxxxxxx rygb    " 	 //25
+    "    xr             rx    r",
+    "    xr     rrr     rx   rr",
+    "    xr  rrrrrrrrr  rx  rry",
+    "    xrrrrWrrrrrWrrrrx rryy",    //20
+    "    xrrrrrWWWWWrrrrrxrryyg",
+    "    xrrrrrrrrrrrrrrxrryygg",
+    "     xrrrrrrrrrrrrxrryyggb",
+    "      xxrrrrrrrrrxrryyggbb",
+    "        xxxxxxxxxrryyggbbb" 	 //25
 };
 
 
