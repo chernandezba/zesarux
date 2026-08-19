@@ -309,6 +309,7 @@ extern char *bitmap_button_ext_desktop_other_clive_heart[];
 extern char *bitmap_button_ext_desktop_other_clive_sunglasses[];
 extern char *bitmap_button_ext_desktop_other_clive_tongue[];
 extern char *bitmap_button_ext_desktop_other_clive_angel[];
+extern char *bitmap_button_ext_desktop_other_clive_angry[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
