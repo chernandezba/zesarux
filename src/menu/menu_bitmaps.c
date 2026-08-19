@@ -8292,17 +8292,17 @@ char *bitmap_button_ext_desktop_other_clive_heart[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   xr.......x.......rx    ",
     "   xr...............rx    ",
     "   xr...............rx    ",  //8
-    "   xr  r r     r r  rx    ",   //9
+    "   xr..r.r.....r.r..rx    ",   //9
     "  xxxxrrrrrxxxrrrrrxxxx   ",	//10
-    "  x   rrrrr   rrrrr   x   ",
-    "  x    rrr     rrr    x   ",
-    "  x     r       r     x   ",
-    "   xr       x       rx    ",  //14
-    "    xr      x      rx     ",
-    "    xr      xx     rx     ",
-    "    xr             rx     ",
-    "    xr     rrr     rx     ",
-    "    xr  rrrrrrrrr  rx     ",
+    "  x...rrrrr...rrrrr...x   ",
+    "  x....rrr.....rrr....x   ",
+    "  x.....r.......r.....x   ",
+    "   xr.......x.......rx    ",  //14
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",
     "    xrrrxxxxxxxxxrrrx     ",    //20
     "    xrrrxWWWWWWWxrrrx     ",
     "    xrrrrxWWWWWxrrrrx     ",
