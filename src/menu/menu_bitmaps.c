@@ -8077,10 +8077,14 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
 struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
     {"clive",bitmap_button_ext_desktop_other_clive},
+    {"clive_heart",bitmap_button_ext_desktop_other_clive_heart},
+    {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
     {"clive_sad",bitmap_button_ext_desktop_other_clive_sad},
     {"clive_surprised",bitmap_button_ext_desktop_other_clive_surprised},
-    {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
     {"clive_wink",bitmap_button_ext_desktop_other_clive_wink},
+    {"scope",bitmap_button_ext_desktop_mirilla_lightgun},
+    {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
+
     {"",NULL} //Siempre finalizar asi
 };
 
@@ -8295,6 +8299,37 @@ char *bitmap_button_ext_desktop_other_clive_wink[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xrrrrrWWWWWrrrrrx     ",
     "    xrrrrrrrrrrrrrrrx     ",
     "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_other_clive_heart[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx       xx        ",
+    "      x           x       ",
+    "     x    x        x      ",
+    "    xr       x     rx     ",
+    "   xr               rx    ",
+    "   xr       x       rx    ",
+    "   xr               rx    ",
+    "   xr               rx    ",
+    "   xr  r r     r r  rx    ",   //9
+    "  xxxxrrrrrxxxrrrrrxxxx   ",	//10
+    "  x   rrrrr   rrrrr   x   ",
+    "  x    rrr     rrr    x   ",
+    "  x     r       r     x   ",
+    "   xr       x       rx    ",  //14
+    "    xr      x      rx     ",
+    "    xr      xx     rx     ",
+    "    xr             rx     ",
+    "    xr     rrr     rx     ",
+    "    xr  rrrrrrrrr  rx     ",
+    "    xrrrxxxxxxxxxrrrx     ",    //20
+    "    xrrrxWWWWWWWxrrrx     ",
+    "    xrrrrxWWWWWxrrrrx     ",
+    "     xrrrrxxxxxrrrrx      ",
     "      xxrrrrrrrrrxx       ",
     "        xxxxxxxxx         " 	 //25
 };
