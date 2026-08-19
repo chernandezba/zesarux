@@ -8081,7 +8081,9 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_heart",bitmap_button_ext_desktop_other_clive_heart},
     {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
     {"clive_sad",bitmap_button_ext_desktop_other_clive_sad},
+    {"clive_sunglasses",bitmap_button_ext_desktop_other_clive_sunglasses},
     {"clive_surprised",bitmap_button_ext_desktop_other_clive_surprised},
+    {"clive_tongue",bitmap_button_ext_desktop_other_clive_tongue},
     {"clive_wink",bitmap_button_ext_desktop_other_clive_wink},
     {"scope",bitmap_button_ext_desktop_mirilla_lightgun},
     {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
@@ -8350,7 +8352,7 @@ char *bitmap_button_ext_desktop_other_clive_cry[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   xr  xxxx   xxxx  rx    ",   //9
     "  xxxxx    xxx    xxxxx   ",	//10
     "  x   x xx x x xx x   x   ",
-    "  x   x    x x    x   x   ",
+    "  x   x cc x x cc x   x   ",
     "  x   x cc x x cc x   x   ",
     "   xr  xccx x xccx  rx    ",
     "    xr  cc  x  cc  rx     ",
@@ -8365,6 +8367,68 @@ char *bitmap_button_ext_desktop_other_clive_cry[EXT_DESKTOP_BUTTONS_ANCHO]={
     "      xxccrrrrrccxx       ",
     "        ccxxxxxcc         " 	 //25
 };
+
+char *bitmap_button_ext_desktop_other_clive_sunglasses[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx       xx        ",
+    "      x           x       ",
+    "     x    x        x      ",
+    "    xr       x     rx     ",
+    "   xr               rx    ",
+    "   xr       x       rx    ",
+    "   xr               rx    ",
+    "   xr               rx    ",
+    "   xr  xxxx   xxxx  rx    ",
+    "  xxxxxxxxxxxxxxxxxxxxx   ",	//10
+    "  x   xxxxxx xxxxxx   x   ",
+    "  x   xxxxxx xxxxxx   x   ",
+    "  x   xxxxxx xxxxxx   x   ",
+    "   xr  xxxx x xxxx  rx    ",
+    "    xr      x      rx     ",
+    "    xr      xx     rx     ",
+    "    xr             rx     ",
+    "    xr     rrr     rx     ",
+    "    xr  rrrrrrrrr  rx     ",
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx       xx        ",
+    "      x           x       ",
+    "     x    x        x      ",
+    "    xr       x     rx     ",
+    "   xr               rx    ",
+    "   xr       x       rx    ",
+    "   xr               rx    ",
+    "   xr               rx    ",
+    "   xr  xxxx   xxxx  rx    ",
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xWWWWx xWWWWx   x   ",
+    "  x   xxxxWx xxxxWx   x   ",
+    "   xr  xxxx x xxxx  rx    ",
+    "    xr      x      rx     ",
+    "    xr      xx     rx     ",
+    "    xr             rx     ",
+    "    xr     rrr     rx     ",
+    "    xr  rrrrrrrrr  rx     ",
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
 
 int zxdesktop_other_icons_count_list(void)
 {
