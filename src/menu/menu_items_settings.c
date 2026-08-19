@@ -15635,7 +15635,7 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
-    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Set default bitmap");
+    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Set default bitmap","Definir bitmap por defecto","Establir bitmap per defecte");
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_REMOVE_ALTERNATE);
     menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
