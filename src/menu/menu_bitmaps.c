@@ -8253,25 +8253,25 @@ char *bitmap_button_ext_desktop_other_clive_laugh[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_other_clive_wink[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "         xxxxxxx          ",     //0
-    "       xx       xx        ",
-    "      x           x       ",
-    "     x    x        x      ",
-    "    xr       x     rx     ",
-    "   xr               rx    ",
-    "   xr   x   x       rx    ",
-    "   xr  x       xxx  rx    ",
-    "   xr x           x rx    ",
-    "   xr  xxxx   xxxx  rx    ",   //9
-    "  xxxxxWWWWxxx    xxxxx   ",	//10
-    "  x   xWxxWx x xx x   x   ",
-    "  x   xWxxWx x    x   x   ",
-    "  x   xWWWWx x    x   x   ",
-    "   xr  xxxx x xxxx  rx    ",  //14
-    "    xr      x      rx     ",
-    "    xr      xx     rx     ",
-    "    xr             rx     ",
-    "    xr     rrr     rx     ",
-    "    xr  rrrrrrrrr  rx     ",
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr...x...x.......rx    ",
+    "   xr..x.......xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxx....xxxxx   ",	//10
+    "  x...xWxxWx.x.xx.x...x   ",
+    "  x...xWxxWx.x....x...x   ",
+    "  x...xWWWWx.x....x...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",  //14
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
     "    xrrrrWrrrrrWrrrrx     ",    //20
     "    xrrrrrWWWWWrrrrrx     ",
     "    xrrrrrrrrrrrrrrrx     ",
@@ -8406,25 +8406,25 @@ char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_other_clive_angel[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "     YYYYxxxxxxxYYYY      ",     //0
-    "    YYYxx       xxYYY     ",
-    "   Y  x           x  Y    ",
-    "  Y  x    x        x  Y   ",
-    "  Y xr       x     rx Y   ",
-    "   Yr               rY    ",
+    "    YYYxx.......xxYYY     ",
+    "   Y  x...........x  Y    ",
+    "  Y  x....x........x  Y   ",
+    "  Y xr.......x.....rx Y   ",
+    "   Yr...............rY    ",
     "   xYYYYYYYYYYYYYYYYYx    ",
-    "   xr YYYYYYYYYYYYY rx    ",
-    "   xr               rx    ",
-    "   xr  xxxx   xxxx  rx    ",
+    "   xr.YYYYYYYYYYYYY.rx    ",
+    "   xr...............rx    ",
+    "   xr..xxxx...xxxx..rx    ",
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
-    "  x   xWxxWx xWxxWx   x   ",
-    "  x   xWWWWx xWWWWx   x   ",
-    "  x   xWWWWx xWWWWx   x   ",
-    "   xr  xxxx x xxxx  rx    ",
-    "    xr      x      rx     ",
-    "    xr      xx     rx     ",
-    "    xr             rx     ",
-    "    xr     rrr     rx     ",
-    "    xr  rrrrrrrrr  rx     ",
+    "  x...xWxxWx.xWxxWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
     "    xrrrrWrrrrrWrrrrx     ",    //20
     "    xrrrrrWWWWWrrrrrx     ",
     "    xrrrrrrrrrrrrrrrx     ",
@@ -8436,11 +8436,11 @@ char *bitmap_button_ext_desktop_other_clive_angel[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_other_clive_angry[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "         xxxxxxx          ",     //0
-    "       xx       xx        ",
-    "      x           x       ",
-    "     x    x        x      ",
-    "    xr       x     rx     ",
-    "   xr               rx    ",
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
     "   xr       x       rx    ",
     "   xr  xx       xx  rx    ",
     "   xr    x     x    rx    ",
