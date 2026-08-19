@@ -15331,6 +15331,7 @@ zxvision_window menu_zxdesktop_set_alternate_bitmap_icon_ventana;
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_BOTON 4
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS 5
 #define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_OTROS 6
+#define ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_REMOVE_ALTERNATE 100
 
 
 
@@ -15473,6 +15474,9 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
 
     //Separadores
     total_alto +=6*2;
+
+    //Item remove alternate
+    total_alto +=2;
 
     //Item ESC
     total_alto ++;
@@ -15626,6 +15630,16 @@ int menu_zxdesktop_set_alternate_bitmap_icon(int accion_inicial_seleccionada)
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
     }
 
+    //Remove alternate
+    menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Set default bitmap");
+    menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_REMOVE_ALTERNATE);
+    menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+
+
 
     menu_add_item_menu_separator(array_menu_common);
     menu_add_item_menu_valor_opcion(array_menu_common,ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_NADA);
@@ -15718,6 +15732,11 @@ void menu_zxdesktop_set_configurable_icons_change_alternate_bitmap(MENU_ITEM_PAR
         //Maquinas
         if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_MAQUINAS) {
             sprintf(alternate_bitmap_string,"m %s",machines_short_names_id[indice_opcion].machine_name);
+        }
+
+        //Quitar el alternate bitmap
+        if (tipo_opcion==ZXDESKTOP_DEFINE_ALTERNATE_BITMAP_TIPO_OPCION_REMOVE_ALTERNATE) {
+            zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap[0]=0;
         }
 
         if (alternate_bitmap_string[0]) strcpy(zxdesktop_configurable_icons_list[valor_opcion].alternate_bitmap,alternate_bitmap_string);
