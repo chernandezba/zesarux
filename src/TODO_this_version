@@ -223,6 +223,7 @@ ejemplos config alternate bitmaps:
 --zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "d 1real_tape"
 --zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "m inves"
 
+-color de fondo blanco para icono de Clive
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
