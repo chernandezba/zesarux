@@ -8326,20 +8326,20 @@ char *bitmap_button_ext_desktop_other_clive_cry[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   xr..xxxx...xxxx..rx    ",   //9
     "  xxxxx....xxx....xxxxx   ",	//10
     "  x...x.xx.x.x.xx.x...x   ",
-    "  x...x.cc.x.x.cc.x...x   ",
-    "  x...x.cc.x.x.cc.x...x   ",
-    "   xr..xccx.x.xccx..rx    ",
-    "    xr..cc..x..cc..rx     ",
-    "    xr..cc..xx.cc..rx     ",
-    "    xr..cc.....cc..rx     ",
-    "    xr..cc.rrr.cc..rx     ",
-    "    xr..ccrrrrrcc..rx     ",
-    "    xrrrccrrWrrccrrrx     ",    //20
-    "    xrrrccrWWWrccrrrx     ",
-    "    xrrrccrrWrrccrrrx     ",
-    "     xrrccrrrrrccrrx      ",
-    "      xxccrrrrrccxx       ",
-    "        ccxxxxxcc         " 	 //25
+    "  x...x.BB.x.x.BB.x...x   ",
+    "  x...x.BB.x.x.BB.x...x   ",
+    "   xr..xBBx.x.xBBx..rx    ",
+    "    xr..BB..x..BB..rx     ",
+    "    xr..BB..xx.BB..rx     ",
+    "    xr..BB.....BB..rx     ",
+    "    xr..BB.rrr.BB..rx     ",
+    "    xr..BBrrrrrBB..rx     ",
+    "    xrrrBBrrWrrBBrrrx     ",    //20
+    "    xrrrBBrWWWrBBrrrx     ",
+    "    xrrrBBrrWrrBBrrrx     ",
+    "     xrrBBrrrrrBBrrx      ",
+    "      xxBBrrrrrBBxx       ",
+    "        BBxxxxxBB         " 	 //25
 };
 
 char *bitmap_button_ext_desktop_other_clive_sunglasses[EXT_DESKTOP_BUTTONS_ANCHO]={
