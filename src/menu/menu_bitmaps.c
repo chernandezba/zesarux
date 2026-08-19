@@ -8092,6 +8092,7 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"scope",bitmap_button_ext_desktop_mirilla_lightgun},
     {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
     {"sinclair",bitmap_button_ext_desktop_other_sinclair},
+    {"spectrum",bitmap_button_ext_desktop_other_spectrum},
 
     {"",NULL} //Siempre finalizar asi
 };
@@ -8556,6 +8557,37 @@ char *bitmap_button_ext_desktop_other_sinclair[EXT_DESKTOP_BUTTONS_ANCHO]={
     "...x.x.x.x.x...x.x.x.x.x..",
     ".xxx.x.x.x.xxx.x.xxx.x.x..",
     ".........................."//25
+};
+
+
+char *bitmap_button_ext_desktop_other_spectrum[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                         r",     //0
+    "                        rr",
+    "                       rrr",
+    "                      rrrr",
+    "                     rrrrr",
+    "                    rrrrrr",
+    "                   rrrrrry",
+    "                  rrrrrryy",
+    "                 rrrrrryyy",
+    "                rrrrrryyyy",
+    "               rrrrrryyyyy",	//10
+    "              rrrrrryyyyyy",
+    "             rrrrrryyyyyyg",
+    "            rrrrrryyyyyygg",
+    "           rrrrrryyyyyyggg",
+    "          rrrrrryyyyyygggg",
+    "         rrrrrryyyyyyggggg",
+    "        rrrrrryyyyyygggggg",
+    "       rrrrrryyyyyyggggggc",
+    "      rrrrrryyyyyyggggggcc",
+    "     rrrrrryyyyyyggggggccc",    //20
+    "    rrrrrryyyyyyggggggcccc",
+    "   rrrrrryyyyyyggggggccccc",
+    "  rrrrrryyyyyyggggggcccccc",
+    " rrrrrryyyyyyggggggccccccc",
+    "rrrrrryyyyyyggggggcccccccc" 	 //25  rryyggccc
 };
 
 
