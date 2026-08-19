@@ -8144,7 +8144,7 @@ char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
     "  x...xWWWWx.xWWWWx...x   ",
     "  x...xWWWWx.xWWWWx...x   ",
-    "  x...xWxxxx.xWxxxx...x   ",
+    "  x...xxxxWx.xxxxWx...x   ",
     "   xr..xxxx.x.xxxx..rx    ",
     "    xr......x......rx     ",
     "    xr......xx.....rx     ",
@@ -8174,7 +8174,7 @@ char *bitmap_button_ext_desktop_other_clive_sad[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
     "  x...xWWWWx.xWWWWx...x   ",
     "  x...xWWWWx.xWWWWx...x   ",
-    "  x...xWxxxx.xWxxxx...x   ",
+    "  x...xxxxWx.xxxxWx...x   ",
     "   xr..xxxx.x.xxxx..rx    ",
     "    xr......x......rx     ",
     "    xr......xx.....rx     ",
@@ -8389,7 +8389,7 @@ char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
     "  x...xWWWWx.xWWWWx...x   ",
     "  x...xWWWWx.xWWWWx...x   ",
-    "  x...xWxxxx.xWxxxx...x   ",
+    "  x...xxxxWx.xxxxWx...x   ",
     "   xr..xxxx.x.xxxx..rx    ",
     "    xr......x......rx     ",
     "    xr......xx.....rx     ",
