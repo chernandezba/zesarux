@@ -8093,6 +8093,7 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
     {"sinclair",bitmap_button_ext_desktop_other_sinclair},
     {"spectrum",bitmap_button_ext_desktop_other_spectrum},
+    {"spectrum2",bitmap_button_ext_desktop_other_spectrum2},
 
     {"",NULL} //Siempre finalizar asi
 };
@@ -8588,6 +8589,36 @@ char *bitmap_button_ext_desktop_other_spectrum[EXT_DESKTOP_BUTTONS_ANCHO]={
     " wrrrrrryyyyyyggggggBBBBBw",
     "wrrrrrryyyyyyggggggBBBBBBw", 	 //25  rryyggBBB
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
+};
+
+char *bitmap_button_ext_desktop_other_spectrum2[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "         xxxxxxxxxxxxxxxxx",
+    "        xrrrryyyyggggBBBBx",
+    "       xrrrryyyyggggBBBBx ",
+    "      xrrrryyyyggggBBBBx  ",
+    "     xrrrryyyyggggBBBBx   ",
+    "    xrrrryyyyggggBBBBx    ",    //20
+    "   xrrrryyyyggggBBBBx     ",
+    "  xrrrryyyyggggBBBBx      ",
+    " xrrrryyyyggggBBBBx       ",
+    "xrrrryyyyggggBBBBx        ",
+    "xxxxxxxxxxxxxxxxx         " 	 //25
 };
 
 
