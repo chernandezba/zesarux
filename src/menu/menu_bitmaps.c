@@ -8323,17 +8323,17 @@ char *bitmap_button_ext_desktop_other_clive_cry[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   xr.......x.......rx    ",
     "   xr...............rx    ",
     "   xr...............rx    ",  //8
-    "   xr  xxxx   xxxx  rx    ",   //9
-    "  xxxxx    xxx    xxxxx   ",	//10
-    "  x   x xx x x xx x   x   ",
-    "  x   x cc x x cc x   x   ",
-    "  x   x cc x x cc x   x   ",
-    "   xr  xccx x xccx  rx    ",
-    "    xr  cc  x  cc  rx     ",
-    "    xr  cc  xx cc  rx     ",
-    "    xr  cc     cc  rx     ",
-    "    xr  cc rrr cc  rx     ",
-    "    xr  ccrrrrrcc  rx     ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxx....xxx....xxxxx   ",	//10
+    "  x...x.xx.x.x.xx.x...x   ",
+    "  x...x.cc.x.x.cc.x...x   ",
+    "  x...x.cc.x.x.cc.x...x   ",
+    "   xr..xccx.x.xccx..rx    ",
+    "    xr..cc..x..cc..rx     ",
+    "    xr..cc..xx.cc..rx     ",
+    "    xr..cc.....cc..rx     ",
+    "    xr..cc.rrr.cc..rx     ",
+    "    xr..ccrrrrrcc..rx     ",
     "    xrrrccrrWrrccrrrx     ",    //20
     "    xrrrccrWWWrccrrrx     ",
     "    xrrrccrrWrrccrrrx     ",
