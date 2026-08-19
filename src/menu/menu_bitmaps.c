@@ -8405,14 +8405,14 @@ char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_other_clive_angel[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "     bbbbxxxxxxxbbbb      ",     //0
-    "    bbbxx       xxbbb     ",
-    "   b  x           x  b    ",
-    "  b  x    x        x  b   ",
-    "  b xr       x     rx b   ",
-    "   br               rb    ",
-    "   xbbbbbbbbbbbbbbbbbx    ",
-    "   xr bbbbbbbbbbbbb rx    ",
+    "     YYYYxxxxxxxYYYY      ",     //0
+    "    YYYxx       xxYYY     ",
+    "   Y  x           x  Y    ",
+    "  Y  x    x        x  Y   ",
+    "  Y xr       x     rx Y   ",
+    "   Yr               rY    ",
+    "   xYYYYYYYYYYYYYYYYYx    ",
+    "   xr YYYYYYYYYYYYY rx    ",
     "   xr               rx    ",
     "   xr  xxxx   xxxx  rx    ",
     "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
