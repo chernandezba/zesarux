@@ -144,21 +144,7 @@ ok - probar joystick "nes" en Windows, joystick logic3
 ->lo contrario: multitask sin background windows, pues el menu funciona a la vez que la emulacion, pero solo se tiene una ventana activaa
 
 
--sobre parche corrección rainbow
-* no acabo de entender como actualiza rainbow_pending_count
-* con el core reduced, acabará llamando a poke_byte_spectrum_sync_rainbow y funcionará bien?
-* ULA_PREFETCH_OFFSET_TSTATES: ya no se usa? tiene el valor 0
-* Pasar diferentes tests de opcodes con el
-* Parche rainbow a ver si no peta
-* El buffer de siguiente línea de 16 no es muy pequeño? si hay un opcode de mas de 16 t-estados que pasará? petará el buffer?
-* Probar con una instrucción que es un prefijo repetido muchas veces. Eso creará un opcode muy grande
-
-
-
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
-
-
--grabar bmp de pantalla QL no lo hace bien: con gimp sale imagen en diagonal
 
 
 -Zeng opción para enviar mensaje a un usuario concreto
@@ -169,23 +155,15 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
 
 
--smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
-Quizá habria que tener alguna herramienta para expandir cualquier mdv
-
-
 -Emulación CST Thor, Q40, Q60, Q68
 
 -Apps calculadora, reloj
 
 
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
-
+-> tiene sentido?
 
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
--quiza va algo lento leyendo datos el QL de microdrive porque hay muchos VERBOSE_PARANOID?
-
-
--assume mdv1 if no device. tiene setting de config?

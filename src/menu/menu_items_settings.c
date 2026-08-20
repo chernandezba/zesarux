@@ -15830,6 +15830,8 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
             if (ventana_buscada!=NULL) {
 
+                menu_add_item_menu_separator(array_menu_common);
+
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_close_window,NULL,
                     "Close Window","Cerrar Ventana","Tancar Finestra");
                 menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
