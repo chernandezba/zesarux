@@ -44254,7 +44254,7 @@ zxvision_window *menu_process_switcher_sorted_list[PROCESS_SWITCHER_MAXIMUM_ICON
 
 int menu_process_switcher_total_icons=0;
 
-zxvision_window *menu_process_switcher_get_window_n(int indice_buscar/*,zxvision_window *w*/)
+zxvision_window *menu_process_switcher_get_window_n(int indice_buscar)
 {
 
     if (indice_buscar<0 || indice_buscar>=menu_process_switcher_total_icons) return NULL;
@@ -44348,7 +44348,7 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
     if (indice_total_icono>=0) {
 
 
-        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono/*,ventana*/);
+        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono);
 
         if (ventana_pulsada!=NULL) {
             //printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);

@@ -15778,6 +15778,16 @@ void menu_zxdesktop_set_configurable_icons_modify_help_sendkeys(MENU_ITEM_PARAME
 
 }
 
+void menu_zxdesktop_set_configurable_icons_close_window(MENU_ITEM_PARAMETERS)
+{
+    //printf("ventana: %s\n",zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+    zxvision_window *ventana_buscada=zxvision_find_window_in_background(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+
+    if (ventana_buscada!=NULL) {
+        zxvision_window_delete_this_window(ventana_buscada);
+    }
+}
+
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
@@ -15814,6 +15824,20 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
         menu_add_item_menu_shortcut(array_menu_common,'b');
 
+        //Si icono es de ventana y es una ventana abierta, permitir cerrar
+        if (id_funcion==F_FUNCION_OPEN_WINDOW) {
+            zxvision_window *ventana_buscada=zxvision_find_window_in_background(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+
+            if (ventana_buscada!=NULL) {
+
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_close_window,NULL,
+                    "Close Window","Cerrar Ventana","Tancar Finestra");
+                menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+            }
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_move_trash,NULL,
             "Move to Trash","Mover a Papelera","Moure a Paperera");
