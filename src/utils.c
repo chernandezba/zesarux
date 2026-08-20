@@ -17633,7 +17633,7 @@ int util_load_editionnamegame(void)
     else return 0;
 }
 
-
+//Retorna 0 si ok
 int util_extract_mdv(char *mdvname, char *dest_dir)
 {
     //echo "./mdvtool /Users/chernandezba/Downloads/psion/ABACUS.MDV export_all /tmp/"

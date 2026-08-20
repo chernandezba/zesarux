@@ -1061,11 +1061,12 @@ void ql_expand_mdv_and_boot(char *archivo)
 
     menu_filesel_mkdir(tmpdir);
 
-    util_extract_mdv(archivo,tmpdir);
+    if (!util_extract_mdv(archivo,tmpdir)) {
 
-    ql_microdrive_floppy_emulation=1;
+        ql_microdrive_floppy_emulation=1;
 
-    ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,tmpdir);
+        ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,tmpdir);
+    }
 
 
 
