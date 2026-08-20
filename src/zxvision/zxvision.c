@@ -24628,105 +24628,25 @@ void old_menu_add_item_menu_es_avanzado(menu_item *m)
 */
 
 
-/*
-char *menu_text_string_sure_spanish="Seguro?";
-char *menu_text_string_sure_catalan="Segur?";
-char *menu_text_string_sure_english="Sure?";
-
-char *menu_text_string_save_config_spanish="Grabar configuración";
-char *menu_text_string_save_config_catalan="Gravar configuració";
-char *menu_text_string_save_config_english="Save config";
-
-char *menu_text_string_save_snapshot_spanish="Grabar snapshot";
-char *menu_text_string_save_snapshot_catalan="Gravar snapshot";
-char *menu_text_string_save_snapshot_english="Save snapshot";
-
-char *menu_text_string_exit_zesarux_spanish="Salir de ZEsarUX";
-char *menu_text_string_exit_zesarux_catalan="Sortir de ZEsarUX";
-char *menu_text_string_exit_zesarux_english="Exit ZEsarUX";
-
-char *menu_text_string_autoframeskip_spanish="Auto Saltar Frames";
-char *menu_text_string_autoframeskip_catalan="Auto Saltar Frames";
-char *menu_text_string_autoframeskip_english="Auto Frameskip";
-
-char *menu_text_string_enabled_spanish="Activado";
-char *menu_text_string_enabled_catalan="Activat";
-char *menu_text_string_enabled_english="Enabled";
-
-char *menu_text_string_welcome_spanish="Bienvenido";
-char *menu_text_string_welcome_catalan="Benvingut";
-char *menu_text_string_welcome_english="Welcome";
 
 
-
-//Funcion para devolver ciertas strings de ingles a español
-//Nota: funcion no optimizada, no usar para muchas strings o sera muy lento
-char *old_menu_get_string_language(char *texto)
-{
-    if (!strcmp(texto,menu_text_string_sure_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_sure_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_sure_catalan;
-        else return menu_text_string_sure_english;
-    }
-
-    else if (!strcmp(texto,menu_text_string_save_config_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_save_config_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_save_config_catalan;
-        else return menu_text_string_save_config_english;
-    }
-
-    else if (!strcmp(texto,menu_text_string_save_snapshot_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_save_snapshot_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_save_snapshot_catalan;
-        else return menu_text_string_save_snapshot_english;
-    }
-
-    else if (!strcmp(texto,menu_text_string_exit_zesarux_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_exit_zesarux_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_exit_zesarux_catalan;
-        else return menu_text_string_exit_zesarux_english;
-    }
-
-    else if (!strcmp(texto,menu_text_string_autoframeskip_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_autoframeskip_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_autoframeskip_catalan;
-        else return menu_text_string_autoframeskip_english;
-    }
-
-    else if (!strcmp(texto,menu_text_string_enabled_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_enabled_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_enabled_catalan;
-        else return menu_text_string_enabled_english;
-    }
-
-    else if (!strcmp(texto,menu_text_string_welcome_english)) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_welcome_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_welcome_catalan;
-        else return menu_text_string_welcome_english;
-    }
-
-    else return texto;
-}
-
-*/
-
-
+//English, Español, Catalán
 struct s_strings_language_list strings_language_list[]={
-    {"Seguro?","Segur?","Sure?"},
-    {"Grabar configuración","Gravar configuració","Save config"},
-    {"Grabar snapshot","Gravar snapshot","Save snapshot"},
-    {"Salir de ZEsarUX","Sortir de ZEsarUX","Exit ZEsarUX"},
-    {"Auto Saltar Frames","Auto Saltar Frames","Auto Frameskip"},
-    {"Activado","Activat","Enabled"},
-    {"Bienvenido","Benvingut","Welcome"},
-    {"Acerca de","Quant a","About"},
-    {"Reordenar iconos","Reordenar icones","Reorder icons"},
-    {"Ordenar iconos alfabéticamente","Ordenar icones alfabèticament","Sort icons alphabetically"},
-    {"Nuevo icono","Nova icona","New icon"},
-    {"Nuevo enlace a archivo","Nou enllaç a arxiu","New file link"},
-    {"Personalizar iconos","Personalitzar icones","Customize icons"},
-    {"Opciones ZX Desktop","Opcions ZX Desktop","ZX Desktop settings"},
-    {"Cambiar Bitmap","Canviar Bitmap","Change Bitmap"}
+    {"Sure?","Seguro?","Segur?"},
+    {"Save config","Grabar configuración","Gravar configuració"},
+    {"Save snapshot","Grabar snapshot","Gravar snapshot"},
+    {"Exit ZEsarUX","Salir de ZEsarUX","Sortir de ZEsarUX"},
+    {"Auto Frameskip","Auto Saltar Frames","Auto Saltar Frames"},
+    {"Enabled","Activado","Activat"},
+    {"Welcome","Bienvenido","Benvingut"},
+    {"About","Acerca de","Quant a"},
+    {"Reorder icons","Reordenar iconos","Reordenar icones"},
+    {"Sort icons alphabetically","Ordenar iconos alfabéticamente","Ordenar icones alfabèticament"},
+    {"New icon","Nuevo icono","Nova icona"},
+    {"New file link","Nuevo enlace a archivo","Nou enllaç a arxiu"},
+    {"Customize icons","Personalizar iconos","Personalitzar icones"},
+    {"ZX Desktop settings","Opciones ZX Desktop","Opcions ZX Desktop"},
+    {"Change Bitmap","Cambiar Bitmap","Canviar Bitmap"}
 };
 
 

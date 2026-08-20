@@ -1800,9 +1800,9 @@ extern int menu_char_width;
 extern int menu_char_height;
 
 struct s_strings_language_list {
+    char *string_english;
     char *string_spanish;
     char *string_catalan;
-    char *string_english;
 };
 
 extern struct s_strings_language_list strings_language_list[];
