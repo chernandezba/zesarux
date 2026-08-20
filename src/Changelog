@@ -17,7 +17,8 @@ Improved Sinclair QL emulation:
 - Added Vision-QL color palette
 - Added QL QIMI Mouse emulation
 - Added flp2 drive
-- Improved load: autogenerate lrun_ sentence, allow to run an exe file, allow to insert a folder as microdrive selecting a boot file or a basic file
+- Allow smartload of files type boot, basic or executables, running sentences lrun_ or exec_ automatically
+- Allow to smartload .mdv images (only Qlay format of size 174930)
 - Allow to load additional ROMS (for example tkii220.rom)
 - Allow to send keystrokes (read clipboard or read from text file) to QL
 - Allow to use PC real-time clock or QL internal

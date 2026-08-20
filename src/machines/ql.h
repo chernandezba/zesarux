@@ -116,6 +116,7 @@ extern void motorola_get_flags_string(char *texto);
 
 extern void ql_load_and_execute(char *nombre);
 extern void ql_handle_boot_file(char *filename);
+extern void ql_expand_mdv_and_boot(char *archivo);
 
 extern char ql_nombre_autorun[];
 

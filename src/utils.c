@@ -6443,6 +6443,8 @@ int quickload_valid_extension(char *nombre) {
     || !util_compare_file_extension(nombre,"sc")
     || !util_compare_file_extension(nombre,"cas")
 
+    || !util_compare_file_extension(nombre,"mdv")
+
     || !util_compare_file_extension(nombre,"zmenu")
     || !util_compare_file_extension(nombre,"m3u")
     ) {
@@ -7200,6 +7202,20 @@ int quickload_continue(char *nombre) {
 
         //Insertar flash en slot 3
         z88_load_flash_intel_card(nombre,3);
+
+
+        return 0;
+    }
+
+    //QL MDV de Qlay de tamaño concreto
+    else if (MACHINE_IS_QL &&
+        (
+                   !util_compare_file_extension(nombre,"mdv")
+        )
+
+        ) {
+
+        ql_expand_mdv_and_boot(nombre);
 
 
         return 0;

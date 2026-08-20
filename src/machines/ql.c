@@ -43,6 +43,7 @@
 #include "ql_qdos_handler.h"
 #include "autoselectoptions.h"
 #include "joystick.h"
+#include "menu_filesel.h"
 
 
 #if defined(__APPLE__)
@@ -954,6 +955,7 @@ void ql_handle_boot_file(char *filename)
                    !util_compare_file_extension_ql(filename,"exec") ||
                    !util_compare_file_extension(filename,"exe") ||
                    !util_compare_file_extension(filename,"exec") ) {
+                        //exec mdv1_...., funciona para fives_exec , gunner tambien, qpuzzle (aunque va raro)
                         sprintf(ql_nombre_autorun,"exec mdv1_%s\x0a",nombre_boot);
 
             }
@@ -1041,6 +1043,30 @@ void ql_load_and_execute(char *filename)
     noautoload.v=antes_no_autoload;
 
     set_snaptape_fileoptions(filename);
+
+
+}
+
+void ql_expand_mdv_and_boot(char *archivo)
+{
+
+    char tmpdir[PATH_MAX];
+
+    char archivo_sin_carpeta[PATH_MAX];
+
+    util_get_file_no_directory(archivo,archivo_sin_carpeta);
+
+
+    sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo_sin_carpeta);
+
+    menu_filesel_mkdir(tmpdir);
+
+    util_extract_mdv(archivo,tmpdir);
+
+    ql_microdrive_floppy_emulation=1;
+
+    ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,tmpdir);
+
 
 
 }

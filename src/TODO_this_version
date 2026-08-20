@@ -169,28 +169,17 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
 
 
-ok-smartload de ql: que tambien muestre archivos "boot" y en  ese caso lo interprete como montar esa carpeta como mdv1 y reset+autoload (si esta autoload claro)
-fives_exec funciona con exec mdv1_...., gunner tambien, qpuzzle (aunque va raro)
-
 -smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
 Quizá habria que tener alguna herramienta para expandir cualquier mdv
 
-
-ok -agregar dispositivo flp2 a QL
 
 -Emulación CST Thor, Q40, Q60, Q68
 
 -Apps calculadora, reloj
 
 
-
-
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 
-
-
--Poder cambiar bitmap de un icono.
-*que al entrar en selector de bitmap el cursor se ubique donde corresponde-> demasiado complicado, no vale la pena
 
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
@@ -198,4 +187,5 @@ ok -agregar dispositivo flp2 a QL
 
 -quiza va algo lento leyendo datos el QL de microdrive porque hay muchos VERBOSE_PARANOID?
 
--si icono de escritorio es openwindow y esa ventana esta abierta, que con boton derecho se pueda cerrar la ventana desde el icono
+
+-assume mdv1 if no device. tiene setting de config?
