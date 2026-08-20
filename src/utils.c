@@ -5016,6 +5016,7 @@ int util_write_configfile(void)
     if (ql_win1_alias_mdv1.v==0)                    ADD_STRING_CONFIG,"--ql-win1-no-alias-mdv1");
 
     if (ql_flp1_follow_mdv1.v)                      ADD_STRING_CONFIG,"--ql-flp1-dir-copied-mdv1");
+    if (ql_qdos_handler_assume_mdv1_if_no_device.v) ADD_STRING_CONFIG,"--ql-assume-mdv1-no-dev");
 
                                                     ADD_STRING_CONFIG,"--ql-data-size-headerless-exe %d",ql_task_default_data_size);
 

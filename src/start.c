@@ -1674,7 +1674,7 @@ screen_effect_print_names();
         "--ql-flp2-read-only             Mark flp2 as read only\n"
         "--ql-win1-no-alias-mdv1         Do not handle win1_ device as an alias to mdv1_\n"
         "--ql-flp1-dir-copied-mdv1       flp1 path parameter is copied from mdv1 path parameter\n"
-        "--ql-data-size-headerless-exe n Data size for headerless exe\n"
+        "--ql-assume-mdv1-no-dev         If a file operation doesn't have device name, assume mdv1\n"
 
 
 
@@ -6140,6 +6140,9 @@ int parse_cmdline_options(int desde_commandline)
                 ql_flp1_follow_mdv1.v=1;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--ql-assume-mdv1-no-dev")) {
+                ql_qdos_handler_assume_mdv1_if_no_device.v=1;
+            }
 
 
                         else if (!strcmp(argv[puntero_parametro],"--ide-file")) {
