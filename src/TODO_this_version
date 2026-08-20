@@ -182,48 +182,17 @@ ok -agregar dispositivo flp2 a QL
 
 -Apps calculadora, reloj
 
-ok -QIMI ql mouse
-ok *setting en menu.
-ok *setting por linea comandos/config file
-ok *que lea movimiento
-ok *lee botones
-ok *sensibilidad
-ok *debug puertos en ventana i/o
+
 
 
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 
--carga roms adicionales
-ok *en c0000
-ok *parametros config
-ok *icono dispositivo rom
 
 
--Poder cambiar bitmap de un icono. Que sea bitmap de una acción o de ventana. Esto puede servir por ejemplo en icono de enviar teclas y que el usuario diga qué bitmap quiere
-*uso get_alternate_bitmap_for_configurable_icon
-*--zxdesktop-append-icon (ext por extended, nombre de parametro temporal)
-ejemplo --zxdesktop-append-icon 1335 392 "OpenWindow" "ZXLife" "zxlife" "exists" "prueba"
-ok *permitir bitmaps de iconos de acciones
-ok *permitir bitmaps de iconos de ventanas. quiza con prefijo "w ", ejemplo "w timemachine"
-ok *permitir bitmaps de iconos de dispositivos, como cinta, etc. requerira tenerlos indexados. prefijo "d "
-ok *permitir bitmaps de botones superiores. quiza simplemente un numero de boton, el 0, 1 2 etc. o tenerlos indexados (quiza mejor). prefijo "b "
-ok *permitir otros bitmaps varios no usados, para el futuro. prefijo "o "
-ok *permitir iconos de máquinas
-ok * que se grabe en la config --zxdesktop-append-icon
-ok * que se pueda cambiar bitmap desde el menu
-ok *cache bitmap
+-Poder cambiar bitmap de un icono.
 *tooltip en selector de alternate bitmap tiene sentido?
 *que al entrar en selector de bitmap el cursor se ubique donde corresponde
-ok *poder eliminar el alternate bitmap y que indique el suyo correspondiente (borrar ese campo del icono tal cual)
 
-ejemplos config alternate bitmaps:
---zxdesktop-append-icon 1419 392 "Reset" "Reset" "" "exists" "quickload"
---zxdesktop-append-icon 1523 392 "Settings" "Settings" "" "exists" "w processmanagement"
---zxdesktop-append-icon 1627 392 "HexEditor" "HexEditor" "" "exists" "b 0"
---zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "d 1real_tape"
---zxdesktop-append-icon 1731 392 "SmartLoad" "SmartLoad" "" "exists" "m inves"
-
-ok -color de fondo blanco para icono de Clive
 
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 

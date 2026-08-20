@@ -1937,18 +1937,11 @@ printf("\n"
         "--zxdesktop-enable-icons-stroke                Sets a stroke on icons, useful to avoid blending with ZX Desktop\n"
         "--zxdesktop-icons-stroke-color n               Define color icons stroke (0-15)\n"
 
-        "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
-          "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. Action must be one of: ");
-
-
-        print_defined_direct_functions();
-
-
-        printf (
-        "\n\n"
-
         "--zxdesktop-append-icon x y a n e s b          Add icon to position x,y, to action a, icon name n, extra parameters e, status s, alternate bitmap b. "
-          "Icon name, extra parameters and alternate bitmap are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. Action must be one of: ");
+          "Icon name, extra parameters and alternate bitmap are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. "
+          "Alternate bitmap parameter can be a action name icon, a window name icon (preffix 'w '), a device name icon (preffix 'd '), a top button number ('b X'), "
+          "a machine name icon (preffix 'm ') or other icons (preffix 'o '); it's better to play with alternate bitmaps from the menu and see how configuration is generated. "
+          "Action must be one of: ");
 
 
         print_defined_direct_functions();
@@ -3863,7 +3856,7 @@ int parse_cmdline_options(int desde_commandline)
                 }
             }
 
-            //Soportar los dos parametros con extra de alternate bitmap o no
+            //zxdesktop-add-icon deprecated. Igual que append-icon pero sin parametro adicional de alternate bitmap
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon") ||
                     !strcmp(argv[puntero_parametro],"--zxdesktop-append-icon")
 
