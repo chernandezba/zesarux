@@ -24725,8 +24725,8 @@ struct s_strings_language_list strings_language_list[]={
     {"Nuevo icono","Nova icona","New icon"},
     {"Nuevo enlace a archivo","Nou enllaç a arxiu","New file link"},
     {"Personalizar iconos","Personalitzar icones","Customize icons"},
-    {"Opciones ZX Desktop","Opcions ZX Desktop","ZX Desktop settings"}
-
+    {"Opciones ZX Desktop","Opcions ZX Desktop","ZX Desktop settings"},
+    {"Cambiar Bitmap","Canviar Bitmap","Change Bitmap"}
 };
 
 
