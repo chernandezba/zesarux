@@ -5870,7 +5870,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%d%%]", audiovolume);
         menu_add_item_menu_shortcut(array_menu_settings_audio,'v');
 
-        if (!MACHINE_IS_QL && sn_chip_present.v==0) {
+        if (sn_chip_present.v==0) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"A~~uto-enable AY Chip");
             menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"A~~uto-habilitar Chip AY","A~~uto-habilitar Xip AY");
             menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(autoenable_ay_chip.v==1 ? 'X' : ' '));

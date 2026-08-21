@@ -217,6 +217,9 @@ void cpu_core_loop_ql(void)
                     audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
             }
 
+            //temp
+            audio_valor_enviar_sonido +=da_output_ay_izquierdo();
+
 
             audio_send_mono_sample(audio_valor_enviar_sonido);
 
@@ -224,6 +227,8 @@ void cpu_core_loop_ql(void)
             ql_qimi_handle_irq(t_scanline);
 
             ql_audio_next_cycle();
+
+            ay_chip_siguiente_ciclo();
 
 			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
 			//esperar para ver si se ha generado una interrupcion 1/50

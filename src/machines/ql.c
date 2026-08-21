@@ -293,6 +293,20 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
         return;
     }
 
+    //Temporal qsound
+    /*Write 0xC3000 -> Write Address Register
+
+Read 0xC3000 -> Read Status
+
+Write 0xC3002 -> Write Register Value
+
+Read 0xC3002 -> Read Register Value
+    */
+
+    if (Address>=0xC3000 && Address<=0xC3002) {
+        printf("Write Qsound Address %X Value %02X\n",Address,Data);
+    }
+
     if (Address>=0x18000 && Address<=0x1BFFF) {
         ql_zx8032_write(Address,Data);
 
@@ -360,6 +374,20 @@ unsigned char ql_readbyte(unsigned int Address)
     if (ql_extra_rom_c000_enabled && Address==0x0c000) {
         //No es del todo real, el cartucho siempre esta en uso, pero parpadeara al inicializarlo (al leer la direccion c000)
         ql_footer_extra_rom_c000();
+    }
+
+    //Temporal qsound
+    /*Write 0xC3000 -> Write Address Register
+
+Read 0xC3000 -> Read Status
+
+Write 0xC3002 -> Write Register Value
+
+Read 0xC3002 -> Read Register Value
+    */
+
+    if (Address>=0xC3000 && Address<=0xC3002) {
+        printf("Read Qsound Address %X\n",Address);
     }
 
 

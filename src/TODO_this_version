@@ -167,3 +167,10 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 -si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
+-Qsound AY
+*sv.ayjmp determinarlo cada vez leyendo 0x28164 y no tenerlo fijo como 0x29C30
+*hacer otro archivo fuente para el chip de sonido que tenga estos traps
+*hacer resto de funciones no solo write all
+*en core, mezclar estereo y no mono
+*en settings indicar qsound ay y no ay solo
+*old tower _m inicio bien una vez con sonido pero ahora arranca pero vuelve al basic con musica en segundo plano
