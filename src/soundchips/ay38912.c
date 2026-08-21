@@ -287,6 +287,7 @@ void init_chip_ay(void)
     else if (MACHINE_IS_ZX8081) ay_chip_frequency=FRECUENCIA_ZX81_AY;
     else if (MACHINE_IS_MSX) ay_chip_frequency=FRECUENCIA_MSX_AY;
     else if (MACHINE_IS_SVI) ay_chip_frequency=FRECUENCIA_SVI_AY;
+    else if (MACHINE_IS_QL) ay_chip_frequency=FRECUENCIA_QL_AY;
     else ay_chip_frequency=FRECUENCIA_SPECTRUM_AY;
 
     debug_printf (VERBOSE_INFO,"Setting AY chip frequency to %d HZ",ay_chip_frequency);
