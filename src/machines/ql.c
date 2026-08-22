@@ -67,6 +67,7 @@ int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 int ql_use_visionql_color_palette=0;
 
 void ql_writebyte_qsound(unsigned int Address, unsigned char Data);
+void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data);
 
 /*
 "The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
@@ -310,7 +311,12 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
         return; //Espacio i/o
     }
 
-    if (Address<0x18000 || Address>ql_mem_limit) return;
+    ql_writebyte_qsound_pia(Address,Data);
+
+
+    if (Address<0x18000) return;
+
+    if (Address>ql_mem_limit) return;
 
 
     unsigned char valor=Data;
@@ -367,19 +373,6 @@ unsigned char ql_readbyte(unsigned int Address)
         ql_footer_extra_rom_c000();
     }
 
-    //Temporal qsound
-    /*Write 0xC3000 -> Write Address Register
-
-Read 0xC3000 -> Read Status
-
-Write 0xC3002 -> Write Register Value
-
-Read 0xC3002 -> Read Register Value
-    */
-
-    if (Address>=0xC3000 && Address<=0xC3002) {
-        printf("Read Qsound Address %X\n",Address);
-    }
 
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
@@ -1124,6 +1117,8 @@ void ql_load_extra_roms(void)
 //Si se capturan las llamadas a la rom de qsound
 int ql_qsound_handle_traps=1;
 
+//Valor habitual para sv.aybas
+moto_long qsound_sv_aybas=0xFFFFFFFF;
 
 //Valor habitual para sv.ayjmp
 moto_long qsound_sv_ayjmp=0x29C30;
@@ -1178,6 +1173,29 @@ void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
 {
 
 
+
+
+    //Cuando se genera el puntero que apunta a sv.ayjmp
+    if (Address>=0x28164 && Address<=0x28167) {
+
+        qsound_sv_ayjmp=(memoria_ql[0x28164] << 24) | (memoria_ql[0x28165] << 16) | (memoria_ql[0x28166] << 8) | memoria_ql[0x28167];
+
+        printf("Generating qsound_sv_ayjmp=%X (Address=%X)\n",qsound_sv_ayjmp,Address);
+    }
+
+    //Cuando se genera el puntero que apunta a sv.aybas
+    if (Address>=0x28160 && Address<=0x28163) {
+
+        qsound_sv_aybas=(memoria_ql[0x28160] << 24) | (memoria_ql[0x28161] << 16) | (memoria_ql[0x28162] << 8) | memoria_ql[0x28163];
+
+        printf("Generating qsound_sv_aybas=%X (Address=%X)\n",qsound_sv_aybas,Address);
+    }
+
+
+
+    if (ay_chip_present.v==0) return;
+
+
     //Temporal qsound
     /* Esto para el clon de alvaro alea
 
@@ -1194,11 +1212,15 @@ Read 0xC3002 -> Read Register Value
         printf("Write Qsound Address %X Value %02X\n",Address,Data);
     }
 
-    //Cuando se genera el puntero que apunta a sv.ayjmp
-    if (Address>=0x28164 && Address<=0x28167) {
+}
 
-        qsound_sv_ayjmp=(memoria_ql[0x28164] << 24) | (memoria_ql[0x28165] << 16) | (memoria_ql[0x28166] << 8) | memoria_ql[0x28167];
 
-        printf("Generating qsound_sv_ayjmp=%X (Address=%X)\n",qsound_sv_ayjmp,Address);
+void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
+{
+    if (ay_chip_present.v==0) return;
+
+
+    if (Address>=0x8000 && Address<=0x8003) {
+        printf("Write Qsound PIA Address %X Value %02X\n",Address,Data);
     }
 }
