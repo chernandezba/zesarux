@@ -285,6 +285,9 @@ unsigned char ql_qimi_readbyte(unsigned int Address)
 
 void ql_writebyte(unsigned int Address, unsigned char Data)
 {
+
+    ql_writebyte_qsound_pia(Address,Data);
+
     Address %=(ql_mem_limit+1);
 
     //QIMI 114622=0x1BFBE
@@ -311,7 +314,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
         return; //Espacio i/o
     }
 
-    ql_writebyte_qsound_pia(Address,Data);
+
 
 
     if (Address<0x18000) return;
@@ -1131,7 +1134,6 @@ void ql_traps_qsound(void)
     int i;
     moto_long puntero;
 
-    //temporal qsound
     //sale de leer direccion 0x28164
     //if (get_pc_register()==0x29C30) {
     if (get_pc_register()==qsound_sv_ayjmp) {
@@ -1219,8 +1221,11 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 {
     if (ay_chip_present.v==0) return;
 
-
-    if (Address>=0x8000 && Address<=0x8003) {
-        printf("Write Qsound PIA Address %X Value %02X\n",Address,Data);
+    //The 6821 PIO is decoded using A0,A1 and A13 to A19, so will be available in the top 8K of the card (0b 1100 001xxxxx xxxxxxAB or 0xC2000 to 0xC3FFF)
+    if ((Address & 0xFE000) == 0xC2000) {
+    //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
+        printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,Address&3,Data);
     }
+
+
 }
