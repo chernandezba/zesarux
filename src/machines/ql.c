@@ -967,8 +967,8 @@ void ql_handle_boot_file(char *filename)
                    !util_compare_file_extension_ql(filename,"exec") ||
                    !util_compare_file_extension(filename,"exe") ||
                    !util_compare_file_extension(filename,"exec") ) {
-                        //exec mdv1_...., funciona para fives_exec , gunner tambien, qpuzzle (aunque va raro)
-                        sprintf(ql_nombre_autorun,"exec mdv1_%s\x0a",nombre_boot);
+                        //exec_w mdv1_...., funciona para fives_exec , gunner tambien, qpuzzle, psion chess
+                        sprintf(ql_nombre_autorun,"exec_w mdv1_%s\x0a",nombre_boot);
 
             }
 
