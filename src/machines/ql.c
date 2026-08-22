@@ -1129,3 +1129,44 @@ void ql_load_extra_roms(void)
 
 
 }
+
+
+void ql_traps_qsound(void)
+{
+    int i;
+    moto_long puntero;
+
+    //temporal qsound
+    //sale de leer direccion 0x28164
+    if (get_pc_register()==0x29C30) {
+        printf("qsound sv.ayjmp D0=%X\n",m68k_get_reg(NULL,M68K_REG_D0));
+
+        switch (m68k_get_reg(NULL,M68K_REG_D0)) {
+            case 1:
+                printf("write ay\n");
+            break;
+
+            case 2:
+                printf("read ay\n");
+            break;
+
+            case 3:
+                printf("writeall ay. Address=%X\n",m68k_get_reg(NULL,M68K_REG_A1));
+                puntero=m68k_get_reg(NULL,M68K_REG_A1);
+
+                for (i=0;i<14;i++) {
+                    out_port_ay(65533,i);
+	                out_port_ay(49149,ql_readbyte(puntero+i));
+                }
+            break;
+
+            case 4:
+                printf("readall ay\n");
+            break;
+
+            default:
+                printf("Unknown qsound function D0=%X\n",m68k_get_reg(NULL,M68K_REG_D0));
+            break;
+        }
+    }
+}

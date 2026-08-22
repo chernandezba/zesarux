@@ -143,4 +143,6 @@ extern int ql_extra_rom_c000_enabled;
 
 extern char ql_extra_rom_c000[];
 
+extern void ql_traps_qsound(void);
+
 #endif
