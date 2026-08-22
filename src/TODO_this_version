@@ -168,11 +168,10 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 
 
 -Qsound AY
-*sv.ayjmp determinarlo cada vez leyendo 0x28164 y no tenerlo fijo como 0x29C30
+ok *sv.ayjmp determinarlo cada vez leyendo 0x28164 y no tenerlo fijo como 0x29C30
 *hacer otro archivo fuente para el chip de sonido que tenga estos traps
 *hacer resto de funciones no solo write all
 *en core, mezclar estereo y no mono
 *en settings indicar qsound ay y no ay solo
-*old tower _m inicio bien una vez con sonido pero ahora arranca pero vuelve al basic con musica en segundo plano. OK-> creo que lo estaba cargando con exec y no exec_w
+
 ok *frecuencia chip ay es menor para el QL
-*siguiente ciclo lo lanzo a final de scanline de ql pero creo que estoy metiendo otra cantidad de scanlines-> estoy haciendo screen_testados_linea=80;

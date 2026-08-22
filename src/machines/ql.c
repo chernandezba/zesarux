@@ -66,6 +66,8 @@ int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 
 int ql_use_visionql_color_palette=0;
 
+void ql_writebyte_qsound(unsigned int Address, unsigned char Data);
+
 /*
 "The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
 Combined with the 2:1 ratio of the 512×256 resolution, the aspect ratio of the QL screen will then be 2/1.355 ≈ 1.476.
@@ -293,19 +295,6 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
         return;
     }
 
-    //Temporal qsound
-    /*Write 0xC3000 -> Write Address Register
-
-Read 0xC3000 -> Read Status
-
-Write 0xC3002 -> Write Register Value
-
-Read 0xC3002 -> Read Register Value
-    */
-
-    if (Address>=0xC3000 && Address<=0xC3002) {
-        printf("Write Qsound Address %X Value %02X\n",Address,Data);
-    }
 
     if (Address>=0x18000 && Address<=0x1BFFF) {
         ql_zx8032_write(Address,Data);
@@ -327,6 +316,8 @@ Read 0xC3002 -> Read Register Value
     unsigned char valor=Data;
 
     memoria_ql[Address]=valor;
+
+    ql_writebyte_qsound(Address,Data);
 
     #ifdef EMULATE_VISUALMEM
 
@@ -1130,16 +1121,26 @@ void ql_load_extra_roms(void)
 
 }
 
+//Si se capturan las llamadas a la rom de qsound
+int ql_qsound_handle_traps=1;
+
+
+//Valor habitual para sv.ayjmp
+moto_long qsound_sv_ayjmp=0x29C30;
 
 void ql_traps_qsound(void)
 {
+    if (ay_chip_present.v==0) return;
+    if (!ql_qsound_handle_traps) return;
+
     int i;
     moto_long puntero;
 
     //temporal qsound
     //sale de leer direccion 0x28164
-    if (get_pc_register()==0x29C30) {
-        printf("qsound sv.ayjmp D0=%X\n",m68k_get_reg(NULL,M68K_REG_D0));
+    //if (get_pc_register()==0x29C30) {
+    if (get_pc_register()==qsound_sv_ayjmp) {
+        printf("qsound sv.ayjmp (%X) D0=%X\n",qsound_sv_ayjmp,m68k_get_reg(NULL,M68K_REG_D0));
 
         switch (m68k_get_reg(NULL,M68K_REG_D0)) {
             case 1:
@@ -1168,5 +1169,36 @@ void ql_traps_qsound(void)
                 printf("Unknown qsound function D0=%X\n",m68k_get_reg(NULL,M68K_REG_D0));
             break;
         }
+    }
+}
+
+
+
+void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
+{
+
+
+    //Temporal qsound
+    /* Esto para el clon de alvaro alea
+
+    Write 0xC3000 -> Write Address Register
+
+Read 0xC3000 -> Read Status
+
+Write 0xC3002 -> Write Register Value
+
+Read 0xC3002 -> Read Register Value
+    */
+
+    if (Address>=0xC3000 && Address<=0xC3002) {
+        printf("Write Qsound Address %X Value %02X\n",Address,Data);
+    }
+
+    //Cuando se genera el puntero que apunta a sv.ayjmp
+    if (Address>=0x28164 && Address<=0x28167) {
+
+        qsound_sv_ayjmp=(memoria_ql[0x28164] << 24) | (memoria_ql[0x28165] << 16) | (memoria_ql[0x28166] << 8) | memoria_ql[0x28167];
+
+        printf("Generating qsound_sv_ayjmp=%X (Address=%X)\n",qsound_sv_ayjmp,Address);
     }
 }
