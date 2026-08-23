@@ -12,6 +12,7 @@ Allow to select output file from the External Audio Source window
 * Improvements:
 
 Improved Sinclair QL emulation:
+- Added Qsound emulation
 - Allow to change QL border color
 - Improved display aspect ratio. Graphics now match the original hardware geometry (1.476:1). Allow also 4:3 and 1:1
 - Added Vision-QL color palette

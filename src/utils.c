@@ -3984,8 +3984,12 @@ int get_ram_size(void)
         total_ram=64*1024;
     }
 
-    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
         total_ram=128*1024;
+    }
+
+    else if (MACHINE_IS_QL) {
+        total_ram=1024*((ql_mem_limit+1)/1024-128);
     }
 
     else if (MACHINE_IS_PCW) {

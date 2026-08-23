@@ -160,6 +160,13 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 -Apps calculadora, reloj
 
 
+-quiza en procrastinar juego Clive que use iconos ya definidos
+*habitualmente que mueva ojos izquierda, derecha , arriba, abajo segun donde esté el ratón
+*que cambie cara por ejemplo enfadado si se genera un mensaje de error
+*que ponga momentaneamente cara con corazones al seleccionar máquinas sinclair, cambridge z88 o mk14
+*que ponga momentaneamente cara triste al seleccionar máquinas amstrad
+
+
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 -> tiene sentido?
 
@@ -177,4 +184,7 @@ ok *sv.ayjmp determinarlo cada vez leyendo 0x28164 y no tenerlo fijo como 0x29C3
 ->de momento hacer que cargue la rom al activar chip y tambien en inicio maquina (aunque ahi se pone ay present a 0 y por tanto no la carga)
 *oldtower_m a veces se cuelga al iniciar
 *poder desactivar el pia y que se pueda hacer mediante solo traps a la rom. tiene sentido?
-*ay registers que aparezca independientemente del chip de audio del ql intel 8049
+
+- poner en features características nuevas de QL: mouse, qsound etc etc
+
+-en info de audio chip en icono maquina ql, que diga que hay ay si conviene
