@@ -2036,6 +2036,12 @@ void menu_ay_registers_overlay(void)
 
     int linea=0;
 
+    if (MACHINE_IS_QL && ay_chip_present.v) {
+        zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"~~Chip selected: [%s]",
+            (menu_ay_registers_ql_selected_ay ? "AY" : "i8049"));
+    }
+
+
 
     int vol_A[MAX_AY_CHIPS],vol_B[MAX_AY_CHIPS],vol_C[MAX_AY_CHIPS],vol_noise;
 
@@ -2596,7 +2602,18 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
     do {
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+
+        switch (tecla) {
+            case 'c':
+                if (MACHINE_IS_QL && ay_chip_present.v) menu_ay_registers_ql_selected_ay ^=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+            break;
+
+        }
+
         //printf ("tecla: %d\n",tecla);
 
         //Si ha cambiado el tamaño
