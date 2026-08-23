@@ -2499,6 +2499,9 @@ void menu_ay_registers_crea_ventana(zxvision_window *ventana,int xventana,int yv
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Audio Chip Registers",
             "ayregisters",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
         ventana->can_be_backgrounded=1;
+
+        ventana->writing_inverse_color=1;
+
         //indicar nombre del grabado de geometria
         //strcpy(ventana->geometry_name,"ayregisters");
         //restaurar estado minimizado de ventana
@@ -2605,7 +2608,10 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
             case 'c':
-                if (MACHINE_IS_QL && ay_chip_present.v) menu_ay_registers_ql_selected_ay ^=1;
+                if (MACHINE_IS_QL && ay_chip_present.v) {
+                    menu_ay_registers_ql_selected_ay ^=1;
+                    ventana->must_clear_cache_on_draw=1;
+                }
             break;
 
             default:
