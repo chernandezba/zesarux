@@ -362,6 +362,15 @@ void ql_footer_extra_rom_c000(void)
 
 unsigned char ql_readbyte(unsigned int Address)
 {
+
+    //Si qsound activado
+    if (ay_chip_present.v) {
+        if (Address>=0xC0000 && Address<=0xC1FFF) {
+            return memoria_ql[Address];
+        }
+    }
+
+
     Address %=(ql_mem_limit+1);
 
     //QIMI 114622=0x1BFBE
@@ -393,7 +402,9 @@ unsigned char ql_readbyte(unsigned int Address)
     }
 
 
-    if (Address>ql_mem_limit) return(0);
+
+
+    if (Address>ql_mem_limit) return 0;
 
     #ifdef EMULATE_VISUALMEM
 
@@ -1113,12 +1124,15 @@ void ql_load_extra_roms(void)
         }
     }
 
+    //Rom de qsound
+    qsound_load_rom();
+
 
 
 }
 
 //Si se capturan las llamadas a la rom de qsound
-int ql_qsound_handle_traps=1;
+int ql_qsound_handle_traps=0;
 
 //Valor habitual para sv.aybas
 moto_long qsound_sv_aybas=0xFFFFFFFF;
@@ -1225,6 +1239,38 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
     if ((Address & 0xFE000) == 0xC2000) {
     //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
         printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,Address&3,Data);
+    }
+
+
+}
+
+
+void qsound_load_rom(void)
+{
+
+    moto_long direccion=0xc0000;
+    int longitud_rom=8192;
+
+    //Primero, por si se ha quitado la rom, vaciar esa zona de memoria
+    memset(&memoria_ql[direccion],0,longitud_rom);
+
+
+    if (ay_chip_present.v==0) return;
+
+    printf("Loading qsound rom\n");
+
+    FILE *ptr_qsound_rom;
+
+    open_sharedfile("Qsound_V1.94.rom",&ptr_qsound_rom);
+
+    if (!ptr_qsound_rom) {
+        debug_printf (VERBOSE_ERR,"Unable to load qsound rom");
+    }
+    else {
+
+        fread(&memoria_ql[direccion],1,longitud_rom,ptr_qsound_rom);
+
+        fclose(ptr_qsound_rom);
     }
 
 

@@ -5550,6 +5550,11 @@ void menu_audio_volume(MENU_ITEM_PARAMETERS)
 void menu_audio_ay_chip(MENU_ITEM_PARAMETERS)
 {
     ay_chip_present.v^=1;
+
+    //temporal cargar la rom de qsound en ql si conviene
+    if (ay_chip_present.v && MACHINE_IS_QL) {
+        qsound_load_rom();
+    }
 }
 
 void menu_audio_ay_chip_autoenable(MENU_ITEM_PARAMETERS)
