@@ -327,6 +327,8 @@ extern int zxdesktop_icon_superupgrade_inverse;
 extern int zxdesktop_icon_samram_inverse;
 extern int zxdesktop_icon_hilow_inverse;
 
+extern int menu_ay_registers_ql_selected_ay;
+
 extern void gamelife_timer_counter_event(void);
 
 #define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue

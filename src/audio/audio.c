@@ -3795,7 +3795,7 @@ int audio_retorna_frecuencia_canal(int canal,int chip)
     }
 
 
-    else if (i8049_chip_present) {
+    else if (i8049_chip_present && !menu_ay_registers_ql_selected_ay) {
         if (canal==0) freq=ql_ipc_get_frecuency_sound_current_pitch();
         else freq=0;
 
@@ -3832,7 +3832,7 @@ int audio_si_canal_tono(int chip,int canal)
 
     }
 
-    else if (i8049_chip_present) {
+    else if (i8049_chip_present && !menu_ay_registers_ql_selected_ay) {
         if (canal==0) {
             if (!ql_audio_playing) {
                 return 0;

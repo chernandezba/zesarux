@@ -2610,6 +2610,7 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
             case 'c':
                 if (MACHINE_IS_QL && ay_chip_present.v) {
                     menu_ay_registers_ql_selected_ay ^=1;
+                    zxvision_cls(ventana);
                     ventana->must_clear_cache_on_draw=1;
                 }
             break;

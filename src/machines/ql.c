@@ -1248,7 +1248,7 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
     if ((Address & 0xFE000) == 0xC2000) {
     //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
         int registro=Address&3;
-        printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,registro,Data);
+        //printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,registro,Data);
 
         int bc1,bdir;
 
