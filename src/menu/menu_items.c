@@ -2004,6 +2004,9 @@ int ayregisters_previo_valor_volume_noise;
 
 zxvision_window *menu_ay_registers_overlay_window;
 
+//Caso del QL. Puede tener el i8049 y el AY
+int menu_ay_registers_ql_selected_ay=0;
+
 void menu_ay_registers_overlay(void)
 {
 
@@ -2162,7 +2165,7 @@ M1-M0= mode bits:
 
     }
 
-    else if (i8049_chip_present) {
+    else if (i8049_chip_present && !menu_ay_registers_ql_selected_ay) {
         total_chips=1;
 
             int volumen_pitch1;

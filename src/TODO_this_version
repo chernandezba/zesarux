@@ -175,3 +175,6 @@ ok *sv.ayjmp determinarlo cada vez leyendo 0x28164 y no tenerlo fijo como 0x29C3
 *en settings indicar qsound ay y no ay solo
 *cuando cargar la rom de qsound? al activar chip ay? al inicio maquina? al reset?
 ->de momento hacer que cargue la rom al activar chip y tambien en inicio maquina (aunque ahi se pone ay present a 0 y por tanto no la carga)
+*oldtower_m a veces se cuelga al iniciar
+*poder desactivar el pia y que se pueda hacer mediante solo traps a la rom. tiene sentido?
+*ay registers que aparezca independientemente del chip de audio del ql intel 8049

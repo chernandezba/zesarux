@@ -368,6 +368,13 @@ unsigned char ql_readbyte(unsigned int Address)
         if (Address>=0xC0000 && Address<=0xC1FFF) {
             return memoria_ql[Address];
         }
+
+        //The 6821 PIO is decoded using A0,A1 and A13 to A19, so will be available in the top 8K of the card (0b 1100 001xxxxx xxxxxxAB or 0xC2000 to 0xC3FFF)
+        if ((Address & 0xFE000) == 0xC2000) {
+        //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
+            int registro=Address&3;
+            printf("Read Qsound PIA Address %X Register %d\n",Address,registro);
+        }
     }
 
 
@@ -1133,6 +1140,7 @@ void ql_load_extra_roms(void)
 
 //Si se capturan las llamadas a la rom de qsound
 int ql_qsound_handle_traps=0;
+
 
 //Valor habitual para sv.aybas
 moto_long qsound_sv_aybas=0xFFFFFFFF;
