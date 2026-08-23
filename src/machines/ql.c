@@ -1230,6 +1230,7 @@ Read 0xC3002 -> Read Register Value
 
 }
 
+unsigned char qsound_pia_last_data_value=0;
 
 void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 {
@@ -1238,7 +1239,32 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
     //The 6821 PIO is decoded using A0,A1 and A13 to A19, so will be available in the top 8K of the card (0b 1100 001xxxxx xxxxxxAB or 0xC2000 to 0xC3FFF)
     if ((Address & 0xFE000) == 0xC2000) {
     //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
-        printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,Address&3,Data);
+        int registro=Address&3;
+        printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,registro,Data);
+
+        int bc1,bdir;
+
+        switch (registro) {
+            case 0:
+                qsound_pia_last_data_value=Data;
+            break;
+
+            case 2:
+                bc1=Data &1;
+                bdir=Data & 8;
+
+                if (bdir) {
+                    if (bc1) {
+                        //seleccionar registro
+                        out_port_ay(65533,qsound_pia_last_data_value);
+                    }
+                    else {
+                        //enviar valor a registro
+	                    out_port_ay(49149,qsound_pia_last_data_value);
+                    }
+                }
+            break;
+        }
     }
 
 
