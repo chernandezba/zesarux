@@ -2735,18 +2735,7 @@ D3.L: code:
           hacer_trap=1;
       }
 
-        /* esto en teoria ya no sirve
-      if (!hacer_trap) {
-          if (
-              ql_si_ruta_parametro(ql_nombre_archivo_load,"mdv") ||
-              ql_si_ruta_parametro(ql_nombre_archivo_load,"flp")
-              ) {
-            printf("hacer trap y es dispositivo\n");
-              hacer_trap=1;
-              es_dispositivo=1;
-          }
-      }
-      */
+
 
      //Ver si ruta es tal cual mdv1_,mdv2_ o flp1_ o flp2_ que indica que se abre el dispositivo entero
      if (
