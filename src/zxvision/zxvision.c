@@ -11008,6 +11008,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"ayregisters",         "audio regs",menu_ay_registers,bitmap_button_ext_desktop_audioregisters},
     {"aysheet",             "audiosheet",menu_ay_partitura,bitmap_button_ext_desktop_audiosheet},
     {"ayplayer",            "ay player",menu_audio_new_ayplayer,bitmap_button_ext_desktop_ayplayer},
+    {"clive",               "clive",        menu_clive_game,bitmap_button_ext_desktop_other_clive_down_left},
     {"convertaudiotozx81",  "cnv aud 81",   menu_convert_audio_to_zx81,bitmap_lowericon_ext_desktop_audio_to_zx81_convert},
     {"corestatistics",      "core stats",   menu_about_core_statistics,bitmap_button_ext_desktop_corestatistics},
 #ifdef EMULATE_CPU_STATS
