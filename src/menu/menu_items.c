@@ -44100,6 +44100,7 @@ enum clive_game_states {
     CLIVE_NORMAL,
     CLIVE_MOVED,
     CLIVE_SLEEP,
+    CLIVE_SAD,
     CLIVE_ANGRY,
     CLIVE_HEART,
     CLIVE_SUNGLASSES
@@ -44158,8 +44159,9 @@ void menu_clive_game_handle_timers(void)
             }
         break;
 
-        //Si lleva mas de 5 segundos con cara de corazones, volver a posicion normal
+        //Si lleva mas de 5 segundos con cara de corazones o triste, volver a posicion normal
         case CLIVE_HEART:
+        case CLIVE_SAD:
             if (tiempo_ultimo_estado>1000*10) {
                 menu_clive_game_state=CLIVE_NORMAL;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
@@ -44203,8 +44205,8 @@ void menu_clive_game_handle_state_changes(void)
 
     enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
 
-    //Si se ha movido respecto a direccion anterior y no estamos en estado corazones
-    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) && menu_clive_game_state!=CLIVE_HEART) {
+    //Si se ha movido respecto a direccion anterior y no estamos en estado corazones ni triste
+    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) && menu_clive_game_state!=CLIVE_HEART && menu_clive_game_state!=CLIVE_SAD) {
         menu_clive_game_state=CLIVE_MOVED;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
@@ -44236,6 +44238,13 @@ void menu_clive_game_handle_state_changes(void)
                 //TODO: pasar a estado triste por cambiar a maquina no sinclair?
             }
         }
+
+        //Pasar a estado triste siempre que se seleccione maquina spectrum amstrad
+        if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_SPECTRUM_P2) {
+            menu_clive_game_state=CLIVE_SAD;
+            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+        }
+
 
         menu_clive_game_previous_machine=current_machine_type;
     }
@@ -44289,6 +44298,10 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_HEART:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_heart;
+        break;
+
+        case CLIVE_SAD:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_sad;
         break;
 
         case CLIVE_SUNGLASSES:
