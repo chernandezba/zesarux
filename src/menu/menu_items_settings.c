@@ -5552,9 +5552,9 @@ void menu_audio_ay_chip(MENU_ITEM_PARAMETERS)
     ay_chip_present.v^=1;
 
     //temporal cargar la rom de qsound en ql si conviene
-    if (ay_chip_present.v && MACHINE_IS_QL) {
-        qsound_load_rom();
-    }
+    //if (ay_chip_present.v && MACHINE_IS_QL) {
+    //    qsound_load_rom();
+    //}
 }
 
 void menu_audio_ay_chip_autoenable(MENU_ITEM_PARAMETERS)
@@ -5860,6 +5860,35 @@ void menu_audio_svi_mic(MENU_ITEM_PARAMETERS)
     svi_sound_cassette_out.v ^=1;
 }
 
+void menu_audio_qsound_chip_present(MENU_ITEM_PARAMETERS)
+{
+    if (ql_qsound_is_enabled) {
+        ql_qsound_disable();
+    }
+    else {
+        ql_qsound_enable();
+    }
+}
+
+void menu_audio_qsound_rom_enabled(MENU_ITEM_PARAMETERS)
+{
+    ql_qsound_rom_enabled ^=1;
+
+    qsound_load_rom();
+
+}
+
+void menu_audio_qsound_handle_traps(MENU_ITEM_PARAMETERS)
+{
+    ql_qsound_handle_traps ^=1;
+}
+
+void menu_audio_qsound_pia_enabled(MENU_ITEM_PARAMETERS)
+{
+    ql_qsound_pia_enabled ^=1;
+}
+
+
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_settings_audio;
@@ -5875,7 +5904,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%d%%]", audiovolume);
         menu_add_item_menu_shortcut(array_menu_settings_audio,'v');
 
-        if (sn_chip_present.v==0) {
+        if (!MACHINE_IS_QL && sn_chip_present.v==0) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"A~~uto-enable AY Chip");
             menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"A~~uto-habilitar Chip AY","A~~uto-habilitar Xip AY");
             menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(autoenable_ay_chip.v==1 ? 'X' : ' '));
@@ -5911,6 +5940,17 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
         else if (MACHINE_IS_QL) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_i8049_chip_present,NULL,"[%c] i8049 sound chip", (i8049_chip_present ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_chip_present,NULL,"[%c] Qsound sound chip", (ql_qsound_is_enabled ? 'X' : ' '));
+
+            if (ql_qsound_is_enabled) {
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip,NULL,"~~AY Chip");
+                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Chip ~~AY","Xip ~~AY");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%c] ", (ay_chip_present.v==1 ? 'X' : ' '));
+
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_rom_enabled,NULL," [%c] Qsound ROM", (ql_qsound_rom_enabled ? 'X' : ' '));
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_handle_traps,NULL," [%c] Qsound handle ROM traps", (ql_qsound_handle_traps ? 'X' : ' '));
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_pia_enabled,NULL," [%c] Qsound PIA", (ql_qsound_pia_enabled ? 'X' : ' '));
+            }
         }
 
 

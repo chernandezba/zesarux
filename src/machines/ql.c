@@ -364,13 +364,13 @@ unsigned char ql_readbyte(unsigned int Address)
 {
 
     //Si qsound activado
-    if (ay_chip_present.v) {
-        if (Address>=0xC0000 && Address<=0xC1FFF) {
+    if (ql_qsound_is_enabled) {
+        if (Address>=0xC0000 && Address<=0xC1FFF && ql_qsound_rom_enabled) {
             return memoria_ql[Address];
         }
 
         //The 6821 PIO is decoded using A0,A1 and A13 to A19, so will be available in the top 8K of the card (0b 1100 001xxxxx xxxxxxAB or 0xC2000 to 0xC3FFF)
-        if ((Address & 0xFE000) == 0xC2000) {
+        if ((Address & 0xFE000) == 0xC2000 && ql_qsound_pia_enabled) {
         //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
             int registro=Address&3;
             printf("Read Qsound PIA Address %X Register %d\n",Address,registro);
@@ -1132,25 +1132,57 @@ void ql_load_extra_roms(void)
     }
 
     //Rom de qsound
-    qsound_load_rom();
+    //qsound_load_rom();
 
 
 
 }
 
+//Habilitado qsound a nivel global
+int ql_qsound_is_enabled=0;
+
+//Si se carga la rom del qsound
+int ql_qsound_rom_enabled=1;
+
 //Si se capturan las llamadas a la rom de qsound
 int ql_qsound_handle_traps=0;
 
+//Si el PIA esta habilitado
+int ql_qsound_pia_enabled=1;
 
-//Valor habitual para sv.aybas
+void ql_set_qsound_settings_on_enabled(void)
+{
+    if (ql_qsound_is_enabled) {
+        //Lo habitual
+        ql_qsound_rom_enabled=1;
+        ql_qsound_handle_traps=0;
+        ql_qsound_pia_enabled=1;
+        ay_chip_present.v=1;
+        qsound_load_rom();
+    }
+}
+
+void ql_qsound_enable(void)
+{
+    ql_qsound_is_enabled=1;
+    ql_set_qsound_settings_on_enabled();
+}
+
+void ql_qsound_disable(void)
+{
+    ql_qsound_is_enabled=0;
+}
+
+
+//Esto no lo uso, lo capturo por si en el futuro hace falta
 moto_long qsound_sv_aybas=0xFFFFFFFF;
 
 //Valor habitual para sv.ayjmp
-moto_long qsound_sv_ayjmp=0x29C30;
+moto_long qsound_sv_ayjmp=0x29B10;
 
 void ql_traps_qsound(void)
 {
-    if (ay_chip_present.v==0) return;
+    if (!ql_qsound_is_enabled) return;
     if (!ql_qsound_handle_traps) return;
 
     int i;
@@ -1217,7 +1249,7 @@ void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
 
 
 
-    if (ay_chip_present.v==0) return;
+    if (!ql_qsound_is_enabled) return;
 
 
     //Temporal qsound
@@ -1242,7 +1274,12 @@ unsigned char qsound_pia_last_data_value=0;
 
 void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 {
+
+    if (!ql_qsound_is_enabled) return;
+
     if (ay_chip_present.v==0) return;
+
+    if (!ql_qsound_pia_enabled) return;
 
     //The 6821 PIO is decoded using A0,A1 and A13 to A19, so will be available in the top 8K of the card (0b 1100 001xxxxx xxxxxxAB or 0xC2000 to 0xC3FFF)
     if ((Address & 0xFE000) == 0xC2000) {
@@ -1289,7 +1326,9 @@ void qsound_load_rom(void)
     memset(&memoria_ql[direccion],0,longitud_rom);
 
 
-    if (ay_chip_present.v==0) return;
+    if (!ql_qsound_is_enabled) return;
+
+    if (!ql_qsound_rom_enabled) return;
 
     printf("Loading qsound rom\n");
 

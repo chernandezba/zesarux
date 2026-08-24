@@ -5260,6 +5260,8 @@ int util_write_configfile(void)
                                                     ADD_STRING_CONFIG,"--ay-stereo-channel B %d",ay3_custom_stereo_B);
                                                     ADD_STRING_CONFIG,"--ay-stereo-channel C %d",ay3_custom_stereo_C);
 
+    if (ql_qsound_is_enabled)                       ADD_STRING_CONFIG,"--ql-qsound-enabled");
+
     if (audiodac_enabled.v)                         ADD_STRING_CONFIG,"--enableaudiodac");
                                                     ADD_STRING_CONFIG,"--audiodactype \"%s\"",audiodac_types[audiodac_selected_type].name);
 

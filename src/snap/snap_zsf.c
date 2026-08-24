@@ -2134,6 +2134,11 @@ Byte fields:
 
 */
 
+  //Si tiene info del chip ay en el snapshot, en QL, implica habilitar qsound
+  if (MACHINE_IS_QL) {
+    ql_qsound_enable();
+  }
+
 }
 
 

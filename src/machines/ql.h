@@ -147,4 +147,13 @@ extern void ql_traps_qsound(void);
 
 extern void qsound_load_rom(void);
 
+extern int ql_qsound_is_enabled;
+extern int ql_qsound_rom_enabled;
+extern int ql_qsound_handle_traps;
+extern int ql_qsound_pia_enabled;
+
+extern void ql_qsound_enable(void);
+extern void ql_qsound_disable(void);
+extern void ql_set_qsound_settings_on_enabled(void);
+
 #endif

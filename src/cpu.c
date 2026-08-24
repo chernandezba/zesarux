@@ -3747,6 +3747,7 @@ Total 20 pages=320 Kb
     //Extra ROMS de QL
     if (MACHINE_IS_QL) {
         ql_load_extra_roms();
+        ql_set_qsound_settings_on_enabled();
     }
 
 }
