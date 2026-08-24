@@ -44099,6 +44099,7 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 enum clive_game_states {
     CLIVE_NORMAL,
     CLIVE_MOVED,
+    CLIVE_SLEEP,
     CLIVE_ANGRY
 };
 
@@ -44116,6 +44117,11 @@ void menu_clive_game_handle_timers(void)
 
     switch (menu_clive_game_state) {
         case CLIVE_NORMAL:
+            //Si lleva mas de 1 minuto sin moverse, ir a dormir
+            if (tiempo_ultimo_estado>1000*60) {
+                menu_clive_game_state=CLIVE_SLEEP;
+                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
         break;
 
         //Si lleva mas de 5 segundos sin moverse, ir a posicion normal
@@ -44132,6 +44138,9 @@ void menu_clive_game_handle_timers(void)
                 menu_clive_game_state=CLIVE_NORMAL;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
+        break;
+
+        default:
         break;
 
     }
@@ -44207,6 +44216,10 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_ANGRY:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_angry;
+        break;
+
+        case CLIVE_SLEEP:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep;
         break;
 
         case CLIVE_MOVED:
