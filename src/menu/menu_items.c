@@ -44127,6 +44127,11 @@ void menu_clive_game_handle_timers(void)
         break;
 
         case CLIVE_ANGRY:
+            //Si pasa mas de 1 segundo desde mostrar el error, ir a estado normal
+            if (tiempo_ultimo_estado>1000) {
+                menu_clive_game_state=CLIVE_NORMAL;
+                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
         break;
 
     }
@@ -44176,9 +44181,13 @@ void menu_clive_game_draw_clive(void)
     menu_clive_game_last_mouse_y=mouse_y;
 
 
+    //Si se esta mostrando un mensaje de error
+    if (menu_muestra_pending_error_message_showing) {
+        menu_clive_game_state=CLIVE_ANGRY;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+    }
 
 
-    //this window
 
     int this_win_y=(w->y)*menu_char_height*menu_gui_zoom*zoom_y+((origen_linea_y+menu_char_height)*zoom_y*menu_gui_zoom); //menu_char_height de la linea titulo
     int delta_y=mouse_y-this_win_y;

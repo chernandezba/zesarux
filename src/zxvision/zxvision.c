@@ -10277,13 +10277,18 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
 
 }
 
+//Para saber si esta activo un mensaje de error y capturarlo desde el juego Clive
+int menu_muestra_pending_error_message_showing=0;
+
 void menu_muestra_pending_error_message(void)
 {
     if (if_pending_error_message) {
         if_pending_error_message=0;
         debug_printf (VERBOSE_INFO,"Showing pending error message on menu");
         //zxvision_generic_message("ERROR",pending_error_message);
+        menu_muestra_pending_error_message_showing=1;
         menu_error_message(pending_error_message);
+        menu_muestra_pending_error_message_showing=0;
     }
 }
 

@@ -1356,6 +1356,7 @@ extern void zxvision_zxdesktop_set_no_frameskip_next(void);
 
 extern int if_pending_error_message;
 extern char pending_error_message[];
+extern int menu_muestra_pending_error_message_showing;
 
 extern void menu_footer_bottom_line(void);
 
