@@ -837,6 +837,7 @@ extern int find_sharedfile(char *archivo,char *ruta_final);
 extern int si_existe_editionnamegame(char *nombre_final);
 
 extern int util_extract_mdv(char *mdvname, char *dest_dir);
+extern int util_extract_img(char *imgname, char *dest_dir);
 extern int util_extract_hdf(char *hdfname, char *dest_dir);
 extern int util_extract_rzx(char *filename,char *tempdir,char *z80_destination,char *force_z80_file_name);
 extern int util_convert_rzx_to_z80(char *filename,char *archivo_destino);

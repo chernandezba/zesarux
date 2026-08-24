@@ -170,6 +170,7 @@
 #include "enhanced_zx81_read.h"
 #include "tv.h"
 #include "ql_zx8302.h"
+#include "ql_extract.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
@@ -6451,6 +6452,7 @@ int quickload_valid_extension(char *nombre) {
     || !util_compare_file_extension(nombre,"cas")
 
     || !util_compare_file_extension(nombre,"mdv")
+    || !util_compare_file_extension(nombre,"img")
 
     || !util_compare_file_extension(nombre,"zmenu")
     || !util_compare_file_extension(nombre,"m3u")
@@ -7223,6 +7225,19 @@ int quickload_continue(char *nombre) {
         ) {
 
         ql_expand_mdv_and_boot(nombre);
+
+
+        return 0;
+    }
+
+    else if (MACHINE_IS_QL &&
+        (
+                   !util_compare_file_extension(nombre,"img")
+        )
+
+        ) {
+
+        ql_expand_img_and_boot(nombre);
 
 
         return 0;
@@ -17659,6 +17674,21 @@ int util_extract_mdv(char *mdvname, char *dest_dir)
         argumentos[3]=dest_dir;
 
     return main_mdvtool(4,argumentos);
+}
+
+//Retorna 0 si ok
+int util_extract_img(char *imgname, char *dest_dir)
+{
+//./extract missed-the-finish_by_dekadence-noice-smfx.img temp
+
+    char *argumentos[]={
+                "ql_extract","",""
+        };
+
+        argumentos[1]=imgname;
+        argumentos[2]=dest_dir;
+
+    return main_ql_extract(3,argumentos);
 }
 
 int util_extract_hdf(char *hdfname, char *dest_dir)

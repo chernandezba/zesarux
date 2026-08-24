@@ -45260,8 +45260,9 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         filtros[9]="_scr";
         filtros[10]="scr";
         filtros[11]="mdv";
+        filtros[12]="img";
 
-        filtros[12]=0;
+        filtros[13]=0;
     }
 
 

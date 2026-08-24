@@ -315,6 +315,8 @@ int menu_file_filter(const char *name,char *filtros[])
         else return 0;
     }
 
+    if (!strcasecmp(extension,"img")) return 1;
+
     if (!strcasecmp(extension,"hdf")) return 1;
 
     if (!strcasecmp(extension,"dsk")) return 1;
@@ -3266,7 +3268,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx",
+        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx","img",
         NULL
     };
 
@@ -3390,6 +3392,11 @@ int menu_filesel_expand(char *archivo,char *tmpdir,char *sufijo_carpeta)
         else if ( !util_compare_file_extension(archivo,"mdv") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a mdv file");
                 return util_extract_mdv(archivo,tmpdir);
+        }
+
+        else if ( !util_compare_file_extension(archivo,"img") ) {
+                debug_printf (VERBOSE_DEBUG,"Is a img file");
+                return util_extract_img(archivo,tmpdir);
         }
 
         else if ( !util_compare_file_extension(archivo,"scl") ) {

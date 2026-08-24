@@ -156,4 +156,6 @@ extern void ql_qsound_enable(void);
 extern void ql_qsound_disable(void);
 extern void ql_set_qsound_settings_on_enabled(void);
 
+extern void ql_expand_img_and_boot(char *archivo);
+
 #endif

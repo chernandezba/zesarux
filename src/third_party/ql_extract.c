@@ -55,6 +55,7 @@
 #include <errno.h>
 #include <limits.h>
 
+#include "ql_extract.h"
 #include "debug.h"
 
 #ifdef _WIN32

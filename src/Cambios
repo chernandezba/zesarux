@@ -20,6 +20,7 @@ Mejorada emulación de Sinclair QL:
 - Agregada unidad flp2
 - Permitir smartload archivos tipo boot, basic o ejecutables, ejecutando sentencias lrun_ o exec_ automáticamente
 - Permitir smartload imágenes .mdv (solo formato Qlay de tamaño 174930)
+- Agregado soporte para imágenes .img (QDOS QL5A / QL5B) images
 - Permitir cargar ROMS adicionales (por ejemplo tkii220.rom)
 - Permitir enviar pulsaciones de teclas (leer del portapapeles o leer de archivo de texto) a QL
 - Permitir usar reloj en tiempo real del PC o el interno del QL
