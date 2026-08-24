@@ -44137,11 +44137,11 @@ void menu_clive_game_handle_timers(void)
                     //De vez en cuando, se pone las gafas de sol
                     //Verlo a cada segundo
                     if ((tiempo_ultimo_estado % 1000)==0) {
-                        printf("Ver si se pone las gafas\n");
+                        //printf("Ver si se pone las gafas\n");
 
                         //Probabilidad de X entre 1000
-                        if ((util_get_random_enhanced()%1000)<2) {
-                            printf("Se pone las gafas\n");
+                        if ((util_get_random_enhanced()%1000)<5) {
+                            //printf("Se pone las gafas\n");
                             menu_clive_game_state=CLIVE_SUNGLASSES;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
                         }
@@ -44335,9 +44335,6 @@ void menu_clive_game_overlay(void)
     if (menu_clive_game_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
-
     menu_clive_game_handle_state_changes();
 
     menu_clive_game_draw_clive();
@@ -44378,8 +44375,8 @@ void menu_clive_game(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("clive",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=10;
+            alto_ventana=10;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
