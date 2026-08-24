@@ -186,11 +186,11 @@ ok? *cuando cargar la rom de qsound? al activar chip ay? al inicio maquina? al r
 *que en settings audio aparezca opciones del AY pero tambien del i8049
 ->de momento hacer que cargue la rom al activar chip y tambien en inicio maquina (aunque ahi se pone ay present a 0 y por tanto no la carga)
 *oldtower_m a veces se cuelga al iniciar
-*poder desactivar el pia y que se pueda hacer mediante solo traps a la rom. tiene sentido?
-*-opción qsound/ay
-Si estaba activado al seleccionar máquina ql tiene que seguir activado
-Desde un zsf activarlo si está en el snap. Y cargar la rom si está el setting de cargarla
-*Opciones qsound. Setting de qsound general y luego:
+ok *poder desactivar el pia y que se pueda hacer mediante solo traps a la rom. tiene sentido?
+ok *-opción qsound/ay
+ok Si estaba activado al seleccionar máquina ql tiene que seguir activado
+ok Desde un zsf activarlo si está en el snap. Y cargar la rom si está el setting de cargarla
+ok *Opciones qsound. Setting de qsound general y luego:
 -ay chip si/no (si por defecto)
 -rom si/no (si por defecto)
 -traps rom si/no (no por defecto)

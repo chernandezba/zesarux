@@ -1236,7 +1236,7 @@ void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
 
         qsound_sv_ayjmp=(memoria_ql[0x28164] << 24) | (memoria_ql[0x28165] << 16) | (memoria_ql[0x28166] << 8) | memoria_ql[0x28167];
 
-        printf("Generating qsound_sv_ayjmp=%X (Address=%X)\n",qsound_sv_ayjmp,Address);
+        printf("Generating qsound_sv_ayjmp=%XH (Pointer Address Written=%XH)\n",qsound_sv_ayjmp,Address);
     }
 
     //Cuando se genera el puntero que apunta a sv.aybas
@@ -1244,7 +1244,7 @@ void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
 
         qsound_sv_aybas=(memoria_ql[0x28160] << 24) | (memoria_ql[0x28161] << 16) | (memoria_ql[0x28162] << 8) | memoria_ql[0x28163];
 
-        printf("Generating qsound_sv_aybas=%X (Address=%X)\n",qsound_sv_aybas,Address);
+        printf("Generating qsound_sv_aybas=%XH (Pointer Address Written=%XH)\n",qsound_sv_aybas,Address);
     }
 
 
