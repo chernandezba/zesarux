@@ -44145,15 +44145,33 @@ void menu_clive_game_draw_clive_putpixel(z80_int *destino GCC_UNUSED,int x,int y
 }
 
 
-#define ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_ANCHO_VENTANA 29
-#define ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_ALTO_VENTANA 20
 
-//Ubicar el boton hacia la derecha de la ventana
-#define ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_OFFSET_BUTTON (ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_ANCHO_VENTANA-(ZESARUX_ASCII_LOGO_ANCHO/menu_char_width)-2)
 
 int menu_clive_game_last_mouse_x=-1;
 int menu_clive_game_last_mouse_y=-1;
 
+void menu_clive_game_handle_state_changes(void)
+{
+
+
+    //Si se ha movido respecto a direccion anterior
+    if (menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) {
+        menu_clive_game_state=CLIVE_MOVED;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+    }
+
+    menu_clive_game_last_mouse_x=mouse_x;
+    menu_clive_game_last_mouse_y=mouse_y;
+
+
+    //Si se esta mostrando un mensaje de error, este es mas prioritario que ningun otro
+    if (menu_muestra_pending_error_message_showing) {
+        menu_clive_game_state=CLIVE_ANGRY;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+    }
+
+
+}
 
 void menu_clive_game_draw_clive(void)
 {
@@ -44169,23 +44187,6 @@ void menu_clive_game_draw_clive(void)
     int origen_linea_y=(ZESARUX_ASCII_LOGO_ALTO*nivel_zoom)/2;
 
 
-
-
-    //Si se ha movido respecto a direccion anterior
-    if (menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) {
-        menu_clive_game_state=CLIVE_MOVED;
-        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
-    }
-
-    menu_clive_game_last_mouse_x=mouse_x;
-    menu_clive_game_last_mouse_y=mouse_y;
-
-
-    //Si se esta mostrando un mensaje de error
-    if (menu_muestra_pending_error_message_showing) {
-        menu_clive_game_state=CLIVE_ANGRY;
-        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
-    }
 
 
 
@@ -44251,6 +44252,7 @@ void menu_clive_game_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
+    menu_clive_game_handle_state_changes();
 
     menu_clive_game_draw_clive();
 
