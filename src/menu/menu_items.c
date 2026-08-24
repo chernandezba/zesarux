@@ -43038,7 +43038,6 @@ void menu_toy_follow_mouse_overlay(void)
 
 
     int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
-
     int delta_x=mouse_x-this_win_x;
 
     //printf("1 this win %d x %d\n",this_win_x,this_win_y);
@@ -44097,9 +44096,138 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 
 }
 
-
+enum clive_game_states {
+    CLIVE_NORMAL,
+    CLIVE_MOVED,
+    CLIVE_ANGRY
+};
 
 zxvision_window *menu_clive_game_window;
+
+enum clive_game_states menu_clive_game_state=CLIVE_NORMAL;
+
+
+int menu_clive_game_tiempo_desde_ultimo_estado=0;
+
+void menu_clive_game_handle_timers(void)
+{
+
+    int tiempo_ultimo_estado=contador_segundo_infinito-menu_clive_game_tiempo_desde_ultimo_estado;
+
+    switch (menu_clive_game_state) {
+        case CLIVE_NORMAL:
+        break;
+
+        //Si lleva mas de 5 segundos sin moverse, ir a posicion normal
+        case CLIVE_MOVED:
+            if (tiempo_ultimo_estado>5000) {
+                menu_clive_game_state=CLIVE_NORMAL;
+                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
+        break;
+
+        case CLIVE_ANGRY:
+        break;
+
+    }
+
+
+}
+
+void menu_clive_game_draw_clive_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
+{
+    zxvision_putpixel(menu_clive_game_window,x,y,color);
+}
+
+
+#define ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_ANCHO_VENTANA 29
+#define ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_ALTO_VENTANA 20
+
+//Ubicar el boton hacia la derecha de la ventana
+#define ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_OFFSET_BUTTON (ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_ANCHO_VENTANA-(ZESARUX_ASCII_LOGO_ANCHO/menu_char_width)-2)
+
+int menu_clive_game_last_mouse_x=-1;
+int menu_clive_game_last_mouse_y=-1;
+
+
+void menu_clive_game_draw_clive(void)
+{
+    zxvision_window *w=menu_clive_game_window;
+
+    int nivel_zoom=2;
+
+    //Saber hacia donde mira, siguiendo el raton
+
+    //Para que quepan los dos ojos, dividir entre 3
+    int origen_linea_x=(ZESARUX_ASCII_LOGO_ANCHO*nivel_zoom)/2;
+
+    int origen_linea_y=(ZESARUX_ASCII_LOGO_ALTO*nivel_zoom)/2;
+
+
+
+
+    //Si se ha movido respecto a direccion anterior
+    if (menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) {
+        menu_clive_game_state=CLIVE_MOVED;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+    }
+
+    menu_clive_game_last_mouse_x=mouse_x;
+    menu_clive_game_last_mouse_y=mouse_y;
+
+
+
+
+    //this window
+
+    int this_win_y=(w->y)*menu_char_height*menu_gui_zoom*zoom_y+((origen_linea_y+menu_char_height)*zoom_y*menu_gui_zoom); //menu_char_height de la linea titulo
+    int delta_y=mouse_y-this_win_y;
+
+
+    int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
+    int delta_x=mouse_x-this_win_x;
+
+
+    char **puntero_bitmap;
+
+
+    puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_left;
+
+    switch (menu_clive_game_state) {
+
+        case CLIVE_ANGRY:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_angry;
+        break;
+
+        case CLIVE_MOVED:
+            //Arriba izquierda
+            if (delta_x<0 && delta_y<0) puntero_bitmap=bitmap_button_ext_desktop_other_clive_up_left;
+            //Arriba derecha
+            else if (delta_x>=0 && delta_y<0) puntero_bitmap=bitmap_button_ext_desktop_other_clive_up_right;
+            //Abajo derecha
+            else if (delta_x>=0 && delta_y>=0) puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_right;
+            //Abajo izquierda y cualquier otro
+            else puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_left;
+        break;
+
+        case CLIVE_NORMAL:
+        default:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_left;
+        break;
+
+    }
+
+    //temp
+    int offset_x=0;
+    int offset_y=0;
+
+
+
+    screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+        0,0,menu_clive_game_draw_clive_putpixel,nivel_zoom,0,1);
+
+}
+
 
 
 void menu_clive_game_overlay(void)
@@ -44114,6 +44242,10 @@ void menu_clive_game_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
+
+    menu_clive_game_draw_clive();
+
+    menu_clive_game_handle_timers();
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_clive_game_window);
