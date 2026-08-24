@@ -8349,19 +8349,19 @@ char *bitmap_button_ext_desktop_other_clive_laugh[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_other_clive_sleep[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "xxxx     xxxxxxx          ",     //0
-    "  x    xx.......xx    xxxx",
-    " x    x...........x     x ",
-    "xxxx x....x........x   x  ",
-    "    xr.......x.....rx xxxx",
-    "   xr...............rx    ",
-    "   xr.......x.......rx    ",
-    "   xr...............rx    ",
-    "   xr...............rx    ",  //8
+    "         xxxxxxx      xxxx",     //0
+    "       xx.......xx      x ",
+    "      x...........x    x  ",
+    "     x....x........x  xxxx",
+    "    xr.......x.....rx     ",
+    "   xr...............rx xxx",
+    "   xr.......x.......rx   x",
+    "   xr...............rx  x ",
+    "   xr...............rx xxx",  //8
     "   xr..xxxx...xxxx..rx    ",   //9
-    "  xxxxx....xxx....xxxxx   ",	//10
-    "  x...x.xx.x.x.xx.x...x   ",
-    "  x...x....x.x....x...x   ",
+    "  xxxxx....xxx....xxxxx xx",	//10
+    "  x...x.xx.x.x.xx.x...x  x",
+    "  x...x....x.x....x...x xx",
     "  x...x....x.x....x...x   ",
     "   xr..xxxx.x.xxxx..rx    ",  //14
     "    xr......x......rx     ",
