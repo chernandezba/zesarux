@@ -44100,7 +44100,8 @@ enum clive_game_states {
     CLIVE_NORMAL,
     CLIVE_MOVED,
     CLIVE_SLEEP,
-    CLIVE_ANGRY
+    CLIVE_ANGRY,
+    CLIVE_HEART
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44110,8 +44111,11 @@ enum clive_game_states menu_clive_game_state=CLIVE_NORMAL;
 
 int menu_clive_game_tiempo_desde_ultimo_estado=0;
 
+int menu_clive_game_current_machine_sinclair=0;
+
 void menu_clive_game_handle_timers(void)
 {
+    enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
 
     int tiempo_ultimo_estado=contador_segundo_infinito-menu_clive_game_tiempo_desde_ultimo_estado;
 
@@ -44132,6 +44136,14 @@ void menu_clive_game_handle_timers(void)
             }
         break;
 
+        //Si lleva mas de 5 segundos con cara de corazones, volver a posicion normal
+        case CLIVE_HEART:
+            if (tiempo_ultimo_estado>1000*10) {
+                menu_clive_game_state=CLIVE_NORMAL;
+                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
+        break;
+
         case CLIVE_ANGRY:
             //Si pasa mas de 1 segundo desde mostrar el error, ir a estado normal
             if (tiempo_ultimo_estado>1000) {
@@ -44143,6 +44155,11 @@ void menu_clive_game_handle_timers(void)
         default:
         break;
 
+    }
+
+    //Si ha cambiado el estado, borrar toda la ventana
+    if (menu_clive_game_state_antes!=menu_clive_game_state) {
+        menu_clive_game_window->must_clear_cache_on_draw=1;
     }
 
 
@@ -44162,9 +44179,10 @@ int menu_clive_game_last_mouse_y=-1;
 void menu_clive_game_handle_state_changes(void)
 {
 
+    enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
 
-    //Si se ha movido respecto a direccion anterior
-    if (menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) {
+    //Si se ha movido respecto a direccion anterior y no estamos en estado corazones
+    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) && menu_clive_game_state!=CLIVE_HEART) {
         menu_clive_game_state=CLIVE_MOVED;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
@@ -44179,6 +44197,27 @@ void menu_clive_game_handle_state_changes(void)
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
 
+    //Si no estaba en maquina sinclair y ahora si, pasar por estado de sinclair con corazones en los ojos
+
+    if (MACHINE_IS_MK14 || MACHINE_IS_ZX80 || MACHINE_IS_ZX81 || MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 ||
+        MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_QL || MACHINE_IS_Z88) {
+        if (!menu_clive_game_current_machine_sinclair) {
+            menu_clive_game_current_machine_sinclair=1;
+            menu_clive_game_state=CLIVE_HEART;
+            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+        }
+    }
+    else {
+        if (menu_clive_game_current_machine_sinclair) {
+            menu_clive_game_current_machine_sinclair=0;
+            //TODO: pasar a estado triste por cambiar a maquina no sinclair?
+        }
+    }
+
+    //Si ha cambiado el estado, borrar toda la ventana
+    if (menu_clive_game_state_antes!=menu_clive_game_state) {
+        menu_clive_game_window->must_clear_cache_on_draw=1;
+    }
 
 }
 
@@ -44220,6 +44259,10 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_SLEEP:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep;
+        break;
+
+        case CLIVE_HEART:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_heart;
         break;
 
         case CLIVE_MOVED:
