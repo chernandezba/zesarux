@@ -8076,7 +8076,10 @@ char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"c5",bitmap_button_ext_desktop_other_c5},
-    {"clive",bitmap_button_ext_desktop_other_clive},
+    {"clive_look_dnleft",bitmap_button_ext_desktop_other_clive_down_left},
+    {"clive_look_dnright",bitmap_button_ext_desktop_other_clive_down_right},
+    {"clive_look_upleft",bitmap_button_ext_desktop_other_clive_up_left},
+    {"clive_look_upright",bitmap_button_ext_desktop_other_clive_up_right},
     {"clive_angel",bitmap_button_ext_desktop_other_clive_angel},
     {"clive_angry",bitmap_button_ext_desktop_other_clive_angry},
     {"clive_cry",bitmap_button_ext_desktop_other_clive_cry},
@@ -8132,7 +8135,7 @@ char *bitmap_button_ext_desktop_other_sad_mac[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 
 
-char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
+char *bitmap_button_ext_desktop_other_clive_down_left[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "         xxxxxxx          ",     //0
     "       xx.......xx        ",
@@ -8148,6 +8151,96 @@ char *bitmap_button_ext_desktop_other_clive[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  x...xWWWWx.xWWWWx...x   ",
     "  x...xWWWWx.xWWWWx...x   ",
     "  x...xxxxWx.xxxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_down_right[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr...............rx    ",
+    "   xr...............rx    ",  //8
+    "   xr..xxxx...xxxx..rx    ",
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxxxx.xWxxxx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_up_left[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr...............rx    ",
+    "   xr...............rx    ",  //8
+    "   xr..xxxx...xxxx..rx    ",
+    "  xxxxxxxxWxxxxxxWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_up_right[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr...............rx    ",
+    "   xr...............rx    ",  //8
+    "   xr..xxxx...xxxx..rx    ",
+    "  xxxxxWxxxxxxWxxxxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
     "   xr..xxxx.x.xxxx..rx    ",
     "    xr......x......rx     ",
     "    xr......xx.....rx     ",

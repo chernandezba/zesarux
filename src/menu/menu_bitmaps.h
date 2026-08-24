@@ -299,7 +299,10 @@ extern char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[];
 extern char *bitmap_button_ext_desktop_paste_keystrokes[];
 
 extern char *bitmap_button_ext_desktop_other_sad_mac[];
-extern char *bitmap_button_ext_desktop_other_clive[];
+extern char *bitmap_button_ext_desktop_other_clive_down_left[];
+extern char *bitmap_button_ext_desktop_other_clive_down_right[];
+extern char *bitmap_button_ext_desktop_other_clive_up_left[];
+extern char *bitmap_button_ext_desktop_other_clive_up_right[];
 extern char *bitmap_button_ext_desktop_other_clive_cry[];
 extern char *bitmap_button_ext_desktop_other_clive_sad[];
 extern char *bitmap_button_ext_desktop_other_clive_surprised[];
