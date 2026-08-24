@@ -44101,7 +44101,8 @@ enum clive_game_states {
     CLIVE_MOVED,
     CLIVE_SLEEP,
     CLIVE_ANGRY,
-    CLIVE_HEART
+    CLIVE_HEART,
+    CLIVE_SUNGLASSES
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44113,6 +44114,9 @@ int menu_clive_game_tiempo_desde_ultimo_estado=0;
 
 int menu_clive_game_current_machine_sinclair=0;
 
+//Para saber cuando se cambia
+int menu_clive_game_previous_machine=-1;
+
 void menu_clive_game_handle_timers(void)
 {
     enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
@@ -44121,10 +44125,28 @@ void menu_clive_game_handle_timers(void)
 
     switch (menu_clive_game_state) {
         case CLIVE_NORMAL:
+        case CLIVE_SUNGLASSES:
             //Si lleva mas de 1 minuto sin moverse, ir a dormir
             if (tiempo_ultimo_estado>1000*60) {
                 menu_clive_game_state=CLIVE_SLEEP;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
+
+            else {
+                if (menu_clive_game_state==CLIVE_NORMAL) {
+                    //De vez en cuando, se pone las gafas de sol
+                    //Verlo a cada segundo
+                    if ((tiempo_ultimo_estado % 1000)==0) {
+                        printf("Ver si se pone las gafas\n");
+
+                        //Probabilidad de X entre 1000
+                        if ((util_get_random_enhanced()%1000)<2) {
+                            printf("Se pone las gafas\n");
+                            menu_clive_game_state=CLIVE_SUNGLASSES;
+                            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+                        }
+                    }
+                }
             }
         break;
 
@@ -44198,20 +44220,24 @@ void menu_clive_game_handle_state_changes(void)
     }
 
     //Si no estaba en maquina sinclair y ahora si, pasar por estado de sinclair con corazones en los ojos
+    if (menu_clive_game_previous_machine!=current_machine_type) {
+        //printf("Cambio maquina de %d a %d\n",menu_clive_game_previous_machine,current_machine_type);
+        if (MACHINE_IS_MK14 || MACHINE_IS_ZX80 || MACHINE_IS_ZX81 || MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 ||
+            MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_QL || MACHINE_IS_Z88) {
+            if (!menu_clive_game_current_machine_sinclair) {
+                menu_clive_game_current_machine_sinclair=1;
+                menu_clive_game_state=CLIVE_HEART;
+                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
+        }
+        else {
+            if (menu_clive_game_current_machine_sinclair) {
+                menu_clive_game_current_machine_sinclair=0;
+                //TODO: pasar a estado triste por cambiar a maquina no sinclair?
+            }
+        }
 
-    if (MACHINE_IS_MK14 || MACHINE_IS_ZX80 || MACHINE_IS_ZX81 || MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 ||
-        MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_QL || MACHINE_IS_Z88) {
-        if (!menu_clive_game_current_machine_sinclair) {
-            menu_clive_game_current_machine_sinclair=1;
-            menu_clive_game_state=CLIVE_HEART;
-            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
-        }
-    }
-    else {
-        if (menu_clive_game_current_machine_sinclair) {
-            menu_clive_game_current_machine_sinclair=0;
-            //TODO: pasar a estado triste por cambiar a maquina no sinclair?
-        }
+        menu_clive_game_previous_machine=current_machine_type;
     }
 
     //Si ha cambiado el estado, borrar toda la ventana
@@ -44263,6 +44289,10 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_HEART:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_heart;
+        break;
+
+        case CLIVE_SUNGLASSES:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_sunglasses;
         break;
 
         case CLIVE_MOVED:
@@ -44377,6 +44407,9 @@ void menu_clive_game(MENU_ITEM_PARAMETERS)
 
 
     menu_clive_game_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+    //printf("Entrando en ventana. menu_clive_game_previous_machine=%d actual=%d\n",menu_clive_game_previous_machine,current_machine_type);
+    if (menu_clive_game_previous_machine<0) menu_clive_game_previous_machine=current_machine_type;
 
 
     //cambio overlay
