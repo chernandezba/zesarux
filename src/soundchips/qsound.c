@@ -131,7 +131,7 @@ void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
     //Cuando se genera el puntero que apunta a sv.ayjmp
     if (Address>=0x28164 && Address<=0x28167) {
 
-        qsound_sv_ayjmp=(memoria_ql[0x28164] << 24) | (memoria_ql[0x28165] << 16) | (memoria_ql[0x28166] << 8) | memoria_ql[0x28167];
+        qsound_sv_ayjmp=((moto_long)memoria_ql[0x28164] << 24) | ((moto_long)memoria_ql[0x28165] << 16) | ((moto_long)memoria_ql[0x28166] << 8) | (moto_long)memoria_ql[0x28167];
 
         //printf("Generating qsound_sv_ayjmp=%XH (Pointer Address Written=%XH)\n",qsound_sv_ayjmp,Address);
     }
@@ -139,7 +139,7 @@ void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
     //Cuando se genera el puntero que apunta a sv.aybas
     if (Address>=0x28160 && Address<=0x28163) {
 
-        qsound_sv_aybas=(memoria_ql[0x28160] << 24) | (memoria_ql[0x28161] << 16) | (memoria_ql[0x28162] << 8) | memoria_ql[0x28163];
+        qsound_sv_aybas=((moto_long)memoria_ql[0x28160] << 24) | ((moto_long)memoria_ql[0x28161] << 16) | ((moto_long)memoria_ql[0x28162] << 8) | (moto_long)memoria_ql[0x28163];
 
         //printf("Generating qsound_sv_aybas=%XH (Pointer Address Written=%XH)\n",qsound_sv_aybas,Address);
     }
