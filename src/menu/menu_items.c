@@ -34083,13 +34083,12 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_QL) {
             menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_i8049_mixer,menu_cond_i8049_chip,"i8049 Mi~~xer");
             menu_add_item_menu_shortcut(array_menu_audio,'x');
+            menu_add_item_menu_tiene_submenu(array_menu_audio);
         }
-        else {
-            menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_mixer,menu_cond_ay_chip,"AY Mi~~xer");
-            menu_add_item_menu_shortcut(array_menu_audio,'x');
-        }
-        menu_add_item_menu_tiene_submenu(array_menu_audio);
 
+        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_mixer,menu_cond_ay_chip,"AY Mi~~xer");
+        menu_add_item_menu_shortcut(array_menu_audio,'x');
+        menu_add_item_menu_tiene_submenu(array_menu_audio);
 
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,

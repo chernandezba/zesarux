@@ -122,8 +122,6 @@ void cpu_core_loop_ql(void)
 		if (0==1) { }
 
 
-
-
 		else {
 			if (esperando_tiempo_final_t_estados.v==0) {
 
@@ -192,43 +190,37 @@ void cpu_core_loop_ql(void)
 
 			t_scanline++;
 
-
-
-
-
-
             //Envio sonido
 
-            audio_valor_enviar_sonido=0;
+            audio_valor_enviar_sonido_izquierdo=audio_valor_enviar_sonido_derecho=0;
 
-            //Usando simulacion por AY
-            //audio_valor_enviar_sonido +=da_output_ay();
-
-            //Usando emulacion del chip intel
-            audio_valor_enviar_sonido +=ql_audio_da_output();
+            audio_valor_enviar_sonido_izquierdo +=da_output_ay_izquierdo();
+            audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
             if (audio_nagra_effect.v) {
-                audio_apply_nagra_effect_mono();
+                audio_apply_nagra_effect();
                 audio_apply_nagra_effect_next();
             }
 
+            audio_valor_enviar_sonido_izquierdo +=ql_audio_da_output();
+            audio_valor_enviar_sonido_derecho +=ql_audio_da_output();
+
+
             //Ajustar volumen
             if (audiovolume!=100) {
-                    audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
+                audio_valor_enviar_sonido_izquierdo=audio_adjust_volume(audio_valor_enviar_sonido_izquierdo);
+                audio_valor_enviar_sonido_derecho=audio_adjust_volume(audio_valor_enviar_sonido_derecho);
             }
 
-            //temp
-            audio_valor_enviar_sonido +=da_output_ay_izquierdo();
 
+            audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
 
-            audio_send_mono_sample(audio_valor_enviar_sonido);
-
-
-            ql_qimi_handle_irq(t_scanline);
 
             ql_audio_next_cycle();
 
             ay_chip_siguiente_ciclo();
+
+            ql_qimi_handle_irq(t_scanline);
 
 			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
 			//esperar para ver si se ha generado una interrupcion 1/50

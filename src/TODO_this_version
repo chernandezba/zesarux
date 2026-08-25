@@ -175,7 +175,6 @@ ok *que ponga momentaneamente cara con corazones al seleccionar máquinas sincla
 
 
 -Qsound AY
-ok *sv.ayjmp determinarlo cada vez leyendo 0x28164 y no tenerlo fijo como 0x29C30
 *hacer otro archivo fuente para el chip de sonido que tenga estos traps
 *hacer resto de funciones de rom traps de qsound no solo write all
 *en core, mezclar estereo y no mono
