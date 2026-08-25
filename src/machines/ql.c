@@ -1291,7 +1291,16 @@ Read 0xC3002 -> Read Register Value
 
 }
 
-unsigned char qsound_pia_last_data_value=0;
+
+unsigned char qsound_pia_data_port_a=0;
+
+//de momento no usado
+unsigned char qsound_pia_control_port_a=0;
+
+unsigned char qsound_pia_data_port_b=0;
+
+//de momento no usado
+unsigned char qsound_pia_control_port_b=0;
 
 void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 {
@@ -1312,23 +1321,32 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 
         switch (registro) {
             case 0:
-                qsound_pia_last_data_value=Data;
+                qsound_pia_data_port_a=Data;
+            break;
+
+            case 1:
+                qsound_pia_control_port_a=Data;
             break;
 
             case 2:
+                qsound_pia_data_port_b=Data;
                 bc1=Data &1;
                 bdir=Data & 8;
 
                 if (bdir) {
                     if (bc1) {
                         //seleccionar registro
-                        out_port_ay(65533,qsound_pia_last_data_value);
+                        out_port_ay(65533,qsound_pia_data_port_a);
                     }
                     else {
                         //enviar valor a registro
-	                    out_port_ay(49149,qsound_pia_last_data_value);
+	                    out_port_ay(49149,qsound_pia_data_port_a);
                     }
                 }
+            break;
+
+            case 3:
+                qsound_pia_control_port_b=Data;
             break;
         }
     }

@@ -15253,7 +15253,7 @@ menu_item *array_menu_ay_mixer;
             "external midi device (enable it on Settings-> Audio-> Audio Chip to MIDI Output");
 
 
-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_CPC) {
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_CPC || MACHINE_IS_QL) {
 
 
             char ay3_stereo_string[16];

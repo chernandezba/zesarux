@@ -177,28 +177,11 @@ ok *que ponga momentaneamente cara con corazones al seleccionar máquinas sincla
 -Qsound AY
 *hacer otro archivo fuente para el chip de sonido que tenga estos traps
 *hacer resto de funciones de rom traps de qsound no solo write all
-*en core, mezclar estereo y no mono
-*en settings indicar qsound ay y no ay solo
 
-ok? *cuando cargar la rom de qsound? al activar chip ay? al inicio maquina? al reset? deberia tambien cargarse al cargar un snapshot con chip ay habilitado
-
-*que en settings audio aparezca opciones del AY pero tambien del i8049
-->de momento hacer que cargue la rom al activar chip y tambien en inicio maquina (aunque ahi se pone ay present a 0 y por tanto no la carga)
 *oldtower_m a veces se cuelga al iniciar
-ok *poder desactivar el pia y que se pueda hacer mediante solo traps a la rom. tiene sentido?
-ok *-opción qsound/ay
-ok Si estaba activado al seleccionar máquina ql tiene que seguir activado
-ok Desde un zsf activarlo si está en el snap. Y cargar la rom si está el setting de cargarla
-ok *Opciones qsound. Setting de qsound general y luego:
--ay chip si/no (si por defecto)
--rom si/no (si por defecto)
--traps rom si/no (no por defecto)
--pía si/no (si por defecto)
-ok ->variables definidas. Falta settings  en audio->settings
-->varios settings de ay_enabled quiza seran qsound_enabled y otros qsound_enabled + setting correspondiente
+
 *opciones de config file: de momento solo qsound enabled, faltan settings traps etc (necesarios?)
 
-Poner qsound a off pone a off todos esos
 Poner a on los pone esos a sus valores por defecto
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?

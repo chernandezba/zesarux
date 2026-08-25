@@ -6552,6 +6552,21 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 
+        if (ql_qsound_is_enabled) {
+            if (ql_qsound_pia_enabled) {
+                strcpy (buf_linea,"QSound\n");
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                sprintf (buf_linea," PIA Data Port A: %02X\n",qsound_pia_data_port_a);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                sprintf (buf_linea," PIA Control Port A: %02X\n",qsound_pia_control_port_a);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                sprintf (buf_linea," PIA Data Port B: %02X\n",qsound_pia_data_port_b);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                sprintf (buf_linea," PIA Control Port B: %02X\n",qsound_pia_control_port_b);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+        }
+
 /*
 $18063	MC_STAT		Master chip status register
 Bit	Purpose
