@@ -90,6 +90,7 @@
 #include "pcw.h"
 #include "zeng_online_client.h"
 #include "datagear.h"
+#include "qsound.h"
 
 
 #include "autoselectoptions.h"

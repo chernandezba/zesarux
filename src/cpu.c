@@ -150,6 +150,7 @@
 #include "lec.h"
 #include "zxmmcplus.h"
 #include "tv.h"
+#include "qsound.h"
 
 
 #ifdef COMPILE_STDOUT

@@ -118,6 +118,7 @@
 #include "lec.h"
 #include "zxmmcplus.h"
 #include "tv.h"
+#include "qsound.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 

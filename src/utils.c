@@ -171,6 +171,7 @@
 #include "tv.h"
 #include "ql_zx8302.h"
 #include "ql_extract.h"
+#include "qsound.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo

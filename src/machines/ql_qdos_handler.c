@@ -39,6 +39,7 @@
 #include "ql_i8049.h"
 #include "ql_zx8302.h"
 #include "timer.h"
+#include "qsound.h"
 
 
 #if defined(__APPLE__)

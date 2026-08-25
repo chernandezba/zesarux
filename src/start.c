@@ -166,6 +166,7 @@
 #include "zxmmcplus.h"
 #include "tv.h"
 #include "ql_zx8302.h"
+#include "qsound.h"
 
 
 

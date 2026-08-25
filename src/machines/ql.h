@@ -143,23 +143,7 @@ extern int ql_extra_rom_c000_enabled;
 
 extern char ql_extra_rom_c000[];
 
-extern void ql_traps_qsound(void);
 
-extern void qsound_load_rom(void);
-
-extern int ql_qsound_is_enabled;
-extern int ql_qsound_rom_enabled;
-extern int ql_qsound_handle_traps;
-extern int ql_qsound_pia_enabled;
-
-extern void ql_qsound_enable(void);
-extern void ql_qsound_disable(void);
-extern void ql_set_qsound_settings_on_enabled(void);
-
-extern unsigned char qsound_pia_data_port_a;
-extern unsigned char qsound_pia_control_port_a;
-extern unsigned char qsound_pia_data_port_b;
-extern unsigned char qsound_pia_control_port_b;
 
 extern void ql_expand_img_and_boot(char *archivo);
 

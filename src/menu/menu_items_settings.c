@@ -142,6 +142,7 @@
 #include "menu_bitmaps.h"
 #include "pcw.h"
 #include "tv.h"
+#include "qsound.h"
 
 
 
