@@ -88,29 +88,63 @@ void ql_traps_qsound(void)
     //sale de leer direccion 0x28164
     //if (get_pc_register()==0x29C30) {
     if (get_pc_register()==qsound_sv_ayjmp) {
-        printf("qsound sv.ayjmp (%X) D0=%X\n",qsound_sv_ayjmp,m68k_get_reg(NULL,M68K_REG_D0));
+        //printf("qsound sv.ayjmp (%X) D0=%X\n",qsound_sv_ayjmp,m68k_get_reg(NULL,M68K_REG_D0));
 
         switch (m68k_get_reg(NULL,M68K_REG_D0)) {
+
+            case 0:
+                printf("ay.reset. TODO\n");
+            break;
+
             case 1:
-                printf("write ay\n");
+                printf("ay.wrreg\n");
+                //D1=Value, D2=register
+                //No testeado
+                out_port_ay(65533,m68k_get_reg(NULL,M68K_REG_D2) & 0xFF); //registro
+                out_port_ay(49149,m68k_get_reg(NULL,M68K_REG_D1) & 0xFF); //valor
             break;
 
             case 2:
-                printf("read ay\n");
+                printf("ay.rdreg. TODO\n");
             break;
 
             case 3:
-                printf("writeall ay. Address=%X\n",m68k_get_reg(NULL,M68K_REG_A1));
+                //printf("ay.wrall. Address=%X\n",m68k_get_reg(NULL,M68K_REG_A1));
+                //testeado con Old Tower
                 puntero=m68k_get_reg(NULL,M68K_REG_A1);
 
                 for (i=0;i<14;i++) {
-                    out_port_ay(65533,i);
-	                out_port_ay(49149,ql_readbyte(puntero+i));
+                    out_port_ay(65533,i); //registro
+	                out_port_ay(49149,ql_readbyte(puntero+i)); //valor
                 }
             break;
 
             case 4:
-                printf("readall ay\n");
+                printf("ay.rdall. TODO\n");
+            break;
+
+            case 5:
+                printf("ay.play. TODO\n");
+            break;
+
+            case 6:
+                printf("ay.tstpl. TODO\n");
+            break;
+
+            case 7:
+                printf("ay.hold. TODO\n");
+            break;
+
+            case 8:
+                printf("ay.relse. TODO\n");
+            break;
+
+            case 9:
+                printf("ay.noise. TODO\n");
+            break;
+
+            case 10:
+                printf("ay.sound. TODO\n");
             break;
 
             default:
