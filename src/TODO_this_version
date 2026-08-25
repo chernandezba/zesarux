@@ -175,14 +175,9 @@ ok *que ponga momentaneamente cara con corazones al seleccionar máquinas sincla
 
 
 -Qsound AY
-*hacer otro archivo fuente para el chip de sonido que tenga estos traps
 *hacer resto de funciones de rom traps de qsound no solo write all
-
 *oldtower_m a veces se cuelga al iniciar
-
 *opciones de config file: de momento solo qsound enabled, faltan settings traps etc (necesarios?)
-
-Poner a on los pone esos a sus valores por defecto
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?
 *poder elegir otra qsound rom alternativa
