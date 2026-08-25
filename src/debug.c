@@ -6583,7 +6583,7 @@ Bit	Purpose
 
     }
 
-      if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
+      if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC || MACHINE_IS_QL)) {
           int chips=ay_retorna_numero_chips();
           int j;
           for (j=0;j<chips;j++) {
