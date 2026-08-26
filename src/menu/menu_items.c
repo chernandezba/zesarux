@@ -44131,10 +44131,29 @@ char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]="";
 
 //“It was originally intended as a machine to teach computing, and the games market was rather secondary. Of course it turned out the other way around but that was not the original intention.”
 
-char *menu_clive_mensaje_origen_hablar="We have only four chips where everyone else has 40";
+char *menu_clive_mensaje_origen_hablar=NULL;
 
 //char *menu_clive_mensaje_origen_hablar="Parece que estas escribiendo una carta. Necesitas ayuda?";
 int menu_clive_game_indice_texto_hablado=0;
+
+#define MENU_CLIVE_MAX_PHRASES 3
+
+char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
+    "We have only four chips where everyone else has 40",
+    "It was originally intended as a machine to teach computing",
+    "That is what I like doing — solving problems"
+};
+
+
+void menu_clive_game_select_random_phrase(void)
+{
+    menu_clive_game_indice_texto_hablado=0;
+
+    int frase_elegir=util_get_random_enhanced()%MENU_CLIVE_MAX_PHRASES;
+
+    menu_clive_mensaje_origen_hablar=frases_clive_game[frase_elegir];
+
+}
 
 void menu_clive_game_hablar_texto_siguiente_palabra(void)
 {
@@ -44207,7 +44226,7 @@ void menu_clive_game_handle_timers(void)
                             printf("Se pone a hablar\n");
                             menu_clive_game_state=CLIVE_TALKING;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
-                            menu_clive_game_indice_texto_hablado=0;
+                            menu_clive_game_select_random_phrase();
                         }
                     }
 
