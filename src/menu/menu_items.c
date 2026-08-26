@@ -44127,7 +44127,7 @@ int menu_clive_game_talking_state=0;
 #define MENU_CLIVE_TALKING_LETTERS_PER_FACE_MOVEMENT 3
 
 #define MENU_CLIVE_MAX_PHRASE_LENGTH 1024
-char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]="";
+char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH+1]="";
 
 //“It was originally intended as a machine to teach computing, and the games market was rather secondary. Of course it turned out the other way around but that was not the original intention.”
 
@@ -44169,20 +44169,31 @@ void menu_clive_game_select_random_phrase(void)
 void menu_clive_game_hablar_texto_siguiente_palabra(void)
 {
     //Si esta hablando mostrar tooltip con el texto
-    //TODO: truncar si origen excede MENU_CLIVE_MAX_PHRASE_LENGTH
 
-    strcpy(menu_clive_game_frase_hablada,menu_clive_mensaje_origen_hablar);
+    int longitud_origen=strlen(menu_clive_mensaje_origen_hablar);
+
+    //truncar si origen excede MENU_CLIVE_MAX_PHRASE_LENGTH
+    if (longitud_origen>MENU_CLIVE_MAX_PHRASE_LENGTH) {
+        longitud_origen=MENU_CLIVE_MAX_PHRASE_LENGTH;
+        printf("Truncar frase origen\n");
+        strncpy(menu_clive_game_frase_hablada,menu_clive_mensaje_origen_hablar,MENU_CLIVE_MAX_PHRASE_LENGTH);
+        menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]=0;
+    }
+
+    else {
+        strcpy(menu_clive_game_frase_hablada,menu_clive_mensaje_origen_hablar);
+    }
 
     menu_clive_game_frase_hablada[menu_clive_game_indice_texto_hablado]=0;
 
-    int longitud_origen=strlen(menu_clive_mensaje_origen_hablar);
+
 
     int i;
     //printf("Inicio frame\n");
 
     for (i=0;i<MENU_CLIVE_TALKING_LETTERS_PER_FACE_MOVEMENT;i++) {
 
-        if (menu_clive_game_indice_texto_hablado<=longitud_origen) {
+        if (menu_clive_game_indice_texto_hablado<longitud_origen) {
             menu_clive_game_indice_texto_hablado++;
             printf("Incrementar 1 caracter el texto\n");
         }
