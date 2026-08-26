@@ -44306,7 +44306,7 @@ char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
 #define MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE (10*1000)
 
 //Probabilidades de eventos aleatorios, sobre 1000
-#define MENU_CLIVE_PROBABILIDAD_HABLAR 50
+#define MENU_CLIVE_PROBABILIDAD_HABLAR 30
 #define MENU_CLIVE_PROBABILIDAD_GAFAS_SOL 5
 
 void menu_clive_game_select_random_phrase(void)
