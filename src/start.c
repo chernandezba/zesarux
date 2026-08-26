@@ -847,6 +847,7 @@ void zesarux_cmdline_help_expert(void)
         "--ay-stereo-mode n               Mode of AY stereo emulated: 0=Mono, 1=ACB, 2=ABC, 3=BAC, 4=Custom. Default Mono\n"
         "--ay-stereo-channel X n          Position of AY channel X (A, B or C) in case of Custom Stereo Mode. 0=Left, 1=Center, 2=Right\n"
         "--ql-qsound-enabled              Enable QL Qsound emulation\n"
+        "--ql-qsound-rom f                Sets a custom QL Qsound ROM\n"
         "--enableaudiodac                 Enable DAC emulation. By default Specdrum\n"
         "--audiodactype type              Select one of audiodac types: "
 );
@@ -6758,6 +6759,11 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--ql-qsound-enabled")) {
                 ql_qsound_is_enabled=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-qsound-rom")) {
+                siguiente_parametro_argumento();
+                strcpy(qsound_rom_name,argv[puntero_parametro]);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--enablespecdrum")) {

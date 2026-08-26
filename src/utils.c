@@ -5264,6 +5264,9 @@ int util_write_configfile(void)
 
     if (ql_qsound_is_enabled)                       ADD_STRING_CONFIG,"--ql-qsound-enabled");
 
+    if (qsound_rom_name[0])                         ADD_STRING_CONFIG,"--ql-qsound-rom \"%s\"",qsound_rom_name);
+
+
     if (audiodac_enabled.v)                         ADD_STRING_CONFIG,"--enableaudiodac");
                                                     ADD_STRING_CONFIG,"--audiodactype \"%s\"",audiodac_types[audiodac_selected_type].name);
 

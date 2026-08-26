@@ -47,6 +47,27 @@ int ql_qsound_handle_traps=0;
 //Si el PIA esta habilitado
 int ql_qsound_pia_enabled=1;
 
+
+//Nombre de la rom. Si "", nombre y ruta por defecto
+char qsound_rom_name[PATH_MAX]="";
+
+//Esto no lo uso, lo capturo por si en el futuro hace falta
+moto_long qsound_sv_aybas=0xFFFFFFFF;
+
+//Valor habitual para sv.ayjmp
+moto_long qsound_sv_ayjmp=0x29B10;
+
+
+unsigned char qsound_pia_data_port_a=0;
+
+//de momento no usado
+unsigned char qsound_pia_control_port_a=0;
+
+unsigned char qsound_pia_data_port_b=0;
+
+//de momento no usado
+unsigned char qsound_pia_control_port_b=0;
+
 void ql_set_qsound_settings_on_enabled(void)
 {
     if (ql_qsound_is_enabled) {
@@ -70,12 +91,6 @@ void ql_qsound_disable(void)
     ql_qsound_is_enabled=0;
 }
 
-
-//Esto no lo uso, lo capturo por si en el futuro hace falta
-moto_long qsound_sv_aybas=0xFFFFFFFF;
-
-//Valor habitual para sv.ayjmp
-moto_long qsound_sv_ayjmp=0x29B10;
 
 void ql_traps_qsound(void)
 {
@@ -202,15 +217,7 @@ Read 0xC3002 -> Read Register Value
 }
 
 
-unsigned char qsound_pia_data_port_a=0;
 
-//de momento no usado
-unsigned char qsound_pia_control_port_a=0;
-
-unsigned char qsound_pia_data_port_b=0;
-
-//de momento no usado
-unsigned char qsound_pia_control_port_b=0;
 
 void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 {
@@ -265,8 +272,7 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 }
 
 
-//Nombre de la rom. Si "", nombre y ruta por defecto
-char qsound_rom_name[PATH_MAX]="";
+
 
 void qsound_load_rom(void)
 {
