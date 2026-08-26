@@ -45,6 +45,7 @@
 
 
 #include "zxvision.h"
+#include "zxvision_private.h"
 #include "zxvision_topbar.h"
 #include "menu_items.h"
 #include "menu_items_settings.h"
