@@ -8674,6 +8674,9 @@ void tooltips_mouse_timer_event(void)
 
     if (tooltip_enabled.v==0) return;
 
+    //Si esta el texto de clive, no hacer nada aqui
+    if (tooltip_mouse_visible_clive.v) return;
+
     if (mouse_menu_disabled.v) return;
 
     int movido=0;
@@ -8701,7 +8704,7 @@ void tooltips_mouse_timer_event(void)
         }
         //Si estaba visible, no hay cambio
         if (tooltip_mouse_visible.v) {
-            printf("no se mueve, hay tooltip visible, no hacer nada %d\n",contador_segundo);
+            //printf("no se mueve, hay tooltip visible, no hacer nada %d\n",contador_segundo);
             tooltips_mouse_frames_counter=0;
             return;
         }
@@ -8709,7 +8712,7 @@ void tooltips_mouse_timer_event(void)
     }
 
     else {
-        //printf("timer %d\n",tooltips_mouse_frames_counter);
+        //printf("tooltips_mouse_timer_event mouse movido timer %d contador_segundo %d\n",tooltips_mouse_frames_counter,contador_segundo);
 
         tooltips_mouse_timer_bloqueo_incremento=0;
         tooltips_mouse_frames_counter=0;
@@ -8719,7 +8722,7 @@ void tooltips_mouse_timer_event(void)
             //printf("movido, no llega a contador, desactivamos %d\n",contador_segundo);
             if (tooltips_mouse_id_ultimo_tooltip>=0) {
                 //TODO: creo que aqui no entra nunca...
-                printf("--movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
+                //printf("--movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
                 tooltips_mouse_timer_event_redraw();
             }
 

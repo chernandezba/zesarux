@@ -44765,12 +44765,6 @@ void menu_clive_game(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:
