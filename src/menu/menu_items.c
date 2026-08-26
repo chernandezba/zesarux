@@ -44228,6 +44228,20 @@ void menu_clive_game_handle_timers(void)
                 }
                 menu_clive_game_hablar_texto_siguiente_palabra();
             }
+
+            //Si ha parado de hablar, en total que este visible 60 segundos
+            if (menu_clive_game_talking_state==MENU_CLIVE_TALKING_STATES) {
+                if (tiempo_ultimo_estado>60*1000) {
+                    //Lo enviamos a dormir
+                    printf("Se va a dormir\n");
+                    menu_clive_game_state=CLIVE_SLEEP;
+                    menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+
+                    //Quitar el overlay de texto de clive hablando
+                    tooltip_mouse_visible.v=0;
+                    tooltip_mouse_visible_clive.v=0;
+                }
+            }
         break;
 
         //Si lleva mas de 5 segundos sin moverse, ir a posicion normal
