@@ -44124,14 +44124,16 @@ int menu_clive_game_previous_machine=-1;
 //si menu_clive_game_talking_state=MENU_CLIVE_TALKING_STATES es que ha dejado de hablar y se queda ahi un rato para que se lea el mensaje
 int menu_clive_game_talking_state=0;
 
-#define MENU_CLIVE_TALKING_LETTERS_PER_FRAME 3
+#define MENU_CLIVE_TALKING_LETTERS_PER_FACE_MOVEMENT 3
 
 #define MENU_CLIVE_MAX_PHRASE_LENGTH 1024
 char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]="";
 
 //“It was originally intended as a machine to teach computing, and the games market was rather secondary. Of course it turned out the other way around but that was not the original intention.”
 
-char *prueba_clive_mensaje_origen="It was originally intended as a machine to teach computing";
+char *prueba_clive_mensaje_origen="We have only four chips where everyone else has 40";
+
+//char *prueba_clive_mensaje_origen="Parece que estas escribiendo una carta. Necesitas ayuda?";
 int menu_clive_game_indice_texto_hablado=0;
 
 void menu_clive_game_hablar_texto_siguiente_palabra(void)
@@ -44148,7 +44150,7 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
     int i;
     //printf("Inicio frame\n");
 
-    for (i=0;i<MENU_CLIVE_TALKING_LETTERS_PER_FRAME;i++) {
+    for (i=0;i<MENU_CLIVE_TALKING_LETTERS_PER_FACE_MOVEMENT;i++) {
 
         if (menu_clive_game_indice_texto_hablado<=longitud_origen) {
             menu_clive_game_indice_texto_hablado++;
