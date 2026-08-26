@@ -304,3 +304,14 @@ También dice, hablando de su obsesión por hacer las cosas pequeñas:
 “I've always been obsessed with small size.”
 
 Y explica el origen del ZX80 de una forma muy bonita: después de ver a su hijo programar un TRS-80, pensó que si podían fabricar un ordenador por £100, podría convertirse en algo que “every man could have.”
+
+
+-tooltip_mouse_visible.v=1;
+tooltips_mouse_ultimo_texto_tooltip
+ver tooltip_mouse_text_overlay()
+
+tooltips_mouse_ultima_pos_y_tooltip
+tooltips_mouse_ultima_pos_x_tooltip
+tooltips_mouse_direccion_tooltip (+/-1)
+->tooltip consume mucho, creo que porque redibuja zx desktop continuamente
+->si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal)

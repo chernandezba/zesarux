@@ -8262,6 +8262,8 @@ int previous_tooltip_mouse_timer_event_mouse_x=-1;
 int previous_tooltip_mouse_timer_event_mouse_y=-1;
 
 z80_bit tooltip_mouse_visible={0};
+//Si esta habilitado por el juego clive
+z80_bit tooltip_mouse_visible_clive={0};
 
 
 void tooltip_mouse_putpixel(int x,int y,int color)
@@ -8720,7 +8722,11 @@ void tooltips_mouse_timer_event(void)
                 printf("--movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
                 tooltips_mouse_timer_event_redraw();
             }
-            tooltip_mouse_visible.v=0;
+
+            //A no ser que este Clive hablando, quitar tooltip
+            if (tooltip_mouse_visible_clive.v==0) {
+                tooltip_mouse_visible.v=0;
+            }
             tooltips_mouse_id_ultimo_tooltip=-1;
             return;
         }
@@ -8742,8 +8748,11 @@ void tooltips_mouse_timer_event(void)
             debug_printf(VERBOSE_INFO,"Remove current mouse tooltip");
             tooltips_mouse_timer_event_redraw();
         }
+        //A no ser que este Clive hablando, quitar tooltip
+        if (tooltip_mouse_visible_clive.v==0) {
+            tooltip_mouse_visible.v=0;
+        }
 
-        tooltip_mouse_visible.v=0;
         tooltips_mouse_id_ultimo_tooltip=-1;
 
         tooltips_mouse_frames_counter=0;

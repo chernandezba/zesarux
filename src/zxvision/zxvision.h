@@ -2026,6 +2026,13 @@ struct s_zxdesktop_lowericons_info {
 
 
 
+extern char *tooltips_mouse_ultimo_texto_tooltip;
+extern int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
+extern int tooltips_mouse_direccion_tooltip;
+extern z80_bit tooltip_mouse_visible;
+extern z80_bit tooltip_mouse_visible_clive;
+
+
 #define TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS 34
 
 //Cada 12 frames de pantalla lanzar las funciones de print y condicion

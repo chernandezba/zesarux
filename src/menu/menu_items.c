@@ -44118,9 +44118,56 @@ int menu_clive_game_current_machine_sinclair=0;
 //Para saber cuando se cambia
 int menu_clive_game_previous_machine=-1;
 
-//4 caras diferentes hablando
+//varias caras diferentes hablando
 #define MENU_CLIVE_TALKING_STATES 8
+
+//si menu_clive_game_talking_state=MENU_CLIVE_TALKING_STATES es que ha dejado de hablar y se queda ahi un rato para que se lea el mensaje
 int menu_clive_game_talking_state=0;
+
+#define MENU_CLIVE_TALKING_LETTERS_PER_FRAME 3
+
+#define MENU_CLIVE_MAX_PHRASE_LENGTH 1024
+char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]="";
+
+//“It was originally intended as a machine to teach computing, and the games market was rather secondary. Of course it turned out the other way around but that was not the original intention.”
+
+char *prueba_clive_mensaje_origen="It was originally intended as a machine to teach computing";
+int menu_clive_game_indice_texto_hablado=0;
+
+void menu_clive_game_hablar_texto_siguiente_palabra(void)
+{
+    //Si esta hablando mostrar tooltip con el texto
+    //TODO: truncar si origen excede MENU_CLIVE_MAX_PHRASE_LENGTH
+
+    strcpy(menu_clive_game_frase_hablada,prueba_clive_mensaje_origen);
+
+    menu_clive_game_frase_hablada[menu_clive_game_indice_texto_hablado]=0;
+
+    int longitud_origen=strlen(prueba_clive_mensaje_origen);
+
+    int i;
+    //printf("Inicio frame\n");
+
+    for (i=0;i<MENU_CLIVE_TALKING_LETTERS_PER_FRAME;i++) {
+
+        if (menu_clive_game_indice_texto_hablado<=longitud_origen) {
+            menu_clive_game_indice_texto_hablado++;
+            printf("Incrementar 1 caracter el texto\n");
+        }
+        else {
+            //dejar de mover la boca pero dejar el texto visible un rato
+            menu_clive_game_talking_state=MENU_CLIVE_TALKING_STATES;
+        }
+    }
+
+    tooltips_mouse_ultimo_texto_tooltip=menu_clive_game_frase_hablada;
+    tooltips_mouse_ultima_pos_x_tooltip=menu_clive_game_window->x*menu_char_width;
+    tooltips_mouse_ultima_pos_y_tooltip=menu_clive_game_window->y*menu_char_width;
+    tooltips_mouse_direccion_tooltip=-1;
+    tooltip_mouse_visible.v=1;
+    tooltip_mouse_visible_clive.v=1;
+
+}
 
 void menu_clive_game_handle_timers(void)
 {
@@ -44158,6 +44205,7 @@ void menu_clive_game_handle_timers(void)
                             printf("Se pone a hablar\n");
                             menu_clive_game_state=CLIVE_TALKING;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+                            menu_clive_game_indice_texto_hablado=0;
                         }
                     }
 
@@ -44171,8 +44219,12 @@ void menu_clive_game_handle_timers(void)
         //Si esta hablando, cada pocas fracciones de segundo, cambiar la cara
         case CLIVE_TALKING:
             if ((tiempo_ultimo_estado % 200)==0) {
-                menu_clive_game_talking_state=util_get_random_enhanced()%MENU_CLIVE_TALKING_STATES;
-                printf("Cambia a cara hablando %d\n",menu_clive_game_talking_state);
+                //Si no ha finalizado de decir la frase
+                if (menu_clive_game_talking_state!=MENU_CLIVE_TALKING_STATES) {
+                    menu_clive_game_talking_state=util_get_random_enhanced()%MENU_CLIVE_TALKING_STATES;
+                    printf("Cambia a cara hablando %d\n",menu_clive_game_talking_state);
+                }
+                menu_clive_game_hablar_texto_siguiente_palabra();
             }
         break;
 
@@ -44546,6 +44598,10 @@ void menu_clive_game(MENU_ITEM_PARAMETERS)
     else {
         zxvision_destroy_window(ventana);
     }
+
+    //Quitar el overlay de texto de clive hablando, por si estaba activo
+    tooltip_mouse_visible.v=0;
+    tooltip_mouse_visible_clive.v=0;
 
 
 }
