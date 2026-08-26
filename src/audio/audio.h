@@ -360,6 +360,8 @@ extern void audiodac_send_sample_value(z80_byte value);
 
 extern const char *audio_get_chip_name(void);
 
+extern const char *audio_get_chip_info_string_ay;
+
 extern void midi_output_frame_event(void);
 extern int audio_midi_output_init(void);
 extern void audio_midi_output_finish(void);

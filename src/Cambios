@@ -8,6 +8,7 @@ Permitir smartload de archivo SCL
 Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 Agregado soporte para disparar acciones de tipo Tecla-F desde el joystick (Reset CPU, Abrir ventana, NMI, etc). También, los eventos de joystick "Quicksave", "Rewind", "FForward" han sido eliminados y pueden ser disparados ahora como acciones
 Permitir seleccionar archivo de salida desde la ventana de Fuente de sonido Externa
+Agregado otro juguete "Clive" a menú Procrastinar
 
 * Mejoras:
 

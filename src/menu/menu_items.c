@@ -161,6 +161,7 @@
 #include "kartusho.h"
 #include "ifrom.h"
 #include "lec.h"
+#include "qsound.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -35497,6 +35498,12 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     const char *chip_name=audio_get_chip_name();
     if (chip_name[0]) {
         sprintf(buf_linea,"Audio Chip: %s\n",chip_name);
+        util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+    }
+
+    //Chip qsound de QL
+    if (MACHINE_IS_QL && ql_qsound_is_enabled && ay_chip_present.v) {
+        sprintf(buf_linea,"Audio Chip: %s\n",audio_get_chip_info_string_ay);
         util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
     }
 
