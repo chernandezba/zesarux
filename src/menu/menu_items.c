@@ -44136,12 +44136,29 @@ char *menu_clive_mensaje_origen_hablar=NULL;
 //char *menu_clive_mensaje_origen_hablar="Parece que estas escribiendo una carta. Necesitas ayuda?";
 int menu_clive_game_indice_texto_hablado=0;
 
-#define MENU_CLIVE_MAX_PHRASES 3
+#define MENU_CLIVE_MAX_PHRASES 20
 
 char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
     "We have only four chips where everyone else has 40",
     "It was originally intended as a machine to teach computing",
-    "That is what I like doing - solving problems"
+    "That is what I like doing - solving problems",
+    "I just like efficiency in design in whatever form",
+    "The Spectrum sacrifices nothing to size",
+    "That size is optimum",
+    "We were always seeking to offer better value for money",
+    "I think there has always been the potential for people to want computers",
+    "I make computers because they are a good market, and they are interesting to design",
+    "They do no harm; but I don't think they are going to save the world",
+    "I like to see computers as tools",
+    "I wasn't that interested in the games side",
+    "I'm interested in the more serious users",
+    "The games market was rather secondary",
+    "I didn't particularly want to get into the games market",
+    "I should think it would make life so jolly boring that you would not want to come back to it",
+    "We were too ambitious with the QL",
+    "I am a person that wants to innovate",
+    "The temptation is always to try and map out new territory",
+    "I won't cease to risk my money on ventures; and some of those are bound to fail"
 };
 
 
