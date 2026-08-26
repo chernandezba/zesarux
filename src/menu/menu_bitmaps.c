@@ -8087,6 +8087,7 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
     {"clive_sad",bitmap_button_ext_desktop_other_clive_sad},
     {"clive_sleep",bitmap_button_ext_desktop_other_clive_sleep},
+    {"clive_sleep2",bitmap_button_ext_desktop_other_clive_sleep2},
     {"clive_speccy",bitmap_button_ext_desktop_other_clive_speccy},
     {"clive_sunglasses",bitmap_button_ext_desktop_other_clive_sunglasses},
     {"clive_surprised",bitmap_button_ext_desktop_other_clive_surprised},
@@ -8626,6 +8627,35 @@ char *bitmap_button_ext_desktop_other_clive_sleep[EXT_DESKTOP_BUTTONS_ANCHO]={
     "        xxxxxxxxx         " 	 //25
 };
 
+char *bitmap_button_ext_desktop_other_clive_sleep2[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx    xxxx",
+    "      x...........x     x ",
+    "     x....x........x   x  ",
+    "    xr.......x.....rx xxxx",
+    "   xr...............rx    ",
+    "   xr.......x.......rx xxx",
+    "   xr...............rx   x",
+    "   xr...............rx  x ",  //8
+    "   xr..xxxx...xxxx..rx xxx",   //9
+    "  xxxxx....xxx....xxxxx   ",	//10
+    "  x...x....x.x....x...x xx",
+    "  x...x.xx.x.x.xx.x...x  x",
+    "  x...x....x.x....x...x xx",
+    "   xr..xxxx.x.xxxx..rx    ",  //14
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",
+    "    xrrrrrrWWrrrrrrrx     ",    //20
+    "    xrrrrrrWWrrrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
 
 char *bitmap_button_ext_desktop_other_clive_wink[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

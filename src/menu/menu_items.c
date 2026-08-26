@@ -44620,7 +44620,12 @@ void menu_clive_game_draw_clive(void)
         break;
 
         case CLIVE_SLEEP:
-            puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep;
+            if ((contador_segundo_infinito % 4000) < 2000) {
+                puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep;
+            }
+            else {
+                puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep2;
+            }
         break;
 
         case CLIVE_HEART:
