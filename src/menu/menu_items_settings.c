@@ -5947,10 +5947,25 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip,NULL,"~~AY Chip");
                 menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Chip ~~AY","Xip ~~AY");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%c] ", (ay_chip_present.v==1 ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable AY Chip on Qsound");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Enable AY Chip on Qsound");
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_rom_enabled,NULL," [%c] Qsound ROM", (ql_qsound_rom_enabled ? 'X' : ' '));
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_handle_traps,NULL," [%c] Qsound handle ROM traps", (ql_qsound_handle_traps ? 'X' : ' '));
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_pia_enabled,NULL," [%c] Qsound PIA", (ql_qsound_pia_enabled ? 'X' : ' '));
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_rom_enabled,NULL," [%c] ROM",(ql_qsound_rom_enabled ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable Qsound ROM. Some games do not need it");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Enable Qsound ROM. Some games do not need it");
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_handle_traps,NULL,"Handle ROM traps","Interceptar llamadas a la ROM","Interceptar trucades a la ROM");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%c] ", (ql_qsound_handle_traps ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Handle ROM traps. PIA is not needed if you enable this");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Handle ROM traps. PIA is not needed if you enable this");
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_pia_enabled,NULL," [%c] PIA", (ql_qsound_pia_enabled ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Emulate PIA, like the real QSound card");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Emulate PIA, like the real QSound card");
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
             }
         }
 
