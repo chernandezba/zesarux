@@ -188,28 +188,5 @@ ok *que ponga momentaneamente cara con corazones al seleccionar máquinas sincla
 -en info de audio chip en icono maquina ql, que diga que hay ay si conviene
 
 -Clive game
-Frases:
-
-
-
-
-
-
-Y hay una que añadiría aunque sea posterior
-
-Hay una entrevista de 2019 en Archives of IT que es especialmente interesante porque es una grabación/transcripción del propio Sinclair,
-no una cita retrospectiva de terceros. Cuando le preguntan por qué había perseguido tanto el bajo precio, responde:
-
-“He does for 10p what any damn fool can do for £1.”
-
-
-
--tooltip_mouse_visible.v=1;
-tooltips_mouse_ultimo_texto_tooltip
-ver tooltip_mouse_text_overlay()
-
-tooltips_mouse_ultima_pos_y_tooltip
-tooltips_mouse_ultima_pos_x_tooltip
-tooltips_mouse_direccion_tooltip (+/-1)
-->tooltip consume mucho, creo que porque redibuja zx desktop continuamente
-->si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal)
+*tooltip consume mucho, creo que porque redibuja zx desktop continuamente
+*si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
