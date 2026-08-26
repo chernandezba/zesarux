@@ -8090,6 +8090,14 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_speccy",bitmap_button_ext_desktop_other_clive_speccy},
     {"clive_sunglasses",bitmap_button_ext_desktop_other_clive_sunglasses},
     {"clive_surprised",bitmap_button_ext_desktop_other_clive_surprised},
+    {"clive_talk1",bitmap_button_ext_desktop_other_clive_talk1},
+    {"clive_talk2",bitmap_button_ext_desktop_other_clive_talk2},
+    {"clive_talk3",bitmap_button_ext_desktop_other_clive_talk3},
+    {"clive_talk4",bitmap_button_ext_desktop_other_clive_talk4},
+    {"clive_talk5",bitmap_button_ext_desktop_other_clive_talk5},
+    {"clive_talk6",bitmap_button_ext_desktop_other_clive_talk6},
+    {"clive_talk7",bitmap_button_ext_desktop_other_clive_talk7},
+    {"clive_talk8",bitmap_button_ext_desktop_other_clive_talk8},
     {"clive_tongue",bitmap_button_ext_desktop_other_clive_tongue},
     {"clive_wink",bitmap_button_ext_desktop_other_clive_wink},
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
@@ -8252,6 +8260,247 @@ char *bitmap_button_ext_desktop_other_clive_up_right[EXT_DESKTOP_BUTTONS_ANCHO]=
     "    xrrrrrWWWWWrrrrrx     ",
     "    xrrrrrrrrrrrrrrrx     ",
     "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk1[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxxWx.xWxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrWrrrrrWrrrrx     ",    //20
+    "    xrrrrrWWWWWrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk2[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxxWx.xWxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrWWrrrWWrrrrx     ",    //20
+    "    xrrrrrrWWWrrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk3[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr..xxx..x..xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr...............rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxxWx.xWxxWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",
+    "    xrrrrrrWWWrrrrrrx     ",    //20
+    "    xrrrrrWrrrWrrrrrx     ",
+    "    xrrrrrWrrrWrrrrrx     ",
+    "     xrrrrrWWWrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk4[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr.xxxx.....xxxx.rx    ",
+    "   xr...............rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxx....xxx....xxxxx   ",	//10
+    "  x...x.xx.x.x.xx.x...x   ",
+    "  x...x....x.x....x...x   ",
+    "  x...x....x.x....x...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",  //14
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrrWWWWWrrrrrx     ",    //20
+    "    xrrrrrrrrrrrrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk5[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxxWx.xWxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",    //19
+    "    xrrrrrrrrrrrrrrrx     ",    //20
+    "    xrrrrWrrrrrWrrrrx     ",
+    "    xrrrrrWWWWWrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk6[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr..xxx..x..xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr...............rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxWWx.xWxWWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",
+    "    xrrrxxxxxxxxxrrrx     ",    //20
+    "    xrrrxWWWWWWWxrrrx     ",
+    "    xrrrrxWWWWWxrrrrx     ",
+    "     xrrrrxxxxxrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_other_clive_talk7[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.xxxx..x..xxxx.rx    ",
+    "   xr...............rx    ",
+    "   xr...............rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxWWx.xWxWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",
+    "    xrrrrxxxxxxxrrrrx     ",    //20
+    "    xrrrrxWWWWWxrrrrx     ",
+    "    xrrrrrxWWWxrrrrrx     ",
+    "     xrrrrrxxxrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+char *bitmap_button_ext_desktop_other_clive_talk8[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",
+    "   xr.x...........x.rx    ",
+    "   xr..xxxx...xxxx..rx    ",   //9
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWxxWx.xWxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rrrrrrrrr..rx     ",
+    "    xrrrrrxxxxxrrrrrx     ",    //20
+    "    xrrrrrxWWWxrrrrrx     ",
+    "    xrrrrrrxWxrrrrrrx     ",
+    "     xrrrrrrxrrrrrrx      ",
     "      xxrrrrrrrrrxx       ",
     "        xxxxxxxxx         " 	 //25
 };

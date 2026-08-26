@@ -319,6 +319,14 @@ extern char *bitmap_button_ext_desktop_other_c5[];
 extern char *bitmap_button_ext_desktop_other_sinclair[];
 extern char *bitmap_button_ext_desktop_other_spectrum[];
 extern char *bitmap_button_ext_desktop_other_spectrum2[];
+extern char *bitmap_button_ext_desktop_other_clive_talk1[];
+extern char *bitmap_button_ext_desktop_other_clive_talk2[];
+extern char *bitmap_button_ext_desktop_other_clive_talk3[];
+extern char *bitmap_button_ext_desktop_other_clive_talk4[];
+extern char *bitmap_button_ext_desktop_other_clive_talk5[];
+extern char *bitmap_button_ext_desktop_other_clive_talk6[];
+extern char *bitmap_button_ext_desktop_other_clive_talk7[];
+extern char *bitmap_button_ext_desktop_other_clive_talk8[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 

@@ -44102,7 +44102,8 @@ enum clive_game_states {
     CLIVE_SAD,
     CLIVE_ANGRY,
     CLIVE_HEART,
-    CLIVE_SUNGLASSES
+    CLIVE_SUNGLASSES,
+    CLIVE_TALKING
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44116,6 +44117,10 @@ int menu_clive_game_current_machine_sinclair=0;
 
 //Para saber cuando se cambia
 int menu_clive_game_previous_machine=-1;
+
+//4 caras diferentes hablando
+#define MENU_CLIVE_TALKING_STATES 8
+int menu_clive_game_talking_state=0;
 
 void menu_clive_game_handle_timers(void)
 {
@@ -44145,8 +44150,29 @@ void menu_clive_game_handle_timers(void)
                             menu_clive_game_state=CLIVE_SUNGLASSES;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
                         }
+
+                        //printf("Ver si se pone a hablar\n");
+
+                        //Probabilidad de X entre 1000
+                        if ((util_get_random_enhanced()%1000)<500) {
+                            printf("Se pone a hablar\n");
+                            menu_clive_game_state=CLIVE_TALKING;
+                            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+                        }
                     }
+
+
+
+
                 }
+            }
+        break;
+
+        //Si esta hablando, cada pocas fracciones de segundo, cambiar la cara
+        case CLIVE_TALKING:
+            if ((tiempo_ultimo_estado % 200)==0) {
+                menu_clive_game_talking_state=util_get_random_enhanced()%MENU_CLIVE_TALKING_STATES;
+                printf("Cambia a cara hablando %d\n",menu_clive_game_talking_state);
             }
         break;
 
@@ -44204,8 +44230,8 @@ void menu_clive_game_handle_state_changes(void)
 
     enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
 
-    //Si se ha movido respecto a direccion anterior y no estamos en estado corazones ni triste
-    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) && menu_clive_game_state!=CLIVE_HEART && menu_clive_game_state!=CLIVE_SAD) {
+    //Si se ha movido respecto a direccion anterior y no estamos en estado corazones ni triste ni hablando
+    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) && menu_clive_game_state!=CLIVE_HEART && menu_clive_game_state!=CLIVE_SAD && menu_clive_game_state!=CLIVE_TALKING) {
         menu_clive_game_state=CLIVE_MOVED;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
@@ -44305,6 +44331,46 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_SUNGLASSES:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_sunglasses;
+        break;
+
+        case CLIVE_TALKING:
+            switch (menu_clive_game_talking_state) {
+                case 0:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk1;
+                break;
+
+                case 1:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk2;
+                break;
+
+                case 2:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk3;
+                break;
+
+                case 3:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk4;
+                break;
+
+                case 4:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk5;
+                break;
+
+                case 5:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk6;
+                break;
+
+                case 6:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk7;
+                break;
+
+                case 7:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk8;
+                break;
+
+                default:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk1;
+                break;
+            }
         break;
 
         case CLIVE_MOVED:
