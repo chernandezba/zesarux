@@ -12708,7 +12708,7 @@ int zxvision_wait_until_esc(zxvision_window *w)
 
     do {
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(w,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(w,tecla);
     } while (tecla!=2 && tecla!=3);
 
     return tecla;
@@ -13786,13 +13786,13 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 
             //izquierda
             case 8:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
                 zxvision_sound_event_cursor_movement();
             break;
 
             //derecha
             case 9:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
                 zxvision_sound_event_cursor_movement();
             break;
 
@@ -13925,7 +13925,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
             case 'S':
             case 'K':
             case 'L':
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
 
 
@@ -19969,7 +19969,7 @@ int zxvision_handle_opqa_wskl(zxvision_window *ventana,z80_byte tecla)
 
 //Funcion comun que usan algunas ventanas para movimiento de cursores y pgup/dn
 //Retorna 0 si no se ha gestionado la tecla
-int zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
+int zxvision_handle_cursors_pgupdn_opqa_wskl(zxvision_window *ventana,z80_byte tecla)
 {
 
     if (zxvision_handle_opqa_wskl(ventana,tecla)) return 1;

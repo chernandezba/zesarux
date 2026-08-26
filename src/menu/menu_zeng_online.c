@@ -2238,7 +2238,7 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 

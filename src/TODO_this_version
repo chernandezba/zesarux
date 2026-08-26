@@ -188,5 +188,5 @@ ok *que ponga momentaneamente cara con corazones al seleccionar máquinas sincla
 -en info de audio chip en icono maquina ql, que diga que hay ay si conviene
 
 -Clive game
-*tooltip consume mucho, creo que porque redibuja zx desktop continuamente
+ok *tooltip consume mucho, creo que porque redibuja zx desktop continuamente
 *si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?

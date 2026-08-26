@@ -12588,7 +12588,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
         //int antes_scroll_y=ventana->offset_y;
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         //si se ha hecho scroll, detectarlo y quitar parametro centrado
         //esto de momento no reacciona bien. TODO: ver porque

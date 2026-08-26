@@ -2711,7 +2711,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         //si se genera un error
         tecla=zxvision_common_getkey_refresh_o_pending_error_message();
 
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         //comprobar si hay algún error pendiente de mostrar, por ejemplo hacer un set amplitude con valor fuera de rango,
         //o que al hacer Run la rutina de conversión retorna error por formato de input desconocido
@@ -5473,7 +5473,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 

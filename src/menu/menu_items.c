@@ -1135,7 +1135,7 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
 
     do {
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
@@ -1972,7 +1972,7 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
     //Y esperar escape (2) o tecla background (3)
     do {
             tecla=zxvision_common_getkey_refresh();
-            zxvision_handle_cursors_pgupdn(ventana,tecla);
+            zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
@@ -2616,7 +2616,7 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
 
         }
@@ -3061,7 +3061,7 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 
     do {
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
@@ -3604,7 +3604,7 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
     do {
         menu_speech_reset_tecla_pulsada(); //Que envie a speech
            tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
          if (tecla=='r') {
              menu_debug_spritenav_save_geometry(ventana);
@@ -4375,7 +4375,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -10819,7 +10819,7 @@ void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
                 /*
                 //Decir que se ha pulsado tecla para que no se relea
                 menu_speech_set_tecla_pulsada();*/
-                zxvision_handle_cursors_pgupdn(&ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(&ventana,tecla);
             break;
 
             //derecha
@@ -10827,7 +10827,7 @@ void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
                 /*
                 //Decir que se ha pulsado tecla para que no se relea
                 menu_speech_set_tecla_pulsada();*/
-                zxvision_handle_cursors_pgupdn(&ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(&ventana,tecla);
             break;
 
             case 24:
@@ -14955,7 +14955,7 @@ void menu_midi_output_status(MENU_ITEM_PARAMETERS)
             default:
                 //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
                 //aqui no entrará alguna
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
                 //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
                 //zxvision_handle_opqa_wskl(ventana,tecla);
@@ -17828,7 +17828,7 @@ void menu_network_traffic(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -19498,7 +19498,7 @@ void menu_textadv_loc_image(MENU_ITEM_PARAMETERS)
 
     do {
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
         //printf ("tecla: %d\n",tecla);
 
         if (ventana->visible_height!=alto_anterior || ventana->visible_width!=ancho_anterior) {
@@ -19896,7 +19896,7 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -23883,7 +23883,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         //printf("bucle\n");
         tecla=zxvision_common_getkey_refresh_noesperanotec_todasteclas();
         z80_byte todos_puertos_teclado_acumulado=menu_da_todas_teclas_cualquiera();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
         //printf ("tecla: %d acumulado: %d\n",tecla,todos_puertos_teclado_acumulado);
 
         //teclas como la de la derecha de L en Z88 (;:) no tiene valor asignado de "tecla" por tanto retorna 0
@@ -24293,7 +24293,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         if (tecla=='l') {
             menu_debug_verbose(0);
@@ -24660,14 +24660,14 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         if (tecla=='m') {
             gs_stereo_mode.v ^=1;
         }
 
         else {
-            zxvision_handle_cursors_pgupdn(ventana,tecla);
+            zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
         }
 
 
@@ -24892,7 +24892,7 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
 
         //printf ("tecla: %d\n",tecla);
@@ -25198,7 +25198,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
     do {
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
         //printf ("tecla: %d\n",tecla);
         if (mouse_is_clicking) {
             //empezamos a contar
@@ -26173,7 +26173,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -28212,7 +28212,7 @@ void menu_view_basic_variables(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         switch (tecla) {
 
@@ -28733,7 +28733,7 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         //printf("mouse_left: %d tecla: %d\n",mouse_left,tecla);
 
@@ -31768,7 +31768,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
             default:
                 //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
                 //aqui no entrará alguna
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
                 //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
                 //zxvision_handle_opqa_wskl(ventana,tecla);
@@ -33261,7 +33261,7 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -33716,7 +33716,7 @@ void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -34967,7 +34967,7 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
         tecla=zxvision_common_getkey_refresh();
 
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
 
         switch (tecla) {
@@ -35426,7 +35426,7 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -35723,7 +35723,7 @@ void menu_ascii_table(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -35946,7 +35946,7 @@ void menu_view_gosub_stack(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
         switch (tecla) {
 
@@ -40354,7 +40354,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -40530,7 +40530,7 @@ void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -43170,7 +43170,7 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -44779,7 +44779,7 @@ void menu_clive_game(MENU_ITEM_PARAMETERS)
             default:
                 //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
                 //aqui no entrará alguna
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
                 //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
                 //zxvision_handle_opqa_wskl(ventana,tecla);
@@ -49293,7 +49293,7 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
             default:
                 //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
                 //aqui no entrará alguna
-                zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
 
                 //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
                 //zxvision_handle_opqa_wskl(ventana,tecla);
