@@ -30,5 +30,9 @@
 #include "zesarux.h"
 
 
+extern int zxvision_si_icono_cerca(int x,int y);
+extern int zxvision_get_minimum_y_icon_position(void);
+extern void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int *p_yinicial,int *p_yfinal);
+
 
 #endif

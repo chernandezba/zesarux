@@ -122,3 +122,96 @@
 #ifdef COMPILE_XWINDOWS
     #include "scrxwindows.h"
 #endif
+
+
+//Ver cuantos iconos hay cerca para saber si se puede posicionar uno o no
+int zxvision_si_icono_cerca(int x,int y)
+{
+    int xminimo=x-ZESARUX_ASCII_LOGO_ANCHO;
+    int xmaximo=x+ZESARUX_ASCII_LOGO_ANCHO;
+
+    int yminimo=y-ZESARUX_ASCII_LOGO_ANCHO;
+    int ymaximo=y+ZESARUX_ASCII_LOGO_ANCHO;
+
+    int i;
+
+    int iconos_cerca=0;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+            int icon_x=zxdesktop_configurable_icons_list[i].pos_x;
+            int icon_y=zxdesktop_configurable_icons_list[i].pos_y;
+
+            //Si hay uno cerca de ahi, volver con 1
+            if (icon_x>=xminimo && icon_x<xmaximo && icon_y>=yminimo && icon_y<ymaximo) iconos_cerca++;
+
+        }
+    }
+
+    return iconos_cerca;
+
+}
+
+//Retorna la coordenada y minima que puede tener un icono en el zx desktop
+//coordenada sin considerar zoom_y
+int zxvision_get_minimum_y_icon_position(void)
+{
+    //yinicial debajo de botones superiores
+    int alto_boton;
+    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,NULL,NULL);
+    alto_boton /=zoom_y;
+
+
+    int yinicial=alto_boton+16;
+
+    //Si no hay menus superiores activados
+    if (menu_zxdesktop_upper_buttons_enabled.v==0) {
+        yinicial=0;
+    }
+
+    //Si está topbar, la yinicial es mas arriba
+    if (zxvision_topbar_menu_enabled.v) {
+        //1 fila de texto. con algo de margen
+        yinicial=menu_char_height*2;
+    }
+
+    //printf("yinicial: %d\n",yinicial);
+
+    return yinicial;
+}
+
+void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int *p_yinicial,int *p_yfinal)
+{
+    /*
+
+    Zona de forma cuadrada delimitada por:
+    x: desde derecha pantalla emulada hasta final x
+    y: desde debajo botones superiores hasta por encima botones inferiores
+
+    */
+
+
+    int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
+
+
+    //Empezar a ubicarlos con algo de margen
+    int xinicial=inicio_x_zxdesktop+24;
+
+    int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
+
+    int yinicial=zxvision_get_minimum_y_icon_position();
+
+    //Hasta llegar a los iconos de dispositivos inferiores
+    int yfinal;
+    menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    //Posiciones menos el zoom
+    yfinal /=zoom_y;
+    //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
+    yfinal -=ZESARUX_ASCII_LOGO_ANCHO;
+
+    *p_xinicial=xinicial;
+    *p_xfinal=xfinal;
+    *p_yinicial=yinicial;
+    *p_yfinal=yfinal;
+
+}
