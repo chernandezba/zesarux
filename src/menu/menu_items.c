@@ -44203,7 +44203,7 @@ void menu_clive_game_handle_timers(void)
                         //printf("Ver si se pone a hablar\n");
 
                         //Probabilidad de X entre 1000
-                        if ((util_get_random_enhanced()%1000)<500) {
+                        if ((util_get_random_enhanced()%1000)<50) {
                             printf("Se pone a hablar\n");
                             menu_clive_game_state=CLIVE_TALKING;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
@@ -44240,6 +44240,13 @@ void menu_clive_game_handle_timers(void)
                     //Quitar el overlay de texto de clive hablando
                     tooltip_mouse_visible.v=0;
                     tooltip_mouse_visible_clive.v=0;
+
+                    //Redibujar para que desaparezca el texto hablado
+                    zxvision_zxdesktop_set_no_frameskip_next();
+
+                    cls_menu_overlay();
+
+                    zxvision_redraw_all_windows();
                 }
             }
         break;
