@@ -43,5 +43,7 @@ extern unsigned char qsound_pia_control_port_b;
 
 #define QSOUND_ROM_FILE "qsound_V1.94.rom"
 
+extern char qsound_rom_name[];
+
 
 #endif

@@ -5890,6 +5890,24 @@ void menu_audio_qsound_pia_enabled(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_qsound_rom(MENU_ITEM_PARAMETERS)
+{
+    char *filtros[2];
+
+    filtros[0]="rom";
+    filtros[1]=0;
+
+
+    if (!menu_filesel("Select ROM File",filtros,qsound_rom_name)) {
+        //Sale con ESC
+
+        //dejar archivo por defecto
+        qsound_rom_name[0]=0;
+    }
+
+    qsound_load_rom();
+}
+
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_settings_audio;
@@ -5955,6 +5973,20 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable Qsound ROM. Some games do not need it");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Enable Qsound ROM. Some games do not need it");
                 menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+
+
+                if (ql_qsound_rom_enabled) {
+                    char string_qsound_rom_file_shown[16];
+                    if (qsound_rom_name[0]==0) sprintf (string_qsound_rom_file_shown,"Default");
+                    else menu_tape_settings_trunc_name(qsound_rom_name,string_qsound_rom_file_shown,16);
+
+                    menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_qsound_rom,NULL,"ROM File: [%s]",string_qsound_rom_file_shown);
+                    menu_add_item_menu_prefijo(array_menu_settings_audio,"     ");
+                    menu_add_item_menu_tooltip(array_menu_settings_audio,"Qsound ROM");
+                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Qsound ROM");
+                }
+
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_qsound_handle_traps,NULL,"Handle ROM traps","Interceptar llamadas a la ROM","Interceptar trucades a la ROM");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%c] ", (ql_qsound_handle_traps ? 'X' : ' '));

@@ -265,6 +265,9 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 }
 
 
+//Nombre de la rom. Si "", nombre y ruta por defecto
+char qsound_rom_name[PATH_MAX]="";
+
 void qsound_load_rom(void)
 {
 
@@ -283,7 +286,16 @@ void qsound_load_rom(void)
 
     FILE *ptr_qsound_rom;
 
-    open_sharedfile(QSOUND_ROM_FILE,&ptr_qsound_rom);
+
+	if (qsound_rom_name[0]==0) {
+		open_sharedfile(QSOUND_ROM_FILE,&ptr_qsound_rom);
+	}
+	else {
+		debug_printf (VERBOSE_INFO,"Opening Qsound Custom ROM %s",qsound_rom_name);
+		ptr_qsound_rom=fopen(qsound_rom_name,"rb");
+	}
+
+
 
     if (!ptr_qsound_rom) {
         debug_printf (VERBOSE_ERR,"Unable to load qsound rom");
