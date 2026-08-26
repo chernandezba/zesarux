@@ -910,24 +910,7 @@ void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_
     zxvision_create_configurable_icon(id_funcion,name_no_dir,nombre);
 }
 
-//Crear un icono con parametros "nombre" y de nombre del icono obtener ese nombre sin path
-//usado especialmente en creacion de iconos de tipo file link
-void old_zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre)
-{
-    if (if_zxdesktop_enabled_and_driver_allows() ) {
-        int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
 
-        if (indice_icono>=0) {
-            //Indicarle la ruta al snapshot
-            strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,nombre);
-            //Agregarle texto
-            char name_no_dir[PATH_MAX];
-            util_get_file_no_directory(nombre,name_no_dir);
-
-            strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
-        }
-    }
-}
 
 //Crear icono en el escritorio que abre ventana indicada
 void zxvision_create_link_desktop_from_window(zxvision_window *w)
@@ -1051,38 +1034,8 @@ void create_default_zxdesktop_configurable_icons(void)
 
 
 
-//Dice si algun icono custom en el escritorio es la papelera
-//-1 si no
-int zxvision_search_trash_configurable_icon(void)
-{
-    int i;
 
-    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
-            //id de la tabla de acciones
-            int id_tabla=zxdesktop_configurable_icons_list[i].indice_funcion;
 
-            enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_tabla].id_funcion;
-
-            if (id_funcion==F_FUNCION_DESKTOP_TRASH) return i;
-        }
-    }
-
-    return -1;
-}
-
-int if_zxdesktop_trash_not_empty(void)
-{
-    int i;
-
-    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
-            return 1;
-        }
-    }
-
-    return 0;
-}
 
 void zxvision_move_configurable_icon_to_trash(int indice_icono)
 {

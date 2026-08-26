@@ -33,6 +33,7 @@
 extern int zxvision_si_icono_cerca(int x,int y);
 extern int zxvision_get_minimum_y_icon_position(void);
 extern void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int *p_yinicial,int *p_yfinal);
-
+extern int zxvision_search_trash_configurable_icon(void);
+extern int if_zxdesktop_trash_not_empty(void);
 
 #endif

@@ -215,3 +215,39 @@ void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int 
     *p_yfinal=yfinal;
 
 }
+
+
+//Dice si algun icono custom en el escritorio es la papelera
+//-1 si no
+int zxvision_search_trash_configurable_icon(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+            //id de la tabla de acciones
+            int id_tabla=zxdesktop_configurable_icons_list[i].indice_funcion;
+
+            enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_tabla].id_funcion;
+
+            if (id_funcion==F_FUNCION_DESKTOP_TRASH) return i;
+        }
+    }
+
+    return -1;
+}
+
+
+
+int if_zxdesktop_trash_not_empty(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
