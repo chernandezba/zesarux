@@ -44530,8 +44530,8 @@ void menu_clive_game_handle_state_changes(void)
     }
 
     //Si se ha pulsado el raton dentro de la ventana, sacar la lengua
-    if (mouse_is_clicking) {
-        if (si_menu_mouse_en_ventana() && menu_mouse_y!=0) {
+    if (mouse_left) {
+        if (zxvision_mouse_en_ventana(menu_clive_game_window) && menu_mouse_y!=0) {
             //Si estaba hablando, dejar de hablar
             if (menu_clive_game_state==CLIVE_TALKING) {
                 menu_clive_game_remove_talking_text();

@@ -20692,6 +20692,7 @@ int menu_if_emulation_paused(void)
     return 0;
 }
 
+//Si el ratón está en la ventana actual
 int si_menu_mouse_en_ventana(void)
 {
     if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<current_win_ancho && menu_mouse_y<current_win_alto ) return 1;
@@ -20872,6 +20873,13 @@ void zxvision_get_mouse_in_window(zxvision_window *ventana,int *posx,int *posy)
     //else {
     //    return -1;
     //}
+}
+
+//Si el ratón está en la ventana indicada
+int zxvision_mouse_en_ventana(zxvision_window *w)
+{
+    if (zxvision_current_window==w && si_menu_mouse_en_ventana()) return 1;
+    else return 0;
 }
 
 //Parecido al anterior pero considerando coordenadas relativas a la ventana actual

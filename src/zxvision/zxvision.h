@@ -306,6 +306,7 @@ extern int si_menu_mouse_en_ventana(void);
 extern int si_menu_mouse_en_ventana_no_en_scrolls(void);
 extern void menu_calculate_mouse_xy(void);
 extern z80_byte menu_retorna_caracter_espacio_titulo(void);
+extern int zxvision_mouse_en_ventana(zxvision_window *w);
 
 extern unsigned char zxvision_retorna_caracter_flecha_arriba(void);
 extern unsigned char zxvision_retorna_caracter_flecha_abajo(void);
