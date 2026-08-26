@@ -44257,6 +44257,8 @@ char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH+1]="";
 
 char *menu_clive_mensaje_origen_hablar=NULL;
 
+#define MENU_CLIVE_DRAW_BITMAP_ZOOM 2
+
 //char *menu_clive_mensaje_origen_hablar="Parece que estas escribiendo una carta. Necesitas ayuda?";
 int menu_clive_game_indice_texto_hablado=0;
 
@@ -44348,8 +44350,13 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
     }
 
     tooltips_mouse_ultimo_texto_tooltip=menu_clive_game_frase_hablada;
-    tooltips_mouse_ultima_pos_x_tooltip=menu_clive_game_window->x*menu_char_width;
-    tooltips_mouse_ultima_pos_y_tooltip=menu_clive_game_window->y*menu_char_width;
+
+    //Ubicamos el cuadro de texto encima de la ventana y centrado en el icono
+    int offset_x=(ZESARUX_ASCII_LOGO_ANCHO*MENU_CLIVE_DRAW_BITMAP_ZOOM)/2;
+
+
+    tooltips_mouse_ultima_pos_x_tooltip=menu_clive_game_window->x*menu_char_width+offset_x;
+    tooltips_mouse_ultima_pos_y_tooltip=menu_clive_game_window->y*menu_char_width-4; //4 para que no este pegado justo a la ventana
     tooltips_mouse_direccion_tooltip=-1;
     tooltip_mouse_visible.v=1;
     tooltip_mouse_visible_clive.v=1;
@@ -44544,11 +44551,11 @@ void menu_clive_game_draw_clive(void)
 {
     zxvision_window *w=menu_clive_game_window;
 
-    int nivel_zoom=2;
+    int nivel_zoom=MENU_CLIVE_DRAW_BITMAP_ZOOM;
 
     //Saber hacia donde mira, siguiendo el raton
 
-    //Para que quepan los dos ojos, dividir entre 3
+
     int origen_linea_x=(ZESARUX_ASCII_LOGO_ANCHO*nivel_zoom)/2;
 
     int origen_linea_y=(ZESARUX_ASCII_LOGO_ALTO*nivel_zoom)/2;
