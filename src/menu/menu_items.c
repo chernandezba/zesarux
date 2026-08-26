@@ -44227,7 +44227,8 @@ enum clive_game_states {
     CLIVE_ANGRY,
     CLIVE_HEART,
     CLIVE_SUNGLASSES,
-    CLIVE_TALKING
+    CLIVE_TALKING,
+    CLIVE_TONGUE
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44363,6 +44364,21 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
 
 }
 
+void menu_clive_game_remove_talking_text(void)
+{
+
+    //Quitar el overlay de texto de clive hablando
+    tooltip_mouse_visible.v=0;
+    tooltip_mouse_visible_clive.v=0;
+
+    //Redibujar para que desaparezca el texto hablado
+    zxvision_zxdesktop_set_no_frameskip_next();
+
+    cls_menu_overlay();
+
+    zxvision_redraw_all_windows();
+}
+
 void menu_clive_game_handle_timers(void)
 {
     enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
@@ -44429,16 +44445,8 @@ void menu_clive_game_handle_timers(void)
                     menu_clive_game_state=CLIVE_SLEEP;
                     menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
 
-                    //Quitar el overlay de texto de clive hablando
-                    tooltip_mouse_visible.v=0;
-                    tooltip_mouse_visible_clive.v=0;
+                    menu_clive_game_remove_talking_text();
 
-                    //Redibujar para que desaparezca el texto hablado
-                    zxvision_zxdesktop_set_no_frameskip_next();
-
-                    cls_menu_overlay();
-
-                    zxvision_redraw_all_windows();
                 }
             }
         break;
@@ -44462,6 +44470,14 @@ void menu_clive_game_handle_timers(void)
 
         case CLIVE_ANGRY:
             //Si pasa mas de 1 segundo desde mostrar el error, ir a estado normal
+            if (tiempo_ultimo_estado>1000) {
+                menu_clive_game_state=CLIVE_NORMAL;
+                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+            }
+        break;
+
+        case CLIVE_TONGUE:
+            //1 segundo maximo mostrando la lengua
             if (tiempo_ultimo_estado>1000) {
                 menu_clive_game_state=CLIVE_NORMAL;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
@@ -44511,6 +44527,19 @@ void menu_clive_game_handle_state_changes(void)
     if (menu_muestra_pending_error_message_showing) {
         menu_clive_game_state=CLIVE_ANGRY;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+    }
+
+    //Si se ha pulsado el raton dentro de la ventana, sacar la lengua
+    if (mouse_is_clicking) {
+        if (si_menu_mouse_en_ventana() && menu_mouse_y!=0) {
+            //Si estaba hablando, dejar de hablar
+            if (menu_clive_game_state==CLIVE_TALKING) {
+                menu_clive_game_remove_talking_text();
+            }
+
+            menu_clive_game_state=CLIVE_TONGUE;
+            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+        }
     }
 
     //Si no estaba en maquina sinclair y ahora si, pasar por estado de sinclair con corazones en los ojos
@@ -44597,6 +44626,10 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_SUNGLASSES:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_sunglasses;
+        break;
+
+        case CLIVE_TONGUE:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_tongue;
         break;
 
         case CLIVE_TALKING:
