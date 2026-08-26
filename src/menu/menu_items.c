@@ -44141,13 +44141,24 @@ int menu_clive_game_indice_texto_hablado=0;
 char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
     "We have only four chips where everyone else has 40",
     "It was originally intended as a machine to teach computing",
-    "That is what I like doing — solving problems"
+    "That is what I like doing - solving problems"
 };
 
+
+//Tiempos de movimientos en segundos*1000
+#define MENU_CLIVE_TIEMPO_HABLANDO (60*1000)
+#define MENU_CLIVE_TIEMPO_PARA_DORMIRSE (60*1000)
+#define MENU_CLIVE_TIEMPO_MOVIDO_A_REPOSO (5*1000)
+#define MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE (10*1000)
+
+//Probabilidades de eventos aleatorios, sobre 1000
+#define MENU_CLIVE_PROBABILIDAD_HABLAR 50
+#define MENU_CLIVE_PROBABILIDAD_GAFAS_SOL 5
 
 void menu_clive_game_select_random_phrase(void)
 {
     menu_clive_game_indice_texto_hablado=0;
+    menu_clive_game_talking_state=0;
 
     int frase_elegir=util_get_random_enhanced()%MENU_CLIVE_MAX_PHRASES;
 
@@ -44200,7 +44211,7 @@ void menu_clive_game_handle_timers(void)
         case CLIVE_NORMAL:
         case CLIVE_SUNGLASSES:
             //Si lleva mas de 1 minuto sin moverse, ir a dormir
-            if (tiempo_ultimo_estado>1000*60) {
+            if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_PARA_DORMIRSE) {
                 menu_clive_game_state=CLIVE_SLEEP;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
@@ -44213,7 +44224,7 @@ void menu_clive_game_handle_timers(void)
                         //printf("Ver si se pone las gafas\n");
 
                         //Probabilidad de X entre 1000
-                        if ((util_get_random_enhanced()%1000)<5) {
+                        if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_GAFAS_SOL) {
                             //printf("Se pone las gafas\n");
                             menu_clive_game_state=CLIVE_SUNGLASSES;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
@@ -44222,7 +44233,7 @@ void menu_clive_game_handle_timers(void)
                         //printf("Ver si se pone a hablar\n");
 
                         //Probabilidad de X entre 1000
-                        if ((util_get_random_enhanced()%1000)<50) {
+                        if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR) {
                             printf("Se pone a hablar\n");
                             menu_clive_game_state=CLIVE_TALKING;
                             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
@@ -44250,7 +44261,7 @@ void menu_clive_game_handle_timers(void)
 
             //Si ha parado de hablar, en total que este visible 60 segundos
             if (menu_clive_game_talking_state==MENU_CLIVE_TALKING_STATES) {
-                if (tiempo_ultimo_estado>60*1000) {
+                if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_HABLANDO) {
                     //Lo enviamos a dormir
                     printf("Se va a dormir\n");
                     menu_clive_game_state=CLIVE_SLEEP;
@@ -44270,18 +44281,18 @@ void menu_clive_game_handle_timers(void)
             }
         break;
 
-        //Si lleva mas de 5 segundos sin moverse, ir a posicion normal
+        //Si lleva mas de X segundos sin moverse los ojos, ir a posicion normal
         case CLIVE_MOVED:
-            if (tiempo_ultimo_estado>5000) {
+            if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_MOVIDO_A_REPOSO) {
                 menu_clive_game_state=CLIVE_NORMAL;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
         break;
 
-        //Si lleva mas de 5 segundos con cara de corazones o triste, volver a posicion normal
+        //Si lleva mas de X segundos con cara de corazones o triste, volver a posicion normal
         case CLIVE_HEART:
         case CLIVE_SAD:
-            if (tiempo_ultimo_estado>1000*10) {
+            if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE) {
                 menu_clive_game_state=CLIVE_NORMAL;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
@@ -44354,7 +44365,6 @@ void menu_clive_game_handle_state_changes(void)
         else {
             if (menu_clive_game_current_machine_sinclair) {
                 menu_clive_game_current_machine_sinclair=0;
-                //TODO: pasar a estado triste por cambiar a maquina no sinclair?
             }
         }
 
