@@ -44136,7 +44136,7 @@ char *menu_clive_mensaje_origen_hablar=NULL;
 //char *menu_clive_mensaje_origen_hablar="Parece que estas escribiendo una carta. Necesitas ayuda?";
 int menu_clive_game_indice_texto_hablado=0;
 
-#define MENU_CLIVE_MAX_PHRASES 20
+#define MENU_CLIVE_MAX_PHRASES 23
 
 char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
     "We have only four chips where everyone else has 40",
@@ -44158,14 +44158,17 @@ char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
     "We were too ambitious with the QL",
     "I am a person that wants to innovate",
     "The temptation is always to try and map out new territory",
-    "I won't cease to risk my money on ventures; and some of those are bound to fail"
+    "I won't cease to risk my money on ventures; and some of those are bound to fail",
+    "I've always been obsessed with small size",
+    "Our machines were lean and efficient",
+    "The sad thing is that today's computers totally abuse their memory"
 };
 
 
 //Tiempos de movimientos en segundos*1000
 #define MENU_CLIVE_TIEMPO_HABLANDO (60*1000)
 #define MENU_CLIVE_TIEMPO_PARA_DORMIRSE (60*1000)
-#define MENU_CLIVE_TIEMPO_MOVIDO_A_REPOSO (5*1000)
+#define MENU_CLIVE_TIEMPO_MOVIDO_A_REPOSO (10*1000)
 #define MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE (10*1000)
 
 //Probabilidades de eventos aleatorios, sobre 1000
