@@ -44131,9 +44131,9 @@ char menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]="";
 
 //“It was originally intended as a machine to teach computing, and the games market was rather secondary. Of course it turned out the other way around but that was not the original intention.”
 
-char *prueba_clive_mensaje_origen="We have only four chips where everyone else has 40";
+char *menu_clive_mensaje_origen_hablar="We have only four chips where everyone else has 40";
 
-//char *prueba_clive_mensaje_origen="Parece que estas escribiendo una carta. Necesitas ayuda?";
+//char *menu_clive_mensaje_origen_hablar="Parece que estas escribiendo una carta. Necesitas ayuda?";
 int menu_clive_game_indice_texto_hablado=0;
 
 void menu_clive_game_hablar_texto_siguiente_palabra(void)
@@ -44141,11 +44141,11 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
     //Si esta hablando mostrar tooltip con el texto
     //TODO: truncar si origen excede MENU_CLIVE_MAX_PHRASE_LENGTH
 
-    strcpy(menu_clive_game_frase_hablada,prueba_clive_mensaje_origen);
+    strcpy(menu_clive_game_frase_hablada,menu_clive_mensaje_origen_hablar);
 
     menu_clive_game_frase_hablada[menu_clive_game_indice_texto_hablado]=0;
 
-    int longitud_origen=strlen(prueba_clive_mensaje_origen);
+    int longitud_origen=strlen(menu_clive_mensaje_origen_hablar);
 
     int i;
     //printf("Inicio frame\n");
