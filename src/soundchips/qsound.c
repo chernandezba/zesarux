@@ -283,7 +283,7 @@ void qsound_load_rom(void)
 
     FILE *ptr_qsound_rom;
 
-    open_sharedfile("Qsound_V1.94.rom",&ptr_qsound_rom);
+    open_sharedfile("qsound_V1.94.rom",&ptr_qsound_rom);
 
     if (!ptr_qsound_rom) {
         debug_printf (VERBOSE_ERR,"Unable to load qsound rom");
