@@ -8606,8 +8606,8 @@ char *bitmap_button_ext_desktop_other_clive_sleep[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr.......x.....rx     ",
     "   xr...............rx xxx",
     "   xr..xxx..x..xxx..rx   x",
-    "   xr.x...........x.rx    ",   //7
-    "   xr...............rx    ",   //8
+    "   xr.x...........x.rx  x ",   //7
+    "   xr...............rx xxx",   //8
     "   xr..xxxx...xxxx..rx    ",   //9
     "  xxxxx....xxx....xxxxx xx",	//10
     "  x...x.xx.x.x.xx.x...x  x",
@@ -8636,8 +8636,8 @@ char *bitmap_button_ext_desktop_other_clive_sleep2[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr.......x.....rx xxxx",
     "   xr...............rx    ",
     "   xr.......x.......rx xxx",
-    "   xr..xxx.....xxx..rx    ",   //7
-    "   xr.x...........x.rx    ",   //8
+    "   xr..xxx.....xxx..rx   x",   //7
+    "   xr.x...........x.rx  x ",   //8
     "   xr..xxxx...xxxx..rx xxx",   //9
     "  xxxxx....xxx....xxxxx   ",	//10
     "  x...x....x.x....x...x xx",
