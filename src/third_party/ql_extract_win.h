@@ -1,7 +1,6 @@
 /*
-    ql_extract.h
-
-    Sinclair QL / QDOS QL5A / QL5B filesystem extractor
+    ZEsarUX  ZX Second-Emulator And Released for UniX
+    Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
 
@@ -18,16 +17,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    Parts of this file were developed with assistance from ChatGPT.
-
-    The implementation is an original implementation and is not copied
-    from a third-party QL filesystem implementation.
 */
 
-#ifndef QL_EXTRACT_H
-#define QL_EXTRACT_H
+#ifndef QL_EXTRACT_WIN_H
+#define QL_EXTRACT_WIN_H
 
-extern int main_ql_extract(int argc,char **argv);
+extern int main_ql_extract_win(int argc, char **argv);
 
 
 #endif

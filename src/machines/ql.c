@@ -1127,6 +1127,29 @@ void ql_expand_img_and_boot(char *archivo)
 
 }
 
+void ql_expand_win_and_boot(char *archivo)
+{
+
+    char tmpdir[PATH_MAX];
+
+    char archivo_sin_carpeta[PATH_MAX];
+
+    util_get_file_no_directory(archivo,archivo_sin_carpeta);
+
+
+    sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo_sin_carpeta);
+
+    menu_filesel_mkdir(tmpdir);
+
+    if (!util_extract_win(archivo,tmpdir)) {
+
+        ql_microdrive_floppy_emulation=1;
+
+        ql_insert_mdv_flp(QL_QDOS_UNIT_MDV1,tmpdir);
+    }
+
+}
+
 int ql_extra_rom_c000_enabled=0;
 
 //ejemplo tkii220.rom

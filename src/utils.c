@@ -170,7 +170,8 @@
 #include "enhanced_zx81_read.h"
 #include "tv.h"
 #include "ql_zx8302.h"
-#include "ql_extract.h"
+#include "ql_extract_img.h"
+#include "ql_extract_win.h"
 #include "qsound.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
@@ -6457,6 +6458,7 @@ int quickload_valid_extension(char *nombre) {
 
     || !util_compare_file_extension(nombre,"mdv")
     || !util_compare_file_extension(nombre,"img")
+    || !util_compare_file_extension(nombre,"win")
 
     || !util_compare_file_extension(nombre,"zmenu")
     || !util_compare_file_extension(nombre,"m3u")
@@ -7242,6 +7244,19 @@ int quickload_continue(char *nombre) {
         ) {
 
         ql_expand_img_and_boot(nombre);
+
+
+        return 0;
+    }
+
+    else if (MACHINE_IS_QL &&
+        (
+                   !util_compare_file_extension(nombre,"win")
+        )
+
+        ) {
+
+        ql_expand_win_and_boot(nombre);
 
 
         return 0;
@@ -17686,13 +17701,28 @@ int util_extract_img(char *imgname, char *dest_dir)
 //./extract missed-the-finish_by_dekadence-noice-smfx.img temp
 
     char *argumentos[]={
-                "ql_extract","",""
+                "ql_extract_img","",""
         };
 
         argumentos[1]=imgname;
         argumentos[2]=dest_dir;
 
-    return main_ql_extract(3,argumentos);
+    return main_ql_extract_img(3,argumentos);
+}
+
+//Retorna 0 si ok
+int util_extract_win(char *imgname, char *dest_dir)
+{
+//./extract missed-the-finish_by_dekadence-noice-smfx.img temp
+
+    char *argumentos[]={
+                "ql_extract_win","",""
+        };
+
+        argumentos[1]=imgname;
+        argumentos[2]=dest_dir;
+
+    return main_ql_extract_win(3,argumentos);
 }
 
 int util_extract_hdf(char *hdfname, char *dest_dir)

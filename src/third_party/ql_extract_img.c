@@ -22,38 +22,36 @@
 
  */
 
-
 /*
- * ql_extract.c
+ * ql_extract_img.c
  *
  * Extractor de imagenes de floppy Sinclair QL / QDOS.
  *
  * Soporta imagenes QL5A y QL5B de sectores de 512 bytes.
  *
- * Compilar:
+ * Entrada para uso desde otro programa:
  *
- *   gcc -O2 -Wall -Wextra -Wpedantic -std=c99 \
- *       -o ql_extract ql_extract.c
+ *   int main_ql_extract_img(int argc, char **argv);
  *
  * Uso:
  *
- *   ./ql_extract imagen.img
- *   ./ql_extract imagen.img directorio_salida
- *   ./ql_extract -l imagen.img
- *   ./ql_extract -v imagen.img
- *   ./ql_extract -v -l imagen.img
+ *   ql_extract_img imagen.img
+ *   ql_extract_img imagen.img directorio_salida
+ *   ql_extract_img -l imagen.img
+ *   ql_extract_img -v imagen.img
+ *   ql_extract_img -z imagen.img
  *
  * Opciones:
  *
  *   -l   solo listar
  *   -v   diagnostico del allocation map
+ *   -z   extraer tambien entradas con 0 bytes de datos
  *
- *
- * QDOS:
+ * Notas QDOS:
  *
  * - sectores de 512 bytes
  * - QL5A contiene tablas logico <-> fisico
- * - allocation map comienza en offset 0x60
+ * - allocation map comienza en offset logico 0x60
  * - cada entrada del mapa ocupa 3 bytes:
  *
  *       12 bits: file ID
@@ -64,7 +62,7 @@
  * - cada entrada del directorio ocupa 64 bytes
  * - los ficheros normales contienen 64 bytes iniciales de header
  * - la longitud almacenada incluye esos 64 bytes
- *
+ * - Directory EOF usa bloques de 512 bytes, NO allocation groups
  */
 
 #include <stdio.h>
@@ -73,7 +71,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include "ql_extract.h"
+#include "ql_extract_img.h"
 
 #ifdef _WIN32
 
@@ -101,7 +99,6 @@
 #define MAP_ENTRY_SIZE         3
 
 #define MAX_FILE_ID        0x1000
-
 #define FILE_SPECIAL_MIN   0x0f80
 
 
@@ -126,14 +123,10 @@ typedef struct
 typedef struct
 {
     uint8_t *image;
-
     size_t image_size;
 
-
     char format[5];
-
     char medium_name[11];
-
 
     uint16_t free_sectors;
     uint16_t good_sectors;
@@ -141,25 +134,20 @@ typedef struct
 
     uint16_t sectors_per_track;
     uint16_t sectors_per_cylinder;
-
     uint16_t tracks;
 
     uint16_t allocation_size;
-
 
     uint32_t directory_eof;
 
     uint16_t sector_offset;
 
-
     uint8_t logical_to_physical[18];
     uint8_t physical_to_logical[18];
-
 
     uint32_t group_count;
 
     FileAllocation file[MAX_FILE_ID];
-
 
     int verbose;
 
@@ -213,9 +201,7 @@ static int
 load_image(QLDisk *disk, const char *filename)
 {
     FILE *f;
-
     long length;
-
 
     f = fopen(filename, "rb");
 
@@ -229,13 +215,11 @@ load_image(QLDisk *disk, const char *filename)
         return 0;
     }
 
-
     if (fseek(f, 0, SEEK_END) != 0)
     {
         fclose(f);
         return 0;
     }
-
 
     length = ftell(f);
 
@@ -245,20 +229,16 @@ load_image(QLDisk *disk, const char *filename)
         return 0;
     }
 
-
     if (fseek(f, 0, SEEK_SET) != 0)
     {
         fclose(f);
         return 0;
     }
 
-
     disk->image_size = (size_t)length;
-
 
     disk->image =
         (uint8_t *)malloc(disk->image_size);
-
 
     if (disk->image == NULL)
     {
@@ -270,7 +250,6 @@ load_image(QLDisk *disk, const char *filename)
         return 0;
     }
 
-
     if (fread(disk->image,
               1,
               disk->image_size,
@@ -281,14 +260,12 @@ load_image(QLDisk *disk, const char *filename)
                 filename);
 
         free(disk->image);
-
         disk->image = NULL;
 
         fclose(f);
 
         return 0;
     }
-
 
     fclose(f);
 
@@ -305,7 +282,6 @@ parse_header(QLDisk *disk)
 {
     const uint8_t *h;
 
-
     if (disk->image_size < SECTOR_SIZE)
     {
         fprintf(stderr,
@@ -314,9 +290,7 @@ parse_header(QLDisk *disk)
         return 0;
     }
 
-
     h = disk->image;
-
 
     if (memcmp(h, "QL5A", 4) != 0 &&
         memcmp(h, "QL5B", 4) != 0)
@@ -328,18 +302,14 @@ parse_header(QLDisk *disk)
         return 0;
     }
 
-
     memcpy(disk->format, h, 4);
-
     disk->format[4] = '\0';
-
 
     memcpy(disk->medium_name,
            h + 4,
            10);
 
     disk->medium_name[10] = '\0';
-
 
     disk->free_sectors =
         read_be16(h + 0x14);
@@ -368,7 +338,6 @@ parse_header(QLDisk *disk)
     disk->sector_offset =
         read_be16(h + 0x26);
 
-
     memcpy(disk->logical_to_physical,
            h + 0x28,
            sizeof(disk->logical_to_physical));
@@ -376,7 +345,6 @@ parse_header(QLDisk *disk)
     memcpy(disk->physical_to_logical,
            h + 0x3a,
            sizeof(disk->physical_to_logical));
-
 
     if (disk->total_sectors == 0 ||
         disk->allocation_size == 0 ||
@@ -389,7 +357,6 @@ parse_header(QLDisk *disk)
         return 0;
     }
 
-
     if (disk->sectors_per_cylinder > 18)
     {
         fprintf(stderr,
@@ -400,7 +367,6 @@ parse_header(QLDisk *disk)
         return 0;
     }
 
-
     if (disk->sectors_per_cylinder %
         disk->sectors_per_track != 0)
     {
@@ -409,7 +375,6 @@ parse_header(QLDisk *disk)
 
         return 0;
     }
-
 
     if ((uint64_t)disk->total_sectors *
             SECTOR_SIZE >
@@ -425,11 +390,9 @@ parse_header(QLDisk *disk)
         return 0;
     }
 
-
     disk->group_count =
         disk->total_sectors /
         disk->allocation_size;
-
 
     if (disk->group_count == 0 ||
         disk->group_count > 65535)
@@ -439,7 +402,6 @@ parse_header(QLDisk *disk)
 
         return 0;
     }
-
 
     return 1;
 }
@@ -453,17 +415,13 @@ static void
 print_disk_info(const QLDisk *disk)
 {
     char name[11];
-
     unsigned i;
-
 
     memcpy(name,
            disk->medium_name,
            sizeof(name));
 
-
     name[10] = '\0';
-
 
     for (i = 10; i > 0; --i)
     {
@@ -477,7 +435,6 @@ print_disk_info(const QLDisk *disk)
             break;
         }
     }
-
 
     printf("\n");
 
@@ -518,14 +475,6 @@ print_disk_info(const QLDisk *disk)
     printf("Sector offset       : %u\n",
            disk->sector_offset);
 
-
-    /*
-     * MUY IMPORTANTE:
-     *
-     * Directory EOF usa bloques de 512 bytes,
-     * NO allocation groups.
-     */
-
     {
         uint32_t block =
             disk->directory_eof >> 16;
@@ -542,12 +491,10 @@ print_disk_info(const QLDisk *disk)
                (unsigned long long)bytes);
     }
 
-
     if (strcmp(disk->format,
                "QL5A") == 0)
     {
         printf("\nLogical -> physical:\n");
-
 
         for (i = 0;
              i < disk->sectors_per_cylinder;
@@ -562,22 +509,18 @@ print_disk_info(const QLDisk *disk)
             unsigned sector =
                 t & 0x7f;
 
-
             printf("%2u:%u/%u  ",
                    i,
                    side,
                    sector);
 
-
             if ((i % 6) == 5)
                 printf("\n");
         }
 
-
         if ((i % 6) != 0)
             printf("\n");
     }
-
 
     printf("\n");
 }
@@ -595,19 +538,11 @@ logical_sector_to_offset(
 {
     uint64_t physical_lba;
 
-
     if (logical_sector >=
         disk->total_sectors)
     {
         return 0;
     }
-
-
-    /*
-     * QL5B:
-     *
-     * Se considera imagen en orden lógico lineal.
-     */
 
     if (strcmp(disk->format,
                "QL5B") == 0)
@@ -618,19 +553,12 @@ logical_sector_to_offset(
     else
     {
         uint32_t track;
-
         uint32_t within_cylinder;
-
         uint8_t translated;
-
         uint32_t side;
-
         uint32_t sector;
-
         uint32_t physical_sector;
-
         uint32_t sides;
-
 
         track =
             logical_sector /
@@ -640,11 +568,9 @@ logical_sector_to_offset(
             logical_sector %
             disk->sectors_per_cylinder;
 
-
         translated =
             disk->logical_to_physical[
                 within_cylinder];
-
 
         side =
             (translated & 0x80) ?
@@ -654,11 +580,9 @@ logical_sector_to_offset(
         sector =
             translated & 0x7f;
 
-
         sides =
             disk->sectors_per_cylinder /
             disk->sectors_per_track;
-
 
         if (side >= sides ||
             sector >= disk->sectors_per_track)
@@ -666,16 +590,10 @@ logical_sector_to_offset(
             return 0;
         }
 
-
-        /*
-         * QDOS track skew.
-         */
-
         physical_sector =
             (sector +
              track * disk->sector_offset) %
             disk->sectors_per_track;
-
 
         physical_lba =
             (uint64_t)track *
@@ -689,7 +607,6 @@ logical_sector_to_offset(
             physical_sector;
     }
 
-
     if ((physical_lba + 1) *
             SECTOR_SIZE >
         disk->image_size)
@@ -697,12 +614,10 @@ logical_sector_to_offset(
         return 0;
     }
 
-
     *image_offset =
         (size_t)(
             physical_lba *
             SECTOR_SIZE);
-
 
     return 1;
 }
@@ -720,7 +635,6 @@ read_logical_sector(
 {
     size_t offset;
 
-
     if (!logical_sector_to_offset(
             disk,
             logical_sector,
@@ -729,11 +643,9 @@ read_logical_sector(
         return 0;
     }
 
-
     memcpy(buffer,
            disk->image + offset,
            SECTOR_SIZE);
-
 
     return 1;
 }
@@ -752,7 +664,6 @@ read_logical_bytes(
 {
     uint8_t sector[SECTOR_SIZE];
 
-
     while (length > 0)
     {
         uint32_t sector_number =
@@ -767,10 +678,8 @@ read_logical_bytes(
             SECTOR_SIZE -
             sector_offset;
 
-
         if (count > length)
             count = length;
-
 
         if (!read_logical_sector(
                 disk,
@@ -780,11 +689,9 @@ read_logical_bytes(
             return 0;
         }
 
-
         memcpy(output,
                sector + sector_offset,
                count);
-
 
         output += count;
 
@@ -794,13 +701,12 @@ read_logical_bytes(
         length -= count;
     }
 
-
     return 1;
 }
 
 
 /* --------------------------------------------------------- */
-/* Leer allocation group físico lógico                       */
+/* Leer allocation group                                     */
 /* --------------------------------------------------------- */
 
 static int
@@ -810,9 +716,7 @@ read_allocation_group(
         uint8_t *buffer)
 {
     uint32_t first_sector;
-
     unsigned i;
-
 
     if (group_number >=
         disk->group_count)
@@ -820,11 +724,9 @@ read_allocation_group(
         return 0;
     }
 
-
     first_sector =
         (uint32_t)group_number *
         disk->allocation_size;
-
 
     for (i = 0;
          i < disk->allocation_size;
@@ -840,13 +742,12 @@ read_allocation_group(
         }
     }
 
-
     return 1;
 }
 
 
 /* --------------------------------------------------------- */
-/* Allocation list                                            */
+/* Allocation list                                           */
 /* --------------------------------------------------------- */
 
 static int
@@ -858,18 +759,11 @@ add_allocation(
 {
     FileAllocation *f;
 
-
     if (file_id >= MAX_FILE_ID)
         return 0;
 
-
     f =
         &disk->file[file_id];
-
-
-    /*
-     * Evitar secuencias duplicadas.
-     */
 
     for (size_t i = 0;
          i < f->count;
@@ -891,7 +785,6 @@ add_allocation(
         }
     }
 
-
     if (f->count ==
         f->capacity)
     {
@@ -900,17 +793,14 @@ add_allocation(
             f->capacity * 2 :
             8;
 
-
         AllocationEntry *p =
             (AllocationEntry *)realloc(
                 f->entry,
                 new_capacity *
                 sizeof(*p));
 
-
         if (p == NULL)
             return 0;
-
 
         f->entry =
             p;
@@ -919,7 +809,6 @@ add_allocation(
             new_capacity;
     }
 
-
     f->entry[f->count].sequence =
         sequence;
 
@@ -927,7 +816,6 @@ add_allocation(
         disk_group;
 
     f->count++;
-
 
     return 1;
 }
@@ -946,14 +834,11 @@ find_allocation_group(
 {
     const FileAllocation *f;
 
-
     if (file_id >= MAX_FILE_ID)
         return 0;
 
-
     f =
         &disk->file[file_id];
-
 
     for (size_t i = 0;
          i < f->count;
@@ -969,13 +854,12 @@ find_allocation_group(
         }
     }
 
-
     return 0;
 }
 
 
 /* --------------------------------------------------------- */
-/* Allocation map                                             */
+/* Tipo especial del allocation map                           */
 /* --------------------------------------------------------- */
 
 static const char *
@@ -987,13 +871,11 @@ special_group_name(uint16_t file_id)
         return "MAP";
     }
 
-
     if (file_id >= 0xfd0 &&
         file_id <= 0xfdf)
     {
         return "FREE";
     }
-
 
     if (file_id >= 0xfe0 &&
         file_id <= 0xfef)
@@ -1001,13 +883,11 @@ special_group_name(uint16_t file_id)
         return "BAD";
     }
 
-
     if (file_id >= 0xff0 &&
         file_id <= 0xfff)
     {
         return "NONEXIST";
     }
-
 
     return "SPECIAL";
 }
@@ -1021,18 +901,14 @@ static int
 build_allocation_map(QLDisk *disk)
 {
     size_t map_bytes;
-
     uint8_t *map;
-
 
     map_bytes =
         (size_t)disk->group_count *
         MAP_ENTRY_SIZE;
 
-
     map =
         (uint8_t *)malloc(map_bytes);
-
 
     if (map == NULL)
     {
@@ -1041,15 +917,6 @@ build_allocation_map(QLDisk *disk)
 
         return 0;
     }
-
-
-    /*
-     * El mapa comienza en byte lógico 0x60.
-     *
-     * Es MUY importante leerlo mediante read_logical_bytes(),
-     * no haciendo memcpy desde image+0x60, porque después del
-     * primer sector los sectores QL5A están intercalados.
-     */
 
     if (!read_logical_bytes(
             disk,
@@ -1065,12 +932,10 @@ build_allocation_map(QLDisk *disk)
         return 0;
     }
 
-
     if (disk->verbose)
     {
         printf("Allocation map:\n\n");
     }
-
 
     for (uint32_t disk_group = 0;
          disk_group < disk->group_count;
@@ -1081,25 +946,13 @@ build_allocation_map(QLDisk *disk)
             disk_group *
             MAP_ENTRY_SIZE;
 
-
-        /*
-         * Dos valores de 12 bits:
-         *
-         *      [AAAAAAAA] [AAAA BBBB] [BBBBBBBB]
-         *
-         * A = file number
-         * B = sequence number
-         */
-
         uint16_t file_id =
             ((uint16_t)p[0] << 4) |
             ((uint16_t)p[1] >> 4);
 
-
         uint16_t sequence =
             ((uint16_t)(p[1] & 0x0f) << 8) |
             (uint16_t)p[2];
-
 
         if (file_id <
             FILE_SPECIAL_MIN)
@@ -1117,7 +970,6 @@ build_allocation_map(QLDisk *disk)
 
                 return 0;
             }
-
 
             if (disk->verbose)
             {
@@ -1144,16 +996,14 @@ build_allocation_map(QLDisk *disk)
         }
     }
 
-
     free(map);
-
 
     return 1;
 }
 
 
 /* --------------------------------------------------------- */
-/* Calcular tamaño del directorio                             */
+/* Tamaño del directorio                                     */
 /* --------------------------------------------------------- */
 
 static int
@@ -1162,54 +1012,52 @@ get_directory_size(
         size_t *directory_size)
 {
     uint32_t block;
-
     uint32_t byte;
-
     uint64_t size;
-
 
     block =
         disk->directory_eof >>
         16;
 
-
     byte =
         disk->directory_eof &
         0xffff;
 
-
     /*
-     * QDOS:
+     * Directory EOF:
      *
-     * block es un BLOQUE DE 512 BYTES.
+     *     size = block * 512 + byte
      *
-     * No es un allocation group.
+     * byte puede ser exactamente 512.
+     *
+     * Por ejemplo:
+     *
+     *     block=0 byte=512
+     *
+     * equivale a:
+     *
+     *     block=1 byte=0
      */
-
-    if (byte >= SECTOR_SIZE)
+    if (byte > SECTOR_SIZE)
     {
         fprintf(stderr,
                 "ERROR: Directory EOF byte=%u "
-                "(debe ser <512)\n",
+                "(debe ser <=512)\n",
                 byte);
 
         return 0;
     }
-
 
     size =
         (uint64_t)block *
         SECTOR_SIZE +
         byte;
 
-
     if (size > SIZE_MAX)
         return 0;
 
-
     *directory_size =
         (size_t)size;
-
 
     return 1;
 }
@@ -1226,39 +1074,27 @@ reconstruct_file(
         size_t qdos_length)
 {
     size_t allocation_bytes;
-
     size_t groups_needed;
-
     size_t allocated_bytes;
-
     uint8_t *data;
-
 
     allocation_bytes =
         (size_t)disk->allocation_size *
         SECTOR_SIZE;
 
-
     if (allocation_bytes == 0)
         return NULL;
-
 
     groups_needed =
         (qdos_length +
          allocation_bytes - 1) /
         allocation_bytes;
 
-
-    /*
-     * Fichero realmente vacío.
-     */
-
     if (groups_needed == 0)
     {
         return
             (uint8_t *)calloc(1, 1);
     }
-
 
     if (groups_needed >
         SIZE_MAX /
@@ -1267,28 +1103,16 @@ reconstruct_file(
         return NULL;
     }
 
-
     allocated_bytes =
         groups_needed *
         allocation_bytes;
-
 
     data =
         (uint8_t *)malloc(
             allocated_bytes);
 
-
     if (data == NULL)
         return NULL;
-
-
-    /*
-     * IMPORTANTE:
-     *
-     * sequence es 0,1,2,3...
-     *
-     * NO sequence >> 4.
-     */
 
     for (size_t sequence = 0;
          sequence < groups_needed;
@@ -1296,13 +1120,11 @@ reconstruct_file(
     {
         uint16_t disk_group;
 
-
         if (sequence > 0xfff)
         {
             free(data);
             return NULL;
         }
-
 
         if (!find_allocation_group(
                 disk,
@@ -1320,7 +1142,6 @@ reconstruct_file(
 
             return NULL;
         }
-
 
         if (!read_allocation_group(
                 disk,
@@ -1341,7 +1162,6 @@ reconstruct_file(
         }
     }
 
-
     return data;
 }
 
@@ -1359,10 +1179,8 @@ sanitize_filename(
 {
     size_t out = 0;
 
-
     if (destination_size == 0)
         return;
-
 
     for (size_t i = 0;
          i < source_length &&
@@ -1372,14 +1190,8 @@ sanitize_filename(
         unsigned char c =
             source[i];
 
-
         if (c == 0)
             break;
-
-
-        /*
-         * Caracteres problemáticos en Unix/Windows.
-         */
 
         if (c == '/'  ||
             c == '\\' ||
@@ -1407,14 +1219,12 @@ sanitize_filename(
         }
     }
 
-
     while (out > 0 &&
            (destination[out - 1] == ' ' ||
             destination[out - 1] == '.'))
     {
         --out;
     }
-
 
     if (out == 0)
     {
@@ -1445,15 +1255,10 @@ read_master_directory(
         size_t *result_count)
 {
     size_t directory_size;
-
     size_t record_count;
-
     uint8_t *raw;
-
     DirectoryEntry *directory;
-
     size_t valid_count = 0;
-
 
     if (!get_directory_size(
             disk,
@@ -1462,43 +1267,32 @@ read_master_directory(
         return 0;
     }
 
-
     if (directory_size == 0)
     {
         fprintf(stderr,
-                "ERROR: directorio de tamaño cero\n");
+                "ERROR: directorio de tamano cero\n");
 
         return 0;
     }
-
 
     if (directory_size %
         FILE_HEADER_SIZE != 0)
     {
         fprintf(stderr,
                 "WARNING: directorio tiene %zu bytes, "
-                "no es múltiplo de 64\n",
+                "no es multiplo de 64\n",
                 directory_size);
     }
-
 
     record_count =
         directory_size /
         FILE_HEADER_SIZE;
-
-
-    /*
-     * Necesitamos reconstruir exactamente directory_size.
-     *
-     * File 0 NO contiene los 64 bytes extra de header.
-     */
 
     raw =
         reconstruct_file(
             disk,
             0,
             directory_size);
-
 
     if (raw == NULL)
     {
@@ -1509,25 +1303,16 @@ read_master_directory(
         return 0;
     }
 
-
     directory =
         (DirectoryEntry *)calloc(
             record_count,
             sizeof(*directory));
-
 
     if (directory == NULL)
     {
         free(raw);
         return 0;
     }
-
-
-    /*
-     * Entrada 0 = master directory.
-     *
-     * Las entradas de fichero empiezan en 1.
-     */
 
     for (size_t file_id = 1;
          file_id < record_count;
@@ -1538,29 +1323,17 @@ read_master_directory(
             file_id *
             FILE_HEADER_SIZE;
 
-
         uint32_t length =
             read_be32(entry + 0x00);
 
-
         uint16_t name_length =
             read_be16(entry + 0x0e);
-
-
-        /*
-         * Entrada borrada/no usada.
-         */
 
         if (length == 0 &&
             name_length == 0)
         {
             continue;
         }
-
-
-        /*
-         * Filename field tiene 0x24 = 36 bytes.
-         */
 
         if (name_length == 0 ||
             name_length > 36)
@@ -1578,12 +1351,6 @@ read_master_directory(
             continue;
         }
 
-
-        /*
-         * Un fichero QDOS normal contiene como mínimo
-         * su header de 64 bytes.
-         */
-
         if (length < FILE_HEADER_SIZE)
         {
             if (disk->verbose)
@@ -1598,11 +1365,6 @@ read_master_directory(
 
             continue;
         }
-
-
-        /*
-         * Protección contra entradas obviamente corruptas.
-         */
 
         if ((uint64_t)length >
             (uint64_t)disk->image_size +
@@ -1620,18 +1382,14 @@ read_master_directory(
             continue;
         }
 
-
         directory[valid_count].file_id =
             (uint16_t)file_id;
-
 
         directory[valid_count].qdos_length =
             length;
 
-
         directory[valid_count].name_length =
             name_length;
-
 
         sanitize_filename(
             entry + 0x10,
@@ -1640,18 +1398,14 @@ read_master_directory(
             sizeof(
                 directory[valid_count].name));
 
-
         directory[valid_count].
             modification_date =
             read_be32(entry + 0x34);
 
-
         valid_count++;
     }
 
-
     free(raw);
-
 
     *result =
         directory;
@@ -1659,28 +1413,22 @@ read_master_directory(
     *result_count =
         valid_count;
 
-
     return 1;
 }
 
 
 /* --------------------------------------------------------- */
-/* Tamaño del contenido real                                  */
+/* Tamaño real del contenido                                 */
 /* --------------------------------------------------------- */
 
 static size_t
 payload_size(const DirectoryEntry *entry)
 {
-    /*
-     * qdos_length incluye los 64 bytes iniciales.
-     */
-
     if (entry->qdos_length <
         FILE_HEADER_SIZE)
     {
         return 0;
     }
-
 
     return
         (size_t)entry->qdos_length -
@@ -1689,7 +1437,7 @@ payload_size(const DirectoryEntry *entry)
 
 
 /* --------------------------------------------------------- */
-/* Comprobar allocation de un fichero                        */
+/* Comprobar allocation                                      */
 /* --------------------------------------------------------- */
 
 static int
@@ -1701,22 +1449,18 @@ check_file_allocation(
         (size_t)disk->allocation_size *
         SECTOR_SIZE;
 
-
     size_t groups_needed =
         ((size_t)entry->qdos_length +
          allocation_bytes - 1) /
         allocation_bytes;
 
-
     int ok = 1;
-
 
     for (size_t sequence = 0;
          sequence < groups_needed;
          ++sequence)
     {
         uint16_t ignored;
-
 
         if (sequence > 0xfff ||
             !find_allocation_group(
@@ -1736,13 +1480,12 @@ check_file_allocation(
         }
     }
 
-
     return ok;
 }
 
 
 /* --------------------------------------------------------- */
-/* Listar                                                     */
+/* Listar                                                    */
 /* --------------------------------------------------------- */
 
 static void
@@ -1754,12 +1497,10 @@ print_directory(
     printf("Archivos: %zu\n\n",
            count);
 
-
     printf(" ID   QDOS BYTES  DATOS      GRUPOS  NOMBRE\n");
 
     printf("----  ----------  ----------  ------  "
            "------------------------------------\n");
-
 
     for (size_t i = 0;
          i < count;
@@ -1768,19 +1509,16 @@ print_directory(
         const DirectoryEntry *entry =
             &directory[i];
 
-
         size_t allocation_bytes =
             (size_t)disk->allocation_size *
             SECTOR_SIZE;
-
 
         size_t required =
             ((size_t)entry->qdos_length +
              allocation_bytes - 1) /
             allocation_bytes;
 
-
-        printf("%03X   %10u  %10zu  %3zu/%-2zu  %s\n",
+        printf("%03X   %10u  %10zu  %3zu/%-2zu  %s",
                entry->file_id,
                entry->qdos_length,
                payload_size(entry),
@@ -1788,8 +1526,14 @@ print_directory(
                disk->file[
                    entry->file_id].count,
                entry->name);
-    }
 
+        if (payload_size(entry) == 0)
+        {
+            printf("  [sin datos]");
+        }
+
+        printf("\n");
+    }
 
     printf("\n");
 }
@@ -1805,23 +1549,20 @@ make_directory(const char *path)
     if (MKDIR(path) == 0)
         return 1;
 
-
     if (errno == EEXIST)
         return 1;
-
 
     fprintf(stderr,
             "ERROR: no puedo crear '%s': %s\n",
             path,
             strerror(errno));
 
-
     return 0;
 }
 
 
 /* --------------------------------------------------------- */
-/* Comprobar si existe fichero host                          */
+/* Existe fichero host                                       */
 /* --------------------------------------------------------- */
 
 static int
@@ -1830,10 +1571,8 @@ host_file_exists(const char *filename)
     FILE *f =
         fopen(filename, "rb");
 
-
     if (f == NULL)
         return 0;
-
 
     fclose(f);
 
@@ -1842,7 +1581,7 @@ host_file_exists(const char *filename)
 
 
 /* --------------------------------------------------------- */
-/* Construir nombre de salida evitando sobrescribir          */
+/* Nombre de salida                                          */
 /* --------------------------------------------------------- */
 
 static int
@@ -1854,7 +1593,6 @@ make_output_filename(
 {
     int n;
 
-
     n =
         snprintf(result,
                  result_size,
@@ -1863,23 +1601,14 @@ make_output_filename(
                  PATH_SEPARATOR,
                  entry->name);
 
-
     if (n < 0 ||
         (size_t)n >= result_size)
     {
         return 0;
     }
 
-
     if (!host_file_exists(result))
         return 1;
-
-
-    /*
-     * Nombre duplicado:
-     *
-     *      filename__023
-     */
 
     n =
         snprintf(result,
@@ -1890,20 +1619,18 @@ make_output_filename(
                  entry->name,
                  entry->file_id);
 
-
     if (n < 0 ||
         (size_t)n >= result_size)
     {
         return 0;
     }
 
-
     return 1;
 }
 
 
 /* --------------------------------------------------------- */
-/* Extraer fichero                                            */
+/* Extraer fichero                                           */
 /* --------------------------------------------------------- */
 
 static int
@@ -1913,24 +1640,15 @@ extract_file(
         const char *output_directory)
 {
     uint8_t *data;
-
     size_t data_size;
-
     char filename[4096];
-
     FILE *f;
-
-
-    /*
-     * qdos_length YA incluye los 64 bytes de header.
-     */
 
     data =
         reconstruct_file(
             disk,
             entry->file_id,
             entry->qdos_length);
-
 
     if (data == NULL)
     {
@@ -1942,10 +1660,8 @@ extract_file(
         return 0;
     }
 
-
     data_size =
         payload_size(entry);
-
 
     if (!make_output_filename(
             output_directory,
@@ -1962,10 +1678,8 @@ extract_file(
         return 0;
     }
 
-
     f =
         fopen(filename, "wb");
-
 
     if (f == NULL)
     {
@@ -1978,11 +1692,6 @@ extract_file(
 
         return 0;
     }
-
-
-    /*
-     * Saltar el header QDOS de 64 bytes.
-     */
 
     if (data_size > 0)
     {
@@ -2004,17 +1713,14 @@ extract_file(
         }
     }
 
-
     fclose(f);
 
     free(data);
-
 
     printf("  %03X  %-36s %10zu bytes\n",
            entry->file_id,
            entry->name,
            data_size);
-
 
     return 1;
 }
@@ -2034,12 +1740,9 @@ free_disk(QLDisk *disk)
         free(disk->file[i].entry);
 
         disk->file[i].entry = NULL;
-
         disk->file[i].count = 0;
-
         disk->file[i].capacity = 0;
     }
-
 
     free(disk->image);
 
@@ -2047,56 +1750,46 @@ free_disk(QLDisk *disk)
 }
 
 
-/* --------------------------------------------------------- */
-/* Main                                                       */
-/* --------------------------------------------------------- */
+/* ========================================================= */
+/* main_ql_extract_img                                           */
+/* ========================================================= */
 
 int
-main_ql_extract(int argc, char **argv)
+main_ql_extract_img(int argc, char **argv)
 {
     QLDisk disk;
-
 
     DirectoryEntry *directory =
         NULL;
 
-
     size_t directory_count =
         0;
-
 
     const char *image_filename =
         NULL;
 
-
     const char *output_directory =
-        "ql_extract";
-
+        "ql_extract_img";
 
     int output_directory_given =
         0;
 
-
     int list_only =
         0;
-
 
     int verbose =
         0;
 
+    int extract_zero_length =
+        0;
 
     int exit_status =
         EXIT_FAILURE;
-
 
     memset(&disk,
            0,
            sizeof(disk));
 
-
-    /*
-     * Argumentos.
-     */
 
     for (int i = 1;
          i < argc;
@@ -2111,6 +1804,11 @@ main_ql_extract(int argc, char **argv)
                         "-v") == 0)
         {
             verbose = 1;
+        }
+        else if (strcmp(argv[i],
+                        "-z") == 0)
+        {
+            extract_zero_length = 1;
         }
         else if (argv[i][0] == '-')
         {
@@ -2147,9 +1845,12 @@ main_ql_extract(int argc, char **argv)
     {
         fprintf(stderr,
                 "Uso:\n"
-                "  %s [-l] [-v] imagen.img [salida]\n\n"
+                "  %s [-l] [-v] [-z] "
+                "imagen.img [salida]\n\n"
                 "  -l  solo listar\n"
-                "  -v  diagnostico detallado\n",
+                "  -v  diagnostico detallado\n"
+                "  -z  extraer tambien entradas "
+                "de 0 bytes\n",
                 argv[0]);
 
         goto done;
@@ -2182,17 +1883,12 @@ main_ql_extract(int argc, char **argv)
     }
 
 
-    /*
-     * Diagnóstico del master directory.
-     */
-
     {
         size_t directory_size;
 
         size_t allocation_bytes =
             (size_t)disk.allocation_size *
             SECTOR_SIZE;
-
 
         if (!get_directory_size(
                 &disk,
@@ -2201,12 +1897,10 @@ main_ql_extract(int argc, char **argv)
             goto done;
         }
 
-
         size_t required_groups =
             (directory_size +
              allocation_bytes - 1) /
             allocation_bytes;
-
 
         printf("Master directory:\n");
 
@@ -2224,7 +1918,6 @@ main_ql_extract(int argc, char **argv)
                disk.file[0].count);
 
         printf("\n");
-
 
         if (disk.file[0].count <
             required_groups)
@@ -2253,18 +1946,11 @@ main_ql_extract(int argc, char **argv)
         directory_count);
 
 
-    /*
-     * Verificación.
-     */
-
     {
         size_t good = 0;
-
         size_t bad = 0;
 
-
         printf("Comprobando allocation map:\n");
-
 
         for (size_t i = 0;
              i < directory_count;
@@ -2282,8 +1968,7 @@ main_ql_extract(int argc, char **argv)
             }
         }
 
-
-        printf("  Correctos : %zu\n",
+        printf("  Correctos  : %zu\n",
                good);
 
         printf("  Con errores: %zu\n\n",
@@ -2312,17 +1997,34 @@ main_ql_extract(int argc, char **argv)
 
 
     {
-        size_t extracted =
-            0;
-
-        size_t failed =
-            0;
-
+        size_t extracted = 0;
+        size_t skipped = 0;
+        size_t failed = 0;
 
         for (size_t i = 0;
              i < directory_count;
              ++i)
         {
+            size_t size =
+                payload_size(
+                    &directory[i]);
+
+            if (size == 0 &&
+                !extract_zero_length)
+            {
+                skipped++;
+
+                if (verbose)
+                {
+                    printf("  %03X  %-36s "
+                           "[omitido: 0 bytes]\n",
+                           directory[i].file_id,
+                           directory[i].name);
+                }
+
+                continue;
+            }
+
             if (extract_file(
                     &disk,
                     &directory[i],
@@ -2342,6 +2044,9 @@ main_ql_extract(int argc, char **argv)
         printf("Extraidos : %zu\n",
                extracted);
 
+        printf("Omitidos  : %zu\n",
+               skipped);
+
         printf("Fallidos  : %zu\n",
                failed);
 
@@ -2349,9 +2054,15 @@ main_ql_extract(int argc, char **argv)
 
 
         if (failed == 0)
-            exit_status = EXIT_SUCCESS;
+        {
+            exit_status =
+                EXIT_SUCCESS;
+        }
         else
-            exit_status = EXIT_FAILURE;
+        {
+            exit_status =
+                EXIT_FAILURE;
+        }
     }
 
 

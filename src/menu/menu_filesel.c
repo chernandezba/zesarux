@@ -317,6 +317,8 @@ int menu_file_filter(const char *name,char *filtros[])
 
     if (!strcasecmp(extension,"img")) return 1;
 
+    if (!strcasecmp(extension,"win")) return 1;
+
     if (!strcasecmp(extension,"hdf")) return 1;
 
     if (!strcasecmp(extension,"dsk")) return 1;
@@ -3268,7 +3270,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx","img",
+        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx","img","win",
         NULL
     };
 
@@ -3397,6 +3399,11 @@ int menu_filesel_expand(char *archivo,char *tmpdir,char *sufijo_carpeta)
         else if ( !util_compare_file_extension(archivo,"img") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a img file");
                 return util_extract_img(archivo,tmpdir);
+        }
+
+        else if ( !util_compare_file_extension(archivo,"win") ) {
+                debug_printf (VERBOSE_DEBUG,"Is a win file");
+                return util_extract_win(archivo,tmpdir);
         }
 
         else if ( !util_compare_file_extension(archivo,"scl") ) {
