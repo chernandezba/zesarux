@@ -162,8 +162,8 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 
 -Clive
 *si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
-*mientras habla si cambia a otro estado (por ejemplo triste o corazones) se quedara overlay de texto
-Hay que hacer que con los cambios de estado, si estaba hablando, quite el overlay
+ok *mientras habla si cambia a otro estado (por ejemplo triste o corazones) se quedara overlay de texto
+ok Hay que hacer que con los cambios de estado, si estaba hablando, quite el overlay
 
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 -> tiene sentido?
@@ -178,12 +178,18 @@ Hay que hacer que con los cambios de estado, si estaba hablando, quite el overla
 *opciones de config file: de momento solo qsound enabled, faltan settings traps etc (necesarios?)
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?
-ok *poder elegir otra qsound rom alternativa
 
 
 - poner en features características nuevas de QL: mouse, qsound etc etc
 
 
--Extract img en filesel solo lo detecte si máquina QL. Para no confundir con imágenes de disco duro .img
+ok -Extract img en filesel solo lo detecte si máquina QL. Para no confundir con imágenes de disco duro .img
 
--soporte joystick ql?
+-soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
+Arriba → F4
+Abajo → F2
+Izquierda → F1
+Derecha → F3
+Disparo → F5
+El teclado ya emula todo esto
+Lo unico que tendria sentido es que al conectar un joystick por usb haga esas funciones de cursores, o F1-F5

@@ -44306,7 +44306,7 @@ char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
 #define MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE (10*1000)
 
 //Probabilidades de eventos aleatorios, sobre 1000
-#define MENU_CLIVE_PROBABILIDAD_HABLAR 30
+#define MENU_CLIVE_PROBABILIDAD_HABLAR 20
 #define MENU_CLIVE_PROBABILIDAD_GAFAS_SOL 5
 
 void menu_clive_game_select_random_phrase(void)
@@ -44373,17 +44373,18 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
 
 void menu_clive_game_remove_talking_text(void)
 {
+    if (tooltip_mouse_visible_clive.v) {
+        //Quitar el overlay de texto de clive hablando
+        tooltip_mouse_visible.v=0;
+        tooltip_mouse_visible_clive.v=0;
 
-    //Quitar el overlay de texto de clive hablando
-    tooltip_mouse_visible.v=0;
-    tooltip_mouse_visible_clive.v=0;
+        //Redibujar para que desaparezca el texto hablado
+        zxvision_zxdesktop_set_no_frameskip_next();
 
-    //Redibujar para que desaparezca el texto hablado
-    zxvision_zxdesktop_set_no_frameskip_next();
+        cls_menu_overlay();
 
-    cls_menu_overlay();
-
-    zxvision_redraw_all_windows();
+        zxvision_redraw_all_windows();
+    }
 }
 
 void menu_clive_game_handle_timers(void)
@@ -44532,6 +44533,8 @@ void menu_clive_game_handle_state_changes(void)
 
     //Si se esta mostrando un mensaje de error, este es mas prioritario que ningun otro
     if (menu_muestra_pending_error_message_showing) {
+        //quitar texto si estaba hablando
+        menu_clive_game_remove_talking_text();
         menu_clive_game_state=CLIVE_ANGRY;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
@@ -44540,9 +44543,7 @@ void menu_clive_game_handle_state_changes(void)
     if (mouse_left) {
         if (zxvision_mouse_en_ventana(menu_clive_game_window) && menu_mouse_y!=0) {
             //Si estaba hablando, dejar de hablar
-            if (menu_clive_game_state==CLIVE_TALKING) {
-                menu_clive_game_remove_talking_text();
-            }
+            menu_clive_game_remove_talking_text();
 
             menu_clive_game_state=CLIVE_TONGUE;
             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
@@ -44556,6 +44557,9 @@ void menu_clive_game_handle_state_changes(void)
             MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_QL || MACHINE_IS_Z88) {
             if (!menu_clive_game_current_machine_sinclair) {
                 menu_clive_game_current_machine_sinclair=1;
+                //quitar texto si estaba hablando
+                menu_clive_game_remove_talking_text();
+
                 menu_clive_game_state=CLIVE_HEART;
                 menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
@@ -44568,6 +44572,9 @@ void menu_clive_game_handle_state_changes(void)
 
         //Pasar a estado triste siempre que se seleccione maquina spectrum amstrad
         if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_SPECTRUM_P2) {
+            //quitar texto si estaba hablando
+            menu_clive_game_remove_talking_text();
+
             menu_clive_game_state=CLIVE_SAD;
             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
         }
