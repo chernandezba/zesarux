@@ -35,5 +35,15 @@ extern int zxvision_get_minimum_y_icon_position(void);
 extern void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int *p_yinicial,int *p_yfinal);
 extern int zxvision_search_trash_configurable_icon(void);
 extern int if_zxdesktop_trash_not_empty(void);
+extern int zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_width(void);
+extern int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_width(void);
+extern int zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_height(void);
+extern int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_height(void);
+extern int zxvision_if_lower_button_switch_zxdesktop_visible(void);
+extern int zxvision_if_lower_button_switch_zxdesktop_enabled(void);
+extern void zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common(int *p_x,int *p_y,int *p_xboton,int *p_yboton);
+extern int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(int ampliar_reducir_ancho);
+
+extern z80_bit switchzxdesktop_button_visible;
 
 #endif

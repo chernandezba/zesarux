@@ -124,6 +124,10 @@
 #endif
 
 
+//si estaba visible o no
+z80_bit switchzxdesktop_button_visible={0};
+
+
 //Ver cuantos iconos hay cerca para saber si se puede posicionar uno o no
 int zxvision_si_icono_cerca(int x,int y)
 {
@@ -247,6 +251,157 @@ int if_zxdesktop_trash_not_empty(void)
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
             return 1;
         }
+    }
+
+    return 0;
+}
+
+//Boton habilitado y ademas visible (visibilidad determinada por movimiento de raton)
+int zxvision_if_lower_button_switch_zxdesktop_visible(void)
+{
+    if (zxvision_if_lower_button_switch_zxdesktop_enabled() && switchzxdesktop_button_visible.v) return 1;
+    else return 0;
+}
+
+int zxvision_if_lower_button_switch_zxdesktop_enabled(void)
+{
+
+    //con emulacion de kempston mouse o lightgun, no se dispara evento de abrir menu al pulsar con raton, por tanto,
+    //no se puede gestionar pulsaciones sobre el boton de switch
+
+    if (si_complete_video_driver() && scr_driver_can_ext_desktop() &&
+        menu_footer && zxdesktop_switch_button_enabled.v && !ventana_fullscreen &&
+        mouse_menu_disabled.v==0 && kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled==0) return 1;
+    else return 0;
+}
+
+
+//Si ampliar_reducir_ancho=1, dice si posicion ampliar alto
+//Si no, dice posicion de reducir alto
+int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(int ampliar_reducir_alto)
+{
+    if (zxvision_if_lower_button_switch_zxdesktop_visible() && mouse_left) {
+
+        int x,y,xboton,yboton;
+
+        zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common(&x,&y,&xboton,&yboton);
+
+        //Los de cambio de alto estan en posicion x -1
+        xboton--;
+
+        //Boton abajo: ampliar alto
+        if (ampliar_reducir_alto) {
+            if (x==xboton && y==yboton+1) {
+                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop enlarge height button");
+                return 1;
+            }
+        }
+
+        //Boton arriba: reducir alto
+        else {
+            if (x==xboton && y==yboton) {
+                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop reduce height button");
+                return 1;
+            }
+        }
+
+
+    }
+
+    return 0;
+}
+
+
+int zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_width(void)
+{
+    return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(1);
+}
+
+int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_width(void)
+{
+    return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(0);
+}
+
+int zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_height(void)
+{
+    return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(1);
+}
+
+int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_height(void)
+{
+    return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(0);
+}
+
+
+
+//Comun para obtener posicion de raton y de botones de zxdesktop
+void zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common(int *p_x,int *p_y,int *p_xboton,int *p_yboton)
+{
+
+    //TODO: Estas posiciones donde estan los botones, se obtienen de manera distinta en las funciones:
+    //menu_put_switch_zxdesktop_footer
+    //zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common
+    //Aunque se obtienen de diferentes maneras pero el resultado final (en teoria) es el mismo
+
+    int mouse_pixel_x,mouse_pixel_y;
+    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+    //printf("si pulsado en boton switch zxdesktop. x %d y %d\n",mouse_pixel_x,mouse_pixel_y);
+
+    int x=mouse_x;
+    int y=mouse_y;
+    //Quitarle el zoom
+    x=x/zoom_x;
+    y=y/zoom_y;
+
+    //y la escala de 8
+    x /=8;
+    y /=8;
+    //printf("si pulsado en boton switch zxdesktop. mouse_x %d mouse_y %d\n",x,y);
+
+    //donde esta el boton
+    //int yboton=screen_get_emulated_display_height_no_zoom_border_en()/8;
+    int yboton=(screen_get_emulated_display_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom()) /8;
+
+    int xboton=screen_get_window_size_width_no_zoom_border_en()/8-2; //justo 2 posicion menos
+    //esta es la posicion x de los botones de +- ancho zx desktop
+    //printf("si pulsado en boton switch zxdesktop. xboton %d yboton %d x %d y %d\n",xboton,yboton,x,y);
+
+    *p_x=x;
+    *p_y=y;
+    *p_xboton=xboton;
+    *p_yboton=yboton;
+}
+
+
+
+//Si ampliar_reducir_ancho=1, dice si posicion de arriba de ampliar ancho
+//Si no, dice posicion de abajo de reducir ancho
+int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(int ampliar_reducir_ancho)
+{
+    if (zxvision_if_lower_button_switch_zxdesktop_visible() && mouse_left) {
+
+        int x,y,xboton,yboton;
+
+        zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common(&x,&y,&xboton,&yboton);
+
+        //Boton arriba: ampliar ancho
+        if (ampliar_reducir_ancho) {
+            if (x==xboton && y==yboton) {
+                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop enlarge width button");
+                return 1;
+            }
+        }
+
+        //Boton abajo: reducir ancho
+        else {
+            if (x==xboton && y==yboton+1) {
+                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop reduce width button");
+                return 1;
+            }
+        }
+
+
     }
 
     return 0;
