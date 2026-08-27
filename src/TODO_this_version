@@ -186,3 +186,6 @@ ok *poder elegir otra qsound rom alternativa
 -en info de audio chip en icono maquina ql, que diga que hay ay si conviene
 
 
+-Extract img en filesel solo lo detecte si máquina QL. Para no confundir con imágenes de disco duro .img
+
+-soporte joystick ql?
