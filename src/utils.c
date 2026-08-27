@@ -8365,6 +8365,9 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
     util_generate_random_noise(pressrelease);
 
+    //Cuando esta qimi mouse, solo afecta a la interaccion del usuario si está la maquina actual en QL
+    int ql_qimi_mouse_enabled_on_ql=(ql_qimi_mouse_enabled && MACHINE_IS_QL ? 1 : 0);
+
     switch(boton) {
         case UTIL_MOUSE_LEFT_BUTTON:
             if (pressrelease) {
@@ -8383,8 +8386,8 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                             int abrir_menu=0;
 
 
-                            //Si no está ni kempston ni lightgun, se abre menu pulsando en cualquier sitio
-                            if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled==0) {
+                            //Si no está ni kempston ni lightgun ni qimi en QL, se abre menu pulsando en cualquier sitio
+                            if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled_on_ql==0) {
                                 abrir_menu=1;
                             }
 
@@ -8452,9 +8455,9 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                 //Si esta menu abierto, hace como ESC
 
                 if (si_menu_mouse_activado()) {
-                    //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
+                    //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston ni lightgun ni qimi en QL
                     if (menu_abierto==0) {
-                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled==0) {
+                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0 && ql_qimi_mouse_enabled_on_ql==0) {
                             if (mouse_menu_ignore_click_open.v==0) {
                                 menu_fire_event_open_menu();
 
