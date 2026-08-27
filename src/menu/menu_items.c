@@ -44257,6 +44257,8 @@ int menu_clive_game_previous_machine=-1;
 //si menu_clive_game_talking_state=MENU_CLIVE_TALKING_STATES es que ha dejado de hablar y se queda ahi un rato para que se lea el mensaje
 int menu_clive_game_talking_state=0;
 
+int menu_clive_game_normal_state=0;
+
 #define MENU_CLIVE_TALKING_LETTERS_PER_FACE_MOVEMENT 3
 
 #define MENU_CLIVE_MAX_PHRASE_LENGTH 1024
@@ -44307,7 +44309,7 @@ char *frases_clive_game[MENU_CLIVE_MAX_PHRASES]={
 #define MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE (10*1000)
 
 //Probabilidades de eventos aleatorios, sobre 1000
-#define MENU_CLIVE_PROBABILIDAD_HABLAR 20
+#define MENU_CLIVE_PROBABILIDAD_HABLAR 10
 #define MENU_CLIVE_PROBABILIDAD_GAFAS_SOL 5
 
 void menu_clive_game_select_random_phrase(void)
@@ -44638,6 +44640,7 @@ void menu_clive_game_draw_clive(void)
         break;
 
         case CLIVE_SLEEP:
+            //2 caras diferentes si duerme
             if ((contador_segundo_infinito % 4000) < 2000) {
                 puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep;
             }
@@ -44719,7 +44722,28 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_NORMAL:
         default:
-            puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_left;
+            //cambiar entre 4 caras cada 5 segundos
+            if ((contador_segundo_infinito % 5000) ==0) {
+                menu_clive_game_normal_state=util_get_random_enhanced()%4;
+            }
+
+            switch(menu_clive_game_normal_state) {
+                case 1:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_right;
+                break;
+
+                case 2:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_up_left;
+                break;
+
+                case 3:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_up_right;
+                break;
+
+                default:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_down_left;
+                break;
+            }
         break;
 
     }
