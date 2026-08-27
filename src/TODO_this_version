@@ -162,8 +162,9 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 
 -Clive
 *si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
-ok *mientras habla si cambia a otro estado (por ejemplo triste o corazones) se quedara overlay de texto
-ok Hay que hacer que con los cambios de estado, si estaba hablando, quite el overlay
+
+
+
 
 -poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 -> tiene sentido?
@@ -183,7 +184,6 @@ ok Hay que hacer que con los cambios de estado, si estaba hablando, quite el ove
 - poner en features características nuevas de QL: mouse, qsound etc etc
 
 
-ok -Extract img en filesel solo lo detecte si máquina QL. Para no confundir con imágenes de disco duro .img
 
 -soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
 Arriba → F4
