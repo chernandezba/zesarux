@@ -315,7 +315,7 @@ int menu_file_filter(const char *name,char *filtros[])
         else return 0;
     }
 
-    if (!strcasecmp(extension,"img")) return 1;
+    if (!strcasecmp(extension,"img") && MACHINE_IS_QL) return 1;
 
     if (!strcasecmp(extension,"win")) return 1;
 
@@ -3270,7 +3270,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx","img","win",
+        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx","win",
         NULL
     };
 
@@ -3281,6 +3281,9 @@ int menu_filesel_file_can_be_expanded(char *archivo)
             return 1;
         }
     }
+
+    //IMG también puede ser una imagen de disco genérica, por tanto solo identificarla como expandible en QL
+    if (!util_compare_file_extension(archivo,"img") && MACHINE_IS_QL) return 1;
 
     //mdv solo los que son de un tamaño concreto
     if (!util_compare_file_extension(archivo,"mdv")) {

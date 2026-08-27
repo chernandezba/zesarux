@@ -183,8 +183,6 @@ ok *poder elegir otra qsound rom alternativa
 
 - poner en features características nuevas de QL: mouse, qsound etc etc
 
--en info de audio chip en icono maquina ql, que diga que hay ay si conviene
-
 
 -Extract img en filesel solo lo detecte si máquina QL. Para no confundir con imágenes de disco duro .img
 
