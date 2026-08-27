@@ -44399,7 +44399,6 @@ void menu_clive_game_handle_timers(void)
             //Si lleva mas de 1 minuto sin moverse, ir a dormir
             if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_PARA_DORMIRSE) {
                 menu_clive_game_state=CLIVE_SLEEP;
-                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
 
             else {
@@ -44413,7 +44412,6 @@ void menu_clive_game_handle_timers(void)
                         if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_GAFAS_SOL) {
                             //printf("Se pone las gafas\n");
                             menu_clive_game_state=CLIVE_SUNGLASSES;
-                            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
                         }
 
                         //printf("Ver si se pone a hablar\n");
@@ -44422,7 +44420,6 @@ void menu_clive_game_handle_timers(void)
                         if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR) {
                             printf("Se pone a hablar\n");
                             menu_clive_game_state=CLIVE_TALKING;
-                            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
                             menu_clive_game_select_random_phrase();
                         }
                     }
@@ -44451,8 +44448,6 @@ void menu_clive_game_handle_timers(void)
                     //Lo enviamos a dormir
                     printf("Se va a dormir\n");
                     menu_clive_game_state=CLIVE_SLEEP;
-                    menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
-
                     menu_clive_game_remove_talking_text();
 
                 }
@@ -44463,7 +44458,6 @@ void menu_clive_game_handle_timers(void)
         case CLIVE_MOVED:
             if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_MOVIDO_A_REPOSO) {
                 menu_clive_game_state=CLIVE_NORMAL;
-                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
         break;
 
@@ -44472,7 +44466,6 @@ void menu_clive_game_handle_timers(void)
         case CLIVE_SAD:
             if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_CORAZON_O_TRISTE) {
                 menu_clive_game_state=CLIVE_NORMAL;
-                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
         break;
 
@@ -44480,7 +44473,6 @@ void menu_clive_game_handle_timers(void)
             //Si pasa mas de 1 segundo desde mostrar el error, ir a estado normal
             if (tiempo_ultimo_estado>1000) {
                 menu_clive_game_state=CLIVE_NORMAL;
-                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
         break;
 
@@ -44488,7 +44480,6 @@ void menu_clive_game_handle_timers(void)
             //1 segundo maximo mostrando la lengua
             if (tiempo_ultimo_estado>1000) {
                 menu_clive_game_state=CLIVE_NORMAL;
-                menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
             }
         break;
 
@@ -44497,9 +44488,10 @@ void menu_clive_game_handle_timers(void)
 
     }
 
-    //Si ha cambiado el estado, borrar toda la ventana
+    //Si ha cambiado el estado, borrar toda la ventana y ademas apuntar el timer donde esta
     if (menu_clive_game_state_antes!=menu_clive_game_state) {
         menu_clive_game_window->must_clear_cache_on_draw=1;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
 
 
