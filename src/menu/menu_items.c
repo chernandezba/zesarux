@@ -44235,7 +44235,8 @@ enum clive_game_states {
     CLIVE_HEART,
     CLIVE_SUNGLASSES,
     CLIVE_TALKING,
-    CLIVE_TONGUE
+    CLIVE_TONGUE,
+    CLIVE_WINK
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44483,6 +44484,13 @@ void menu_clive_game_handle_timers(void)
             }
         break;
 
+        case CLIVE_WINK:
+            //1 segundo maximo guiñando el ojo
+            if (tiempo_ultimo_estado>1000) {
+                menu_clive_game_state=CLIVE_NORMAL;
+            }
+        break;
+
         default:
         break;
 
@@ -44538,6 +44546,17 @@ void menu_clive_game_handle_state_changes(void)
             menu_clive_game_remove_talking_text();
 
             menu_clive_game_state=CLIVE_TONGUE;
+            menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+        }
+    }
+
+    //Si se ha pulsado el boton derecho del raton dentro de la ventana, guiñar el ojo
+    if (mouse_right) {
+        if (zxvision_mouse_en_ventana(menu_clive_game_window) && menu_mouse_y!=0) {
+            //Si estaba hablando, dejar de hablar
+            menu_clive_game_remove_talking_text();
+
+            menu_clive_game_state=CLIVE_WINK;
             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
         }
     }
@@ -44641,6 +44660,10 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_TONGUE:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_tongue;
+        break;
+
+        case CLIVE_WINK:
+            puntero_bitmap=bitmap_button_ext_desktop_other_clive_wink;
         break;
 
         case CLIVE_TALKING:
