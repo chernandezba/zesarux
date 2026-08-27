@@ -44722,9 +44722,9 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_NORMAL:
         default:
-            //cambiar entre 4 caras cada 5 segundos
+            //cambiar entre 5 caras cada 5 segundos
             if ((contador_segundo_infinito % 5000) ==0) {
-                menu_clive_game_normal_state=util_get_random_enhanced()%4;
+                menu_clive_game_normal_state=util_get_random_enhanced()%5;
             }
 
             switch(menu_clive_game_normal_state) {
@@ -44738,6 +44738,10 @@ void menu_clive_game_draw_clive(void)
 
                 case 3:
                     puntero_bitmap=bitmap_button_ext_desktop_other_clive_up_right;
+                break;
+
+                case 4:
+                    puntero_bitmap=bitmap_button_ext_desktop_other_clive_speccy;
                 break;
 
                 default:
