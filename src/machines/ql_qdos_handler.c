@@ -1957,6 +1957,25 @@ void handle_trap_fs_headr(void)
     }
 }
 
+//Mira si hay un archivo llamado "LABEL" y lo retorna como label
+void handle_trap_fs_mdinf_obtener_label_de_disco(int indice_canal,char *label)
+{
+
+    char channel_device[PATH_MAX];
+    char channel_file[PATH_MAX];
+    char label_path[PATH_MAX];
+    ql_split_path_device_name(qltraps_fopen_files[indice_canal].ql_file_name,
+        channel_device,channel_file,0,0);
+
+    if (ql_return_full_path(channel_device,"LABEL",label_path)) return;
+
+    if (si_existe_archivo(label_path)) {
+        //Primero ponemos todo label a espacio para rellenar luego con el nombre efectivo leido
+        strcpy(label,"          ");
+        lee_archivo(label_path,label,10);
+    }
+}
+
 
 void handle_trap_fs_mdinf(void)
 {
@@ -2008,7 +2027,8 @@ void handle_trap_fs_mdinf(void)
 
         char label[11]="ZEsarUXMD "; //por defecto. 10 caracteres y dejamos el 0 del final aunque no se use
 
-        //TODO: Ver si hay archivo "LABEL" y asignarlo a char label
+        //Ver si hay archivo "LABEL" y asignarlo a char label
+        handle_trap_fs_mdinf_obtener_label_de_disco(indice_canal,label);
 
         int i;
         for (i=0;i<10;i++) ql_writebyte(puntero++,label[i]);
