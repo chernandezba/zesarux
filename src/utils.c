@@ -7222,7 +7222,7 @@ int quickload_continue(char *nombre) {
         return 0;
     }
 
-    //QL MDV de Qlay de tamaño concreto
+    //QL MDV
     else if (MACHINE_IS_QL &&
         (
                    !util_compare_file_extension(nombre,"mdv")

@@ -129,16 +129,6 @@ http://www.dilwyn.me.uk/downloads.html
 -util z80 moto poke pokea en motorola pero sin protección de escritura en rom
 
 
--Mdv dos formatos
-
-http://qlforum.co.uk/viewtopic.php?t=749&start=20
-
-You know that q-emulator supports two different types of mdv image files Both with ".mdv" file extensions?
-
-QLay style, and Q-emulator style made with the mdump_exe program.
-
-QLay image files are 174,930 bytes long, and q-emulater image files are of a varying length due to only storing the good sectors of the Microdrive.
-
 
 --juegos funcionan bien en ql (hay muchos mas, pero estos estan bien y ademas tienen sonido):
 catchjack.zip

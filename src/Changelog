@@ -20,7 +20,8 @@ Improved Sinclair QL emulation:
 - Added QL QIMI Mouse emulation
 - Added flp2 drive
 - Allow smartload of files type boot, basic or executables, running sentences lrun_ or exec_ automatically
-- Allow to smartload .mdv images (only Qlay format of size 174930)
+- Allow to smartload .mdv images
+- Added support for all kind of .mdv files
 - Added support for .img (QDOS QL5A / QL5B) images
 - Added support for .win images
 - Allow to load additional ROMS (for example tkii220.rom)

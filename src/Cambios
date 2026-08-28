@@ -20,7 +20,8 @@ Mejorada emulación de Sinclair QL:
 - Agregada emulación de Ratón QL QIMI
 - Agregada unidad flp2
 - Permitir smartload archivos tipo boot, basic o ejecutables, ejecutando sentencias lrun_ o exec_ automáticamente
-- Permitir smartload imágenes .mdv (solo formato Qlay de tamaño 174930)
+- Permitir smartload imágenes .mdv
+- Agregado soporte para cualquier tipo de archivos .mdv
 - Agregado soporte para imágenes .img (QDOS QL5A / QL5B) images
 - Agregado soporte para imágenes .win
 - Permitir cargar ROMS adicionales (por ejemplo tkii220.rom)
