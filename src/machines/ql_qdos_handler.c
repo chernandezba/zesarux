@@ -2006,6 +2006,14 @@ void handle_trap_fs_mdinf(void)
         reg_a1 +=10;
         m68k_set_reg(M68K_REG_A1,reg_a1);
 
+        char label[11]="ZEsarUXMD "; //por defecto. 10 caracteres y dejamos el 0 del final aunque no se use
+
+        //TODO: Ver si hay archivo "LABEL" y asignarlo a char label
+
+        int i;
+        for (i=0;i<10;i++) ql_writebyte(puntero++,label[i]);
+
+        /*
         ql_writebyte(puntero++,'Z');
         ql_writebyte(puntero++,'E');
         ql_writebyte(puntero++,'s');
@@ -2016,6 +2024,7 @@ void handle_trap_fs_mdinf(void)
         ql_writebyte(puntero++,'M');
         ql_writebyte(puntero++,'D');
         ql_writebyte(puntero++,' '); //10
+        */
 
 
     }
