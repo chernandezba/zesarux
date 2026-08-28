@@ -174,37 +174,18 @@ void mdvtool_file_dump_chain(int f) {
   printf("\n");
 }
 
+//Generar archivo LABEL con el label dentro de dicho archivo
 void mdvtool_create_label(char *medium_name,char *dest_dir)
 {
     //printf("medium name: %s dest_dir: %s\n",medium_name,dest_dir);
 
-    char buffer_nombre[PATH_MAX];
-    /*
-    Evitar caracteres tipo / o \
-    */
-
-   int i;
-
-   for (i=0;medium_name[i];i++) {
-       char c=medium_name[i];
-
-       if (c=='/' || c=='\\') c='.';
-
-       buffer_nombre[i]=c;
-   }
-
-   buffer_nombre[i]=0;
-
    char nombre_final[PATH_MAX];
 
-   sprintf(nombre_final,"%s/LABEL-%s",dest_dir,buffer_nombre);
+   sprintf(nombre_final,"%s/LABEL",dest_dir);
 
    debug_printf(VERBOSE_INFO,"Creating label file %s",nombre_final);
 
-   char *buffer_contenido="Dummy file just to generate a file label";
-
-   util_save_file((z80_byte *)buffer_contenido,strlen(buffer_contenido),nombre_final);
-
+   util_save_file((z80_byte *)medium_name,10,nombre_final);
 
 }
 
