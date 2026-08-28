@@ -1562,6 +1562,81 @@ make_directory(const char *path)
 
 
 /* --------------------------------------------------------- */
+/* Crear fichero con el label del medio                      */
+/* --------------------------------------------------------- */
+
+static int
+create_label_file(const char *output_directory,
+                  const char *medium_name)
+{
+    char label[11];
+    char filename[4096];
+    size_t label_length;
+    int n;
+    FILE *f;
+
+    memcpy(label, medium_name, 10);
+    label[10] = '\0';
+
+    label_length = strlen(label);
+
+    while (label_length > 0 &&
+           label[label_length - 1] == ' ')
+    {
+        label[--label_length] = '\0';
+    }
+
+    if (label_length == 0)
+        return 1;
+
+    n = snprintf(filename,
+                 sizeof(filename),
+                 "%s%cLABEL",
+                 output_directory,
+                 PATH_SEPARATOR);
+
+    if (n < 0 || (size_t)n >= sizeof(filename))
+    {
+        fprintf(stderr,
+                "ERROR: ruta demasiado larga para el archivo LABEL\n");
+        return 0;
+    }
+
+    f = fopen(filename, "wb");
+
+    if (f == NULL)
+    {
+        fprintf(stderr,
+                "ERROR: no puedo crear '%s': %s\n",
+                filename,
+                strerror(errno));
+        return 0;
+    }
+
+    if (fwrite(label, 1, label_length, f) != label_length)
+    {
+        fprintf(stderr,
+                "ERROR escribiendo '%s'\n",
+                filename);
+        fclose(f);
+        return 0;
+    }
+
+    if (fclose(f) != 0)
+    {
+        fprintf(stderr,
+                "ERROR cerrando '%s': %s\n",
+                filename,
+                strerror(errno));
+        return 0;
+    }
+
+    printf("Archivo LABEL creado: %s\n", label);
+    return 1;
+}
+
+
+/* --------------------------------------------------------- */
 /* Existe fichero host                                       */
 /* --------------------------------------------------------- */
 
@@ -2036,6 +2111,12 @@ main_ql_extract_img(int argc, char **argv)
             {
                 failed++;
             }
+        }
+
+        if (!create_label_file(output_directory,
+                               disk.medium_name))
+        {
+            failed++;
         }
 
 
