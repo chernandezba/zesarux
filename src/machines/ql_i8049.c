@@ -22,6 +22,7 @@
 
 
 #include <stdio.h>
+#include <stdint.h>
 
 
 #include "ql_i8049.h"
@@ -158,6 +159,20 @@ int ql_audio_output_bit=0;
 
 //Si hay sonido produciendose
 int ql_audio_playing=0;
+
+//Acumulador de fase entero de 32 bits. Permite generar frecuencias precisas
+//sin limitar cada semiperiodo a un numero entero de muestras de 15600 Hz.
+static uint32_t ql_audio_phase_accumulator=0;
+static uint32_t ql_audio_phase_increment=0;
+static int ql_audio_previous_output_bit=0;
+static moto_byte ql_audio_phase_pitch=0;
+static unsigned char ql_audio_phase_fuziness=0;
+
+//Duration y grad_x usan unidades de 72 microsegundos. Este acumulador permite
+//medir la duracion con enteros aunque cada muestra de audio dure 1/15600 s.
+#define QL_AUDIO_TIME_FRACTION_PER_SAMPLE 1000000U
+#define QL_AUDIO_DURATION_FRACTION_LIMIT  (72U*FRECUENCIA_CONSTANTE_NORMAL_SONIDO)
+static uint32_t ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
 
 
 // Fin Parametros de sonido
@@ -798,6 +813,7 @@ void ql_stop_sound(void)
 {
 
     ql_audio_playing=0;
+    ql_audio_phase_increment=0;
 }
 
 moto_int ql_get_counter_from_pitch(moto_byte pitch)
@@ -833,6 +849,34 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
     }
 }
 
+//Seleccionar un pitch usando solo aritmetica entera. Fuzziness se conserva
+//con el mismo efecto aproximado que tenia al sumarse al semiperiodo anterior.
+static void ql_audio_set_current_pitch(moto_byte pitch)
+{
+    uint64_t numerator;
+    uint64_t denominator;
+    int frecuencia=ql_pitch_frequency_table[pitch];
+
+    ql_audio_switch_pitch_current_pitch=pitch;
+    ql_audio_phase_pitch=pitch;
+    ql_audio_phase_fuziness=ql_audio_fuziness;
+
+    if (frecuencia<=0) {
+        ql_audio_phase_increment=0;
+        return;
+    }
+
+    numerator=((uint64_t)(unsigned int)frecuencia)<<32;
+    denominator=FRECUENCIA_CONSTANTE_NORMAL_SONIDO+
+                (uint64_t)2U*(unsigned int)ql_audio_fuziness*(unsigned int)frecuencia;
+
+    ql_audio_phase_increment=(uint32_t)(numerator/denominator);
+
+    //Mantener estos contadores para compatibilidad con snapshots antiguos.
+    ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(pitch);
+    ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
+}
+
 
 
 
@@ -866,12 +910,7 @@ void ql_audio_switch_pitches_init(void)
     //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios
     if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y) {
 
-        ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(ql_audio_pitch1);
-
-
-    //printf("contador: %d\n",ql_audio_pitch_counter_initial);
-
-        ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
+        ql_audio_set_current_pitch(ql_audio_pitch1);
 
         return;
     }
@@ -931,10 +970,7 @@ void ql_audio_switch_pitches_init(void)
     //printf("final_pitch: %d\n",ql_audio_switch_pitch_current_pitch);
 
 
-    ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(ql_audio_switch_pitch_current_pitch);
-
-
-    ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
+    ql_audio_set_current_pitch(ql_audio_switch_pitch_current_pitch);
 
 
 }
@@ -1082,10 +1118,7 @@ void ql_audio_switch_pitches(void)
 
         //printf("current pitch: %d\n",ql_audio_switch_pitch_current_pitch);
 
-        ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(ql_audio_switch_pitch_current_pitch);
-
-
-        ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
+        ql_audio_set_current_pitch(ql_audio_switch_pitch_current_pitch);
     }
 
 }
@@ -1100,26 +1133,48 @@ void ql_audio_next_cycle(void)
 
     ql_audio_next_cycle_counter++;
 
-    //Contador para el pitch, para conmutar valor altavoz
-    ql_audio_pitch_counter_current--;
-    if (ql_audio_pitch_counter_current==0) {
-        ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
-        ql_audio_output_bit ^=1;
+    //Un snapshot antiguo no contiene el nuevo acumulador. Reconstruirlo al
+    //primer ciclo conservando el nivel de salida guardado en el snapshot.
+    {
+        moto_byte pitch=ql_audio_switch_pitch_current_pitch;
 
-        ql_audio_switch_pitches();
+        if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y)
+            pitch=ql_audio_pitch1;
+
+        if (ql_audio_phase_increment==0 ||
+            ql_audio_phase_pitch!=pitch ||
+            ql_audio_phase_fuziness!=ql_audio_fuziness) {
+            if (ql_audio_phase_increment==0)
+                ql_audio_phase_accumulator=ql_audio_output_bit ? 0x80000000U : 0;
+
+            ql_audio_set_current_pitch(pitch);
+        }
     }
+
+    ql_audio_phase_accumulator+=ql_audio_phase_increment;
+    ql_audio_output_bit=(int)(ql_audio_phase_accumulator>>31);
+
+    //Mantener el cambio de pitch en el mismo punto que antes: al cambiar el
+    //nivel de la onda cuadrada.
+    if (ql_audio_output_bit!=ql_audio_previous_output_bit) ql_audio_switch_pitches();
+    ql_audio_previous_output_bit=ql_audio_output_bit;
 
 
     //Contador de la duracion del sonido
     //Si es 0, dejarlo tal cual
     if (ql_current_sound_duration!=0) {
 
-        ql_current_sound_duration--;
+        ql_audio_duration_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
 
-        if (ql_current_sound_duration==0) {
-            //Silenciar
-            //printf("stop sound\n");
-            ql_stop_sound();
+        if (ql_audio_duration_fraction>=QL_AUDIO_DURATION_FRACTION_LIMIT) {
+            ql_audio_duration_fraction-=QL_AUDIO_DURATION_FRACTION_LIMIT;
+            ql_current_sound_duration--;
+
+            if (ql_current_sound_duration==0) {
+                //Silenciar
+                //printf("stop sound\n");
+                ql_stop_sound();
+            }
         }
     }
 }
@@ -1267,6 +1322,11 @@ void ql_ipc_set_sound_parameters(void)
     ql_audio_next_cycle_counter=0;
     ql_audio_wrap_counter=0;
 
+    ql_audio_phase_accumulator=0;
+    ql_audio_output_bit=0;
+    ql_audio_previous_output_bit=0;
+    ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+
     ql_audio_playing=1;
 
 
@@ -1274,16 +1334,10 @@ void ql_ipc_set_sound_parameters(void)
 
 int ql_ipc_get_frecuency_sound_value(int pitch)
 {
-    //ql_audio_pitch
+    if (pitch<0) pitch=0;
+    if (pitch>255) pitch=255;
 
-    //Cada scanline, se decrementa el contador. Por tanto, son 15600 hz de base
-
-    //No deberia ser 0 nunca, pero por si acaso
-    if (pitch==0) return FRECUENCIA_SONIDO;
-
-    int frecuencia=FRECUENCIA_SONIDO/pitch/2;
-
-    return frecuencia;
+    return ql_pitch_frequency_table[pitch];
 }
 
 
@@ -1292,7 +1346,7 @@ int ql_ipc_get_frecuency_sound_value(int pitch)
 int ql_ipc_get_frecuency_sound_current_pitch(void)
 {
 
-    return ql_ipc_get_frecuency_sound_value(ql_audio_pitch_counter_initial);
+    return ql_ipc_get_frecuency_sound_value(ql_audio_switch_pitch_current_pitch);
 }
 
 
