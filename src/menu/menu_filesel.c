@@ -310,10 +310,7 @@ int menu_file_filter(const char *name,char *filtros[])
 
     if (!strcasecmp(extension,"rar")) return 1;
 
-    if (!strcasecmp(extension,"mdv")) {
-        if (get_file_size((char *)name)==174930) return 1;
-        else return 0;
-    }
+    if (!strcasecmp(extension,"mdv")) return 1;
 
     if (!strcasecmp(extension,"img") && MACHINE_IS_QL) return 1;
 
@@ -3285,11 +3282,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     //IMG también puede ser una imagen de disco genérica, por tanto solo identificarla como expandible en QL
     if (!util_compare_file_extension(archivo,"img") && MACHINE_IS_QL) return 1;
 
-    //mdv solo los que son de un tamaño concreto
-    if (!util_compare_file_extension(archivo,"mdv")) {
-        if (get_file_size(archivo)==174930) return 1;
-        else return 0;
-    }
+    if (!util_compare_file_extension(archivo,"mdv")) return 1;
 
     //Ver si comprimido
     if (menu_filesel_is_compressed(archivo)) return 1;

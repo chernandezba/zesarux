@@ -1,5 +1,13 @@
 /*
-    mdvtool.c: Tool from MIST emulator to extract contents of a .mdv qlay file format. File should be 174930 bytes in size
+    mdvtool.c: Tool from MIST emulator to extract contents of .mdv images.
+
+    Mejorado soportados por ZEsarUX:
+
+    1. QLay clasico de 174.930 bytes (el único que soportaba mdvtool inicialmente)
+    2. Q-emulator Mdump 1, con sectores de 528 bytes.
+    3. Q-emulator Mdump 2, con sectores de 530 bytes.
+    4. Imagenes Mdump con cantidad variable de sectores buenos.
+
     (c) 2015 by Till Harbaum
     https://github.com/mist-devel
     https://github.com/mist-devel/mist-binaries/tree/master/cores/ql/tools/mdvtool
@@ -103,6 +111,17 @@ unsigned short sum(unsigned char *p, int len) {
   return v;
 }
 
+static unsigned short mdvtool_read_be16(const unsigned char *p) {
+  return ((unsigned short)p[0] << 8) | p[1];
+}
+
+static unsigned int mdvtool_read_be32(const unsigned char *p) {
+  return ((unsigned int)p[0] << 24) |
+         ((unsigned int)p[1] << 16) |
+         ((unsigned int)p[2] << 8) |
+         p[3];
+}
+
 unsigned short mdvtool_get_index(int s) {
   int i;
   for(i=0;i<MDVTOOL_MAX_SECTORS;i++)
@@ -198,6 +217,91 @@ void mdvtool_create_label(char *medium_name,char *dest_dir)
 
 }
 
+//Cargar imagen Q-emulator Mdump 1/2 y convertir sus sectores al formato interno QLAY
+static int mdvtool_load_mdump(FILE *file,int file_size)
+{
+  unsigned char header[46];
+  unsigned char mdump_sector[530];
+  unsigned int data_offset;
+  unsigned short sector_size;
+  unsigned char sector_count;
+  unsigned short sector_data_offset;
+  unsigned short sector_header_offset;
+  unsigned short block_header_offset;
+  int i;
+
+  if (fseek(file,0,SEEK_SET)!=0 || fread(header,1,sizeof(header),file)!=sizeof(header)) {
+    fprintf(stderr,"Unable to read Mdump header\n");
+    return -1;
+  }
+
+  if (memcmp(header,"Mdv*Dump",8)!=0) {
+    fprintf(stderr,"Unknown MDV image format\n");
+    return -1;
+  }
+
+  data_offset=mdvtool_read_be32(header+0x0c);
+  sector_size=mdvtool_read_be16(header+0x10);
+  sector_count=header[0x12];
+  sector_data_offset=mdvtool_read_be16(header+0x28);
+  sector_header_offset=mdvtool_read_be16(header+0x2a);
+  block_header_offset=mdvtool_read_be16(header+0x2c);
+
+  if ((sector_size!=528 && sector_size!=530) ||
+      sector_count==0 ||
+      sector_data_offset!=16 ||
+      sector_header_offset!=0 ||
+      block_header_offset!=14 ||
+      data_offset<sizeof(header) ||
+      data_offset+(unsigned int)sector_count*sector_size>(unsigned int)file_size) {
+    fprintf(stderr,"Invalid or unsupported Mdump image header\n");
+    return -1;
+  }
+
+  if (fseek(file,(long)data_offset,SEEK_SET)!=0) {
+    fprintf(stderr,"Unable to seek to Mdump sector data\n");
+    return -1;
+  }
+
+  memset(buffer,0,sizeof(buffer));
+
+  for (i=0;i<sector_count;i++) {
+    mdv_entry_t *entry=&buffer[i];
+
+    if (fread(mdump_sector,1,sector_size,file)!=sector_size) {
+      fprintf(stderr,"Unable to read Mdump sector %d\n",i);
+      return -1;
+    }
+
+    memset(entry->hdr.preamble,0,10);
+    entry->hdr.preamble[10]=0xff;
+    entry->hdr.preamble[11]=0xff;
+    entry->hdr.ff=mdump_sector[0];
+    entry->hdr.snum=mdump_sector[1];
+    memcpy(entry->hdr.name,mdump_sector+2,10);
+    memcpy(&entry->hdr.rnd,mdump_sector+12,2);
+    entry->hdr.csum=sum(&entry->hdr.ff,14);
+
+    memset(entry->sec.bh_preamble,0,10);
+    entry->sec.bh_preamble[10]=0xff;
+    entry->sec.bh_preamble[11]=0xff;
+    entry->sec.file=mdump_sector[14];
+    entry->sec.block=mdump_sector[15];
+    entry->sec.bh_csum=sum(&entry->sec.file,2);
+
+    memset(entry->sec.data_preamble,0,6);
+    entry->sec.data_preamble[6]=0xff;
+    entry->sec.data_preamble[7]=0xff;
+    memcpy(entry->sec.data,mdump_sector+16,512);
+    entry->sec.data_csum=sum(entry->sec.data,512);
+  }
+
+  printf("Q-emulator Mdump format: %d sectors, %u bytes/sector\n",
+         sector_count,sector_size);
+
+  return 0;
+}
+
 int mdv_load(char *name,char *dest_dir) {
 
   printf("Loading %s ...\n", name);
@@ -224,12 +328,8 @@ int mdv_load(char *name,char *dest_dir) {
       return -1;
     }
   } else {
-    fprintf(stderr, "Uexpected file size\n");
-
-    // check if it's a qemulator image and load and convert it
-
-
-    return -1;
+    // load qemulator Mdump 1/2 image and convert it
+    if(mdvtool_load_mdump(mdv,size)<0) return -1;
   }
 
   // check all chunks
