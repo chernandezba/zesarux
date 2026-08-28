@@ -616,6 +616,63 @@ static int make_directory(const char *path)
     return 0;
 }
 
+static int create_label_file(const char *output_dir,
+                             const char *device_name)
+{
+    char filename[4096];
+    size_t label_length;
+    int n;
+    FILE *f;
+
+    if (device_name[0] == '\0')
+        return 1;
+
+    n = snprintf(filename,
+                 sizeof(filename),
+                 "%s%cLABEL",
+                 output_dir,
+                 PATH_SEPARATOR);
+
+    if (n < 0 || (size_t)n >= sizeof(filename))
+    {
+        fprintf(stderr,
+                "ERROR: ruta demasiado larga para el archivo LABEL\n");
+        return 0;
+    }
+
+    f = fopen(filename, "wb");
+    if (f == NULL)
+    {
+        fprintf(stderr,
+                "ERROR: no puedo crear '%s': %s\n",
+                filename,
+                strerror(errno));
+        return 0;
+    }
+
+    label_length = strlen(device_name);
+    if (fwrite(device_name, 1, label_length, f) != label_length)
+    {
+        fprintf(stderr,
+                "ERROR escribiendo '%s'\n",
+                filename);
+        fclose(f);
+        return 0;
+    }
+
+    if (fclose(f) != 0)
+    {
+        fprintf(stderr,
+                "ERROR cerrando '%s': %s\n",
+                filename,
+                strerror(errno));
+        return 0;
+    }
+
+    printf("Archivo LABEL creado: %s\n", device_name);
+    return 1;
+}
+
 static int host_file_exists(const char *filename)
 {
     FILE *f = fopen(filename, "rb");
@@ -1096,6 +1153,12 @@ int main_ql_extract_win(int argc, char **argv)
                            &dirs_ok,
                            &skipped,
                            &failed))
+    {
+        failed++;
+    }
+
+    if (!list_only &&
+        !create_label_file(output_directory, win.device_name))
     {
         failed++;
     }
