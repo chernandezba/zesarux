@@ -855,8 +855,11 @@ void cpu_panic(char *mensaje)
             //Maximo 32 caracteres, aunque aprovechamos todo (border incluso) pero hay que considerar
             //por ejemplo pantalla sin border con zoom 1, en ese caso habra un minimo de 256 de ancho (32 caracteres de ancho)
                                  //01234567890123456789012345678901
+
+            char *mensaje_kernel_panic="*  ZEsarUX kernel panic  :-( *\n";
+
             cpu_panic_printstring("******************************\n");
-            cpu_panic_printstring("*  ZEsarUX kernel panic  :-( *\n");
+            cpu_panic_printstring(mensaje_kernel_panic);
             cpu_panic_printstring("******************************\n");
             cpu_panic_printstring("\n\n");
             cpu_panic_printstring("Panic message:\n");
@@ -880,11 +883,21 @@ void cpu_panic(char *mensaje)
             cpu_panic_printstring("\nHave a nice day ;)\n");
 
             //Mostrar cara triste de Clive
-            //Por debajo del contador de tiempo que sale despues
             int zoom_clive=2;
-            int offset_clive_x=0;
+
+            //Por debajo del contador de tiempo que sale despues
+            //int offset_clive_x=0;
+            //int offset_clive_y=cpu_panic_last_y+8*cpu_panic_pixel_zoom; //1 linea por debajo de donde esta ahora para que aparezca el contador de tiempo
+
+            //A la derecha del texto de kernel panic
+            int offset_clive_x=8*strlen(mensaje_kernel_panic)*cpu_panic_pixel_zoom;
+            int offset_clive_y=0;
+
+            int max_offset_clive_x=cpu_panic_xmax-EXT_DESKTOP_BUTTONS_ANCHO*zoom_clive;
             int max_offset_clive_y=cpu_panic_ymax-EXT_DESKTOP_BUTTONS_ALTO*zoom_clive;
-            int offset_clive_y=cpu_panic_last_y+8*cpu_panic_pixel_zoom; //1 linea por debajo de donde esta ahora para que aparezca el contador de tiempo
+
+            //controlar limites y si se pasa ponerlo pegado por abajo y/o derecha
+            if (offset_clive_x>max_offset_clive_x) offset_clive_x=max_offset_clive_x;
             if (offset_clive_y>max_offset_clive_y) offset_clive_y=max_offset_clive_y;
 
 
