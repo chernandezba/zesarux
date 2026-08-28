@@ -8678,10 +8678,10 @@ char *bitmap_button_ext_desktop_other_clive_wink[EXT_DESKTOP_BUTTONS_ANCHO]={
     "    xr......xx.....rx     ",
     "    xr.............rx     ",
     "    xr.....rrr.....rx     ",
-    "    xr..rrrrrrrrr..rx     ",    //19
-    "    xrrrrWrrrrrWrrrrx     ",    //20
-    "    xrrrrrWWWWWrrrrrx     ",
-    "    xrrrrrrrrrrrrrrrx     ",
+    "    xr..rrrrrrrrr..rx     ",
+    "    xrrrxxxxxxxxxrrrx     ",    //20
+    "    xrrrrxWWWWWxrrrrx     ",
+    "    xrrrrrxxxxxrrrrrx     ",
     "     xrrrrrrrrrrrrrx      ",
     "      xxrrrrrrrrrxx       ",
     "        xxxxxxxxx         " 	 //25
