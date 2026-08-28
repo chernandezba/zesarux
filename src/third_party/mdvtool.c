@@ -1,7 +1,7 @@
 /*
     mdvtool.c: Tool from MIST emulator to extract contents of .mdv images.
 
-    Mejorado soportados por ZEsarUX:
+    Mejorado soporte en ZEsarUX:
 
     1. QLay clasico de 174.930 bytes (el único que soportaba mdvtool inicialmente)
     2. Q-emulator Mdump 1, con sectores de 528 bytes.
