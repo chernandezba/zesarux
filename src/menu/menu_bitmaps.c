@@ -8665,13 +8665,13 @@ char *bitmap_button_ext_desktop_other_clive_wink[EXT_DESKTOP_BUTTONS_ANCHO]={
     "     x....x........x      ",
     "    xr.......x.....rx     ",
     "   xr...............rx    ",
-    "   xr...x...x.......rx    ",
-    "   xr..x.......xxx..rx    ",
-    "   xr.x...........x.rx    ",
-    "   xr..xxxx...xxxx..rx    ",   //9
+    "   xr.......x.......rx    ",
+    "   xr..xxx..........rx    ",
+    "   xr.x........xxx..rx    ",
+    "   xr..xxxx...xxxxx.rx    ",   //9
     "  xxxxxWWWWxxx....xxxxx   ",	//10
-    "  x...xWxxWx.x....x...x   ",
-    "  x...xWWWWx.x.xx.x...x   ",
+    "  x...xWxxWx.x.xx.x...x   ",
+    "  x...xWWWWx.x....x...x   ",
     "  x...xWWWWx.x....x...x   ",
     "   xr..xxxx.x.xxxx..rx    ",  //14
     "    xr......x......rx     ",
