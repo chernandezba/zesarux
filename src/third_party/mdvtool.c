@@ -179,6 +179,15 @@ void mdvtool_create_label(char *medium_name,char *dest_dir)
 {
     //printf("medium name: %s dest_dir: %s\n",medium_name,dest_dir);
 
+   int i;
+
+   //No crear el archivo LABEL si el nombre contiene solo espacios o bytes nulos
+   for (i=0;i<10;i++) {
+       if (medium_name[i]!=' ' && medium_name[i]!=0) break;
+   }
+
+   if (i==10) return;
+
    char nombre_final[PATH_MAX];
 
    sprintf(nombre_final,"%s/LABEL",dest_dir);
