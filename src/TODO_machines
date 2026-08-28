@@ -183,6 +183,27 @@ y en la doc de uqlx:
 Q: How do you manage the 50 hz interrupt of the 8049 and the Keyboard interrupt?
 
 
+Sugerencias de Alvaro Alea:
+
+-1º que funcione la ROM minerva (al menos a mi no me va...) y en especial soporte para la version en español que hizo el compañero Daniel: https://github.com/dfernande132/MinervaSP (aunque lo de los teclados y el QL es un melon muy complicado)
+Creo que el que no funcione esta relacionado con las interrupciones y el teclado, y puede con suerte que sea el mismo problema que hace que en lemmings no puedas pasar del menu inicial.
+
+-Si quiza seria interesante el zesaurux devolviera correctamente la etiqueta del medio (ahora devuelve siempre "ZEsarUXMD" y el numero magic, hay algun microdrive que lo utiliza como proteccion, aunque ahora de memoria no te podria decir, tendria que buscarlo...
+->Lo que puedo intentar hacer es que al extraer genere un archivo "especial" llamado LABEL o algo así y al hacer un dir aparezca el label correspondiente... puede estar chulo
+
+-Otra cosa que no hace nigun emulador, y al menos a mi me resultaria muy interesante, es que soportases el interfaz de discos QUBIDE, que utiliza discos duros IDE o tarjetas CF (es algo parecido el interfaz de 8bits de los ZX Spectrum +3E).
+
+-Soporte para el interfaz QLUB (el interfaz QLUB es un proyecto opensource, pero que usa una tajeta tennsy 2.0 descatalogada, que permite mediante un driver dentro del QL, utilizar un puerto serie com si fuera un interfaz de red sinclair la gracia es que es un puerto serie USB, entonces puedes tener un PC con el emulador, el QLUB pinchado a un USB del ordenador y en el otro lado un QL Real o un ZX Spectrum con interface 1, y contectarlos via el cable de red sinclair entre ellos, como si el QL Emulado fuera uno Real.
+
+-Que emule las Gold Card y la Super Gold Card, estas tarjetas añaden un 68000 o 68020 al QL, ademas de la velocidad extra por los Mhz del procesador, tienen una memoria de mas ancho de bits (16 en la Gold Card y 32 en la Super Gold Card) que aceleran mucho mas el QL.
+A nivel hardware tiene una memoria ROM mas grande, y una RAM que se pagina sobre la ROM en el arranque.
+
+-Y la aurora, es una tarjeta que sustituye al QL cuando se usa con las Gold Card, lo principal de esta tarjeta es que añade nuevos modo de video, en especial cuando se utiliza junto a la Super Gold Card pues añade 256Kb de memoria de video sobre la que ya tienene la supergoldcard.
+
+-Por ultimo una curiosidad a emular seria el raton starmouse, que es un raton que se conectaba en el enchufe de joystick Nº2, y simulaba pulsaciones con los movimientos del raton. en realidad solo hay un programa que utiliza este interface, pero seria curioso.
+
+-Tambien hay un raton "mice" que pone los movimientos del raton en otra posicion de memoria, este raton venia acompañado de una ROM (se conecta al cartucho de ROM del QL) y tenia un entorno grafico, parecido al starmouse, hay 2 o 3 programas que lo utilizan, y es mas que nada una curiosidad, aunque emularlo no es demasiado dificil. y que yo sepa ningun emulador emula a estos dos ratones.
+
 -------------
 
 
