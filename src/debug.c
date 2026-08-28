@@ -119,6 +119,7 @@
 #include "zxmmcplus.h"
 #include "tv.h"
 #include "qsound.h"
+#include "menu_bitmaps.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -790,6 +791,11 @@ void cpu_panic_printstring(char *message)
     }
 }
 
+void cpu_panic_clive_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
+{
+    scr_putpixel(x,y,color);
+}
+
 //Abortar ejecucion del emulador con kernel panic
 void cpu_panic(char *mensaje)
 {
@@ -872,6 +878,18 @@ void cpu_panic(char *mensaje)
             }
                                      //01234567890123456789012345678901
             cpu_panic_printstring("\nHave a nice day ;)\n");
+
+            //Mostrar cara triste de Clive
+            //Por debajo del contador de tiempo que sale despues
+            int zoom_clive=2;
+            int offset_clive_x=0;
+            int max_offset_clive_y=cpu_panic_ymax-EXT_DESKTOP_BUTTONS_ALTO*zoom_clive;
+            int offset_clive_y=cpu_panic_last_y+8*cpu_panic_pixel_zoom; //1 linea por debajo de donde esta ahora para que aparezca el contador de tiempo
+            if (offset_clive_y>max_offset_clive_y) offset_clive_y=max_offset_clive_y;
+
+
+            screen_put_asciibitmap_generic(bitmap_button_ext_desktop_other_clive_cry,NULL,offset_clive_x,offset_clive_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+                0,0,cpu_panic_clive_putpixel,zoom_clive,0,0);
 
 
             int cuenta_atras;
