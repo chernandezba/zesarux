@@ -142,12 +142,75 @@ void baseconf_write_memory_aux(z80_int direccion,z80_byte valor)
         }
 }
 
+z80_byte baseconf_get_video_mode(void)
+{
+        return (baseconf_last_port_eff7&0x20) |
+               ((baseconf_last_port_eff7&1)<<1) |
+               (baseconf_last_port_77&7);
+}
+
 int baseconf_text_mode_active(void)
 {
-        z80_byte mode=(baseconf_last_port_eff7&0x20) |
-                      ((baseconf_last_port_eff7&1)<<1) |
-                      (baseconf_last_port_77&7);
-        return mode==7;
+        return baseconf_get_video_mode()==7;
+}
+
+void screen_baseconf_refresca_ega_mode(void)
+{
+        int x,y;
+        int vpage=(puerto_32765&8) ? 7 : 5;
+
+        /* ATM EGA is a 320x200 packed display.  Each byte describes
+           the colours of two adjacent pixels; the four byte streams
+           alternate between video pages vpage and vpage^4. */
+        for (y=0;y<192;y++) {
+                int sy=y*200/192;
+                for (x=0;x<256;x++) {
+                        int sx=x*320/256;
+                        int pair=sx&~1;
+                        int adr=sy*40+(sx>>3);
+                        int page=vpage;
+                        z80_byte value;
+
+                        switch (pair&7) {
+                        case 0:
+                                page=vpage^4;
+                                break;
+                        case 2:
+                                break;
+                        case 4:
+                                page=vpage^4;
+                                adr+=0x2000;
+                                break;
+                        default: /* pair 6 */
+                                adr+=0x2000;
+                                break;
+                        }
+
+                        value=baseconf_ram_mem_table[page][adr];
+                        if (sx&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
+                        else value=(value&7) | ((value&0x40)>>3);
+                        scr_putpixel_zoom(x,y,value);
+                }
+        }
+}
+
+void screen_baseconf_refresca_hw_multicolor_mode(void)
+{
+        int x,y;
+        int vpage=(puerto_32765&8) ? 7 : 5;
+        z80_byte *screen=baseconf_ram_mem_table[vpage];
+
+        /* In hardware multicolor mode every bitmap byte also supplies
+           the attribute for that same 8-pixel group. */
+        for (y=0;y<192;y++) {
+                int adr_line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
+                for (x=0;x<256;x++) {
+                        z80_byte value=screen[adr_line+(x>>3)];
+                        z80_byte ink=(value&7) | ((value&0x40)>>3);
+                        z80_byte paper=(value&0x78)>>3;
+                        scr_putpixel_zoom(x,y,(value&(0x80>>(x&7))) ? ink : paper);
+                }
+        }
 }
 
 void screen_baseconf_refresca_text_mode(void)
@@ -384,7 +447,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         }
 
         //xx77H
-        else if ( (puerto&0x00FF)==0x77 && baseconf_shadow_ports_available() ) {
+        else if ( (puerto&0x00FF)==0x77 && baseconf_dos_signal && baseconf_shadow_ports_available() ) {
                 baseconf_shadow_mode_port_77=puerto_h;
                baseconf_last_port_77=valor;
 
@@ -483,7 +546,7 @@ segmento 0 pagina 0
 		 zxevo_nvram[zxevo_last_port_dff7]=valor;
 					}
         else if ( (puerto&0x00FF)==0x77 ) {
-                printf ("Record: control signal CS to SD-card unemulated\n");
+                baseconf_sd_cs=(valor&2) ? 1 : 0;
         }
 
         else {

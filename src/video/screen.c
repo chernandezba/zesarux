@@ -5203,9 +5203,20 @@ void scr_refresca_pantalla_comun(void)
 
     z80_byte attribute,ink,paper,bright,flash,aux;
 
-    if (MACHINE_IS_BASECONF && baseconf_text_mode_active()) {
-        screen_baseconf_refresca_text_mode();
-        return;
+    if (MACHINE_IS_BASECONF) {
+        z80_byte baseconf_mode=baseconf_get_video_mode();
+        if (baseconf_mode==0) {
+            screen_baseconf_refresca_ega_mode();
+            return;
+        }
+        if (baseconf_mode==0x23) {
+            screen_baseconf_refresca_hw_multicolor_mode();
+            return;
+        }
+        if (baseconf_mode==7) {
+            screen_baseconf_refresca_text_mode();
+            return;
+        }
     }
 
 
