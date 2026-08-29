@@ -30,7 +30,8 @@ typedef unsigned short z80_int;
 //Tipos propios para motorola, para intentar evitar z80_
 typedef unsigned char moto_byte; // 8 bits
 typedef unsigned short moto_int; // 16 bits
-typedef unsigned int moto_long;
+typedef unsigned int moto_long; // 32 bits
+typedef unsigned long long moto_long_long; // 64 bits
 
 
 

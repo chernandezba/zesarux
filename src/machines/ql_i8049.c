@@ -22,7 +22,6 @@
 
 
 #include <stdio.h>
-#include <stdint.h>
 
 
 #include "ql_i8049.h"
@@ -162,17 +161,17 @@ int ql_audio_playing=0;
 
 //Acumulador de fase entero de 32 bits. Permite generar frecuencias precisas
 //sin limitar cada semiperiodo a un numero entero de muestras de 15600 Hz.
-static uint32_t ql_audio_phase_accumulator=0;
-static uint32_t ql_audio_phase_increment=0;
+static moto_long ql_audio_phase_accumulator=0;
+static moto_long ql_audio_phase_increment=0;
 static int ql_audio_previous_output_bit=0;
 static moto_byte ql_audio_phase_pitch=0;
-static unsigned char ql_audio_phase_fuziness=0;
+static moto_byte ql_audio_phase_fuziness=0;
 
 //Duration y grad_x usan unidades de 72 microsegundos. Este acumulador permite
 //medir la duracion con enteros aunque cada muestra de audio dure 1/15600 s.
 #define QL_AUDIO_TIME_FRACTION_PER_SAMPLE 1000000U
 #define QL_AUDIO_DURATION_FRACTION_LIMIT  (72U*FRECUENCIA_CONSTANTE_NORMAL_SONIDO)
-static uint32_t ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+static moto_long ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
 
 
 // Fin Parametros de sonido
@@ -853,24 +852,24 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
 //con el mismo efecto aproximado que tenia al sumarse al semiperiodo anterior.
 static void ql_audio_set_current_pitch(moto_byte pitch)
 {
-    uint64_t numerator;
-    uint64_t denominator;
-    int frecuencia=ql_pitch_frequency_table[pitch];
+    moto_long_long numerator;
+    moto_long_long denominator;
+    moto_long frecuencia=(moto_long)ql_pitch_frequency_table[pitch];
 
     ql_audio_switch_pitch_current_pitch=pitch;
     ql_audio_phase_pitch=pitch;
     ql_audio_phase_fuziness=ql_audio_fuziness;
 
-    if (frecuencia<=0) {
+    if (frecuencia==0) {
         ql_audio_phase_increment=0;
         return;
     }
 
-    numerator=((uint64_t)(unsigned int)frecuencia)<<32;
+    numerator=((moto_long_long)frecuencia)<<32;
     denominator=FRECUENCIA_CONSTANTE_NORMAL_SONIDO+
-                (uint64_t)2U*(unsigned int)ql_audio_fuziness*(unsigned int)frecuencia;
+                (moto_long_long)2U*ql_audio_fuziness*frecuencia;
 
-    ql_audio_phase_increment=(uint32_t)(numerator/denominator);
+    ql_audio_phase_increment=(moto_long)(numerator/denominator);
 
     //Mantener estos contadores para compatibilidad con snapshots antiguos.
     ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(pitch);
