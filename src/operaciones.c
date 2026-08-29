@@ -1167,6 +1167,7 @@ z80_byte fetch_opcode_spectrum(void)
 #ifdef EMULATE_VISUALMEM
 	set_visualmemopcodebuffer(reg_pc);
 #endif
+	if (MACHINE_IS_BASECONF) baseconf_pre_opcode_fetch(reg_pc);
 	return peek_byte_no_time (reg_pc);
 }
 
@@ -2947,6 +2948,8 @@ void poke_byte_no_time_baseconf(z80_int dir,z80_byte valor)
 	set_visualmembuffer(dir);
 #endif
 
+                baseconf_write_memory_aux(dir,valor);
+
 		z80_byte *puntero;
 		puntero=baseconf_return_segment_memory(dir);
 
@@ -2954,7 +2957,7 @@ void poke_byte_no_time_baseconf(z80_int dir,z80_byte valor)
 		//if (dir<16384) {
 	//return;
 
-			if (baseconf_memory_segments_type[dir/16384]==0) {
+			if (baseconf_memory_segments_type[dir/16384]==0 || !baseconf_memory_write_allowed(dir)) {
 				//0 rom
 				return;
 			}
@@ -9440,7 +9443,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
 				}
 
 	if (MACHINE_IS_BASECONF) {
-		if (puerto_l==0xBF || puerto_l==0x77 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || puerto==0x7ffd || puerto==0xeff7
+		if (puerto_l==0xBF || puerto_l==0x77 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || puerto==0x7ffd || puerto==0xeff7
 			|| puerto==0xEFF7 || puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)
 		{
 			//printf ("Out port baseconf port %04XH value %02XH. PC=%04XH\n",puerto,value,reg_pc);

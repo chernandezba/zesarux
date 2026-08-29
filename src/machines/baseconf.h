@@ -74,6 +74,11 @@ extern int baseconf_sd_cs;
 extern z80_byte baseconf_last_port_bf;
 
 extern int baseconf_shadow_ports_available(void);
+extern void baseconf_write_memory_aux(z80_int direccion,z80_byte valor);
+extern void baseconf_pre_opcode_fetch(z80_int direccion);
+extern int baseconf_memory_write_allowed(z80_int direccion);
+extern int baseconf_text_mode_active(void);
+extern void screen_baseconf_refresca_text_mode(void);
 
 
 

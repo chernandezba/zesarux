@@ -53,6 +53,7 @@
 #include "timer.h"
 #include "tbblue.h"
 #include "tsconf.h"
+#include "baseconf.h"
 #include "mk14.h"
 #include "settings.h"
 #include "vdp_9918a.h"
@@ -5201,6 +5202,11 @@ void scr_refresca_pantalla_comun(void)
     //int zx,zy;
 
     z80_byte attribute,ink,paper,bright,flash,aux;
+
+    if (MACHINE_IS_BASECONF && baseconf_text_mode_active()) {
+        screen_baseconf_refresca_text_mode();
+        return;
+    }
 
 
     if (simulate_screen_zx8081.v==1) {

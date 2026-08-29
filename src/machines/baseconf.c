@@ -57,6 +57,51 @@ z80_byte baseconf_memory_segments[4];
 //0: rom. otra cosa: ram
 z80_byte baseconf_memory_segments_type[4];
 
+/*
+ * BaseConf has two sets of four memory-manager registers.  Bit 4 of
+ * #7FFD selects the set that is visible to the CPU.  Keep the register
+ * contents apart from baseconf_memory_segments[], which describes the
+ * four pages currently resolved and is used by the memory/debug cores.
+ *
+ * Bit 7 in the flags enables substitution of the page bits from #7FFD;
+ * bit 6 selects RAM.  Page numbers below are stored non-inverted.
+ */
+static z80_byte baseconf_mmu_pages[8];
+static z80_byte baseconf_mmu_flags[8];
+static z80_byte baseconf_text_font[2048];
+static int baseconf_dos_signal;
+
+static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
+static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
+extern z80_byte baseconf_shadow_mode_port_77;
+
+void baseconf_pre_opcode_fetch(z80_int direccion)
+{
+        int mapa=(puerto_32765&16) ? 4 : 0;
+        int segmento=direccion>>14;
+
+        /* A9 allows DOS to leave when execution has moved to RAM. */
+        if (baseconf_dos_signal && baseconf_memory_segments_type[segmento] &&
+            (baseconf_shadow_mode_port_77&2)) {
+                baseconf_dos_signal=0;
+                baseconf_set_memory_pages();
+        }
+
+        /* An M1 in #3Dxx re-enters DOS when substitution is enabled for
+           the current MMU window. */
+        if (!baseconf_dos_signal && (direccion&0x3f00)==0x3d00 &&
+            (baseconf_mmu_flags[mapa+segmento]&128)) {
+                baseconf_dos_signal=1;
+                baseconf_set_memory_pages();
+        }
+}
+
+int baseconf_memory_write_allowed(z80_int direccion)
+{
+        int mapa=(puerto_32765&16) ? 4 : 0;
+        return (baseconf_mmu_flags[mapa+(direccion>>14)]&32)==0;
+}
+
 z80_byte baseconf_last_port_77;
 
 z80_byte baseconf_shadow_mode_port_77;
@@ -86,6 +131,61 @@ int baseconf_shadow_ports_available(void)
 void lee_byte_evo_aux(z80_int direccion GCC_UNUSED)
 {
         //TODO: funcion que se usa en el core baseconf de testing
+}
+
+void baseconf_write_memory_aux(z80_int direccion,z80_byte valor)
+{
+        /* BF.bit2 redirects every CPU memory write to the 2 KB text
+           font RAM as well as to the normally mapped memory. */
+        if (baseconf_last_port_bf&4) {
+                baseconf_text_font[direccion&2047]=valor;
+        }
+}
+
+int baseconf_text_mode_active(void)
+{
+        z80_byte mode=(baseconf_last_port_eff7&0x20) |
+                      ((baseconf_last_port_eff7&1)<<1) |
+                      (baseconf_last_port_77&7);
+        return mode==7;
+}
+
+void screen_baseconf_refresca_text_mode(void)
+{
+        int x,y;
+        int vpage=(puerto_32765&8) ? 7 : 5;
+        z80_byte *text=baseconf_ram_mem_table[vpage+3];
+
+        /* PentEvo text is 80x25 characters.  Its 8 font pixels occupy
+           four 320x200 hardware pixels.  Scale the complete mode into
+           the existing 256x192 Spectrum viewport until BaseConf gets
+           its own dynamically sized video surface. */
+        for (y=0;y<192;y++) {
+                int sy=y*200/192;
+                int row=sy>>3;
+                int font_line=sy&7;
+                for (x=0;x<256;x++) {
+                        int half_pixel=x*640/256;
+                        int column=half_pixel>>3;
+                        int font_x=half_pixel&7;
+                        int adr=0x1c0+row*64+(column>>1);
+                        z80_byte caracter,atributo;
+
+                        if (column&1) {
+                                caracter=text[adr+0x1000];
+                                atributo=text[adr+0x2001];
+                        }
+                        else {
+                                caracter=text[adr];
+                                atributo=text[adr+0x3000];
+                        }
+
+                        z80_byte font=baseconf_text_font[caracter*8+font_line];
+                        z80_byte ink=(atributo&7)+((atributo&0x40) ? 8 : 0);
+                        z80_byte paper=((atributo>>3)&7)+((atributo&0x80) ? 8 : 0);
+                        scr_putpixel_zoom(x,y,(font&(0x80>>font_x)) ? ink : paper);
+                }
+        }
 }
 
 void baseconf_reset_cpu(void)
@@ -130,10 +230,19 @@ void baseconf_set_memory_pages(void)
 {
 
         int i=0;
+        int mapa=(puerto_32765&16) ? 4 : 0;
 
         for (i=0;i<4;i++) {
-                z80_byte pagina=baseconf_memory_segments[i];
-                z80_byte pagina_es_ram=baseconf_memory_segments_type[i];
+                z80_byte flags=baseconf_mmu_flags[mapa+i];
+                z80_byte pagina=baseconf_mmu_pages[mapa+i];
+                z80_byte pagina_es_ram=flags&64;
+
+                /* #xFF7 bit 7 does not mean page 7.  It makes the
+                   selected low page bits follow #7FFD dynamically. */
+                if (flags&128) {
+                        if (pagina_es_ram) pagina=baseconf_change_ram_page_7ffd(pagina);
+                        else pagina=baseconf_change_rom_page_trdos(pagina);
+                }
 
                 if ((baseconf_shadow_mode_port_77&1)==0) {
                         //A8: if 0, then disable the memory manager. In each window processor is installed the last page of ROM. 0 after reset.
@@ -165,6 +274,9 @@ void baseconf_set_memory_pages(void)
                         debug_paginas_memoria_mapeadas[i]=DEBUG_PAGINA_MAP_ES_ROM+pagina;
                 }
 
+                baseconf_memory_segments[i]=pagina;
+                baseconf_memory_segments_type[i]=pagina_es_ram;
+
                 //printf ("segmento %d pagina %d\n",i,pagina);
         }
 
@@ -182,14 +294,16 @@ void baseconf_hard_reset(void)
   debug_printf(VERBOSE_DEBUG,"BaseConf Hard reset cpu");
 
   //Asignar bloques memoria
-  baseconf_memory_segments[0]=baseconf_memory_segments[1]=baseconf_memory_segments[2]=baseconf_memory_segments[3]=255;
-  baseconf_memory_segments_type[0]=baseconf_memory_segments_type[1]=baseconf_memory_segments_type[2]=baseconf_memory_segments_type[3]=0;
+  int i;
+  for (i=0;i<8;i++) {
+          baseconf_mmu_pages[i]=255;
+          baseconf_mmu_flags[i]=0;
+  }
+  for (i=0;i<2048;i++) baseconf_text_font[i]=0;
+  baseconf_dos_signal=1;
 
 
   reset_cpu();
-
-
-	int i;
 
 
        //Borrar toda memoria ram
@@ -202,10 +316,15 @@ void baseconf_hard_reset(void)
                         *puntero=0;
                 }
         }
-baseconf_last_port_77=0;
-baseconf_shadow_mode_port_77=0;
+/* Hardware reset value is encoded as 0x83 internally: A14=1 and
+   data bits 1:0=11.  In ZEsarUX both parts are kept separately.  This
+   selects the ordinary ZX video mode while leaving A8/A9 cleared. */
+baseconf_last_port_77=3;
+baseconf_shadow_mode_port_77=0x40;
 baseconf_last_port_bf=0;
 baseconf_last_port_eff7=0;
+baseconf_sd_enabled=1;
+baseconf_sd_cs=1;
 
         baseconf_set_memory_pages();
 
@@ -216,7 +335,7 @@ baseconf_last_port_eff7=0;
 for RAM - in the window there is a substitution under 3 or 6 bits (depending on the mode of ZX Spectrum 128k or pentagon 1024k)
 page numbers are not inverse bits from port # 7FFD.
 */
-z80_byte baseconf_change_ram_page_7ffd(z80_byte value)
+static z80_byte baseconf_change_ram_page_7ffd(z80_byte value)
 {
 
 /*
@@ -247,17 +366,10 @@ For ROM - there is a substitution LSB page numbers signal the inclusion of TR-DO
 In addition, there is the inclusion of the shadow of ports and TR-DOS («log in TR-DOS »), if in this box will code execution with the offset # 3Dxx.
 */
 
-z80_byte baseconf_change_rom_page_trdos(z80_byte value)
+static z80_byte baseconf_change_rom_page_trdos(z80_byte value)
 {
         value=value&254;
-        if ((baseconf_shadow_mode_port_77&2)==0) {
-                //printf ("TODO: If 0 then -force- the inclusion of TR-DOS and the shadow ports. 0 after reset\n");
-                /*
-                A9: If 0 then "force" the inclusion of TR-DOS and the shadow ports. 0 after reset.
-                */
-
-               value=value|1; // no estoy seguro de esto
-        }
+        if (baseconf_dos_signal) value|=1;
         return value;
 }
 
@@ -294,27 +406,12 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         //xFF7H
         //The memory manager pages.
         else if ( (puerto&0x0FFF)==0xFF7 && baseconf_shadow_ports_available() ) {
+                 z80_byte es_ram=valor&64;
+                 z80_byte pagina=(valor^255)&(es_ram ? 63 : 31);
+                 z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
 
-
-
-                  z80_byte pagina=valor ^ 255;
-                         z80_byte es_ram=valor & 64;
-
-
-
-                      z80_byte segmento=puerto_h>>6;
-                     if (es_ram==0) {
-                           pagina=pagina&31;
-                         if (valor&128) pagina=baseconf_change_rom_page_trdos(pagina);
-                  }
-
-                  else {
-                                pagina=pagina&63;
-                                if (valor&128) pagina=baseconf_change_ram_page_7ffd(pagina);
-                 }
-
-                 baseconf_memory_segments[segmento]=pagina;
-                 baseconf_memory_segments_type[segmento]=es_ram;
+                 baseconf_mmu_pages[segmento]=pagina;
+                 baseconf_mmu_flags[segmento]=valor&0xC0;
 
 
                baseconf_set_memory_pages();
@@ -345,34 +442,30 @@ segmento 0 pagina 0
         //x7F7H
         //The memory manager pages. All ram access. Port not in ATM2
         else if ( (puerto&0x0FFF)==0x7F7 && baseconf_shadow_ports_available() ) {
-                z80_byte pagina=valor ^ 255;
-                z80_byte es_ram=1;
+                z80_byte pagina=valor;
+                z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
 
-                z80_byte segmento=puerto_h>>6;
-
-
-                if (valor&128) pagina=baseconf_change_ram_page_7ffd(pagina);
-
-                baseconf_memory_segments[segmento]=pagina;
-                baseconf_memory_segments_type[segmento]=es_ram;
+                baseconf_mmu_pages[segmento]=pagina;
+                /* #x7F7 supplies all eight page bits, but does not
+                   alter the substitution flag previously set by #xFF7. */
+                baseconf_mmu_flags[segmento] |=64;
 
 
                baseconf_set_memory_pages();
         }
 
+        //xBF7H: write protection for the selected MMU window
+        else if ( (puerto&0x0FFF)==0xBF7 && baseconf_shadow_ports_available() ) {
+                z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
+                baseconf_mmu_flags[segmento] &=~32;
+                if (valor&1) baseconf_mmu_flags[segmento] |=32;
+        }
+
         else if (puerto==0x7ffd) {
-                //mapeamos ram y rom , pero sin habilitando memory manager
-                //baseconf_shadow_ports |=1;
-
-                //ram
-                baseconf_memory_segments[3]=valor&7;
-                baseconf_memory_segments_type[3]=1;
-
-                //rom
-                baseconf_memory_segments[0] &=254;
-                if (valor&16) baseconf_memory_segments[0] |= 1;
-                baseconf_memory_segments_type[0]=0;
-
+                /* In 128K paging mode bit 5 locks subsequent #7FFD
+                   writes until reset.  MMU writes through #xFF7/#x7F7
+                   remain available. */
+                if ((baseconf_last_port_eff7&4) && (puerto_32765&32)) return;
 
                 puerto_32765=valor;
 
@@ -435,8 +528,3 @@ void screen_baseconf_refresca_pantalla(void)
 	}
 */
 }
-
-
-
-
-
