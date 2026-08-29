@@ -7431,6 +7431,12 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 
 
+        /* BaseConf configuration port is even, so it must be decoded
+           before the generic Spectrum ULA handler. */
+        if (MACHINE_IS_BASECONF && puerto_l==0xbe) {
+            return baseconf_read_config_port(puerto_h);
+        }
+
         //Puerto ULA, cualquier puerto par. En un Spectrum normal, esto va al final
 	//En un Inves, deberia ir al principio, pues el inves hace un AND con el valor de los perifericos que retornan valor en el puerto leido
         if ( (puerto_l & 1)==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS_TC_2068) && !(MACHINE_IS_PRISM) ) {
@@ -7535,6 +7541,18 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
 	if (MACHINE_IS_BASECONF) {
 		//printf ("Baseconf reading port %04XH on pc=%04XH\n",puerto,reg_pc);
+
+        /* Outside DOS these are the ZX Evo SPI ports.  The bootstrap
+           uses INIR on xx57 to load its continuation into RAM page 0. */
+        if (puerto_l==0x77) return 0;
+        if (puerto_l==0x57) {
+            int i;
+            if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xff;
+            for (i=0;i<MMC_MAX_CARDS;i++) {
+                if (mmc_enabled[i].v) return mmc_read();
+            }
+            return 0xff;
+        }
 
 		//Puertos nvram. TODO gestion puertos shadow
 		if (puerto==0xeff7 /*&& !baseconf_shadow_ports_available()*/ ) return puerto_eff7;
@@ -9443,7 +9461,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
 				}
 
 	if (MACHINE_IS_BASECONF) {
-		if (puerto_l==0xBF || puerto_l==0x77 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || puerto==0x7ffd || puerto==0xeff7
+		if (puerto_l==0xBF || puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || puerto==0x7ffd || puerto==0xeff7
 			|| puerto==0xEFF7 || puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)
 		{
 			//printf ("Out port baseconf port %04XH value %02XH. PC=%04XH\n",puerto,value,reg_pc);

@@ -32,6 +32,7 @@
 #include "ula.h"
 #include "operaciones.h"
 #include "zxevo.h"
+#include "mmc.h"
 
 
 //Si la sd esta activa o no
@@ -74,6 +75,8 @@ static int baseconf_dos_signal;
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
 extern z80_byte baseconf_shadow_mode_port_77;
+extern z80_byte baseconf_last_port_77;
+extern z80_byte baseconf_last_port_eff7;
 
 void baseconf_pre_opcode_fetch(z80_int direccion)
 {
@@ -100,6 +103,39 @@ int baseconf_memory_write_allowed(z80_int direccion)
 {
         int mapa=(puerto_32765&16) ? 4 : 0;
         return (baseconf_mmu_flags[mapa+(direccion>>14)]&32)==0;
+}
+
+z80_byte baseconf_read_config_port(z80_byte puerto_h)
+{
+        int i;
+        z80_byte value=0;
+
+        if (!baseconf_shadow_ports_available()) return 0xff;
+
+        if ((puerto_h&0xf8)==0) {
+                return baseconf_mmu_pages[puerto_h&7]^255;
+        }
+
+        switch (puerto_h) {
+        case 0x08:
+                for (i=7;i>=0;i--) value=(value<<1) | ((baseconf_mmu_flags[i]>>6)&1);
+                return value;
+        case 0x09:
+                for (i=7;i>=0;i--) value=(value<<1) | ((baseconf_mmu_flags[i]>>7)&1);
+                return value;
+        case 0x0a:
+                return puerto_32765;
+        case 0x0b:
+                return baseconf_last_port_eff7;
+        case 0x0c:
+                /* a14.a9.a8.0.b3..b0, with bit 4 reporting DOS. */
+                return ((baseconf_shadow_mode_port_77&0x40)<<1) |
+                       ((baseconf_shadow_mode_port_77&3)<<5) |
+                       (baseconf_dos_signal ? 0x10 : 0) |
+                       (baseconf_last_port_77&0x0f);
+        default:
+                return 0xff;
+        }
 }
 
 z80_byte baseconf_last_port_77;
@@ -156,6 +192,7 @@ int baseconf_text_mode_active(void)
 
 void screen_baseconf_refresca_ega_mode(void)
 {
+    printf("EGA mode\n");
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
 
@@ -196,6 +233,7 @@ void screen_baseconf_refresca_ega_mode(void)
 
 void screen_baseconf_refresca_hw_multicolor_mode(void)
 {
+    printf("multicolor mode\n");
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *screen=baseconf_ram_mem_table[vpage];
@@ -208,6 +246,7 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
                         z80_byte value=screen[adr_line+(x>>3)];
                         z80_byte ink=(value&7) | ((value&0x40)>>3);
                         z80_byte paper=(value&0x78)>>3;
+                        //printf("%d %d\n",ink,paper);
                         scr_putpixel_zoom(x,y,(value&(0x80>>(x&7))) ? ink : paper);
                 }
         }
@@ -215,6 +254,7 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
 
 void screen_baseconf_refresca_text_mode(void)
 {
+    printf("text mode\n");
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *text=baseconf_ram_mem_table[vpage+3];
@@ -447,7 +487,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         }
 
         //xx77H
-        else if ( (puerto&0x00FF)==0x77 && baseconf_dos_signal && baseconf_shadow_ports_available() ) {
+        else if ( (puerto&0x00FF)==0x77 && baseconf_shadow_ports_available() ) {
                 baseconf_shadow_mode_port_77=puerto_h;
                baseconf_last_port_77=valor;
 
@@ -546,7 +586,13 @@ segmento 0 pagina 0
 		 zxevo_nvram[zxevo_last_port_dff7]=valor;
 					}
         else if ( (puerto&0x00FF)==0x77 ) {
+                baseconf_sd_enabled=valor&1;
                 baseconf_sd_cs=(valor&2) ? 1 : 0;
+                mmc_cs(baseconf_sd_cs ? 0xff : 0xfe);
+        }
+
+        else if ( (puerto&0x00FF)==0x57 ) {
+                if (baseconf_sd_enabled && !baseconf_sd_cs) mmc_write(valor);
         }
 
         else {
