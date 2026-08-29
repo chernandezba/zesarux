@@ -250,16 +250,11 @@ void baseconf_set_memory_pages(void)
                         pagina_es_ram=0;
                 }
 
-                if (baseconf_last_port_eff7&8) {
-                        /* 3: When placing a 1 in box # 0000 .. # 3FFF forces the zero page RAM.
-                        This bit has priority over all other ways to switch the memory page in the window.
-                        Value after reset - 0.
-                        */
-
-                       if (i==0) {
-                               pagina=0;
-                               pagina_es_ram=1;
-                       }
+                /* EFF7.bit3 has priority over the MMU for the first
+                   16K window and exposes RAM page 0 there. */
+                if ((baseconf_last_port_eff7&8) && i==0) {
+                        pagina=0;
+                        pagina_es_ram=1;
                 }
 
                 //TODO: A9: If 0 then "force" the inclusion of TR-DOS and the shadow ports. 0 after reset.
@@ -413,7 +408,6 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                  baseconf_mmu_pages[segmento]=pagina;
                  baseconf_mmu_flags[segmento]=valor&0xC0;
 
-
                baseconf_set_memory_pages();
         }
         /*Out port baseconf port FFF7H value 40H. PC=03AAH
@@ -442,14 +436,13 @@ segmento 0 pagina 0
         //x7F7H
         //The memory manager pages. All ram access. Port not in ATM2
         else if ( (puerto&0x0FFF)==0x7F7 && baseconf_shadow_ports_available() ) {
-                z80_byte pagina=valor;
+                z80_byte pagina=valor^255;
                 z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
 
                 baseconf_mmu_pages[segmento]=pagina;
-                /* #x7F7 supplies all eight page bits, but does not
+                /* #x7F7 supplies all eight inverted page bits, but does not
                    alter the substitution flag previously set by #xFF7. */
                 baseconf_mmu_flags[segmento] |=64;
-
 
                baseconf_set_memory_pages();
         }

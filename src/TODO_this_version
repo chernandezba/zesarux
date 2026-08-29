@@ -197,3 +197,6 @@ Lo unico que tendria sentido es que al conectar un joystick por usb haga esas fu
 
 
 -En features ql agregar soporte mdv entero, img, win
+
+-quiza en el caso de baseconf, fetch_opcode_spectrum que se cambie por uno propio para evitar la condicion adicional siempre en todos los spectrum
+de if (MACHINE_IS_BASECONF) baseconf_pre_opcode_fetch(reg_pc);
