@@ -151,6 +151,10 @@ z80_byte baseconf_last_port_eff7;
 int baseconf_shadow_ports_available(void)
 {
 
+        /* An M1 fetch in #3Dxx asserts DOS, which exposes both the
+           TR-DOS ROM and the shadow configuration ports. */
+        if (baseconf_dos_signal) return 1;
+
         if (baseconf_last_port_bf&1) {
                 //0: if 1 then enable shadow ports. 0 after reset.
                 return 1;
@@ -368,7 +372,15 @@ void baseconf_set_memory_pages(void)
                 }
                 else {
                         pagina=pagina & 31;
-                        baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina];
+                        /* The bundled flash dump stores logical ROMs
+                           0..7 in physical slots 8..15, leaving the low
+                           slots erased.  Resolve that dump layout here,
+                           after the ROM file has been loaded. */
+                        if (pagina<8 && baseconf_rom_mem_table[pagina][0]==0xff &&
+                           baseconf_rom_mem_table[pagina+8][0]!=0xff) {
+                                baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina+8];
+                        }
+                        else baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina];
                         debug_paginas_memoria_mapeadas[i]=DEBUG_PAGINA_MAP_ES_ROM+pagina;
                 }
 

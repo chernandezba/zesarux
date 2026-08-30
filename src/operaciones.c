@@ -7437,9 +7437,20 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
             return baseconf_read_config_port(puerto_h);
         }
 
+        /* IDE status used by the TS Labs reset service.  With no BaseConf
+           IDE device attached, report not busy instead of floating high. */
+        if (MACHINE_IS_BASECONF && puerto_h==0x27 &&
+            (puerto_l==0x70 || puerto_l==0xaf)) return 0;
+
+        /* BaseConf only decodes the ULA at FE/F6 (A3 selects bright
+           border), rather than responding to every even port. */
+        if (MACHINE_IS_BASECONF && (puerto_l&0xf7)==0xf6) {
+            return lee_puerto_spectrum_ula(puerto_h);
+        }
+
         //Puerto ULA, cualquier puerto par. En un Spectrum normal, esto va al final
 	//En un Inves, deberia ir al principio, pues el inves hace un AND con el valor de los perifericos que retornan valor en el puerto leido
-        if ( (puerto_l & 1)==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS_TC_2068) && !(MACHINE_IS_PRISM) ) {
+        if ( (puerto_l & 1)==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS_TC_2068) && !(MACHINE_IS_PRISM) && !(MACHINE_IS_BASECONF) ) {
 
 		return lee_puerto_spectrum_ula(puerto_h);
 
@@ -7580,7 +7591,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 			return zxevo_nvram[zxevo_last_port_dff7];
 		}
 
-		printf ("Baseconf reading unhandled port %04XH on pc=%04XH\n",puerto,reg_pc);
+		// Unimplemented BaseConf ports return the idle bus value below.
 
 	}
 
@@ -8848,7 +8859,11 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
         //super wonder boy usa puerto 1fe
         //paperboy usa puertos xxfe
 	//Puerto 254 realmente es cualquier puerto par
-       	if ( (puerto & 1 )==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS_TC_2068) && !(MACHINE_IS_PRISM) ) {
+        if (MACHINE_IS_BASECONF && (puerto_l&0xf7)==0xf6) {
+                out_port_spectrum_border(puerto,value);
+        }
+
+	if ( (puerto & 1 )==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS_TC_2068) && !(MACHINE_IS_PRISM) && !(MACHINE_IS_BASECONF) ) {
 
 		out_port_spectrum_border(puerto,value);
 
