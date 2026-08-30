@@ -372,10 +372,8 @@ void baseconf_set_memory_pages(void)
                 }
                 else {
                         pagina=pagina & 31;
-                        /* The bundled flash dump stores logical ROMs
-                           0..7 in physical slots 8..15, leaving the low
-                           slots erased.  Resolve that dump layout here,
-                           after the ROM file has been loaded. */
+                        /* Temporary compatibility for flash images whose
+                           low logical ROM slots are stored eight slots later. */
                         if (pagina<8 && baseconf_rom_mem_table[pagina][0]==0xff &&
                            baseconf_rom_mem_table[pagina+8][0]!=0xff) {
                                 baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina+8];
