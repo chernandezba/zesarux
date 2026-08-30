@@ -84,7 +84,7 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
         int segmento=direccion>>14;
 
         /* A9 allows DOS to leave when execution has moved to RAM. */
-        if (baseconf_dos_signal && baseconf_memory_segments_type[segmento] &&
+        if (baseconf_dos_signal && direccion>=0x4000 &&
             (baseconf_shadow_mode_port_77&2)) {
                 baseconf_dos_signal=0;
                 baseconf_set_memory_pages();
