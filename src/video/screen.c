@@ -1152,7 +1152,8 @@ void recalcular_get_total_ancho_rainbow(void)
     }
 
     else if (MACHINE_IS_BASECONF) {
-        get_total_ancho_rainbow_cached=BASECONF_DISPLAY_WIDTH;
+        get_total_ancho_rainbow_cached=BASECONF_DISPLAY_WIDTH+
+            (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -1204,7 +1205,8 @@ void recalcular_get_total_alto_rainbow(void)
     }
 
     else if (MACHINE_IS_BASECONF) {
-        get_total_alto_rainbow_cached=BASECONF_DISPLAY_HEIGHT;
+        get_total_alto_rainbow_cached=BASECONF_DISPLAY_HEIGHT+
+            (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -12006,7 +12008,7 @@ int screen_get_emulated_display_width_no_zoom(void)
     }
 
     else if (MACHINE_IS_BASECONF) {
-        return BASECONF_DISPLAY_WIDTH;
+        return BASECONF_DISPLAY_WIDTH+BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -12051,7 +12053,7 @@ int screen_get_emulated_display_height_no_zoom(void)
     }
 
     else if (MACHINE_IS_BASECONF) {
-        return BASECONF_DISPLAY_HEIGHT;
+        return BASECONF_DISPLAY_HEIGHT+BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -12101,7 +12103,8 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
     }
 
     else if (MACHINE_IS_BASECONF) {
-    return BASECONF_DISPLAY_WIDTH;
+    return BASECONF_DISPLAY_WIDTH+
+        (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -12151,7 +12154,8 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         }
 
     else if (MACHINE_IS_BASECONF) {
-        return alto_extdesktop+BASECONF_DISPLAY_HEIGHT;
+        return alto_extdesktop+BASECONF_DISPLAY_HEIGHT+
+            BASECONF_BOTTOM_BORDER_NO_ZOOM*border_enabled.v;
         }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -12200,7 +12204,8 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
     }
 
     else if (MACHINE_IS_BASECONF) {
-    return BASECONF_DISPLAY_HEIGHT;
+    return BASECONF_DISPLAY_HEIGHT+
+        (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_TBBLUE) {

@@ -360,28 +360,32 @@ static void screen_baseconf_refresca_border(void)
 {
         int x,y,offset_x,offset_y,width,height;
         int left,top,right,bottom;
+        int total_width,total_height;
         z80_int colour=baseconf_get_palette_colour(baseconf_border_colour);
 
-        if (!border_enabled.v) return;
-
         baseconf_get_mode_geometry(&offset_x,&offset_y,&width,&height);
-        left=BASECONF_LEFT_BORDER_NO_ZOOM+offset_x;
-        top=BASECONF_TOP_BORDER_NO_ZOOM+offset_y;
+        total_width=BASECONF_DISPLAY_WIDTH+
+                (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+        total_height=BASECONF_DISPLAY_HEIGHT+
+                (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+
+        left=BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+offset_x;
+        top=BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v+offset_y;
         right=left+width;
         bottom=top+height;
 
         for (y=0;y<top;y++)
-                for (x=0;x<BASECONF_DISPLAY_WIDTH;x++)
+                for (x=0;x<total_width;x++)
                         baseconf_putpixel_absolute(x,y,colour);
 
-        for (y=bottom;y<BASECONF_DISPLAY_HEIGHT;y++)
-                for (x=0;x<BASECONF_DISPLAY_WIDTH;x++)
+        for (y=bottom;y<total_height;y++)
+                for (x=0;x<total_width;x++)
                         baseconf_putpixel_absolute(x,y,colour);
 
         for (y=top;y<bottom;y++) {
                 for (x=0;x<left;x++)
                         baseconf_putpixel_absolute(x,y,colour);
-                for (x=right;x<BASECONF_DISPLAY_WIDTH;x++)
+                for (x=right;x<total_width;x++)
                         baseconf_putpixel_absolute(x,y,colour);
         }
 }
