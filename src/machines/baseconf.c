@@ -59,20 +59,20 @@ z80_byte baseconf_memory_segments[4];
 z80_byte baseconf_memory_segments_type[4];
 
 /*
- * BaseConf has two sets of four memory-manager registers.  Bit 4 of
- * #7FFD selects the set that is visible to the CPU.  Keep the register
- * contents apart from baseconf_memory_segments[], which describes the
- * four pages currently resolved and is used by the memory/debug cores.
+ * BaseConf tiene dos conjuntos de cuatro registros de gestión de memoria.
+ * El bit 4 de #7FFD selecciona el conjunto visible para la CPU. Se mantiene
+ * su contenido separado de baseconf_memory_segments[], que describe las
+ * cuatro páginas resueltas y es usado por los cores de memoria y debug.
  *
- * Bit 7 in the flags enables substitution of the page bits from #7FFD;
- * bit 6 selects RAM.  Page numbers below are stored non-inverted.
+ * El bit 7 de los flags habilita la sustitución de los bits de página desde
+ * #7FFD; el bit 6 selecciona RAM. Los números de página se guardan sin invertir.
  */
 static z80_byte baseconf_mmu_pages[8];
 static z80_byte baseconf_mmu_flags[8];
 static z80_byte baseconf_text_font[2048];
 static int baseconf_dos_signal;
-/* PentEvo virtual Beta Disk state.  The firmware stores the RAM-disk
-   service in RAM page FE and selects it instead of the physical FDC. */
+/* Estado del Beta Disk virtual de PentEvo. El firmware guarda el servicio
+   de RAM-disk en la página RAM FE y lo selecciona en lugar del FDC físico. */
 static z80_byte baseconf_beta_drive_virtual;
 static z80_byte baseconf_beta_drive_selected;
 static z80_byte baseconf_extended_dos_ports[4];
@@ -93,9 +93,9 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
         int mapa=(puerto_32765&16) ? 4 : 0;
         int segmento=direccion>>14;
 
-        /* The EVO tape emulator installs a hardware breakpoint (normally
-           #0556, the 48K ROM loader entry).  Its NMI service is resident in
-           RAM page FF, so it does not use ZEsarUX ROM tape traps. */
+        /* El emulador de cinta de EVO instala un breakpoint hardware
+           (normalmente #0556, entrada del cargador de la ROM de 48K). Su
+           servicio NMI reside en la página RAM FF y no usa traps de cinta. */
         if (!baseconf_nmi_active && (baseconf_last_port_bf&0x10) &&
             direccion==baseconf_nmi_breakpoint) {
                 printf("BaseConf hardware breakpoint hit at %04XH: entering RAM FF NMI service\n",
@@ -114,15 +114,15 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
                 }
         }
 
-        /* A9 allows DOS to leave when execution has moved to RAM. */
+        /* A9 permite salir de DOS cuando la ejecución ha pasado a RAM. */
         if (baseconf_dos_signal && direccion>=0x4000 &&
             (baseconf_shadow_mode_port_77&2)) {
                 baseconf_dos_signal=0;
                 baseconf_set_memory_pages();
         }
 
-        /* An M1 in #3Dxx re-enters DOS when substitution is enabled for
-           the current MMU window. */
+        /* Un M1 en #3Dxx vuelve a entrar en DOS cuando la sustitución está
+           habilitada para la ventana MMU actual. */
         if (!baseconf_dos_signal && (direccion&0x3f00)==0x3d00 &&
             (baseconf_mmu_flags[mapa+segmento]&128)) {
                 baseconf_dos_signal=1;
@@ -159,7 +159,7 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
         case 0x0b:
                 return baseconf_last_port_eff7;
         case 0x0c:
-                /* a14.a9.a8.0.b3..b0, with bit 4 reporting DOS. */
+                /* a14.a9.a8.0.b3..b0, con el bit 4 indicando el estado DOS. */
                 return ((baseconf_shadow_mode_port_77&0x40)<<1) |
                        ((baseconf_shadow_mode_port_77&3)<<5) |
                        (baseconf_dos_signal ? 0x10 : 0) |
@@ -194,21 +194,22 @@ z80_byte baseconf_last_port_bf;
 
 z80_byte baseconf_last_port_eff7;
 
-//ver Xpeccy - http://github.com/samstyle/Xpeccy Baseconf ports and memory maping is in ./src/libxpeccy/hardware/pentevo.c
+//Ver Xpeccy: los puertos y el mapa de memoria BaseConf están en ./src/libxpeccy/hardware/pentevo.c
+//http://github.com/samstyle/Xpeccy
 
 int baseconf_shadow_ports_available(void)
 {
 
-        /* An M1 fetch in #3Dxx asserts DOS, which exposes both the
-           TR-DOS ROM and the shadow configuration ports. */
+        /* Un fetch M1 en #3Dxx activa DOS, exponiendo tanto la ROM TR-DOS
+           como los puertos shadow de configuración. */
         if (baseconf_dos_signal) return 1;
 
         if (baseconf_last_port_bf&1) {
-                //0: if 1 then enable shadow ports. 0 after reset.
+                //Si vale 1 habilita los puertos shadow. Vale 0 después de reset.
                 return 1;
         }
         if ((baseconf_shadow_mode_port_77&2)==0) {
-                //Enable shadow mode ports of the memory manager's permission.
+                //Habilita el permiso de los puertos shadow del gestor de memoria.
                 return 1;
         }
 
@@ -223,8 +224,8 @@ void lee_byte_evo_aux(z80_int direccion GCC_UNUSED)
 
 void baseconf_write_memory_aux(z80_int direccion,z80_byte valor)
 {
-        /* BF.bit2 redirects every CPU memory write to the 2 KB text
-           font RAM as well as to the normally mapped memory. */
+        /* BF.bit2 redirige cada escritura de memoria de la CPU a los 2 KB
+           de RAM de fuente de texto, además de a la memoria mapeada normal. */
         if (baseconf_last_port_bf&4) {
                 baseconf_text_font[direccion&2047]=valor;
         }
@@ -248,9 +249,9 @@ static z80_int baseconf_get_palette_colour(z80_byte colour)
         return baseconf_palette[colour&15];
 }
 
-/* All BaseConf modes are rendered into a 640x400 active area.  Keep the
-   scaling integral: 256x192 -> 512x384, 320x200 -> 640x400 and
-   640x200 -> 640x400.  The unused area becomes additional border. */
+/* Todos los modos BaseConf se renderizan en un área activa de 640x400.
+   Se mantiene escalado entero: 256x192 -> 512x384, 320x200 -> 640x400 y
+   640x200 -> 640x400. El área sin usar se convierte en border adicional. */
 static void baseconf_putpixel_scaled(int x,int y,z80_int colour,
                                     int scale_x,int scale_y,
                                     int offset_x,int offset_y)
@@ -326,12 +327,12 @@ static void screen_baseconf_refresca_border(void)
 
 void baseconf_set_border_colour(z80_int puerto,z80_byte value)
 {
-        /* A3 is inverted and supplies the fourth border colour bit. */
+        /* A3 está invertido y proporciona el cuarto bit de color del border. */
         baseconf_border_colour=(value&7) | ((~puerto)&8);
 }
 
-/* ALCO: 256x192, one 4-bit colour per pixel.  Four interleaved byte
-   streams occupy the two adjacent Spectrum screen pages. */
+/* ALCO: 256x192, un color de 4 bits por píxel. Cuatro flujos de bytes
+   entrelazados ocupan las dos páginas de pantalla Spectrum adyacentes. */
 void screen_baseconf_refresca_alco_mode(void)
 {
         int x,y;
@@ -360,9 +361,9 @@ void screen_baseconf_refresca_ega_mode(void)
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
 
-        /* ATM EGA is a 320x200 packed display.  Each byte describes
-           the colours of two adjacent pixels; the four byte streams
-           alternate between video pages vpage and vpage^4. */
+        /* ATM EGA es un display packed de 320x200. Cada byte describe
+           los colores de dos píxeles adyacentes; los cuatro flujos de bytes
+           alternan entre las páginas de vídeo vpage y vpage^4. */
         for (y=0;y<200;y++) {
                 for (x=0;x<320;x++) {
                         int sx=x;
@@ -395,8 +396,8 @@ void screen_baseconf_refresca_ega_mode(void)
         }
 }
 
-/* ATM hardware multicolor is a 640x200 bitmap with one attribute byte
-   per group of eight high-resolution pixels. */
+/* ATM hardware multicolor es un bitmap de 640x200 con un byte de atributos
+   por cada grupo de ocho píxeles de alta resolución. */
 void screen_baseconf_refresca_atm_multicolor_mode(void)
 {
         int x,y;
@@ -454,8 +455,8 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *screen=baseconf_ram_mem_table[vpage];
 
-        /* In hardware multicolor mode every bitmap byte also supplies
-           the attribute for that same 8-pixel group. */
+        /* En modo hardware multicolor cada byte del bitmap también
+           proporciona el atributo para ese mismo grupo de 8 píxeles. */
         for (y=0;y<192;y++) {
                 int adr_line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
                 for (x=0;x<256;x++) {
@@ -475,7 +476,7 @@ void screen_baseconf_refresca_text_mode(void)
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *text=baseconf_ram_mem_table[vpage+3];
 
-        /* PentEvo text is 80x25 characters, hence 640x200 pixels. */
+        /* El texto PentEvo es de 80x25 caracteres, por tanto 640x200 píxeles. */
         for (y=0;y<200;y++) {
                 int row=y>>3;
                 int font_line=y&7;
@@ -553,27 +554,27 @@ void baseconf_set_memory_pages(void)
                 z80_byte pagina=baseconf_mmu_pages[mapa+i];
                 z80_byte pagina_es_ram=flags&64;
 
-                /* #xFF7 bit 7 does not mean page 7.  It makes the
-                   selected low page bits follow #7FFD dynamically. */
+                /* El bit 7 de #xFF7 no significa página 7. Hace que los bits
+                   bajos de la página seleccionada sigan dinámicamente #7FFD. */
                 if (flags&128) {
                         if (pagina_es_ram) pagina=baseconf_change_ram_page_7ffd(pagina);
                         else pagina=baseconf_change_rom_page_trdos(pagina);
                 }
 
                 if ((baseconf_shadow_mode_port_77&1)==0) {
-                        //A8: if 0, then disable the memory manager. In each window processor is installed the last page of ROM. 0 after reset.
+                        //A8: si vale 0 deshabilita el gestor de memoria. En cada ventana de la CPU se instala la última página de ROM. Vale 0 después de reset.
                         pagina=255;
                         pagina_es_ram=0;
                 }
 
-                /* EFF7.bit3 has priority over the MMU for the first
-                   16K window and exposes RAM page 0 there. */
+                /* EFF7.bit3 tiene prioridad sobre la MMU en la primera
+                   ventana de 16K y expone allí la página RAM 0. */
                 if ((baseconf_last_port_eff7&8) && i==0) {
                         pagina=0;
                         pagina_es_ram=1;
                 }
-                /* A selected virtual Beta Disk replaces the physical FDC.
-                   Its service code/data live in the last-but-one RAM page. */
+                /* Un Beta Disk virtual seleccionado sustituye al FDC físico.
+                   Su código y datos de servicio residen en la penúltima página RAM. */
                 else if (i==0 && baseconf_nmi_active) {
                         pagina=0xff;
                         pagina_es_ram=1;
@@ -584,7 +585,7 @@ void baseconf_set_memory_pages(void)
                         pagina_es_ram=1;
                 }
 
-                //TODO: A9: If 0 then "force" the inclusion of TR-DOS and the shadow ports. 0 after reset.
+                //TODO: A9: si vale 0 fuerza la inclusión de TR-DOS y los puertos shadow. Vale 0 después de reset.
 
                 if (pagina_es_ram) {
                         baseconf_memory_paged[i]=baseconf_ram_mem_table[pagina];
@@ -592,8 +593,8 @@ void baseconf_set_memory_pages(void)
                 }
                 else {
                         pagina=pagina & 31;
-                        /* Temporary compatibility for flash images whose
-                           low logical ROM slots are stored eight slots later. */
+                        /* Compatibilidad temporal con imágenes flash cuyas posiciones
+                           lógicas bajas de ROM están guardadas ocho posiciones después. */
                         if (pagina<8 && baseconf_rom_mem_table[pagina][0]==0xff &&
                            baseconf_rom_mem_table[pagina+8][0]!=0xff) {
                                 baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina+8];
@@ -652,9 +653,9 @@ void baseconf_hard_reset(void)
                         *puntero=0;
                 }
         }
-/* Hardware reset value is encoded as 0x83 internally: A14=1 and
-   data bits 1:0=11.  In ZEsarUX both parts are kept separately.  This
-   selects the ordinary ZX video mode while leaving A8/A9 cleared. */
+/* El valor de reset hardware se codifica internamente como 0x83: A14=1 y
+   los bits de datos 1:0=11. En ZEsarUX ambas partes se guardan por separado.
+   Esto selecciona el modo de vídeo ZX normal dejando A8/A9 a cero. */
 baseconf_last_port_77=3;
 baseconf_shadow_mode_port_77=0x40;
 baseconf_last_port_bf=0;
@@ -668,16 +669,17 @@ baseconf_sd_cs=1;
 
 //Cambia el valor de entrada de numero de pagina ram segun :
 /*
-for RAM - in the window there is a substitution under 3 or 6 bits (depending on the mode of ZX Spectrum 128k or pentagon 1024k)
-page numbers are not inverse bits from port # 7FFD.
+Para RAM, en la ventana hay una sustitución de 3 o 6 bits, dependiendo del
+modo ZX Spectrum 128K o Pentagon 1024K. Los números de página no son los bits
+invertidos del puerto #7FFD.
 */
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value)
 {
 
 /*
 baseconf_last_port_eff7;
-2: off for a 1 - mode ZX Spectrum 128k, otherwise - mode pentagon 1024k.
-Value after reset - 0.
+2: con un 1 selecciona modo ZX Spectrum 128K; en caso contrario, modo
+Pentagon 1024K. Su valor después de reset es 0.
 */
         //printf ("adjusting ram to bits port 7ffdh\n");
 
@@ -698,8 +700,9 @@ Value after reset - 0.
 
 //Cambia el valor de entrada de numero de pagina rom segun:
 /*
-For ROM - there is a substitution LSB page numbers signal the inclusion of TR-DOS (1 if the TR-DOS included).
-In addition, there is the inclusion of the shadow of ports and TR-DOS («log in TR-DOS »), if in this box will code execution with the offset # 3Dxx.
+Para ROM, hay una sustitución del LSB del número de página que indica la
+inclusión de TR-DOS: vale 1 cuando TR-DOS está incluido. También se incluyen
+los puertos shadow y TR-DOS al ejecutar código con offset #3Dxx en esta ventana.
 */
 
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value)
@@ -717,8 +720,8 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
 
 
-        /* Newer EVO firmware writes the additional configuration registers
-           through xxBD.  13BD marks drives A-D that are RAM disks. */
+        /* El firmware EVO reciente escribe los registros adicionales de
+           configuración mediante xxBD. 13BD marca las unidades A-D que son RAM-disk. */
         if ((puerto&0x00ff)==0xbd && baseconf_shadow_ports_available() &&
             (((puerto_h&0xfc)==0x10) || puerto_h<=1)) {
                 int extended_register=((puerto_h&0xfc)==0x10) ?
@@ -739,20 +742,20 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                 }
         }
 
-        /* OUT #xxBE from the resident service restores the previous mapping
-           after the two M1 cycles of RETN. */
+        /* OUT #xxBE desde el servicio residente restaura el mapeo anterior
+           después de los dos ciclos M1 de RETN. */
         else if ((puerto&0x00ff)==0xbe && baseconf_nmi_active) {
                 printf("BaseConf NMI service exit through %04XH\n",puerto);
                 baseconf_nmi_exit_countdown=2;
         }
 
-        /* The Beta Disk system register contains the selected drive.  It is
-           still decoded for a virtual drive although the WD1793 ports are not. */
+        /* El registro de sistema Beta Disk contiene la unidad seleccionada.
+           Se decodifica para una unidad virtual aunque los puertos WD1793 no. */
         else if ((puerto&0x00ff)==0xff && baseconf_shadow_ports_available()) {
-                /* A14 of the last #xx77 access selects the meaning of #xxFF.
-                   With A14 low it programs the palette; with A14 high it is
-                   the Beta Disk system register.  BaseConf software such as
-                   Hypnotoad does not require BF.5 for palette writes. */
+                /* A14 del último acceso #xx77 selecciona el significado de #xxFF.
+                   Con A14 a cero programa la paleta; con A14 a uno es el registro
+                   de sistema Beta Disk. Software BaseConf como Hypnotoad no
+                   necesita BF.5 para escribir la paleta. */
                 if (!(baseconf_shadow_mode_port_77&0x40)) {
                         z80_int inverted_value=(~valor)&0xff;
                         z80_int inverted_port=(~puerto)&0xffff;
@@ -784,7 +787,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         }
 
         //xxBFH
-        //Enable shadow mode ports write permission in ROM.
+        //Habilita en ROM el permiso de escritura de los puertos shadow.
         else if ( (puerto&0x00FF)==0xBF ) {
                baseconf_last_port_bf=valor;
 
@@ -812,7 +815,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
 
         //xFF7H
-        //The memory manager pages.
+        //Páginas del gestor de memoria.
         else if ( (puerto&0x0FFF)==0xFF7 && baseconf_shadow_ports_available() ) {
                  z80_byte es_ram=valor&64;
                  z80_byte pagina=(valor^255)&(es_ram ? 63 : 31);
@@ -823,44 +826,44 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
                baseconf_set_memory_pages();
         }
-        /*Out port baseconf port FFF7H value 40H. PC=03AAH
+        /*Salida puerto BaseConf FFF7H valor 40H. PC=03AAH
 segmento 0 pagina 24
 segmento 1 pagina 64
 segmento 2 pagina 255
 segmento 3 pagina 63
-Out port baseconf port F7F7H value BFH. PC=03AFH  -> BF=10 111111 -> pagina invertida=64... o sea que solo hay que pillar bits inferiores?
+Salida puerto BaseConf F7F7H valor BFH. PC=03AFH -> BF=10 111111 -> pagina invertida=64... o sea que solo hay que pillar bits inferiores?
 segmento 0 pagina 24
 segmento 1 pagina 64
 segmento 2 pagina 255
 segmento 3 pagina 64
-Out port baseconf port 3FF7H value 06H. PC=84C0H
+Salida puerto BaseConf 3FF7H valor 06H. PC=84C0H
 segmento 0 pagina 25
 segmento 1 pagina 64
 segmento 2 pagina 255
 segmento 3 pagina 64
-Out port baseconf port DEF7H value EFH. PC=31BCH
-Baseconf reading port BEF7H
-baseconf reading nvram register EFH
-Out port baseconf port 3FF7H value 3FH. PC=84D7H
+Salida puerto BaseConf DEF7H valor EFH. PC=31BCH
+BaseConf leyendo puerto BEF7H
+BaseConf leyendo registro NVRAM EFH
+Salida puerto BaseConf 3FF7H valor 3FH. PC=84D7H
 segmento 0 pagina 0
 
 */
 
         //x7F7H
-        //The memory manager pages. All ram access. Port not in ATM2
+        //Páginas del gestor de memoria. Todo acceso a RAM. Puerto no presente en ATM2.
         else if ( (puerto&0x0FFF)==0x7F7 && baseconf_shadow_ports_available() ) {
                 z80_byte pagina=valor^255;
                 z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
 
                 baseconf_mmu_pages[segmento]=pagina;
-                /* #x7F7 supplies all eight inverted page bits, but does not
-                   alter the substitution flag previously set by #xFF7. */
+                /* #x7F7 proporciona los ocho bits invertidos de página, pero no
+                   modifica el flag de sustitución establecido antes por #xFF7. */
                 baseconf_mmu_flags[segmento] |=64;
 
                baseconf_set_memory_pages();
         }
 
-        //xBF7H: write protection for the selected MMU window
+        //xBF7H: protección de escritura para la ventana MMU seleccionada.
         else if ( (puerto&0x0FFF)==0xBF7 && baseconf_shadow_ports_available() ) {
                 z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
                 baseconf_mmu_flags[segmento] &=~32;
@@ -868,9 +871,9 @@ segmento 0 pagina 0
         }
 
         else if (puerto==0x7ffd) {
-                /* In 128K paging mode bit 5 locks subsequent #7FFD
-                   writes until reset.  MMU writes through #xFF7/#x7F7
-                   remain available. */
+                /* En modo de paginación 128K el bit 5 bloquea las escrituras
+                   posteriores a #7FFD hasta reset. Las escrituras MMU mediante
+                   #xFF7/#x7F7 continúan disponibles. */
                 if ((baseconf_last_port_eff7&4) && (puerto_32765&32)) return;
 
                 puerto_32765=valor;
@@ -893,9 +896,9 @@ segmento 0 pagina 0
 
 
 	else if (puerto==0xbff7 && !baseconf_shadow_ports_available() ) {
-		/* On BaseConf #EFF7 is the configuration register kept in
-		   baseconf_last_port_eff7.  Using the generic puerto_eff7 here
-		   left non-shadow CMOS access permanently disabled. */
+		/* En BaseConf #EFF7 es el registro de configuración guardado en
+		   baseconf_last_port_eff7. Usar aquí el puerto_eff7 genérico dejaba
+		   permanentemente deshabilitado el acceso CMOS no-shadow. */
 		if (baseconf_last_port_eff7&128) {
 			zxevo_nvram[zxevo_last_port_dff7]=valor;
 			if (zxevo_last_port_dff7==0xed)
@@ -905,7 +908,7 @@ segmento 0 pagina 0
 	}
 
         else if (puerto==0xbef7 && baseconf_shadow_ports_available() ) {
-                        //Note: In the shadow mode port # BEF7 available regardless of bit 7 port # EFF7.
+                        //En modo shadow el puerto #BEF7 está disponible independientemente del bit 7 de #EFF7.
 		 zxevo_nvram[zxevo_last_port_dff7]=valor;
 		 if (zxevo_last_port_dff7==0xed)
                          printf("BaseConf CMOS EDH written %02XH: Emu tape=%d Autostart=%d\n",
@@ -1129,8 +1132,8 @@ void baseconf_refresca_pantalla_no_rainbow(void)
 
 void baseconf_refresca_pantalla(void)
 {
-        /* Real-video timing is not implemented yet, so both paths use the
-           complete frame renderer. */
+        /* El timing de real video todavía no está implementado, por lo que
+           ambas rutas usan el render completo del frame. */
         baseconf_refresca_pantalla_no_rainbow();
         screen_baseconf_refresca_border();
         modificado_border.v=0;
