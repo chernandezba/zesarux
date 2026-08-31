@@ -207,4 +207,4 @@ d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 
 -show registers in console y ademas que muestre desensamblado
 
--texto del footer en baseconf donde esta apareciendo???
+-si se habilita emulacion betadisk no va el menu zxevo. quiza hacer que esa condicion no se habilite si esta baseconf. y tampoco al hacer drag&drop de un trd
