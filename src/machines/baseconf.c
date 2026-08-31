@@ -1058,7 +1058,9 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
 
                 */
 
-                baseconf_putpixel_scaled(x_hi+bit,y,color,2,2,64,8);
+                baseconf_putpixel_scaled(x_hi+bit,y,
+                                         baseconf_get_palette_colour(color),
+                                         2,2,64,8);
 
                 byte_leido=byte_leido<<1;
             }

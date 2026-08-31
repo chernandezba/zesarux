@@ -2,6 +2,7 @@ ZEsarUX 13.1 - xxxx edition. 10 July 2026
 
 * New things added:
 
+Added (fixed actually) ZX Evo Baseconf
 Added configuration file setting for enabling to use numeric keys on Azerty keyboard, without having to press Shift
 Added more different joystick support for Mac (Dpad, different axis)
 Allow to smartload a SCL file
