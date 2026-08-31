@@ -81,6 +81,18 @@ static z80_byte baseconf_border_colour;
 static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
 static int baseconf_nmi_exit_countdown;
+static z80_byte baseconf_cmos_extension_type;
+
+/* El firmware del AVR expone estas identificaciones mediante los registros
+   F0-FF del RTC Gluk. Los bytes 12 y 13 contienen la fecha empaquetada como
+   año(6 bits), mes(4 bits) y día(5 bits); los dos últimos son el CRC del
+   firmware y EVO Reset Service no los muestra. */
+static const z80_byte baseconf_version[16]={
+        'Z','X','E','v','o','T','S','&','B','A','S','E',0xf9,0x1c,0xff,0xff
+};
+static const z80_byte baseconf_avr_boot_version[16]={
+        'Z','X','E','v','o','A','V','R','B','o','o','t',0x37,0x18,0xff,0xff
+};
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
@@ -181,6 +193,36 @@ z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
         case 0x8f: return baseconf_extended_dos_ports[3];
         default: return 0xff;
         }
+}
+
+z80_byte baseconf_read_cmos(void)
+{
+        z80_byte indice=zxevo_last_port_dff7;
+
+        /* El bit 7 del registro C cambia F0-FF a EEPROM normal. */
+        if (indice<0xf0 || (zxevo_nvram[0x0c]&0x80))
+                return zxevo_nvram[indice];
+
+        if (baseconf_cmos_extension_type==0)
+                return baseconf_version[indice&0x0f];
+        if (baseconf_cmos_extension_type==1)
+                return baseconf_avr_boot_version[indice&0x0f];
+
+        return 0xff;
+}
+
+void baseconf_write_cmos(z80_byte valor)
+{
+        z80_byte indice=zxevo_last_port_dff7;
+
+        if (indice>=0xf0 && !(zxevo_nvram[0x0c]&0x80)) {
+                /* Las implementaciones antiguas aceptan la selección del tipo
+                   desde cualquiera de los aliases F0-FF. */
+                baseconf_cmos_extension_type=valor;
+                return;
+        }
+
+        zxevo_nvram[indice]=valor;
 }
 
 z80_byte baseconf_last_port_77;
@@ -635,6 +677,7 @@ void baseconf_hard_reset(void)
   baseconf_nmi_breakpoint=0;
   baseconf_nmi_active=0;
   baseconf_nmi_exit_countdown=0;
+  baseconf_cmos_extension_type=0;
 
 
   reset_cpu();
@@ -899,7 +942,7 @@ segmento 0 pagina 0
 		   baseconf_last_port_eff7. Usar aquí el puerto_eff7 genérico dejaba
 		   permanentemente deshabilitado el acceso CMOS no-shadow. */
 		if (baseconf_last_port_eff7&128) {
-			zxevo_nvram[zxevo_last_port_dff7]=valor;
+			baseconf_write_cmos(valor);
 			if (zxevo_last_port_dff7==0xed)
 				printf("BaseConf CMOS EDH written %02XH through BFF7H: Emu tape=%d Autostart=%d\n",
 				       valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);
@@ -908,7 +951,7 @@ segmento 0 pagina 0
 
         else if (puerto==0xbef7 && baseconf_shadow_ports_available() ) {
                         //En modo shadow el puerto #BEF7 está disponible independientemente del bit 7 de #EFF7.
-		 zxevo_nvram[zxevo_last_port_dff7]=valor;
+		 baseconf_write_cmos(valor);
 		 if (zxevo_last_port_dff7==0xed)
                          printf("BaseConf CMOS EDH written %02XH: Emu tape=%d Autostart=%d\n",
                                 valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);

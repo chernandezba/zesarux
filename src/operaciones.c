@@ -7594,7 +7594,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 				printf("BaseConf CMOS EDH read %02XH through BFF7H: Emu tape=%d Autostart=%d\n",
 				       zxevo_nvram[0xed],(zxevo_nvram[0xed]&0x40) ? 1 : 0,
 				       (zxevo_nvram[0xed]&4) ? 1 : 0);
-			return zxevo_nvram[zxevo_last_port_dff7];
+			return baseconf_read_cmos();
 		}
 
         if ( (puerto&0x00FF)==0xBF ) {
@@ -7610,7 +7610,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
                                 printf("BaseConf CMOS EDH read %02XH: Emu tape=%d Autostart=%d\n",
                                        zxevo_nvram[0xed],(zxevo_nvram[0xed]&0x40) ? 1 : 0,
                                        (zxevo_nvram[0xed]&4) ? 1 : 0);
-			return zxevo_nvram[zxevo_last_port_dff7];
+			return baseconf_read_cmos();
 		}
 
 		// Unimplemented BaseConf ports return the idle bus value below.
