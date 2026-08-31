@@ -2719,10 +2719,6 @@ void set_machine_params(void)
             fetch_opcode=fetch_opcode_baseconf;
             ay_chip_present.v=1;
 
-            //baseConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
-            //por conveniencia, dado que se verá todo mejor asi que no con real video off
-            //if (autodetect_rainbow.v) enable_rainbow();
-
         break;
 
         case MACHINE_ID_COLECO:
