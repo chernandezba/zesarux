@@ -77,6 +77,10 @@ static z80_byte baseconf_beta_drive_virtual;
 static z80_byte baseconf_beta_drive_selected;
 static z80_byte baseconf_extended_dos_ports[4];
 static z80_int baseconf_palette[16];
+static const z80_int baseconf_palette_default[16]={
+        0,7,1792,1799,112,119,1904,1911,
+        0,15,3840,3855,240,255,4080,4095
+};
 static z80_byte baseconf_border_colour;
 static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
@@ -285,7 +289,12 @@ int baseconf_text_mode_active(void)
 
 static z80_int baseconf_get_palette_colour(z80_byte colour)
 {
-        return baseconf_palette[colour&15];
+        return PRISM_INDEX_FIRST_COLOR+baseconf_palette[colour&15];
+}
+
+z80_int baseconf_get_palette_entry(z80_byte indice)
+{
+        return baseconf_palette[indice&15];
 }
 
 /* Todos los modos BaseConf se renderizan en un área activa de 640x400.
@@ -672,7 +681,7 @@ void baseconf_hard_reset(void)
   baseconf_beta_drive_virtual=0;
   baseconf_beta_drive_selected=0;
   for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
-  for (i=0;i<16;i++) baseconf_palette[i]=i;
+  for (i=0;i<16;i++) baseconf_palette[i]=baseconf_palette_default[i];
   baseconf_border_colour=0;
   baseconf_nmi_breakpoint=0;
   baseconf_nmi_active=0;
@@ -811,8 +820,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                               ((inverted_value&0x20)>>3) |
                               ((inverted_port&0x0100)>>7) |
                               ((inverted_port&0x2000)>>13);
-                        baseconf_palette[baseconf_border_colour]=
-                                PRISM_INDEX_FIRST_COLOR+(r<<8)+(g<<4)+b;
+                        baseconf_palette[baseconf_border_colour]=(r<<8)+(g<<4)+b;
 
                         //Los mismos colores que máquina Prism
                 }

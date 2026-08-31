@@ -266,7 +266,7 @@ extern long normal_overlay_time_total_drawing_overlay;
 
 //Total de paletas mapeadas
 //Usado en ver sprites y ver colores mapeados
-#define MENU_TOTAL_MAPPED_PALETTES 21
+#define MENU_TOTAL_MAPPED_PALETTES 22
 
 #define MENU_LAST_DIR_FILE_NAME "zesarux_last_dir.txt"
 #define MENU_SCR_INFO_FILE_NAME "zesarux_scr_info.txt"

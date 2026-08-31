@@ -108,6 +108,7 @@
 #include "scmp.h"
 #include "esxdos_handler.h"
 #include "tsconf.h"
+#include "baseconf.h"
 #include "spritefinder.h"
 #include "snap_spg.h"
 #include "betadisk.h"
@@ -11370,6 +11371,11 @@ int menu_debug_sprites_total_colors_mapped_palette(int paleta)
             return PCW_TOTAL_PALETTE_COLOURS;
         break;
 
+        //BaseConf
+        case 21:
+            return 16;
+        break;
+
     }
 
     return 16;
@@ -11457,6 +11463,11 @@ int menu_debug_sprites_max_value_mapped_palette(int paleta)
         case 20:
             //PCW
             return TSCONF_TOTAL_PALETTE_COLOURS;
+        break;
+
+        case 21:
+            //Baseconf
+            return PRISM_TOTAL_PALETTE_COLOURS;
         break;
 
 
@@ -11585,6 +11596,11 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
             return pcw_get_color_palette(color);
         break;
 
+        case 21:
+            //BaseConf
+            return baseconf_get_palette_entry(color);
+        break;
+
 
     }
 
@@ -11665,6 +11681,11 @@ int menu_debug_sprites_return_color_palette(int paleta, z80_byte color)
         case 20:
             //PCW
             return TSCONF_INDEX_FIRST_COLOR+index;
+        break;
+
+        case 21:
+            //BaseConf devuelve un índice RGB444 relativo dentro de la paleta Prism.
+            return PRISM_INDEX_FIRST_COLOR+index;
         break;
 
     }
@@ -11769,6 +11790,10 @@ void menu_debug_sprites_get_palette_name(int paleta, char *s)
 
         case 20:
             strcpy(s,"PCW");
+        break;
+
+        case 21:
+            strcpy(s,"BaseConf");
         break;
 
         default:

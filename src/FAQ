@@ -755,6 +755,19 @@ A: Be sure you haven't enabled divmmc or divide paging, it's incompatible with s
 ----------------------------------------------------------------------------
 
 
+BaseConf
+------
+
+
+Q: How do I load a TRD file?
+A: You first need to have a MMC inserted. Then on the boot screen (EVO Reset Service) select R. Service, the C. Image to RAMDISK, select the TRD from the file browser.
+Then go to Z. TR-DOS boot and select the file to boot
+
+
+
+----------------------------------------------------------------------------
+
+
 CPC
 ---
 
