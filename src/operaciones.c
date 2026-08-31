@@ -8865,6 +8865,7 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
         //paperboy usa puertos xxfe
 	//Puerto 254 realmente es cualquier puerto par
         if (MACHINE_IS_BASECONF && (puerto_l&0xf7)==0xf6) {
+                baseconf_set_border_colour(puerto,value);
                 out_port_spectrum_border(puerto,value);
         }
 

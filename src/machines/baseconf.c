@@ -76,6 +76,8 @@ static int baseconf_dos_signal;
 static z80_byte baseconf_beta_drive_virtual;
 static z80_byte baseconf_beta_drive_selected;
 static z80_byte baseconf_extended_dos_ports[4];
+static z80_int baseconf_palette[16];
+static z80_byte baseconf_border_colour;
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
@@ -213,6 +215,17 @@ int baseconf_text_mode_active(void)
         return mode==6 || mode==7;
 }
 
+static z80_int baseconf_get_palette_colour(z80_byte colour)
+{
+        return baseconf_palette[colour&15];
+}
+
+void baseconf_set_border_colour(z80_int puerto,z80_byte value)
+{
+        /* A3 is inverted and supplies the fourth border colour bit. */
+        baseconf_border_colour=(value&7) | ((~puerto)&8);
+}
+
 /* ALCO: 256x192, one 4-bit colour per pixel.  Four interleaved byte
    streams occupy the two adjacent Spectrum screen pages. */
 void screen_baseconf_refresca_alco_mode(void)
@@ -232,7 +245,7 @@ void screen_baseconf_refresca_alco_mode(void)
                         value=baseconf_ram_mem_table[page][adr];
                         if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
                         else value=(value&7) | ((value&0x40)>>3);
-                        scr_putpixel_zoom(x,y,value);
+                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(value));
                 }
         }
 }
@@ -272,7 +285,7 @@ void screen_baseconf_refresca_ega_mode(void)
                         value=baseconf_ram_mem_table[page][adr];
                         if (sx&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
                         else value=(value&7) | ((value&0x40)>>3);
-                        scr_putpixel_zoom(x,y,value);
+                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(value));
                 }
         }
 }
@@ -294,7 +307,8 @@ void screen_baseconf_refresca_atm_multicolor_mode(void)
                         z80_byte attr=baseconf_ram_mem_table[vpage^4][adr+half];
                         z80_byte ink=(attr&7) | ((attr&0x40)>>3);
                         z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
-                        scr_putpixel_zoom(x,y,(pixels&(0x80>>(sx&7))) ? ink : paper);
+                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
+                                (pixels&(0x80>>(sx&7))) ? ink : paper));
                 }
         }
 }
@@ -325,7 +339,8 @@ void screen_baseconf_refresca_atm_text_mode(void)
                         z80_byte font=baseconf_text_font[caracter*8+font_line];
                         z80_byte ink=(attr&7) | ((attr&0x40)>>3);
                         z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
-                        scr_putpixel_zoom(x,y,(font&(0x80>>(sx&7))) ? ink : paper);
+                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
+                                (font&(0x80>>(sx&7))) ? ink : paper));
                 }
         }
 }
@@ -345,7 +360,8 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
                         z80_byte ink=(value&7) | ((value&0x40)>>3);
                         z80_byte paper=(value&0x78)>>3;
                         //printf("%d %d\n",ink,paper);
-                        scr_putpixel_zoom(x,y,(value&(0x80>>(x&7))) ? ink : paper);
+                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
+                                (value&(0x80>>(x&7))) ? ink : paper));
                 }
         }
 }
@@ -383,7 +399,8 @@ void screen_baseconf_refresca_text_mode(void)
                         z80_byte font=baseconf_text_font[caracter*8+font_line];
                         z80_byte ink=(atributo&7)+((atributo&0x40) ? 8 : 0);
                         z80_byte paper=((atributo>>3)&7)+((atributo&0x80) ? 8 : 0);
-                        scr_putpixel_zoom(x,y,(font&(0x80>>font_x)) ? ink : paper);
+                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
+                                (font&(0x80>>font_x)) ? ink : paper));
                 }
         }
 }
@@ -512,6 +529,8 @@ void baseconf_hard_reset(void)
   baseconf_beta_drive_virtual=0;
   baseconf_beta_drive_selected=0;
   for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
+  for (i=0;i<16;i++) baseconf_palette[i]=i;
+  baseconf_border_colour=0;
 
 
   reset_cpu();
@@ -605,8 +624,32 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         /* The Beta Disk system register contains the selected drive.  It is
            still decoded for a virtual drive although the WD1793 ports are not. */
         else if ((puerto&0x00ff)==0xff && baseconf_shadow_ports_available()) {
-                baseconf_beta_drive_selected=valor;
-                baseconf_set_memory_pages();
+                /* A14 of the last #xx77 access selects the meaning of #xxFF.
+                   With A14 low it programs the palette; with A14 high it is
+                   the Beta Disk system register.  BaseConf software such as
+                   Hypnotoad does not require BF.5 for palette writes. */
+                if (!(baseconf_shadow_mode_port_77&0x40)) {
+                        z80_int inverted_value=(~valor)&0xff;
+                        z80_int inverted_port=(~puerto)&0xffff;
+                        int r=((inverted_value&0x02)<<2) |
+                              ((inverted_value&0x40)>>4) |
+                              ((inverted_port&0x0200)>>8) |
+                              ((inverted_port&0x4000)>>14);
+                        int g=((inverted_value&0x10)>>1) |
+                              ((inverted_value&0x80)>>5) |
+                              ((inverted_port&0x1000)>>11) |
+                              ((inverted_port&0x8000)>>15);
+                        int b=((inverted_value&0x01)<<3) |
+                              ((inverted_value&0x20)>>3) |
+                              ((inverted_port&0x0100)>>7) |
+                              ((inverted_port&0x2000)>>13);
+                        baseconf_palette[baseconf_border_colour]=
+                                PRISM_INDEX_FIRST_COLOR+(r<<8)+(g<<4)+b;
+                }
+                else {
+                        baseconf_beta_drive_selected=valor;
+                        baseconf_set_memory_pages();
+                }
         }
 
         else if (baseconf_shadow_ports_available() &&
