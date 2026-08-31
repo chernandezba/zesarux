@@ -200,3 +200,9 @@ Lo unico que tendria sentido es que al conectar un joystick por usb haga esas fu
 
 -quiza en el caso de baseconf, fetch_opcode_spectrum que se cambie por uno propio para evitar la condicion adicional siempre en todos los spectrum
 de if (MACHINE_IS_BASECONF) baseconf_pre_opcode_fetch(reg_pc);
+
+-zxevo baseconf rom buena:
+md5sum zxevo_baseconf.rom
+d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
+
+-show registers in console y ademas que muestre desensamblado

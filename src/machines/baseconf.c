@@ -71,6 +71,11 @@ static z80_byte baseconf_mmu_pages[8];
 static z80_byte baseconf_mmu_flags[8];
 static z80_byte baseconf_text_font[2048];
 static int baseconf_dos_signal;
+/* PentEvo virtual Beta Disk state.  The firmware stores the RAM-disk
+   service in RAM page FE and selects it instead of the physical FDC. */
+static z80_byte baseconf_beta_drive_virtual;
+static z80_byte baseconf_beta_drive_selected;
+static z80_byte baseconf_extended_dos_ports[4];
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
@@ -133,8 +138,21 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
                        ((baseconf_shadow_mode_port_77&3)<<5) |
                        (baseconf_dos_signal ? 0x10 : 0) |
                        (baseconf_last_port_77&0x0f);
+        case 0x13:
+                return baseconf_beta_drive_virtual;
         default:
                 return 0xff;
+        }
+}
+
+z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
+{
+        switch (puerto_l) {
+        case 0x2f: return baseconf_extended_dos_ports[0];
+        case 0x4f: return baseconf_extended_dos_ports[1];
+        case 0x6f: return baseconf_extended_dos_ports[2];
+        case 0x8f: return baseconf_extended_dos_ports[3];
+        default: return 0xff;
         }
 }
 
@@ -363,6 +381,13 @@ void baseconf_set_memory_pages(void)
                         pagina=0;
                         pagina_es_ram=1;
                 }
+                /* A selected virtual Beta Disk replaces the physical FDC.
+                   Its service code/data live in the last-but-one RAM page. */
+                else if (i==0 && baseconf_beta_drive_selected &&
+                         baseconf_beta_drive_virtual==baseconf_beta_drive_selected) {
+                        pagina=0xfe;
+                        pagina_es_ram=1;
+                }
 
                 //TODO: A9: If 0 then "force" the inclusion of TR-DOS and the shadow ports. 0 after reset.
 
@@ -409,6 +434,9 @@ void baseconf_hard_reset(void)
   }
   for (i=0;i<2048;i++) baseconf_text_font[i]=0;
   baseconf_dos_signal=1;
+  baseconf_beta_drive_virtual=0;
+  baseconf_beta_drive_selected=0;
+  for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
 
 
   reset_cpu();
@@ -485,12 +513,36 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 {
 
         z80_byte puerto_h=puerto>>8;
+        z80_byte puerto_l=puerto&0xff;
 
 
+
+        /* Newer EVO firmware writes the additional configuration registers
+           through xxBD.  13BD marks drives A-D that are RAM disks. */
+        if ((puerto&0x00ff)==0xbd && (puerto_h&0xfc)==0x10 &&
+            baseconf_shadow_ports_available()) {
+                if ((puerto_h&3)==3) {
+                        baseconf_beta_drive_virtual=valor&0x0f;
+                        baseconf_set_memory_pages();
+                }
+        }
+
+        /* The Beta Disk system register contains the selected drive.  It is
+           still decoded for a virtual drive although the WD1793 ports are not. */
+        else if ((puerto&0x00ff)==0xff && baseconf_shadow_ports_available()) {
+                baseconf_beta_drive_selected=valor;
+                baseconf_set_memory_pages();
+        }
+
+        else if (baseconf_shadow_ports_available() &&
+                 (puerto_l==0x2f || puerto_l==0x4f ||
+                  puerto_l==0x6f || puerto_l==0x8f)) {
+                baseconf_extended_dos_ports[(puerto_l-0x2f)>>5]=valor;
+        }
 
         //xxBFH
         //Enable shadow mode ports write permission in ROM.
-        if ( (puerto&0x00FF)==0xBF ) {
+        else if ( (puerto&0x00FF)==0xBF ) {
                baseconf_last_port_bf=valor;
 
                baseconf_set_memory_pages();
