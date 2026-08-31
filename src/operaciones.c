@@ -1167,8 +1167,16 @@ z80_byte fetch_opcode_spectrum(void)
 #ifdef EMULATE_VISUALMEM
 	set_visualmemopcodebuffer(reg_pc);
 #endif
-	if (MACHINE_IS_BASECONF) baseconf_pre_opcode_fetch(reg_pc);
 	return peek_byte_no_time (reg_pc);
+}
+
+z80_byte fetch_opcode_baseconf(void)
+{
+#ifdef EMULATE_VISUALMEM
+	set_visualmemopcodebuffer(reg_pc);
+#endif
+	baseconf_pre_opcode_fetch(reg_pc);
+	return peek_byte_no_time(reg_pc);
 }
 
 z80_byte fetch_opcode_ace(void)

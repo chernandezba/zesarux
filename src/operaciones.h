@@ -248,6 +248,7 @@ extern z80_byte (*peek_byte_no_time)(z80_int dir);
 extern z80_byte (*fetch_opcode)(void);
 
 extern z80_byte fetch_opcode_spectrum(void);
+extern z80_byte fetch_opcode_baseconf(void);
 extern z80_byte fetch_opcode_zx81(void);
 extern z80_byte fetch_opcode_ace(void);
 extern z80_byte fetch_opcode_cpc(void);

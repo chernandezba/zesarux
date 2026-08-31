@@ -2716,6 +2716,7 @@ void set_machine_params(void)
             peek_byte_no_time=peek_byte_no_time_baseconf;
             poke_byte_no_time=poke_byte_no_time_baseconf;
             lee_puerto=lee_puerto_spectrum;
+            fetch_opcode=fetch_opcode_baseconf;
             ay_chip_present.v=1;
 
             //baseConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
@@ -3776,4 +3777,3 @@ unsigned int buildnumber_int=0;
 unsigned int last_buildnumber_int=0;
 
 z80_bit zesarux_has_been_downgraded={0};
-
