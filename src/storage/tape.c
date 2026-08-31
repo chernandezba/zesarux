@@ -1350,6 +1350,10 @@ int tap_load_detect(void)
             if (reg_pc!=1378) return 0;
         }
 
+        else if (MACHINE_IS_BASECONF) {
+            if (reg_pc!=1378) return 0;
+        }
+
         else if (MACHINE_IS_TSCONF) {
             if (reg_pc!=1378) return 0;
         }
@@ -1437,6 +1441,16 @@ int tap_load_detect(void)
 
                 return 1;
 
+        }
+
+        /* En BaseConf el EVO Service tiene prioridad mediante su breakpoint
+           hardware en #0556. Si no ha interceptado la carga y se alcanza el
+           IN A,(#FE) normal de la ROM, se permite usar el TAP de ZEsarUX. */
+        if (MACHINE_IS_BASECONF) {
+                if (peek_byte_no_time(reg_pc)!=0xDB) return 0;
+                if (peek_byte_no_time(reg_pc+1)!=0xFE) return 0;
+
+                return 1;
         }
 
         //Para TSCONF, detectar como zxuno. Por PC y por instrucciones

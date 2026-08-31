@@ -770,6 +770,8 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                               ((inverted_port&0x2000)>>13);
                         baseconf_palette[baseconf_border_colour]=
                                 PRISM_INDEX_FIRST_COLOR+(r<<8)+(g<<4)+b;
+
+                        //Los mismos colores que máquina Prism
                 }
                 else {
                         baseconf_beta_drive_selected=valor;
