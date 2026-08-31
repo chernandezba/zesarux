@@ -143,6 +143,7 @@ int mmc_cid_index=-1;
 
 //A 0 cuando se ha recibido todos los valores correctos de ocr
 int mmc_ocr_index=-1;
+int mmc_stop_index=-1;
 
 //A 0 cuando se ha recibido todos los valores correctos de read block
 int mmc_read_index=-1;
@@ -153,6 +154,7 @@ int mmc_write_index=-1;
 //Direcciones de inicio de lectura y escritura de datos
 unsigned int mmc_write_address;
 unsigned int mmc_read_address;
+z80_int mmc_read_crc;
 z80_byte mmc_last_command=0;
 int mmc_index_command=0;
 
@@ -719,6 +721,7 @@ void mmc_cs(z80_byte value)
 	mmc_csd_index=-1;
 	mmc_cid_index=-1;
 	mmc_ocr_index=-1;
+	mmc_stop_index=-1;
 
 
 }
@@ -796,6 +799,20 @@ z80_byte mmc_read_byte_memory(unsigned int address)
         //printf("leyendo byte de direccion %XH: %02XH. PC=%XH\n",address,mmc_memory_pointer[mmc_card_selected][address],reg_pc);
 		return mmc_memory_pointer[mmc_card_selected][address];
 	}
+}
+
+static z80_int mmc_crc16_block(unsigned int address)
+{
+        z80_int crc=0;
+        int i,bit;
+
+        for (i=0;i<512;i++) {
+                crc ^= (z80_int)mmc_read_byte_memory(address+i)<<8;
+                for (bit=0;bit<8;bit++) {
+                        crc=(crc&0x8000) ? (crc<<1)^0x1021 : crc<<1;
+                }
+        }
+        return crc;
 }
 
 void mmc_write_byte_memory(unsigned int address,z80_byte value)
@@ -975,9 +992,15 @@ z80_byte mmc_read(void)
                 case 0x4C:
                         //debug_printf (VERBOSE_PARANOID,"MMC Read command STOP_TRANSMISSION. PC=%d A=%d BC=%d",reg_pc,reg_a,reg_bc);
 
+                        if (!MACHINE_IS_BASECONF) return 1;
 
-
-                        return 1;
+                        /* R1b: report success/busy once and then release
+                           the SPI bus with FF. */
+                        if (mmc_stop_index==0) {
+                                mmc_stop_index=1;
+                                return 0;
+                        }
+                        return 0xff;
                 break;
 
 
@@ -1008,19 +1031,16 @@ z80_byte mmc_read(void)
 					//(value>=32 && value<=127 ? value : '?') );
 				}
 
-                                //CRC. A FFh
-                                /*
-                                Nota: no estoy seguro viendo mi codigo si este crc se pretende que sean 1 byte o 2
-                                Porque tal y como está ahora, será 1 byte de crc. Si vemos sobre mmc_read_index:
-                                mmc_read_index=514. ultimo byte de datos
-                                mmc_read_index=515. se asigna value=crc=255. Se retorna ese value. Al incrementarse mmc_read_index pasa a ser 516 y luego a -1
-                                mmc_read_index=516. se asigna value=crc=255. Pero aqui NO se llega nunca pues mmc_read_index pasa de 515 a 516 y a -1 de golpe
-                                */
-                                if (mmc_read_index==515 || mmc_read_index==516) value=0xFF;
+                                if (MACHINE_IS_BASECONF) {
+                                        //CRC16-CCITT, most significant byte first.
+                                        if (mmc_read_index==515) value=mmc_read_crc>>8;
+                                        if (mmc_read_index==516) value=mmc_read_crc&0xff;
+                                }
+                                else if (mmc_read_index==515 || mmc_read_index==516) value=0xff;
 
                                 //Si final
                                 mmc_read_index++;
-                                if (mmc_read_index==516) mmc_read_index=-1;
+                                if (mmc_read_index==(MACHINE_IS_BASECONF ? 517 : 516)) mmc_read_index=-1;
 
 
                                 return value;
@@ -1074,26 +1094,23 @@ z80_byte mmc_read(void)
                     //    (value>=32 && value<=127 ? value : '?') );
                 }
 
-                //cuando se han leido los 512 bytes, ir al siguiente sector
-                if (mmc_read_index==514) mmc_read_index=515;
-
-				/*
-
-
-                                //CRC. A FFh
-                                if (mmc_read_index==515 || mmc_read_index==516) value=0xFF;
-
-				*/
+                if (MACHINE_IS_BASECONF) {
+                    //CRC16-CCITT del bloque, byte alto primero.
+                    if (mmc_read_index==515) value=mmc_read_crc>>8;
+                    if (mmc_read_index==516) value=mmc_read_crc&0xff;
+                }
+                else if (mmc_read_index==514) mmc_read_index=515;
 
                 //Si final
                 mmc_read_index++;
-                if (mmc_read_index==516) mmc_read_index=-1;
+                if (mmc_read_index==(MACHINE_IS_BASECONF ? 517 : 516)) mmc_read_index=-1;
 
 
                 //Siguiente bloque a leer
                 if (mmc_read_index==-1) {
                     mmc_read_index=0;
                     mmc_read_address +=512;
+                    if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(mmc_read_address);
                     //debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address=%XH",mmc_read_address);
                 }
 
@@ -1168,7 +1185,6 @@ z80_byte mmc_read(void)
 
                                 //CRC. A FFh
                                 if (mmc_ocr_index==7 || mmc_ocr_index==8) {
-                                        //printf ("retornando CRC\n");
                                         value=0xFF;
                                 }
 
@@ -1294,6 +1310,7 @@ void mmc_write(z80_byte value)
 			        if (mmc_index_command==5) {
                         //Estado idle
                         mmc_r1=1;
+			if (MACHINE_IS_BASECONF) mmc_stop_index=0;
                         //Reseteamos indice
                         mmc_index_command=0;
                     }
@@ -1324,10 +1341,7 @@ void mmc_write(z80_byte value)
                                                 mmc_parameters_sent[2],mmc_parameters_sent[3]);
 					//printf ("Direccion: 0x%X\n",direccion);
 					mmc_read_address=direccion;
-
-
-
-
+					if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(direccion);
 					mmc_read_index=0;
                                 }
                         break;
@@ -1354,6 +1368,7 @@ void mmc_write(z80_byte value)
                                         //printf ("Direccion: 0x%X\n",direccion);
                                         //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
                                         mmc_read_address=direccion;
+                                        if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(direccion);
                                         //debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK. Address: %XH",direccion);
 
 
