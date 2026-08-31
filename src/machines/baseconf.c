@@ -84,9 +84,6 @@ static int baseconf_nmi_exit_countdown;
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
-extern z80_byte baseconf_shadow_mode_port_77;
-extern z80_byte baseconf_last_port_77;
-extern z80_byte baseconf_last_port_eff7;
 
 void baseconf_pre_opcode_fetch(z80_int direccion)
 {

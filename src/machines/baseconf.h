@@ -43,6 +43,8 @@
 //#define BASECONF_MAX_SPRITES 85
 
 extern z80_byte baseconf_last_port_eff7;
+extern z80_byte baseconf_last_port_77;
+extern z80_byte baseconf_shadow_mode_port_77;
 //extern z80_byte baseconf_last_port_dff7;
 //extern z80_byte baseconf_nvram[];
 
