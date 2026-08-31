@@ -1681,6 +1681,16 @@ int tap_save_detect(void)
                             return 1;
     }
 
+    /* BaseConf, igual que Prism: detectar la entrada de la rutina estándar
+       de grabación mediante LD HL,#1F80, sin depender de una ROM concreta. */
+    if (MACHINE_IS_BASECONF) {
+                    if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                    if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                    if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+
+                    return 1;
+    }
+
     if (MACHINE_IS_TSCONF) {
     //Como maquina +2A
     //Ver que instruccion sea ld hl,1f80
