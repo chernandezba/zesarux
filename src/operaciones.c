@@ -7581,7 +7581,12 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 			//return zxevo_nvram[zxevo_last_port_dff7];
 
 
-			return (puerto_eff7 & 0x80) ? zxevo_nvram[zxevo_last_port_dff7] : 0xff;
+			if (!(baseconf_last_port_eff7&0x80)) return 0xff;
+			if (zxevo_last_port_dff7==0xed)
+				printf("BaseConf CMOS EDH read %02XH through BFF7H: Emu tape=%d Autostart=%d\n",
+				       zxevo_nvram[0xed],(zxevo_nvram[0xed]&0x40) ? 1 : 0,
+				       (zxevo_nvram[0xed]&4) ? 1 : 0);
+			return zxevo_nvram[zxevo_last_port_dff7];
 		}
 
         if ( (puerto&0x00FF)==0xBF ) {
@@ -7593,6 +7598,10 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 		if (puerto==0xbef7 /*&& baseconf_shadow_ports_available()*/ ) {
 			//printf ("baseconf reading nvram register %02XH\n",zxevo_last_port_dff7);
 
+			if (zxevo_last_port_dff7==0xed)
+                                printf("BaseConf CMOS EDH read %02XH: Emu tape=%d Autostart=%d\n",
+                                       zxevo_nvram[0xed],(zxevo_nvram[0xed]&0x40) ? 1 : 0,
+                                       (zxevo_nvram[0xed]&4) ? 1 : 0);
 			return zxevo_nvram[zxevo_last_port_dff7];
 		}
 
@@ -9482,7 +9491,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
 				}
 
 	if (MACHINE_IS_BASECONF) {
-		if (puerto_l==0xBF || puerto_l==0xBD || puerto_l==0xFF ||
+		if (puerto_l==0xBF || puerto_l==0xBD || puerto_l==0xBE || puerto_l==0xFF ||
                         puerto_l==0x2f || puerto_l==0x4f || puerto_l==0x6f || puerto_l==0x8f ||
                         puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || puerto==0x7ffd || puerto==0xeff7
 			|| puerto==0xEFF7 || puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)

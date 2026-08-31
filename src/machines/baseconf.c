@@ -78,6 +78,9 @@ static z80_byte baseconf_beta_drive_selected;
 static z80_byte baseconf_extended_dos_ports[4];
 static z80_int baseconf_palette[16];
 static z80_byte baseconf_border_colour;
+static z80_int baseconf_nmi_breakpoint;
+static int baseconf_nmi_active;
+static int baseconf_nmi_exit_countdown;
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
@@ -89,6 +92,27 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
 {
         int mapa=(puerto_32765&16) ? 4 : 0;
         int segmento=direccion>>14;
+
+        /* The EVO tape emulator installs a hardware breakpoint (normally
+           #0556, the 48K ROM loader entry).  Its NMI service is resident in
+           RAM page FF, so it does not use ZEsarUX ROM tape traps. */
+        if (!baseconf_nmi_active && (baseconf_last_port_bf&0x10) &&
+            direccion==baseconf_nmi_breakpoint) {
+                printf("BaseConf hardware breakpoint hit at %04XH: entering RAM FF NMI service\n",
+                       direccion);
+                baseconf_nmi_active=1;
+                baseconf_nmi_exit_countdown=0;
+                baseconf_set_memory_pages();
+                generate_nmi();
+        }
+
+        if (baseconf_nmi_active && baseconf_nmi_exit_countdown) {
+                baseconf_nmi_exit_countdown--;
+                if (!baseconf_nmi_exit_countdown) {
+                        baseconf_nmi_active=0;
+                        baseconf_set_memory_pages();
+                }
+        }
 
         /* A9 allows DOS to leave when execution has moved to RAM. */
         if (baseconf_dos_signal && direccion>=0x4000 &&
@@ -142,6 +166,10 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
                        (baseconf_last_port_77&0x0f);
         case 0x13:
                 return baseconf_beta_drive_virtual;
+        case 0x10:
+                return baseconf_nmi_breakpoint&0xff;
+        case 0x11:
+                return baseconf_nmi_breakpoint>>8;
         default:
                 return 0xff;
         }
@@ -475,6 +503,10 @@ void baseconf_set_memory_pages(void)
                 }
                 /* A selected virtual Beta Disk replaces the physical FDC.
                    Its service code/data live in the last-but-one RAM page. */
+                else if (i==0 && baseconf_nmi_active) {
+                        pagina=0xff;
+                        pagina_es_ram=1;
+                }
                 else if (i==0 && baseconf_beta_drive_selected &&
                          baseconf_beta_drive_virtual==baseconf_beta_drive_selected) {
                         pagina=0xfe;
@@ -531,6 +563,9 @@ void baseconf_hard_reset(void)
   for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
   for (i=0;i<16;i++) baseconf_palette[i]=i;
   baseconf_border_colour=0;
+  baseconf_nmi_breakpoint=0;
+  baseconf_nmi_active=0;
+  baseconf_nmi_exit_countdown=0;
 
 
   reset_cpu();
@@ -613,12 +648,31 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
         /* Newer EVO firmware writes the additional configuration registers
            through xxBD.  13BD marks drives A-D that are RAM disks. */
-        if ((puerto&0x00ff)==0xbd && (puerto_h&0xfc)==0x10 &&
-            baseconf_shadow_ports_available()) {
-                if ((puerto_h&3)==3) {
+        if ((puerto&0x00ff)==0xbd && baseconf_shadow_ports_available() &&
+            (((puerto_h&0xfc)==0x10) || puerto_h<=1)) {
+                int extended_register=((puerto_h&0xfc)==0x10) ?
+                                      (puerto_h&3) : puerto_h;
+                if (extended_register==0) {
+                        baseconf_nmi_breakpoint=(baseconf_nmi_breakpoint&0xff00)|valor;
+                        printf("BaseConf NMI breakpoint low=%02XH, address=%04XH\n",
+                               valor,baseconf_nmi_breakpoint);
+                }
+                else if (extended_register==1) {
+                        baseconf_nmi_breakpoint=(baseconf_nmi_breakpoint&0x00ff)|(valor<<8);
+                        printf("BaseConf NMI breakpoint high=%02XH, address=%04XH\n",
+                               valor,baseconf_nmi_breakpoint);
+                }
+                else if (extended_register==3) {
                         baseconf_beta_drive_virtual=valor&0x0f;
                         baseconf_set_memory_pages();
                 }
+        }
+
+        /* OUT #xxBE from the resident service restores the previous mapping
+           after the two M1 cycles of RETN. */
+        else if ((puerto&0x00ff)==0xbe && baseconf_nmi_active) {
+                printf("BaseConf NMI service exit through %04XH\n",puerto);
+                baseconf_nmi_exit_countdown=2;
         }
 
         /* The Beta Disk system register contains the selected drive.  It is
@@ -662,6 +716,11 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         //Enable shadow mode ports write permission in ROM.
         else if ( (puerto&0x00FF)==0xBF ) {
                baseconf_last_port_bf=valor;
+
+               if ((valor&0x10) || baseconf_nmi_breakpoint)
+                       printf("BaseConf BF=%02XH: hardware breakpoint %s at %04XH\n",
+                              valor,(valor&0x10) ? "enabled" : "disabled",
+                              baseconf_nmi_breakpoint);
 
                baseconf_set_memory_pages();
         }
@@ -752,18 +811,34 @@ segmento 0 pagina 0
 
         //Puertos NVRAM.
 	else if (puerto==0xeff7 && !baseconf_shadow_ports_available() ) puerto_eff7=valor;
-	else if (puerto==0xdff7 && !baseconf_shadow_ports_available() ) zxevo_last_port_dff7=valor;
-        else if (puerto==0xdef7 && baseconf_shadow_ports_available() ) zxevo_last_port_dff7=valor;
+	else if (puerto==0xdff7 && !baseconf_shadow_ports_available() ) {
+		zxevo_last_port_dff7=valor;
+		if (valor==0xed) printf("BaseConf CMOS selected EDH through DFF7H\n");
+	}
+        else if (puerto==0xdef7 && baseconf_shadow_ports_available() ) {
+                zxevo_last_port_dff7=valor;
+                if (valor==0xed) printf("BaseConf CMOS selected EDH\n");
+        }
 
 
 	else if (puerto==0xbff7 && !baseconf_shadow_ports_available() ) {
-						//Si esta permitida la escritura
-						if (puerto_eff7&128) zxevo_nvram[zxevo_last_port_dff7]=valor;
+		/* On BaseConf #EFF7 is the configuration register kept in
+		   baseconf_last_port_eff7.  Using the generic puerto_eff7 here
+		   left non-shadow CMOS access permanently disabled. */
+		if (baseconf_last_port_eff7&128) {
+			zxevo_nvram[zxevo_last_port_dff7]=valor;
+			if (zxevo_last_port_dff7==0xed)
+				printf("BaseConf CMOS EDH written %02XH through BFF7H: Emu tape=%d Autostart=%d\n",
+				       valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);
+		}
 	}
 
         else if (puerto==0xbef7 && baseconf_shadow_ports_available() ) {
                         //Note: In the shadow mode port # BEF7 available regardless of bit 7 port # EFF7.
 		 zxevo_nvram[zxevo_last_port_dff7]=valor;
+		 if (zxevo_last_port_dff7==0xed)
+                         printf("BaseConf CMOS EDH written %02XH: Emu tape=%d Autostart=%d\n",
+                                valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);
 					}
         else if ( (puerto&0x00FF)==0x77 ) {
                 baseconf_sd_enabled=valor&1;
