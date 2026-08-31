@@ -992,8 +992,6 @@ z80_byte mmc_read(void)
                 case 0x4C:
                         //debug_printf (VERBOSE_PARANOID,"MMC Read command STOP_TRANSMISSION. PC=%d A=%d BC=%d",reg_pc,reg_a,reg_bc);
 
-                        if (!MACHINE_IS_BASECONF) return 1;
-
                         /* R1b: report success/busy once and then release
                            the SPI bus with FF. */
                         if (mmc_stop_index==0) {
@@ -1310,7 +1308,7 @@ void mmc_write(z80_byte value)
 			        if (mmc_index_command==5) {
                         //Estado idle
                         mmc_r1=1;
-			if (MACHINE_IS_BASECONF) mmc_stop_index=0;
+			mmc_stop_index=0;
                         //Reseteamos indice
                         mmc_index_command=0;
                     }
