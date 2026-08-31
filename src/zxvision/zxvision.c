@@ -32245,7 +32245,7 @@ void set_menu_gui_zoom(void)
     //antes de iniciar el driver de video, por tanto el driver de video no existe aun y no retornaria que es completo
     //esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2
     //if (si_complete_video_driver() ) {
-        if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
+        if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE || MACHINE_IS_BASECONF) menu_gui_zoom=2;
     //}
 
     debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);

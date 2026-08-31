@@ -77,6 +77,7 @@
 #include "svi.h"
 #include "realjoystick.h"
 #include "pcw.h"
+#include "baseconf.h"
 
 
 int gArgc;
@@ -3002,6 +3003,9 @@ void scrcocoa_refresca_pantalla(void)
             screen_tsconf_refresca_pantalla();
         }
 
+        else if (MACHINE_IS_BASECONF)	{
+            baseconf_refresca_pantalla();
+        }
 
         else { //Spectrum no TSConf
 

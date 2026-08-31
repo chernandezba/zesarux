@@ -489,6 +489,8 @@ extern void screen_text_repinta_pantalla_chloe(void);
 
 extern void screen_tbblue_refresca_pantalla(void);
 
+extern void scr_simular_video_zx8081(void);
+
 //extern void z88_return_character_atributes(z80_byte *sbr,int *ascii_caracter,int *ancho,int *inverse,int *subrallado,int *parpadeo,int *gris,int *null_caracter);
 
 

@@ -47,6 +47,7 @@
 #include "sms.h"
 #include "svi.h"
 #include "pcw.h"
+#include "baseconf.h"
 
 
 #include <X11/Xlib.h> // Every Xlib program must include this
@@ -685,6 +686,10 @@ void scrxwindows_refresca_pantalla(void)
     else if (MACHINE_IS_SPECTRUM) {
 
         if (MACHINE_IS_TSCONF)	screen_tsconf_refresca_pantalla();
+
+        else if (MACHINE_IS_BASECONF)	{
+            baseconf_refresca_pantalla();
+        }
 
 
         else { //Spectrum no TSConf

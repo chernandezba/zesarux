@@ -248,6 +248,82 @@ static z80_int baseconf_get_palette_colour(z80_byte colour)
         return baseconf_palette[colour&15];
 }
 
+/* All BaseConf modes are rendered into a 640x400 active area.  Keep the
+   scaling integral: 256x192 -> 512x384, 320x200 -> 640x400 and
+   640x200 -> 640x400.  The unused area becomes additional border. */
+static void baseconf_putpixel_scaled(int x,int y,z80_int colour,
+                                    int scale_x,int scale_y,
+                                    int offset_x,int offset_y)
+{
+        int dx,dy;
+        int output_x=offset_x+x*scale_x;
+        int output_y=offset_y+y*scale_y;
+
+        for (dy=0;dy<scale_y;dy++)
+                for (dx=0;dx<scale_x;dx++)
+                        scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
+}
+
+static void baseconf_get_mode_geometry(int *offset_x,int *offset_y,
+                                       int *width,int *height)
+{
+        z80_byte mode=baseconf_get_video_mode();
+
+        if (mode==0x13 || mode==0x23 || mode==3) {
+                *width=512;
+                *height=384;
+                *offset_x=(640-*width)/2;
+                *offset_y=(400-*height)/2;
+        }
+        else {
+                *width=640;
+                *height=400;
+                *offset_x=0;
+                *offset_y=0;
+        }
+}
+
+static void baseconf_putpixel_absolute(int x,int y,z80_int colour)
+{
+        int dx,dy;
+        int px=x*zoom_x;
+        int py=y*zoom_y;
+
+        for (dy=0;dy<zoom_y;dy++)
+                for (dx=0;dx<zoom_x;dx++)
+                        scr_putpixel(px+dx,py+dy,colour);
+}
+
+static void screen_baseconf_refresca_border(void)
+{
+        int x,y,offset_x,offset_y,width,height;
+        int left,top,right,bottom;
+        z80_int colour=baseconf_get_palette_colour(baseconf_border_colour);
+
+        if (!border_enabled.v) return;
+
+        baseconf_get_mode_geometry(&offset_x,&offset_y,&width,&height);
+        left=BASECONF_LEFT_BORDER_NO_ZOOM+offset_x;
+        top=BASECONF_TOP_BORDER_NO_ZOOM+offset_y;
+        right=left+width;
+        bottom=top+height;
+
+        for (y=0;y<top;y++)
+                for (x=0;x<BASECONF_DISPLAY_WIDTH;x++)
+                        baseconf_putpixel_absolute(x,y,colour);
+
+        for (y=bottom;y<BASECONF_DISPLAY_HEIGHT;y++)
+                for (x=0;x<BASECONF_DISPLAY_WIDTH;x++)
+                        baseconf_putpixel_absolute(x,y,colour);
+
+        for (y=top;y<bottom;y++) {
+                for (x=0;x<left;x++)
+                        baseconf_putpixel_absolute(x,y,colour);
+                for (x=right;x<BASECONF_DISPLAY_WIDTH;x++)
+                        baseconf_putpixel_absolute(x,y,colour);
+        }
+}
+
 void baseconf_set_border_colour(z80_int puerto,z80_byte value)
 {
         /* A3 is inverted and supplies the fourth border colour bit. */
@@ -273,7 +349,8 @@ void screen_baseconf_refresca_alco_mode(void)
                         value=baseconf_ram_mem_table[page][adr];
                         if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
                         else value=(value&7) | ((value&0x40)>>3);
-                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(value));
+                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(value),
+                                                2,2,64,8);
                 }
         }
 }
@@ -286,12 +363,11 @@ void screen_baseconf_refresca_ega_mode(void)
         /* ATM EGA is a 320x200 packed display.  Each byte describes
            the colours of two adjacent pixels; the four byte streams
            alternate between video pages vpage and vpage^4. */
-        for (y=0;y<192;y++) {
-                int sy=y*200/192;
-                for (x=0;x<256;x++) {
-                        int sx=x*320/256;
+        for (y=0;y<200;y++) {
+                for (x=0;x<320;x++) {
+                        int sx=x;
                         int pair=sx&~1;
-                        int adr=sy*40+(sx>>3);
+                        int adr=y*40+(sx>>3);
                         int page=vpage;
                         z80_byte value;
 
@@ -313,7 +389,8 @@ void screen_baseconf_refresca_ega_mode(void)
                         value=baseconf_ram_mem_table[page][adr];
                         if (sx&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
                         else value=(value&7) | ((value&0x40)>>3);
-                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(value));
+                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(value),
+                                                2,2,0,0);
                 }
         }
 }
@@ -325,18 +402,17 @@ void screen_baseconf_refresca_atm_multicolor_mode(void)
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
 
-        for (y=0;y<192;y++) {
-                int sy=y*200/192;
-                for (x=0;x<256;x++) {
-                        int sx=x*640/256;
-                        int adr=sy*40+(sx>>4);
+        for (y=0;y<200;y++) {
+                for (x=0;x<640;x++) {
+                        int sx=x;
+                        int adr=y*40+(sx>>4);
                         int half=(sx&8) ? 0x2000 : 0;
                         z80_byte pixels=baseconf_ram_mem_table[vpage][adr+half];
                         z80_byte attr=baseconf_ram_mem_table[vpage^4][adr+half];
                         z80_byte ink=(attr&7) | ((attr&0x40)>>3);
                         z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
-                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
-                                (pixels&(0x80>>(sx&7))) ? ink : paper));
+                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                                (pixels&(0x80>>(sx&7))) ? ink : paper),1,2,0,0);
                 }
         }
 }
@@ -346,12 +422,11 @@ void screen_baseconf_refresca_atm_text_mode(void)
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
 
-        for (y=0;y<192;y++) {
-                int sy=y*200/192;
-                int row=sy>>3;
-                int font_line=sy&7;
-                for (x=0;x<256;x++) {
-                        int sx=x*640/256;
+        for (y=0;y<200;y++) {
+                int row=y>>3;
+                int font_line=y&7;
+                for (x=0;x<640;x++) {
+                        int sx=x;
                         int column=sx>>3;
                         int adr=0x1c0+row*64+(column>>1);
                         z80_byte caracter,attr;
@@ -367,8 +442,8 @@ void screen_baseconf_refresca_atm_text_mode(void)
                         z80_byte font=baseconf_text_font[caracter*8+font_line];
                         z80_byte ink=(attr&7) | ((attr&0x40)>>3);
                         z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
-                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
-                                (font&(0x80>>(sx&7))) ? ink : paper));
+                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                                (font&(0x80>>(sx&7))) ? ink : paper),1,2,0,0);
                 }
         }
 }
@@ -388,8 +463,8 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
                         z80_byte ink=(value&7) | ((value&0x40)>>3);
                         z80_byte paper=(value&0x78)>>3;
                         //printf("%d %d\n",ink,paper);
-                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
-                                (value&(0x80>>(x&7))) ? ink : paper));
+                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                                (value&(0x80>>(x&7))) ? ink : paper),2,2,64,8);
                 }
         }
 }
@@ -400,16 +475,12 @@ void screen_baseconf_refresca_text_mode(void)
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *text=baseconf_ram_mem_table[vpage+3];
 
-        /* PentEvo text is 80x25 characters.  Its 8 font pixels occupy
-           four 320x200 hardware pixels.  Scale the complete mode into
-           the existing 256x192 Spectrum viewport until BaseConf gets
-           its own dynamically sized video surface. */
-        for (y=0;y<192;y++) {
-                int sy=y*200/192;
-                int row=sy>>3;
-                int font_line=sy&7;
-                for (x=0;x<256;x++) {
-                        int half_pixel=x*640/256;
+        /* PentEvo text is 80x25 characters, hence 640x200 pixels. */
+        for (y=0;y<200;y++) {
+                int row=y>>3;
+                int font_line=y&7;
+                for (x=0;x<640;x++) {
+                        int half_pixel=x;
                         int column=half_pixel>>3;
                         int font_x=half_pixel&7;
                         int adr=0x1c0+row*64+(column>>1);
@@ -427,8 +498,8 @@ void screen_baseconf_refresca_text_mode(void)
                         z80_byte font=baseconf_text_font[caracter*8+font_line];
                         z80_byte ink=(atributo&7)+((atributo&0x40) ? 8 : 0);
                         z80_byte paper=((atributo>>3)&7)+((atributo&0x80) ? 8 : 0);
-                        scr_putpixel_zoom(x,y,baseconf_get_palette_colour(
-                                (font&(0x80>>font_x)) ? ink : paper));
+                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                                (font&(0x80>>font_x)) ? ink : paper),1,2,0,0);
                 }
         }
 }
@@ -884,4 +955,183 @@ void screen_baseconf_refresca_pantalla(void)
         screen_baseconf_refresca_rainbow();
 	}
 */
+}
+
+
+//Refresco pantalla sin rainbow
+void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
+{
+    int x,y,bit;
+    z80_int direccion,dir_atributo;
+    z80_byte byte_leido;
+    int color=0;
+    int fila;
+    //int zx,zy;
+
+    z80_byte attribute,ink,paper,bright,flash,aux;
+
+
+
+    if (simulate_screen_zx8081.v==1) {
+        //simular modo video zx80/81
+        scr_simular_video_zx8081();
+        return;
+    }
+
+
+    z80_byte *screen=get_base_mem_pantalla();
+
+    //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+    z80_byte x_hi;
+
+    for (y=0;y<192;y++) {
+        //direccion=16384 | devuelve_direccion_pantalla(0,y);
+
+        //direccion=16384 | screen_addr_table[(y<<5)];
+        direccion=screen_addr_table[(y<<5)];
+
+
+        fila=y/8;
+        dir_atributo=6144+(fila*32);
+        for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
+
+
+
+            byte_leido=screen[direccion];
+            attribute=screen[dir_atributo];
+
+            //Prueba de un modo de video inventado en que el color de la tinta sale de los 4 bits de la zona de pixeles
+            //int ink1,ink2;
+
+            if (scr_refresca_sin_colores.v) {
+                attribute=56;
+                //ink1=(byte_leido >>4)&0xF;
+                //ink2=(byte_leido    )&0xF;
+
+            }
+
+            else {
+                if (scr_refresca_show_attribute_grid.v) {
+                    int cuad=(fila+x)%2;
+                    if (cuad) attribute=56+64;
+                    else attribute=56;
+                }
+            }
+
+
+            ink=attribute &7;
+            paper=(attribute>>3) &7;
+            bright=(attribute) &64;
+            flash=(attribute)&128;
+            if (flash) {
+                    //intercambiar si conviene
+                    if (estado_parpadeo.v) {
+                            aux=paper;
+                            paper=ink;
+                            ink=aux;
+                    }
+            }
+
+            if (bright) {
+                ink +=8;
+                paper +=8;
+            }
+
+            for (bit=0;bit<8;bit++) {
+
+                color= ( byte_leido & 128 ? ink : paper );
+                //if (scr_refresca_sin_colores.v) {
+                //	if (bit<=3) color= ( byte_leido & 128 ? ink1 : paper );
+                //	else color= ( byte_leido & 128 ? ink2 : paper );
+                //}
+
+                /*
+
+                Prueba cutre de visualizar la imagen en un plano 3D
+                int xfinal,yfinal;
+                //191-y porque el 0,0 lo tenemos arriba del todo pero la funcion de 3D lo asume abajo del todo
+                zxvision_widgets_draw_particles_3d_convert(x_hi+bit,191-y,0,&xfinal,&yfinal);
+                scr_putpixel_zoom(xfinal,191-yfinal,color);
+                if (xfinal<0) printf("X %d\n",xfinal);
+
+                */
+
+                baseconf_putpixel_scaled(x_hi+bit,y,color,2,2,64,8);
+
+                byte_leido=byte_leido<<1;
+            }
+
+
+            //temp
+            //else {
+            //	printf ("no refrescamos zona x %d fila %d\n",x,fila);
+            //}
+
+
+            direccion++;
+            dir_atributo++;
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+//Refresco pantalla sin rainbow
+void baseconf_refresca_pantalla_no_rainbow(void)
+{
+
+
+        z80_byte baseconf_mode=baseconf_get_video_mode();
+        if (baseconf_mode==0x13) {
+            printf("BaseConf video mode 13H: ALCO 16 colour, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+            screen_baseconf_refresca_alco_mode();
+            return;
+        }
+        if (baseconf_mode==0) {
+            printf("BaseConf video mode 00H: ATM EGA, pixels 320x200 -> 640x400, border L/R=40 T/B=88\n");
+            screen_baseconf_refresca_ega_mode();
+            return;
+        }
+        if (baseconf_mode==0x23) {
+            printf("BaseConf video mode 23H: ZX hardware multicolor, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+            screen_baseconf_refresca_hw_multicolor_mode();
+            return;
+        }
+        if (baseconf_mode==2) {
+            printf("BaseConf video mode 02H: ATM hardware multicolor, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+            screen_baseconf_refresca_atm_multicolor_mode();
+            return;
+        }
+        if (baseconf_mode==6) {
+            printf("BaseConf video mode 06H: ATM text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+            screen_baseconf_refresca_atm_text_mode();
+            return;
+        }
+        if (baseconf_mode==7) {
+            printf("BaseConf video mode 07H: EVO text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+            screen_baseconf_refresca_text_mode();
+            return;
+        }
+        if (baseconf_mode==3)
+            printf("BaseConf video mode 03H: standard ZX, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+        else
+            printf("BaseConf video mode %02XH: unknown, using standard ZX renderer, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n",
+                   baseconf_mode);
+        baseconf_refresca_pantalla_no_rainbow_standard_48k();
+}
+
+
+void baseconf_refresca_pantalla(void)
+{
+        /* Real-video timing is not implemented yet, so both paths use the
+           complete frame renderer. */
+        baseconf_refresca_pantalla_no_rainbow();
+        screen_baseconf_refresca_border();
+        modificado_border.v=0;
 }

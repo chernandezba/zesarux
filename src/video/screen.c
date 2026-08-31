@@ -1151,6 +1151,10 @@ void recalcular_get_total_ancho_rainbow(void)
         get_total_ancho_rainbow_cached=TSCONF_DISPLAY_WIDTH;
     }
 
+    else if (MACHINE_IS_BASECONF) {
+        get_total_ancho_rainbow_cached=BASECONF_DISPLAY_WIDTH;
+    }
+
     else if (MACHINE_IS_TBBLUE) {
         get_total_ancho_rainbow_cached=2*TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+512;
     }
@@ -1197,6 +1201,10 @@ void recalcular_get_total_alto_rainbow(void)
 
     else if (MACHINE_IS_TSCONF) {
         get_total_alto_rainbow_cached=TSCONF_DISPLAY_HEIGHT;
+    }
+
+    else if (MACHINE_IS_BASECONF) {
+        get_total_alto_rainbow_cached=BASECONF_DISPLAY_HEIGHT;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -2331,6 +2339,10 @@ int scr_get_index_cache_putpixel_no_rainbow(int x,int y)
         indice_cache=(get_total_ancho_rainbow()*(TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
     }
 
+    else if (MACHINE_IS_BASECONF) {
+        indice_cache=(get_total_ancho_rainbow()*(BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
+
     else if (MACHINE_IS_TBBLUE) {
         indice_cache=(get_total_ancho_rainbow()*(TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
     }
@@ -2377,6 +2389,11 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
     else if (MACHINE_IS_TSCONF) {
         offsetx=TSCONF_LEFT_BORDER*border_enabled.v;
         offsety=TSCONF_TOP_BORDER*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_BASECONF) {
+        offsetx=BASECONF_LEFT_BORDER*border_enabled.v;
+        offsety=BASECONF_TOP_BORDER*border_enabled.v;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -3300,6 +3317,11 @@ if (MACHINE_IS_Z88) {
     else if (MACHINE_IS_TSCONF) {
         *margenx_izq=TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v;
         *margeny_arr=TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_BASECONF) {
+        *margenx_izq=BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+        *margeny_arr=BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -5203,44 +5225,6 @@ void scr_refresca_pantalla_comun(void)
 
     z80_byte attribute,ink,paper,bright,flash,aux;
 
-    if (MACHINE_IS_BASECONF) {
-        z80_byte baseconf_mode=baseconf_get_video_mode();
-        if (baseconf_mode==0x13) {
-            printf("BaseConf video mode 13H: ALCO 16 colour\n");
-            screen_baseconf_refresca_alco_mode();
-            return;
-        }
-        if (baseconf_mode==0) {
-            printf("BaseConf video mode 00H: ATM EGA\n");
-            screen_baseconf_refresca_ega_mode();
-            return;
-        }
-        if (baseconf_mode==0x23) {
-            printf("BaseConf video mode 23H: ZX hardware multicolor\n");
-            screen_baseconf_refresca_hw_multicolor_mode();
-            return;
-        }
-        if (baseconf_mode==2) {
-            printf("BaseConf video mode 02H: ATM hardware multicolor\n");
-            screen_baseconf_refresca_atm_multicolor_mode();
-            return;
-        }
-        if (baseconf_mode==6) {
-            printf("BaseConf video mode 06H: ATM text\n");
-            screen_baseconf_refresca_atm_text_mode();
-            return;
-        }
-        if (baseconf_mode==7) {
-            printf("BaseConf video mode 07H: EVO text\n");
-            screen_baseconf_refresca_text_mode();
-            return;
-        }
-        if (baseconf_mode==3)
-            printf("BaseConf video mode 03H: standard ZX\n");
-        else
-            printf("BaseConf video mode %02XH: unknown, using standard ZX renderer\n",
-                   baseconf_mode);
-    }
 
 
     if (simulate_screen_zx8081.v==1) {
@@ -12021,6 +12005,10 @@ int screen_get_emulated_display_width_no_zoom(void)
         return TSCONF_DISPLAY_WIDTH;
     }
 
+    else if (MACHINE_IS_BASECONF) {
+        return BASECONF_DISPLAY_WIDTH;
+    }
+
     else if (MACHINE_IS_TBBLUE) {
         return TBBLUE_DISPLAY_WIDTH+TBBLUE_LEFT_BORDER_NO_ZOOM*2;
     }
@@ -12060,6 +12048,10 @@ int screen_get_emulated_display_height_no_zoom(void)
 
     else if (MACHINE_IS_TSCONF) {
         return TSCONF_DISPLAY_HEIGHT;
+    }
+
+    else if (MACHINE_IS_BASECONF) {
+        return BASECONF_DISPLAY_HEIGHT;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -12108,6 +12100,10 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
     return TSCONF_DISPLAY_WIDTH;
     }
 
+    else if (MACHINE_IS_BASECONF) {
+    return BASECONF_DISPLAY_WIDTH;
+    }
+
     else if (MACHINE_IS_TBBLUE) {
     return TBBLUE_DISPLAY_WIDTH+(TBBLUE_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
     }
@@ -12154,6 +12150,10 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+TSCONF_DISPLAY_HEIGHT;
         }
 
+    else if (MACHINE_IS_BASECONF) {
+        return alto_extdesktop+BASECONF_DISPLAY_HEIGHT;
+        }
+
     else if (MACHINE_IS_TBBLUE) {
         return alto_extdesktop+TBBLUE_DISPLAY_HEIGHT+(TBBLUE_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
         }
@@ -12197,6 +12197,10 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
 
     else if (MACHINE_IS_TSCONF) {
     return TSCONF_DISPLAY_HEIGHT;
+    }
+
+    else if (MACHINE_IS_BASECONF) {
+    return BASECONF_DISPLAY_HEIGHT;
     }
 
     else if (MACHINE_IS_TBBLUE) {

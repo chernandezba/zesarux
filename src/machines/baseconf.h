@@ -24,15 +24,17 @@
 
 #include "cpu.h"
 
+#define BASECONF_DISPLAY_WIDTH 720
+#define BASECONF_DISPLAY_HEIGHT 576
 
-#define BASECONF_LEFT_BORDER_NO_ZOOM 0
-#define BASECONF_TOP_BORDER_NO_ZOOM 0
+
+
+#define BASECONF_LEFT_BORDER_NO_ZOOM 40
+#define BASECONF_TOP_BORDER_NO_ZOOM 88
 
 #define BASECONF_LEFT_BORDER BASECONF_LEFT_BORDER_NO_ZOOM*zoom_x
 #define BASECONF_TOP_BORDER BASECONF_TOP_BORDER_NO_ZOOM*zoom_y
 
-#define BASECONF_DISPLAY_WIDTH 720
-#define BASECONF_DISPLAY_HEIGHT 576
 
 #define BASECONF_FMAPS_SIZE 1024
 #define BASECONF_ROM_PAGES 32
@@ -90,7 +92,7 @@ extern void screen_baseconf_refresca_hw_multicolor_mode(void);
 extern void screen_baseconf_refresca_text_mode(void);
 
 
-
+extern void baseconf_refresca_pantalla(void);
 
 
 
