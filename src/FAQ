@@ -763,7 +763,8 @@ Q: How do I load a TRD file?
 A: You first need to have a MMC inserted. Then on the boot screen (EVO Reset Service) select R. Service, the C. Image to RAMDISK, select the TRD from the file browser.
 Then go to Z. TR-DOS boot and select the file to boot
 
-
+Q: What is FAT Boot on the EVO Reset Service?
+A: It's used to load Hobeta files, you can find an example on the mmc card called "TEST.$C"
 
 ----------------------------------------------------------------------------
 

@@ -69,6 +69,7 @@ char *betadisk_rom_file_name="trdos.rom";
 z80_bit trd_enabled={0};
 
 void betadisk_trdoshandler_read_write_sectors(void);
+void betadisk_show_activity(void);
 
 int trd_must_flush_to_disk=0;
 
@@ -81,6 +82,24 @@ z80_bit trd_persistent_writes={1};
 //http://problemkaputt.de/zxdocs.htm#spectrumdiscbetabetaplusbeta128diskinterfacetrdos
 
 void betadisk_format_disk(void);
+
+void betadisk_handle_trdos_traps(void)
+{
+	if (!trd_enabled.v) return;
+
+	/* Punto común de transferencia de sectores de TR-DOS. El trap sirve
+	   tanto para la ROM del Beta Disk externo como para EVO-DOS en BaseConf. */
+	if (reg_pc==0x1e67 && (reg_a==0 || reg_a==255)) {
+		betadisk_show_activity();
+		betadisk_trdoshandler_read_write_sectors();
+	}
+
+	if (reg_pc==0x1ee8) {
+		debug_printf(VERBOSE_DEBUG,"Formating trd disk");
+		betadisk_show_activity();
+		betadisk_format_disk();
+	}
+}
 
 int betadisk_check_if_rom_area(z80_int dir)
 {
@@ -322,25 +341,7 @@ l1e67h:
 
 			}
 */
-			if (reg_pc==0x1e67) {
-                //printf("PC on addr 0x1e67\n");
-				if (reg_a==0 || reg_a==255) {
-					//char buffer_registros[8192];
-					//print_registers(buffer_registros);
-					//printf ("\n\nHandler for transfer_sectors\n");
-					//printf ("%s\n",buffer_registros);
-					betadisk_show_activity();
-					betadisk_trdoshandler_read_write_sectors();
-				}
-			}
-
-
-			if (reg_pc==0x1ee8) {
-				//format
-				debug_printf(VERBOSE_DEBUG,"Formating trd disk");
-				betadisk_show_activity();
-				betadisk_format_disk();
-			}
+			betadisk_handle_trdos_traps();
 
 		}
 	}

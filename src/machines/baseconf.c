@@ -33,6 +33,7 @@
 #include "operaciones.h"
 #include "zxevo.h"
 #include "mmc.h"
+#include "betadisk.h"
 
 
 //Si la sd esta activa o no
@@ -101,6 +102,12 @@ static const z80_byte baseconf_avr_boot_version[16]={
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
 
+static int baseconf_beta_virtual_drive_active(void)
+{
+        return baseconf_beta_drive_selected &&
+               baseconf_beta_drive_virtual==baseconf_beta_drive_selected;
+}
+
 void baseconf_pre_opcode_fetch(z80_int direccion)
 {
         int mapa=(puerto_32765&16) ? 4 : 0;
@@ -141,6 +148,12 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
                 baseconf_dos_signal=1;
                 baseconf_set_memory_pages();
         }
+
+        /* EVO-DOS conserva los puntos de transferencia de sectores de
+           TR-DOS. Si EVO Reset Service no ha seleccionado una unidad virtual,
+           se atienden con el TRD insertado desde el menú de ZEsarUX. */
+        if (baseconf_dos_signal && !baseconf_beta_virtual_drive_active())
+                betadisk_handle_trdos_traps();
 }
 
 int baseconf_memory_write_allowed(z80_int direccion)
@@ -627,8 +640,7 @@ void baseconf_set_memory_pages(void)
                         pagina=0xff;
                         pagina_es_ram=1;
                 }
-                else if (i==0 && baseconf_beta_drive_selected &&
-                         baseconf_beta_drive_virtual==baseconf_beta_drive_selected) {
+                else if (i==0 && baseconf_beta_virtual_drive_active()) {
                         pagina=0xfe;
                         pagina_es_ram=1;
                 }

@@ -206,3 +206,5 @@ md5sum zxevo_baseconf.rom
 d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 
 -show registers in console y ademas que muestre desensamblado
+
+-texto del footer en baseconf donde esta apareciendo???
