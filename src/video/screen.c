@@ -5205,18 +5205,41 @@ void scr_refresca_pantalla_comun(void)
 
     if (MACHINE_IS_BASECONF) {
         z80_byte baseconf_mode=baseconf_get_video_mode();
+        if (baseconf_mode==0x13) {
+            printf("BaseConf video mode 13H: ALCO 16 colour\n");
+            screen_baseconf_refresca_alco_mode();
+            return;
+        }
         if (baseconf_mode==0) {
+            printf("BaseConf video mode 00H: ATM EGA\n");
             screen_baseconf_refresca_ega_mode();
             return;
         }
         if (baseconf_mode==0x23) {
+            printf("BaseConf video mode 23H: ZX hardware multicolor\n");
             screen_baseconf_refresca_hw_multicolor_mode();
             return;
         }
+        if (baseconf_mode==2) {
+            printf("BaseConf video mode 02H: ATM hardware multicolor\n");
+            screen_baseconf_refresca_atm_multicolor_mode();
+            return;
+        }
+        if (baseconf_mode==6) {
+            printf("BaseConf video mode 06H: ATM text\n");
+            screen_baseconf_refresca_atm_text_mode();
+            return;
+        }
         if (baseconf_mode==7) {
+            printf("BaseConf video mode 07H: EVO text\n");
             screen_baseconf_refresca_text_mode();
             return;
         }
+        if (baseconf_mode==3)
+            printf("BaseConf video mode 03H: standard ZX\n");
+        else
+            printf("BaseConf video mode %02XH: unknown, using standard ZX renderer\n",
+                   baseconf_mode);
     }
 
 

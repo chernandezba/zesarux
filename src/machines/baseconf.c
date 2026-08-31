@@ -209,12 +209,36 @@ z80_byte baseconf_get_video_mode(void)
 
 int baseconf_text_mode_active(void)
 {
-        return baseconf_get_video_mode()==7;
+        z80_byte mode=baseconf_get_video_mode();
+        return mode==6 || mode==7;
+}
+
+/* ALCO: 256x192, one 4-bit colour per pixel.  Four interleaved byte
+   streams occupy the two adjacent Spectrum screen pages. */
+void screen_baseconf_refresca_alco_mode(void)
+{
+        int x,y;
+        int vpage=(puerto_32765&8) ? 7 : 5;
+
+        for (y=0;y<192;y++) {
+                int line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
+                for (x=0;x<256;x++) {
+                        int adr=line+(x>>3);
+                        int page=vpage;
+                        z80_byte value;
+
+                        if ((x&6)==0 || (x&6)==4) page^=1;
+                        if (x&4) adr+=0x2000;
+                        value=baseconf_ram_mem_table[page][adr];
+                        if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
+                        else value=(value&7) | ((value&0x40)>>3);
+                        scr_putpixel_zoom(x,y,value);
+                }
+        }
 }
 
 void screen_baseconf_refresca_ega_mode(void)
 {
-    printf("EGA mode\n");
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
 
@@ -253,9 +277,61 @@ void screen_baseconf_refresca_ega_mode(void)
         }
 }
 
+/* ATM hardware multicolor is a 640x200 bitmap with one attribute byte
+   per group of eight high-resolution pixels. */
+void screen_baseconf_refresca_atm_multicolor_mode(void)
+{
+        int x,y;
+        int vpage=(puerto_32765&8) ? 7 : 5;
+
+        for (y=0;y<192;y++) {
+                int sy=y*200/192;
+                for (x=0;x<256;x++) {
+                        int sx=x*640/256;
+                        int adr=sy*40+(sx>>4);
+                        int half=(sx&8) ? 0x2000 : 0;
+                        z80_byte pixels=baseconf_ram_mem_table[vpage][adr+half];
+                        z80_byte attr=baseconf_ram_mem_table[vpage^4][adr+half];
+                        z80_byte ink=(attr&7) | ((attr&0x40)>>3);
+                        z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+                        scr_putpixel_zoom(x,y,(pixels&(0x80>>(sx&7))) ? ink : paper);
+                }
+        }
+}
+
+void screen_baseconf_refresca_atm_text_mode(void)
+{
+        int x,y;
+        int vpage=(puerto_32765&8) ? 7 : 5;
+
+        for (y=0;y<192;y++) {
+                int sy=y*200/192;
+                int row=sy>>3;
+                int font_line=sy&7;
+                for (x=0;x<256;x++) {
+                        int sx=x*640/256;
+                        int column=sx>>3;
+                        int adr=0x1c0+row*64+(column>>1);
+                        z80_byte caracter,attr;
+
+                        if (column&1) {
+                                caracter=baseconf_ram_mem_table[vpage][adr+0x2000];
+                                attr=baseconf_ram_mem_table[vpage^4][adr+1];
+                        }
+                        else {
+                                caracter=baseconf_ram_mem_table[vpage][adr];
+                                attr=baseconf_ram_mem_table[vpage^4][adr^0x2000];
+                        }
+                        z80_byte font=baseconf_text_font[caracter*8+font_line];
+                        z80_byte ink=(attr&7) | ((attr&0x40)>>3);
+                        z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+                        scr_putpixel_zoom(x,y,(font&(0x80>>(sx&7))) ? ink : paper);
+                }
+        }
+}
+
 void screen_baseconf_refresca_hw_multicolor_mode(void)
 {
-    printf("multicolor mode\n");
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *screen=baseconf_ram_mem_table[vpage];
@@ -276,7 +352,6 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
 
 void screen_baseconf_refresca_text_mode(void)
 {
-    printf("text mode\n");
         int x,y;
         int vpage=(puerto_32765&8) ? 7 : 5;
         z80_byte *text=baseconf_ram_mem_table[vpage+3];
