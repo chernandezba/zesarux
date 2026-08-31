@@ -6868,7 +6868,8 @@ int quickload_continue(char *nombre) {
 
         }
 
-        betadisk_enable();
+        //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadis
+        if (!MACHINE_IS_BASECONF) betadisk_enable();
 
         //Si es scl, extraer el trd que se obtiene del scl e insertar el trd
         if (!util_compare_file_extension(nombre,"scl")) {
