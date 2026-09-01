@@ -576,7 +576,7 @@
 9580 END DEFine zxexpand$
 
 9600 DEFine FuNction zxqs$(zs$,zt)
-9610  zr$=zxexpand$(zs$):zq$="v15":zi=1:zo=5:zd=5:zold=5:ztrip=0:ztie=0:za$="":zxframes=0:zxloop=0:zcomment=0
+9610  zr$=zxexpand$(zs$):zq$="v15":zi=1:zo=5:zd=5:zold=5:ztrip=0:ztie=0:za=0:zxframes=0:zxloop=0:zcomment=0
 9620  REPeat zql
 9630   IF zi>LEN(zr$) THEN EXIT zql
 9640   zch$=zr$(zi)
@@ -588,7 +588,8 @@
 9700   IF zch$=" " OR zch$="N" OR zch$="(" THEN zi=zi+1:NEXT zql
 9710   IF zch$=")" THEN zxloop=1:EXIT zql
 9720   IF zch$="H" THEN EXIT zql
-9730   IF zch$="#" OR zch$="$" THEN za$=zch$:zi=zi+1:NEXT zql
+9730   IF zch$="#" THEN za=za+1:zi=zi+1:NEXT zql
+9735   IF zch$="$" THEN za=za-1:zi=zi+1:NEXT zql
 9740   zcode=CODE(zch$)
 9750   IF zcode>=48 AND zcode<=57 THEN
 9760    zj=zi
@@ -640,10 +641,8 @@
 10220   zqo=zo-1+zupper:IF zqo<0 THEN zqo=0
 10230   IF zqo>7 THEN zqo=7
 10240   zf=zxdur(zd,zt)+ztie:ztie=0:IF zf>255 THEN zf=255
-10250   zq$=zq$&"o"&zqo&"l"&zf
-10260   zq$=zq$&znote$
-10270   IF za$="#" THEN zq$=zq$&"s"
-10280   IF za$="$" THEN zq$=zq$&"b":za$="":zxframes=zxframes+zf
+10250   zq$=zq$&zxnote$(znote$,za,zqo,zf)
+10260   za=0:zxframes=zxframes+zf
 10290   IF ztrip>0 THEN ztrip=ztrip-1
 10300   IF ztrip=0 AND zd>=10 THEN zd=zold
 10310   zi=zi+1:NEXT zql
@@ -652,6 +651,43 @@
 10340  END REPeat zql
 10350  RETurn zq$
 10360 END DEFine zxqs$
+
+10362 DEFine FuNction zxnote$(zzn$,zza,zzqo,zzl)
+10363  IF zza=0 THEN RETurn "o"&zzqo&"l"&zzl&zzn$
+10364  IF zza=1 THEN RETurn "o"&zzqo&"l"&zzl&zzn$&"s"
+10365  IF zza=-1 THEN RETurn "o"&zzqo&"l"&zzl&zzn$&"b"
+10366  zzb=0
+10367  IF zzn$="D" THEN zzb=2
+10368  IF zzn$="E" THEN zzb=4
+10369  IF zzn$="F" THEN zzb=5
+10370  IF zzn$="G" THEN zzb=7
+10371  IF zzn$="A" THEN zzb=9
+10372  IF zzn$="H" THEN zzb=11
+10373  zzs=zzb+zza
+10374  REPeat zzlow
+10375   IF zzs>=0 THEN EXIT zzlow
+10376   zzs=zzs+12:zzqo=zzqo-1
+10377  END REPeat zzlow
+10378  REPeat zzhigh
+10379   IF zzs<12 THEN EXIT zzhigh
+10380   zzs=zzs-12:zzqo=zzqo+1
+10381  END REPeat zzhigh
+10382  IF zzqo<0 THEN zzqo=0
+10383  IF zzqo>7 THEN zzqo=7
+10384  zzn$="C":zzx$=""
+10385  IF zzs=1 THEN zzn$="C":zzx$="s"
+10386  IF zzs=2 THEN zzn$="D"
+10387  IF zzs=3 THEN zzn$="D":zzx$="s"
+10388  IF zzs=4 THEN zzn$="E"
+10389  IF zzs=5 THEN zzn$="F"
+10390  IF zzs=6 THEN zzn$="F":zzx$="s"
+10391  IF zzs=7 THEN zzn$="G"
+10392  IF zzs=8 THEN zzn$="G":zzx$="s"
+10393  IF zzs=9 THEN zzn$="A"
+10394  IF zzs=10 THEN zzn$="A":zzx$="s"
+10395  IF zzs=11 THEN zzn$="H"
+10396  RETurn "o"&zzqo&"l"&zzl&zzn$&zzx$
+10397 END DEFine zxnote$
 
 10400 DEFine FuNction zxfill$(zq$,zf,ztarget)
 10410  IF zf<=0 THEN RETurn zq$
