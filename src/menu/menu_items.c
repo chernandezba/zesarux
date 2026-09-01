@@ -2755,6 +2755,17 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
 
         }
 
+        if (MACHINE_IS_BASECONF) {
+
+            z80_byte baseconf_mode=baseconf_get_video_mode();
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: %02X",baseconf_mode);
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"%s",baseconf_get_video_mode_string());
+
+
+
+        }
+
         if (MACHINE_IS_TBBLUE) {
 
             //menu_escribe_linea_opcion(linea++,-1,1,"ULA Video mode:");
@@ -36276,10 +36287,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }
 
-        if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
+        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
             if (MACHINE_IS_TSCONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"~~TSConf");
                 menu_add_item_menu_shortcut(array_menu_debug,'t');
+                menu_add_item_menu_tiene_submenu(array_menu_debug);
+            }
+            if (MACHINE_IS_BASECONF) {
+                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"BaseConf");
                 menu_add_item_menu_tiene_submenu(array_menu_debug);
             }
             if (MACHINE_IS_TBBLUE) {

@@ -79,6 +79,8 @@ extern z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l);
 extern z80_byte baseconf_read_cmos(void);
 extern void baseconf_write_cmos(z80_byte valor);
 
+extern char *baseconf_get_video_mode_string(void);
+
 extern int baseconf_sd_enabled;
 
 extern int baseconf_sd_cs;

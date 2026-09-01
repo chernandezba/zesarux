@@ -209,9 +209,11 @@ d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 
 -modo video que aparezca en debug->baseconf->video info
 
--modos turbo baseconf
+ok -modos turbo baseconf
 
 juegos y demos: http://atmturbo.nedopc.com/load_trdos.htm
 
--al desactivar qsound desde menu se queda chip ay present. entonces se guarda en snapshot info del chip ay y al cargarlo el snapshot, se habilita qsound
+ok -al desactivar qsound desde menu se queda chip ay present. entonces se guarda en snapshot info del chip ay y al cargarlo el snapshot, se habilita qsound
 quiza al desactivar qsound desde menu deberia desactivar chip ay
+
+-baseconf: insertar trd habilita el modo max turbo speed si accelerate load
