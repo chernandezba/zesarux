@@ -138,13 +138,7 @@ void cpu_core_loop_ql(void)
 
     timer_check_interrupt();
 
-//#ifdef COMPILE_STDOUT
-//              if (screen_stdout_driver) scr_stdout_printchar();
-//#endif
-//
-//#ifdef COMPILE_SIMPLETEXT
-//                if (screen_simpletext_driver) scr_simpletext_printchar();
-//#endif
+
     if (chardetect_detect_char_enabled.v) chardetect_detect_char();
     if (chardetect_printchar_enabled.v) chardetect_printchar();
 

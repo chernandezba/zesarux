@@ -217,3 +217,5 @@ ok -al desactivar qsound desde menu se queda chip ay present. entonces se guarda
 quiza al desactivar qsound desde menu deberia desactivar chip ay
 
 -baseconf: insertar trd habilita el modo max turbo speed si accelerate load
+
+-si clive tiene ventanas por encima, no puede empezar a hablar
