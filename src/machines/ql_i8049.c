@@ -165,6 +165,7 @@ static moto_long ql_audio_phase_accumulator=0;
 static moto_long ql_audio_phase_increment=0;
 static int ql_audio_previous_output_bit=0;
 static moto_byte ql_audio_phase_pitch=0;
+static moto_int ql_audio_new_sound_waiting_for_edge=0;
 
 //Randomness se mantiene durante un paso de pitch. Fuzziness cambia en cada
 //semiperiodo, como hace la rutina $422 de la ROM del IPC 8049.
@@ -817,7 +818,13 @@ void ql_stop_sound(void)
 {
 
     ql_audio_playing=0;
+    ql_audio_output_bit=0;
+    ql_audio_previous_output_bit=0;
+    ql_audio_phase_accumulator=0;
     ql_audio_phase_increment=0;
+    ql_audio_random_pitch_offset=0;
+    ql_audio_fuzzy_pitch_offset=0;
+    ql_audio_new_sound_waiting_for_edge=0;
 }
 
 moto_int ql_get_counter_from_pitch(moto_byte pitch)
@@ -1050,7 +1057,7 @@ void ql_audio_next_cycle(void)
 
     if (!i8049_chip_present) return;
 
-    if (ql_audio_grad_x) {
+    if (ql_audio_grad_x && !ql_audio_new_sound_waiting_for_edge) {
         //Grad_x esta expresado en unidades de 72 microsegundos. Su temporizador
         //es independiente de las transiciones de la onda cuadrada.
         ql_audio_grad_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
@@ -1072,8 +1079,9 @@ void ql_audio_next_cycle(void)
             !ql_sound_feature_grad_y_enabled)
             pitch=ql_audio_pitch1;
 
-        if (ql_audio_phase_increment==0 ||
-            ql_audio_phase_pitch!=pitch) {
+        if (!ql_audio_new_sound_waiting_for_edge &&
+            (ql_audio_phase_increment==0 ||
+             ql_audio_phase_pitch!=pitch)) {
             if (ql_audio_phase_increment==0)
                 ql_audio_phase_accumulator=ql_audio_output_bit ? 0x80000000U : 0;
 
@@ -1085,6 +1093,10 @@ void ql_audio_next_cycle(void)
     ql_audio_output_bit=(int)(ql_audio_phase_accumulator>>31);
 
     if (ql_audio_output_bit!=ql_audio_previous_output_bit) {
+        //Al sustituir un sonido la ROM termina primero el semiperiodo que ya
+        //estaba en curso y aplica aqui los parametros del nuevo sonido.
+        ql_audio_new_sound_waiting_for_edge=0;
+
         //Con intervalo cero la ROM actualiza el gradiente en cada
         //interrupcion del temporizador de pitch, es decir, cada semiperiodo.
         if (!ql_audio_grad_x) ql_audio_switch_pitches();
@@ -1182,6 +1194,11 @@ unsigned char ql_ipc_sound_command_buffer[8*2];
 
 void ql_ipc_set_sound_parameters(void)
 {
+    moto_int replacing_sound=ql_audio_playing;
+    moto_long previous_phase_accumulator=ql_audio_phase_accumulator;
+    moto_long previous_phase_increment=ql_audio_phase_increment;
+    moto_byte previous_phase_pitch=ql_audio_phase_pitch;
+    moto_int previous_output_bit=ql_audio_output_bit;
 
     /*
     BEEP syntax:
@@ -1257,15 +1274,30 @@ void ql_ipc_set_sound_parameters(void)
     ql_audio_next_cycle_counter=0;
     ql_audio_wrap_counter=0;
 
-    ql_audio_phase_accumulator=0;
-    ql_audio_output_bit=0;
-    ql_audio_previous_output_bit=0;
     ql_audio_random_pitch_offset=0;
     ql_audio_fuzzy_pitch_offset=0;
     ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
     ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
 
     ql_audio_switch_pitches_init();
+
+    if (replacing_sound) {
+        //El temporizador del sonido anterior sigue hasta su proxima
+        //transicion. Conservar durante ese tiempo su fase y su pitch.
+        ql_audio_phase_accumulator=previous_phase_accumulator;
+        ql_audio_phase_increment=previous_phase_increment;
+        ql_audio_phase_pitch=previous_phase_pitch;
+        ql_audio_output_bit=previous_output_bit;
+        ql_audio_previous_output_bit=previous_output_bit;
+        ql_audio_new_sound_waiting_for_edge=1;
+    }
+    else {
+        //La entrada $04A de la ROM inicia el altavoz a nivel alto.
+        ql_audio_phase_accumulator=0x80000000U;
+        ql_audio_output_bit=1;
+        ql_audio_previous_output_bit=1;
+        ql_audio_new_sound_waiting_for_edge=0;
+    }
 
     ql_audio_playing=1;
 
