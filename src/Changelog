@@ -15,6 +15,7 @@ Added another toy "Clive" to Procrastinate menu
 
 Improved Sinclair QL emulation:
 - Added Qsound emulation
+- Improved intel 8049 sound
 - Allow to change QL border color
 - Improved display aspect ratio. Graphics now match the original hardware geometry (1.476:1). Allow also 4:3 and 1:1
 - Added Vision-QL color palette

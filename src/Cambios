@@ -15,6 +15,7 @@ Agregado otro juguete "Clive" a menú Procrastinar
 
 Mejorada emulación de Sinclair QL:
 - Agregado emulación de Qsound
+- Mejorada emulación del intel 8049
 - Permitir cambiar color de border de QL
 - Mejorada la relación de aspecto de la pantalla del Sinclair QL. Los gráficos ahora reproducen la geometría del hardware original (1.476:1). Permitir también 4:3 y 1:1
 - Agregada paleta de colores de Vision-QL
