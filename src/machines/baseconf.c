@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "cpu.h"
 #include "baseconf.h"
@@ -216,6 +217,26 @@ z80_byte baseconf_read_cmos(void)
 {
         z80_byte indice=zxevo_last_port_dff7;
 
+        /* El RTC Gluk devuelve la fecha y hora local en BCD. */
+        if (indice==0x00 || indice==0x02 || indice==0x04 ||
+            indice==0x06 || indice==0x07 || indice==0x08 || indice==0x09) {
+                time_t tiempo=time(NULL);
+                struct tm fecha=*localtime(&tiempo);
+                int valor;
+
+                switch (indice) {
+                case 0x00: valor=fecha.tm_sec; break;
+                case 0x02: valor=fecha.tm_min; break;
+                case 0x04: valor=fecha.tm_hour; break;
+                case 0x06: valor=fecha.tm_wday+1; break;
+                case 0x07: valor=fecha.tm_mday; break;
+                case 0x08: valor=fecha.tm_mon+1; break;
+                default:   valor=fecha.tm_year%100; break;
+                }
+
+                return ((valor/10)<<4) | (valor%10);
+        }
+
         /* El bit 7 del registro C cambia F0-FF a EEPROM normal. */
         if (indice<0xf0 || (zxevo_nvram[0x0c]&0x80))
                 return zxevo_nvram[indice];
@@ -249,6 +270,40 @@ z80_byte baseconf_shadow_mode_port_77;
 z80_byte baseconf_last_port_bf;
 
 z80_byte baseconf_last_port_eff7;
+
+static int baseconf_cpu_speed_selected=70;
+
+
+static void baseconf_set_cpu_speed(void)
+{
+    int nueva_velocidad;
+
+    if (baseconf_last_port_77&0x08) {
+        nueva_velocidad=140;
+    }
+    else if (baseconf_last_port_eff7&0x10) {
+        nueva_velocidad=35;
+    }
+    else {
+        nueva_velocidad=70;
+    }
+
+    if (nueva_velocidad==baseconf_cpu_speed_selected) return;
+
+    baseconf_cpu_speed_selected=nueva_velocidad;
+    if (nueva_velocidad==35) {
+        printf("BaseConf CPU speed selected: 3.5 MHz\n");
+    }
+    else if (nueva_velocidad==70) {
+        printf("BaseConf CPU speed selected: 7 MHz\n");
+    }
+    else {
+        printf("BaseConf CPU speed selected: 14 MHz\n");
+    }
+
+    cpu_turbo_speed=nueva_velocidad/35;
+    cpu_set_turbo_speed();
+}
 
 //Ver Xpeccy: los puertos y el mapa de memoria BaseConf están en ./src/libxpeccy/hardware/pentevo.c
 //http://github.com/samstyle/Xpeccy
@@ -725,6 +780,8 @@ baseconf_last_port_77=3;
 baseconf_shadow_mode_port_77=0x40;
 baseconf_last_port_bf=0;
 baseconf_last_port_eff7=0;
+baseconf_cpu_speed_selected=-1;
+baseconf_set_cpu_speed();
 baseconf_sd_enabled=1;
 baseconf_sd_cs=1;
 
@@ -869,6 +926,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         else if ( (puerto&0x00FF)==0x77 && baseconf_shadow_ports_available() ) {
                 baseconf_shadow_mode_port_77=puerto_h;
                baseconf_last_port_77=valor;
+               baseconf_set_cpu_speed();
 
                baseconf_set_memory_pages();
         }
@@ -876,6 +934,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         else if (puerto==0xEFF7) {
                 //printf ("setting port EFF7 value\n");
                 baseconf_last_port_eff7=valor;
+                baseconf_set_cpu_speed();
                 baseconf_set_memory_pages();
         }
 
@@ -1151,7 +1210,7 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
 
 
 
-
+static int debug_video_mode=0;
 
 //Refresco pantalla sin rainbow
 void baseconf_refresca_pantalla_no_rainbow(void)
@@ -1160,40 +1219,43 @@ void baseconf_refresca_pantalla_no_rainbow(void)
 
         z80_byte baseconf_mode=baseconf_get_video_mode();
         if (baseconf_mode==0x13) {
-            printf("BaseConf video mode 13H: ALCO 16 colour, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+            if (debug_video_mode) printf("BaseConf video mode 13H: ALCO 16 colour, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
             screen_baseconf_refresca_alco_mode();
             return;
         }
         if (baseconf_mode==0) {
-            printf("BaseConf video mode 00H: ATM EGA, pixels 320x200 -> 640x400, border L/R=40 T/B=88\n");
+            if (debug_video_mode) printf("BaseConf video mode 00H: ATM EGA, pixels 320x200 -> 640x400, border L/R=40 T/B=88\n");
             screen_baseconf_refresca_ega_mode();
             return;
         }
         if (baseconf_mode==0x23) {
-            printf("BaseConf video mode 23H: ZX hardware multicolor, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+            if (debug_video_mode) printf("BaseConf video mode 23H: ZX hardware multicolor, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
             screen_baseconf_refresca_hw_multicolor_mode();
             return;
         }
         if (baseconf_mode==2) {
-            printf("BaseConf video mode 02H: ATM hardware multicolor, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+            if (debug_video_mode) printf("BaseConf video mode 02H: ATM hardware multicolor, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
             screen_baseconf_refresca_atm_multicolor_mode();
             return;
         }
         if (baseconf_mode==6) {
-            printf("BaseConf video mode 06H: ATM text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+            if (debug_video_mode) printf("BaseConf video mode 06H: ATM text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
             screen_baseconf_refresca_atm_text_mode();
             return;
         }
         if (baseconf_mode==7) {
-            printf("BaseConf video mode 07H: EVO text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+            if (debug_video_mode) printf("BaseConf video mode 07H: EVO text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
             screen_baseconf_refresca_text_mode();
             return;
         }
-        if (baseconf_mode==3)
-            printf("BaseConf video mode 03H: standard ZX, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
-        else
-            printf("BaseConf video mode %02XH: unknown, using standard ZX renderer, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n",
+        if (baseconf_mode==3) {
+            if (debug_video_mode) printf("BaseConf video mode 03H: standard ZX, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+        }
+        else {
+            if (debug_video_mode) printf("BaseConf video mode %02XH: unknown, using standard ZX renderer, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n",
                    baseconf_mode);
+        }
+
         baseconf_refresca_pantalla_no_rainbow_standard_48k();
 }
 

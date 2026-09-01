@@ -30,5 +30,8 @@ extern z80_byte zxevo_nvram[];
 
 extern z80_byte zxevo_last_port_dff7;
 
+#define ZXEVO_NVRAM_ELEMENTS 256
+
+extern void zxevo_reset_nvram(void);
 
 #endif

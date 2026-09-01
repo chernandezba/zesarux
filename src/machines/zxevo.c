@@ -23,7 +23,7 @@
 #include <stdlib.h>
 
 #include "cpu.h"
-#include "tsconf.h"
+#include "zxevo.h"
 #include "mem128.h"
 #include "debug.h"
 #include "contend.h"
@@ -34,7 +34,7 @@
 
 
 //Comun zxevo, tanto para baseconf como tsconf
-z80_byte zxevo_nvram[256];
+z80_byte zxevo_nvram[ZXEVO_NVRAM_ELEMENTS];
 
 //Control de acceso a celdas nvram
 //z80_byte zxevo_last_port_eff7;
@@ -42,3 +42,11 @@ z80_byte zxevo_nvram[256];
 //celda nvram seleccionada
 z80_byte zxevo_last_port_dff7;
 
+
+
+void zxevo_reset_nvram(void)
+{
+    int i;
+
+    for (i=0;i<ZXEVO_NVRAM_ELEMENTS;i++) zxevo_nvram[i]=0;
+}

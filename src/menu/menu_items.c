@@ -163,6 +163,7 @@
 #include "ifrom.h"
 #include "lec.h"
 #include "qsound.h"
+#include "zxevo.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -34188,6 +34189,16 @@ void menu_debug_hard_reset(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_debug_zxevo_clear_nvram(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Clear ZX-Evo NVRAM")==1) {
+        zxevo_reset_nvram();
+        menu_generic_message_splash("Clear ZX-Evo NVRAM","OK. NVRAM cleared");
+    }
+
+
+}
+
 
 void menu_debug_nmi(MENU_ITEM_PARAMETERS)
 {
@@ -36122,6 +36133,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 "On Z88, it's the same as opening flap and pressing reset button.\n"
                 "On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine"
                 );
+            menu_add_item_menu_genera_ventana(array_menu_debug);
+            menu_add_item_menu_se_cerrara(array_menu_debug);
+        }
+
+        if (MACHINE_IS_ZXEVO) {
+            menu_add_item_menu(array_menu_debug,"Clear ZX-Evo NVRAM",MENU_OPCION_NORMAL,menu_debug_zxevo_clear_nvram,NULL);
+            menu_add_item_menu_tooltip(array_menu_debug,"Clear ZX-Evo NVRAM");
+            menu_add_item_menu_ayuda(array_menu_debug,"Clear ZX-Evo NVRAM");
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_se_cerrara(array_menu_debug);
         }

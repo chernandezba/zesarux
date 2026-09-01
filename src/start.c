@@ -167,6 +167,7 @@
 #include "tv.h"
 #include "ql_zx8302.h"
 #include "qsound.h"
+#include "zxevo.h"
 
 
 
@@ -9027,6 +9028,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     menu_debug_daad_init_flagobject();
 
     inicializa_tabla_contend_speed_higher();
+
+    zxevo_reset_nvram();
 
     get_os_release();
 
