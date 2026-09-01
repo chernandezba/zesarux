@@ -2759,10 +2759,7 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
 
             z80_byte baseconf_mode=baseconf_get_video_mode();
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: %02X",baseconf_mode);
-            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"%s",baseconf_get_video_mode_string());
-
-
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: %02X. %s",baseconf_mode,baseconf_get_video_mode_string());
 
         }
 
