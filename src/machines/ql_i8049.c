@@ -176,6 +176,7 @@ static moto_byte ql_audio_fuzzy_pitch_offset=0;
 #define QL_AUDIO_TIME_FRACTION_PER_SAMPLE 1000000U
 #define QL_AUDIO_DURATION_FRACTION_LIMIT  (72U*FRECUENCIA_CONSTANTE_NORMAL_SONIDO)
 static moto_long ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+static moto_long ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
 
 
 // Fin Parametros de sonido
@@ -924,58 +925,15 @@ void ql_audio_switch_pitches_init(void)
     }
 
 
-    //    //grad_y
-    //ql_audio_grad_y
-    //-8,7: range is -8 to 7 where step 1 to 7 scales downwards high to low pitch and -8 to 0 starts the sequence
+    //Grad_y es un valor con signo de 4 bits. La ROM empieza en pitch1 para
+    //gradientes positivos y en pitch2 para gradientes negativos.
+    signed_ql_audio_grad_y=(ql_audio_grad_y&8) ? ql_audio_grad_y-16 : ql_audio_grad_y;
 
-    //Ver en cual de los dos pitch empezamos
-     moto_byte lower_pitch,higher_pitch;
-
-    if (ql_audio_pitch1>ql_audio_pitch2) {
-        higher_pitch=ql_audio_pitch1;
-        lower_pitch=ql_audio_pitch2;
-    }
-    else {
-        higher_pitch=ql_audio_pitch2;
-        lower_pitch=ql_audio_pitch1;
-    }
-
-    //convertir grad_y a algo con signo
-
-    if (ql_audio_grad_y<=7) {
-        signed_ql_audio_grad_y=ql_audio_grad_y;
-    }
-    else {
-        //-1=15
-        //-2=14
-        //....
-        //-6=10
-        //-7=9
-        //-8=8
-       signed_ql_audio_grad_y=-16+ql_audio_grad_y;
-    }
-
-    //printf("i8049: higher pitch: %d lower pitch: %d signed_grad_y: %d\n",higher_pitch,lower_pitch,signed_ql_audio_grad_y);
-
-
-
-    ql_audio_switch_pitch_array[0]=higher_pitch;
-    ql_audio_switch_pitch_array[1]=lower_pitch;
-
-
-
-    //Incremento positivo, bajar de high to low
-    if (signed_ql_audio_grad_y>=0) ql_audio_switch_pitch_current_index=0; //empieza en high
-    else ql_audio_switch_pitch_current_index=1; //empieza en low
-
-    //Realmente si bajamos, seria signo negativo. Si subimos, es positivo. por tanto invertir lo que nos ha llegado
-    signed_ql_audio_grad_y =-signed_ql_audio_grad_y;
-
-
-
-    ql_audio_switch_pitch_current_pitch=ql_audio_switch_pitch_array[ql_audio_switch_pitch_current_index];
-
-    //printf("final_pitch: %d\n",ql_audio_switch_pitch_current_pitch);
+    ql_audio_switch_pitch_array[0]=ql_audio_pitch1;
+    ql_audio_switch_pitch_array[1]=ql_audio_pitch2;
+    ql_audio_switch_pitch_current_index=(signed_ql_audio_grad_y<0) ? 1 : 0;
+    ql_audio_switch_pitch_current_pitch=
+        ql_audio_switch_pitch_array[ql_audio_switch_pitch_current_index];
 
 
     ql_audio_set_current_pitch(ql_audio_switch_pitch_current_pitch);
@@ -1026,72 +984,45 @@ void ql_audio_switch_pitches(void)
    //Comando beep:
    //beep duration, pitch, pitch2, grad_x, grad_y, wrap, fuzzy, random
 
-   //TODO: que significa grad_x negativo???
-   // grad_x is in multiple units of 72 microseconds for each note. Dado que ql_audio_switch_pitches puede ejecutarse mas tarde
-   //que 72 microsegundos, hay que tener un contador para esto en ql_audio_next_cycle
-
-   //: segun grad_y negativo o positivo, hay que hacer al inicio del sonido que se empiece en uno u otro pitch
-
    //Reaplicar cambios en el mixer
    ql_adjust_audio_settings_with_mixer();
 
    //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios
    if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y) return;
 
-    //Ver si hay que cambiar la nota en curso
-
     if (ql_audio_next_cycle_counter>=ql_audio_grad_x) {
-        //ql_audio_next_cycle_counter -=ql_audio_grad_x; //restamos en vez de poner a 0 para que sea tiempo acumulativo
+        moto_int next_pitch;
+        int reached_limit;
 
-        ql_audio_next_cycle_counter =0;
+        //Conservar el exceso para que el temporizador no acumule error.
+        ql_audio_next_cycle_counter-=ql_audio_grad_x;
         debug_printf(VERBOSE_PARANOID,"i8049: Next note in step");
 
-        //cambiar nota
-        //tenemos ql_audio_switch_pitch_current_pitch nota actual
-        //    ql_audio_switch_pitch_array[0]=higher_pitch;
-        // ql_audio_switch_pitch_array[1]=lower_pitch;
-        //Y incremento en signed_ql_audio_grad_y
+        //La suma del 8049 es de 8 bits y por tanto permite wrap aritmetico.
+        next_pitch=(moto_int)ql_audio_switch_pitch_current_pitch+
+                   signed_ql_audio_grad_y;
+        ql_audio_switch_pitch_current_pitch=(moto_byte)next_pitch;
 
+        //La rutina $327 considera alcanzado un extremo cuando el pitch queda
+        //fuera del intervalo abierto formado por pitch1 y pitch2.
+        reached_limit=!(ql_audio_switch_pitch_current_pitch>ql_audio_pitch1 &&
+                        ql_audio_switch_pitch_current_pitch<ql_audio_pitch2);
 
-        ql_audio_switch_pitch_current_pitch += signed_ql_audio_grad_y;
-
-        //Ver si subimos o bajamos
-        if (signed_ql_audio_grad_y>=0) {
-            //Ver si nos pasamos
-            if (ql_audio_switch_pitch_current_pitch>=ql_audio_switch_pitch_array[0]) {
-                //Sobrepasado limite.
-                //printf("Reached upper limit.\n");
-                //printf("wrap counter: %d\n",ql_audio_wrap_counter);
-
-                //No tengo claro que la funcion de wrap sea esta
-
-                ql_audio_wrap_counter++;
-                if (ql_audio_wrap_counter>=ql_audio_wrap && ql_audio_wrap!=15) {
-                    //printf("reached maximum wraps. do not change anymore\n");
-                    ql_audio_pitch2=ql_audio_grad_x=ql_audio_grad_y=0;
-                }
-                else {
-                    ql_audio_switch_pitch_current_pitch=ql_audio_switch_pitch_array[1];
-                }
+        if (reached_limit) {
+            if (ql_audio_wrap==15 || ql_audio_wrap_counter<ql_audio_wrap) {
+                //Repetir el recorrido en la misma direccion desde su origen.
+                ql_audio_wrap_counter=(ql_audio_wrap_counter+1)&255;
+                ql_audio_switch_pitch_current_index=
+                    (signed_ql_audio_grad_y<0) ? 1 : 0;
+                ql_audio_switch_pitch_current_pitch=
+                    ql_audio_switch_pitch_array[ql_audio_switch_pitch_current_index];
             }
-        }
-        else {
-            //Ver si nos pasamos por debajo
-            if (ql_audio_switch_pitch_current_pitch<=ql_audio_switch_pitch_array[1]) {
-                //Sobrepasado limite. TODO
-                //printf("Reached lower limit.\n");
-                //printf("wrap counter: %d\n",ql_audio_wrap_counter);
-
-                //No tengo claro que la funcion de wrap sea esta
-
-                ql_audio_wrap_counter++;
-                if (ql_audio_wrap_counter>=ql_audio_wrap && ql_audio_wrap!=15) {
-                    //printf("reached maximum wraps. do not change anymore\n");
-                    ql_audio_pitch2=ql_audio_grad_x=ql_audio_grad_y=0;
-                }
-                else {
-                    ql_audio_switch_pitch_current_pitch=ql_audio_switch_pitch_array[0];
-                }
+            else {
+                //Tras los wraps solicitados, invertir el gradiente. Wrap 0
+                //produce por tanto el rebote normal entre ambos pitches.
+                ql_audio_wrap_counter=0;
+                if (signed_ql_audio_grad_y!=-8)
+                    signed_ql_audio_grad_y=-signed_ql_audio_grad_y;
             }
         }
 
@@ -1115,7 +1046,15 @@ void ql_audio_next_cycle(void)
 
     if (!i8049_chip_present) return;
 
-    ql_audio_next_cycle_counter++;
+    //Grad_x esta expresado en unidades de 72 microsegundos. Su temporizador
+    //es independiente de las transiciones de la onda cuadrada.
+    ql_audio_grad_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
+
+    if (ql_audio_grad_fraction>=QL_AUDIO_DURATION_FRACTION_LIMIT) {
+        ql_audio_grad_fraction-=QL_AUDIO_DURATION_FRACTION_LIMIT;
+        ql_audio_next_cycle_counter++;
+        ql_audio_switch_pitches();
+    }
 
     //Un snapshot antiguo no contiene el nuevo acumulador. Reconstruirlo al
     //primer ciclo conservando el nivel de salida guardado en el snapshot.
@@ -1137,11 +1076,7 @@ void ql_audio_next_cycle(void)
     ql_audio_phase_accumulator+=ql_audio_phase_increment;
     ql_audio_output_bit=(int)(ql_audio_phase_accumulator>>31);
 
-    //Mantener el cambio de pitch en el mismo punto que antes: al cambiar el
-    //nivel de la onda cuadrada.
     if (ql_audio_output_bit!=ql_audio_previous_output_bit) {
-        ql_audio_switch_pitches();
-
         //Fuzziness modifica cada semiperiodo de manera independiente.
         ql_audio_fuzzy_pitch_offset=
             ql_audio_get_random_pitch_offset(ql_audio_fuziness);
@@ -1316,6 +1251,7 @@ void ql_ipc_set_sound_parameters(void)
     ql_audio_random_pitch_offset=0;
     ql_audio_fuzzy_pitch_offset=0;
     ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+    ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
 
     ql_audio_switch_pitches_init();
 
