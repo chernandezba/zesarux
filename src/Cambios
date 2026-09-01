@@ -31,6 +31,7 @@ Mejorada emulación de Sinclair QL:
 - Permitir usar reloj en tiempo real del PC o el interno del QL
 - Permitir cambiar la zona horaria del RTC
 - Grabar el reloj de tiempo real del QL en los snapshots ZSF
+- Agregado soporte para drivers de video de modo texto (stdout, simpletext)
 
 Mejorado ZX Vision:
 - Mejorada la organización, redacción y coherencia de los menús de la interfaz de usuario
