@@ -15210,6 +15210,19 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 }
 
+int zxvision_any_window_over_me(zxvision_window *w)
+{
+    int x,y;
+
+    for (x=w->x;x< w->x + w->visible_width;x++) {
+        for (y=w->y;y< w->y + w->visible_height;y++) {
+            if (zxvision_coords_in_superior_windows(w,x,y)) return 1;
+        }
+    }
+
+    return 0;
+}
+
 //Buscar una ventana entre las activas que corresponda al geometry name
 zxvision_window *zxvision_find_window_in_background(char *geometry_name)
 {

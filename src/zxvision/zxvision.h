@@ -1781,6 +1781,8 @@ extern void zxvision_sound_event_cursor_movement(void);
 extern void zxvision_sound_event_close_window(void);
 extern void zxvision_sound_event_new_window(void);
 
+extern int zxvision_any_window_over_me(zxvision_window *w);
+
 extern char *menu_get_string_language(char *texto);
 
 extern void menu_init_strings_language_array(void);

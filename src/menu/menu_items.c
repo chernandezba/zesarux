@@ -44466,6 +44466,8 @@ void menu_clive_game_handle_timers(void)
 
     int tiempo_ultimo_estado=contador_segundo_infinito-menu_clive_game_tiempo_desde_ultimo_estado;
 
+    printf("Ventana encima mio: %d\n",zxvision_any_window_over_me(menu_clive_game_window));
+
     switch (menu_clive_game_state) {
         case CLIVE_NORMAL:
         case CLIVE_SUNGLASSES:
