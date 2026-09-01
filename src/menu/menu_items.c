@@ -44451,11 +44451,15 @@ void menu_clive_game_remove_talking_text(void)
 
 int menu_clive_puede_hablar(void)
 {
+    //Si hay alguna ventana encima mio, no puede hablar
+    if (zxvision_any_window_over_me(menu_clive_game_window)) return 0;
+
     //Si esta menu cerrado, puede hablar
     if (!menu_abierto) return 1;
 
-    //Si esta menu abierto y la ventana activa no es la suya, no puede hablar
+    //Si esta menu abierto y la ventana activa es la suya, puede hablar
     if (zxvision_current_window==menu_clive_game_window) return 1;
+
 
     return 0;
 }
@@ -44466,7 +44470,7 @@ void menu_clive_game_handle_timers(void)
 
     int tiempo_ultimo_estado=contador_segundo_infinito-menu_clive_game_tiempo_desde_ultimo_estado;
 
-    printf("Ventana encima mio: %d\n",zxvision_any_window_over_me(menu_clive_game_window));
+    //printf("Ventana encima mio: %d\n",zxvision_any_window_over_me(menu_clive_game_window));
 
     switch (menu_clive_game_state) {
         case CLIVE_NORMAL:
@@ -44492,10 +44496,15 @@ void menu_clive_game_handle_timers(void)
                         //printf("Ver si se pone a hablar\n");
 
                         //Probabilidad de X entre 1000
-                        if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR && menu_clive_puede_hablar() ) {
-                            printf("Se pone a hablar\n");
-                            menu_clive_game_state=CLIVE_TALKING;
-                            menu_clive_game_select_random_phrase();
+                        if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR) {
+                            if (menu_clive_puede_hablar() ) {
+                                printf("Se pone a hablar\n");
+                                menu_clive_game_state=CLIVE_TALKING;
+                                menu_clive_game_select_random_phrase();
+                            }
+                            else {
+                                printf("No puede hablar\n");
+                            }
                         }
                     }
 
