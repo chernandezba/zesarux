@@ -127,7 +127,7 @@ __FEATURES__
     * Chrome
     * Prism
     * ZX-Uno
-    * ZX-Evolution BaseConf (beta)
+    * ZX-Evolution BaseConf
     * ZX-Evolution TS-Conf
     * ZX Spectrum Next
     * Jupiter Ace
