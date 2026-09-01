@@ -916,8 +916,11 @@ void ql_adjust_audio_settings_with_mixer(void)
 //Inicialización de los procesos de cambio entre dos pitches
 void ql_audio_switch_pitches_init(void)
 {
-    //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios
-    if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y) {
+    //Los ceros son valores validos para los tres parametros. Solo los
+    //interruptores del mixer desactivan expresamente el gradiente completo.
+    if (!ql_sound_feature_pitch2_enabled ||
+        !ql_sound_feature_grad_x_enabled ||
+        !ql_sound_feature_grad_y_enabled) {
 
         ql_audio_set_current_pitch(ql_audio_pitch1);
 
@@ -941,7 +944,7 @@ void ql_audio_switch_pitches_init(void)
 
 }
 
-//Modifica el pitch, si conviene, cuando pitch2 no es 0
+//Modifica el pitch cuando vence el intervalo grad_x.
 void ql_audio_switch_pitches(void)
 {
     /*
@@ -987,8 +990,9 @@ void ql_audio_switch_pitches(void)
    //Reaplicar cambios en el mixer
    ql_adjust_audio_settings_with_mixer();
 
-   //Si pitch2, o grad_x, o grad_y es 0, no hacer cambios
-   if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y) return;
+   if (!ql_sound_feature_pitch2_enabled ||
+       !ql_sound_feature_grad_x_enabled ||
+       !ql_sound_feature_grad_y_enabled) return;
 
     if (ql_audio_next_cycle_counter>=ql_audio_grad_x) {
         moto_int next_pitch;
@@ -1046,14 +1050,16 @@ void ql_audio_next_cycle(void)
 
     if (!i8049_chip_present) return;
 
-    //Grad_x esta expresado en unidades de 72 microsegundos. Su temporizador
-    //es independiente de las transiciones de la onda cuadrada.
-    ql_audio_grad_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
+    if (ql_audio_grad_x) {
+        //Grad_x esta expresado en unidades de 72 microsegundos. Su temporizador
+        //es independiente de las transiciones de la onda cuadrada.
+        ql_audio_grad_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
 
-    if (ql_audio_grad_fraction>=QL_AUDIO_DURATION_FRACTION_LIMIT) {
-        ql_audio_grad_fraction-=QL_AUDIO_DURATION_FRACTION_LIMIT;
-        ql_audio_next_cycle_counter++;
-        ql_audio_switch_pitches();
+        if (ql_audio_grad_fraction>=QL_AUDIO_DURATION_FRACTION_LIMIT) {
+            ql_audio_grad_fraction-=QL_AUDIO_DURATION_FRACTION_LIMIT;
+            ql_audio_next_cycle_counter++;
+            ql_audio_switch_pitches();
+        }
     }
 
     //Un snapshot antiguo no contiene el nuevo acumulador. Reconstruirlo al
@@ -1061,7 +1067,9 @@ void ql_audio_next_cycle(void)
     {
         moto_byte pitch=ql_audio_switch_pitch_current_pitch;
 
-        if (!ql_audio_pitch2 || !ql_audio_grad_x || !ql_audio_grad_y)
+        if (!ql_sound_feature_pitch2_enabled ||
+            !ql_sound_feature_grad_x_enabled ||
+            !ql_sound_feature_grad_y_enabled)
             pitch=ql_audio_pitch1;
 
         if (ql_audio_phase_increment==0 ||
@@ -1077,6 +1085,10 @@ void ql_audio_next_cycle(void)
     ql_audio_output_bit=(int)(ql_audio_phase_accumulator>>31);
 
     if (ql_audio_output_bit!=ql_audio_previous_output_bit) {
+        //Con intervalo cero la ROM actualiza el gradiente en cada
+        //interrupcion del temporizador de pitch, es decir, cada semiperiodo.
+        if (!ql_audio_grad_x) ql_audio_switch_pitches();
+
         //Fuzziness modifica cada semiperiodo de manera independiente.
         ql_audio_fuzzy_pitch_offset=
             ql_audio_get_random_pitch_offset(ql_audio_fuziness);
