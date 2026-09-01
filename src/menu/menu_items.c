@@ -44434,6 +44434,17 @@ void menu_clive_game_remove_talking_text(void)
     }
 }
 
+int menu_clive_puede_hablar(void)
+{
+    //Si esta menu cerrado, puede hablar
+    if (!menu_abierto) return 1;
+
+    //Si esta menu abierto y la ventana activa no es la suya, no puede hablar
+    if (zxvision_current_window==menu_clive_game_window) return 1;
+
+    return 0;
+}
+
 void menu_clive_game_handle_timers(void)
 {
     enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
@@ -44464,7 +44475,7 @@ void menu_clive_game_handle_timers(void)
                         //printf("Ver si se pone a hablar\n");
 
                         //Probabilidad de X entre 1000
-                        if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR) {
+                        if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR && menu_clive_puede_hablar() ) {
                             printf("Se pone a hablar\n");
                             menu_clive_game_state=CLIVE_TALKING;
                             menu_clive_game_select_random_phrase();
