@@ -16690,7 +16690,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
         char buffer_velocidad[30];
 
-        if (CPU_IS_Z80 && !MACHINE_IS_Z88) {
+        if ((CPU_IS_Z80 || CPU_IS_MOTOROLA) && !MACHINE_IS_Z88) {
             int cpu_hz=get_cpu_frequency();
             int cpu_khz=cpu_hz/1000;
 
