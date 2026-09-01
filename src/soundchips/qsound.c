@@ -89,6 +89,10 @@ void ql_qsound_enable(void)
 void ql_qsound_disable(void)
 {
     ql_qsound_is_enabled=0;
+
+    //para que en el snapshot zsf no se guarde el estado del chip ay,
+    //si se hiciera, al cargar el snapshot al haber estado del chip ay, se activaria qsound
+    ay_chip_present.v=0;
 }
 
 
