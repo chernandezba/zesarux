@@ -165,7 +165,11 @@ static moto_long ql_audio_phase_accumulator=0;
 static moto_long ql_audio_phase_increment=0;
 static int ql_audio_previous_output_bit=0;
 static moto_byte ql_audio_phase_pitch=0;
-static moto_byte ql_audio_phase_fuziness=0;
+
+//Randomness se mantiene durante un paso de pitch. Fuzziness cambia en cada
+//semiperiodo, como hace la rutina $422 de la ROM del IPC 8049.
+static moto_byte ql_audio_random_pitch_offset=0;
+static moto_byte ql_audio_fuzzy_pitch_offset=0;
 
 //Duration y grad_x usan unidades de 72 microsegundos. Este acumulador permite
 //medir la duracion con enteros aunque cada muestra de audio dure 1/15600 s.
@@ -817,17 +821,6 @@ void ql_stop_sound(void)
 
 moto_int ql_get_counter_from_pitch(moto_byte pitch)
 {
-
-    //Le suma fuziness
-    /*
-    int aux_pitch=pitch;
-
-    aux_pitch +=ql_audio_fuziness;
-
-    //Si no se sale del rango de 8 bits
-    if (aux_pitch<256) pitch = aux_pitch;
-    */
-
     //Es una tabla de 256 elementos. Dado que ql_audio_pitch1 es variable de 8 bits, no hay peligro de salirnos de la tabla
     int frecuencia=ql_pitch_frequency_table[pitch];
 
@@ -842,23 +835,33 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
         //Esto no deberia pasar, pero por si acaso para evitar division por 0
         return (FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2);
     }
-    //no estoy seguro que fuziness debe aplicar aqui
-    else {
-        return ql_audio_fuziness+(FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2)/frecuencia;
-    }
+    else return (FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2)/frecuencia;
 }
 
-//Seleccionar un pitch usando solo aritmetica entera. Fuzziness se conserva
-//con el mismo efecto aproximado que tenia al sumarse al semiperiodo anterior.
-static void ql_audio_set_current_pitch(moto_byte pitch)
+//La ROM del IPC solo aplica random/fuzzy si esta activo el bit 3. Los tres
+//bits inferiores seleccionan una mascara de 1, 3, 7 ... 255.
+static moto_byte ql_audio_get_random_pitch_offset(moto_byte parameter)
+{
+    moto_int mask;
+
+    if (!(parameter&8)) return 0;
+
+    mask=(1U<<((parameter&7)+1))-1;
+
+    ay_randomize(0);
+
+    return (moto_byte)(randomize_noise[0]&mask);
+}
+
+static void ql_audio_update_phase_increment(void)
 {
     moto_long_long numerator;
-    moto_long_long denominator;
-    moto_long frecuencia=(moto_long)ql_pitch_frequency_table[pitch];
+    moto_byte effective_pitch=ql_audio_switch_pitch_current_pitch+
+                              ql_audio_random_pitch_offset+
+                              ql_audio_fuzzy_pitch_offset;
+    moto_long frecuencia=(moto_long)ql_pitch_frequency_table[effective_pitch];
 
-    ql_audio_switch_pitch_current_pitch=pitch;
-    ql_audio_phase_pitch=pitch;
-    ql_audio_phase_fuziness=ql_audio_fuziness;
+    ql_audio_phase_pitch=ql_audio_switch_pitch_current_pitch;
 
     if (frecuencia==0) {
         ql_audio_phase_increment=0;
@@ -866,14 +869,20 @@ static void ql_audio_set_current_pitch(moto_byte pitch)
     }
 
     numerator=((moto_long_long)frecuencia)<<32;
-    denominator=FRECUENCIA_CONSTANTE_NORMAL_SONIDO+
-                (moto_long_long)2U*ql_audio_fuziness*frecuencia;
 
-    ql_audio_phase_increment=(moto_long)(numerator/denominator);
+    ql_audio_phase_increment=(moto_long)(numerator/FRECUENCIA_CONSTANTE_NORMAL_SONIDO);
 
     //Mantener estos contadores para compatibilidad con snapshots antiguos.
-    ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(pitch);
+    ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(effective_pitch);
     ql_audio_pitch_counter_current=ql_audio_pitch_counter_initial;
+}
+
+//Seleccionar un pitch usando solo aritmetica entera.
+static void ql_audio_set_current_pitch(moto_byte pitch)
+{
+    ql_audio_switch_pitch_current_pitch=pitch;
+
+    ql_audio_update_phase_increment();
 }
 
 
@@ -974,33 +983,6 @@ void ql_audio_switch_pitches_init(void)
 
 }
 
-moto_int ql_get_audio_interval_steps_random(void)
-{
-        //Random just randomises the steps
-        //Retornar el steps aplicando random
-    //Si random 0, nada
-    if (ql_audio_randomness_of_step==0) return ql_audio_grad_x;
-
-
-    //Valor random entre 1 y 15, y ver que total no excede 32768
-    if (ql_audio_grad_x>32000) return ql_audio_grad_x;
-
-
-  ay_randomize(0);
-
-  //valor_random es valor de 16 bits
-  int valor_random=randomize_noise[0];
-
-
-    int step_add_random=valor_random % ql_audio_randomness_of_step;
-
-    //printf("Adding random %d to step (max %d value random: %d)\n",step_add_random,ql_audio_randomness_of_step,valor_random);
-
-    return ql_audio_grad_x+step_add_random;
-
-
-}
-
 //Modifica el pitch, si conviene, cuando pitch2 no es 0
 void ql_audio_switch_pitches(void)
 {
@@ -1058,9 +1040,7 @@ void ql_audio_switch_pitches(void)
 
     //Ver si hay que cambiar la nota en curso
 
-    //Random just randomises the steps
-
-    if (ql_audio_next_cycle_counter>=ql_get_audio_interval_steps_random() ) {
+    if (ql_audio_next_cycle_counter>=ql_audio_grad_x) {
         //ql_audio_next_cycle_counter -=ql_audio_grad_x; //restamos en vez de poner a 0 para que sea tiempo acumulativo
 
         ql_audio_next_cycle_counter =0;
@@ -1117,6 +1097,11 @@ void ql_audio_switch_pitches(void)
 
         //printf("current pitch: %d\n",ql_audio_switch_pitch_current_pitch);
 
+        //Randomness modifica el pitch base una vez por cada paso y mantiene
+        //ese valor hasta el siguiente paso.
+        ql_audio_random_pitch_offset=
+            ql_audio_get_random_pitch_offset(ql_audio_randomness_of_step);
+
         ql_audio_set_current_pitch(ql_audio_switch_pitch_current_pitch);
     }
 
@@ -1141,8 +1126,7 @@ void ql_audio_next_cycle(void)
             pitch=ql_audio_pitch1;
 
         if (ql_audio_phase_increment==0 ||
-            ql_audio_phase_pitch!=pitch ||
-            ql_audio_phase_fuziness!=ql_audio_fuziness) {
+            ql_audio_phase_pitch!=pitch) {
             if (ql_audio_phase_increment==0)
                 ql_audio_phase_accumulator=ql_audio_output_bit ? 0x80000000U : 0;
 
@@ -1155,7 +1139,14 @@ void ql_audio_next_cycle(void)
 
     //Mantener el cambio de pitch en el mismo punto que antes: al cambiar el
     //nivel de la onda cuadrada.
-    if (ql_audio_output_bit!=ql_audio_previous_output_bit) ql_audio_switch_pitches();
+    if (ql_audio_output_bit!=ql_audio_previous_output_bit) {
+        ql_audio_switch_pitches();
+
+        //Fuzziness modifica cada semiperiodo de manera independiente.
+        ql_audio_fuzzy_pitch_offset=
+            ql_audio_get_random_pitch_offset(ql_audio_fuziness);
+        ql_audio_update_phase_increment();
+    }
     ql_audio_previous_output_bit=ql_audio_output_bit;
 
 
@@ -1316,15 +1307,17 @@ void ql_ipc_set_sound_parameters(void)
 
 
 
-    ql_audio_switch_pitches_init();
-
     ql_audio_next_cycle_counter=0;
     ql_audio_wrap_counter=0;
 
     ql_audio_phase_accumulator=0;
     ql_audio_output_bit=0;
     ql_audio_previous_output_bit=0;
+    ql_audio_random_pitch_offset=0;
+    ql_audio_fuzzy_pitch_offset=0;
     ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+
+    ql_audio_switch_pitches_init();
 
     ql_audio_playing=1;
 
