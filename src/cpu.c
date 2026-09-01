@@ -151,6 +151,7 @@
 #include "zxmmcplus.h"
 #include "tv.h"
 #include "qsound.h"
+#include "core_ql.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -993,6 +994,7 @@ void hard_reset_cpu(void)
 void reset_cpu(void)
 {
 
+    ql_total_frames=0;
     debug_printf (VERBOSE_INFO,"Reset cpu");
 
     if (esxdos_umount_on_reset.v) {
@@ -2959,9 +2961,9 @@ void set_machine_params(void)
 
             ql_readbyte_no_ports_function=ql_readbyte_no_ports;
 
-
-            //Hagamoslo mas lento
-            screen_testados_linea=80;
+            //old
+            //screen_testados_linea=80;
+            screen_testados_linea=223;
 
             i8049_chip_present=1;
         break;

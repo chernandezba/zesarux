@@ -26,5 +26,6 @@
 
 extern void cpu_core_loop_ql(void);
 
+extern int ql_total_frames;
 
 #endif

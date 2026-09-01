@@ -94,6 +94,41 @@ void ql_chapuza_parpadeo_cursor(void)
 }
 */
 
+
+//Según cálculos a ojo tendríamos: (y digo a ojo por la velocidad comparativa, viendo que vaya "mas o menos igual" que un QL real
+//y basándonos en 312 scanlines:
+//223 ciclos por scanline
+//69582 ciclos en un frame de video -> aprox 3479100 Hz = 3.48 MHz
+//El QL debido a:
+//La penalización del bus de 8 bits del 68008.
+//La contención de la RAM interna con el ZX8301.
+//Rinde aproximadamente el 41 % del rendimiento de un 68000 a 7.5 Mhz, o, inversamente, un 68000 a 7,5 MHz sería unas 2,43 veces más rápido.
+
+/*
+| Situación                                 | Equivalencia aproximada |
+|---                                        |---:|
+| Código con bastante cálculo interno       | 5–7 MHz de 68000 |
+| Carga mixta típica                        | 4–5 MHz de 68000 |
+| Código muy dependiente de RAM interna     | 3–4 MHz de 68000 |
+| Tu estimación                             | ≈3,08 MHz, o 41 % |
+
+
+Una equivalencia global más prudente podría estar alrededor de 4–4,6 MHz de 68000, dejando los 3 MHz como un caso particularmente castigado.
+
+El calculo a ojo consiste en calcular cuantos frames de video tarda desde el arranque del QL hasta aparecer el menu,
+esto son 175 frames
+
+*/
+
+
+//Contadores para estos cálculos temporales. No se usan realmente
+static int ciclos_por_frame_calculados=0;
+static int ciclos_por_scanline_calculados=0;
+
+//Para saber cuanto tarda desde el boot hasta aparecer el menu
+//Variable temporal de debug
+int ql_total_frames=0;
+
 //bucle principal de ejecucion de la cpu de jupiter ace
 void cpu_core_loop_ql(void)
 {
@@ -167,10 +202,19 @@ void cpu_core_loop_ql(void)
 
         m68k_execute(1);
 
+        //Le pedimos 1 ciclo y el contador final nos indica cuanto ha tardado
+        int ciclos_ultimo_opcode=1-m68k_cycles_remaining();
+        //printf("Ciclos ultima instruccion: %d\n",ciclos_ultimo_opcode);
 
+        ciclos_por_frame_calculados +=ciclos_ultimo_opcode;
+        ciclos_por_scanline_calculados +=ciclos_ultimo_opcode;
+
+
+        //old
+        //t_estados +=4;
 
         //Simplemente incrementamos los t-estados un valor inventado, aunque luego al final parece ser parecido a la realidad
-        t_estados+=4;
+        t_estados+=ciclos_ultimo_opcode;
 
 
     }
@@ -182,6 +226,9 @@ void cpu_core_loop_ql(void)
 
     //normalmente
     if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+
+        //printf("Ciclos por scanline: %d\n",ciclos_por_scanline_calculados);
+        ciclos_por_scanline_calculados=0;
 
         t_scanline++;
 
@@ -223,6 +270,10 @@ void cpu_core_loop_ql(void)
         //Final de frame
 
         if (t_estados>=screen_testados_total) {
+            //printf("Ciclos total en un frame: %d Total en 1 segundo: %d\n",ciclos_por_frame_calculados,ciclos_por_frame_calculados*50);
+            //printf("Total frames: %d\n",ql_total_frames);
+            ql_total_frames++;
+            ciclos_por_frame_calculados=0;
 
             t_scanline=0;
 
