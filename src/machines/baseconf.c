@@ -1260,13 +1260,13 @@ void baseconf_refresca_pantalla_no_rainbow(void)
 }
 
 
-char *baseconf_videomode_string_13="ALCO 16 colour, pixels 256x192, border L/R=104 T/B=96";
-char *baseconf_videomode_string_0="ATM EGA, pixels 320x200, border L/R=40 T/B=88";
-char *baseconf_videomode_string_23="ZX hardware multicolor, pixels 256x192, border L/R=104 T/B=96";
-char *baseconf_videomode_string_2="ATM hardware multicolor, pixels 640x200, border L/R=40 T/B=88";
-char *baseconf_videomode_string_6="ATM text, pixels 640x200, border L/R=40 T/B=88";
-char *baseconf_videomode_string_7="EVO text, pixels 640x200, border L/R=40 T/B=88";
-char *baseconf_videomode_string_3="Standard ZX, pixels 256x192, border L/R=104 T/B=96";
+char *baseconf_videomode_string_13="ALCO 16 colour 256x192";
+char *baseconf_videomode_string_0="ATM EGA 320x200";
+char *baseconf_videomode_string_23="ZX hardware multicolor 256x192";
+char *baseconf_videomode_string_2="ATM hardware multicolor 640x200";
+char *baseconf_videomode_string_6="ATM text 640x200";
+char *baseconf_videomode_string_7="EVO text 640x200";
+char *baseconf_videomode_string_3="Standard ZX 256x192";
 char baseconf_videomode_string_unk[200]="";
 
 
@@ -1304,8 +1304,7 @@ char *baseconf_get_video_mode_string(void)
         break;
 
         default:
-            sprintf(baseconf_videomode_string_unk,"BaseConf video mode %02XH: unknown, using standard ZX renderer, pixels 256x192 -> 512x384, "
-                    "border L/R=104 T/B=96",baseconf_mode);
+            sprintf(baseconf_videomode_string_unk,"BaseConf video mode %02XH: unknown, using standard ZX renderer 256x192",baseconf_mode);
             return baseconf_videomode_string_unk;
         break;
 
