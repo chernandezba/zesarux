@@ -172,12 +172,15 @@ static moto_int ql_audio_new_sound_waiting_for_edge=0;
 static moto_byte ql_audio_random_pitch_offset=0;
 static moto_byte ql_audio_fuzzy_pitch_offset=0;
 
-//Duration y grad_x usan unidades de 72 microsegundos. Este acumulador permite
-//medir la duracion con enteros aunque cada muestra de audio dure 1/15600 s.
-#define QL_AUDIO_TIME_FRACTION_PER_SAMPLE 1000000U
-#define QL_AUDIO_DURATION_FRACTION_LIMIT  (72U*FRECUENCIA_CONSTANTE_NORMAL_SONIDO)
-static moto_long ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
-static moto_long ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+//El timer del 8049 avanza a 11 MHz / 15 ciclos / 32 del prescaler. Esto da
+//22916,67 ticks por segundo. Se usa la fraccion 68750/3 para no usar float.
+#define QL_AUDIO_IPC_TICKS_NUMERATOR 68750U
+#define QL_AUDIO_IPC_TICKS_DENOMINATOR 3U
+#define QL_AUDIO_TIME_FRACTION_PER_SAMPLE QL_AUDIO_IPC_TICKS_NUMERATOR
+#define QL_AUDIO_TIME_FRACTION_LIMIT \
+    (QL_AUDIO_IPC_TICKS_DENOMINATOR*FRECUENCIA_CONSTANTE_NORMAL_SONIDO)
+static moto_long ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_LIMIT/2;
+static moto_long ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_LIMIT/2;
 
 
 // Fin Parametros de sonido
@@ -829,8 +832,13 @@ void ql_stop_sound(void)
 
 moto_int ql_get_counter_from_pitch(moto_byte pitch)
 {
-    //Es una tabla de 256 elementos. Dado que ql_audio_pitch1 es variable de 8 bits, no hay peligro de salirnos de la tabla
-    int frecuencia=ql_pitch_frequency_table[pitch];
+    moto_int frecuencia;
+    moto_byte timer_pitch=pitch-1;
+
+    //La ROM tiene un desfase de uno y una sobrecarga medida de 10,6 ticks
+    //por semiperiodo. Multiplicar todo por 10 conserva la precision entera.
+    frecuencia=(QL_AUDIO_IPC_TICKS_NUMERATOR*5U)/
+               (QL_AUDIO_IPC_TICKS_DENOMINATOR*(timer_pitch*10U+106U));
 
     //printf("frecuencia: %d\n",frecuencia);
 
@@ -864,21 +872,20 @@ static moto_byte ql_audio_get_random_pitch_offset(moto_byte parameter)
 static void ql_audio_update_phase_increment(void)
 {
     moto_long_long numerator;
+    moto_long_long denominator;
     moto_byte effective_pitch=ql_audio_switch_pitch_current_pitch+
                               ql_audio_random_pitch_offset+
                               ql_audio_fuzzy_pitch_offset;
-    moto_long frecuencia=(moto_long)ql_pitch_frequency_table[effective_pitch];
+    moto_byte timer_pitch=effective_pitch-1;
 
     ql_audio_phase_pitch=ql_audio_switch_pitch_current_pitch;
 
-    if (frecuencia==0) {
-        ql_audio_phase_increment=0;
-        return;
-    }
-
-    numerator=((moto_long_long)frecuencia)<<32;
-
-    ql_audio_phase_increment=(moto_long)(numerator/FRECUENCIA_CONSTANTE_NORMAL_SONIDO);
+    //frecuencia = (68750/3) / (2 * (pitch-1+10,6)). Se calcula
+    //directamente el incremento de fase para no redondear antes a hercios.
+    numerator=((moto_long_long)QL_AUDIO_IPC_TICKS_NUMERATOR*5U)<<32;
+    denominator=(moto_long_long)QL_AUDIO_IPC_TICKS_DENOMINATOR*
+                (timer_pitch*10U+106U)*FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+    ql_audio_phase_increment=(moto_long)(numerator/denominator);
 
     //Mantener estos contadores para compatibilidad con snapshots antiguos.
     ql_audio_pitch_counter_initial=ql_get_counter_from_pitch(effective_pitch);
@@ -1058,12 +1065,11 @@ void ql_audio_next_cycle(void)
     if (!i8049_chip_present) return;
 
     if (ql_audio_grad_x && !ql_audio_new_sound_waiting_for_edge) {
-        //Grad_x esta expresado en unidades de 72 microsegundos. Su temporizador
-        //es independiente de las transiciones de la onda cuadrada.
+        //Grad_x se expresa en ticks del temporizador interno del 8049.
         ql_audio_grad_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
 
-        if (ql_audio_grad_fraction>=QL_AUDIO_DURATION_FRACTION_LIMIT) {
-            ql_audio_grad_fraction-=QL_AUDIO_DURATION_FRACTION_LIMIT;
+        while (ql_audio_grad_fraction>=QL_AUDIO_TIME_FRACTION_LIMIT) {
+            ql_audio_grad_fraction-=QL_AUDIO_TIME_FRACTION_LIMIT;
             ql_audio_next_cycle_counter++;
             ql_audio_switch_pitches();
         }
@@ -1115,8 +1121,9 @@ void ql_audio_next_cycle(void)
 
         ql_audio_duration_fraction+=QL_AUDIO_TIME_FRACTION_PER_SAMPLE;
 
-        if (ql_audio_duration_fraction>=QL_AUDIO_DURATION_FRACTION_LIMIT) {
-            ql_audio_duration_fraction-=QL_AUDIO_DURATION_FRACTION_LIMIT;
+        while (ql_current_sound_duration!=0 &&
+               ql_audio_duration_fraction>=QL_AUDIO_TIME_FRACTION_LIMIT) {
+            ql_audio_duration_fraction-=QL_AUDIO_TIME_FRACTION_LIMIT;
             ql_current_sound_duration--;
 
             if (ql_current_sound_duration==0) {
@@ -1276,8 +1283,8 @@ void ql_ipc_set_sound_parameters(void)
 
     ql_audio_random_pitch_offset=0;
     ql_audio_fuzzy_pitch_offset=0;
-    ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
-    ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_PER_SAMPLE/2;
+    ql_audio_duration_fraction=QL_AUDIO_TIME_FRACTION_LIMIT/2;
+    ql_audio_grad_fraction=QL_AUDIO_TIME_FRACTION_LIMIT/2;
 
     ql_audio_switch_pitches_init();
 
@@ -1306,10 +1313,15 @@ void ql_ipc_set_sound_parameters(void)
 
 int ql_ipc_get_frecuency_sound_value(int pitch)
 {
+    moto_byte timer_pitch;
+
     if (pitch<0) pitch=0;
     if (pitch>255) pitch=255;
 
-    return ql_pitch_frequency_table[pitch];
+    timer_pitch=(moto_byte)pitch-1;
+
+    return (QL_AUDIO_IPC_TICKS_NUMERATOR*5U)/
+           (QL_AUDIO_IPC_TICKS_DENOMINATOR*(timer_pitch*10U+106U));
 }
 
 
