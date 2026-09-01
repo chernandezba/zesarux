@@ -30,9 +30,6 @@
 #include "utils.h"
 #include "audio.h"
 
-//Para usar funcion random
-#include "ay38912.h"
-
 
 /*
 
@@ -171,6 +168,9 @@ static moto_int ql_audio_new_sound_waiting_for_edge=0;
 //semiperiodo, como hace la rutina $422 de la ROM del IPC 8049.
 static moto_byte ql_audio_random_pitch_offset=0;
 static moto_byte ql_audio_fuzzy_pitch_offset=0;
+
+//Estado RANDOM de 16 bits equivalente a las posiciones $25/$26 del IPC.
+static moto_int ql_audio_random_state=0;
 
 //El timer del 8049 avanza a 11 MHz / 15 ciclos / 32 del prescaler. Esto da
 //22916,67 ticks por segundo. Se usa la fraccion 68750/3 para no usar float.
@@ -859,14 +859,22 @@ moto_int ql_get_counter_from_pitch(moto_byte pitch)
 static moto_byte ql_audio_get_random_pitch_offset(moto_byte parameter)
 {
     moto_int mask;
+    moto_int random_product;
+    moto_byte random_low;
+    moto_byte random_high;
 
     if (!(parameter&8)) return 0;
 
     mask=(1U<<((parameter&7)+1))-1;
 
-    ay_randomize(0);
+    //Rutina $73A de la ROM: multiplica el byte alto por $008D, suma el
+    //byte bajo anterior y finalmente $008B, todo con wrap de 16 bits.
+    random_low=(moto_byte)ql_audio_random_state;
+    random_high=(moto_byte)(ql_audio_random_state>>8);
+    random_product=(moto_int)random_high*0x008D;
+    ql_audio_random_state=(moto_int)(random_product+random_low+0x008B);
 
-    return (moto_byte)(randomize_noise[0]&mask);
+    return (moto_byte)(ql_audio_random_state&mask);
 }
 
 static void ql_audio_update_phase_increment(void)
