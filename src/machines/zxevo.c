@@ -36,8 +36,6 @@
 //Comun zxevo, tanto para baseconf como tsconf
 z80_byte zxevo_nvram[ZXEVO_NVRAM_ELEMENTS];
 
-//Control de acceso a celdas nvram
-//z80_byte zxevo_last_port_eff7;
 
 //celda nvram seleccionada
 z80_byte zxevo_last_port_dff7;

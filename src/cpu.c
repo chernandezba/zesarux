@@ -1267,9 +1267,6 @@ util_stats_init();
         m68k_set_cpu_type(M68K_CPU_TYPE_68000);
         m68k_pulse_reset();
 
-        //HWReset();
-        //printf ("Reg PC QL: %08XH\n",pc);
-        //sleep(2);
         ql_ipc_reset();
         ql_stop_sound();
         qltraps_init_fopen_files_array();

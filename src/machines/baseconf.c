@@ -105,76 +105,76 @@ static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
 
 static int baseconf_beta_virtual_drive_active(void)
 {
-        return baseconf_beta_drive_selected &&
-               baseconf_beta_drive_virtual==baseconf_beta_drive_selected;
+    return baseconf_beta_drive_selected &&
+            baseconf_beta_drive_virtual==baseconf_beta_drive_selected;
 }
 
 void baseconf_pre_opcode_fetch(z80_int direccion)
 {
-        int mapa=(puerto_32765&16) ? 4 : 0;
-        int segmento=direccion>>14;
+    int mapa=(puerto_32765&16) ? 4 : 0;
+    int segmento=direccion>>14;
 
-        /* El emulador de cinta de EVO instala un breakpoint hardware
-           (normalmente #0556, entrada del cargador de la ROM de 48K). Su
-           servicio NMI reside en la página RAM FF y no usa traps de cinta. */
-        if (!baseconf_nmi_active && (baseconf_last_port_bf&0x10) &&
-            direccion==baseconf_nmi_breakpoint) {
-                printf("BaseConf hardware breakpoint hit at %04XH: entering RAM FF NMI service\n",
-                       direccion);
-                baseconf_nmi_active=1;
-                baseconf_nmi_exit_countdown=0;
-                baseconf_set_memory_pages();
-                generate_nmi();
-        }
+    /* El emulador de cinta de EVO instala un breakpoint hardware
+        (normalmente #0556, entrada del cargador de la ROM de 48K). Su
+        servicio NMI reside en la página RAM FF y no usa traps de cinta. */
+    if (!baseconf_nmi_active && (baseconf_last_port_bf&0x10) &&
+        direccion==baseconf_nmi_breakpoint) {
+            printf("BaseConf hardware breakpoint hit at %04XH: entering RAM FF NMI service\n",
+                    direccion);
+            baseconf_nmi_active=1;
+            baseconf_nmi_exit_countdown=0;
+            baseconf_set_memory_pages();
+            generate_nmi();
+    }
 
-        if (baseconf_nmi_active && baseconf_nmi_exit_countdown) {
-                baseconf_nmi_exit_countdown--;
-                if (!baseconf_nmi_exit_countdown) {
-                        baseconf_nmi_active=0;
-                        baseconf_set_memory_pages();
-                }
-        }
+    if (baseconf_nmi_active && baseconf_nmi_exit_countdown) {
+            baseconf_nmi_exit_countdown--;
+            if (!baseconf_nmi_exit_countdown) {
+                    baseconf_nmi_active=0;
+                    baseconf_set_memory_pages();
+            }
+    }
 
-        /* A9 permite salir de DOS cuando la ejecución ha pasado a RAM. */
-        if (baseconf_dos_signal && direccion>=0x4000 &&
-            (baseconf_shadow_mode_port_77&2)) {
-                baseconf_dos_signal=0;
-                baseconf_set_memory_pages();
-        }
+    /* A9 permite salir de DOS cuando la ejecución ha pasado a RAM. */
+    if (baseconf_dos_signal && direccion>=0x4000 &&
+        (baseconf_shadow_mode_port_77&2)) {
+            baseconf_dos_signal=0;
+            baseconf_set_memory_pages();
+    }
 
-        /* Un M1 en #3Dxx vuelve a entrar en DOS cuando la sustitución está
-           habilitada para la ventana MMU actual. */
-        if (!baseconf_dos_signal && (direccion&0x3f00)==0x3d00 &&
-            (baseconf_mmu_flags[mapa+segmento]&128)) {
-                baseconf_dos_signal=1;
-                baseconf_set_memory_pages();
-        }
+    /* Un M1 en #3Dxx vuelve a entrar en DOS cuando la sustitución está
+        habilitada para la ventana MMU actual. */
+    if (!baseconf_dos_signal && (direccion&0x3f00)==0x3d00 &&
+        (baseconf_mmu_flags[mapa+segmento]&128)) {
+            baseconf_dos_signal=1;
+            baseconf_set_memory_pages();
+    }
 
-        /* EVO-DOS conserva los puntos de transferencia de sectores de
-           TR-DOS. Si EVO Reset Service no ha seleccionado una unidad virtual,
-           se atienden con el TRD insertado desde el menú de ZEsarUX. */
-        if (baseconf_dos_signal && !baseconf_beta_virtual_drive_active())
-                betadisk_handle_trdos_traps();
+    /* EVO-DOS conserva los puntos de transferencia de sectores de
+        TR-DOS. Si EVO Reset Service no ha seleccionado una unidad virtual,
+        se atienden con el TRD insertado desde el menú de ZEsarUX. */
+    if (baseconf_dos_signal && !baseconf_beta_virtual_drive_active())
+            betadisk_handle_trdos_traps();
 }
 
 int baseconf_memory_write_allowed(z80_int direccion)
 {
-        int mapa=(puerto_32765&16) ? 4 : 0;
-        return (baseconf_mmu_flags[mapa+(direccion>>14)]&32)==0;
+    int mapa=(puerto_32765&16) ? 4 : 0;
+    return (baseconf_mmu_flags[mapa+(direccion>>14)]&32)==0;
 }
 
 z80_byte baseconf_read_config_port(z80_byte puerto_h)
 {
-        int i;
-        z80_byte value=0;
+    int i;
+    z80_byte value=0;
 
-        if (!baseconf_shadow_ports_available()) return 0xff;
+    if (!baseconf_shadow_ports_available()) return 0xff;
 
-        if ((puerto_h&0xf8)==0) {
-                return baseconf_mmu_pages[puerto_h&7]^255;
-        }
+    if ((puerto_h&0xf8)==0) {
+            return baseconf_mmu_pages[puerto_h&7]^255;
+    }
 
-        switch (puerto_h) {
+    switch (puerto_h) {
         case 0x08:
                 for (i=7;i>=0;i--) value=(value<<1) | ((baseconf_mmu_flags[i]>>6)&1);
                 return value;
@@ -199,68 +199,68 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
                 return baseconf_nmi_breakpoint>>8;
         default:
                 return 0xff;
-        }
+    }
 }
 
 z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
 {
-        switch (puerto_l) {
+    switch (puerto_l) {
         case 0x2f: return baseconf_extended_dos_ports[0];
         case 0x4f: return baseconf_extended_dos_ports[1];
         case 0x6f: return baseconf_extended_dos_ports[2];
         case 0x8f: return baseconf_extended_dos_ports[3];
         default: return 0xff;
-        }
+    }
 }
 
 z80_byte baseconf_read_cmos(void)
 {
-        z80_byte indice=zxevo_last_port_dff7;
+    z80_byte indice=zxevo_last_port_dff7;
 
-        /* El RTC Gluk devuelve la fecha y hora local en BCD. */
-        if (indice==0x00 || indice==0x02 || indice==0x04 ||
-            indice==0x06 || indice==0x07 || indice==0x08 || indice==0x09) {
-                time_t tiempo=time(NULL);
-                struct tm fecha=*localtime(&tiempo);
-                int valor;
+    /* El RTC Gluk devuelve la fecha y hora local en BCD. */
+    if (indice==0x00 || indice==0x02 || indice==0x04 ||
+        indice==0x06 || indice==0x07 || indice==0x08 || indice==0x09) {
+            time_t tiempo=time(NULL);
+            struct tm fecha=*localtime(&tiempo);
+            int valor;
 
-                switch (indice) {
-                case 0x00: valor=fecha.tm_sec; break;
-                case 0x02: valor=fecha.tm_min; break;
-                case 0x04: valor=fecha.tm_hour; break;
-                case 0x06: valor=fecha.tm_wday+1; break;
-                case 0x07: valor=fecha.tm_mday; break;
-                case 0x08: valor=fecha.tm_mon+1; break;
-                default:   valor=fecha.tm_year%100; break;
-                }
+            switch (indice) {
+            case 0x00: valor=fecha.tm_sec; break;
+            case 0x02: valor=fecha.tm_min; break;
+            case 0x04: valor=fecha.tm_hour; break;
+            case 0x06: valor=fecha.tm_wday+1; break;
+            case 0x07: valor=fecha.tm_mday; break;
+            case 0x08: valor=fecha.tm_mon+1; break;
+            default:   valor=fecha.tm_year%100; break;
+            }
 
-                return ((valor/10)<<4) | (valor%10);
-        }
+            return ((valor/10)<<4) | (valor%10);
+    }
 
-        /* El bit 7 del registro C cambia F0-FF a EEPROM normal. */
-        if (indice<0xf0 || (zxevo_nvram[0x0c]&0x80))
-                return zxevo_nvram[indice];
+    /* El bit 7 del registro C cambia F0-FF a EEPROM normal. */
+    if (indice<0xf0 || (zxevo_nvram[0x0c]&0x80))
+        return zxevo_nvram[indice];
 
-        if (baseconf_cmos_extension_type==0)
-                return baseconf_version[indice&0x0f];
-        if (baseconf_cmos_extension_type==1)
-                return baseconf_avr_boot_version[indice&0x0f];
+    if (baseconf_cmos_extension_type==0)
+        return baseconf_version[indice&0x0f];
+    if (baseconf_cmos_extension_type==1)
+        return baseconf_avr_boot_version[indice&0x0f];
 
-        return 0xff;
+    return 0xff;
 }
 
 void baseconf_write_cmos(z80_byte valor)
 {
-        z80_byte indice=zxevo_last_port_dff7;
+    z80_byte indice=zxevo_last_port_dff7;
 
-        if (indice>=0xf0 && !(zxevo_nvram[0x0c]&0x80)) {
-                /* Las implementaciones antiguas aceptan la selección del tipo
-                   desde cualquiera de los aliases F0-FF. */
-                baseconf_cmos_extension_type=valor;
-                return;
-        }
+    if (indice>=0xf0 && !(zxevo_nvram[0x0c]&0x80)) {
+        /* Las implementaciones antiguas aceptan la selección del tipo
+            desde cualquiera de los aliases F0-FF. */
+        baseconf_cmos_extension_type=valor;
+        return;
+    }
 
-        zxevo_nvram[indice]=valor;
+    zxevo_nvram[indice]=valor;
 }
 
 z80_byte baseconf_last_port_77;
@@ -311,20 +311,20 @@ static void baseconf_set_cpu_speed(void)
 int baseconf_shadow_ports_available(void)
 {
 
-        /* Un fetch M1 en #3Dxx activa DOS, exponiendo tanto la ROM TR-DOS
-           como los puertos shadow de configuración. */
-        if (baseconf_dos_signal) return 1;
+    /* Un fetch M1 en #3Dxx activa DOS, exponiendo tanto la ROM TR-DOS
+        como los puertos shadow de configuración. */
+    if (baseconf_dos_signal) return 1;
 
-        if (baseconf_last_port_bf&1) {
-                //Si vale 1 habilita los puertos shadow. Vale 0 después de reset.
-                return 1;
-        }
-        if ((baseconf_shadow_mode_port_77&2)==0) {
-                //Habilita el permiso de los puertos shadow del gestor de memoria.
-                return 1;
-        }
+    if (baseconf_last_port_bf&1) {
+        //Si vale 1 habilita los puertos shadow. Vale 0 después de reset.
+        return 1;
+    }
+    if ((baseconf_shadow_mode_port_77&2)==0) {
+        //Habilita el permiso de los puertos shadow del gestor de memoria.
+        return 1;
+    }
 
-        return 0;
+    return 0;
 }
 
 
@@ -335,34 +335,34 @@ void lee_byte_evo_aux(z80_int direccion GCC_UNUSED)
 
 void baseconf_write_memory_aux(z80_int direccion,z80_byte valor)
 {
-        /* BF.bit2 redirige cada escritura de memoria de la CPU a los 2 KB
-           de RAM de fuente de texto, además de a la memoria mapeada normal. */
-        if (baseconf_last_port_bf&4) {
-                baseconf_text_font[direccion&2047]=valor;
-        }
+    /* BF.bit2 redirige cada escritura de memoria de la CPU a los 2 KB
+        de RAM de fuente de texto, además de a la memoria mapeada normal. */
+    if (baseconf_last_port_bf&4) {
+        baseconf_text_font[direccion&2047]=valor;
+    }
 }
 
 z80_byte baseconf_get_video_mode(void)
 {
-        return (baseconf_last_port_eff7&0x20) |
-               ((baseconf_last_port_eff7&1)<<1) |
-               (baseconf_last_port_77&7);
+    return (baseconf_last_port_eff7&0x20) |
+        ((baseconf_last_port_eff7&1)<<1) |
+        (baseconf_last_port_77&7);
 }
 
 int baseconf_text_mode_active(void)
 {
-        z80_byte mode=baseconf_get_video_mode();
-        return mode==6 || mode==7;
+    z80_byte mode=baseconf_get_video_mode();
+    return mode==6 || mode==7;
 }
 
 static z80_int baseconf_get_palette_colour(z80_byte colour)
 {
-        return PRISM_INDEX_FIRST_COLOR+baseconf_palette[colour&15];
+    return PRISM_INDEX_FIRST_COLOR+baseconf_palette[colour&15];
 }
 
 z80_int baseconf_get_palette_entry(z80_byte indice)
 {
-        return baseconf_palette[indice&15];
+    return baseconf_palette[indice&15];
 }
 
 /* Todos los modos BaseConf se renderizan en un área activa de 640x400.
@@ -372,257 +372,257 @@ static void baseconf_putpixel_scaled(int x,int y,z80_int colour,
                                     int scale_x,int scale_y,
                                     int offset_x,int offset_y)
 {
-        int dx,dy;
-        int output_x=offset_x+x*scale_x;
-        int output_y=offset_y+y*scale_y;
+    int dx,dy;
+    int output_x=offset_x+x*scale_x;
+    int output_y=offset_y+y*scale_y;
 
-        for (dy=0;dy<scale_y;dy++)
-                for (dx=0;dx<scale_x;dx++)
-                        scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
+    for (dy=0;dy<scale_y;dy++)
+            for (dx=0;dx<scale_x;dx++)
+                    scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
 }
 
 static void baseconf_get_mode_geometry(int *offset_x,int *offset_y,
                                        int *width,int *height)
 {
-        z80_byte mode=baseconf_get_video_mode();
+    z80_byte mode=baseconf_get_video_mode();
 
-        if (mode==0x13 || mode==0x23 || mode==3) {
-                *width=512;
-                *height=384;
-                *offset_x=(640-*width)/2;
-                *offset_y=(400-*height)/2;
-        }
-        else {
-                *width=640;
-                *height=400;
-                *offset_x=0;
-                *offset_y=0;
-        }
+    if (mode==0x13 || mode==0x23 || mode==3) {
+            *width=512;
+            *height=384;
+            *offset_x=(640-*width)/2;
+            *offset_y=(400-*height)/2;
+    }
+    else {
+            *width=640;
+            *height=400;
+            *offset_x=0;
+            *offset_y=0;
+    }
 }
 
 static void baseconf_putpixel_absolute(int x,int y,z80_int colour)
 {
-        int dx,dy;
-        int px=x*zoom_x;
-        int py=y*zoom_y;
+    int dx,dy;
+    int px=x*zoom_x;
+    int py=y*zoom_y;
 
-        for (dy=0;dy<zoom_y;dy++)
-                for (dx=0;dx<zoom_x;dx++)
-                        scr_putpixel(px+dx,py+dy,colour);
+    for (dy=0;dy<zoom_y;dy++)
+        for (dx=0;dx<zoom_x;dx++)
+            scr_putpixel(px+dx,py+dy,colour);
 }
 
 static void screen_baseconf_refresca_border(void)
 {
-        int x,y,offset_x,offset_y,width,height;
-        int left,top,right,bottom;
-        int total_width,total_height;
-        z80_int colour=baseconf_get_palette_colour(baseconf_border_colour);
+    int x,y,offset_x,offset_y,width,height;
+    int left,top,right,bottom;
+    int total_width,total_height;
+    z80_int colour=baseconf_get_palette_colour(baseconf_border_colour);
 
-        baseconf_get_mode_geometry(&offset_x,&offset_y,&width,&height);
-        total_width=BASECONF_DISPLAY_WIDTH+
-                (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
-        total_height=BASECONF_DISPLAY_HEIGHT+
-                (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+    baseconf_get_mode_geometry(&offset_x,&offset_y,&width,&height);
+    total_width=BASECONF_DISPLAY_WIDTH+
+            (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    total_height=BASECONF_DISPLAY_HEIGHT+
+            (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
 
-        left=BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+offset_x;
-        top=BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v+offset_y;
-        right=left+width;
-        bottom=top+height;
+    left=BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+offset_x;
+    top=BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v+offset_y;
+    right=left+width;
+    bottom=top+height;
 
-        for (y=0;y<top;y++)
-                for (x=0;x<total_width;x++)
-                        baseconf_putpixel_absolute(x,y,colour);
+    for (y=0;y<top;y++)
+        for (x=0;x<total_width;x++)
+                baseconf_putpixel_absolute(x,y,colour);
 
-        for (y=bottom;y<total_height;y++)
-                for (x=0;x<total_width;x++)
-                        baseconf_putpixel_absolute(x,y,colour);
+    for (y=bottom;y<total_height;y++)
+        for (x=0;x<total_width;x++)
+                baseconf_putpixel_absolute(x,y,colour);
 
-        for (y=top;y<bottom;y++) {
-                for (x=0;x<left;x++)
-                        baseconf_putpixel_absolute(x,y,colour);
-                for (x=right;x<total_width;x++)
-                        baseconf_putpixel_absolute(x,y,colour);
+    for (y=top;y<bottom;y++) {
+        for (x=0;x<left;x++)
+                baseconf_putpixel_absolute(x,y,colour);
+        for (x=right;x<total_width;x++)
+                baseconf_putpixel_absolute(x,y,colour);
         }
 }
 
 void baseconf_set_border_colour(z80_int puerto,z80_byte value)
 {
-        /* A3 está invertido y proporciona el cuarto bit de color del border. */
-        baseconf_border_colour=(value&7) | ((~puerto)&8);
+    /* A3 está invertido y proporciona el cuarto bit de color del border. */
+    baseconf_border_colour=(value&7) | ((~puerto)&8);
 }
 
 /* ALCO: 256x192, un color de 4 bits por píxel. Cuatro flujos de bytes
    entrelazados ocupan las dos páginas de pantalla Spectrum adyacentes. */
 void screen_baseconf_refresca_alco_mode(void)
 {
-        int x,y;
-        int vpage=(puerto_32765&8) ? 7 : 5;
+    int x,y;
+    int vpage=(puerto_32765&8) ? 7 : 5;
 
-        for (y=0;y<192;y++) {
-                int line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
-                for (x=0;x<256;x++) {
-                        int adr=line+(x>>3);
-                        int page=vpage;
-                        z80_byte value;
+    for (y=0;y<192;y++) {
+        int line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
+        for (x=0;x<256;x++) {
+            int adr=line+(x>>3);
+            int page=vpage;
+            z80_byte value;
 
-                        if ((x&6)==0 || (x&6)==4) page^=1;
-                        if (x&4) adr+=0x2000;
-                        value=baseconf_ram_mem_table[page][adr];
-                        if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
-                        else value=(value&7) | ((value&0x40)>>3);
-                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(value),
-                                                2,2,64,8);
-                }
+            if ((x&6)==0 || (x&6)==4) page^=1;
+            if (x&4) adr+=0x2000;
+            value=baseconf_ram_mem_table[page][adr];
+            if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
+            else value=(value&7) | ((value&0x40)>>3);
+            baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(value),
+                                    2,2,64,8);
         }
+    }
 }
 
 void screen_baseconf_refresca_ega_mode(void)
 {
-        int x,y;
-        int vpage=(puerto_32765&8) ? 7 : 5;
+    int x,y;
+    int vpage=(puerto_32765&8) ? 7 : 5;
 
-        /* ATM EGA es un display packed de 320x200. Cada byte describe
-           los colores de dos píxeles adyacentes; los cuatro flujos de bytes
-           alternan entre las páginas de vídeo vpage y vpage^4. */
-        for (y=0;y<200;y++) {
-                for (x=0;x<320;x++) {
-                        int sx=x;
-                        int pair=sx&~1;
-                        int adr=y*40+(sx>>3);
-                        int page=vpage;
-                        z80_byte value;
+    /* ATM EGA es un display packed de 320x200. Cada byte describe
+        los colores de dos píxeles adyacentes; los cuatro flujos de bytes
+        alternan entre las páginas de vídeo vpage y vpage^4. */
+    for (y=0;y<200;y++) {
+        for (x=0;x<320;x++) {
+            int sx=x;
+            int pair=sx&~1;
+            int adr=y*40+(sx>>3);
+            int page=vpage;
+            z80_byte value;
 
-                        switch (pair&7) {
-                        case 0:
-                                page=vpage^4;
-                                break;
-                        case 2:
-                                break;
-                        case 4:
-                                page=vpage^4;
-                                adr+=0x2000;
-                                break;
-                        default: /* pair 6 */
-                                adr+=0x2000;
-                                break;
-                        }
+            switch (pair&7) {
+            case 0:
+                    page=vpage^4;
+                    break;
+            case 2:
+                    break;
+            case 4:
+                    page=vpage^4;
+                    adr+=0x2000;
+                    break;
+            default: /* pair 6 */
+                    adr+=0x2000;
+                    break;
+            }
 
-                        value=baseconf_ram_mem_table[page][adr];
-                        if (sx&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
-                        else value=(value&7) | ((value&0x40)>>3);
-                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(value),
-                                                2,2,0,0);
-                }
+            value=baseconf_ram_mem_table[page][adr];
+            if (sx&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
+            else value=(value&7) | ((value&0x40)>>3);
+            baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(value),
+                                    2,2,0,0);
         }
+    }
 }
 
 /* ATM hardware multicolor es un bitmap de 640x200 con un byte de atributos
    por cada grupo de ocho píxeles de alta resolución. */
 void screen_baseconf_refresca_atm_multicolor_mode(void)
 {
-        int x,y;
-        int vpage=(puerto_32765&8) ? 7 : 5;
+    int x,y;
+    int vpage=(puerto_32765&8) ? 7 : 5;
 
-        for (y=0;y<200;y++) {
-                for (x=0;x<640;x++) {
-                        int sx=x;
-                        int adr=y*40+(sx>>4);
-                        int half=(sx&8) ? 0x2000 : 0;
-                        z80_byte pixels=baseconf_ram_mem_table[vpage][adr+half];
-                        z80_byte attr=baseconf_ram_mem_table[vpage^4][adr+half];
-                        z80_byte ink=(attr&7) | ((attr&0x40)>>3);
-                        z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
-                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
-                                (pixels&(0x80>>(sx&7))) ? ink : paper),1,2,0,0);
-                }
+    for (y=0;y<200;y++) {
+        for (x=0;x<640;x++) {
+            int sx=x;
+            int adr=y*40+(sx>>4);
+            int half=(sx&8) ? 0x2000 : 0;
+            z80_byte pixels=baseconf_ram_mem_table[vpage][adr+half];
+            z80_byte attr=baseconf_ram_mem_table[vpage^4][adr+half];
+            z80_byte ink=(attr&7) | ((attr&0x40)>>3);
+            z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+            baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                    (pixels&(0x80>>(sx&7))) ? ink : paper),1,2,0,0);
         }
+    }
 }
 
 void screen_baseconf_refresca_atm_text_mode(void)
 {
-        int x,y;
-        int vpage=(puerto_32765&8) ? 7 : 5;
+    int x,y;
+    int vpage=(puerto_32765&8) ? 7 : 5;
 
-        for (y=0;y<200;y++) {
-                int row=y>>3;
-                int font_line=y&7;
-                for (x=0;x<640;x++) {
-                        int sx=x;
-                        int column=sx>>3;
-                        int adr=0x1c0+row*64+(column>>1);
-                        z80_byte caracter,attr;
+    for (y=0;y<200;y++) {
+        int row=y>>3;
+        int font_line=y&7;
+        for (x=0;x<640;x++) {
+            int sx=x;
+            int column=sx>>3;
+            int adr=0x1c0+row*64+(column>>1);
+            z80_byte caracter,attr;
 
-                        if (column&1) {
-                                caracter=baseconf_ram_mem_table[vpage][adr+0x2000];
-                                attr=baseconf_ram_mem_table[vpage^4][adr+1];
-                        }
-                        else {
-                                caracter=baseconf_ram_mem_table[vpage][adr];
-                                attr=baseconf_ram_mem_table[vpage^4][adr^0x2000];
-                        }
-                        z80_byte font=baseconf_text_font[caracter*8+font_line];
-                        z80_byte ink=(attr&7) | ((attr&0x40)>>3);
-                        z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
-                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
-                                (font&(0x80>>(sx&7))) ? ink : paper),1,2,0,0);
-                }
+            if (column&1) {
+                caracter=baseconf_ram_mem_table[vpage][adr+0x2000];
+                attr=baseconf_ram_mem_table[vpage^4][adr+1];
+            }
+            else {
+                caracter=baseconf_ram_mem_table[vpage][adr];
+                attr=baseconf_ram_mem_table[vpage^4][adr^0x2000];
+            }
+            z80_byte font=baseconf_text_font[caracter*8+font_line];
+            z80_byte ink=(attr&7) | ((attr&0x40)>>3);
+            z80_byte paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+            baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                    (font&(0x80>>(sx&7))) ? ink : paper),1,2,0,0);
         }
+    }
 }
 
 void screen_baseconf_refresca_hw_multicolor_mode(void)
 {
-        int x,y;
-        int vpage=(puerto_32765&8) ? 7 : 5;
-        z80_byte *screen=baseconf_ram_mem_table[vpage];
+    int x,y;
+    int vpage=(puerto_32765&8) ? 7 : 5;
+    z80_byte *screen=baseconf_ram_mem_table[vpage];
 
-        /* En modo hardware multicolor cada byte del bitmap también
-           proporciona el atributo para ese mismo grupo de 8 píxeles. */
-        for (y=0;y<192;y++) {
-                int adr_line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
-                for (x=0;x<256;x++) {
-                        z80_byte value=screen[adr_line+(x>>3)];
-                        z80_byte ink=(value&7) | ((value&0x40)>>3);
-                        z80_byte paper=(value&0x78)>>3;
-                        //printf("%d %d\n",ink,paper);
-                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
-                                (value&(0x80>>(x&7))) ? ink : paper),2,2,64,8);
-                }
+    /* En modo hardware multicolor cada byte del bitmap también
+        proporciona el atributo para ese mismo grupo de 8 píxeles. */
+    for (y=0;y<192;y++) {
+        int adr_line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
+        for (x=0;x<256;x++) {
+            z80_byte value=screen[adr_line+(x>>3)];
+            z80_byte ink=(value&7) | ((value&0x40)>>3);
+            z80_byte paper=(value&0x78)>>3;
+            //printf("%d %d\n",ink,paper);
+            baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                    (value&(0x80>>(x&7))) ? ink : paper),2,2,64,8);
         }
+    }
 }
 
 void screen_baseconf_refresca_text_mode(void)
 {
-        int x,y;
-        int vpage=(puerto_32765&8) ? 7 : 5;
-        z80_byte *text=baseconf_ram_mem_table[vpage+3];
+    int x,y;
+    int vpage=(puerto_32765&8) ? 7 : 5;
+    z80_byte *text=baseconf_ram_mem_table[vpage+3];
 
-        /* El texto PentEvo es de 80x25 caracteres, por tanto 640x200 píxeles. */
-        for (y=0;y<200;y++) {
-                int row=y>>3;
-                int font_line=y&7;
-                for (x=0;x<640;x++) {
-                        int half_pixel=x;
-                        int column=half_pixel>>3;
-                        int font_x=half_pixel&7;
-                        int adr=0x1c0+row*64+(column>>1);
-                        z80_byte caracter,atributo;
+    /* El texto PentEvo es de 80x25 caracteres, por tanto 640x200 píxeles. */
+    for (y=0;y<200;y++) {
+        int row=y>>3;
+        int font_line=y&7;
+        for (x=0;x<640;x++) {
+            int half_pixel=x;
+            int column=half_pixel>>3;
+            int font_x=half_pixel&7;
+            int adr=0x1c0+row*64+(column>>1);
+            z80_byte caracter,atributo;
 
-                        if (column&1) {
-                                caracter=text[adr+0x1000];
-                                atributo=text[adr+0x2001];
-                        }
-                        else {
-                                caracter=text[adr];
-                                atributo=text[adr+0x3000];
-                        }
+            if (column&1) {
+                caracter=text[adr+0x1000];
+                atributo=text[adr+0x2001];
+            }
+            else {
+                caracter=text[adr];
+                atributo=text[adr+0x3000];
+            }
 
-                        z80_byte font=baseconf_text_font[caracter*8+font_line];
-                        z80_byte ink=(atributo&7)+((atributo&0x40) ? 8 : 0);
-                        z80_byte paper=((atributo>>3)&7)+((atributo&0x80) ? 8 : 0);
-                        baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
-                                (font&(0x80>>font_x)) ? ink : paper),1,2,0,0);
-                }
+            z80_byte font=baseconf_text_font[caracter*8+font_line];
+            z80_byte ink=(atributo&7)+((atributo&0x40) ? 8 : 0);
+            z80_byte paper=((atributo>>3)&7)+((atributo&0x80) ? 8 : 0);
+            baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
+                    (font&(0x80>>font_x)) ? ink : paper),1,2,0,0);
         }
+    }
 }
 
 void baseconf_reset_cpu(void)
@@ -631,11 +631,7 @@ void baseconf_reset_cpu(void)
 
     //TODO. Que otros puertos de baseconf se ponen a 0 en el reset?
 
-
-
-
     baseconf_set_memory_pages();
-    //baseconf_set_sizes_display();
 }
 
 void baseconf_init_memory_tables(void)
@@ -656,9 +652,6 @@ void baseconf_init_memory_tables(void)
 		puntero +=16384;
 	}
 
-
-
-
 }
 
 
@@ -666,67 +659,67 @@ void baseconf_init_memory_tables(void)
 void baseconf_set_memory_pages(void)
 {
 
-        int i=0;
-        int mapa=(puerto_32765&16) ? 4 : 0;
+    int i=0;
+    int mapa=(puerto_32765&16) ? 4 : 0;
 
-        for (i=0;i<4;i++) {
-                z80_byte flags=baseconf_mmu_flags[mapa+i];
-                z80_byte pagina=baseconf_mmu_pages[mapa+i];
-                z80_byte pagina_es_ram=flags&64;
+    for (i=0;i<4;i++) {
+        z80_byte flags=baseconf_mmu_flags[mapa+i];
+        z80_byte pagina=baseconf_mmu_pages[mapa+i];
+        z80_byte pagina_es_ram=flags&64;
 
-                /* El bit 7 de #xFF7 no significa página 7. Hace que los bits
-                   bajos de la página seleccionada sigan dinámicamente #7FFD. */
-                if (flags&128) {
-                        if (pagina_es_ram) pagina=baseconf_change_ram_page_7ffd(pagina);
-                        else pagina=baseconf_change_rom_page_trdos(pagina);
-                }
-
-                if ((baseconf_shadow_mode_port_77&1)==0) {
-                        //A8: si vale 0 deshabilita el gestor de memoria. En cada ventana de la CPU se instala la última página de ROM. Vale 0 después de reset.
-                        pagina=255;
-                        pagina_es_ram=0;
-                }
-
-                /* EFF7.bit3 tiene prioridad sobre la MMU en la primera
-                   ventana de 16K y expone allí la página RAM 0. */
-                if ((baseconf_last_port_eff7&8) && i==0) {
-                        pagina=0;
-                        pagina_es_ram=1;
-                }
-                /* Un Beta Disk virtual seleccionado sustituye al FDC físico.
-                   Su código y datos de servicio residen en la penúltima página RAM. */
-                else if (i==0 && baseconf_nmi_active) {
-                        pagina=0xff;
-                        pagina_es_ram=1;
-                }
-                else if (i==0 && baseconf_beta_virtual_drive_active()) {
-                        pagina=0xfe;
-                        pagina_es_ram=1;
-                }
-
-                //TODO: A9: si vale 0 fuerza la inclusión de TR-DOS y los puertos shadow. Vale 0 después de reset.
-
-                if (pagina_es_ram) {
-                        baseconf_memory_paged[i]=baseconf_ram_mem_table[pagina];
-                        debug_paginas_memoria_mapeadas[i]=pagina;
-                }
-                else {
-                        pagina=pagina & 31;
-                        /* Compatibilidad temporal con imágenes flash cuyas posiciones
-                           lógicas bajas de ROM están guardadas ocho posiciones después. */
-                        if (pagina<8 && baseconf_rom_mem_table[pagina][0]==0xff &&
-                           baseconf_rom_mem_table[pagina+8][0]!=0xff) {
-                                baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina+8];
-                        }
-                        else baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina];
-                        debug_paginas_memoria_mapeadas[i]=DEBUG_PAGINA_MAP_ES_ROM+pagina;
-                }
-
-                baseconf_memory_segments[i]=pagina;
-                baseconf_memory_segments_type[i]=pagina_es_ram;
-
-                //printf ("segmento %d pagina %d\n",i,pagina);
+        /* El bit 7 de #xFF7 no significa página 7. Hace que los bits
+            bajos de la página seleccionada sigan dinámicamente #7FFD. */
+        if (flags&128) {
+                if (pagina_es_ram) pagina=baseconf_change_ram_page_7ffd(pagina);
+                else pagina=baseconf_change_rom_page_trdos(pagina);
         }
+
+        if ((baseconf_shadow_mode_port_77&1)==0) {
+                //A8: si vale 0 deshabilita el gestor de memoria. En cada ventana de la CPU se instala la última página de ROM. Vale 0 después de reset.
+                pagina=255;
+                pagina_es_ram=0;
+        }
+
+        /* EFF7.bit3 tiene prioridad sobre la MMU en la primera
+            ventana de 16K y expone allí la página RAM 0. */
+        if ((baseconf_last_port_eff7&8) && i==0) {
+                pagina=0;
+                pagina_es_ram=1;
+        }
+        /* Un Beta Disk virtual seleccionado sustituye al FDC físico.
+            Su código y datos de servicio residen en la penúltima página RAM. */
+        else if (i==0 && baseconf_nmi_active) {
+                pagina=0xff;
+                pagina_es_ram=1;
+        }
+        else if (i==0 && baseconf_beta_virtual_drive_active()) {
+                pagina=0xfe;
+                pagina_es_ram=1;
+        }
+
+        //TODO: A9: si vale 0 fuerza la inclusión de TR-DOS y los puertos shadow. Vale 0 después de reset.
+
+        if (pagina_es_ram) {
+            baseconf_memory_paged[i]=baseconf_ram_mem_table[pagina];
+            debug_paginas_memoria_mapeadas[i]=pagina;
+        }
+        else {
+            pagina=pagina & 31;
+            /* Compatibilidad temporal con imágenes flash cuyas posiciones
+                lógicas bajas de ROM están guardadas ocho posiciones después. */
+            if (pagina<8 && baseconf_rom_mem_table[pagina][0]==0xff &&
+                baseconf_rom_mem_table[pagina+8][0]!=0xff) {
+                    baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina+8];
+            }
+            else baseconf_memory_paged[i]=baseconf_rom_mem_table[pagina];
+            debug_paginas_memoria_mapeadas[i]=DEBUG_PAGINA_MAP_ES_ROM+pagina;
+        }
+
+        baseconf_memory_segments[i]=pagina;
+        baseconf_memory_segments_type[i]=pagina_es_ram;
+
+        //printf ("segmento %d pagina %d\n",i,pagina);
+    }
 
 
 
@@ -739,53 +732,53 @@ void baseconf_set_memory_pages(void)
 void baseconf_hard_reset(void)
 {
 
-  debug_printf(VERBOSE_DEBUG,"BaseConf Hard reset cpu");
+    debug_printf(VERBOSE_DEBUG,"BaseConf Hard reset cpu");
 
-  //Asignar bloques memoria
-  int i;
-  for (i=0;i<8;i++) {
-          baseconf_mmu_pages[i]=255;
-          baseconf_mmu_flags[i]=0;
-  }
-  for (i=0;i<2048;i++) baseconf_text_font[i]=0;
-  baseconf_dos_signal=1;
-  baseconf_beta_drive_virtual=0;
-  baseconf_beta_drive_selected=0;
-  for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
-  for (i=0;i<16;i++) baseconf_palette[i]=baseconf_palette_default[i];
-  baseconf_border_colour=0;
-  baseconf_nmi_breakpoint=0;
-  baseconf_nmi_active=0;
-  baseconf_nmi_exit_countdown=0;
-  baseconf_cmos_extension_type=0;
-
-
-  reset_cpu();
+    //Asignar bloques memoria
+    int i;
+    for (i=0;i<8;i++) {
+        baseconf_mmu_pages[i]=255;
+        baseconf_mmu_flags[i]=0;
+    }
+    for (i=0;i<2048;i++) baseconf_text_font[i]=0;
+    baseconf_dos_signal=1;
+    baseconf_beta_drive_virtual=0;
+    baseconf_beta_drive_selected=0;
+    for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
+    for (i=0;i<16;i++) baseconf_palette[i]=baseconf_palette_default[i];
+    baseconf_border_colour=0;
+    baseconf_nmi_breakpoint=0;
+    baseconf_nmi_active=0;
+    baseconf_nmi_exit_countdown=0;
+    baseconf_cmos_extension_type=0;
 
 
-       //Borrar toda memoria ram
-        int d;
-        z80_byte *puntero;
+    reset_cpu();
 
-        for (i=0;i<BASECONF_RAM_PAGES;i++) {
-                puntero=baseconf_ram_mem_table[i];
-                for (d=0;d<16384;d++,puntero++) {
-                        *puntero=0;
-                }
+
+    //Borrar toda memoria ram
+    int d;
+    z80_byte *puntero;
+
+    for (i=0;i<BASECONF_RAM_PAGES;i++) {
+        puntero=baseconf_ram_mem_table[i];
+        for (d=0;d<16384;d++,puntero++) {
+                *puntero=0;
         }
-/* El valor de reset hardware se codifica internamente como 0x83: A14=1 y
-   los bits de datos 1:0=11. En ZEsarUX ambas partes se guardan por separado.
-   Esto selecciona el modo de vídeo ZX normal dejando A8/A9 a cero. */
-baseconf_last_port_77=3;
-baseconf_shadow_mode_port_77=0x40;
-baseconf_last_port_bf=0;
-baseconf_last_port_eff7=0;
-baseconf_cpu_speed_selected=-1;
-baseconf_set_cpu_speed();
-baseconf_sd_enabled=1;
-baseconf_sd_cs=1;
+    }
+    /* El valor de reset hardware se codifica internamente como 0x83: A14=1 y
+    los bits de datos 1:0=11. En ZEsarUX ambas partes se guardan por separado.
+    Esto selecciona el modo de vídeo ZX normal dejando A8/A9 a cero. */
+    baseconf_last_port_77=3;
+    baseconf_shadow_mode_port_77=0x40;
+    baseconf_last_port_bf=0;
+    baseconf_last_port_eff7=0;
+    baseconf_cpu_speed_selected=-1;
+    baseconf_set_cpu_speed();
+    baseconf_sd_enabled=1;
+    baseconf_sd_cs=1;
 
-        baseconf_set_memory_pages();
+    baseconf_set_memory_pages();
 
 }
 
@@ -798,26 +791,26 @@ invertidos del puerto #7FFD.
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value)
 {
 
-/*
-baseconf_last_port_eff7;
-2: con un 1 selecciona modo ZX Spectrum 128K; en caso contrario, modo
-Pentagon 1024K. Su valor después de reset es 0.
-*/
-        //printf ("adjusting ram to bits port 7ffdh\n");
+    /*
+    baseconf_last_port_eff7;
+    2: con un 1 selecciona modo ZX Spectrum 128K; en caso contrario, modo
+    Pentagon 1024K. Su valor después de reset es 0.
+    */
+    //printf ("adjusting ram to bits port 7ffdh\n");
 
-        if (baseconf_last_port_eff7&4) {
-                //paginacion 128k
-                value=value&(255-7);
-                value=value | (puerto_32765&7);
-        }
-        else {
-                //paginacion pentagon 1024k. 6 bits
-                z80_byte ram_entra=(puerto_32765&7) | ((puerto_32765>>2)&(8+16+32));
-                value=value&(255-63);
-                value=value|ram_entra;
-        }
+    if (baseconf_last_port_eff7&4) {
+        //paginacion 128k
+        value=value&(255-7);
+        value=value | (puerto_32765&7);
+    }
+    else {
+        //paginacion pentagon 1024k. 6 bits
+        z80_byte ram_entra=(puerto_32765&7) | ((puerto_32765>>2)&(8+16+32));
+        value=value&(255-63);
+        value=value|ram_entra;
+    }
 
-        return value;
+    return value;
 }
 
 //Cambia el valor de entrada de numero de pagina rom segun:
@@ -829,9 +822,9 @@ los puertos shadow y TR-DOS al ejecutar código con offset #3Dxx en esta ventana
 
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value)
 {
-        value=value&254;
-        if (baseconf_dos_signal) value|=1;
-        return value;
+    value=value&254;
+    if (baseconf_dos_signal) value|=1;
+    return value;
 }
 
 void baseconf_out_port(z80_int puerto,z80_byte valor)
@@ -1056,34 +1049,6 @@ segmento 0 pagina 0
 }
 
 
-void screen_baseconf_refresca_pantalla(void)
-{
-
-	/*
-	//Como spectrum clasico
-
-	//modo clasico. sin rainbow
-	if (rainbow_enabled.v==0) {
-        screen_baseconf_refresca_border();
-        z80_byte modo_video=baseconf_get_video_mode_display();
-
-
-        //printf ("modo video: %d\n",modo_video );
-        if (modo_video==0) scr_baseconf_refresca_pantalla_zxmode_no_rainbow();
-        if (modo_video==1) scr_baseconf_refresca_pantalla_16c_256c_no_rainbow(1);
-        if (modo_video==2) scr_baseconf_refresca_pantalla_16c_256c_no_rainbow(2);
-        if (modo_video==3) screen_baseconf_refresca_text_mode();
-
-	}
-
-	else {
-	//modo rainbow - real video
-        if (baseconf_si_render_spritetile_rapido.v) baseconf_fast_tilesprite_render();
-
-        screen_baseconf_refresca_rainbow();
-	}
-*/
-}
 
 
 //Refresco pantalla sin rainbow
@@ -1217,46 +1182,46 @@ void baseconf_refresca_pantalla_no_rainbow(void)
 {
 
 
-        z80_byte baseconf_mode=baseconf_get_video_mode();
-        if (baseconf_mode==0x13) {
-            if (debug_video_mode) printf("BaseConf video mode 13H: ALCO 16 colour, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
-            screen_baseconf_refresca_alco_mode();
-            return;
-        }
-        if (baseconf_mode==0) {
-            if (debug_video_mode) printf("BaseConf video mode 00H: ATM EGA, pixels 320x200 -> 640x400, border L/R=40 T/B=88\n");
-            screen_baseconf_refresca_ega_mode();
-            return;
-        }
-        if (baseconf_mode==0x23) {
-            if (debug_video_mode) printf("BaseConf video mode 23H: ZX hardware multicolor, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
-            screen_baseconf_refresca_hw_multicolor_mode();
-            return;
-        }
-        if (baseconf_mode==2) {
-            if (debug_video_mode) printf("BaseConf video mode 02H: ATM hardware multicolor, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
-            screen_baseconf_refresca_atm_multicolor_mode();
-            return;
-        }
-        if (baseconf_mode==6) {
-            if (debug_video_mode) printf("BaseConf video mode 06H: ATM text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
-            screen_baseconf_refresca_atm_text_mode();
-            return;
-        }
-        if (baseconf_mode==7) {
-            if (debug_video_mode) printf("BaseConf video mode 07H: EVO text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
-            screen_baseconf_refresca_text_mode();
-            return;
-        }
-        if (baseconf_mode==3) {
-            if (debug_video_mode) printf("BaseConf video mode 03H: standard ZX, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
-        }
-        else {
-            if (debug_video_mode) printf("BaseConf video mode %02XH: unknown, using standard ZX renderer, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n",
-                   baseconf_mode);
-        }
+    z80_byte baseconf_mode=baseconf_get_video_mode();
+    if (baseconf_mode==0x13) {
+        if (debug_video_mode) printf("BaseConf video mode 13H: ALCO 16 colour, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+        screen_baseconf_refresca_alco_mode();
+        return;
+    }
+    if (baseconf_mode==0) {
+        if (debug_video_mode) printf("BaseConf video mode 00H: ATM EGA, pixels 320x200 -> 640x400, border L/R=40 T/B=88\n");
+        screen_baseconf_refresca_ega_mode();
+        return;
+    }
+    if (baseconf_mode==0x23) {
+        if (debug_video_mode) printf("BaseConf video mode 23H: ZX hardware multicolor, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+        screen_baseconf_refresca_hw_multicolor_mode();
+        return;
+    }
+    if (baseconf_mode==2) {
+        if (debug_video_mode) printf("BaseConf video mode 02H: ATM hardware multicolor, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+        screen_baseconf_refresca_atm_multicolor_mode();
+        return;
+    }
+    if (baseconf_mode==6) {
+        if (debug_video_mode) printf("BaseConf video mode 06H: ATM text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+        screen_baseconf_refresca_atm_text_mode();
+        return;
+    }
+    if (baseconf_mode==7) {
+        if (debug_video_mode) printf("BaseConf video mode 07H: EVO text, pixels 640x200 -> 640x400, border L/R=40 T/B=88\n");
+        screen_baseconf_refresca_text_mode();
+        return;
+    }
+    if (baseconf_mode==3) {
+        if (debug_video_mode) printf("BaseConf video mode 03H: standard ZX, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n");
+    }
+    else {
+        if (debug_video_mode) printf("BaseConf video mode %02XH: unknown, using standard ZX renderer, pixels 256x192 -> 512x384, border L/R=104 T/B=96\n",
+                baseconf_mode);
+    }
 
-        baseconf_refresca_pantalla_no_rainbow_standard_48k();
+    baseconf_refresca_pantalla_no_rainbow_standard_48k();
 }
 
 
@@ -1319,9 +1284,9 @@ char *baseconf_get_video_mode_string(void)
 
 void baseconf_refresca_pantalla(void)
 {
-        /* El timing de real video todavía no está implementado, por lo que
-           ambas rutas usan el render completo del frame. */
-        baseconf_refresca_pantalla_no_rainbow();
-        screen_baseconf_refresca_border();
-        modificado_border.v=0;
+    /* El timing de real video todavía no está implementado, por lo que
+        ambas rutas usan el render completo del frame. */
+    baseconf_refresca_pantalla_no_rainbow();
+    screen_baseconf_refresca_border();
+    modificado_border.v=0;
 }

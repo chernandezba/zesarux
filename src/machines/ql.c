@@ -349,8 +349,6 @@ void ql_footer_extra_rom_c000(void)
 {
 
 
-
-
     generic_footertext_print_operating("ROM");
     watermark_tell_device_activity();
 
@@ -359,8 +357,6 @@ void ql_footer_extra_rom_c000(void)
         zxdesktop_icon_ql_external_rom_inverse=1;
         menu_draw_ext_desktop();
     }
-
-
 
 
 }

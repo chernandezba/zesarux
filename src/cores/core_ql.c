@@ -353,29 +353,25 @@ pc_intr equ     $18021  bits 4..0 set as pending level 2 interrupts
 
     //Interrupcion de 1/50s. mapa teclas activas y joystick
     if (interrupcion_fifty_generada.v) {
-            interrupcion_fifty_generada.v=0;
+        interrupcion_fifty_generada.v=0;
 
-            //y de momento actualizamos tablas de teclado segun tecla leida
-            //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-            scr_actualiza_tablas_teclado();
+        scr_actualiza_tablas_teclado();
 
+        //lectura de joystick
+        realjoystick_main();
 
-            //lectura de joystick
-            realjoystick_main();
-
-            //printf ("temp conta fifty: %d\n",tempcontafifty++);
     }
 
 
     //Interrupcion de procesador y marca final de frame
     if (interrupcion_timer_generada.v) {
-            interrupcion_timer_generada.v=0;
-            esperando_tiempo_final_t_estados.v=0;
-            interlaced_numero_frame++;
-            //printf ("%d\n",interlaced_numero_frame);
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+        //printf ("%d\n",interlaced_numero_frame);
 
-            //Para calcular lo que se tarda en ejecutar todo un frame
-            timer_get_elapsed_core_frame_pre();
+        //Para calcular lo que se tarda en ejecutar todo un frame
+        timer_get_elapsed_core_frame_pre();
     }
 
     //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
