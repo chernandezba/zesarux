@@ -686,7 +686,7 @@
 10393  IF zzs=9 THEN zzn$="A"
 10394  IF zzs=10 THEN zzn$="A":zzx$="#"
 10395  IF zzs=11 THEN zzn$="H"
-10396  RETurn "o"&zzqo&"l"&zzl&zzn$&zzx$
+10396  RETurn "o"&zzqo&"l"&zzl&zzx$&zzn$
 10397 END DEFine zxnote$
 
 10400 DEFine FuNction zxfill$(zq$,zf,ztarget)
