@@ -216,6 +216,7 @@ juegos y demos: http://atmturbo.nedopc.com/load_trdos.htm
 
 
 -baseconf: insertar trd habilita el modo max turbo speed si accelerate load
+->corregido?
 
 
 -baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF

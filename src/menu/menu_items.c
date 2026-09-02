@@ -21651,17 +21651,17 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (!MACHINE_IS_CPC) {
-        //menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
-        menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_video_layers,NULL,"Video ~~Layers");
-        menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
-        menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
+            //menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
+            menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_video_layers,NULL,"Video ~~Layers");
+            menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
+            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
-        if (!MACHINE_IS_CPC) {
-        menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
-        menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
-        menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
+            menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
+            menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
+            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
         if (MACHINE_IS_TBBLUE) {
