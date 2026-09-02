@@ -656,9 +656,6 @@
 10360 END DEFine zxqs$
 
 10362 DEFine FuNction zxnote$(zzn$,zza,zzqo,zzl)
-10363  IF zza=0 THEN RETurn "o"&zzqo&"l"&zzl&zzn$
-10364  IF zza=1 THEN RETurn "o"&zzqo&"l"&zzl&zzn$&"s"
-10365  IF zza=-1 THEN RETurn "o"&zzqo&"l"&zzl&zzn$&"b"
 10366  zzb=0
 10367  IF zzn$="D" THEN zzb=2
 10368  IF zzn$="E" THEN zzb=4
@@ -666,7 +663,7 @@
 10370  IF zzn$="G" THEN zzb=7
 10371  IF zzn$="A" THEN zzb=9
 10372  IF zzn$="H" THEN zzb=11
-10373  zzs=zzb+zza
+10373  zzs=zzb+zza+5
 10374  REPeat zzlow
 10375   IF zzs>=0 THEN EXIT zzlow
 10376   zzs=zzs+12:zzqo=zzqo-1
@@ -678,16 +675,16 @@
 10382  IF zzqo<0 THEN zzqo=0
 10383  IF zzqo>7 THEN zzqo=7
 10384  zzn$="C":zzx$=""
-10385  IF zzs=1 THEN zzn$="C":zzx$="s"
+10385  IF zzs=1 THEN zzn$="C":zzx$="#"
 10386  IF zzs=2 THEN zzn$="D"
-10387  IF zzs=3 THEN zzn$="D":zzx$="s"
+10387  IF zzs=3 THEN zzn$="D":zzx$="#"
 10388  IF zzs=4 THEN zzn$="E"
 10389  IF zzs=5 THEN zzn$="F"
-10390  IF zzs=6 THEN zzn$="F":zzx$="s"
+10390  IF zzs=6 THEN zzn$="F":zzx$="#"
 10391  IF zzs=7 THEN zzn$="G"
-10392  IF zzs=8 THEN zzn$="G":zzx$="s"
+10392  IF zzs=8 THEN zzn$="G":zzx$="#"
 10393  IF zzs=9 THEN zzn$="A"
-10394  IF zzs=10 THEN zzn$="A":zzx$="s"
+10394  IF zzs=10 THEN zzn$="A":zzx$="#"
 10395  IF zzs=11 THEN zzn$="H"
 10396  RETurn "o"&zzqo&"l"&zzl&zzn$&zzx$
 10397 END DEFine zxnote$
