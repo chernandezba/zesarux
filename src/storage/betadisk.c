@@ -820,7 +820,8 @@ void trd_insert_disk(char *nombre)
     return;
   }
 
-	if (noautoload.v==0) {
+    //Al insertar trd en baseconf no quiero que haga reset
+	if (noautoload.v==0 && !MACHINE_IS_BASECONF) {
 		reset_cpu();
 	}
 

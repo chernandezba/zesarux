@@ -215,10 +215,8 @@ d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 juegos y demos: http://atmturbo.nedopc.com/load_trdos.htm
 
 
-
 -baseconf: insertar trd habilita el modo max turbo speed si accelerate load
 
-ok -si clive tiene ventanas por encima, no puede empezar a hablar
 
 -baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF
 
