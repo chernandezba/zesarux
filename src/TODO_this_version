@@ -160,8 +160,6 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 -Apps calculadora, reloj
 
 
--Clive
-*si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
 
 
 
@@ -212,7 +210,11 @@ d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 ->mas ventanas en debug->baseconf?
 
 
-juegos y demos: http://atmturbo.nedopc.com/load_trdos.htm
+juegos y demos:
+
+http://atmturbo.nedopc.com/load_trdos.htm
+
+https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 
 
 -baseconf: insertar trd habilita el modo max turbo speed si accelerate load
@@ -220,10 +222,12 @@ juegos y demos: http://atmturbo.nedopc.com/load_trdos.htm
 
 
 -baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF
+-> parece que baseconf no. quiza eso es de atm
 
 
 -driver audio que sea archivo raw. esto complementaria el output a audio del menu
 pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
 
-
--utilizar truco en canciones ql para acelerar la ejecucion entre cada pausa. que escribiendo en una direccion de memoria fuerze top speed en zesarux o vuelva
+-Clive
+*si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
+*cuando se va a dormir si estoy en alguna ventana, esa ventana pierde la ventana de titulo normal
