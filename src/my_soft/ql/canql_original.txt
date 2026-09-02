@@ -1,0 +1,14 @@
+canql_original.bas contiene la versión fuente de Canciones para QL con las
+secuencias musicales en sintaxis Spectrum PLAY.
+
+Sirve como entrada para preconvert_canql.py, que genera la versión final con
+las cadenas traducidas previamente al formato nativo de QSound. Esto evita
+convertir las canciones durante la ejecución.
+
+Uso:
+
+    cp canql_original.bas canql.bas
+    python3 preconvert_canql.py canql.bas
+
+El conversor modifica el fichero indicado directamente. No debe ejecutarse
+sobre un canql.bas que ya haya sido preconvertido.
