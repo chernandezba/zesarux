@@ -1,4 +1,4 @@
-1 GO SUB 31:GO SUB 30:LET a=1:LET co=0:LET li=6:MODE 8:WINDOW 400,224,56,16:CSIZE 2,0:BORDER 1,7:PAPER 7:INK 0:RESTORE 1600:CLS:PRINT "(c) Cesar Hernandez Bano (24/8/94)":PRINT "Canciones recopiladas de la":PRINT "revista MICROHOBBY":PRINT "--------------------------------":AT #0,0,0:PRINT #0;"ELIGE CANCION CON CURSORES Y"\"{ ENTER }"
+1 GO SUB 31:GO SUB 30:LET a=1:LET co=0:LET li=6:MODE 8:WINDOW 384,220,64,16:CSIZE 2,0:BORDER 0:PAPER 0:INK 7:WINDOW #0,384,20,64,236:CSIZE #0,2,0:BORDER #0,0:PAPER #0,0:INK #0,7:RESTORE 1600:CLS:CLS #0:PRINT "(c) Cesar Hernandez Bano 24/8/94":PRINT "Canciones recopiladas de la":PRINT "revista MICROHOBBY":PRINT "--------------------------------":AT #0,0,0:PRINT #0;"ELIGE CANCION CON CURSORES Y"\"{ ENTER }"
 2 zxmenu
 3 LET VO=0:GO TO 10
 4 zxselect:RUN
@@ -9,8 +9,8 @@
 9 GO SUB 31:CLEAR:SAVE "mdv1_CANCIONES_QL_QSOUND":GO TO 9
 10 LET vez=0
 11 GO SUB 12:GO TO 22
-12 PAPER 4:INK 7:AT li,co:PRINT "               ";:RETURN
-13 PAPER 7:INK 0:AT li,co:PRINT "               ";:RETURN
+12 zxitem 7,0:RETURN
+13 zxitem 0,7:RETURN
 15 LET c=zxkey:IF c=10 AND a<26 THEN GO SUB 13:LET a=a+1:LET li=li+1:GO TO 5
 16 IF c=13 THEN GO TO 24
 17 IF c=11 AND a>1 THEN GO SUB 13:LET a=a-1:LET li=li-1:GO TO 7
@@ -434,18 +434,25 @@
 8010 DEFine PROCedure zxmenu
 8020  LET VO=1:LET lin=6:LET col=0
 8030  FOR n=1 TO 26
-8040   GO SUB 10:READ aa,a$,a$,a$
-8050   AT lin,col:OVER 0:PRINT a$;
+8040   READ aa,a$,a$,a$
+8050   PAPER 0:INK 7:AT lin,col:OVER 0:PRINT a$;
 8060   LET lin=lin+1:IF lin=21 THEN LET lin=6:LET col=16
 8070  END FOR n
 8080 END DEFine zxmenu
-8100 DEFine PROCedure zxselect
-8110  GO SUB 31:RESTORE 1600
-8120  FOR n=1 TO a
-8130   READ lin,t$,a$,b$
-8140  END FOR n
-8150  CLS:GO SUB 35:GO SUB lin:PAUSE
-8160 END DEFine zxselect
+8090 DEFine PROCedure zxitem(zpaper,zink)
+8092  RESTORE 1600
+8094  FOR zn=1 TO a
+8096   READ zline,zt$,za$,zname$
+8098  END FOR zn
+8100  PAPER zpaper:INK zink:AT li,co:PRINT "               ";:AT li,co:PRINT zname$;
+8102 END DEFine zxitem
+8110 DEFine PROCedure zxselect
+8120  GO SUB 31:RESTORE 1600
+8130  FOR n=1 TO a
+8140   READ lin,t$,a$,b$
+8150  END FOR n
+8160  CLS:GO SUB 35:GO SUB lin:PAUSE
+8170 END DEFine zxselect
 8180 DEFine PROCedure zxregs
 8190  FOR zn=0 TO 13
 8200   READ zm:POKE_AY zn,zm
@@ -634,9 +641,9 @@
 10150   zi=zi+1:NEXT zql
 10160  END IF
 10170  IF zch$="_" THEN zi=zi+1:NEXT zql
-10180  IF (zch$>="a" AND zch$<="g") OR (zch$>="A" AND zch$<="G") THEN
-10190   zupper=0:IF zch$>="A" AND zch$<="G" THEN zupper=1
-10200   znote$=zch$:IF zch$>="a" AND zch$<="g" THEN znote$=CHR$(CODE(zch$)-32)
+10180  IF (zcode>=97 AND zcode<=103) OR (zcode>=65 AND zcode<=71) THEN
+10190   zupper=0:IF zcode>=65 AND zcode<=71 THEN zupper=1
+10200   znote$=zch$:IF zcode>=97 AND zcode<=103 THEN znote$=CHR$(zcode-32)
 10210   IF znote$="B" THEN znote$="H"
 10220   zqo=zo-1+zupper:IF zqo<0 THEN zqo=0
 10230   IF zqo>7 THEN zqo=7
