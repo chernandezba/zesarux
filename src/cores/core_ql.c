@@ -125,9 +125,7 @@ esto son 175 frames
 static int ciclos_por_frame_calculados=0;
 static int ciclos_por_scanline_calculados=0;
 
-//Para saber cuanto tarda desde el boot hasta aparecer el menu
-//Variable temporal de debug
-int ql_total_frames=0;
+
 
 //bucle principal de ejecucion de la cpu de jupiter ace
 void cpu_core_loop_ql(void)

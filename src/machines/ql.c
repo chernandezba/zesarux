@@ -77,6 +77,11 @@ This is wider than 4:3 due to the overscan."
 https://theqlforum.com/viewtopic.php?start=20&t=2799
 */
 
+//Para saber cuanto tarda desde el boot hasta aparecer el menu
+//Variable temporal de debug
+int ql_total_frames=0;
+
+
 int ql_get_display_width_with_proportion(void)
 {
     switch (ql_pantalla_proporcion_real) {

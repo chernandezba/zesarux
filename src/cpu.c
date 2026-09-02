@@ -994,7 +994,7 @@ void hard_reset_cpu(void)
 void reset_cpu(void)
 {
 
-    ql_total_frames=0;
+
     debug_printf (VERBOSE_INFO,"Reset cpu");
 
     if (esxdos_umount_on_reset.v) {
@@ -1275,6 +1275,8 @@ util_stats_init();
         qltraps_init_fopen_files_array();
 
         ql_qimi_reset();
+
+        ql_total_frames=0;
     }
 
     if (MACHINE_IS_MK14) {
@@ -2963,7 +2965,47 @@ void set_machine_params(void)
 
             //old
             //screen_testados_linea=80;
-            screen_testados_linea=223;
+
+            /*
+             * Musashi no tiene un modo 68008: ejecuta el juego de instrucciones
+             * compatible usando los tiempos de un 68000 (bus externo de 16 bits).
+             * Por ello no podemos usar directamente los 7,5 MHz del QL ni sus
+             * 150.000 clocks por frame como presupuesto de ciclos de Musashi. El
+             * 68008 necesita mas ciclos para acceder a operandos de 16 y 32 bits
+             * por su bus de 8 bits y, ademas, el ZX8301 le roba accesos a la RAM
+             * interna para generar el video. La relacion entre clocks del 68008 y
+             * ciclos de Musashi tampoco es constante: depende de la mezcla de
+             * instrucciones y de cuantos accesos a memoria realice el programa.
+             *
+             * Este valor es, por tanto, una calibracion empirica intermedia entre
+             * dos cargas medidas:
+             *
+             * - Con 223 ciclos por scanline, el arranque de un QL PAL estandar
+             *   tarda 175 frames (3,5 segundos), igual que la referencia de una
+             *   maquina real. El arranque es un caso muy penalizado porque el test
+             *   inicial realiza muchos accesos a la RAM compartida.
+             *
+             * - Con ese mismo valor, un bucle SuperBASIC FOR de 100.000 iteraciones
+             *   tarda una media de 17,2 segundos (cuatro medidas de 17 segundos y
+             *   una de 18), mientras que en un QL real tarda aproximadamente 20.
+             *   Para reproducir este segundo resultado el limite equivalente seria
+             *   223 * 17,2 / 20 = 191,78, es decir, unos 192 ciclos por scanline.
+             *
+             * Tomamos el punto medio entre ambas calibraciones:
+             *
+             *                  (223 + 192) / 2 = 207,5
+             *
+             * y usamos 207 como aproximacion entera. A 312 scanlines y 50 frames
+             * por segundo equivale nominalmente a unos 3,23 millones de ciclos
+             * Musashi por segundo. El total observado puede ser algo mayor porque
+             * el core siempre termina la instruccion en curso aunque esta rebase
+             * el limite del scanline.
+             *
+             * No es una temporizacion exacta del 68008; es un compromiso global
+             * hasta que se modelen sus tiempos de instruccion y la contencion del
+             * ZX8301 por separado.
+             */
+            screen_testados_linea=207;
 
             i8049_chip_present=1;
         break;

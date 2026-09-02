@@ -2415,7 +2415,7 @@ void ql_rom_traps(void)
         //Debug: ver los frames que tarda hasta aparecer el menu F1
         /*
         if (get_pc_register()==0x4af6) {
-            printf("########################Total: %d\n\n\n",ql_total_frames);
+            printf("\nTotal frames del boot: %d\n\n\n",ql_total_frames);
             printf("########################\n");
             printf("########################\n");
             printf("########################\n");
@@ -2425,6 +2425,7 @@ void ql_rom_traps(void)
             printf("########################\n");
         }
         */
+
 
     if (ql_initial_autoload) {
 
