@@ -88,6 +88,7 @@ static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
 static int baseconf_nmi_exit_countdown;
 static z80_byte baseconf_cmos_extension_type;
+static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
 /* El firmware del AVR expone estas identificaciones mediante los registros
    F0-FF del RTC Gluk. Los bytes 12 y 13 contienen la fecha empaquetada como
@@ -217,6 +218,10 @@ z80_byte baseconf_read_cmos(void)
 {
     z80_byte indice=zxevo_last_port_dff7;
 
+    if (indice<=0x0d) {
+        //printf("BaseConf RTC read register %02XH\n",indice);
+    }
+
     /* El RTC Gluk devuelve la fecha y hora local en BCD. */
     if (indice==0x00 || indice==0x02 || indice==0x04 ||
         indice==0x06 || indice==0x07 || indice==0x08 || indice==0x09) {
@@ -234,7 +239,37 @@ z80_byte baseconf_read_cmos(void)
             default:   valor=fecha.tm_year%100; break;
             }
 
-            return ((valor/10)<<4) | (valor%10);
+        return ((valor/10)<<4) | (valor%10);
+    }
+
+    switch (indice) {
+        /* Registro A: estado de actualización del RTC. Devolver 00H indica
+           que la fecha y la hora se pueden leer sin esperar. */
+        case 0x0a: return 0x00;
+
+        /* Registro B: configuración del formato horario. El valor 02H
+           selecciona datos en BCD y formato de 24 horas. */
+        case 0x0b: return 0x02;
+
+        /* Registro C: el bit 4 indica que el RTC ha terminado de actualizar
+           la fecha y la hora. Se activa una sola vez por cada nuevo segundo,
+           ya que la lectura del registro reconoce y limpia este flag.
+           Parece que Reset Service necesita esto o si no, no aparece el reloj
+        */
+        case 0x0c: {
+            time_t segundo_actual=time(NULL);
+
+            if (segundo_actual!=baseconf_rtc_ultimo_segundo_actualizado) {
+                baseconf_rtc_ultimo_segundo_actualizado=segundo_actual;
+                return 0x10;
+            }
+
+            return 0x00;
+        }
+
+        /* Registro D: estado de validez del RTC. El bit 7 a uno indica que
+           la RAM respaldada y la fecha/hora contienen datos válidos. */
+        case 0x0d: return 0x80;
     }
 
     /* El bit 7 del registro C cambia F0-FF a EEPROM normal. */
@@ -751,6 +786,7 @@ void baseconf_hard_reset(void)
     baseconf_nmi_active=0;
     baseconf_nmi_exit_countdown=0;
     baseconf_cmos_extension_type=0;
+    baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
 
     reset_cpu();
