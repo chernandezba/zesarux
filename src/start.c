@@ -725,11 +725,7 @@ void zesarux_cmdline_help(void)
 
 
 
-#ifdef USE_SNDFILE
-    printf ("--aofile file           Also output sound to wav or raw file\n");
-#else
-    printf ("--aofile file           Also output sound to raw file\n");
-#endif
+
 
     printf ("--version               Get emulator version and exit. Must be the first command line setting\n");
 
@@ -879,8 +875,18 @@ printf (
         "--midi-raw-device s              Set midi raw device to s. Needed on Linux with Alsa audio driver\n"
         "--midi-allow-tone-noise          Allow tone+noise channels on midi\n"
         "--midi-no-raw-mode               Do not use midi in raw mode. Raw mode is required on Linux to emulate AY midi registers\n"
+    );
 
 
+
+#ifdef USE_SNDFILE
+    printf ("--aofile file                Also output sound to wav or raw file\n");
+#else
+    printf ("--aofile file                Also output sound to raw file\n");
+#endif
+
+
+    printf(
         "\n"
         "\n"
         "Audio Driver Settings\n"
