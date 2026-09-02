@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate direct QSound PLAY calls in canql.bas.
+"""Generate direct QSound PLAY calls in cancionesql.bas.
 
-This deliberately mirrors the SuperBASIC converter in canql.bas.  It is kept
+This deliberately mirrors the SuperBASIC converter in cancionesqloriginal.bas.
 beside the program so future edits to the original Spectrum PLAY strings can
 be baked again without hand-transcribing QSound syntax.
 """

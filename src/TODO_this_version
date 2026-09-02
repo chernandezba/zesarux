@@ -208,16 +208,24 @@ d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 -> esto mejor con transation log?
 
 -modo video que aparezca en debug->baseconf->video info
+->mas info adicional?
+->mas ventanas en debug->baseconf?
 
-ok -modos turbo baseconf
 
 juegos y demos: http://atmturbo.nedopc.com/load_trdos.htm
 
-ok -al desactivar qsound desde menu se queda chip ay present. entonces se guarda en snapshot info del chip ay y al cargarlo el snapshot, se habilita qsound
-quiza al desactivar qsound desde menu deberia desactivar chip ay
+
 
 -baseconf: insertar trd habilita el modo max turbo speed si accelerate load
 
--si clive tiene ventanas por encima, no puede empezar a hablar
+ok -si clive tiene ventanas por encima, no puede empezar a hablar
 
 -baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF
+
+
+-driver audio que sea archivo raw. esto complementaria el output a audio del menu
+pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
+
+-aofile deberia salir en experthelp. no en help normal
+
+-utilizar truco en canciones ql para acelerar la ejecucion entre cada pausa. que escribiendo en una direccion de memoria fuerze top speed en zesarux o vuelva
