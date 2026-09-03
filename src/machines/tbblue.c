@@ -3708,7 +3708,12 @@ z80_byte tbblue_get_diviface_enabled(void)
             bit 5 = Enable Lightpen  (1 = enabled)
             bit 4 = Enable DivMMC (1 = enabled) -> divmmc automatic paging. divmmc memory is supported using manual
         */
-    return tbblue_registers[6]&16;
+    /*
+     * Los cores antiguos controlaban el automapeo con el bit 4 del registro
+     * 06. Desde el core 3.01.10 se movio al bit 4 del registro 0A. Aceptamos
+     * ambos para poder arrancar tanto firmware antiguo como actual.
+     */
+    return (tbblue_registers[6] | tbblue_registers[0x0A])&16;
 }
 
 void tbblue_set_emulator_setting_divmmc(void)
@@ -3955,6 +3960,8 @@ Bit	Function
     tbblue_registers[112]=0;
 
     tbblue_registers[0xB8]=0x83;
+    tbblue_registers[0xB9]=0x01;
+    tbblue_registers[0xBA]=0x00;
     tbblue_registers[0xBB]=0xCD;
 
     tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0]=0;
@@ -4068,6 +4075,7 @@ void tbblue_hard_reset(void)
     tbblue_registers[7]=0;
     tbblue_registers[8]=16;
     tbblue_registers[9]=0;
+    tbblue_registers[10]=1;
 
 
     tbblue_registers[0x8c]=0;
@@ -4828,6 +4836,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
     z80_byte last_register_6=tbblue_registers[6];
     z80_byte last_register_7=tbblue_registers[7];
     z80_byte last_register_8=tbblue_registers[8];
+    z80_byte last_register_10=tbblue_registers[10];
     z80_byte last_register_17=tbblue_registers[17];
     z80_byte last_register_21=tbblue_registers[21];
     z80_byte last_register_66=tbblue_registers[66];
@@ -5073,6 +5082,11 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                     */
             if ( (last_register_6&16) != (value&16)) tbblue_set_emulator_setting_divmmc();
             //if ( (last_register_6&8) != (value&8)) tbblue_set_emulator_setting_multiface();
+        break;
+
+        case 10:
+            //Desde el core 3.01.10, el bit 4 habilita el automapeo DivMMC
+            if ( (last_register_10&16) != (value&16)) tbblue_set_emulator_setting_divmmc();
         break;
 
 

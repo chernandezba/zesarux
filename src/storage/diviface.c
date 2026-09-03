@@ -35,6 +35,7 @@
 #include "contend.h"
 #include "prism.h"
 #include "tbblue.h"
+#include "mem128.h"
 #include "tsconf.h"
 
 z80_bit diviface_enabled={0};
@@ -124,10 +125,6 @@ void diviface_tbblue_map_unmap(void)
   bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
   bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
 
-  TODO: de momento no hago instant o delayed
-
-  TODO: Resto de 0xB8 (184) => Divmmc Entry Points 0
-
   TODO: No se hace correctamente el pre/post de 66H
 
 0xB8 (184) => Divmmc Entry Points 0
@@ -139,27 +136,44 @@ void diviface_tbblue_map_unmap(void)
 
     z80_byte tbblue_divmmc_entry_points_one=tbblue_registers[0xBB];
     z80_byte tbblue_divmmc_entry_points_zero=tbblue_registers[0xB8];
+    z80_byte tbblue_divmmc_entry_points_valid_zero=tbblue_registers[0xB9];
+    z80_byte tbblue_divmmc_entry_points_timing_zero=tbblue_registers[0xBA];
+
+    /*
+     * Los puntos de entrada cuyo bit correspondiente de B9 esta a cero solo
+     * son validos mientras esta seleccionada la ROM3. Esta condicion se anadio
+     * al core de Next 3.01.10 y la usan las versiones recientes de NextZXOS.
+     *
+     * En modo +3/Next la ROM activa se selecciona normalmente mediante
+     * 1FFD/7FFD. Si algun bit de bloqueo de ROM alternativa esta activo, la
+     * pareja de bits es la que selecciona la ROM.
+     */
+    z80_byte active_rom;
+    z80_byte altrom_locks=(tbblue_registers[0x8C] >> 4) & 3;
+    if (altrom_locks) active_rom=altrom_locks;
+    else active_rom=get_actual_rom_p2a();
+
+    int rom3_present=(active_rom==3);
+
+    /* B8 incluye los ocho vectores RST, no solamente 00h, 08h y 38h. */
+    if (reg_pc<=0x0038 && (reg_pc&7)==0) {
+        int bit=reg_pc>>3;
+        z80_byte mask=1<<bit;
+
+        if ((tbblue_divmmc_entry_points_zero&mask) &&
+            ((tbblue_divmmc_entry_points_valid_zero&mask) || rom3_present) &&
+            diviface_paginacion_automatica_activa.v==0) {
+            if (tbblue_divmmc_entry_points_timing_zero&mask) {
+                diviface_salta_trap_antes=1;
+            }
+            else {
+                diviface_salta_trap_despues=1;
+            }
+        }
+    }
 
     //Traps que paginan memoria y saltan despues de leer instruccion
     switch (reg_pc) {
-        case 0x0000:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_zero&1)) {
-                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
-                diviface_salta_trap_despues=1;
-            }
-        break;
-        case 0x0008:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_zero&2)) {
-                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
-                diviface_salta_trap_despues=1;
-            }
-        break;
-        case 0x0038:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_zero&128)) {
-                //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
-                diviface_salta_trap_despues=1;
-            }
-        break;
         case 0x0066:
             if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&1 || tbblue_divmmc_entry_points_one&2) ) {
                 //printf("---desde diviface.c Paginando divmmc cuando PC=%XH\n",reg_pc);
@@ -167,27 +181,27 @@ void diviface_tbblue_map_unmap(void)
             }
         break;
         case 0x04c6:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&4) ) {
+            if (rom3_present && diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&4) ) {
                 //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
                 diviface_salta_trap_despues=1;
             }
         break;
         case 0x0562:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&8) ) {
+            if (rom3_present && diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&8) ) {
                 //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
                 diviface_salta_trap_despues=1;
             }
         break;
 
         case 0x04D7:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&16) ) {
+            if (rom3_present && diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&16) ) {
                 //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
                 diviface_salta_trap_despues=1;
             }
         break;
 
         case 0x056A:
-            if (diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&32) ) {
+            if (rom3_present && diviface_paginacion_automatica_activa.v==0 && (tbblue_divmmc_entry_points_one&32) ) {
                 //printf("Paginando divmmc cuando PC=%XH\n",reg_pc);
                 diviface_salta_trap_despues=1;
             }
@@ -196,7 +210,7 @@ void diviface_tbblue_map_unmap(void)
 
 
     //Traps que paginan memoria y saltan antes de leer instruccion
-    if (reg_pc>=0x3d00 && reg_pc<=0x3dff &&  (tbblue_divmmc_entry_points_one&128) ) diviface_salta_trap_antes=1;
+    if (rom3_present && reg_pc>=0x3d00 && reg_pc<=0x3dff && (tbblue_divmmc_entry_points_one&128)) diviface_salta_trap_antes=1;
 
     //Traps que despaginan memoria antes de leer instruccion
     if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v && (tbblue_divmmc_entry_points_one&64) ) {
