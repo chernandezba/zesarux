@@ -36055,6 +36055,35 @@ Y definirla en zxvision_known_window_names_array
 zxvision_window *menu_debug_cpu_info_window;
 
 
+void menu_debug_cpu_info_draw_cpu_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
+{
+    zxvision_putpixel(menu_debug_cpu_info_window,x,y,color);
+}
+
+
+
+
+void menu_debug_cpu_info_draw_cpu(void)
+{
+    int nivel_zoom=2;
+
+
+    char **puntero_bitmap;
+
+    puntero_bitmap=bitmap_button_ext_desktop_debugcpu_info;
+
+
+    int offset_x=menu_char_width;
+    int offset_y=menu_char_height;
+
+
+    screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+        0,0,menu_debug_cpu_info_draw_cpu_putpixel,nivel_zoom,0,1);
+
+}
+
+
+
 void menu_debug_cpu_info_overlay(void)
 {
 
@@ -36089,7 +36118,7 @@ void menu_debug_cpu_info_overlay(void)
     }
     zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s (X%d)",buffer_velocidad,cpu_turbo_speed);
 
-
+    menu_debug_cpu_info_draw_cpu();
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_debug_cpu_info_window);
