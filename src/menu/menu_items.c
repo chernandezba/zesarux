@@ -36043,14 +36043,6 @@ void menu_view_gosub_stack(MENU_ITEM_PARAMETERS)
 
 
 
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "debug_cpu_info" por el nombre de la ventana
-Sustituir "debugcpuinfo" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "Window title" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
-
 
 zxvision_window *menu_debug_cpu_info_window;
 
