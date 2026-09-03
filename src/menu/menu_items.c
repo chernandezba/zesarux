@@ -36093,27 +36093,11 @@ void menu_debug_cpu_info_overlay(void)
     if (menu_debug_cpu_info_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    char buffer_velocidad[40];
+    get_cpu_frequency_mhz_string(buffer_velocidad);
 
 
-
-    char buffer_velocidad[30];
-
-    if ((CPU_IS_Z80 || CPU_IS_MOTOROLA) && !MACHINE_IS_Z88) {
-        int cpu_hz=get_cpu_frequency();
-        //printf("%d\n",cpu_hz);
-        int cpu_mhz = cpu_hz / 1000000;
-
-        //Obtener decimales
-        int decimal_mhz = (cpu_hz % 1000000) / 1000;
-
-        sprintf(buffer_velocidad,"%d.%03d MHz",cpu_mhz,decimal_mhz);
-    }
-    else {
-        buffer_velocidad[0]=0;
-    }
-    zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s (X%d)",buffer_velocidad,cpu_turbo_speed);
+    zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s MHz (X%d)",buffer_velocidad,cpu_turbo_speed);
 
     menu_debug_cpu_info_draw_cpu();
 

@@ -957,6 +957,8 @@ extern int util_get_available_drives(char *texto);
 
 extern int get_cpu_frequency(void);
 
+extern void get_cpu_frequency_mhz_string(char *buffer_velocidad);
+
 
 extern void util_clear_final_spaces(char *orig,char *destination);
 
