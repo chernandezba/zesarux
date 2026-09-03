@@ -36102,16 +36102,13 @@ void menu_debug_cpu_info_overlay(void)
 
     if ((CPU_IS_Z80 || CPU_IS_MOTOROLA) && !MACHINE_IS_Z88) {
         int cpu_hz=get_cpu_frequency();
-        int cpu_khz=cpu_hz/1000;
+        //printf("%d\n",cpu_hz);
+        int cpu_mhz = cpu_hz / 1000000;
 
         //Obtener decimales
-        int mhz_enteros=cpu_khz/1000;
-        int decimal_mhz=cpu_khz-(mhz_enteros*1000);
+        int decimal_mhz = (cpu_hz % 1000000) / 1000;
 
-                            //01234567890123456789012345678901
-                            //           1234567890
-                            //Turbo: 16X 99.999 MHz
-        sprintf(buffer_velocidad," %d.%d MHz",mhz_enteros,decimal_mhz);
+        sprintf(buffer_velocidad,"%d.%03d MHz",cpu_mhz,decimal_mhz);
     }
     else {
         buffer_velocidad[0]=0;
