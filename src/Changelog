@@ -58,6 +58,7 @@ Fixed ZX Vision:
 - Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 - Fixed clicking on previous menu and menu was closed randomly
 
+Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
 Fixed disabling Search menu
 Fixed BMP saving for widths not divisible by 4

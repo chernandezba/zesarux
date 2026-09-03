@@ -58,6 +58,7 @@ Corregido ZX Vision:
 - Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 - Corregido al pulsar en un menú previo y el menú se cerraba aleatoriamente
 
+Corregido arranque de Spectrum Next con NextZXOS 2.09
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo
 Corregido el desactivado del menú de Búsqueda
 Corregido al salvar archivos bmp que no tienen ancho multiple de 4

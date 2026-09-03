@@ -231,3 +231,17 @@ pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con -
 -Clive
 *si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
 *cuando se va a dormir si estoy en alguna ventana, esa ventana pierde la ventana de titulo normal
+
+
+
+-tbblue funciona:
+
+NextZXOS: 2.06H
+./zesarux --noconfigfile --mmc-file tbblue-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
+
+-tbblue no funciona:
+
+NextZXOS: 2.09
+./zesarux --noconfigfile --mmc-file tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
+equivalente:
+./zesarux --configfile configfile_tbblue_pruebas
