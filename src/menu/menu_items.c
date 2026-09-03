@@ -21651,6 +21651,8 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
         }
 
 
+
+
         if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
             //menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_video_layers,NULL,"Video ~~Layers");
@@ -21681,6 +21683,13 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_copper,NULL,"[%c] Copper enabled",
                             (tbblue_force_disable_cooper.v ? ' ' : 'X' ));
         }
+
+        //Maquinas con posibilidad de turbo
+        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_TBBLUE || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM) {
+            menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_cpu_info,NULL,"CPU Info");
+            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        }
+
 
         if (MACHINE_IS_MSX || MACHINE_IS_SVI) {
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_msx_svi_memory_info,NULL,"~~Memory Info");
@@ -36029,6 +36038,187 @@ void menu_view_gosub_stack(MENU_ITEM_PARAMETERS)
 
 
 }
+
+
+
+
+
+/*
+Inicio de Template de ventana de menu que se puede enviar a background
+Sustituir "debug_cpu_info" por el nombre de la ventana
+Sustituir "debugcpuinfo" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
+Sustituir "Window title" por el titulo de la ventana
+Y definirla en zxvision_known_window_names_array
+*/
+
+
+zxvision_window *menu_debug_cpu_info_window;
+
+
+void menu_debug_cpu_info_overlay(void)
+{
+
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_debug_cpu_info_window->is_minimized) return;
+
+
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+
+
+    char buffer_velocidad[30];
+
+    if ((CPU_IS_Z80 || CPU_IS_MOTOROLA) && !MACHINE_IS_Z88) {
+        int cpu_hz=get_cpu_frequency();
+        int cpu_khz=cpu_hz/1000;
+
+        //Obtener decimales
+        int mhz_enteros=cpu_khz/1000;
+        int decimal_mhz=cpu_khz-(mhz_enteros*1000);
+
+                            //01234567890123456789012345678901
+                            //           1234567890
+                            //Turbo: 16X 99.999 MHz
+        sprintf(buffer_velocidad," %d.%d MHz",mhz_enteros,decimal_mhz);
+    }
+    else {
+        buffer_velocidad[0]=0;
+    }
+    zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s (X%d)",buffer_velocidad,cpu_turbo_speed);
+
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_debug_cpu_info_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_debug_cpu_info;
+
+
+void menu_debug_cpu_info(MENU_ITEM_PARAMETERS)
+{
+    menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_debug_cpu_info;
+
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("debugcpuinfo",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"CPU Info",
+            "debugcpuinfo",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+    zxvision_draw_window(ventana);
+
+    z80_byte tecla;
+
+
+    int salir=0;
+
+
+    menu_debug_cpu_info_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_cpu_info_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
+    }
+
+    do {
+
+
+        tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+
+            default:
+                //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
+                //aqui no entrará alguna
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
+
+                //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
+                //zxvision_handle_opqa_wskl(ventana,tecla);
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+    util_add_window_geometry_compact(ventana);
+
+    if (tecla==3) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+        zxvision_destroy_window(ventana);
+    }
+
+
+}
+
 
 
 

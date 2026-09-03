@@ -329,6 +329,8 @@ extern char *bitmap_button_ext_desktop_other_clive_talk6[];
 extern char *bitmap_button_ext_desktop_other_clive_talk7[];
 extern char *bitmap_button_ext_desktop_other_clive_talk8[];
 
+extern char *bitmap_button_ext_desktop_debugcpu_info[];
+
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
 #define EXT_DESKTOP_BUTTONS_ANCHO 26

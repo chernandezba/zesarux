@@ -245,3 +245,8 @@ NextZXOS: 2.09
 ./zesarux --noconfigfile --mmc-file tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
 equivalente:
 ./zesarux --configfile configfile_tbblue_pruebas
+
+
+-ventana que indique velocidad cpu turbo y mhz
+
+-rutina de turbo y cpu info hacerla comun

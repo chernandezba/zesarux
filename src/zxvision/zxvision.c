@@ -10882,6 +10882,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 #ifdef EMULATE_CPU_STATS
     {"cpucompactstatistics","cpucmpstat",menu_debug_cpu_resumen_stats,bitmap_button_ext_desktop_cpustatistics},
 #endif
+    {"debugcpuinfo",        "cpu info",menu_debug_cpu_info,bitmap_button_ext_desktop_debugcpu_info},
     {"debugconsole",        "debug cons",   menu_debug_unnamed_console,bitmap_button_ext_desktop_debugconsole},
     {"debugcpu",            "debug cpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
     {"debugdma",            "debug dma",menu_debug_dma,bitmap_button_ext_desktop_debugdma},
