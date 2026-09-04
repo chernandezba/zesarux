@@ -120,6 +120,7 @@
 #include "tv.h"
 #include "qsound.h"
 #include "menu_bitmaps.h"
+#include "baseconf.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -6245,6 +6246,43 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
     if (superupgrade_enabled.v) {
       sprintf (buf_linea,"Superupgrade 43B port: %02X\n",superupgrade_puerto_43b);
       sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    }
+
+    if (MACHINE_IS_BASECONF) {
+        sprintf (buf_linea,"\nBaseConf ports:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," XX77: %02XH\n",baseconf_last_port_77);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
+/*
+z80_byte ;
+z80_byte baseconf_last_port_sd_77;
+z80_byte baseconf_shadow_mode_port_77;
+z80_byte baseconf_last_port_bf;
+z80_byte baseconf_last_port_eff7;
+z80_byte baseconf_last_port_bd;
+z80_byte baseconf_last_port_be;
+z80_byte baseconf_last_port_ff;
+z80_byte baseconf_last_port_57;
+z80_byte baseconf_last_port_dff7;
+z80_byte baseconf_last_port_bff7;
+z80_byte baseconf_last_port_7ffd;
+
+
+baseconf_last_port_extended_dos[0] // xx2F
+baseconf_last_port_extended_dos[1] // xx4F
+baseconf_last_port_extended_dos[2] // xx6F
+baseconf_last_port_extended_dos[3] // xx8F
+
+z80_byte baseconf_last_port_extended_dos[4];
+
+z80_byte baseconf_last_port_ff7;
+z80_byte baseconf_last_port_7f7;
+z80_byte baseconf_last_port_bf7;
+*/
+
     }
 
       if (MACHINE_IS_TBBLUE) {

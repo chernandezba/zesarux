@@ -299,12 +299,29 @@ void baseconf_write_cmos(z80_byte valor)
 }
 
 z80_byte baseconf_last_port_77;
-
+z80_byte baseconf_last_port_sd_77;
 z80_byte baseconf_shadow_mode_port_77;
-
 z80_byte baseconf_last_port_bf;
-
 z80_byte baseconf_last_port_eff7;
+z80_byte baseconf_last_port_bd;
+z80_byte baseconf_last_port_be;
+z80_byte baseconf_last_port_ff;
+z80_byte baseconf_last_port_57;
+z80_byte baseconf_last_port_dff7;
+z80_byte baseconf_last_port_bff7;
+z80_byte baseconf_last_port_7ffd;
+
+/*
+baseconf_last_port_extended_dos[0] // xx2F
+baseconf_last_port_extended_dos[1] // xx4F
+baseconf_last_port_extended_dos[2] // xx6F
+baseconf_last_port_extended_dos[3] // xx8F
+*/
+z80_byte baseconf_last_port_extended_dos[4];
+
+z80_byte baseconf_last_port_ff7;
+z80_byte baseconf_last_port_7f7;
+z80_byte baseconf_last_port_bf7;
 
 static int baseconf_cpu_speed_selected=70;
 
@@ -809,6 +826,19 @@ void baseconf_hard_reset(void)
     baseconf_shadow_mode_port_77=0x40;
     baseconf_last_port_bf=0;
     baseconf_last_port_eff7=0;
+
+    baseconf_last_port_bd=0;
+    baseconf_last_port_be=0;
+    baseconf_last_port_ff=0;
+    baseconf_last_port_57=0;
+    baseconf_last_port_sd_77=0;
+    baseconf_last_port_dff7=0;
+    baseconf_last_port_bff7=0;
+    baseconf_last_port_7ffd=0;
+    for (i=0;i<4;i++) baseconf_last_port_extended_dos[i]=0;
+    baseconf_last_port_ff7=0;
+    baseconf_last_port_7f7=0;
+    baseconf_last_port_bf7=0;
     baseconf_cpu_speed_selected=-1;
     baseconf_set_cpu_speed();
     baseconf_sd_enabled=1;
@@ -871,10 +901,13 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
 
 
+
+
         /* El firmware EVO reciente escribe los registros adicionales de
            configuración mediante xxBD. 13BD marca las unidades A-D que son RAM-disk. */
         if ((puerto&0x00ff)==0xbd && baseconf_shadow_ports_available() &&
             (((puerto_h&0xfc)==0x10) || puerto_h<=1)) {
+                baseconf_last_port_bd=valor;
                 int extended_register=((puerto_h&0xfc)==0x10) ?
                                       (puerto_h&3) : puerto_h;
                 if (extended_register==0) {
@@ -896,6 +929,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         /* OUT #xxBE desde el servicio residente restaura el mapeo anterior
            después de los dos ciclos M1 de RETN. */
         else if ((puerto&0x00ff)==0xbe && baseconf_nmi_active) {
+                baseconf_last_port_be=valor;
                 printf("BaseConf NMI service exit through %04XH\n",puerto);
                 baseconf_nmi_exit_countdown=2;
         }
@@ -903,6 +937,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         /* El registro de sistema Beta Disk contiene la unidad seleccionada.
            Se decodifica para una unidad virtual aunque los puertos WD1793 no. */
         else if ((puerto&0x00ff)==0xff && baseconf_shadow_ports_available()) {
+                baseconf_last_port_ff=valor;
                 /* A14 del último acceso #xx77 selecciona el significado de #xxFF.
                    Con A14 a cero programa la paleta; con A14 a uno es el registro
                    de sistema Beta Disk. Software BaseConf como Hypnotoad no
@@ -935,6 +970,7 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         else if (baseconf_shadow_ports_available() &&
                  (puerto_l==0x2f || puerto_l==0x4f ||
                   puerto_l==0x6f || puerto_l==0x8f)) {
+                baseconf_last_port_extended_dos[(puerto_l-0x2f)>>5]=valor;
                 baseconf_extended_dos_ports[(puerto_l-0x2f)>>5]=valor;
         }
 
@@ -975,6 +1011,8 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                  z80_byte pagina=(valor^255)&(es_ram ? 63 : 31);
                  z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
 
+                 baseconf_last_port_ff7=valor;
+
                  baseconf_mmu_pages[segmento]=pagina;
                  baseconf_mmu_flags[segmento]=valor&0xC0;
 
@@ -1009,6 +1047,8 @@ segmento 0 pagina 0
                 z80_byte pagina=valor^255;
                 z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
 
+                baseconf_last_port_7f7=valor;
+
                 baseconf_mmu_pages[segmento]=pagina;
                 /* #x7F7 proporciona los ocho bits invertidos de página, pero no
                    modifica el flag de sustitución establecido antes por #xFF7. */
@@ -1020,6 +1060,7 @@ segmento 0 pagina 0
         //xBF7H: protección de escritura para la ventana MMU seleccionada.
         else if ( (puerto&0x0FFF)==0xBF7 && baseconf_shadow_ports_available() ) {
                 z80_byte segmento=(puerto_h>>6)+((puerto_32765&16) ? 4 : 0);
+                baseconf_last_port_bf7=valor;
                 baseconf_mmu_flags[segmento] &=~32;
                 if (valor&1) baseconf_mmu_flags[segmento] |=32;
         }
@@ -1030,6 +1071,7 @@ segmento 0 pagina 0
                    #xFF7/#x7F7 continúan disponibles. */
                 if ((baseconf_last_port_eff7&4) && (puerto_32765&32)) return;
 
+                baseconf_last_port_7ffd=valor;
                 puerto_32765=valor;
 
                 baseconf_set_memory_pages();
@@ -1040,16 +1082,19 @@ segmento 0 pagina 0
         //Puertos NVRAM.
 	else if (puerto==0xeff7 && !baseconf_shadow_ports_available() ) puerto_eff7=valor;
 	else if (puerto==0xdff7 && !baseconf_shadow_ports_available() ) {
+		baseconf_last_port_dff7=valor;
 		zxevo_last_port_dff7=valor;
 		if (valor==0xed) printf("BaseConf CMOS selected EDH through DFF7H\n");
 	}
         else if (puerto==0xdef7 && baseconf_shadow_ports_available() ) {
+                baseconf_last_port_dff7=valor;
                 zxevo_last_port_dff7=valor;
                 if (valor==0xed) printf("BaseConf CMOS selected EDH\n");
         }
 
 
 	else if (puerto==0xbff7 && !baseconf_shadow_ports_available() ) {
+		baseconf_last_port_bff7=valor;
 		/* En BaseConf #EFF7 es el registro de configuración guardado en
 		   baseconf_last_port_eff7. Usar aquí el puerto_eff7 genérico dejaba
 		   permanentemente deshabilitado el acceso CMOS no-shadow. */
@@ -1062,6 +1107,7 @@ segmento 0 pagina 0
 	}
 
         else if (puerto==0xbef7 && baseconf_shadow_ports_available() ) {
+                 baseconf_last_port_bff7=valor;
                         //En modo shadow el puerto #BEF7 está disponible independientemente del bit 7 de #EFF7.
 		 baseconf_write_cmos(valor);
 		 if (zxevo_last_port_dff7==0xed)
@@ -1069,12 +1115,14 @@ segmento 0 pagina 0
                                 valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);
 					}
         else if ( (puerto&0x00FF)==0x77 ) {
+                baseconf_last_port_sd_77=valor;
                 baseconf_sd_enabled=valor&1;
                 baseconf_sd_cs=(valor&2) ? 1 : 0;
                 mmc_cs(baseconf_sd_cs ? 0xff : 0xfe);
         }
 
         else if ( (puerto&0x00FF)==0x57 ) {
+                baseconf_last_port_57=valor;
                 if (baseconf_sd_enabled && !baseconf_sd_cs) mmc_write(valor);
         }
 

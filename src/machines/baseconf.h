@@ -87,6 +87,22 @@ extern int baseconf_sd_cs;
 
 extern z80_byte baseconf_last_port_bf;
 
+/* Ultimos valores escritos en los puertos propios de BaseConf. */
+extern z80_int baseconf_last_out_port;
+extern z80_byte baseconf_last_out_value;
+extern z80_byte baseconf_last_port_bd;
+extern z80_byte baseconf_last_port_be;
+extern z80_byte baseconf_last_port_ff;
+extern z80_byte baseconf_last_port_57;
+extern z80_byte baseconf_last_port_sd_77;
+extern z80_byte baseconf_last_port_dff7;
+extern z80_byte baseconf_last_port_bff7;
+extern z80_byte baseconf_last_port_7ffd;
+extern z80_byte baseconf_last_port_extended_dos[4];
+extern z80_byte baseconf_last_port_ff7;
+extern z80_byte baseconf_last_port_7f7;
+extern z80_byte baseconf_last_port_bf7;
+
 extern int baseconf_shadow_ports_available(void);
 extern void baseconf_write_memory_aux(z80_int direccion,z80_byte valor);
 extern void baseconf_pre_opcode_fetch(z80_int direccion);

@@ -247,13 +247,9 @@ equivalente:
 ./zesarux --configfile configfile_tbblue_pruebas
 
 
--ventana que indique velocidad cpu turbo y mhz
-ok
 
--rutina de turbo y cpu info hacerla comun
-ok
 
 -cpu info:
 ok *icono app acabar. una i de info?
-*icono dentro ventana que sea un Z80, un motorola o un sc... ?
+ok *icono dentro ventana que sea un Z80, un motorola o un sc... ?
 ok *Debug CPU info. Solo redibujar el icono si es necesario (dirty etc)
