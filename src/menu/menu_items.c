@@ -36057,7 +36057,7 @@ void menu_debug_cpu_info_draw_cpu_putpixel(z80_int *destino GCC_UNUSED,int x,int
 
 void menu_debug_cpu_info_draw_cpu(void)
 {
-    printf("Dibujando cpu %d\n",contador_segundo_infinito);
+    //printf("Dibujando cpu %d\n",contador_segundo_infinito);
 
     int nivel_zoom=2;
 
@@ -36077,7 +36077,7 @@ void menu_debug_cpu_info_draw_cpu(void)
 
 }
 
-
+char menu_debug_cpu_info_overlay_last_speed[40]="";
 
 void menu_debug_cpu_info_overlay(void)
 {
@@ -36088,14 +36088,23 @@ void menu_debug_cpu_info_overlay(void)
     if (menu_debug_cpu_info_window->is_minimized) return;
 
 
+    int forzar_redibujado=0;
+
+    char buffer_velocidad[40];
+    get_cpu_frequency_mhz_string(buffer_velocidad);
+
+    if (strcmp(menu_debug_cpu_info_overlay_last_speed,buffer_velocidad)) {
+        //printf("Forzar redibujado por cambio velocidad\n");
+        forzar_redibujado=1;
+    }
+
     //Redibujar solo cuando es necesario
-    if (menu_debug_cpu_info_window->dirty_user_must_draw_contents) {
-        char buffer_velocidad[40];
-        get_cpu_frequency_mhz_string(buffer_velocidad);
+    if (menu_debug_cpu_info_window->dirty_user_must_draw_contents || forzar_redibujado) {
         zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s MHz (X%d)",buffer_velocidad,cpu_turbo_speed);
 
         menu_debug_cpu_info_draw_cpu();
         menu_debug_cpu_info_window->dirty_user_must_draw_contents=0;
+        strcpy(menu_debug_cpu_info_overlay_last_speed,buffer_velocidad);
     }
 
     //Mostrar contenido
