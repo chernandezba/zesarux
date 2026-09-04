@@ -344,13 +344,13 @@ static void baseconf_set_cpu_speed(void)
 
     baseconf_cpu_speed_selected=nueva_velocidad;
     if (nueva_velocidad==35) {
-        printf("BaseConf CPU speed selected: 3.5 MHz\n");
+        //printf("BaseConf CPU speed selected: 3.5 MHz\n");
     }
     else if (nueva_velocidad==70) {
-        printf("BaseConf CPU speed selected: 7 MHz\n");
+        //printf("BaseConf CPU speed selected: 7 MHz\n");
     }
     else {
-        printf("BaseConf CPU speed selected: 14 MHz\n");
+        //printf("BaseConf CPU speed selected: 14 MHz\n");
     }
 
     cpu_turbo_speed=nueva_velocidad/35;
