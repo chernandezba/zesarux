@@ -6252,36 +6252,64 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         sprintf (buf_linea,"\nBaseConf ports:\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-        sprintf (buf_linea," XX77: %02XH\n",baseconf_last_port_77);
+        sprintf (buf_linea,"-System/configuration:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX77: %02XH (System)\n",baseconf_last_port_77);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
+        sprintf (buf_linea,"-SD / SPI:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX77 SD: %02XH (SD control)\n",baseconf_last_port_sd_77);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," Shadow XX77 address: %02XH (address bits)\n",baseconf_shadow_mode_port_77);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XXBF: %02XH (shadow enable/NMI)\n",baseconf_last_port_bf);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," EFF7: %02XH (system control)\n",baseconf_last_port_eff7);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-/*
-z80_byte ;
-z80_byte baseconf_last_port_sd_77;
-z80_byte baseconf_shadow_mode_port_77;
-z80_byte baseconf_last_port_bf;
-z80_byte baseconf_last_port_eff7;
-z80_byte baseconf_last_port_bd;
-z80_byte baseconf_last_port_be;
-z80_byte baseconf_last_port_ff;
-z80_byte baseconf_last_port_57;
-z80_byte baseconf_last_port_dff7;
-z80_byte baseconf_last_port_bff7;
-z80_byte baseconf_last_port_7ffd;
+        sprintf (buf_linea,"-Video / Beta Disk:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XXFF: %02XH (palette/Beta Disk)\n",baseconf_last_port_ff);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX57: %02XH (SPI data)\n",baseconf_last_port_57);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
+        sprintf (buf_linea,"-CMOS / RTC:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," DFF7/DEF7: %02XH (CMOS index)\n",baseconf_last_port_dff7);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," BFF7/BEF7: %02XH (CMOS data)\n",baseconf_last_port_bff7);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-baseconf_last_port_extended_dos[0] // xx2F
-baseconf_last_port_extended_dos[1] // xx4F
-baseconf_last_port_extended_dos[2] // xx6F
-baseconf_last_port_extended_dos[3] // xx8F
+        sprintf (buf_linea,"-Memory management:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," 7FFD: %02XH (RAM/ROM paging)\n",baseconf_last_port_7ffd);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-z80_byte baseconf_last_port_extended_dos[4];
+        sprintf (buf_linea,"-Extended DOS:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX2F: %02XH (DOS register 0)\n",baseconf_last_port_extended_dos[0]);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX4F: %02XH (DOS register 1)\n",baseconf_last_port_extended_dos[1]);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX6F: %02XH (DOS register 2)\n",baseconf_last_port_extended_dos[2]);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XX8F: %02XH (DOS register 3)\n",baseconf_last_port_extended_dos[3]);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XFF7: %02XH (MMU page/type)\n",baseconf_last_port_ff7);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," X7F7: %02XH (MMU RAM page)\n",baseconf_last_port_7f7);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XBF7: %02XH (MMU write protect)\n",baseconf_last_port_bf7);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-z80_byte baseconf_last_port_ff7;
-z80_byte baseconf_last_port_7f7;
-z80_byte baseconf_last_port_bf7;
-*/
+        sprintf (buf_linea,"-Other BaseConf control ports:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XXBD: %02XH (NMI/auxiliary)\n",baseconf_last_port_bd);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," XXBE: %02XH (NMI exit)\n",baseconf_last_port_be);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
     }
 

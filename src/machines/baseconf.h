@@ -88,8 +88,6 @@ extern int baseconf_sd_cs;
 extern z80_byte baseconf_last_port_bf;
 
 /* Ultimos valores escritos en los puertos propios de BaseConf. */
-extern z80_int baseconf_last_out_port;
-extern z80_byte baseconf_last_out_value;
 extern z80_byte baseconf_last_port_bd;
 extern z80_byte baseconf_last_port_be;
 extern z80_byte baseconf_last_port_ff;
