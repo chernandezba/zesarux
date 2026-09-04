@@ -23812,30 +23812,28 @@ int util_get_available_drives(char *texto)
 
 int get_cpu_frequency(void)
 {
+    int frames_per_second = MACHINE_IS_Z88 ? 200 : 50;
+    int cpu_hz = screen_testados_total * frames_per_second;
 
-        int cpu_hz=screen_testados_total*50;
+    //printf("get_cpu_frequency. screen_testados_total=%d cpu_hz=%d\n",screen_testados_total,cpu_hz);
 
-        //printf("get_cpu_frequency. screen_testados_total=%d cpu_hz=%d\n",screen_testados_total,cpu_hz);
-
-        return cpu_hz;
+    return cpu_hz;
 }
 
 void get_cpu_frequency_mhz_string(char *buffer_velocidad)
 {
 
-    if ((CPU_IS_Z80 || CPU_IS_MOTOROLA || CPU_IS_SCMP) && !MACHINE_IS_Z88) {
-        int cpu_hz=get_cpu_frequency();
-        //printf("%d\n",cpu_hz);
-        int cpu_mhz = cpu_hz / 1000000;
 
-        //Obtener decimales
-        int decimal_mhz = (cpu_hz % 1000000) / 1000;
+    int cpu_hz=get_cpu_frequency();
+    //printf("%d\n",cpu_hz);
+    int cpu_mhz = cpu_hz / 1000000;
 
-        sprintf(buffer_velocidad,"%d.%03d",cpu_mhz,decimal_mhz);
-    }
-    else {
-        strcpy(buffer_velocidad,"unknown");
-    }
+    //Obtener decimales
+    int decimal_mhz = (cpu_hz % 1000000) / 1000;
+
+    sprintf(buffer_velocidad,"%d.%03d",cpu_mhz,decimal_mhz);
+
+
 }
 
 
