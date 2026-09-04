@@ -332,6 +332,7 @@ extern char *bitmap_button_ext_desktop_other_clive_talk8[];
 extern char *bitmap_button_ext_desktop_debugcpu_info[];
 extern char *bitmap_button_ext_desktop_cpu_z80[];
 extern char *bitmap_button_ext_desktop_cpu_m68k[];
+extern char *bitmap_button_ext_desktop_cpu_scmp[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 

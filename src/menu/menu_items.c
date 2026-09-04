@@ -36064,7 +36064,8 @@ void menu_debug_cpu_info_draw_cpu(void)
 
     char **puntero_bitmap;
 
-    if (MACHINE_IS_QL) puntero_bitmap=bitmap_button_ext_desktop_cpu_m68k;
+    if (CPU_IS_MOTOROLA) puntero_bitmap=bitmap_button_ext_desktop_cpu_m68k;
+    else if (CPU_IS_SCMP) puntero_bitmap=bitmap_button_ext_desktop_cpu_scmp;
     else puntero_bitmap=bitmap_button_ext_desktop_cpu_z80;
 
 
@@ -36093,6 +36094,7 @@ void menu_debug_cpu_info_overlay(void)
     char buffer_velocidad[40];
     get_cpu_frequency_mhz_string(buffer_velocidad);
 
+    //Si cambia la velocidad, forzar render
     if (strcmp(menu_debug_cpu_info_overlay_last_speed,buffer_velocidad)) {
         //printf("Forzar redibujado por cambio velocidad\n");
         forzar_redibujado=1;
