@@ -23823,7 +23823,7 @@ int get_cpu_frequency(void)
 void get_cpu_frequency_mhz_string(char *buffer_velocidad)
 {
 
-    if ((CPU_IS_Z80 || CPU_IS_MOTOROLA) && !MACHINE_IS_Z88) {
+    if ((CPU_IS_Z80 || CPU_IS_MOTOROLA || CPU_IS_SCMP) && !MACHINE_IS_Z88) {
         int cpu_hz=get_cpu_frequency();
         //printf("%d\n",cpu_hz);
         int cpu_mhz = cpu_hz / 1000000;

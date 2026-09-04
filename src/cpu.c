@@ -3014,6 +3014,7 @@ void set_machine_params(void)
             peek_byte_no_time=peek_byte_no_time_mk14;
             poke_byte_no_time=poke_byte_no_time_mk14;
             lee_puerto=lee_puerto_legacy_mk14;
+            screen_testados_linea=284;
         break;
 
 
