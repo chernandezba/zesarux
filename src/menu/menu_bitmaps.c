@@ -4075,11 +4075,11 @@ char *bitmap_button_ext_desktop_cpu_scmp[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  x   x   x   x   x   x   ",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xxxx...xx...xx.xxx.xx...xx", //10
-    "x.xx.xxxx.xxxx..x..xx.x.xx",
+    "xxxx...xxx..xx.xxx.xx...xx", //10
+    "x.xx.xxxx.xxxx..x..xx.xx.x",
     "x..x...xx.xxxx.x.x.xx...xx",
     "x.xxxx.xx.xxxx.xxx.xx.xxxx",
-    "xxxx...xx...xx.xxx.xx.xxxx",
+    "xxxx...xxx..xx.xxx.xx.xxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "  x   x   x   x   x   x   ",
