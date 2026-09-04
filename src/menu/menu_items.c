@@ -36062,7 +36062,8 @@ void menu_debug_cpu_info_draw_cpu(void)
 
     char **puntero_bitmap;
 
-    puntero_bitmap=bitmap_button_ext_desktop_debugcpu_info;
+    if (MACHINE_IS_QL) puntero_bitmap=bitmap_button_ext_desktop_cpu_m68k;
+    else puntero_bitmap=bitmap_button_ext_desktop_cpu_z80;
 
 
     int offset_x=menu_char_width;

@@ -254,3 +254,4 @@ equivalente:
 -cpu info:
 *icono app acabar. una i de info?
 *icono dentro ventana que sea un Z80, un motorola o un sc... ?
+*Debug CPU info. Solo redibujar el icono si es necesario (dirty etc)

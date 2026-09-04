@@ -3974,17 +3974,54 @@ char *bitmap_button_ext_desktop_debugcpu[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_debugcpu_info[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "  x   x   x   x   x   x   ",	//0
+    "                          ",  //0
+    "                          ",
+    "  x   x   x   x   x   x   ",
     "  x   x   x   x   x   x   ",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xxxxxxxxxxwwwwxxwwxxxwwxxx",
-    "xwxxxxxxxxxxxwxwxxwxwxxwxx",
-    "xwwxxxxxxxxxwxxxwwxxwxxwxx",
-    "xwxxxxxxxxxwxxxwxxwxwxxwxx",
-    "xxxxxxxxxxwwwwxxwwxxxwwxxx",
+    "xxxxxxxwwwwxxwwxxxwwxxxxxx",
+    "xwxxxxxxxxwxwxxwxwxxwxxxxx",
+    "xwwxxxxxxwxxxwwxxwxxwxxxxx",
+    "xwxxxxxxwxxxwxxwxwxxwxxxxx",
+    "xxxxxxxwwwwxxwwxxxwwxxxxxx",  //10
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "  x   x   x   x   x   x   ",
+    "  x   x   x   x   x   x   ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "wwbbww                    ",
+    "                          ",
+    "wbbbww                    ",    //20
+    "wwbbww                    ",
+    "wwbbww                    ",
+    "wwbbww                    ",
+    "wbbbbw                    ",
+    "wwwwww                    " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_cpu_z80[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ", //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "  x   x   x   x   x   x   ",
+    "  x   x   x   x   x   x   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxwwwwxxwwxxxwwxxxxxx", //10
+    "xwxxxxxxxxwxwxxwxwxxwxxxxx",
+    "xwwxxxxxxwxxxwwxxwxxwxxxxx",
+    "xwxxxxxxwxxxwxxwxwxxwxxxxx",
+    "xxxxxxxwwwwxxwwxxxwwxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "  x   x   x   x   x   x   ",
     "  x   x   x   x   x   x   ",
     "                          ",
@@ -3993,6 +4030,30 @@ char *bitmap_button_ext_desktop_debugcpu_info[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",
     "                          ",
     "                          ",
+    "                          "   //25
+};
+
+char *bitmap_button_ext_desktop_cpu_m68k[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ", //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "  x   x   x   x   x   x   ",
+    "  x   x   x   x   x   x   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxx.xxx..xx.xx.xxxxx", //10
+    "x.xxxxxx.xxx.xx.x.x.xxxxxx",
+    "x..xxxx...xxx..xx..xxxxxxx",
+    "x.xxxxx.xx.x.xx.x.x.xxxxxx",
+    "xxxxxxxx..xxx..xx.xx.xxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "  x   x   x   x   x   x   ",
+    "  x   x   x   x   x   x   ",
     "                          ",
     "                          ",	//20
     "                          ",
@@ -8131,6 +8192,8 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_talk8",bitmap_button_ext_desktop_other_clive_talk8},
     {"clive_tongue",bitmap_button_ext_desktop_other_clive_tongue},
     {"clive_wink",bitmap_button_ext_desktop_other_clive_wink},
+    {"cpu_z80",bitmap_button_ext_desktop_cpu_z80},
+    {"cpu_m68k",bitmap_button_ext_desktop_cpu_m68k},
     {"sadmac",bitmap_button_ext_desktop_other_sad_mac},
     {"scope",bitmap_button_ext_desktop_mirilla_lightgun},
     {"scope_fired",bitmap_button_ext_desktop_mirilla_lightgun_disparada},
