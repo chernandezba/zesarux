@@ -316,6 +316,8 @@ extern char *bitmap_button_ext_desktop_other_clive_angry[];
 extern char *bitmap_button_ext_desktop_other_clive_speccy[];
 extern char *bitmap_button_ext_desktop_other_clive_sleep[];
 extern char *bitmap_button_ext_desktop_other_clive_sleep2[];
+extern char *bitmap_button_ext_desktop_other_clive_sing1[];
+extern char *bitmap_button_ext_desktop_other_clive_sing2[];
 extern char *bitmap_button_ext_desktop_other_c5[];
 extern char *bitmap_button_ext_desktop_other_sinclair[];
 extern char *bitmap_button_ext_desktop_other_spectrum[];

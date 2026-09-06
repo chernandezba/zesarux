@@ -44476,7 +44476,8 @@ enum clive_game_states {
     CLIVE_SUNGLASSES,
     CLIVE_TALKING,
     CLIVE_TONGUE,
-    CLIVE_WINK
+    CLIVE_WINK,
+    CLIVE_SING
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44780,6 +44781,9 @@ void menu_clive_game_draw_clive_putpixel(z80_int *destino GCC_UNUSED,int x,int y
 int menu_clive_game_last_mouse_x=-1;
 int menu_clive_game_last_mouse_y=-1;
 
+//Para los 3 canales
+int menu_clive_game_ay_chip_antes_sobrepasa[3]={0,0,0};
+
 void menu_clive_game_handle_state_changes(void)
 {
 
@@ -44824,6 +44828,60 @@ void menu_clive_game_handle_state_changes(void)
             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
         }
     }
+
+    int hay_musica_en_el_chip=0;
+
+    //Si suena musica en el chip AY y no está hablando
+
+    int i;
+    char canal='A';
+
+    for (i=0;i<3;i++,canal++) {
+
+        //Utilizamos los sensores, que tienen umbrales ("color rojo") que es lo que hará pasar de frame en el gamelife
+        char sensor_name[SENSORS_MAX_SHORT_NAME];
+
+        //canal A, B o C
+        sprintf(sensor_name,"ay_vol_chip0_chan_%c",canal);
+        int sensor_id=sensor_find(sensor_name);
+
+        if (sensor_id>=0) {
+
+            int media_cpu_perc=sensor_get_percentaje_value_by_id(sensor_id);
+            int upper_warning_perc=sensors_array[sensor_id].upper_warning_perc;
+
+            int sobrepasa=0;
+
+            if (media_cpu_perc>upper_warning_perc) {
+                sobrepasa=1;
+            }
+
+            //se mueve de generación cuando pasa de 0 a 1 (o sea, un "golpe" de volumen)
+            int copia_antes=menu_clive_game_ay_chip_antes_sobrepasa[i];
+            menu_clive_game_ay_chip_antes_sobrepasa[i]=sobrepasa;
+
+            //Si ahora sobrepasa y antes no
+            if (sobrepasa && !copia_antes) {
+                printf("hay musica en chip, canal %c\n",canal);
+                hay_musica_en_el_chip=1;
+            }
+        }
+    }
+
+    if (hay_musica_en_el_chip && menu_clive_game_state!=CLIVE_TALKING) {
+        menu_clive_game_state=CLIVE_SING;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+    }
+
+    //Si no hay musica y estaba cantando y han pasado X segundos, pasar a estado normal
+    if (!hay_musica_en_el_chip && menu_clive_game_state==CLIVE_SING &&
+        contador_segundo_infinito-menu_clive_game_tiempo_desde_ultimo_estado>5000)  {
+
+        printf("ya no hay musica. ir a modo normal\n");
+        menu_clive_game_state=CLIVE_NORMAL;
+
+    }
+
 
     //Si no estaba en maquina sinclair y ahora si, pasar por estado de sinclair con corazones en los ojos
     if (menu_clive_game_previous_machine!=current_machine_type) {
@@ -44908,6 +44966,16 @@ void menu_clive_game_draw_clive(void)
             }
             else {
                 puntero_bitmap=bitmap_button_ext_desktop_other_clive_sleep2;
+            }
+        break;
+
+        case CLIVE_SING:
+            //2 caras diferentes si canta
+            if ((contador_segundo_infinito % 4000) < 2000) {
+                puntero_bitmap=bitmap_button_ext_desktop_other_clive_sing1;
+            }
+            else {
+                puntero_bitmap=bitmap_button_ext_desktop_other_clive_sing2;
             }
         break;
 

@@ -8207,6 +8207,8 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_heart",bitmap_button_ext_desktop_other_clive_heart},
     {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
     {"clive_sad",bitmap_button_ext_desktop_other_clive_sad},
+    {"clive_sing1",bitmap_button_ext_desktop_other_clive_sing1},
+    {"clive_sing2",bitmap_button_ext_desktop_other_clive_sing2},
     {"clive_sleep",bitmap_button_ext_desktop_other_clive_sleep},
     {"clive_sleep2",bitmap_button_ext_desktop_other_clive_sleep2},
     {"clive_speccy",bitmap_button_ext_desktop_other_clive_speccy},
@@ -8780,6 +8782,69 @@ char *bitmap_button_ext_desktop_other_clive_sleep2[EXT_DESKTOP_BUTTONS_ANCHO]={
     "      xxrrrrrrrrrxx       ",
     "        xxxxxxxxx         " 	 //25
 };
+
+
+char *bitmap_button_ext_desktop_other_clive_sing1[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx       xx ",     //0
+    "       xx.......xx     x  ",
+    "      x...........x    x  ",
+    "     x....x........x  xx  ",
+    "    xr.......x.....rx xx  ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",   //7
+    "   xr.x...........x.rx    ",   //8
+    "   xr..xxxx...xxxx..rx    ",
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xxxxWx.xxxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx  xx ",
+    "    xr......xx.....rx  x  ",
+    "    xr.............rx  x  ",
+    "    xr.....rrr.....rx xx  ",
+    "    xr..rrrrrrrrr..rx xx  ",    //19
+    " xx xrrrrrrrWrrrrrrrx     ",    //20
+    " x  xrrrrrrWWWrrrrrrx     ",
+    " x  xrrrrrrrWrrrrrrrx     ",
+    "xx   xrrrrrrrrrrrrrx      ",
+    "xx    xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_other_clive_sing2[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx     xx ",
+    "      x...........x    x  ",
+    "     x....x........x   x  ",
+    "    xr.......x.....rx xx  ",
+    "   xr...............rxxx  ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",   //7
+    "   xr.x...........x.rx    ",   //8
+    "   xr..xxxx...xxxx..rx    ",
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xxxxWx.xxxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx  xx ",
+    "    xr.............rx  x  ",
+    "    xr.....rrr.....rx  x  ",
+    "    xr..rrrrrrrrr..rx xx  ",    //19
+    "    xrrrrrrrWrrrrrrrx xx  ",    //20
+    " xx xrrrrrrWWWrrrrrrx     ",
+    " x  xrrrrrrrWrrrrrrrx     ",
+    " x   xrrrrrrrrrrrrrx      ",
+    "xx    xxrrrrrrrrrxx       ",
+    "xx      xxxxxxxxx         " 	 //25
+};
+
 
 char *bitmap_button_ext_desktop_other_clive_wink[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
