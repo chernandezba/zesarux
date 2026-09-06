@@ -8179,6 +8179,8 @@ int tooltips_mouse_id_ultimo_tooltip=-1;
 enum tooltips_mouse_tipos tooltips_mouse_tipo_ultimo_tooltip=TOOLTIP_MOUSE_TIPO_BOTONES;
 char *tooltips_mouse_ultimo_texto_tooltip;
 int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
+
+//Para arriba o para abajo
 int tooltips_mouse_direccion_tooltip=+1;
 
 #define TOOLTIPS_MOUSE_ALTO_CARACTER 6

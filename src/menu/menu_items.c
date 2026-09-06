@@ -44610,6 +44610,13 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
     tooltips_mouse_ultima_pos_x_tooltip=menu_clive_game_window->x*menu_char_width+offset_x;
     tooltips_mouse_ultima_pos_y_tooltip=menu_clive_game_window->y*menu_char_width-4; //4 para que no este pegado justo a la ventana
     tooltips_mouse_direccion_tooltip=-1;
+
+    //Si esta muy arriba clive, el texto por debajo de la ventana
+    if (menu_clive_game_window->y<6) {
+        tooltips_mouse_direccion_tooltip=+1;
+        tooltips_mouse_ultima_pos_y_tooltip=(menu_clive_game_window->y+menu_clive_game_window->visible_height)*menu_char_width+4;
+    }
+
     tooltip_mouse_visible.v=1;
     tooltip_mouse_visible_clive.v=1;
 
