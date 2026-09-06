@@ -4968,6 +4968,24 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
             z80_byte maquina=(tbblue_registers[3])&7;
 
+            //Generar NMI del Multiface interno en el flanco de subida del bit 3
+            if (value&8 && (last_register_2&8)==0 && maquina!=0 && maquina!=7) {
+                /*
+                 * La peticion se ignora si DivMMC o Multiface ya controlan
+                 * el bus. NextZXOS usa esta NMI para arrancar snapshots SNX.
+                 */
+                if (diviface_paginacion_automatica_activa.v==0 &&
+                    multiface_switched_on.v==0) {
+                    multiface_type=MULTIFACE_TYPE_THREE;
+                    multiface_enable();
+                    multiface_map_memory();
+                    generate_nmi_multiface_tbblue();
+                }
+                else {
+                    tbblue_registers[2] &=(255-8);
+                }
+            }
+
             //Solo se permite nmi si el bit estaba a 0 antes y si no esta en config mode
             if (value&4 && (last_register_2&4)==0 && maquina!=0 && maquina!=7) {
                 //printf("generate nmi\n");
