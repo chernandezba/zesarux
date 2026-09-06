@@ -44862,13 +44862,13 @@ void menu_clive_game_handle_state_changes(void)
 
             //Si ahora sobrepasa y antes no
             if (sobrepasa && !copia_antes) {
-                printf("hay musica en chip, canal %c\n",canal);
+                //printf("hay musica en chip, canal %c\n",canal);
                 hay_musica_en_el_chip=1;
             }
         }
     }
 
-    if (hay_musica_en_el_chip && menu_clive_game_state!=CLIVE_TALKING) {
+    if (hay_musica_en_el_chip && menu_clive_game_state!=CLIVE_TALKING && menu_clive_game_state!=CLIVE_MOVED) {
         menu_clive_game_state=CLIVE_SING;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
@@ -44877,7 +44877,7 @@ void menu_clive_game_handle_state_changes(void)
     if (!hay_musica_en_el_chip && menu_clive_game_state==CLIVE_SING &&
         contador_segundo_infinito-menu_clive_game_tiempo_desde_ultimo_estado>5000)  {
 
-        printf("ya no hay musica. ir a modo normal\n");
+        //printf("ya no hay musica. ir a modo normal\n");
         menu_clive_game_state=CLIVE_NORMAL;
 
     }
