@@ -11,6 +11,7 @@ Added support for triggering F-function actions from joystick (Reset CPU, Open w
 Allow to select output file from the External Audio Source window
 Added another toy "Clive" to Procrastinate menu
 Allow preffix $ and 0x for hexadecimal values
+Allow to debug on console esxdos calls
 
 * Improvements:
 

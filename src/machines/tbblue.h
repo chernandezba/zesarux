@@ -27,7 +27,7 @@
 
 #define TBBLUE_CORE_DEFAULT_VERSION_MAJOR     3
 #define TBBLUE_CORE_DEFAULT_VERSION_MINOR     2
-#define TBBLUE_CORE_DEFAULT_VERSION_SUBMINOR  1
+#define TBBLUE_CORE_DEFAULT_VERSION_SUBMINOR  3
 
 //borde izquierdo + pantalla + borde derecho, multiplicado por 2
 #define TBBLUE_LAYERS_PIXEL_WIDTH ((48+256+48)*2)

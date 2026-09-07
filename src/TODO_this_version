@@ -277,3 +277,16 @@ Y con snapshot de pogie (asi no parece que funcione!):
 
 -Monopoly poner nombre de david si no está
 
+
+
+-Exploding fist:
+
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit.sfx] String at BD21H return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit2.sfx] String at BD30H return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/sweep.sfx] String at BD40H return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/grunt.sfx] String at BD4EH return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Sprites/coreimage.spr] String at B9C5H return to 7ADBH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Palettes/coreimage.npl] String at BC9DH return to 86A7H
+
+PC=95a1h cargar pantalla error
+necesita core 3.2.0 o inferior!

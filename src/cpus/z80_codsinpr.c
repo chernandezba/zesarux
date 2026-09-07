@@ -1920,6 +1920,10 @@ void instruccion_207()
 //RST 8
 	contend_read_no_mreq( IR, 1 );
 
+    if (esxdos_debug.v && MACHINE_IS_SPECTRUM) {
+        esxdos_debug_run();
+    }
+
 	if (esxdos_handler_enabled.v && MACHINE_IS_SPECTRUM) {
 		esxdos_handler_run();
 	}

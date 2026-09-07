@@ -7999,8 +7999,8 @@ void menu_hardware_dinamic_sd1(MENU_ITEM_PARAMETERS)
 
 void menu_tbblue_board_id(MENU_ITEM_PARAMETERS)
 {
-    int opcion=menu_simple_three_choices("Next Board ID","Select one",
-        "ZXN Issue 2, XC6SLX16-2FTG256","ZXN Issue 3, XC6SLX16-2FTG256","ZXN Issue 4, XC7A15T-1CSG324");
+    int opcion=menu_simple_four_choices("Next Board ID","Select one",
+        "ZXN Issue 2, XC6SLX16-2FTG256","ZXN Issue 3, XC6SLX16-2FTG256","ZXN Issue 4, XC7A15T-1CSG324","ZXN Issue 5, XC7A35T-2CSG324");
 
     switch (opcion) {
 
@@ -8015,6 +8015,10 @@ void menu_tbblue_board_id(MENU_ITEM_PARAMETERS)
 
         case 3:
             tbblue_board_id=2;
+        break;
+
+        case 4:
+            tbblue_board_id=3;
         break;
 
     }

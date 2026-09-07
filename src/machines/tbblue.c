@@ -339,6 +339,7 @@ z80_byte tbblue_machine_id=0x0a;
     0000 = ZXN Issue 2, XC6SLX16-2FTG256, 128Mbit W25Q128JV, 24bit spi, 64K*8 core size
     0001 = ZXN Issue 3, XC6SLX16-2FTG256, 128Mbit W25Q128JV, 24bit spi, 64K*8 core size
     0010 = ZXN Issue 4, XC7A15T-1CSG324, 256Mbit MX25L25645G, 32bit spi, 64K*34 core size
+    0011 = ZXN Issue 5, XC7A35T-2CSG324, 256Mbit MX25L25645G, 32bit spi, 64K*34 core size
 */
 z80_byte tbblue_board_id=0;
 

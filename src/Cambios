@@ -11,6 +11,7 @@ Agregado soporte para disparar acciones de tipo Tecla-F desde el joystick (Reset
 Permitir seleccionar archivo de salida desde la ventana de Fuente de sonido Externa
 Agregado otro juguete "Clive" a menú Procrastinar
 Permitir prefijos $ y 0x para valores hexadecimales
+Permitir hacer debug en consola de llamadas a esxdos
 
 * Mejoras:
 

@@ -52,6 +52,7 @@ char esxdos_handler_cwd[PATH_MAX]="";
 
 z80_int *registro_parametros_hl_ix;
 
+z80_int *debug_registro_parametros_hl_ix;
 
 const char *esxdos_plus3dos_signature="PLUS3DOS";
 
@@ -78,6 +79,9 @@ struct s_esxdos_fopen esxdos_fopen_files[ESXDOS_MAX_OPEN_FILES];
 
 
 z80_bit esxdos_handler_enabled={0};
+
+//Para poder hacer debug de llamadas a esxdos. No hace falta habilitar el handler
+z80_bit esxdos_debug={0};
 
 //Indica que al hacer reset, esxdos se quitara
 //Esto sucede por ejemplo al hacer smartload de un archivo .nex, donde monta la carpeta donde esta ubicado el .nex,
@@ -169,15 +173,16 @@ void esxdos_handler_copy_hl_to_string(char *buffer_fichero)
 
 	esxdos_handler_copy_register_to_string(buffer_fichero,*registro_parametros_hl_ix);
 
-/*
-	int i;
 
-	for (i=0;peek_byte_no_time((*registro_parametros_hl_ix)+i);i++) {
-		buffer_fichero[i]=peek_byte_no_time((*registro_parametros_hl_ix)+i);
-	}
+}
 
-	buffer_fichero[i]=0;
-*/
+void debug_esxdos_handler_copy_hl_to_string(char *buffer_fichero)
+{
+
+
+	esxdos_handler_copy_register_to_string(buffer_fichero,*debug_registro_parametros_hl_ix);
+
+
 }
 
 void esxdos_handler_no_error_uncarry(void)
@@ -2488,6 +2493,192 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 	}
 }
 
+
+void esxdos_debug_run(void)
+{
+
+	//Ver si se usa IX o HL
+
+	debug_registro_parametros_hl_ix=&reg_hl;
+	if (reg_pc>16383) {
+		debug_printf(VERBOSE_DEBUG,"ESXDOS handler: Using IX register instead of HL because PC>16383");
+		debug_registro_parametros_hl_ix=&reg_ix;
+	}
+
+
+    z80_byte funcion=peek_byte_no_time(reg_pc);
+
+	char buffer_fichero[256];
+	char buffer_fichero2[256];
+
+	z80_byte f_seek_mode;
+
+	switch (funcion)
+	{
+
+		case ESXDOS_RST8_DISK_STATUS:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_STATUS. A register: %02XH",reg_a);
+		break;
+
+		case ESXDOS_RST8_DISK_READ:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_READ");
+		break;
+
+		case ESXDOS_RST8_DISK_INFO:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_INFO. A register: %02XH",reg_a);
+		break;
+
+		case ESXDOS_RST8_M_DRIVEINFO:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_DRIVE_INFO. A register: %02XH",reg_a);
+		break;
+
+		case ESXDOS_RST8_F_MOUNT:
+			//Pues de momento retornar ok tal cual
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MOUNT. A register: %02XH",reg_a);
+		break;
+
+        case ESXDOS_RST8_M_DOSVERSION:
+
+            //Creo que esto solo esta en Next. En este caso se ve que se llama en Atic Atac de Next
+            if (MACHINE_IS_TBBLUE) {
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: M_DOSVERSION");
+            }
+            else {
+               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (M_DOSVERSION)!! ",funcion);
+
+            }
+        break;
+
+
+		case ESXDOS_RST8_M_GETSETDRV:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_GETSETDRV");
+	  break;
+
+		case ESXDOS_RST8_F_OPEN:
+			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s] PTR to file: %04XH",reg_b,buffer_fichero,debug_registro_parametros_hl_ix);
+		break;
+
+		case ESXDOS_RST8_F_CLOSE:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CLOSE");
+		break;
+
+		case ESXDOS_RST8_F_SYNC:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SYNC");
+		break;
+
+		case ESXDOS_RST8_F_READ:
+		//Read BC bytes at HL from file handle A.
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READ. Read %d bytes at %04XH from file handle %d",reg_bc,(*debug_registro_parametros_hl_ix),reg_a);
+		break;
+
+		case ESXDOS_RST8_F_WRITE:
+		//Write BC bytes at HL from file handle A.
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. Write %d bytes from %04XH from file handle %d",reg_bc,(*debug_registro_parametros_hl_ix),reg_a);
+		break;
+
+		case ESXDOS_RST8_F_SEEK:
+
+			f_seek_mode=(z80_byte) ((*debug_registro_parametros_hl_ix) & 0xff);
+
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEK. Move %04X%04XH bytes mode %d from file handle %d",reg_bc,reg_de,f_seek_mode,reg_a);
+
+		break;
+
+		case ESXDOS_RST8_F_GETCWD:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD");
+		break;
+
+		case ESXDOS_RST8_F_CHDIR:
+			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CHDIR: %s",buffer_fichero);
+		break;
+
+
+		case ESXDOS_RST8_F_MKDIR:
+			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MKDIR: %s",buffer_fichero);
+		break;
+
+		case ESXDOS_RST8_F_STAT:
+			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_STAT: %s",buffer_fichero);
+		break;
+
+		case ESXDOS_RST8_F_UNLINK:
+			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_UNLINK: %s",buffer_fichero);
+		break;
+
+		case ESXDOS_RST8_F_RENAME:
+			esxdos_handler_copy_register_to_string(buffer_fichero,*registro_parametros_hl_ix);
+			esxdos_handler_copy_register_to_string(buffer_fichero2,reg_de);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_RENAME: %s to %s",buffer_fichero,buffer_fichero2);
+		break;
+
+		case ESXDOS_RST8_F_OPENDIR:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPENDIR");
+		break;
+
+		case ESXDOS_RST8_F_READDIR:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READDIR");
+		break;
+
+		case ESXDOS_RST8_F_TELLDIR:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_TELLDIR");
+		break;
+
+		case ESXDOS_RST8_F_SEEKDIR:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEKDIR. Offset: %04X%04XH",reg_bc,reg_de);
+		break;
+
+		case ESXDOS_RST8_F_REWINDDIR:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_REWINDDIR");
+		break;
+
+		case ESXDOS_RST8_F_FSTAT:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_FSTAT");
+		break;
+
+		case 0xB3:
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unknown ESXDOS_RST8 B3H. Return ok");
+		//desconocida. salta cuando se hace un LOAD *"NOMBRE"
+		//hace un fread con flags  FA_READ|FA_USE_HEADER  y luego llama a este 0xB3
+		break;
+
+		/*case ESXDOS_RST8_DISK_IOCTL:
+			//Ni idea de que hace esto
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unimplemented ESXDOS_RST8_DISK_IOCTL. Return ok. PC=%XH",reg_pc);
+		//desconocida. salta al hacer "list" en tr-dos con una imagen trd montada
+
+		break;*/
+
+        case ESXDOS_RST8_DISK_FILEMAP:
+            //De momento esto solo lo he encontrado en el Pogie de Next, en Atic Atac de Next y en Exploding Fist de Next
+            if (MACHINE_IS_TBBLUE) {
+
+                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
+                    reg_a,DE,HL,reg_ix,reg_pc);
+            }
+            else {
+               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (DISK_FILEMAP)!! ",funcion);
+            }
+        break;
+
+
+		default:
+			if (funcion>=0x80) {
+				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 call: %02XH !! ",funcion);
+				char buffer_registros[1024];
+				print_registers(buffer_registros);
+				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
+
+			}
+		break;
+    }
+
+
+}
 
 void esxdos_handler_run(void)
 {
