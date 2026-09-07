@@ -61,17 +61,6 @@ static AudioUnit gOutputUnit;
 /* Records sound writer status information */
 static int audio_output_started;
 
-/* Frecuencia a la que CoreAudio solicita las muestras de salida. */
-static Float64 audiocoreaudio_output_sample_rate;
-
-/* Estado del remuestreador lineal desde la frecuencia interna de ZEsarUX. */
-static double audiocoreaudio_resample_position;
-static int audiocoreaudio_resample_current_left;
-static int audiocoreaudio_resample_current_right;
-static int audiocoreaudio_resample_next_left;
-static int audiocoreaudio_resample_next_right;
-static int audiocoreaudio_resample_initialized;
-
 void audiocoreaudio_fifo_write(char *origen,int longitud);
 
 //Tamanyo de fifo. Es un multiplicador de AUDIO_BUFFER_SIZE
@@ -174,7 +163,6 @@ freqptr=&freqqqq;
   if( get_default_sample_rate( device, &deviceFormat.mSampleRate ) ) return 1;
 
   *freqptr = deviceFormat.mSampleRate;
-  audiocoreaudio_output_sample_rate=deviceFormat.mSampleRate;
 
   deviceFormat.mFormatID =  kAudioFormatLinearPCM;
   deviceFormat.mFormatFlags =  kLinearPCMFormatFlagIsSignedInteger
@@ -185,8 +173,8 @@ freqptr=&freqqqq;
 
 //inDesc.mSampleRate=rate;
 
-  /* Usar el formato nativo del dispositivo. El callback remuestrea desde la
-     frecuencia interna de ZEsarUX para no forzar el formato del monitor. */
+//parece que esto no hace nada
+deviceFormat.mSampleRate=FRECUENCIA_SONIDO;
 
 
 char *stereoptr;
@@ -262,9 +250,6 @@ stereoptr=&pepe;
     debug_printf( VERBOSE_ERR, "AudioUnitInitialize=%ld", (long)err );
     return 1;
   }
-
-  audiocoreaudio_resample_position=0;
-  audiocoreaudio_resample_initialized=0;
 
   /* Adjust relative processor speed to deal with adjusting sound generation
      frequency against emulation speed (more flexible than adjusting generated
@@ -602,36 +587,6 @@ void audiocoreaudio_fifo_read(uint8_t *destino,int longitud)
         }
 }
 
-/* Lee un frame estéreo de la FIFO. */
-int audiocoreaudio_fifo_read_frame(int *left,int *right)
-{
-        if (audiocoreaudio_fifo_return_size()<2) return 0;
-
-        *left=(signed char)audiocoreaudio_fifo_buffer[audiocoreaudio_fifo_read_position];
-        audiocoreaudio_fifo_read_position=audiocoreaudio_fifo_next_index(audiocoreaudio_fifo_read_position);
-
-        *right=(signed char)audiocoreaudio_fifo_buffer[audiocoreaudio_fifo_read_position];
-        audiocoreaudio_fifo_read_position=audiocoreaudio_fifo_next_index(audiocoreaudio_fifo_read_position);
-
-        return 1;
-}
-
-/* Prepara las dos muestras necesarias para la interpolación lineal. */
-int audiocoreaudio_resample_prepare(void)
-{
-        if (audiocoreaudio_resample_initialized) return 1;
-
-        if (!audiocoreaudio_fifo_read_frame(&audiocoreaudio_resample_current_left,
-                                             &audiocoreaudio_resample_current_right)) return 0;
-        if (!audiocoreaudio_fifo_read_frame(&audiocoreaudio_resample_next_left,
-                                             &audiocoreaudio_resample_next_right)) return 0;
-
-        audiocoreaudio_resample_position=0;
-        audiocoreaudio_resample_initialized=1;
-
-        return 1;
-}
-
 
 //puntero del buffer
 //el tema es que nuestro buffer tiene un tamanyo y mac os x usa otro de diferente longitud
@@ -645,47 +600,39 @@ OSStatus coreaudiowrite( void *inRefCon GCC_UNUSED,
                          UInt32 inNumberFrames,
                          AudioBufferList *ioData )
 {
+  int len = deviceFormat.mBytesPerFrame * inNumberFrames;
   uint8_t* out = ioData->mBuffers[0].mData;
-  UInt32 frame;
 
 
 
 	//si esta el sonido desactivado, enviamos silencio
 	if (audio_playing.v==0) {
-		memset(out,0,inNumberFrames*deviceFormat.mBytesPerFrame);
-		audiocoreaudio_resample_initialized=0;
+		uint8_t *puntero_salida;
+		puntero_salida = out;
+		while (len>0) {
+			*puntero_salida=0;
+			puntero_salida++;
+			len--;
+		}
 		//printf ("audio_playing.v=0 en audiocoreaudio\n");
 	}
 
 	else {
-		memset(out,0,inNumberFrames*deviceFormat.mBytesPerFrame);
 
-		for (frame=0;frame<inNumberFrames;frame++) {
-			int left,right;
-			double fraction;
+		//printf ("coreaudiowrite. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+		if (len>audiocoreaudio_fifo_return_size()) {
+			//debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiocoreaudio_fifo_return_size: %d",len,audiocoreaudio_fifo_return_size() );
+			//esto puede pasar con el detector de silencio
 
-			if (!audiocoreaudio_resample_prepare()) break;
+			//retornar solo lo que tenemos
+			//audiocoreaudio_fifo_read(out,audiocoreaudio_fifo_return_size() );
 
-			fraction=audiocoreaudio_resample_position;
-			left=audiocoreaudio_resample_current_left+
-				(int)((audiocoreaudio_resample_next_left-audiocoreaudio_resample_current_left)*fraction);
-			right=audiocoreaudio_resample_current_right+
-				(int)((audiocoreaudio_resample_next_right-audiocoreaudio_resample_current_right)*fraction);
+			return noErr;
+		}
 
-			out[frame*2]=(uint8_t)(signed char)left;
-			out[frame*2+1]=(uint8_t)(signed char)right;
 
-			audiocoreaudio_resample_position+=(double)FRECUENCIA_SONIDO/audiocoreaudio_output_sample_rate;
-			while (audiocoreaudio_resample_position>=1.0) {
-				audiocoreaudio_resample_position-=1.0;
-				audiocoreaudio_resample_current_left=audiocoreaudio_resample_next_left;
-				audiocoreaudio_resample_current_right=audiocoreaudio_resample_next_right;
-				if (!audiocoreaudio_fifo_read_frame(&audiocoreaudio_resample_next_left,
-				                                     &audiocoreaudio_resample_next_right)) {
-					audiocoreaudio_resample_initialized=0;
-					break;
-				}
-			}
+		else {
+			audiocoreaudio_fifo_read(out,len);
 		}
 
 	}
