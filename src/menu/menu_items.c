@@ -21660,11 +21660,7 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
                             (tbblue_force_disable_cooper.v ? ' ' : 'X' ));
         }
 
-        //Maquinas con posibilidad de turbo
-        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_TBBLUE || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM) {
-            menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_cpu_info,NULL,"CPU Info");
-            menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
-        }
+
 
 
         if (MACHINE_IS_MSX || MACHINE_IS_SVI) {
@@ -36468,6 +36464,18 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }
 
+
+        menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_info,NULL,"CPU Info");
+        menu_add_item_menu_add_flags(array_menu_debug,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
+            "Debug console","Consola Depuración","Consola Depuració");
+        menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
+        menu_add_item_menu_es_avanzado(array_menu_debug);
+
+
         if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
             if (MACHINE_IS_TSCONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"~~TSConf");
@@ -36524,11 +36532,6 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_debug);
         }
 
-        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
-            "Debug console","Consola Depuración","Consola Depuració");
-        menu_add_item_menu_se_cerrara(array_menu_debug);
-        menu_add_item_menu_genera_ventana(array_menu_debug);
-        menu_add_item_menu_es_avanzado(array_menu_debug);
 
         menu_add_item_menu_separator(array_menu_debug);
 
