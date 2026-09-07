@@ -10981,25 +10981,42 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
 
   //int posicion_sufijo=l-1;
 
+    int prefijo_hexa=0; //1=$, 2=0x
+    if (texto[0]=='$') prefijo_hexa=1;
+    else if (texto[0]=='0') {
+        if (texto[1]=='x' || texto[1]=='X') prefijo_hexa=2;
+    }
 
     char sufijo=texto[posicion_sufijo];
-    if (sufijo=='H' || sufijo=='h') {
+    if (sufijo=='H' || sufijo=='h' || prefijo_hexa) {
         //hexadecimal
         //Vamos a comprobar que todo lo que haya este en el rango 0..9 a..f A...F
         //Por que si no, un label que se llame por ejemplo "Research" pensara que es un valor hexadecimal, porque acaba en h
-        if (parse_string_is_hexa(texto,posicion_sufijo)) {
-            //quitamos sufijo y parseamos
-            texto[posicion_sufijo]=0;
-            value=strtol(texto, NULL, 16);
-            //volvemos a dejar sufijo tal cual
-            texto[posicion_sufijo]=sufijo;
+        int inicio_hexa=prefijo_hexa; //con esto me salto los caracteres del prefijo
+        int longitud=posicion_sufijo;
 
-                    *tipo_valor=TPF_HEXADECIMAL;
+        //Con prefijo se incluye el último carácter del número, pero se respeta
+        //el final detectado antes de un espacio o de un paréntesis de cierre.
+        if (prefijo_hexa) longitud=posicion_sufijo+1;
+
+        if (longitud>prefijo_hexa && parse_string_is_hexa(&texto[inicio_hexa],longitud-prefijo_hexa)) {
+            //quitamos sufijo y parseamos
+
+            if (!prefijo_hexa) texto[longitud]=0;
+            //printf("parse_string_to_number_get_type. evaluamos hexa de [%s]\n",&texto[inicio_hexa]);
+            value=strtol(&texto[inicio_hexa], NULL, 16);
+            //volvemos a dejar sufijo tal cual
+            if (!prefijo_hexa) texto[longitud]=sufijo;
+
+            *tipo_valor=TPF_HEXADECIMAL;
             return value;
+        }
+        else {
+            //printf("parse_string_is_hexa dice que no es hexa [%s]\n",&texto[inicio_hexa]);
         }
     }
 
-        if (sufijo=='%') {
+    if (sufijo=='%') {
         //binario
         //quitamos sufijo y parseamos
         texto[posicion_sufijo]=0;

@@ -380,10 +380,12 @@ int exp_par_is_number(char *texto,int *final)
     /*
     Expresiones admitidas:
     numero decimal: 0123456789
-    numero hexadecimal: 0123456789ABCDEFH
+    numero hexadecimal: 0123456789ABCDEFH ,  0xAAA, $AAA
     numero binario: 01%
     numero ascii "A" o 'a'
      */
+
+    //printf("Inicio exp_par_is_number. texto=[%s]\n",texto);
 
     //Primero probar ascii
     if (texto[0]=='"' || texto[0]=='\'') {
@@ -398,29 +400,55 @@ int exp_par_is_number(char *texto,int *final)
 
     //Tendra que empezar con numero o hexa, si no, error
     int esletra=0;
-    if (!exp_par_is_hexadigit(texto[0],&esletra)) {
-        //printf ("numero no empieza con hexadigito\n");
-        return -1;
+
+    int es_prefijo_hexa=0;
+
+
+
+    //Si empieza por 0x o $, es hexadecimal tambien
+    if (texto[0]=='$') es_prefijo_hexa=1;
+    else if (texto[0]=='0') {
+        if (texto[1]=='x' || texto[1]=='X') es_prefijo_hexa=2;
+    }
+
+    if (!es_prefijo_hexa) {
+
+
+        if (!exp_par_is_hexadigit(texto[0],&esletra)) {
+            //printf ("numero no empieza con hexadigito\n");
+            return -1;
+        }
+
     }
 
     //Parseamos hasta encontrar sufijo, si lo hay
-    int i;
-    for (i=0;texto[i];i++) {
+
+
+    int i=es_prefijo_hexa;
+    int hay_digito_hexa=0;
+
+    for (;texto[i];i++) {
         if (letra_minuscula(texto[i])=='h' || texto[i]=='%') {
+            if (es_prefijo_hexa && !hay_digito_hexa) return -1;
             *final=i+1;
             return 1;
         }
         if (!exp_par_is_hexadigit(texto[i],&esletra)) break;
+        hay_digito_hexa=1;
 
     }
 
     //final pero sin letra de sufijo
 
     //esletra?
-    if (esletra) {
-        //printf ("Habia letra hexa pero sin sufijo hexa. no es numero\n");
+    if (es_prefijo_hexa && !hay_digito_hexa) return -1;
+
+    if (esletra && !es_prefijo_hexa) {
+        //printf ("Habia letra hexa pero sin sufijo o prefijo hexa. no es numero. i=%d texto[i]=%d\n",i,texto[i]);
         return 0;
     }
+
+    //printf("Final exp_par_is_number i=%d texto[i]=%d\n",i,texto[i]);
 
     *final=i;
     return 1;

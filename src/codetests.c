@@ -880,6 +880,8 @@ void codetests_expression_parser(void)
 
 	codetests_expression_parser_expect("101%",5);
 	codetests_expression_parser_expect("AAB0H",0xaab0);
+    codetests_expression_parser_expect("0xaab0",0xaab0);
+    codetests_expression_parser_expect("$aab0",0xaab0);
 	codetests_expression_parser_expect("\"A\"",'A');
 	codetests_expression_parser_expect("'b'",'b');
 
@@ -924,6 +926,30 @@ void codetests_expression_parser(void)
 
 	codetests_expression_parser_expect("10/2",5);
 	codetests_expression_parser_expect("4+10/2",9);
+    codetests_expression_parser_expect("4+AH/2",9);
+    codetests_expression_parser_expect("4+$A/2",9);
+    codetests_expression_parser_expect("4+0xA/2",9);
+
+    codetests_expression_parser_expect("64+20/2",74);
+    codetests_expression_parser_expect("40H+20/2",74);
+    codetests_expression_parser_expect("40H+14H/2",74);
+    codetests_expression_parser_expect("40H+0x14/2",74);
+    codetests_expression_parser_expect("40H+$14/2",74);
+    codetests_expression_parser_expect("0x40+$14/2",74);
+    codetests_expression_parser_expect("$40+$14/2",74);
+    codetests_expression_parser_expect("$40+20/2",74);
+
+    codetests_expression_parser_expect("32000+20000/2",42000);
+    codetests_expression_parser_expect("0x7d00+0x4e20/2",42000);
+    codetests_expression_parser_expect("0x7d00+20000/2",42000);
+    codetests_expression_parser_expect("$7d00+20000/2",42000);
+    codetests_expression_parser_expect("$7d00+$4e20/2",42000);
+    codetests_expression_parser_expect("$7d00+20000/2",42000);
+    codetests_expression_parser_expect("32000+$4e20/2",42000);
+    codetests_expression_parser_expect("32000+0x4e20/2",42000);
+    codetests_expression_parser_expect("32000+0x4e20/2H",42000);
+    codetests_expression_parser_expect("32000+0x4e20/0x2",42000);
+    codetests_expression_parser_expect("32000+0x4e20/$2",42000);
 
 	//Comparadores
 	codetests_expression_parser_expect("1=1",1);

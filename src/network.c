@@ -1432,6 +1432,7 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
         }
         else {
             next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
+            //printf("zsock linea: [%s]\n",buffer_linea);
             total_leidos -=leidos;
 
             //si linea primera http code
@@ -1441,6 +1442,7 @@ char *zsock_http_skip_headers(char *mem,int total_leidos,int *http_code,char *re
                 if (existe!=NULL) {
                     //Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF
                     *http_code=parse_string_to_number(&existe[1]);
+                    //printf("http code: %d\n",http_code);
                     if ((*http_code)==302) redireccion=1;
                 }
             }
