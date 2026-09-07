@@ -1214,7 +1214,7 @@ void codetests_zeng(void)
 }
 
 
-void codetests_https()
+void codetests_https(void)
 {
 	//http://www.zx81.nl/files.html
 	int http_code;
@@ -1285,8 +1285,91 @@ void codetests_https()
 
 }
 
+void codetests_redirect(void)
+{
+	//http://www.zx81.nl/files.html
+	int http_code;
+	char *mem;
+	char *orig_mem;
+	char *mem_after_headers;
+	int total_leidos;
+	//int retorno=zsock_http("www.google.es","/",&http_code,&mem,&total_leidos,&mem_after_headers,0,"",1);
 
-void codetests_https_sni()
+	char redirect_url[NETWORK_MAX_URL]="";
+
+	int retorno=zsock_http("httpbin.org","/redirect-to?url=https%3A%2F%2Fexample.com",
+				&http_code,&mem,&total_leidos,&mem_after_headers,1,"",1,redirect_url,0,"");
+
+	if (retorno<0) {
+        printf ("Error zsock_http: %s\n",z_sock_get_error(retorno));
+        if (mem!=NULL) printf ("Response\n%s\n",mem);
+		exit(1);
+	}
+
+	orig_mem=mem;
+
+	if (retorno==0 && mem!=NULL) printf ("Response\n%s\n",mem);
+
+
+
+	//leer linea a linea hasta fin cabecera
+	char buffer_linea[1024];
+	int i=0;
+	int salir=0;
+	do {
+		int leidos;
+		char *next_mem;
+		if (*mem=='\n') {
+			//esto puede que no pase, linea con solo salto linea tendra un cr antes,
+			//por tanto la deteccion de esa linea se leera abajom cuando buffer linea vacia
+			salir=1;
+			mem++;
+			printf ("salir con salto linea inicial\n");
+		}
+		else {
+			next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
+			total_leidos -=leidos;
+
+			if (buffer_linea[0]==0) {
+				salir=1;
+				printf ("salir con linea vacia final\n");
+				mem=next_mem;
+			}
+			else {
+				printf ("cabecera %d: %s\n",i,buffer_linea);
+				i++;
+				mem=next_mem;
+			}
+
+			if (total_leidos<=0) salir=1;
+		}
+	} while (!salir);
+
+	printf ("respuesta despues cabeceras:\n%s\n",mem);
+
+
+	if (orig_mem!=NULL) free (orig_mem);
+
+	//peticion saltando cabeceras
+	//printf ("Request skipping headers\n");
+	//retorno=zsock_http("www.google.es","/",&http_code,&mem,&total_leidos,&mem_after_headers,1,"",1);
+	//if (mem_after_headers!=NULL) printf ("Answer after headers:\n%s\n",mem_after_headers);
+
+	//if (mem!=NULL) free (mem);
+
+
+    printf("Redirect url: [%s]\n",redirect_url);
+
+    if (strcmp("https://example.com",redirect_url)) {
+        printf("Error invalid redirection\n");
+        exit(1);
+    }
+
+
+}
+
+
+void codetests_https_sni(void)
 {
 	//http://www.zx81.nl/files.html
 	int http_code;
@@ -3102,6 +3185,8 @@ void codetests_main(int main_argc,char *main_argv[])
 	//codetests_https();
 
     //codetests_https_sni();
+
+    //codetests_redirect();
 
 	//int r=z_sock_close_connection(44);
 	//if (r<0) printf ("Error: %s\n",z_sock_get_error(r));
