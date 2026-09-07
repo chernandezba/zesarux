@@ -2497,6 +2497,8 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 void esxdos_debug_run(void)
 {
 
+    debug_printf (VERBOSE_DEBUG,"ESXDOS call. Return address: %04XH",peek_word_no_time(reg_sp));
+
 	//Ver si se usa IX o HL
 
 	debug_registro_parametros_hl_ix=&reg_hl;
@@ -2556,7 +2558,8 @@ void esxdos_debug_run(void)
 
 		case ESXDOS_RST8_F_OPEN:
 			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s] PTR to file: %04XH",reg_b,buffer_fichero,debug_registro_parametros_hl_ix);
+			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s] PTR to file: %04XH",
+                reg_b,buffer_fichero,*debug_registro_parametros_hl_ix);
 		break;
 
 		case ESXDOS_RST8_F_CLOSE:
