@@ -155,10 +155,21 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
 
 
-QL-Emulación CST Thor, Q40, Q60, Q68
+-driver audio que sea archivo raw. esto complementaria el output a audio del menu
+pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
+
 
 -Apps calculadora, reloj
 
+
+----
+
+Pendientes ahora
+
+***QL*****
+
+
+QL-Emulación CST Thor, Q40, Q60, Q68
 
 
 
@@ -198,6 +209,8 @@ QL-En features ql agregar soporte mdv entero, img, win
 
 
 
+***Baseconf*****
+
 -zxevo baseconf rom buena:
 md5sum zxevo_baseconf.rom
 d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
@@ -225,13 +238,16 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 -> parece que baseconf no. quiza eso es de atm
 
 
--driver audio que sea archivo raw. esto complementaria el output a audio del menu
-pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
+***Clive*****
 
 -Clive
 *si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
 *cuando se va a dormir si estoy en alguna ventana, esa ventana pierde la ventana de titulo normal
 *quitar debug prints?
+
+
+
+***Spectrum Next*****
 
 -tbblue funciona:
 
@@ -247,22 +263,17 @@ equivalente:
 Y con snapshot de pogie (asi no parece que funcione!):
 ./zesarux --configfile codex_additional/configfile_tbblue_pruebas codex_additional/testpogie.zsf
 
+-El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
+>revisar que al cargar .snx desde quickload tambien soporte lo del file handle
 
+
+***CPU info*****
 
 -cpu info:
 *algo mas pendiente?
 
 
+***Monopoly*****
+
 -Monopoly poner nombre de david si no está
 
-
--El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
->revisar que al cargar .snx desde quickload tambien soporte lo del file handle
-
-
-
--permitir en mi parser de numero el 0x o $ para valores hexadecimales
-ok?
-
-
--zsock_http_skip_headers quiza no gestiona bien los redirects
