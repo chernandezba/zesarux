@@ -155,7 +155,7 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.
 
 
--Emulación CST Thor, Q40, Q60, Q68
+QL-Emulación CST Thor, Q40, Q60, Q68
 
 -Apps calculadora, reloj
 
@@ -163,14 +163,14 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 
 
 
--poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
+QL-poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
 -> tiene sentido?
 
 
--si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
+QL-si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
--Qsound AY
+QL-Qsound AY
 *hacer resto de funciones de rom traps de qsound no solo write all
 *oldtower_m a veces se cuelga al iniciar
 *opciones de config file: de momento solo qsound enabled, faltan settings traps etc (necesarios?)
@@ -178,11 +178,11 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 *Incluir alguna demo de QL en extras?
 
 
-- poner en features características nuevas de QL: mouse, qsound etc etc
+QL- poner en features características nuevas de QL: mouse, qsound etc etc
 
 
 
--soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
+QL -soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
 Arriba → F4
 Abajo → F2
 Izquierda → F1
@@ -191,10 +191,10 @@ Disparo → F5
 El teclado ya emula todo esto
 Lo unico que tendria sentido es que al conectar un joystick por usb haga esas funciones de cursores, o F1-F5
 
--Rabenstein. hay un img no admitido
+QL-Rabenstein. hay un img no admitido
 
 
--En features ql agregar soporte mdv entero, img, win
+QL-En features ql agregar soporte mdv entero, img, win
 
 
 
@@ -236,15 +236,16 @@ pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con -
 -tbblue funciona:
 
 NextZXOS: 2.06H
-./zesarux --noconfigfile --mmc-file tbblue-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
+./zesarux --noconfigfile --mmc-file codex_additional/tbblue-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
 
 -tbblue no funciona (ya si! :) :
 
 NextZXOS: 2.09
-./zesarux --noconfigfile --mmc-file tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
+./zesarux --noconfigfile --mmc-file codex_additional/tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
 equivalente:
-./zesarux --configfile configfile_tbblue_pruebas
-
+./zesarux --configfile codex_additional/configfile_tbblue_pruebas
+Y con snapshot de pogie (asi no parece que funcione!):
+./zesarux --configfile codex_additional/configfile_tbblue_pruebas codex_additional/testpogie.zsf
 
 
 
@@ -253,3 +254,15 @@ equivalente:
 
 
 -Monopoly poner nombre de david si no está
+
+
+-El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
+>revisar que al cargar .snx desde quickload tambien soporte lo del file handle
+
+
+
+-permitir en mi parser de numero el 0x o $ para valores hexadecimales
+ok?
+
+
+-zsock_http_skip_headers quiza no gestiona bien los redirects

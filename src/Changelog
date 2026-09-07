@@ -10,6 +10,7 @@ Added device icons: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 Added support for triggering F-function actions from joystick (Reset CPU, Open window, NMI, etc). Also, joystick events "Quicksave", "Rewind", "FForward" have been removed and can be triggered now as actions
 Allow to select output file from the External Audio Source window
 Added another toy "Clive" to Procrastinate menu
+Allow preffix $ and 0x for hexadecimal values
 
 * Improvements:
 

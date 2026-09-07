@@ -10,6 +10,7 @@ Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, su
 Agregado soporte para disparar acciones de tipo Tecla-F desde el joystick (Reset CPU, Abrir ventana, NMI, etc). También, los eventos de joystick "Quicksave", "Rewind", "FForward" han sido eliminados y pueden ser disparados ahora como acciones
 Permitir seleccionar archivo de salida desde la ventana de Fuente de sonido Externa
 Agregado otro juguete "Clive" a menú Procrastinar
+Permitir prefijos $ y 0x para valores hexadecimales
 
 * Mejoras:
 

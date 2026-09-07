@@ -877,6 +877,12 @@ void codetests_expression_parser(void)
 
 	codetests_expression_parser_expect("0H",0);
 	codetests_expression_parser_expect("1H",1);
+    codetests_expression_parser_expect("AH",10);
+    codetests_expression_parser_expect("0xA",10);
+    codetests_expression_parser_expect("$A",10);
+    codetests_expression_parser_expect("C123H",49443);
+    codetests_expression_parser_expect("0xC123",49443);
+    codetests_expression_parser_expect("$C123",49443);
 
 	codetests_expression_parser_expect("101%",5);
 	codetests_expression_parser_expect("AAB0H",0xaab0);
