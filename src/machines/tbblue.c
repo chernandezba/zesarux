@@ -4969,7 +4969,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             z80_byte maquina=(tbblue_registers[3])&7;
 
             //Generar NMI del Multiface interno en el flanco de subida del bit 3
-            if (value&8 && (last_register_2&8)==0 && maquina!=0 && maquina!=7) {
+            if (value&8 && (last_register_2&8)==0 && (tbblue_registers[6]&8) &&
+                maquina!=0 && maquina!=7) {
                 /*
                  * La peticion se ignora si DivMMC o Multiface ya controlan
                  * el bus. NextZXOS usa esta NMI para arrancar snapshots SNX.
@@ -8905,6 +8906,11 @@ void tbblue_retn(void)
     //desmapear divmmc cuando salta un retn
     //printf("--Unmapping divmmc from retn\n");
     diviface_paginacion_automatica_activa.v=0;
+
+    //El Multiface interno del Next deja de controlar la memoria al terminar la NMI
+    if (multiface_enabled.v && multiface_switched_on.v) {
+        multiface_unmap_memory();
+    }
 }
 
 
