@@ -330,6 +330,7 @@ extern char *bitmap_button_ext_desktop_other_clive_talk5[];
 extern char *bitmap_button_ext_desktop_other_clive_talk6[];
 extern char *bitmap_button_ext_desktop_other_clive_talk7[];
 extern char *bitmap_button_ext_desktop_other_clive_talk8[];
+extern char *bitmap_button_ext_desktop_other_clive_mute[];
 
 extern char *bitmap_button_ext_desktop_debugcpu_info[];
 extern char *bitmap_button_ext_desktop_cpu_z80[];

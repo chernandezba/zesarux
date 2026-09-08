@@ -10792,7 +10792,7 @@ void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
         char string_esxdos_traps_root_dir_shown[18];
 
 
-        menu_add_item_menu_inicial_format(&array_menu_esxdos_traps,MENU_OPCION_NORMAL,menu_storage_esxdos_traps_emulation,NULL,"[%c] ~~Enabled", (esxdos_handler_enabled.v ? 'X' : ' ' ));
+        menu_add_item_menu_inicial_format(&array_menu_esxdos_traps,MENU_OPCION_NORMAL,menu_storage_esxdos_traps_emulation,NULL,"[%c] ~~ESXDOS handler", (esxdos_handler_enabled.v ? 'X' : ' ' ));
         menu_add_item_menu_shortcut(array_menu_esxdos_traps,'e');
         menu_add_item_menu_tooltip(array_menu_esxdos_traps,"Enable ESXDOS handler");
         menu_add_item_menu_ayuda(array_menu_esxdos_traps,"Enable ESXDOS handler");
@@ -10815,9 +10815,14 @@ void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
 
         }
 
+        menu_add_item_menu_separator(array_menu_esxdos_traps);
+
 
         menu_add_item_menu_format(array_menu_esxdos_traps,MENU_OPCION_NORMAL,NULL,NULL,"[%c] ESXDOS Debug",
             (esxdos_debug.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_esxdos_traps,"Enable ESXDOS Debug");
+        menu_add_item_menu_ayuda(array_menu_esxdos_traps,"Enable ESXDOS Debug. You can show call parameters on debug console, "
+            "you don't need to enable esxdos handler to do this");
         menu_add_item_menu_opcion_conmuta(array_menu_esxdos_traps,&esxdos_debug);
 
 
@@ -10826,7 +10831,7 @@ void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_esxdos_traps);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&esxdos_traps_opcion_seleccionada,&item_seleccionado,array_menu_esxdos_traps,"ESXDOS handler" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&esxdos_traps_opcion_seleccionada,&item_seleccionado,array_menu_esxdos_traps,"ESXDOS" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

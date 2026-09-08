@@ -42939,11 +42939,11 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_esxdos_traps,NULL,"~~ESXDOS Handler");
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_esxdos_traps,NULL,"~~ESXDOS");
             menu_add_item_menu_shortcut(array_menu_storage,'e');
             menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_ESXDOS_HANDLER));
             menu_add_item_menu_ayuda(array_menu_storage,"Enables emulator to handle ESXDOS calls and "
-                "use local files from your computer instead of using from inside the mmc/ide virtual file.\n"
+                "use local files from your computer instead of using from inside the mmc/ide virtual file; also you can enable ESXDOS debug calls.\n"
                 "You can choose to have also "
                 "enabled mmc/ide virtual file or not, you can use one of the settings or both. In case of using both, supported esxdos handler "
                 "functions are managed with it; if not, they will be handled by the usual mmc/ide virtual file firmware (usually esxdos).\n"
@@ -44480,7 +44480,8 @@ enum clive_game_states {
     CLIVE_TALKING,
     CLIVE_TONGUE,
     CLIVE_WINK,
-    CLIVE_SING
+    CLIVE_SING,
+    CLIVE_MUTE_UNMUTE
 };
 
 zxvision_window *menu_clive_game_window;
@@ -44491,6 +44492,9 @@ enum clive_game_states menu_clive_game_state=CLIVE_NORMAL;
 int menu_clive_game_tiempo_desde_ultimo_estado=0;
 
 int menu_clive_game_current_machine_sinclair=0;
+
+
+int menu_clive_esta_mudo=0;
 
 //Para saber cuando se cambia
 int menu_clive_game_previous_machine=-1;
@@ -44643,6 +44647,9 @@ void menu_clive_game_remove_talking_text(void)
 
 int menu_clive_puede_hablar(void)
 {
+    if (menu_clive_esta_mudo) return 0;
+
+
     //Si hay alguna ventana encima mio, no puede hablar
     if (zxvision_any_window_over_me(menu_clive_game_window)) return 0;
 
@@ -44766,6 +44773,13 @@ void menu_clive_game_handle_timers(void)
             }
         break;
 
+        case CLIVE_MUTE_UNMUTE:
+            //1 segundo maximo como mudo o no mudo
+            if (tiempo_ultimo_estado>1000) {
+                menu_clive_game_state=CLIVE_NORMAL;
+            }
+        break;
+
         default:
         break;
 
@@ -44800,7 +44814,9 @@ void menu_clive_game_handle_state_changes(void)
     enum clive_game_states menu_clive_game_state_antes=menu_clive_game_state;
 
     //Si se ha movido respecto a direccion anterior y no estamos en estado corazones ni triste ni hablando
-    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) && menu_clive_game_state!=CLIVE_HEART && menu_clive_game_state!=CLIVE_SAD && menu_clive_game_state!=CLIVE_TALKING) {
+    if ((menu_clive_game_last_mouse_x!=mouse_x || menu_clive_game_last_mouse_y!=mouse_y) &&
+        menu_clive_game_state!=CLIVE_HEART && menu_clive_game_state!=CLIVE_SAD &&
+        menu_clive_game_state!=CLIVE_TALKING && menu_clive_game_state!=CLIVE_MUTE_UNMUTE) {
         menu_clive_game_state=CLIVE_MOVED;
         menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
     }
@@ -44818,7 +44834,8 @@ void menu_clive_game_handle_state_changes(void)
     }
 
     //Si se ha pulsado el raton dentro de la ventana, sacar la lengua
-    if (mouse_left) {
+    /*
+    if (mouse_left && !mouse_is_double_clicking) {
         if (zxvision_mouse_en_ventana(menu_clive_game_window) && menu_mouse_y!=0) {
             //Si estaba hablando, dejar de hablar
             menu_clive_game_remove_talking_text();
@@ -44827,16 +44844,41 @@ void menu_clive_game_handle_state_changes(void)
             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
         }
     }
+    */
 
-    //Si se ha pulsado el boton derecho del raton dentro de la ventana, guiñar el ojo
+    //Si se ha pulsado el boton derecho del raton dentro de la ventana, guiñar el ojo o sacar la lengua, random 50%
     if (mouse_right) {
-        if (zxvision_mouse_en_ventana(menu_clive_game_window) && menu_mouse_y!=0) {
+        if (zxvision_mouse_en_ventana(menu_clive_game_window) && menu_mouse_y!=0 && menu_clive_game_state!=CLIVE_WINK && menu_clive_game_state!=CLIVE_TONGUE) {
             //Si estaba hablando, dejar de hablar
             menu_clive_game_remove_talking_text();
 
-            menu_clive_game_state=CLIVE_WINK;
+            if ((util_get_random_enhanced()%1000)<500) {
+                menu_clive_game_state=CLIVE_WINK;
+            }
+            else {
+                menu_clive_game_state=CLIVE_TONGUE;
+            }
+
             menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
         }
+    }
+
+    if (zxvision_mouse_en_ventana(menu_clive_game_window) && mouse_is_double_clicking) {
+        printf("Double click on Clive %d\n",contador_segundo_infinito);
+
+
+        //TODO: esto lo deberia hacer zxvision.c. Pero si no lo pongo a 0, se queda siempre activo
+        //hasta cambiar de ventana o hacer un click normal
+        mouse_is_double_clicking=0;
+
+        menu_clive_esta_mudo ^=1;
+
+        printf("Clive mudo o no: %d\n",menu_clive_esta_mudo);
+
+
+        menu_clive_game_state=CLIVE_MUTE_UNMUTE;
+        menu_clive_game_tiempo_desde_ultimo_estado=contador_segundo_infinito;
+
     }
 
     int hay_musica_en_el_chip=0;
@@ -45007,6 +45049,16 @@ void menu_clive_game_draw_clive(void)
 
         case CLIVE_WINK:
             puntero_bitmap=bitmap_button_ext_desktop_other_clive_wink;
+        break;
+
+        case CLIVE_MUTE_UNMUTE:
+            if (menu_clive_esta_mudo) {
+                puntero_bitmap=bitmap_button_ext_desktop_other_clive_mute;
+            }
+            else {
+                //Que se vea la boca abierta y se ha salido del mudo
+                puntero_bitmap=bitmap_button_ext_desktop_other_clive_talk6;
+            }
         break;
 
         case CLIVE_TALKING:

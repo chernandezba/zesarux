@@ -8999,6 +8999,37 @@ char *bitmap_button_ext_desktop_other_clive_tongue[EXT_DESKTOP_BUTTONS_ANCHO]={
     "        xxxxxxxxx         " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_other_clive_mute[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "         xxxxxxx          ",     //0
+    "       xx.......xx        ",
+    "      x...........x       ",
+    "     x....x........x      ",
+    "    xr.......x.....rx     ",
+    "   xr...............rx    ",
+    "   xr.......x.......rx    ",
+    "   xr..xxx.....xxx..rx    ",   //7
+    "   xr.x...........x.rx    ",   //8
+    "   xr..xxxx...xxxx..rx    ",
+    "  xxxxxWWWWxxxWWWWxxxxx   ",	//10
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xWWWWx.xWWWWx...x   ",
+    "  x...xxxxWx.xxxxWx...x   ",
+    "   xr..xxxx.x.xxxx..rx    ",
+    "    xr......x......rx     ",
+    "    xr......xx.....rx     ",
+    "    xr.............rx     ",
+    "    xr.....rrr.....rx     ",
+    "    xr..rxrxrxrxr..rx     ",    //19
+    "    xrrrWxWxWxWxWrrrx     ",    //20
+    "    xrrrrxrxrxrxrrrrx     ",
+    "    xrrrrrrrrrrrrrrrx     ",
+    "     xrrrrrrrrrrrrrx      ",
+    "      xxrrrrrrrrrxx       ",
+    "        xxxxxxxxx         " 	 //25
+};
+
 char *bitmap_button_ext_desktop_other_clive_angel[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "     YYYYxxxxxxxYYYY      ",     //0
