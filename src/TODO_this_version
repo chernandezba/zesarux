@@ -247,7 +247,7 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 * fat boot: lee del disco ide o del mmc archivos hobbeta (extensiones $C etc). si hay mas de uno, aparece un selector de archivos para cargar
 * tr dos boot: inicia el disco virtual mapeado (trd o scl) desde r.service->image to ramdisk o bien leyendo del betadisk emulation de ZEsarUX
 * tape load: si emu tape load on, abre selector de archivos desde ide o mmc para seleccionar un tap. si emu tape load off, lee de cinta puerto feh o emulada por ZEsarUX
-* hdd boot: que hace?? se suele resetear
+* hdd boot: para iniciar sistemas como iS-DOS/TASiS
 * cd boot: que hace??
 
 ***Clive*****

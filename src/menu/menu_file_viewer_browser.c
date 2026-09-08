@@ -5687,7 +5687,17 @@ void menu_file_hobeta_browser_show(char *filename)
  	sprintf(buffer_texto,"Extension: %c",c);
  	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+    sprintf(buffer_texto,"Parameter 1:             %d",buffer_cabecera[9]+256*buffer_cabecera[10]);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
+    sprintf(buffer_texto,"Length (real):           %d",buffer_cabecera[11]+256*buffer_cabecera[12]);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    sprintf(buffer_texto,"Length (sector-aligned): %d",buffer_cabecera[13]+256*buffer_cabecera[14]);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    sprintf(buffer_texto,"Checksum: %04XH",buffer_cabecera[15]+256*buffer_cabecera[16]);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 	texto_browser[indice_buffer]=0;
 	zxvision_generic_message_tooltip("Hobeta file browser" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_browser);
