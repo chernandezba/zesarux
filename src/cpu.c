@@ -2111,6 +2111,11 @@ void set_machine_params(void)
         if (timex_video_emulation.v) disable_timex_video();
     }
 
+    //Baseconf no tiene modo Timex
+    if (MACHINE_IS_BASECONF) {
+        if (timex_video_emulation.v) disable_timex_video();
+    }
+
     //Quitar mensajes de footer establecidos con autoselectoptions.c
     //Desactivado. Esto provoca:
     //Al cambiar de maquina, si hay un mensaje pendiente, seguira desplazandose hasta que acabe

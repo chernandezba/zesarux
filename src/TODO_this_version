@@ -238,12 +238,19 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 -> parece que baseconf no. quiza eso es de atm
 
 
+-indicar como:
+* cargar un trd desde la SD: R Service, Image to ramdisk. ...
+* cargar un trd sin SD, mediante betadisk emulation de ZEsarUX
+* cargar un tap desde la SD. L emu tape load on. T Tape load. Seleccionar tape
+* cargar un tap sin SD, mediante tape emulation de ZEsarUX
+
 ***Clive*****
 
 -Clive
 *si salta un tooltip de icono, que deje de hablar (pasar a estado cara normal), o no?
 *cuando se va a dormir si estoy en alguna ventana, esa ventana pierde la ventana de titulo normal
 *quitar debug prints?
+ok *doble click lo silencia, para que no hable en ningun momento
 
 
 
@@ -298,3 +305,7 @@ ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Palettes/coreimage.npl] Str
 
 PC=95a1h cargar pantalla error
 necesita core 3.2.0 o inferior!
+
+---
+
+desactivar timex al entrar en baseconf

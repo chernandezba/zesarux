@@ -58,6 +58,7 @@
 #include "pd765.h"
 #include "tsconf.h"
 #include "tbblue.h"
+#include "baseconf.h"
 
 #include "scrstdout.h"
 #include "settings.h"
@@ -767,6 +768,7 @@ void core_spectrum_handle_interrupts(void)
         }
 
         else {
+            if (MACHINE_IS_BASECONF) baseconf_handle_nmi();
             push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
         }
 

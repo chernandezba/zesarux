@@ -1172,11 +1172,14 @@ z80_byte fetch_opcode_spectrum(void)
 
 z80_byte fetch_opcode_baseconf(void)
 {
+	z80_byte opcode;
 #ifdef EMULATE_VISUALMEM
 	set_visualmemopcodebuffer(reg_pc);
 #endif
 	baseconf_pre_opcode_fetch(reg_pc);
-	return peek_byte_no_time(reg_pc);
+	opcode=peek_byte_no_time(reg_pc);
+	baseconf_post_opcode_fetch(&opcode);
+	return opcode;
 }
 
 z80_byte fetch_opcode_ace(void)
@@ -2960,8 +2963,6 @@ void poke_byte_no_time_baseconf(z80_int dir,z80_byte valor)
 
 		z80_byte *puntero;
 		puntero=baseconf_return_segment_memory(dir);
-
-
 		//if (dir<16384) {
 	//return;
 
@@ -7441,7 +7442,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         /* BaseConf configuration port is even, so it must be decoded
            before the generic Spectrum ULA handler. */
-        if (MACHINE_IS_BASECONF && (puerto_l==0xbe || puerto_l==0xbd)) {
+        /* BaseConf 2014 lee la configuración en xxBE; las revisiones
+           posteriores la leen en xxBD. Se conservan ambas interfaces. */
+        if (MACHINE_IS_BASECONF && (puerto_l==0xbd || puerto_l==0xbe)) {
             return baseconf_read_config_port(puerto_h);
         }
 
@@ -7590,10 +7593,6 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
 
 			if (!(baseconf_last_port_eff7&0x80)) return 0xff;
-			if (zxevo_last_port_dff7==0xed)
-				printf("BaseConf CMOS EDH read %02XH through BFF7H: Emu tape=%d Autostart=%d\n",
-				       zxevo_nvram[0xed],(zxevo_nvram[0xed]&0x40) ? 1 : 0,
-				       (zxevo_nvram[0xed]&4) ? 1 : 0);
 			return baseconf_read_cmos();
 		}
 
@@ -7606,10 +7605,6 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 		if (puerto==0xbef7 /*&& baseconf_shadow_ports_available()*/ ) {
 			//printf ("baseconf reading nvram register %02XH\n",zxevo_last_port_dff7);
 
-			if (zxevo_last_port_dff7==0xed)
-                                printf("BaseConf CMOS EDH read %02XH: Emu tape=%d Autostart=%d\n",
-                                       zxevo_nvram[0xed],(zxevo_nvram[0xed]&0x40) ? 1 : 0,
-                                       (zxevo_nvram[0xed]&4) ? 1 : 0);
 			return baseconf_read_cmos();
 		}
 

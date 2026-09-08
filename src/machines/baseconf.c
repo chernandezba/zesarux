@@ -86,6 +86,7 @@ static const z80_int baseconf_palette_default[16]={
 static z80_byte baseconf_border_colour;
 static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
+static int baseconf_nmi_entry_pending;
 static int baseconf_nmi_exit_countdown;
 static z80_byte baseconf_cmos_extension_type;
 static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
@@ -116,24 +117,12 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
     int segmento=direccion>>14;
 
     /* El emulador de cinta de EVO instala un breakpoint hardware
-        (normalmente #0556, entrada del cargador de la ROM de 48K). Su
-        servicio NMI reside en la página RAM FF y no usa traps de cinta. */
+        (normalmente #0556, entrada del cargador de la ROM de 48K). La
+        página RAM FF se conecta al aceptar la NMI, después de terminar
+        la instrucción cuyo M1 disparó el breakpoint. */
     if (!baseconf_nmi_active && (baseconf_last_port_bf&0x10) &&
         direccion==baseconf_nmi_breakpoint) {
-            printf("BaseConf hardware breakpoint hit at %04XH: entering RAM FF NMI service\n",
-                    direccion);
-            baseconf_nmi_active=1;
-            baseconf_nmi_exit_countdown=0;
-            baseconf_set_memory_pages();
             generate_nmi();
-    }
-
-    if (baseconf_nmi_active && baseconf_nmi_exit_countdown) {
-            baseconf_nmi_exit_countdown--;
-            if (!baseconf_nmi_exit_countdown) {
-                    baseconf_nmi_active=0;
-                    baseconf_set_memory_pages();
-            }
     }
 
     /* A9 permite salir de DOS cuando la ejecución ha pasado a RAM. */
@@ -158,9 +147,47 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
             betadisk_handle_trdos_traps();
 }
 
+void baseconf_post_opcode_fetch(z80_byte *opcode)
+{
+    /* BaseConf inyecta por hardware un NOP en 0066 y conecta la página FF
+        después de ese primer M1. El opcode de 0067 ya se obtiene de la
+        página residente. */
+    if (baseconf_nmi_entry_pending) {
+            *opcode=0;
+            baseconf_nmi_entry_pending=0;
+            baseconf_nmi_active=1;
+            baseconf_set_memory_pages();
+            return;
+    }
+
+    /* OUT (#BE),A solicita retirar la página FF después del segundo M1.
+        RETN aporta exactamente los dos fetches ED y 45. */
+    if (baseconf_nmi_active && baseconf_nmi_exit_countdown) {
+            baseconf_nmi_exit_countdown--;
+            if (!baseconf_nmi_exit_countdown) {
+                    baseconf_nmi_active=0;
+                    baseconf_set_memory_pages();
+            }
+    }
+}
+
+void baseconf_handle_nmi(void)
+{
+    /* Tanto la tecla NMI como el breakpoint hardware preparan la entrada al
+        servicio residente. El mapeo se hará tras leer el NOP de 0066. */
+    baseconf_nmi_entry_pending=1;
+    baseconf_nmi_exit_countdown=0;
+}
+
 int baseconf_memory_write_allowed(z80_int direccion)
 {
     int mapa=(puerto_32765&16) ? 4 : 0;
+
+    /* La protección read-only de #xBF7 no actúa en la primera ventana
+        cuando EFF7.bit3 o una NMI han conectado directamente una RAM. */
+    if (direccion<0x4000 &&
+        ((baseconf_last_port_eff7&8) || baseconf_nmi_active)) return 1;
+
     return (baseconf_mmu_flags[mapa+(direccion>>14)]&32)==0;
 }
 
@@ -169,10 +196,9 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
     int i;
     z80_byte value=0;
 
-    if (!baseconf_shadow_ports_available()) return 0xff;
-
     if ((puerto_h&0xf8)==0) {
-            return baseconf_mmu_pages[puerto_h&7]^255;
+            value=baseconf_mmu_pages[puerto_h&7]^255;
+            return value;
     }
 
     switch (puerto_h) {
@@ -198,6 +224,9 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
                 return baseconf_nmi_breakpoint&0xff;
         case 0x11:
                 return baseconf_nmi_breakpoint>>8;
+        case 0x12:
+                for (i=7;i>=0;i--) value=(value<<1) | ((baseconf_mmu_flags[i]>>5)&1);
+                return value;
         default:
                 return 0xff;
     }
@@ -801,6 +830,7 @@ void baseconf_hard_reset(void)
     baseconf_border_colour=0;
     baseconf_nmi_breakpoint=0;
     baseconf_nmi_active=0;
+    baseconf_nmi_entry_pending=0;
     baseconf_nmi_exit_countdown=0;
     baseconf_cmos_extension_type=0;
     baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
@@ -903,22 +933,19 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
 
 
-        /* El firmware EVO reciente escribe los registros adicionales de
-           configuración mediante xxBD. 13BD marca las unidades A-D que son RAM-disk. */
-        if ((puerto&0x00ff)==0xbd && baseconf_shadow_ports_available() &&
-            (((puerto_h&0xfc)==0x10) || puerto_h<=1)) {
+        /* La revisión de 2014 usa 00BD/01BD para el breakpoint. Las
+           revisiones nuevas lo trasladan a 10BD/11BD y añaden 13BD para
+           marcar las unidades RAM-disk. Se admiten ambas interfaces. */
+        if ((puerto&0x00ff)==0xbd &&
+            ((puerto_h&0xfc)==0x10 || puerto_h<=1)) {
                 baseconf_last_port_bd=valor;
-                int extended_register=((puerto_h&0xfc)==0x10) ?
+                int extended_register=(puerto_h&0xfc)==0x10 ?
                                       (puerto_h&3) : puerto_h;
                 if (extended_register==0) {
                         baseconf_nmi_breakpoint=(baseconf_nmi_breakpoint&0xff00)|valor;
-                        printf("BaseConf NMI breakpoint low=%02XH, address=%04XH\n",
-                               valor,baseconf_nmi_breakpoint);
                 }
                 else if (extended_register==1) {
                         baseconf_nmi_breakpoint=(baseconf_nmi_breakpoint&0x00ff)|(valor<<8);
-                        printf("BaseConf NMI breakpoint high=%02XH, address=%04XH\n",
-                               valor,baseconf_nmi_breakpoint);
                 }
                 else if (extended_register==3) {
                         baseconf_beta_drive_virtual=valor&0x0f;
@@ -930,7 +957,6 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
            después de los dos ciclos M1 de RETN. */
         else if ((puerto&0x00ff)==0xbe && baseconf_nmi_active) {
                 baseconf_last_port_be=valor;
-                printf("BaseConf NMI service exit through %04XH\n",puerto);
                 baseconf_nmi_exit_countdown=2;
         }
 
@@ -978,12 +1004,6 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         //Habilita en ROM el permiso de escritura de los puertos shadow.
         else if ( (puerto&0x00FF)==0xBF ) {
                baseconf_last_port_bf=valor;
-
-               if ((valor&0x10) || baseconf_nmi_breakpoint)
-                       printf("BaseConf BF=%02XH: hardware breakpoint %s at %04XH\n",
-                              valor,(valor&0x10) ? "enabled" : "disabled",
-                              baseconf_nmi_breakpoint);
-
                baseconf_set_memory_pages();
         }
 
@@ -1084,12 +1104,10 @@ segmento 0 pagina 0
 	else if (puerto==0xdff7 && !baseconf_shadow_ports_available() ) {
 		baseconf_last_port_dff7=valor;
 		zxevo_last_port_dff7=valor;
-		if (valor==0xed) printf("BaseConf CMOS selected EDH through DFF7H\n");
 	}
         else if (puerto==0xdef7 && baseconf_shadow_ports_available() ) {
                 baseconf_last_port_dff7=valor;
                 zxevo_last_port_dff7=valor;
-                if (valor==0xed) printf("BaseConf CMOS selected EDH\n");
         }
 
 
@@ -1100,9 +1118,6 @@ segmento 0 pagina 0
 		   permanentemente deshabilitado el acceso CMOS no-shadow. */
 		if (baseconf_last_port_eff7&128) {
 			baseconf_write_cmos(valor);
-			if (zxevo_last_port_dff7==0xed)
-				printf("BaseConf CMOS EDH written %02XH through BFF7H: Emu tape=%d Autostart=%d\n",
-				       valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);
 		}
 	}
 
@@ -1110,9 +1125,6 @@ segmento 0 pagina 0
                  baseconf_last_port_bff7=valor;
                         //En modo shadow el puerto #BEF7 está disponible independientemente del bit 7 de #EFF7.
 		 baseconf_write_cmos(valor);
-		 if (zxevo_last_port_dff7==0xed)
-                         printf("BaseConf CMOS EDH written %02XH: Emu tape=%d Autostart=%d\n",
-                                valor,(valor&0x40) ? 1 : 0,(valor&4) ? 1 : 0);
 					}
         else if ( (puerto&0x00FF)==0x77 ) {
                 baseconf_last_port_sd_77=valor;

@@ -762,13 +762,48 @@ Petaba porque justo ant
 
 --- Baseconf ---
 
--Baseconf:
-hay dos tarjetas según:
-Which card is activated, sets bit 4 port # 7FFD.?? -> pendiente
+-Revisar la NMI y EVO Magic Service. La entrada de NMI implementada sigue la
+documentacion actual de BaseConf: el Z80 apila el PC, el hardware entrega un
+NOP en #0066 y a continuacion conecta la pagina RAM #FF para ejecutar desde
+#0067. La salida mediante OUT (#BE),A mantiene RAM #FF durante los dos M1 de
+RETN. Esta parte se observo funcionando, pero EVO Magic Service prealpha no
+restaura correctamente el programa interrumpido: al seleccionar una opcion
+(por ejemplo E) acaba regresando a #0000 y la pantalla queda negra. Por tanto,
+la NMI aun no esta validada de extremo a extremo.
 
--No llega a arrancar la rom
+-Revisar "L. Emu tape load" de EVO Reset Service. Sin TAP insertado desde los
+menus de ZEsarUX, LOAD "" funciona normalmente si esta opcion esta en OFF,
+pero con ON termina saltando a #0000 como si se hubiera producido un reset.
+No interviene tap_load_detect() ni el trap de cinta de ZEsarUX.
 
--Baseconf soporta ulaplus
+El diagnostico realizado fue:
+* El firmware modifica el vector RST #08 y entra en su manejador de cinta en
+  ROM (#3C97).
+* El manejador conecta RAM #FF mediante #37F7 y tambien la pagina #FF en la
+  ventana #8000..#BFFF mediante #B7F7. Estas escrituras y su resultado
+  coinciden con la descripcion de la MMU del manual.
+* Antes de entrar guarda diez bytes del contexto, copiando #FF40..#FF49 a
+  RAM #FF:#00F3.
+* El codigo del servicio, en PC=#0665, borra #FF40..#FF4F. Posteriormente, en
+  PC=#0198, restaura solamente #FF40..#FF49.
+* #FF4A/#FF4B contenian #053F, apilado por la rutina de cinta de la ROM, y
+  quedan a cero. El servicio vuelve a #056B con Z=0; RET NZ extrae #0000 de
+  la pila y salta a esa direccion.
+* Queda por averiguar por que el servicio entra en ese camino y borra esa
+  zona cuando no hay ningun TAP interno seleccionado. No aplicar un parche
+  forzando la pila o el flag Z hasta comprender el protocolo del firmware,
+  porque podria romper una carga interna valida.
+
+-Documentacion usada para esta revision:
+  codex_additional/zxevo_base_configuration.pdf (revision actual) y
+  codex_additional/zxevo_base_configuration_viejo.pdf (revision de 2014).
+La revision antigua usa #xxBE para algunas lecturas de configuracion y
+#00BD/#01BD para el breakpoint; la actual usa #xxBD y #10BD/#11BD.
+
+-Comprobar las dos tarjetas de memoria seleccionadas por el bit 4 de #7FFD.
+
+-Comprobar si BaseConf soporta ULAplus o si solamente debe considerarse una
+extension externa.
 
 -------------
 

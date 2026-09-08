@@ -104,6 +104,8 @@ extern z80_byte baseconf_last_port_bf7;
 extern int baseconf_shadow_ports_available(void);
 extern void baseconf_write_memory_aux(z80_int direccion,z80_byte valor);
 extern void baseconf_pre_opcode_fetch(z80_int direccion);
+extern void baseconf_post_opcode_fetch(z80_byte *opcode);
+extern void baseconf_handle_nmi(void);
 extern int baseconf_memory_write_allowed(z80_int direccion);
 extern int baseconf_text_mode_active(void);
 extern z80_byte baseconf_get_video_mode(void);
