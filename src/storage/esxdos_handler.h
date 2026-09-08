@@ -185,6 +185,10 @@ extern void esxdos_handler_reset(void);
 #define ESXDOS_MAX_OPEN_FILES 16
 
 
+#define DBG_PRINT_ESXDOS debug_printf(VERBOSE_CLASS_ESXDOS|
+#define DBG_PRINT_ESXDOS_HANDLER debug_printf(VERBOSE_CLASS_ESXDOS_HANDLER|
+
+
 //Usados al fopen de archivos y tambien al abrir directorios
 
 struct s_esxdos_fopen {

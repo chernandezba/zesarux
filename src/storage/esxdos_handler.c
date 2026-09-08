@@ -97,7 +97,7 @@ int esxdos_find_free_fopen(void)
 		//Evitar valor 0 de numero de archivo. Parece que Dungeonette no le gusta en el primer fopen que el file handle sea 0
 		//Sera algo normal? O fallo de ese juego? En cualquier caso, evitar retornar el handle numero 0
 		if (esxdos_fopen_files[i].open_file.v==0 && i!=0) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Free handle: %d",i);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Free handle: %d",i);
 			return i;
 		}
 	}
@@ -250,13 +250,13 @@ void esxdos_handler_pre_fileopen(char *nombre_inicial,char *fullpath)
 
 
 		if (!existe_archivo) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: File %s not found. Searching without case sensitive",fullpath);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: File %s not found. Searching without case sensitive",fullpath);
 			char encontrado[PATH_MAX];
 			char directorio[PATH_MAX];
 			util_get_complete_path(esxdos_handler_root_dir,esxdos_handler_cwd,directorio);
 			//sprintf (directorio,"%s/%s",esxdos_handler_root_dir,esxdos_handler_cwd);
 			if (util_busca_archivo_nocase ((char *)nombre_inicial,directorio,encontrado) ) {
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Found with name %s",encontrado);
+				DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Found with name %s",encontrado);
 				existe_archivo=1;
 
 				//cambiamos el nombre fullpath y el nombre_inicial por el encontrado
@@ -264,7 +264,7 @@ void esxdos_handler_pre_fileopen(char *nombre_inicial,char *fullpath)
 
 				sprintf (fullpath,"%s/%s/%s",esxdos_handler_root_dir,esxdos_handler_cwd,(char *)nombre_inicial);
 				//sprintf (fullpath,"%s/%s/%s",esxdos_handler_root_dir,esxdos_handler_cwd,encontrado);
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Found file %s searching without case sensitive",fullpath);
+				DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Found file %s searching without case sensitive",fullpath);
 			}
 		}
 
@@ -277,14 +277,14 @@ void esxdos_handler_pre_fileopen(char *nombre_inicial,char *fullpath)
 
 void esxdos_handler_debug_file_flags(z80_byte b)
 {
-	if (b&ESXDOS_RST8_FA_READ) debug_printf (VERBOSE_DEBUG,"ESXDOS handler: FA_READ|");
-	if (b&ESXDOS_RST8_FA_WRITE) debug_printf (VERBOSE_DEBUG,"ESXDOS handler: FA_WRITE|");
-	if (b&ESXDOS_RST8_FA_OPEN_EXIST) debug_printf (VERBOSE_DEBUG,"ESXDOS handler: FA_OPEN_EXIST|");
-	if (b&ESXDOS_RST8_FA_OPEN_CREAT) debug_printf (VERBOSE_DEBUG,"ESXDOS handler: FA_OPEN_CREAT|");
-	if (b&ESXDOS_RST8_FA_CREAT_NOEXIST) debug_printf (VERBOSE_DEBUG,"ESXDOS handler: FA_CREAT_NOEXIST|");
-	if (b&ESXDOS_RST8_FA_USE_HEADER) debug_printf (VERBOSE_DEBUG,"ESXDOS handler: FA_USE_HEADER|");
+	if (b&ESXDOS_RST8_FA_READ) DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: FA_READ|");
+	if (b&ESXDOS_RST8_FA_WRITE) DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: FA_WRITE|");
+	if (b&ESXDOS_RST8_FA_OPEN_EXIST) DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: FA_OPEN_EXIST|");
+	if (b&ESXDOS_RST8_FA_OPEN_CREAT) DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: FA_OPEN_CREAT|");
+	if (b&ESXDOS_RST8_FA_CREAT_NOEXIST) DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: FA_CREAT_NOEXIST|");
+	if (b&ESXDOS_RST8_FA_USE_HEADER) DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: FA_USE_HEADER|");
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ");
 }
 
 
@@ -313,7 +313,7 @@ int esxdos_handler_get_attr_etc(char *nombre,z80_int puntero,z80_byte *atributo)
 		//sprintf((char *) &esxdos_handler_globaldata[0],"<%s>",esxdos_handler_dp->d_name);
 		//longitud_nombre +=2;
 		*atributo |=16;
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Is a directory");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Is a directory");
 	}
 
 	else {
@@ -359,7 +359,7 @@ int esxdos_handler_get_attr_etc(char *nombre,z80_int puntero,z80_byte *atributo)
 
 	z80_long_int l=longitud_total;
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: length file: %d",l);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: length file: %d",l);
 	esxdos_handler_fill_size_struct(puntero+4,l);
 
 	return 0;
@@ -392,7 +392,7 @@ void esxdos_handler_call_f_unlink(void)
 
 	esxdos_handler_pre_fileopen(nombre_archivo,fullpath);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
 
 	if (!si_existe_archivo(fullpath)) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
@@ -441,7 +441,7 @@ void esxdos_handler_call_f_rename(void)
 	esxdos_handler_copy_hl_to_string(nombre_archivo);
 	esxdos_handler_pre_fileopen(nombre_archivo,fullpath);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
 
 	if (!si_existe_archivo(fullpath)) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
@@ -501,7 +501,7 @@ void esxdos_handler_call_f_stat(void)
 
 	esxdos_handler_pre_fileopen(nombre_archivo,fullpath);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
 
 	z80_int puntero=reg_de;
 	poke_byte_no_time(puntero++,0); //drive
@@ -645,7 +645,7 @@ Esto se usa en NextDaw, es open+truncate
 
 			default:
 
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unsupported fopen mode: %02XH",reg_b);
+				DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unsupported fopen mode: %02XH",reg_b);
 				esxdos_handler_error_carry(ESXDOS_ERROR_EIO);
 				return;
 			break;
@@ -662,7 +662,7 @@ Esto se usa en NextDaw, es open+truncate
     }
 
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Opening file in system mode: [%s]",fopen_mode);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Opening file in system mode: [%s]",fopen_mode);
 
 
 	//Ver si no se han abierto el maximo de archivos y obtener handle libre
@@ -670,7 +670,7 @@ Esto se usa en NextDaw, es open+truncate
 	if (free_handle==-1) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_ENFILE);
 		esxdos_handler_old_return_call();
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: no free handles");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: no free handles");
 		return;
 	}
 
@@ -684,28 +684,28 @@ Esto se usa en NextDaw, es open+truncate
 	esxdos_fopen_files[free_handle].tiene_plus3dos_header.v=0;
 
 	if (debe_usar_plus3_header && escritura) {
-		debug_printf (VERBOSE_DEBUG,"Preparing PLUS3DOS 8 byte header");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"Preparing PLUS3DOS 8 byte header");
 		esxdos_fopen_files[free_handle].tiene_plus3dos_header.v=1;
 		int i;
 		for (i=0;i<8;i++) {
 			z80_byte byte_leido=peek_byte_no_time(reg_de+i);
 			esxdos_fopen_files[free_handle].buffer_plus3dos_header[i]=byte_leido;
-			//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %02XH ",byte_leido);
+			//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: %02XH ",byte_leido);
 		}
 
-		//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ");
+		//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ");
 	}
 
 
 	esxdos_handler_pre_fileopen(nombre_archivo,fullpath);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: fullpath file: %s",fullpath);
 
 
 	//Ver tipos de apertura que dan error si existe
 	if ( modo_abrir==(ESXDOS_RST8_FA_CREAT_NOEXIST | ESXDOS_RST8_FA_WRITE))  {
 		if (si_existe_archivo(fullpath)) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: file exists and using mode FA_CREAT_NOEXIST|ESXDOS_RST8_FA_WRITE. Error");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: file exists and using mode FA_CREAT_NOEXIST|ESXDOS_RST8_FA_WRITE. Error");
 			esxdos_handler_error_carry(ESXDOS_ERROR_EEXIST);
 			esxdos_handler_old_return_call();
 			return;
@@ -713,12 +713,12 @@ Esto se usa en NextDaw, es open+truncate
 	}
 
 
-	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: file type: %d",get_file_type_from_name(fullpath));
+	//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: file type: %d",get_file_type_from_name(fullpath));
 	//sleep(5);
 
 	//Si archivo es directorio, error
 	if (get_file_type_from_name(fullpath)==2) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: is a directory. can't fopen it");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: is a directory. can't fopen it");
 		esxdos_handler_error_carry(ESXDOS_ERROR_EISDIR);
 		esxdos_handler_old_return_call();
 		return;
@@ -730,17 +730,17 @@ Esto se usa en NextDaw, es open+truncate
 
 	if (esxdos_fopen_files[free_handle].esxdos_last_open_file_handler_unix==NULL) {
 		esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_open file: %s",fullpath);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_open file: %s",fullpath);
 		esxdos_handler_old_return_call();
 		return;
 	}
 	else {
 		//temp_esxdos_last_open_file_handler=1;
 		if (debe_usar_plus3_header && escritura==0) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Reading PLUS3DOS header at DE=%04XH",reg_de);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Reading PLUS3DOS header at DE=%04XH",reg_de);
 			//char buffer_registros[1024];
 			//print_registers(buffer_registros);
-			//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
+			//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
 
 			//TODO: El NMI handler, al abrir la pantalla de ayuda, utiliza esto, aunque realmente es un .scr sin cabecera
 			//como workaround, hacemos que el que realmente no tenga cabecera (no empieza por "plus3dos"), no se le lea cabecera
@@ -783,10 +783,10 @@ Esto se usa en NextDaw, es open+truncate
 					fread(&byte_leido,1,1,esxdos_fopen_files[free_handle].esxdos_last_open_file_handler_unix);
 					poke_byte_no_time(reg_de+i,byte_leido);
 					//poke_byte_no_time(reg_de+i,0xFF); //temp
-					//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %02XH ",byte_leido);
+					//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: %02XH ",byte_leido);
 				}
 
-				//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ");
+				//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ");
 
 				//Y saltar otros (128-23)
 				char buffer_restante[128-23];
@@ -797,11 +797,11 @@ Esto se usa en NextDaw, es open+truncate
 
 		reg_a=free_handle;
 		esxdos_handler_no_error_uncarry();
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Successfully esxdos_handler_call_f_open handle: %d file: %s",free_handle,fullpath);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Successfully esxdos_handler_call_f_open handle: %d file: %s",free_handle,fullpath);
 
 
 		if (stat(fullpath, &esxdos_fopen_files[free_handle].last_file_buf_stat)!=0) {
-						debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unable to get status of file %s",fullpath);
+						DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unable to get status of file %s",fullpath);
 		}
 
 
@@ -822,14 +822,14 @@ void esxdos_handler_call_f_read(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_read. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_read. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
 	}
 
 	if (esxdos_fopen_files[file_handler].open_file.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_read. Handler %d not found",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_read. Handler %d not found",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -838,7 +838,7 @@ void esxdos_handler_call_f_read(void)
 
 		//Si es un directorio, error
 		if (esxdos_fopen_files[file_handler].is_a_directory.v) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_read. Handler %d is a directory",file_handler);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_read. Handler %d is a directory",file_handler);
 			esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 			esxdos_handler_old_return_call();
 			return;
@@ -854,7 +854,7 @@ void esxdos_handler_call_f_read(void)
 		z80_int bytes_a_leer=reg_bc;
 		int leidos=1;
 
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: esxdos_handler_call_f_read. Unix file handle: %p",esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: esxdos_handler_call_f_read. Unix file handle: %p",esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
 
 		while (bytes_a_leer && leidos) {
 			z80_byte byte_read;
@@ -870,7 +870,7 @@ void esxdos_handler_call_f_read(void)
 		//(*registro_parametros_hl_ix) +=total_leidos; //???
 		esxdos_handler_no_error_uncarry();
 
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Successfully esxdos_handler_call_f_read total bytes read: %d",total_leidos);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Successfully esxdos_handler_call_f_read total bytes read: %d",total_leidos);
 
 	}
 
@@ -883,14 +883,14 @@ void esxdos_handler_call_f_seek(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
 	}
 
 	if (esxdos_fopen_files[file_handler].open_file.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d not found",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d not found",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -898,7 +898,7 @@ void esxdos_handler_call_f_seek(void)
 
 	//Si es un directorio, error
 	if (esxdos_fopen_files[file_handler].is_a_directory.v) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d is a directory",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d is a directory",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -907,7 +907,7 @@ void esxdos_handler_call_f_seek(void)
 
 	long initial_offset=ftell(esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: offset was at %ld",initial_offset);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: offset was at %ld",initial_offset);
 
 /*
 F_SEEK: Seek BCDE bytes. A=handle
@@ -947,7 +947,7 @@ On return BCDE=current file pointer. FIXME-Should return bytes actually seeked
 		break;
 
 		default:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Unsupported mode %d",f_seek_mode);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Unsupported mode %d",f_seek_mode);
 			esxdos_handler_error_carry(ESXDOS_ERROR_EIO);
 			esxdos_handler_old_return_call();
 			return;
@@ -959,13 +959,13 @@ On return BCDE=current file pointer. FIXME-Should return bytes actually seeked
 
 
 	if (fseek (esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix, offset, whence)!=0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error running fseek system call");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error running fseek system call");
 	}
 
 	//Retornar BCDE
 	offset=ftell(esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: offset is now at %ld",offset);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: offset is now at %ld",offset);
 
 	//sleep (5);
 
@@ -986,14 +986,14 @@ void esxdos_handler_call_f_write(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_write. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_write. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
 	}
 
 	if (esxdos_fopen_files[file_handler].open_file.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_write. Handler %d not found",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_write. Handler %d not found",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1001,7 +1001,7 @@ void esxdos_handler_call_f_write(void)
 	else {
 		//Si es un directorio, error
 		if (esxdos_fopen_files[file_handler].is_a_directory.v) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_write. Handler %d is a directory",file_handler);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_write. Handler %d is a directory",file_handler);
 			esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 			esxdos_handler_old_return_call();
 			return;
@@ -1017,7 +1017,7 @@ void esxdos_handler_call_f_write(void)
 
 		if (esxdos_fopen_files[file_handler].tiene_plus3dos_header.v) {
 			//Escribir primero cabecera PLUS3DOS
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Adding PLUS3DOS Header");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Adding PLUS3DOS Header");
 			//TODO: asumimos que se escriben todos los bytes de golpe->BC contiene la longitud total del bloque
 			/*
 
@@ -1076,7 +1076,7 @@ Offset	Length	Description
 
 		esxdos_handler_no_error_uncarry();
 
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Successfully esxdos_handler_call_f_write total bytes write: %d",total_leidos);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Successfully esxdos_handler_call_f_write total bytes write: %d",total_leidos);
 
 	}
 
@@ -1091,7 +1091,7 @@ void esxdos_handler_call_f_close(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_close. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_close. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1100,7 +1100,7 @@ void esxdos_handler_call_f_close(void)
 
 
 	if (esxdos_fopen_files[file_handler].open_file.v==0) {
-		//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_close. Handler %d not found",file_handler);
+		//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_close. Handler %d not found",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1109,12 +1109,12 @@ void esxdos_handler_call_f_close(void)
 
 	else {
 		if (esxdos_fopen_files[file_handler].is_a_directory.v==0) {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Closing a file");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Closing a file");
 			fclose(esxdos_fopen_files[file_handler].esxdos_last_open_file_handler_unix);
 		}
 
 		else {
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Closing a directory");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Closing a directory");
 			closedir(esxdos_fopen_files[file_handler].esxdos_handler_dfd);
 		}
 
@@ -1132,7 +1132,7 @@ void esxdos_handler_call_f_sync(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_sync. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_sync. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		return;
 	}
@@ -1147,7 +1147,7 @@ void esxdos_handler_call_f_sync(void)
 
 	//Si es un directorio, error
 	if (esxdos_fopen_files[file_handler].is_a_directory.v) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_sync. Handler %d is a directory",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_sync. Handler %d is a directory",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1169,7 +1169,7 @@ int esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir
 {
 
 
-	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: esxdos_handler_get_final_directory. dir: %s esxdos_handler_root_dir: %s",dir,esxdos_handler_root_dir);
+	//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: esxdos_handler_get_final_directory. dir: %s esxdos_handler_root_dir: %s",dir,esxdos_handler_root_dir);
     char copia_esxdos_handler_root_dir[PATH_MAX];
     char copia_esxdos_handler_cwd[PATH_MAX];
 
@@ -1200,7 +1200,7 @@ int esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir
 	//Ver en que directorio estamos
 	//char dir_final[PATH_MAX];
 	getcwd(finaldir,PATH_MAX);
-	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: total final directory: %s . esxdos_handler_root_dir: %s",finaldir,esxdos_handler_root_dir);
+	//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: total final directory: %s . esxdos_handler_root_dir: %s",finaldir,esxdos_handler_root_dir);
 	//Esto suele retornar sim barra al final
 
 	//Si finaldir no tiene barra al final, haremos que esxdos_handler_root_dir tampoco la tenga
@@ -1213,7 +1213,7 @@ int esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir
 			if (m) {
 				if (esxdos_handler_root_dir[m-1]=='/' || esxdos_handler_root_dir[m-1]=='\\') {
 					//root dir tiene barra al final. quitarla
-					//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: quitando barra del final de esxdos_handler_root_dir");
+					//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: quitando barra del final de esxdos_handler_root_dir");
 					esxdos_handler_root_dir[m-1]=0;
 				}
 			}
@@ -1223,11 +1223,11 @@ int esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir
     int retorno_error=0;
 
 	//Ahora hay que quitar la parte del directorio raiz
-	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: running strstr (%s,%s)",finaldir,esxdos_handler_root_dir);
+	//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: running strstr (%s,%s)",finaldir,esxdos_handler_root_dir);
 	char *s=strstr(finaldir,esxdos_handler_root_dir);
 
 	if (s==NULL) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Directory change not allowed");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Directory change not allowed");
 		//directorio final es el mismo que habia
         //dejar como estaba antes
 		//sprintf (finaldir,"%s",esxdos_handler_cwd);
@@ -1248,11 +1248,11 @@ int esxdos_handler_get_final_directory(char *dir, char *finaldir, char *localdir
     if (localdir!=NULL) {
         int l=strlen(esxdos_handler_root_dir);
         sprintf (localdir,"%s",&finaldir[l]);
-        //debug_printf (VERBOSE_DEBUG,"ESXDOS handler: local directory: %s",localdir);
+        //DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: local directory: %s",localdir);
     }
 
 
-	//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: directorio final local de esxdos_handler: %s",finaldir);
+	//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: directorio final local de esxdos_handler: %s",finaldir);
 
 
 	//Restauramos directorio actual del emulador
@@ -1272,17 +1272,17 @@ void esxdos_handler_call_f_chdir(void)
 
     char directorio_final[PATH_MAX];
 
-    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Changing to directory %s",ruta);
+    DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Changing to directory %s",ruta);
 
     int error_retorno=esxdos_handler_get_final_directory(ruta,directorio_final,esxdos_handler_cwd);
 
 
-    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Final directory %s . cwd: %s",directorio_final,esxdos_handler_cwd);
+    DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Final directory %s . cwd: %s",directorio_final,esxdos_handler_cwd);
 
 
 	//Si archivo es directorio, error
 	if (error_retorno) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error changing directory");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error changing directory");
 		esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
 		esxdos_handler_old_return_call();
 		return;
@@ -1300,10 +1300,10 @@ void esxdos_handler_call_f_mkdir(void)
 	char fullpath[PATH_MAX];
 	esxdos_handler_copy_hl_to_string(nombre_archivo);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Mkdir %s",nombre_archivo);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Mkdir %s",nombre_archivo);
 	esxdos_handler_get_fullpath(nombre_archivo,fullpath);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: mkdir: fullpath: %s",fullpath);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: mkdir: fullpath: %s",fullpath);
 
 	menu_filesel_mkdir(fullpath);
 
@@ -1333,12 +1333,12 @@ void esxdos_handler_call_f_getcwd(void)
 
     if (esxdos_handler_cwd[0]==0) {
         esxdos_handler_copy_string_to_hl("/");
-        debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD. Return [/]");
+        DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD. Return [/]");
     }
 
 	else {
         esxdos_handler_copy_string_to_hl(esxdos_handler_cwd);
-        debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD. Return [%s]",esxdos_handler_cwd);
+        DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD. Return [%s]",esxdos_handler_cwd);
     }
 
 	esxdos_handler_no_error_uncarry();
@@ -1364,7 +1364,7 @@ int free_handle=esxdos_find_free_fopen();
 if (free_handle==-1) {
 	esxdos_handler_error_carry(ESXDOS_ERROR_ENFILE);
 	esxdos_handler_old_return_call();
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: no free handles");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: no free handles");
 	return;
 }
 
@@ -1372,7 +1372,7 @@ if (free_handle==-1) {
 	char directorio[PATH_MAX];
 
 	esxdos_handler_copy_hl_to_string(directorio);
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: opening directory %s, drive %d, folder access mode %02XH",directorio,reg_a,reg_b);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: opening directory %s, drive %d, folder access mode %02XH",directorio,reg_a,reg_b);
 
 	char directorio_final[PATH_MAX];
 	//obtener directorio final
@@ -1384,7 +1384,7 @@ if (free_handle==-1) {
 	esxdos_fopen_files[free_handle].esxdos_handler_dfd = opendir(directorio_final);
 
 	if (esxdos_fopen_files[free_handle].esxdos_handler_dfd == NULL) {
-	 	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Can't open directory %s (full: %s)", directorio,directorio_final);
+	 	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Can't open directory %s (full: %s)", directorio,directorio_final);
 	  esxdos_handler_error_carry(ESXDOS_ERROR_ENOENT);
 		esxdos_handler_old_return_call();
 		return;
@@ -1409,7 +1409,7 @@ int esxdos_handler_readdir_no_valido(char *s)
 	//Si longitud mayor que 12 (8 nombre, punto, 3 extension)
 	//if (strlen(s)>12) return 0;
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: checking if name %s is valid",s);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: checking if name %s is valid",s);
 
 
 	char extension[NAME_MAX];
@@ -1450,7 +1450,7 @@ int esxdos_handler_string_to_msdos(char *fullname,z80_int puntero)
 	poke_byte_no_time(puntero+i,0);
 	i++;
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: length name: %d",i);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: length name: %d",i);
 	//if (i<11) poke_byte_no_time(puntero+i,0);
 
 	//return 12;
@@ -1468,23 +1468,23 @@ int esxdos_handler_string_to_msdos(char *fullname,z80_int puntero)
 	util_get_file_without_extension(fullname,nombre);
 	util_get_file_extension(fullname,extension);
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: name: %s extension: %s",nombre,extension);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: name: %s extension: %s",nombre,extension);
 
 	//Escribir nombre
 	for (i=0;i<8 && nombre[i];i++) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %c",nombre[i]);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: %c",nombre[i]);
 		poke_byte_no_time(puntero+i,nombre[i]);
 	}
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: .");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: .");
 
 	//Escribir extension
 	for (i=0;i<3 && extension[i];i++) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %c",extension[i]);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: %c",extension[i]);
 		poke_byte_no_time(puntero+8+i,extension[i]);
 	}
 
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ");
 
 }
 
@@ -1501,7 +1501,7 @@ int esxdos_aux_readdir(int file_handler)
 
 		//temp closedir(esxdos_fopen_files[file_handler].esxdos_handler_dfd);
 		//temp esxdos_fopen_files[file_handler].esxdos_handler_dfd=NULL;
-		debug_printf (VERBOSE_DEBUG,"No more files on readdir");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"No more files on readdir");
 
 
 		//no hay mas archivos
@@ -1527,7 +1527,7 @@ void esxdos_handler_call_f_readdir(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_readdir. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_readdir. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1551,7 +1551,7 @@ void esxdos_handler_call_f_readdir(void)
 */
 
 if (esxdos_fopen_files[file_handler].open_file.v==0) {
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_readdir. Handler %d not found",file_handler);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_readdir. Handler %d not found",file_handler);
 	esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 	esxdos_handler_old_return_call();
 	return;
@@ -1565,7 +1565,7 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 
 	//Si no es un directorio, error
 	if (esxdos_fopen_files[file_handler].is_a_directory.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_readdir. Handler %d is not a directory",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_readdir. Handler %d is not a directory",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1574,7 +1574,7 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 
 	if (!esxdos_aux_readdir(file_handler)) {
 		//no hay mas archivos
-		debug_printf (VERBOSE_DEBUG,"Returning no more files to readdir");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"Returning no more files to readdir");
 		reg_a=0;
 		esxdos_handler_no_error_uncarry();
 		esxdos_handler_old_return_call();
@@ -1632,11 +1632,11 @@ void esxdos_handler_call_f_seekdir(void)
 
 	int file_handler=reg_a;
 
-	debug_printf (VERBOSE_DEBUG,"Skipping %d files on seekdir file handler %d",posicion,file_handler);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"Skipping %d files on seekdir file handler %d",posicion,file_handler);
 
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seekdir. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seekdir. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1644,7 +1644,7 @@ void esxdos_handler_call_f_seekdir(void)
 
 
 	if (esxdos_fopen_files[file_handler].open_file.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seekdir. Handler %d not found",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seekdir. Handler %d not found",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1658,7 +1658,7 @@ void esxdos_handler_call_f_seekdir(void)
 
 	//Si no es un directorio, error
 	if (esxdos_fopen_files[file_handler].is_a_directory.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seekdir. Handler %d is not a directory",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seekdir. Handler %d is not a directory",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1695,7 +1695,7 @@ void esxdos_handler_call_f_seekdir(void)
 		posicion--;
 	}
 
-	debug_printf (VERBOSE_DEBUG,"End skipping");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"End skipping");
 
 	//Ya nos hemos posicionado
 	esxdos_handler_no_error_uncarry();
@@ -1710,7 +1710,7 @@ void esxdos_handler_call_f_rewinddir(void)
 
 
 if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_rewinddir. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_rewinddir. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1718,7 +1718,7 @@ if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
 
 
 if (esxdos_fopen_files[file_handler].open_file.v==0) {
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_rewinddir. Handler %d not found",file_handler);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_rewinddir. Handler %d not found",file_handler);
 	esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 	esxdos_handler_old_return_call();
 	return;
@@ -1732,7 +1732,7 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 
 	//Si no es un directorio, error
 	if (esxdos_fopen_files[file_handler].is_a_directory.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_rewinddir. Handler %d is not a directory",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_rewinddir. Handler %d is not a directory",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1756,7 +1756,7 @@ void esxdos_handler_call_f_telldir(void)
 	int file_handler=reg_a;
 
 	if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_telldir. Handler %d out of range",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_telldir. Handler %d out of range",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1764,7 +1764,7 @@ void esxdos_handler_call_f_telldir(void)
 
 
 if (esxdos_fopen_files[file_handler].open_file.v==0) {
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_telldir. Handler %d not found",file_handler);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_telldir. Handler %d not found",file_handler);
 	esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 	esxdos_handler_old_return_call();
 	return;
@@ -1778,7 +1778,7 @@ if (esxdos_fopen_files[file_handler].esxdos_handler_dfd==NULL) {
 
 	//Si no es un directorio, error
 	if (esxdos_fopen_files[file_handler].is_a_directory.v==0) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_telldir. Handler %d is not a directory",file_handler);
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_telldir. Handler %d is not a directory",file_handler);
 		esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 		esxdos_handler_old_return_call();
 		return;
@@ -1817,14 +1817,14 @@ f_fstat                 equ fsys_base + 9;      // $a1  and c
 int file_handler=reg_a;
 
 if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_stat. Handler %d out of range",file_handler);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_stat. Handler %d out of range",file_handler);
 	esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 	esxdos_handler_old_return_call();
 	return;
 }
 
 if (esxdos_fopen_files[file_handler].open_file.v==0) {
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_stat. Handler %d not found",file_handler);
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_stat. Handler %d not found",file_handler);
 	esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
 	esxdos_handler_old_return_call();
 	return;
@@ -1838,7 +1838,7 @@ if (esxdos_fopen_files[file_handler].open_file.v==0) {
 
 	z80_byte atributo_archivo=0;
 	if (get_file_type_from_stat(&esxdos_fopen_files[file_handler].last_file_buf_stat)==2) {
-		debug_printf (VERBOSE_DEBUG,"ESXDOS handler: fstat: is a directory");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: fstat: is a directory");
 		atributo_archivo|=16;
 	}
 
@@ -1872,7 +1872,7 @@ if (esxdos_fopen_files[file_handler].open_file.v==0) {
 
 void esxdos_handler_run_normal_rst8(void)
 {
-	debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Running normal rst 8 call");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Running normal rst 8 call");
 	rst(8);
 }
 
@@ -2070,18 +2070,18 @@ void esxdos_handler_begin_handling_commands(void)
 	{
 
 		case ESXDOS_RST8_DISK_STATUS:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_STATUS. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_STATUS. A register: %02XH",reg_a);
 			esxdos_handler_call_disk_status();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_DISK_READ:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_READ");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_READ");
 			esxdos_handler_run_normal_rst8();
 		break;
 
 		case ESXDOS_RST8_DISK_INFO:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_INFO. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_INFO. A register: %02XH",reg_a);
 			esxdos_handler_call_disk_info();
 			//esxdos_handler_run_normal_rst8();
 			//esxdos_handler_no_error_uncarry();
@@ -2089,7 +2089,7 @@ void esxdos_handler_begin_handling_commands(void)
 		break;
 
 		case ESXDOS_RST8_M_DRIVEINFO:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_DRIVE_INFO. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_DRIVE_INFO. A register: %02XH",reg_a);
 			esxdos_handler_call_m_drive_info();
 			//esxdos_handler_no_error_uncarry();
 			esxdos_handler_new_return_call();
@@ -2097,7 +2097,7 @@ void esxdos_handler_begin_handling_commands(void)
 
 		case ESXDOS_RST8_F_MOUNT:
 			//Pues de momento retornar ok tal cual
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MOUNT. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MOUNT. A register: %02XH",reg_a);
 			esxdos_handler_no_error_uncarry();
 			esxdos_handler_new_return_call();
 		break;
@@ -2106,7 +2106,7 @@ void esxdos_handler_begin_handling_commands(void)
 
             //Creo que esto solo esta en Next. En este caso se ve que se llama en Atic Atac de Next
             if (MACHINE_IS_TBBLUE) {
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: M_DOSVERSION");
+                DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: M_DOSVERSION");
                 /*
 ; *****************************************************************************
 ;Exit: ;
@@ -2140,14 +2140,14 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 esxdos_handler_new_return_call();
             }
             else {
-               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (M_DOSVERSION)!! ",funcion);
+               DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (M_DOSVERSION)!! ",funcion);
                rst(8);
             }
         break;
 
 
 		case ESXDOS_RST8_M_GETSETDRV:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_GETSETDRV");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_GETSETDRV");
 			//M_GETSETDRV: If A=0 -> Get default drive in A. Else set default drive passed in A.
 
 			/*
@@ -2167,37 +2167,37 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 		case ESXDOS_RST8_F_OPEN:
 
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s]",reg_b,buffer_fichero);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s]",reg_b,buffer_fichero);
 			esxdos_handler_call_f_open();
 			esxdos_handler_new_return_call();
 
 		break;
 
 		case ESXDOS_RST8_F_CLOSE:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CLOSE");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CLOSE");
 			esxdos_handler_call_f_close();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_SYNC:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SYNC");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SYNC");
 			esxdos_handler_call_f_sync();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_READ:
 		//Read BC bytes at HL from file handle A.
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READ. Read %d bytes at %04XH from file handle %d",reg_bc,(*registro_parametros_hl_ix),reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READ. Read %d bytes at %04XH from file handle %d",reg_bc,(*registro_parametros_hl_ix),reg_a);
 			esxdos_handler_call_f_read();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_WRITE:
 		//Write BC bytes at HL from file handle A.
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. Write %d bytes from %04XH from file handle %d",reg_bc,(*registro_parametros_hl_ix),reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. Write %d bytes from %04XH from file handle %d",reg_bc,(*registro_parametros_hl_ix),reg_a);
 
 			//temp
-			//debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. content 1 byte: %02XH",peek_byte_no_time(*registro_parametros_hl_ix));
+			//DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. content 1 byte: %02XH",peek_byte_no_time(*registro_parametros_hl_ix));
 
 			esxdos_handler_call_f_write();
 			esxdos_handler_new_return_call();
@@ -2209,20 +2209,20 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 			//Mas elegante asi:
 			f_seek_mode=(z80_byte) ((*registro_parametros_hl_ix) & 0xff);
 
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEK. Move %04X%04XH bytes mode %d from file handle %d",reg_bc,reg_de,f_seek_mode,reg_a);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEK. Move %04X%04XH bytes mode %d from file handle %d",reg_bc,reg_de,f_seek_mode,reg_a);
 			esxdos_handler_call_f_seek();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_GETCWD:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD");
 			esxdos_handler_call_f_getcwd();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_CHDIR:
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CHDIR: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CHDIR: %s",buffer_fichero);
 			esxdos_handler_call_f_chdir();
 			esxdos_handler_new_return_call();
 		break;
@@ -2230,21 +2230,21 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
 		case ESXDOS_RST8_F_MKDIR:
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MKDIR: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MKDIR: %s",buffer_fichero);
 			esxdos_handler_call_f_mkdir();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_STAT:
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_STAT: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_STAT: %s",buffer_fichero);
 			esxdos_handler_call_f_stat();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_UNLINK:
 			esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_UNLINK: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_UNLINK: %s",buffer_fichero);
 			esxdos_handler_call_f_unlink();
 			esxdos_handler_new_return_call();
 		break;
@@ -2252,32 +2252,32 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 		case ESXDOS_RST8_F_RENAME:
 			esxdos_handler_copy_register_to_string(buffer_fichero,*registro_parametros_hl_ix);
 			esxdos_handler_copy_register_to_string(buffer_fichero2,reg_de);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_RENAME: %s to %s",buffer_fichero,buffer_fichero2);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_RENAME: %s to %s",buffer_fichero,buffer_fichero2);
 			esxdos_handler_call_f_rename();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_OPENDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPENDIR");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPENDIR");
 			esxdos_handler_call_f_opendir();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_READDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READDIR");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READDIR");
 			esxdos_handler_call_f_readdir();
 			//printf ("Codigos retorno: A=%02XH HL=%02XH carry=%d PC=%02XH\n",reg_a,HL,Z80_FLAGS & FLAG_C,reg_pc);
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_TELLDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_TELLDIR");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_TELLDIR");
 			esxdos_handler_call_f_telldir();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_SEEKDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEKDIR. Offset: %04X%04XH",reg_bc,reg_de);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEKDIR. Offset: %04X%04XH",reg_bc,reg_de);
 			//printf ("dir handle: %02XH Offset %04X%04X\n",reg_a,BC,DE);
 		//temporal. SEEKDIR. F_SEEKDIR: Sets offset of directory. A=dir handle, BCDE=offset
 			esxdos_handler_call_f_seekdir();
@@ -2285,19 +2285,19 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 		break;
 
 		case ESXDOS_RST8_F_REWINDDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_REWINDDIR");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_REWINDDIR");
 			esxdos_handler_call_f_rewinddir();
 			esxdos_handler_new_return_call();
 		break;
 
 		case ESXDOS_RST8_F_FSTAT:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_FSTAT");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_FSTAT");
 			esxdos_handler_call_f_fstat();
 			esxdos_handler_new_return_call();
 		break;
 
 		case 0xB3:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unknown ESXDOS_RST8 B3H. Return ok");
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unknown ESXDOS_RST8 B3H. Return ok");
 		//desconocida. salta cuando se hace un LOAD *"NOMBRE"
 		//hace un fread con flags  FA_READ|FA_USE_HEADER  y luego llama a este 0xB3
 			esxdos_handler_no_error_uncarry();
@@ -2306,7 +2306,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
 		/*case ESXDOS_RST8_DISK_IOCTL:
 			//Ni idea de que hace esto
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unimplemented ESXDOS_RST8_DISK_IOCTL. Return ok. PC=%XH",reg_pc);
+			DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unimplemented ESXDOS_RST8_DISK_IOCTL. Return ok. PC=%XH",reg_pc);
 		//desconocida. salta al hacer "list" en tr-dos con una imagen trd montada
 			esxdos_handler_run_normal_rst8();
 
@@ -2356,21 +2356,21 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 //TODO: Esto no esta soportado: Can be called multiple times if buffer is filled, continuing from previous.
 
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
+                DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
                     reg_a,DE,HL,reg_ix,reg_pc);
 
 
                 int file_handler=reg_a;
 
                 if (file_handler>=ESXDOS_MAX_OPEN_FILES) {
-                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d out of range",file_handler);
+                    DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d out of range",file_handler);
                     esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
                     esxdos_handler_old_return_call();
                     return;
                 }
 
                 if (esxdos_fopen_files[file_handler].open_file.v==0) {
-                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d not found",file_handler);
+                    DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d not found",file_handler);
                     esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
                     esxdos_handler_old_return_call();
                     return;
@@ -2378,14 +2378,14 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 //Si es un directorio, error
                 if (esxdos_fopen_files[file_handler].is_a_directory.v) {
-                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d is a directory",file_handler);
+                    DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Error from esxdos_handler_call_f_seek. Handler %d is a directory",file_handler);
                     esxdos_handler_error_carry(ESXDOS_ERROR_EBADF);
                     esxdos_handler_old_return_call();
                     return;
                 }
 
 
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
+                DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
                 //printf ("ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File (file handle %d): %s\n",file_handler,esxdos_fopen_files[file_handler].debug_fullpath);
 
@@ -2433,7 +2433,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+4,(sectores_ocupa) & 0xFF);
                     poke_byte_no_time((*registro_parametros_hl_ix)+indice+5,(sectores_ocupa>>8) & 0xFF);
 
-                    debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH segment size: %d sectors Remaining file size: %lld",offset_escribir,sectores_ocupa,file_size);
+                    DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Building file map. Offset sector: %XH segment size: %d sectors Remaining file size: %lld",offset_escribir,sectores_ocupa,file_size);
 
                     (*registro_parametros_hl_ix)+=6;
 
@@ -2442,7 +2442,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
                 //Montar este archivo como imagen mmc
 
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Mounting file [%s] as MMC image",esxdos_fopen_files[file_handler].debug_fullpath);
+                DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. Mounting file [%s] as MMC image",esxdos_fopen_files[file_handler].debug_fullpath);
 
                 mmc_disable(0);
                 mmc_filemap_from_esxdos[0]=1;
@@ -2473,7 +2473,7 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
                 esxdos_handler_new_return_call();
             }
             else {
-               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (DISK_FILEMAP)!! ",funcion);
+               DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (DISK_FILEMAP)!! ",funcion);
                rst(8);
             }
         break;
@@ -2481,10 +2481,10 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 
 		default:
 			if (funcion>=0x80) {
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 call: %02XH !! ",funcion);
+				DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 call: %02XH !! ",funcion);
 				char buffer_registros[1024];
 				print_registers(buffer_registros);
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
+				DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
 
 			}
 			rst(8); //No queremos que muestre mensaje de debug
@@ -2493,165 +2493,168 @@ eg for NextZXOS v1.94, DE=$0194 HL=language code:
 	}
 }
 
+z80_byte debug_esxdos_last_function=0;
+
 
 void esxdos_debug_run(void)
 {
-
-    debug_printf (VERBOSE_DEBUG,"ESXDOS call. Return address: %04XH",peek_word_no_time(reg_sp));
 
 	//Ver si se usa IX o HL
 
 	debug_registro_parametros_hl_ix=&reg_hl;
 	if (reg_pc>16383) {
-		debug_printf(VERBOSE_DEBUG,"ESXDOS handler: Using IX register instead of HL because PC>16383");
 		debug_registro_parametros_hl_ix=&reg_ix;
 	}
 
+    debug_esxdos_last_function=peek_byte_no_time(reg_pc);
 
-    z80_byte funcion=peek_byte_no_time(reg_pc);
+    if (debug_esxdos_last_function>=0x80) {
+        DBG_PRINT_ESXDOS VERBOSE_DEBUG,"ESXDOS call. Using %s. Return address: %04XH",
+            (debug_registro_parametros_hl_ix==&reg_ix ? "IX" : "HL"),reg_pc+1);
+    }
 
 	char buffer_fichero[256];
 	char buffer_fichero2[256];
 
 	z80_byte f_seek_mode;
 
-	switch (funcion)
+	switch (debug_esxdos_last_function)
 	{
 
 		case ESXDOS_RST8_DISK_STATUS:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_STATUS. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_DISK_STATUS. A register: %02XH",reg_a);
 		break;
 
 		case ESXDOS_RST8_DISK_READ:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_READ");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_DISK_READ");
 		break;
 
 		case ESXDOS_RST8_DISK_INFO:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_INFO. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_DISK_INFO. A register: %02XH",reg_a);
 		break;
 
 		case ESXDOS_RST8_M_DRIVEINFO:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_DRIVE_INFO. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_M_DRIVE_INFO. A register: %02XH",reg_a);
 		break;
 
 		case ESXDOS_RST8_F_MOUNT:
 			//Pues de momento retornar ok tal cual
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MOUNT. A register: %02XH",reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_MOUNT. A register: %02XH",reg_a);
 		break;
 
         case ESXDOS_RST8_M_DOSVERSION:
 
             //Creo que esto solo esta en Next. En este caso se ve que se llama en Atic Atac de Next
             if (MACHINE_IS_TBBLUE) {
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: M_DOSVERSION");
+                DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-M_DOSVERSION");
             }
             else {
-               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (M_DOSVERSION)!! ",funcion);
+               DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-Unhandled ESXDOS_RST8 : %02XH (M_DOSVERSION)!! ",debug_esxdos_last_function);
 
             }
         break;
 
 
 		case ESXDOS_RST8_M_GETSETDRV:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_M_GETSETDRV");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_M_GETSETDRV");
 	  break;
 
 		case ESXDOS_RST8_F_OPEN:
 			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s] PTR to file: %04XH",
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_OPEN. Mode: %02XH File: [%s]. PTR to file: %04XH",
                 reg_b,buffer_fichero,*debug_registro_parametros_hl_ix);
 		break;
 
 		case ESXDOS_RST8_F_CLOSE:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CLOSE");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_CLOSE. File handle %d",reg_a);
 		break;
 
 		case ESXDOS_RST8_F_SYNC:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SYNC");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_SYNC. File handle %d",reg_a);
 		break;
 
 		case ESXDOS_RST8_F_READ:
 		//Read BC bytes at HL from file handle A.
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READ. Read %d bytes at %04XH from file handle %d",reg_bc,(*debug_registro_parametros_hl_ix),reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_READ. Read %d bytes at %04XH from file handle %d",reg_bc,(*debug_registro_parametros_hl_ix),reg_a);
 		break;
 
 		case ESXDOS_RST8_F_WRITE:
 		//Write BC bytes at HL from file handle A.
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_Write. Write %d bytes from %04XH from file handle %d",reg_bc,(*debug_registro_parametros_hl_ix),reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_Write. Write %d bytes from %04XH from file handle %d",reg_bc,(*debug_registro_parametros_hl_ix),reg_a);
 		break;
 
 		case ESXDOS_RST8_F_SEEK:
 
 			f_seek_mode=(z80_byte) ((*debug_registro_parametros_hl_ix) & 0xff);
 
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEK. Move %04X%04XH bytes mode %d from file handle %d",reg_bc,reg_de,f_seek_mode,reg_a);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_SEEK. Move %04X%04XH bytes mode %d from file handle %d",reg_bc,reg_de,f_seek_mode,reg_a);
 
 		break;
 
 		case ESXDOS_RST8_F_GETCWD:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_GETCWD");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_GETCWD");
 		break;
 
 		case ESXDOS_RST8_F_CHDIR:
 			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_CHDIR: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_CHDIR: [%s]",buffer_fichero);
 		break;
 
 
 		case ESXDOS_RST8_F_MKDIR:
 			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_MKDIR: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_MKDIR: [%s]",buffer_fichero);
 		break;
 
 		case ESXDOS_RST8_F_STAT:
 			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_STAT: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_STAT: [%s]",buffer_fichero);
 		break;
 
 		case ESXDOS_RST8_F_UNLINK:
 			debug_esxdos_handler_copy_hl_to_string(buffer_fichero);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_UNLINK: %s",buffer_fichero);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_UNLINK: [%s]",buffer_fichero);
 		break;
 
 		case ESXDOS_RST8_F_RENAME:
 			esxdos_handler_copy_register_to_string(buffer_fichero,*registro_parametros_hl_ix);
 			esxdos_handler_copy_register_to_string(buffer_fichero2,reg_de);
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_RENAME: %s to %s",buffer_fichero,buffer_fichero2);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_RENAME: [%s] to [%s]",buffer_fichero,buffer_fichero2);
 		break;
 
 		case ESXDOS_RST8_F_OPENDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_OPENDIR");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_OPENDIR");
 		break;
 
 		case ESXDOS_RST8_F_READDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_READDIR");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_READDIR");
 		break;
 
 		case ESXDOS_RST8_F_TELLDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_TELLDIR");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_TELLDIR");
 		break;
 
 		case ESXDOS_RST8_F_SEEKDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_SEEKDIR. Offset: %04X%04XH",reg_bc,reg_de);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_SEEKDIR. Offset: %04X%04XH",reg_bc,reg_de);
 		break;
 
 		case ESXDOS_RST8_F_REWINDDIR:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_REWINDDIR");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_REWINDDIR");
 		break;
 
 		case ESXDOS_RST8_F_FSTAT:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_F_FSTAT");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_F_FSTAT. File handle %d",reg_a);
 		break;
 
 		case 0xB3:
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unknown ESXDOS_RST8 B3H. Return ok");
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-Unknown ESXDOS_RST8 B3H. Return ok");
 		//desconocida. salta cuando se hace un LOAD *"NOMBRE"
 		//hace un fread con flags  FA_READ|FA_USE_HEADER  y luego llama a este 0xB3
 		break;
 
 		/*case ESXDOS_RST8_DISK_IOCTL:
 			//Ni idea de que hace esto
-			debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unimplemented ESXDOS_RST8_DISK_IOCTL. Return ok. PC=%XH",reg_pc);
+			DBG_PRINT_ESXDOS VERBOSE_DEBUG,"ESXDOS handler: Unimplemented ESXDOS_RST8_DISK_IOCTL. Return ok. PC=%XH",reg_pc);
 		//desconocida. salta al hacer "list" en tr-dos con una imagen trd montada
 
 		break;*/
@@ -2660,28 +2663,29 @@ void esxdos_debug_run(void)
             //De momento esto solo lo he encontrado en el Pogie de Next, en Atic Atac de Next y en Exploding Fist de Next
             if (MACHINE_IS_TBBLUE) {
 
-                debug_printf (VERBOSE_DEBUG,"ESXDOS handler: ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
+                DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-ESXDOS_RST8_DISK_FILEMAP. File handle: %02XH DE=%04XH HL=%04XH IX=%04XH PC=%04XH",
                     reg_a,DE,HL,reg_ix,reg_pc);
             }
             else {
-               debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 : %02XH (DISK_FILEMAP)!! ",funcion);
+               DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-Unknown ESXDOS_RST8 : %02XH (DISK_FILEMAP)",debug_esxdos_last_function);
             }
         break;
 
 
 		default:
-			if (funcion>=0x80) {
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: Unhandled ESXDOS_RST8 call: %02XH !! ",funcion);
+			if (debug_esxdos_last_function>=0x80) {
+				DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-Unknown ESXDOS_RST8 call: %02XH",debug_esxdos_last_function);
 				char buffer_registros[1024];
 				print_registers(buffer_registros);
-				debug_printf (VERBOSE_DEBUG,"ESXDOS handler: %s",buffer_registros);
-
+				DBG_PRINT_ESXDOS VERBOSE_DEBUG,"-%s",buffer_registros);
 			}
 		break;
     }
 
 
 }
+
+
 
 void esxdos_handler_run(void)
 {
@@ -2697,7 +2701,7 @@ Main syscall entry point. Parameters are the same for code inside ESXDOS (.comma
 
 	registro_parametros_hl_ix=&reg_hl;
 	if (reg_pc>16383) {
-		debug_printf(VERBOSE_DEBUG,"ESXDOS handler: Using IX register instead of HL because PC>16383");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"Using IX register instead of HL because PC>16383");
 		registro_parametros_hl_ix=&reg_ix;
 	}
 
@@ -2709,7 +2713,7 @@ void esxdos_handler_reset(void)
 {
 	//Inicializar array de archivos abiertos
 	//esxdos_fopen_files[ESXDOS_MAX_OPEN_FILES];
-	debug_printf(VERBOSE_DEBUG,"Clearing esxdos file handler open files list");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"Clearing esxdos file handler open files list");
 	int i;
 	for (i=0;i<ESXDOS_MAX_OPEN_FILES;i++) {
 		esxdos_fopen_files[i].open_file.v=0;
@@ -2721,7 +2725,7 @@ void esxdos_handler_enable(void)
 
 	//esto solo puede pasar activandolo por linea de comandos
 	if (!MACHINE_IS_SPECTRUM) {
-		debug_printf (VERBOSE_INFO,"ESXDOS handler can only be enabled on Spectrum");
+		DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"ESXDOS handler can only be enabled on Spectrum");
 		return;
 	}
 
@@ -2735,7 +2739,7 @@ void esxdos_handler_enable(void)
 	//	return;
 	//}
 
-	debug_printf(VERBOSE_DEBUG,"Enabling ESXDOS handler");
+	DBG_PRINT_ESXDOS_HANDLER VERBOSE_DEBUG,"Enabling ESXDOS handler");
 
 	//root dir se pone directorio actual si esta vacio
 	if (esxdos_handler_root_dir[0]==0) getcwd(esxdos_handler_root_dir,PATH_MAX);
