@@ -18461,6 +18461,99 @@ int util_get_pixel_color_scr(z80_byte *scrfile,int x,int y)
 
 
 
+int util_extract_hobeta(char *filename,char *tempdir)
+{
+
+    int total_file_size=get_file_size(filename);
+
+    //Leer archivo
+    FILE *ptr_tapebrowser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting tap",filename);
+        return 1;
+    }
+
+    total_file_size -=17;
+
+    z80_byte *memoria=util_malloc(total_file_size,"Can not allocate memory for hobeta extract");
+
+    //leer la cabecera
+    z80_byte buffer_cabecera[17];
+
+    zvfs_fread(in_fatfs,buffer_cabecera,17,ptr_tapebrowser,&fil);
+
+
+
+    char buffer_nombre[11]; //8 caracteres + . + extension + 0 final
+    char c;
+    int i,j;
+    for (i=0,j=0;i<8;i++) {
+        c=buffer_cabecera[i];
+        if (c<32 || c>126) c='?';
+        buffer_nombre[j]=c;
+
+        //si hay espacio, no meterlo en el nombre final
+        if (c!=32) j++;
+    }
+
+    c=buffer_cabecera[i];
+    if (c<32 || c>126) c='?';
+
+    buffer_nombre[j++]='.';
+
+
+    buffer_nombre[j++]=c;
+
+    buffer_nombre[j]=0;
+
+
+    char output_file[PATH_MAX];
+
+
+    sprintf (output_file,"%s/%s",tempdir,buffer_nombre);
+
+
+    zvfs_fread(in_fatfs,memoria,total_file_size,ptr_tapebrowser,&fil);
+
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+
+
+    //Escribir archivo salida
+    FILE *ptr_tzxfile;
+
+    //Soporte para FatFS
+    FIL fil_tzxfile;        /* File object */
+    //FRESULT fr_tzxfile;     /* FatFs return code */
+
+    int in_fatfs_tzxfile;
+
+
+
+    if (zvfs_fopen_write(output_file,&in_fatfs_tzxfile,&ptr_tzxfile,&fil_tzxfile)<0) {
+        debug_printf (VERBOSE_ERR,"Can not open %s",output_file);
+        return 1;
+    }
+
+
+    zvfs_fwrite(in_fatfs_tzxfile,memoria,total_file_size,ptr_tzxfile,&fil_tzxfile);
+
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+
+
+    free(memoria);
+
+
+    return 0;
+
+}
 
 //Rutina para extraer TAP pero tambien para convertir a TZX o PZX
 //Si tzxfile !=NULL, lo convierte a tzx o pzx, en vez de expandir

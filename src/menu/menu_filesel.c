@@ -3287,6 +3287,14 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     //Ver si comprimido
     if (menu_filesel_is_compressed(archivo)) return 1;
 
+
+    char extension[NAME_MAX];
+
+    util_get_file_extension(archivo,extension);
+
+    //Archivo hobeta
+    if (extension[0]=='$') return 1;
+
     return 0;
 }
 
@@ -3295,6 +3303,9 @@ int menu_filesel_file_can_be_expanded(char *archivo)
 //sufijo_carpeta si no es NULL, agrega ese sufijo al nombre de carpeta temporal
 int menu_filesel_expand(char *archivo,char *tmpdir,char *sufijo_carpeta)
 {
+
+    char extension[NAME_MAX];
+    util_get_file_extension(archivo,extension);
 
     if (!menu_filesel_file_can_be_expanded(archivo)) {
         //printf("File can not be expanded\n");
@@ -3349,6 +3360,11 @@ int menu_filesel_expand(char *archivo,char *tmpdir,char *sufijo_carpeta)
         else if (!util_compare_file_extension(archivo,"pzx") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a pzx file");
                 return util_extract_pzx(archivo,tmpdir,NULL,0);
+        }
+
+        else if (extension[0]=='$') {
+                debug_printf (VERBOSE_DEBUG,"Is a trd file");
+                return util_extract_hobeta(archivo,tmpdir);
         }
 
         else if (!util_compare_file_extension(archivo,"trd") ) {
