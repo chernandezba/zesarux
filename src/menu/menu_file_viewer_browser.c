@@ -5627,6 +5627,78 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
 
 
 
+void menu_file_hobeta_browser_show(char *filename)
+{
+
+	//Leemos cabecera archivo sms
+    FILE *ptr_file_z80_browser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_z80_browser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        return;
+    }
+
+
+    z80_byte buffer_cabecera[17];
+
+
+    int leidos;
+
+    leidos=zvfs_fread(in_fatfs,buffer_cabecera,17,ptr_file_z80_browser,&fil);
+
+
+    if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_file_z80_browser,&fil);
+
+    int indice_buffer=0;
+    char buffer_texto[512];
+
+    char *texto_browser=util_malloc_max_texto_browser();
+
+
+    char buffer_nombre[9];
+    char c;
+    int i;
+    for (i=0;i<8;i++) {
+        c=buffer_cabecera[i];
+        if (c<32 || c>126) c='.';
+        buffer_nombre[i]=c;
+    }
+
+    buffer_nombre[i]=0;
+
+ 	sprintf(buffer_texto,"Name: %s",buffer_nombre);
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    c=buffer_cabecera[i];
+    if (c<32 || c>126) c='.';
+
+ 	sprintf(buffer_texto,"Extension: %c",c);
+ 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+
+
+	texto_browser[indice_buffer]=0;
+	zxvision_generic_message_tooltip("Hobeta file browser" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_browser);
+
+
+    free(texto_browser);
+
+
+}
+
+
 void menu_file_col_browser_show(char *filename)
 {
 
@@ -5924,6 +5996,10 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         //printf ("extension vacia: %d\n",util_compare_file_extension(file_name,"") );
         //printf ("es z88 basic: %d\n",file_is_z88_basic(file_name));
 
+        char extension[NAME_MAX];
+
+        util_get_file_extension(file_name,extension);
+
         //Algunos tipos conocidos
         if (!util_compare_file_extension(file_name,"tap")) menu_tape_browser_show(file_name,-1);
 
@@ -6005,6 +6081,8 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         else if (!util_compare_file_extension(file_name,"rmd")) menu_file_rmd_browser_show(file_name);
 
         else if (!util_compare_file_extension(file_name,"mdr")) menu_file_mdr_browser_show(file_name);
+
+        else if (extension[0]=='$') menu_file_hobeta_browser_show(file_name);
 
         //Si archivo no tiene extension pero su contenido parece indicar que es z88 basic
         else if (!util_compare_file_extension(file_name,"") && file_is_z88_basic(file_name)) menu_file_basic_browser_show(file_name);
