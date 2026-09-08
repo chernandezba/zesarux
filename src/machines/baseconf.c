@@ -34,6 +34,7 @@
 #include "operaciones.h"
 #include "zxevo.h"
 #include "mmc.h"
+#include "ide.h"
 #include "betadisk.h"
 
 
@@ -88,6 +89,15 @@ static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
 static int baseconf_nmi_entry_pending;
 static int baseconf_nmi_exit_countdown;
+static z80_byte baseconf_ide_high_latch;
+static z80_byte baseconf_ide_low_latch;
+static int baseconf_ide_read_high_pending;
+static int baseconf_ide_write_low_pending;
+static int baseconf_ide_write_high_from_port_11;
+static z80_byte baseconf_ide_control;
+static z80_byte baseconf_ide_transfer_command;
+static int baseconf_ide_transfer_bytes;
+static int baseconf_ide_sectors_remaining;
 static z80_byte baseconf_cmos_extension_type;
 static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
@@ -104,6 +114,164 @@ static const z80_byte baseconf_avr_boot_version[16]={
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
+
+static int baseconf_ide_register(z80_byte puerto_l)
+{
+    switch (puerto_l) {
+        case 0x30: return 1;
+        case 0x50: return 2;
+        case 0x70: return 3;
+        case 0x90: return 4;
+        case 0xb0: return 5;
+        case 0xd0: return 6;
+        case 0xf0: return 7;
+        default: return -1;
+    }
+}
+
+int baseconf_ide_port(z80_byte puerto_l)
+{
+    return puerto_l==0x10 || puerto_l==0x11 || puerto_l==0xc8 ||
+           baseconf_ide_register(puerto_l)>=0;
+}
+
+static void baseconf_ide_sync_data(void)
+{
+    baseconf_ide_read_high_pending=0;
+    baseconf_ide_write_low_pending=0;
+    baseconf_ide_write_high_from_port_11=0;
+}
+
+static void baseconf_ide_increment_lba(void)
+{
+    unsigned int lba;
+
+    /* Los accesos observados del firmware BaseConf usan direccionamiento LBA. */
+    if (!(ide_register_drive_head&0x40)) return;
+
+    lba=((unsigned int)(ide_register_drive_head&0x0f)<<24) |
+        ((unsigned int)ide_register_cylinder_high<<16) |
+        ((unsigned int)ide_register_cylinder_low<<8) |
+        ide_register_sector_number;
+    lba++;
+
+    ide_register_sector_number=lba&0xff;
+    ide_register_cylinder_low=(lba>>8)&0xff;
+    ide_register_cylinder_high=(lba>>16)&0xff;
+    ide_register_drive_head=(ide_register_drive_head&0xf0) | ((lba>>24)&0x0f);
+}
+
+static void baseconf_ide_begin_transfer(z80_byte comando)
+{
+    baseconf_ide_transfer_command=0;
+    baseconf_ide_transfer_bytes=0;
+    baseconf_ide_sectors_remaining=0;
+
+    if (comando==0x20 || comando==0x21 || comando==0x30) {
+            baseconf_ide_transfer_command=comando;
+            /* En ATA el valor cero representa una transferencia de 256 sectores. */
+            baseconf_ide_sectors_remaining=ide_register_sector_count ?
+                    ide_register_sector_count : 256;
+    }
+}
+
+static void baseconf_ide_data_transferred(int bytes)
+{
+    if (!baseconf_ide_transfer_command) return;
+
+    baseconf_ide_transfer_bytes+=bytes;
+    if (baseconf_ide_transfer_bytes<512) return;
+
+    baseconf_ide_transfer_bytes=0;
+    baseconf_ide_sectors_remaining--;
+    ide_register_sector_count=(z80_byte)baseconf_ide_sectors_remaining;
+
+    if (baseconf_ide_sectors_remaining>0) {
+            /* ide.c procesa un sector por orden. BaseConf mantiene DRQ y avanza
+               al siguiente sector repitiendo internamente la misma orden. */
+            baseconf_ide_increment_lba();
+            ide_write_command_block_register(7,baseconf_ide_transfer_command);
+    }
+    else baseconf_ide_transfer_command=0;
+}
+
+z80_byte baseconf_ide_read(z80_byte puerto_l)
+{
+    int registro=baseconf_ide_register(puerto_l);
+
+    if (puerto_l==0x10) {
+            /* En modo extendido dos lecturas consecutivas de #10 entregan
+               primero el byte bajo y después el alto. En modo NemoIDE el
+               segundo byte se recoge mediante #11. */
+            if (baseconf_ide_read_high_pending) {
+                    baseconf_ide_read_high_pending=0;
+                    return baseconf_ide_high_latch;
+            }
+
+            z80_byte bajo=ide_read_command_block_register(0);
+            baseconf_ide_high_latch=ide_read_command_block_register(0);
+            baseconf_ide_data_transferred(2);
+            baseconf_ide_read_high_pending=1;
+            return bajo;
+    }
+
+    if (puerto_l==0x11) {
+            baseconf_ide_read_high_pending=0;
+            return baseconf_ide_high_latch;
+    }
+
+    baseconf_ide_sync_data();
+    if (puerto_l==0xc8) return ide_read_command_block_register(7);
+    return ide_read_command_block_register(registro);
+}
+
+void baseconf_ide_write(z80_byte puerto_l,z80_byte valor)
+{
+    int registro=baseconf_ide_register(puerto_l);
+
+    if (puerto_l==0x11) {
+            /* NemoIDE escribe primero el byte alto en #11 y después el
+               byte bajo en #10, que completa la palabra ATA. */
+            baseconf_ide_high_latch=valor;
+            baseconf_ide_write_high_from_port_11=1;
+            baseconf_ide_write_low_pending=0;
+            return;
+    }
+
+    if (puerto_l==0x10) {
+            if (baseconf_ide_write_high_from_port_11) {
+                    ide_write_command_block_register(0,valor);
+                    ide_write_command_block_register(0,baseconf_ide_high_latch);
+                    baseconf_ide_data_transferred(2);
+                    baseconf_ide_write_high_from_port_11=0;
+                    return;
+            }
+
+            /* El modo extendido recibe por #10 los bytes bajo y alto de
+               cada palabra, en ese orden. */
+            if (!baseconf_ide_write_low_pending) {
+                    baseconf_ide_low_latch=valor;
+                    baseconf_ide_write_low_pending=1;
+            }
+            else {
+                    ide_write_command_block_register(0,baseconf_ide_low_latch);
+                    ide_write_command_block_register(0,valor);
+                    baseconf_ide_data_transferred(2);
+                    baseconf_ide_write_low_pending=0;
+            }
+            return;
+    }
+
+    baseconf_ide_sync_data();
+    if (puerto_l==0xc8) {
+            /* Bit SRST del registro Device Control. */
+            if ((valor&4) && !(baseconf_ide_control&4)) ide_reset();
+            baseconf_ide_control=valor;
+            return;
+    }
+    ide_write_command_block_register(registro,valor);
+    if (registro==7) baseconf_ide_begin_transfer(valor);
+}
 
 static int baseconf_beta_virtual_drive_active(void)
 {
@@ -832,6 +1000,15 @@ void baseconf_hard_reset(void)
     baseconf_nmi_active=0;
     baseconf_nmi_entry_pending=0;
     baseconf_nmi_exit_countdown=0;
+    baseconf_ide_high_latch=0xff;
+    baseconf_ide_low_latch=0;
+    baseconf_ide_read_high_pending=0;
+    baseconf_ide_write_low_pending=0;
+    baseconf_ide_write_high_from_port_11=0;
+    baseconf_ide_control=0;
+    baseconf_ide_transfer_command=0;
+    baseconf_ide_transfer_bytes=0;
+    baseconf_ide_sectors_remaining=0;
     baseconf_cmos_extension_type=0;
     baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 

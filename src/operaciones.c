@@ -7373,6 +7373,11 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     //Puerto ZXMMC+
     if (zxmmcplus_enabled.v && puerto_l==0x7f) return zxmmcplus_read_port();
 
+	//Puertos NemoIDE nativos de BaseConf
+	if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
+		return baseconf_ide_read(puerto_l);
+	}
+
 	//Puertos 8-bit simple ide
 	if (eight_bit_simple_ide_enabled.v && (puerto_l&16)==0) {
 		return eight_bit_simple_ide_read(puerto_l);
@@ -7447,11 +7452,6 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         if (MACHINE_IS_BASECONF && (puerto_l==0xbd || puerto_l==0xbe)) {
             return baseconf_read_config_port(puerto_h);
         }
-
-        /* IDE status used by the TS Labs reset service.  With no BaseConf
-           IDE device attached, report not busy instead of floating high. */
-        if (MACHINE_IS_BASECONF && puerto_h==0x27 &&
-            (puerto_l==0x70 || puerto_l==0xaf)) return 0;
 
         /* BaseConf only decodes the ULA at FE/F6 (A3 selects bright
            border), rather than responding to every even port. */
@@ -9650,6 +9650,11 @@ acts as expected unless this registe is explicitly changed by the user/software.
 
     if (zxmmc_emulation.v==0 && zxmmcplus_enabled.v && puerto_l==0x1f) {
         zxmmcplus_mmc_cs(value);
+    }
+
+    //Puertos IDE nativos de BaseConf
+    if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
+            baseconf_ide_write(puerto_l,value);
     }
 
     //Puertos 8-bit simple ide
