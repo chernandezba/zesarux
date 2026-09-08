@@ -157,85 +157,84 @@ void ide_flush_flash_to_disk(void)
 
 	if (ide_enabled.v==0) return;
 
-        if (ide_flash_must_flush_to_disk==0) {
-                debug_printf (VERBOSE_DEBUG,"Trying to flush IDE to disk but no changes made");
-                return;
-        }
+    if (ide_flash_must_flush_to_disk==0) {
+        debug_printf (VERBOSE_DEBUG,"Trying to flush IDE to disk but no changes made");
+        return;
+    }
 
-        if (ide_persistent_writes.v==0) {
-                debug_printf (VERBOSE_DEBUG,"Trying to flush IDE to disk but persistent writes disabled");
-                return;
-        }
-
-
-        debug_printf (VERBOSE_INFO,"Flushing IDE to disk");
+    if (ide_persistent_writes.v==0) {
+        debug_printf (VERBOSE_DEBUG,"Trying to flush IDE to disk but persistent writes disabled");
+        return;
+    }
 
 
-        FILE *ptr_idefile;
+    debug_printf (VERBOSE_INFO,"Flushing IDE to disk");
+
+
+    FILE *ptr_idefile;
 
 	debug_printf (VERBOSE_INFO,"Opening IDE File %s",ide_file_name);
 	ptr_idefile=fopen(ide_file_name,"wb");
 
 
 
-        int escritos=0;
-        long long int size;
-        size=ide_size;
+    int escritos=0;
+    long long int size;
+    size=ide_size;
 
 
-        if (ptr_idefile!=NULL) {
-                z80_byte *puntero;
-                puntero=ide_memory_pointer;
+    if (ptr_idefile!=NULL) {
+        z80_byte *puntero;
+        puntero=ide_memory_pointer;
 
-		//Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
-		//metera flush a 1
-		ide_flash_must_flush_to_disk=0;
+        //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
+        //metera flush a 1
+        ide_flash_must_flush_to_disk=0;
 
-                escritos=fwrite(puntero,1,size,ptr_idefile);
+        escritos=fwrite(puntero,1,size,ptr_idefile);
 
-                fclose(ptr_idefile);
+        fclose(ptr_idefile);
 
+    }
 
-        }
+    //printf ("ptr_idefile: %d\n",ptr_idefile);
+    //printf ("escritos: %d\n",escritos);
 
-        //printf ("ptr_idefile: %d\n",ptr_idefile);
-        //printf ("escritos: %d\n",escritos);
-
-        if (escritos!=size || ptr_idefile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to IDE file. Disabling write file operations");
-                ide_persistent_writes.v=0;
-        }
+    if (escritos!=size || ptr_idefile==NULL) {
+        debug_printf (VERBOSE_ERR,"Error writing to IDE file. Disabling write file operations");
+        ide_persistent_writes.v=0;
+    }
 
 }
 
 int ide_read_file_to_memory(void)
 {
-	if (ide_memory_pointer==NULL || ide_enabled.v==0)  {
-    debug_printf(VERBOSE_ERR,"IDE is not enabled. You should not get this message");
-    return 1;
-  }
+    if (ide_memory_pointer==NULL || ide_enabled.v==0)  {
+        debug_printf(VERBOSE_ERR,"IDE is not enabled. You should not get this message");
+        return 1;
+    }
 
 	FILE *ptr_idefile;
 	unsigned int leidos=0;
 
-debug_printf (VERBOSE_INFO,"Opening IDE File %s",ide_file_name);
+    debug_printf (VERBOSE_INFO,"Opening IDE File %s",ide_file_name);
 	ptr_idefile=fopen(ide_file_name,"rb");
 
 
 	if (ptr_idefile!=NULL) {
-					leidos=fread(ide_memory_pointer,1,expected_read_ide_size,ptr_idefile);
-					fclose(ptr_idefile);
-}
+        leidos=fread(ide_memory_pointer,1,expected_read_ide_size,ptr_idefile);
+        fclose(ptr_idefile);
+    }
 
-if (ptr_idefile==NULL) {
-debug_printf (VERBOSE_ERR,"Error opening ide file");
-return 1;
-}
+    if (ptr_idefile==NULL) {
+        debug_printf (VERBOSE_ERR,"Error opening ide file");
+        return 1;
+    }
 
-if (leidos!=expected_read_ide_size) {
-debug_printf (VERBOSE_ERR,"Error reading ide. Asked: %ld Read: %d",ide_size,leidos);
-return 1;
-}
+    if (leidos!=expected_read_ide_size) {
+        debug_printf (VERBOSE_ERR,"Error reading ide. Asked: %ld Read: %d",ide_size,leidos);
+        return 1;
+    }
 
 
 
@@ -251,20 +250,21 @@ int ide_read_file(void)
 	ide_memory_pointer=NULL;
 
 
-        ide_memory_pointer=malloc(ide_size);
-        if (ide_memory_pointer==NULL) {
-                cpu_panic ("No enough memory for ide emulation");
-        }
+    ide_memory_pointer=malloc(ide_size);
+    if (ide_memory_pointer==NULL) {
+        cpu_panic ("No enough memory for ide emulation");
+    }
 
-				if (ide_read_file_to_memory()) {
+    if (ide_read_file_to_memory()) {
+        return 1;
+    }
+
+
+    if (ide_set_image_parameters() ) {
 					return 1;
-				}
+    }
 
-
-				if (ide_set_image_parameters() ) {
-					return 1;
-				}
-      return 0;
+    return 0;
 
 }
 
@@ -281,7 +281,7 @@ void ide_insert(void)
 	if (!si_existe_archivo(ide_file_name)) {
 		debug_printf (VERBOSE_ERR,"File %s does not exist",ide_file_name);
 		ide_disable();
-                return;
+        return;
 	}
 
 
@@ -292,8 +292,8 @@ void ide_insert(void)
 
 	if (ide_check_card_size() ){
 		ide_disable();
-                return;
-        }
+        return;
+    }
 
 
 	if (ide_read_file()) {
@@ -301,17 +301,14 @@ void ide_insert(void)
 		return;
 	}
 
-
-
-
 }
 
 void ide_reset(void)
 {
-        //Resetear estado
-        ide_write_sector_operation=0;
-        ide_index_return_buffer=0;
-        ide_index_write_buffer=0;
+    //Resetear estado
+    ide_write_sector_operation=0;
+    ide_index_return_buffer=0;
+    ide_index_write_buffer=0;
 
 	//TODO resetear otros contadores a 0
 	ide_register_sector_number=1;
@@ -326,7 +323,7 @@ void ide_reset(void)
 
 
 
-        ide_status_register=(IDE_STATUS_RDY|IDE_STATUS_DSC);
+    ide_status_register=(IDE_STATUS_RDY|IDE_STATUS_DSC);
 
 }
 
@@ -334,14 +331,14 @@ void ide_enable(void)
 {
     if (ide_enabled.v) return;
 
-        debug_printf (VERBOSE_INFO,"Enabling ide");
-        ide_enabled.v=1;
+    debug_printf (VERBOSE_INFO,"Enabling ide");
+    ide_enabled.v=1;
 
 	ide_reset();
 
-        ide_memory_pointer=NULL;
+    ide_memory_pointer=NULL;
 
-        ide_insert();
+    ide_insert();
 
 
 }
@@ -350,19 +347,19 @@ void ide_disable(void)
 {
     if (ide_enabled.v==0) return;
 
-	//Hacer flush si hay algun cambio
-	ide_flush_flash_to_disk();
+    //Hacer flush si hay algun cambio
+    ide_flush_flash_to_disk();
 
 
-        //Desactivar Divide ports
-        //divide_ide_ports_disable();
+    //Desactivar Divide ports
+    //divide_ide_ports_disable();
 
 
-	ide_enabled.v=0;
+    ide_enabled.v=0;
 
-        //Si habia memoria asignada, desasignar
-        if (ide_memory_pointer!=NULL) free (ide_memory_pointer);
-        ide_memory_pointer=NULL;
+    //Si habia memoria asignada, desasignar
+    if (ide_memory_pointer!=NULL) free (ide_memory_pointer);
+    ide_memory_pointer=NULL;
 
 }
 
@@ -406,6 +403,9 @@ int ide_check_card_size(void)
             debug_printf (VERBOSE_INFO,"Warning. Unexpected ide size. Should be one of: 8, 16, 32, 64, 128, 256, 512, 1024 MB. "
                                        "Rounding up to %d and continuing anyway, use at your own risk!",size_mb);
             ide_size=size_mb*1024*1024;
+
+            //Asignaremos memoria como si fuera un tamaño estandard. Además si el archivo se escribe porque se ha modificado,
+            //ya se normalizará ese tamaño
 
         break;
     }
