@@ -12,6 +12,8 @@ Permitir seleccionar archivo de salida desde la ventana de Fuente de sonido Exte
 Agregado otro juguete "Clive" a menú Procrastinar
 Permitir prefijos $ y 0x para valores hexadecimales
 Permitir hacer debug en consola de llamadas a esxdos
+Permitir visualizar y extraer archivos Hobeta (.$C, etc)
+Permitir usar imagenes ide de tamaño no estandar
 
 * Mejoras:
 

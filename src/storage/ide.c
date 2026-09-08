@@ -99,6 +99,9 @@ int ide_card_selected=0;
 //64 MB
 long long int ide_size=64*1024*1024;
 
+//Para que pueda leer tamaño inferior a lo esperado (los multiples de MB...)
+long long int expected_read_ide_size=64*1024*1024;
+
 
 int ide_write_sector_operation=0;
 int ide_index_write_buffer=0;
@@ -220,7 +223,7 @@ debug_printf (VERBOSE_INFO,"Opening IDE File %s",ide_file_name);
 
 
 	if (ptr_idefile!=NULL) {
-					leidos=fread(ide_memory_pointer,1,ide_size,ptr_idefile);
+					leidos=fread(ide_memory_pointer,1,expected_read_ide_size,ptr_idefile);
 					fclose(ptr_idefile);
 }
 
@@ -229,7 +232,7 @@ debug_printf (VERBOSE_ERR,"Error opening ide file");
 return 1;
 }
 
-if (leidos!=ide_size) {
+if (leidos!=expected_read_ide_size) {
 debug_printf (VERBOSE_ERR,"Error reading ide. Asked: %ld Read: %d",ide_size,leidos);
 return 1;
 }
@@ -285,6 +288,7 @@ void ide_insert(void)
 
 	ide_size=get_file_size(ide_file_name);
 	debug_printf (VERBOSE_DEBUG,"ide file size: %ld",ide_size);
+    expected_read_ide_size=ide_size;
 
 	if (ide_check_card_size() ){
 		ide_disable();
@@ -369,7 +373,10 @@ void ide_disable(void)
 //Mirar si tarjeta ide tiene tamanyo admitido
 int ide_check_card_size(void)
 {
-        switch (ide_size) {
+
+    int size_mb=ide_size/1024/1024;
+
+    switch (ide_size) {
 		case 8*1024*1024:
 		case 16*1024*1024:
 		case 32*1024*1024:
@@ -381,13 +388,29 @@ int ide_check_card_size(void)
 		break;
 
 
-                default:
-                        debug_printf (VERBOSE_ERR,"Invalid card size. Must be one of: 8, 16, 32, 64, 128, 256, 512, 1024 MB");
-                        return 1;
-                break;
-        }
+        default:
+            if (size_mb<8) size_mb=8;
+            else if (size_mb<16) size_mb=16;
+            else if (size_mb<32) size_mb=32;
+            else if (size_mb<64) size_mb=64;
+            else if (size_mb<128) size_mb=128;
+            else if (size_mb<256) size_mb=256;
+            else if (size_mb<512) size_mb=512;
+            else if (size_mb<1024) size_mb=1024;
+            else {
+                debug_printf (VERBOSE_ERR,"Invalid card size. Maximum 1024 MB");
+                return 1;
+            }
 
-        return 0;
+            //No mostramos esto como error por pantalla.
+            debug_printf (VERBOSE_INFO,"Warning. Unexpected ide size. Should be one of: 8, 16, 32, 64, 128, 256, 512, 1024 MB. "
+                                       "Rounding up to %d and continuing anyway, use at your own risk!",size_mb);
+            ide_size=size_mb*1024*1024;
+
+        break;
+    }
+
+    return 0;
 
 }
 
