@@ -44866,6 +44866,9 @@ void menu_clive_game_handle_state_changes(void)
     if (zxvision_mouse_en_ventana(menu_clive_game_window) && mouse_is_double_clicking) {
         printf("Double click on Clive %d\n",contador_segundo_infinito);
 
+        //Si estaba hablando, dejar de hablar
+        menu_clive_game_remove_talking_text();
+
 
         //TODO: esto lo deberia hacer zxvision.c. Pero si no lo pongo a 0, se queda siempre activo
         //hasta cambiar de ventana o hacer un click normal
