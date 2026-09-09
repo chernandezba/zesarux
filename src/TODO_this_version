@@ -1,5 +1,7 @@
 
 
+
+-hh
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 -> en teoria esto no deberia pasar. Ese limite es para sistemas de 32 bits al asignar:
 time_t tiempo = time(NULL);
