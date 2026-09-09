@@ -8421,6 +8421,11 @@ void screen_store_scanline_rainbow_solo_display_prism(void)
 //en cambio, si border esta activado, la primera linea del buffer sera de border
 void screen_store_scanline_rainbow_solo_display(void)
 {
+    if (MACHINE_IS_BASECONF) {
+        baseconf_store_scanline_rainbow_display();
+        return;
+    }
+
     //Si maquina tsconf. Dado que tiene border tamaño variable, hacerlo desde aqui tal cual
     if (MACHINE_IS_TSCONF) {
         screen_store_scanline_rainbow_solo_display_tsconf();
@@ -8958,7 +8963,12 @@ de la linea actual del border (incluso en la zona central) pero no dibuja en pan
 void screen_store_scanline_rainbow_solo_border(void)
 {
 
-    if (border_enabled.v==0) return;
+	if (border_enabled.v==0) return;
+
+    if (MACHINE_IS_BASECONF) {
+        baseconf_store_scanline_rainbow_border();
+        return;
+    }
 
 
     int ancho_pantalla=256;

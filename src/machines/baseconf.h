@@ -113,6 +113,7 @@ extern int baseconf_memory_write_allowed(z80_int direccion);
 extern int baseconf_text_mode_active(void);
 extern z80_byte baseconf_get_video_mode(void);
 extern z80_int baseconf_get_palette_entry(z80_byte indice);
+extern z80_byte baseconf_get_border_colour(void);
 extern void baseconf_set_border_colour(z80_int puerto,z80_byte value);
 extern void screen_baseconf_refresca_alco_mode(void);
 extern void screen_baseconf_refresca_ega_mode(void);
@@ -120,6 +121,8 @@ extern void screen_baseconf_refresca_atm_multicolor_mode(void);
 extern void screen_baseconf_refresca_atm_text_mode(void);
 extern void screen_baseconf_refresca_hw_multicolor_mode(void);
 extern void screen_baseconf_refresca_text_mode(void);
+extern void baseconf_store_scanline_rainbow_border(void);
+extern void baseconf_store_scanline_rainbow_display(void);
 
 
 extern void baseconf_refresca_pantalla(void);

@@ -225,6 +225,7 @@ d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
 ->mas ventanas en debug->baseconf?
 
 
+
 juegos y demos:
 
 http://atmturbo.nedopc.com/load_trdos.htm
@@ -248,7 +249,8 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 
 * fat boot: lee del disco ide o del mmc archivos hobbeta (extensiones $C etc). si hay mas de uno, aparece un selector de archivos para cargar
 * tr dos boot: inicia el disco virtual mapeado (trd o scl) desde r.service->image to ramdisk o bien leyendo del betadisk emulation de ZEsarUX
-* tape load: si emu tape load on, abre selector de archivos desde ide o mmc para seleccionar un tap. si emu tape load off, lee de cinta puerto feh o emulada por ZEsarUX
+* tape load: si emu tape load on, abre selector de archivos desde ide o mmc para seleccionar un tap. si emu tape load off, lee de cinta
+   puerto feh o emulada por ZEsarUX
 * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 * cd boot: que hace??
 
@@ -281,6 +283,7 @@ Y con snapshot de pogie (asi no parece que funcione!):
 -El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
 >revisar que al cargar .snx desde quickload tambien soporte lo del file handle
 
+-cargar en modo 48k no parece funcionar
 
 ***CPU info*****
 
@@ -291,13 +294,6 @@ Y con snapshot de pogie (asi no parece que funcione!):
 ***Monopoly*****
 
 -Monopoly poner nombre de david si no está
-
-
-
-
-***Debug esxdos handler*****
--que tenga un tipo diferente de debug para poder aplicar filtros
--cambiar texto mensajes, que no diga "handler"
 
 
 ---

@@ -700,6 +700,11 @@ void baseconf_set_border_colour(z80_int puerto,z80_byte value)
     baseconf_border_colour=(value&7) | ((~puerto)&8);
 }
 
+z80_byte baseconf_get_border_colour(void)
+{
+    return baseconf_border_colour;
+}
+
 /* ALCO: 256x192, un color de 4 bits por píxel. Cuatro flujos de bytes
    entrelazados ocupan las dos páginas de pantalla Spectrum adyacentes. */
 void screen_baseconf_refresca_alco_mode(void)
@@ -874,6 +879,272 @@ void screen_baseconf_refresca_text_mode(void)
     }
 }
 
+/* Devuelve el color de un pixel de la linea activa actual. El calculo es el
+   mismo que usa el render de frame completo, pero permite almacenarlo cuando
+   termina cada scanline. */
+static z80_int baseconf_get_scanline_pixel(z80_byte mode,int x,int y)
+{
+    int vpage=(puerto_32765&8) ? 7 : 5;
+    z80_byte value,attr,ink,paper;
+
+    switch (mode) {
+    //Modo 13H, ALCO 256x192: obtiene cada color de 4 bits de las dos paginas de VRAM entrelazadas.
+    case 0x13: {
+        int adr=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2) | (x>>3);
+        int page=vpage;
+        if ((x&6)==0 || (x&6)==4) page^=1;
+        if (x&4) adr+=0x2000;
+        value=baseconf_ram_mem_table[page][adr];
+        if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
+        else value=(value&7) | ((value&0x40)>>3);
+        return baseconf_get_palette_colour(value);
+    }
+
+    //Modo 00H, ATM EGA 320x200: reconstruye cada color de 4 bits desde cuatro planos de VRAM entrelazados.
+    case 0: {
+        int pair=x&~1;
+        int adr=y*40+(x>>3);
+        int page=vpage;
+        switch (pair&7) {
+        case 0: page=vpage^4; break;
+        case 2: break;
+        case 4: page=vpage^4; adr+=0x2000; break;
+        default: adr+=0x2000; break;
+        }
+        value=baseconf_ram_mem_table[page][adr];
+        if (x&1) value=((value&0x38)>>3) | ((value&0x80)>>4);
+        else value=(value&7) | ((value&0x40)>>3);
+        return baseconf_get_palette_colour(value);
+    }
+
+    //Modo 23H, ZX hardware multicolor: usa un byte por grupo para seleccionar ink o paper en cada pixel.
+    case 0x23: {
+        int adr=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2) | (x>>3);
+        value=baseconf_ram_mem_table[vpage][adr];
+        ink=(value&7) | ((value&0x40)>>3);
+        paper=(value&0x78)>>3;
+        return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
+    }
+
+    //Modo 02H, ATM hardware multicolor 640x200: lee bitmap y atributo de paginas de VRAM separadas.
+    case 2: {
+        int adr=y*40+(x>>4);
+        int half=(x&8) ? 0x2000 : 0;
+        value=baseconf_ram_mem_table[vpage][adr+half];
+        attr=baseconf_ram_mem_table[vpage^4][adr+half];
+        ink=(attr&7) | ((attr&0x40)>>3);
+        paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+        return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
+    }
+
+    //Modo 06H, ATM text 640x200: obtiene el caracter y atributo entrelazados y consulta la fuente activa.
+    case 6: {
+        int column=x>>3;
+        int adr=0x1c0+(y>>3)*64+(column>>1);
+        z80_byte caracter;
+        if (column&1) {
+            caracter=baseconf_ram_mem_table[vpage][adr+0x2000];
+            attr=baseconf_ram_mem_table[vpage^4][adr+1];
+        }
+        else {
+            caracter=baseconf_ram_mem_table[vpage][adr];
+            attr=baseconf_ram_mem_table[vpage^4][adr^0x2000];
+        }
+        value=baseconf_text_font[caracter*8+(y&7)];
+        ink=(attr&7) | ((attr&0x40)>>3);
+        paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+        return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
+    }
+
+    //Modo 07H, EVO text 640x200: obtiene caracter y atributo de cuatro zonas de una misma pagina de VRAM.
+    case 7: {
+        z80_byte *text=baseconf_ram_mem_table[vpage+3];
+        int column=x>>3;
+        int adr=0x1c0+(y>>3)*64+(column>>1);
+        z80_byte caracter;
+        if (column&1) {
+            caracter=text[adr+0x1000];
+            attr=text[adr+0x2001];
+        }
+        else {
+            caracter=text[adr];
+            attr=text[adr+0x3000];
+        }
+        value=baseconf_text_font[caracter*8+(y&7)];
+        ink=(attr&7) | ((attr&0x40)>>3);
+        paper=((attr&0x38)>>3) | ((attr&0x80)>>4);
+        return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
+    }
+
+    //Modo 03H o desconocido, ZX standard: combina el bitmap Spectrum con su atributo de celda 8x8.
+    default: {
+        z80_byte *screen=get_base_mem_pantalla();
+        int adr=screen_addr_table[y<<5]+(x>>3);
+        int adr_attr=6144+(y>>3)*32+(x>>3);
+        value=screen[adr];
+        attr=screen[adr_attr];
+        if (scr_refresca_sin_colores.v) attr=56;
+        else if (scr_refresca_show_attribute_grid.v)
+            attr=56+((((y>>3)+(x>>3))&1) ? 64 : 0);
+        ink=(attr&7)+((attr&64) ? 8 : 0);
+        paper=((attr>>3)&7)+((attr&64) ? 8 : 0);
+        if ((attr&128) && estado_parpadeo.v) {
+            z80_byte aux=ink;
+            ink=paper;
+            paper=aux;
+        }
+        return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
+    }
+    }
+}
+
+/* El scanline de video comienza en display, continua por el border derecho,
+   retrace y termina en el border izquierdo de la linea siguiente. Se guarda
+   este ultimo tramo para dibujarlo al principio del siguiente scanline. */
+static z80_byte baseconf_border_left_next[BASECONF_DISPLAY_WIDTH+2*BASECONF_LEFT_BORDER_NO_ZOOM];
+static int baseconf_border_left_next_valid=0;
+
+void baseconf_store_scanline_rainbow_border(void)
+{
+    //Color del border resultante en cada T-estado del scanline actual.
+    z80_byte state_colour[MAX_STATES_LINE];
+
+    //Color de border heredado del final del scanline anterior.
+    z80_byte colour=screen_border_last_color;
+
+    //Modo de video BaseConf activo durante este scanline.
+    z80_byte mode=baseconf_get_video_mode();
+
+    //Indica si el modo utiliza el area activa ancha de 640 pixeles.
+    int wide_mode=(mode==0 || mode==2 || mode==6 || mode==7);
+
+    //Numero de scanlines activos del modo: 200 en modos anchos o 192 en modos ZX.
+    int source_height=wide_mode ? 200 : 192;
+
+    //Numero de scanlines de border superior dentro de las 288 lineas visibles.
+    int top_border=(288-source_height)/2;
+
+    //Primer scanline del core que corresponde al frame visible de BaseConf.
+    int visible_start=screen_indice_inicio_pant-top_border;
+
+    //Posicion vertical del scanline actual dentro de las 288 lineas visibles.
+    int visible_y=t_scanline_draw-visible_start;
+
+    //Posicion vertical dentro del area activa; es negativa en el border superior.
+    int active_y=t_scanline_draw-screen_indice_inicio_pant;
+
+    //Ancho total en pixeles del rainbow buffer, incluyendo border si esta habilitado.
+    int total_width=get_total_ancho_rainbow();
+
+    //Ancho del border izquierdo: 40 pixeles en modos anchos y 104 en modos ZX.
+    int left_width=wide_mode ? 40 : 104;
+
+    //Coordenada X donde comienza el border derecho.
+    int right_start=total_width-left_width;
+
+    //Indice del primer T-estado del scanline actual en fullbuffer_border.
+    int line_start=t_scanline*screen_testados_linea;
+
+    //Primer T-estado del retrace, despues del display y del border derecho.
+    int pre_retrace=screen_testados_indice_borde_derecho*cpu_turbo_speed;
+
+    //Primer T-estado posterior al retrace, correspondiente al border izquierdo siguiente.
+    int post_retrace_start=screen_testados_linea-
+                           (screen_total_borde_izquierdo/2)*cpu_turbo_speed;
+
+    //Cantidad total de T-estados que contiene el scanline actual.
+    int line_states=screen_testados_linea;
+
+    //Contadores para pixeles, T-estados y duplicado vertical del scanline.
+    int x,state,duplicate;
+
+    if (pre_retrace>line_states) pre_retrace=line_states;
+    if (post_retrace_start<pre_retrace) post_retrace_start=pre_retrace;
+    if (post_retrace_start>=line_states) post_retrace_start=line_states-1;
+
+    for (state=0;state<line_states;state++) {
+        z80_byte change=fullbuffer_border[line_start+state];
+        if (change!=255) colour=change;
+        state_colour[state]=colour;
+    }
+    screen_border_last_color=colour;
+
+    //BaseConf genera 288 scanlines visibles, que se duplican verticalmente hasta 576.
+    if (visible_y>=0 && visible_y<288) {
+        int output_y=visible_y*2;
+        int central_line=(active_y>=0 && active_y<source_height);
+
+        for (x=0;x<total_width;x++) {
+            z80_byte raw_colour;
+            if (central_line && x>=left_width && x<right_start) continue;
+
+            if (x<left_width) {
+                if (baseconf_border_left_next_valid)
+                    raw_colour=baseconf_border_left_next[(x*total_width)/left_width];
+                else raw_colour=state_colour[0];
+            }
+            else {
+                int position=x-left_width;
+                int length=total_width-left_width;
+                state=(position*pre_retrace)/length;
+                if (state>=pre_retrace) state=pre_retrace-1;
+                raw_colour=state_colour[state];
+            }
+
+            for (duplicate=0;duplicate<2;duplicate++)
+                rainbow_buffer[(output_y+duplicate)*total_width+x]=
+                    baseconf_get_palette_colour(raw_colour);
+        }
+    }
+
+    for (x=0;x<total_width;x++) {
+        state=post_retrace_start+
+              (x*(line_states-post_retrace_start))/total_width;
+        if (state>=line_states) state=line_states-1;
+        baseconf_border_left_next[x]=state_colour[state];
+    }
+    baseconf_border_left_next_valid=1;
+}
+
+void baseconf_store_scanline_rainbow_display(void)
+{
+    z80_byte mode=baseconf_get_video_mode();
+    int wide_mode=(mode==0 || mode==2 || mode==6 || mode==7);
+    int source_width=wide_mode ? (mode==0 ? 320 : 640) : 256;
+    int source_height=wide_mode ? 200 : 192;
+    int top_border=(288-source_height)/2;
+    int active_y=t_scanline_draw-screen_indice_inicio_pant;
+    int scale_x=(source_width==640) ? 1 : 2;
+    int display_width=source_width*scale_x;
+    int total_width=get_total_ancho_rainbow();
+    int offset_x=(total_width-display_width)/2;
+    int output_y=(border_enabled.v ? top_border*2 :
+                   (BASECONF_DISPLAY_HEIGHT-source_height*2)/2)+active_y*2;
+    int x,duplicate;
+
+    if (active_y<0 || active_y>=source_height) return;
+
+    /* Sin border, los modos de 512x384 no ocupan todo el display de 640x400.
+       Se limpia una vez por frame el espacio sobrante para que no conserve
+       pixeles del frame anterior. */
+    if (!border_enabled.v && active_y==0) {
+        int position;
+        z80_int border_colour=baseconf_get_palette_colour(baseconf_border_colour);
+        for (position=0;position<total_width*BASECONF_DISPLAY_HEIGHT;position++)
+            rainbow_buffer[position]=border_colour;
+    }
+
+    for (x=0;x<source_width;x++) {
+        z80_int colour=baseconf_get_scanline_pixel(mode,x,active_y);
+        int output_x=offset_x+x*scale_x;
+        for (duplicate=0;duplicate<2;duplicate++) {
+            z80_int *pixel=&rainbow_buffer[(output_y+duplicate)*total_width+output_x];
+            pixel[0]=colour;
+            if (scale_x==2) pixel[1]=colour;
+        }
+    }
+}
+
 void baseconf_reset_cpu(void)
 {
 
@@ -996,6 +1267,7 @@ void baseconf_hard_reset(void)
     for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
     for (i=0;i<16;i++) baseconf_palette[i]=baseconf_palette_default[i];
     baseconf_border_colour=0;
+    baseconf_border_left_next_valid=0;
     baseconf_nmi_breakpoint=0;
     baseconf_nmi_active=0;
     baseconf_nmi_entry_pending=0;
@@ -1557,9 +1829,12 @@ char *baseconf_get_video_mode_string(void)
 
 void baseconf_refresca_pantalla(void)
 {
-    /* El timing de real video todavía no está implementado, por lo que
-        ambas rutas usan el render completo del frame. */
-    baseconf_refresca_pantalla_no_rainbow();
-    screen_baseconf_refresca_border();
-    modificado_border.v=0;
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_rainbow_comun();
+    }
+    else {
+        baseconf_refresca_pantalla_no_rainbow();
+        screen_baseconf_refresca_border();
+        modificado_border.v=0;
+    }
 }
