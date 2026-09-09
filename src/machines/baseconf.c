@@ -1108,18 +1108,41 @@ void baseconf_store_scanline_rainbow_border(void)
 
 void baseconf_store_scanline_rainbow_display(void)
 {
+    //Modo de video BaseConf activo durante este scanline.
     z80_byte mode=baseconf_get_video_mode();
+
+    //Indica si el modo utiliza una resolucion horizontal de 320 o 640 pixeles.
     int wide_mode=(mode==0 || mode==2 || mode==6 || mode==7);
+
+    //Ancho logico en pixeles de la imagen generada por el modo actual.
     int source_width=wide_mode ? (mode==0 ? 320 : 640) : 256;
+
+    //Alto logico del area activa: 200 scanlines en modos anchos o 192 en modos ZX.
     int source_height=wide_mode ? 200 : 192;
+
+    //Numero de scanlines de border superior dentro de las 288 lineas visibles.
     int top_border=(288-source_height)/2;
+
+    //Posicion vertical del scanline actual dentro del area activa.
     int active_y=t_scanline_draw-screen_indice_inicio_pant;
+
+    //Factor entero horizontal: duplica los modos de 256 y 320, pero mantiene los de 640.
     int scale_x=(source_width==640) ? 1 : 2;
+
+    //Ancho que ocupa el area activa despues de aplicar el escalado horizontal.
     int display_width=source_width*scale_x;
+
+    //Ancho total del rainbow buffer, incluyendo el border cuando esta habilitado.
     int total_width=get_total_ancho_rainbow();
+
+    //Desplazamiento horizontal necesario para centrar el area activa en el buffer.
     int offset_x=(total_width-display_width)/2;
+
+    //Linea de destino, incluyendo el border o el centrado, y el duplicado vertical.
     int output_y=(border_enabled.v ? top_border*2 :
                    (BASECONF_DISPLAY_HEIGHT-source_height*2)/2)+active_y*2;
+
+    //Contadores para los pixeles de origen y su duplicado vertical.
     int x,duplicate;
 
     if (active_y<0 || active_y>=source_height) return;
