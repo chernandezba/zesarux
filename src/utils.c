@@ -18467,7 +18467,7 @@ int util_extract_hobeta(char *filename,char *tempdir)
     int total_file_size=get_file_size(filename);
 
     //Leer archivo
-    FILE *ptr_tapebrowser;
+    FILE *ptr_extract_input;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -18476,7 +18476,7 @@ int util_extract_hobeta(char *filename,char *tempdir)
     int in_fatfs;
 
 
-    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_extract_input,&fil)<0) {
         debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting tap",filename);
         return 1;
     }
@@ -18488,7 +18488,7 @@ int util_extract_hobeta(char *filename,char *tempdir)
     //leer la cabecera
     z80_byte buffer_cabecera[17];
 
-    zvfs_fread(in_fatfs,buffer_cabecera,17,ptr_tapebrowser,&fil);
+    zvfs_fread(in_fatfs,buffer_cabecera,17,ptr_extract_input,&fil);
 
 
 
@@ -18521,31 +18521,33 @@ int util_extract_hobeta(char *filename,char *tempdir)
     sprintf (output_file,"%s/%s",tempdir,buffer_nombre);
 
 
-    zvfs_fread(in_fatfs,memoria,total_file_size,ptr_tapebrowser,&fil);
+    zvfs_fread(in_fatfs,memoria,total_file_size,ptr_extract_input,&fil);
 
-    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+    zvfs_fclose(in_fatfs,ptr_extract_input,&fil);
+
+
 
 
     //Escribir archivo salida
-    FILE *ptr_tzxfile;
+    FILE *ptr_extract_output;
 
     //Soporte para FatFS
-    FIL fil_tzxfile;        /* File object */
+    FIL fil_output;        /* File object */
     //FRESULT fr_tzxfile;     /* FatFs return code */
 
-    int in_fatfs_tzxfile;
+    int in_fatfs_output;
 
 
 
-    if (zvfs_fopen_write(output_file,&in_fatfs_tzxfile,&ptr_tzxfile,&fil_tzxfile)<0) {
+    if (zvfs_fopen_write(output_file,&in_fatfs_output,&ptr_extract_output,&fil_output)<0) {
         debug_printf (VERBOSE_ERR,"Can not open %s",output_file);
         return 1;
     }
 
 
-    zvfs_fwrite(in_fatfs_tzxfile,memoria,total_file_size,ptr_tzxfile,&fil_tzxfile);
+    zvfs_fwrite(in_fatfs_output,memoria,total_file_size,ptr_extract_output,&fil_output);
 
-    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+    zvfs_fclose(in_fatfs_output,ptr_extract_output,&fil_output);
 
 
     free(memoria);
