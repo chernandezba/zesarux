@@ -5630,8 +5630,8 @@ Hence, data 26 70 2 gives a product code of 27026 and 26 70 a gives a product co
 void menu_file_hobeta_browser_show(char *filename)
 {
 
-	//Leemos cabecera archivo sms
-    FILE *ptr_file_z80_browser;
+
+    FILE *ptr_file_input_browser;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -5640,7 +5640,7 @@ void menu_file_hobeta_browser_show(char *filename)
     int in_fatfs;
 
 
-    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_z80_browser,&fil)<0) {
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_input_browser,&fil)<0) {
         debug_printf(VERBOSE_ERR,"Unable to open file");
         return;
     }
@@ -5651,7 +5651,7 @@ void menu_file_hobeta_browser_show(char *filename)
 
     int leidos;
 
-    leidos=zvfs_fread(in_fatfs,buffer_cabecera,17,ptr_file_z80_browser,&fil);
+    leidos=zvfs_fread(in_fatfs,buffer_cabecera,17,ptr_file_input_browser,&fil);
 
 
     if (leidos==0) {
@@ -5659,7 +5659,7 @@ void menu_file_hobeta_browser_show(char *filename)
         return;
     }
 
-    zvfs_fclose(in_fatfs,ptr_file_z80_browser,&fil);
+    zvfs_fclose(in_fatfs,ptr_file_input_browser,&fil);
 
     int indice_buffer=0;
     char buffer_texto[512];
