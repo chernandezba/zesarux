@@ -44571,10 +44571,17 @@ double menu_calculator_pulsado_decimal_divisor=0;
 int menu_calculator_pendiente_reset_cero=0;
 z80_byte menu_calculator_ultimo_operador=0;
 int menu_calculator_hay_primer_operador=0;
+int menu_calculator_decimales=0;
 
 void menu_calculator_render(zxvision_window *w)
 {
-	zxvision_print_string_defaults_fillspc_format(w,1,0,"%f",menu_calculator_second_operator);
+	if (menu_calculator_decimales==9999) {
+			zxvision_print_string_defaults_fillspc_format(w,1,0,"%f",menu_calculator_second_operator);
+	}
+	
+	else {
+		zxvision_print_string_defaults_fillspc_format(w,1,0,"%.*f",menu_calculator_decimales,menu_calculator_second_operator);
+	}
 }
 
 void menu_calculator(MENU_ITEM_PARAMETERS)
@@ -44654,6 +44661,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 				menu_calculator_pendiente_reset_cero=0;
 				menu_calculator_ultimo_operador=0;
 				menu_calculator_hay_primer_operador=0;
+				menu_calculator_decimales=0;
 
 			break;
 			
@@ -44670,6 +44678,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 				if (menu_calculator_pendiente_reset_cero) {
 					menu_calculator_pendiente_reset_cero=0;
 					menu_calculator_second_operator=0;
+					menu_calculator_decimales=0;
 				}
 					
 				if (!menu_calculator_pulsado_decimal_divisor) {
@@ -44682,6 +44691,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 					digito /=menu_calculator_pulsado_decimal_divisor;
 					menu_calculator_pulsado_decimal_divisor *=10;
 					menu_calculator_second_operator +=digito;
+					menu_calculator_decimales++;
 				}
 			break;
 			
@@ -44720,6 +44730,8 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 					
 					//en pantalla solo se ve el second. hacemos esto para que se vea el resultado
 					menu_calculator_second_operator=menu_calculator_first_operator;
+					
+					menu_calculator_decimales=9999;
 				
 				}
 				
@@ -44759,6 +44771,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 						
 				menu_calculator_pendiente_reset_cero=1;			
 				menu_calculator_hay_primer_operador=0;
+				menu_calculator_decimales=9999;
 					
 				
 			break;
