@@ -44547,6 +44547,8 @@ void menu_calculator_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    
+    //No se si realmente hace falta overlay para esta ventana
 
 
     //Mostrar contenido
@@ -44560,6 +44562,15 @@ void menu_calculator_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_calculator;
 
+
+float menu_calculator_first_operator=0;
+float menu_calculator_second_operator=0;
+float menu_calculator_pulsado_decimal_divisor=0;
+
+void menu_calculator_render(zxvision_window *w)
+{
+	zxvision_print_string_defaults_fillspc_format(w,1,0,"%f",menu_calculator_second_operator);
+}
 
 void menu_calculator(MENU_ITEM_PARAMETERS)
 {
@@ -44623,11 +44634,39 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
     do {
 
-
+//zxvision_print_char_simple(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,z80_byte caracter)
+		menu_calculator_render(ventana);
         tecla=zxvision_common_getkey_refresh();
 
 
         switch (tecla) {
+			
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if (!menu_calculator_pulsado_decimal_divisor) {
+					menu_calculator_second_operator *=10;
+					menu_calculator_second_operator += (tecla-'0');
+				}
+				else {
+					//sumarle digito decimal desplazado a la derecha
+					float digito=tecla-'0';
+					digito /=menu_calculator_pulsado_decimal_divisor;
+					menu_calculator_pulsado_decimal_divisor *=10;
+					menu_calculator_second_operator +=digito;
+				}
+			break;
+			
+			case '.':
+				menu_calculator_pulsado_decimal_divisor=10;
+			break;
 
             case 11:
                 //arriba
