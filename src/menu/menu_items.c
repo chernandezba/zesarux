@@ -44566,8 +44566,11 @@ zxvision_window zxvision_window_calculator;
 double menu_calculator_first_operator=0;
 double menu_calculator_second_operator=0;
 double menu_calculator_pulsado_decimal_divisor=0;
+
+//pendiente reset a cero segundo operador al pulsar siguiente digito
 int menu_calculator_pendiente_reset_cero=0;
 z80_byte menu_calculator_ultimo_operador=0;
+int menu_calculator_hay_primer_operador=0;
 
 void menu_calculator_render(zxvision_window *w)
 {
@@ -44643,6 +44646,17 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 			
+			case 'c':
+				menu_calculator_first_operator=0;
+				menu_calculator_second_operator=0;
+				menu_calculator_pulsado_decimal_divisor=0;
+
+				menu_calculator_pendiente_reset_cero=0;
+				menu_calculator_ultimo_operador=0;
+				menu_calculator_hay_primer_operador=0;
+
+			break;
+			
 			case '0':
 			case '1':
 			case '2':
@@ -44676,32 +44690,57 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 			break;
 			
 			case '+':
-				menu_calculator_ultimo_operador=tecla;
+			case '-':
+				
 				menu_calculator_pulsado_decimal_divisor=0;
 				
-				menu_calculator_first_operator=menu_calculator_first_operator + menu_calculator_second_operator;
+				if (menu_calculator_hay_primer_operador) {
 				
-				//en pantalla solo se ve el second. hacemos esto para que se vea el resultado
-				menu_calculator_second_operator=menu_calculator_first_operator;
+					switch(menu_calculator_ultimo_operador) {
+						case '+':
+							menu_calculator_first_operator=menu_calculator_first_operator + menu_calculator_second_operator;
+						break;
+						
+						case '-':
+							menu_calculator_first_operator=menu_calculator_first_operator - menu_calculator_second_operator;
+						break;					
+						
+					}
+					
+					
+					//en pantalla solo se ve el second. hacemos esto para que se vea el resultado
+					menu_calculator_second_operator=menu_calculator_first_operator;
 				
+				}
+				
+				else {
+					menu_calculator_first_operator=menu_calculator_second_operator;
+				}
+				
+				menu_calculator_hay_primer_operador=1;
+				
+				menu_calculator_ultimo_operador=tecla;
 				menu_calculator_pendiente_reset_cero=1;
 			break;
 			
 			
 			case '=':
 			case 13:
+				menu_calculator_pulsado_decimal_divisor=0;
+				
 				switch (menu_calculator_ultimo_operador) {
-					case '+':
-						menu_calculator_pulsado_decimal_divisor=0;
-						
+					case '+':		
 						menu_calculator_second_operator=menu_calculator_first_operator + menu_calculator_second_operator;
 					break;
 						
-					
+					case '-':		
+						menu_calculator_second_operator=menu_calculator_first_operator - menu_calculator_second_operator;
+					break;					
 				}
 				menu_calculator_first_operator=0;
 						
 				menu_calculator_pendiente_reset_cero=1;			
+				menu_calculator_hay_primer_operador=0;
 					
 				
 			break;
