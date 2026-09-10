@@ -44357,6 +44357,7 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 zxvision_window *menu_clock_window;
 
 int menu_clock_parpadeo_segundos=1;
+int menu_clock_mouse_left_antes=0;
 
 void menu_clock_overlay(void)
 {
@@ -44368,11 +44369,16 @@ void menu_clock_overlay(void)
 
 
 	//Si se ha pulsado el raton dentro de la ventana, no parpadear los segundos
-    if (mouse_left) {
+	//Evitar que se conmute a cada frame si se mantiene boton pulsado
+    if (mouse_left && !menu_clock_mouse_left_antes) {
+		printf("pulsa boton\n");
         if (zxvision_mouse_en_ventana(menu_clock_window) && menu_mouse_y!=0) {
 			menu_clock_parpadeo_segundos ^=1;
+			printf("conmutar parpadeo.actual=%d\n",menu_clock_parpadeo_segundos);
         }
     }
+    
+    menu_clock_mouse_left_antes=mouse_left;
     
 
 
