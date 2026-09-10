@@ -8098,6 +8098,39 @@ char *bitmap_button_ext_desktop_midi_output_status[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wwwwww                    " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_clock[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",    //20
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          " 	 //25
+};
+
+
+
 /*
 Template
 char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={
@@ -8206,6 +8239,7 @@ struct s_zxdesktop_other_icons zxdesktop_other_icons_list[]={
     {"clive_cry",bitmap_button_ext_desktop_other_clive_cry},
     {"clive_heart",bitmap_button_ext_desktop_other_clive_heart},
     {"clive_laugh",bitmap_button_ext_desktop_other_clive_laugh},
+    {"clive_mute",bitmap_button_ext_desktop_other_clive_mute},
     {"clive_sad",bitmap_button_ext_desktop_other_clive_sad},
     {"clive_sing1",bitmap_button_ext_desktop_other_clive_sing1},
     {"clive_sing2",bitmap_button_ext_desktop_other_clive_sing2},

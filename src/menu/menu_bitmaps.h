@@ -297,6 +297,7 @@ extern char *bitmap_button_ext_desktop_mirilla_lightgun[];
 extern char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[];
 extern char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[];
 extern char *bitmap_button_ext_desktop_paste_keystrokes[];
+extern char *bitmap_button_ext_desktop_clock[];
 
 extern char *bitmap_button_ext_desktop_other_sad_mac[];
 extern char *bitmap_button_ext_desktop_other_clive_down_left[];
