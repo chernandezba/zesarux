@@ -26019,7 +26019,20 @@ void util_get_time_string(char *texto)
 	
 }
 
-
+//Retorna los milisegundos del rtc (la fracción de 1 segundo)
+int util_get_time_milliseconds(void)
+{
+	int milliseconds;
+	
+	struct timeval tv;
+	
+	gettimeofday(&tv, NULL);
+	
+	milliseconds=tv.tv_usec/1000;
+	
+	return milliseconds;
+	
+}
 
 //Retorna texto %Y-%m-%d-%H-%M-%S, usado en quicksave y en dump zsf on panic
 //texto tiene que tener tamanyo 40, aunque cabe con menos, pero mejor asi  .   char time_string[40];

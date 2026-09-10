@@ -970,6 +970,7 @@ extern void snapshot_get_date_time_string_human(char *texto);
 extern void snapshot_get_date_time_string(char *texto);
 
 extern void util_get_time_string(char *texto);
+extern int util_get_time_milliseconds(void);
 
 #define MEMORY_ZONE_NUM_FILE_ZONE 16
 #define MEMORY_ZONE_NUM_TBBLUE_COPPER 17

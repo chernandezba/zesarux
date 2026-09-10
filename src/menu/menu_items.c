@@ -44356,6 +44356,7 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_clock_window;
 
+int menu_clock_parpadeo_segundos=1;
 
 void menu_clock_overlay(void)
 {
@@ -44366,21 +44367,31 @@ void menu_clock_overlay(void)
     if (menu_clock_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+	//Si se ha pulsado el raton dentro de la ventana, no parpadear los segundos
+    if (mouse_left) {
+        if (zxvision_mouse_en_ventana(menu_clock_window) && menu_mouse_y!=0) {
+			menu_clock_parpadeo_segundos ^=1;
+        }
+    }
     
+
+
     //HH:MM:SS
     char tiempo[9];
     
     util_get_time_string(tiempo);
     
-    //hacer parpadear los ":"
-    //TODO: esto deberia ir coordinado cada medio segundo del rtc, no del contador_segundo_infinito
-    int milis=contador_segundo_infinito % 1000;
     
-    if (milis<500) {
-		tiempo[2]=' ';
-		tiempo[5]=' ';
+    if (menu_clock_parpadeo_segundos) {
+		//hacer parpadear los ":"
+		int milis=util_get_time_milliseconds();
+		
+		//printf("%d\n",milis);
+		
+		if (milis>=500) {
+			tiempo[2]=' ';
+			tiempo[5]=' ';
+		}
 	}
     
     zxvision_print_string_defaults(menu_clock_window,1,0,tiempo);
