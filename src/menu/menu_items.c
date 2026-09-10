@@ -45504,29 +45504,8 @@ void menu_toys(MENU_ITEM_PARAMETERS)
 
     //letras usadas: rhndmictxbsvfpoaug
     do {
-        menu_add_item_menu_inicial(&array_menu_toys,"ZX~~Life",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
-        menu_add_item_menu_tooltip(array_menu_toys,"This my ZEsarUX own version of the Game of Life :)");
-        menu_add_item_menu_ayuda(array_menu_toys,"The Game of Life, also known simply as Life, is a cellular automaton "
-            "devised by the British mathematician John Horton Conway in 1970. It is a zero-player game, meaning "
-            "that its evolution is determined by its initial state, requiring no further input. "
-            "One interacts with the Game of Life by creating an initial configuration and observing how it evolves. "
-            "It is Turing complete and can simulate a universal constructor or any other Turing machine. "
-            "This my ZEsarUX own version of the Game of Life :)");
-        menu_add_item_menu_shortcut(array_menu_toys,'l');
-        menu_add_item_menu_se_cerrara(array_menu_toys);
-        menu_add_item_menu_genera_ventana(array_menu_toys);
-
-
-
-        menu_add_item_menu_en_es_ca(array_menu_toys,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
-            "ZX~~Eyes","ZX~~Eyes","ZX~~Eyes");
-        menu_add_item_menu_tooltip(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
-        menu_add_item_menu_ayuda(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
-        menu_add_item_menu_shortcut(array_menu_toys,'e');
-        menu_add_item_menu_se_cerrara(array_menu_toys);
-        menu_add_item_menu_genera_ventana(array_menu_toys);
-
-        menu_add_item_menu_en_es_ca(array_menu_toys,MENU_OPCION_NORMAL,menu_clive_game,NULL,
+        
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_toys,MENU_OPCION_NORMAL,menu_clive_game,NULL,
             "~~Clive","~~Clive","~~Clive");
         menu_add_item_menu_tooltip(array_menu_toys,"Some toy starring uncle Clive");
         menu_add_item_menu_ayuda(array_menu_toys,"Some toy starring uncle Clive");
@@ -45541,16 +45520,40 @@ void menu_toys(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_toys,'l');
         menu_add_item_menu_se_cerrara(array_menu_toys);
         menu_add_item_menu_genera_ventana(array_menu_toys);
+        
+
+        menu_add_item_menu_en_es_ca(array_menu_toys,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
+            "ZX~~Eyes","ZX~~Eyes","ZX~~Eyes");
+        menu_add_item_menu_tooltip(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
+        menu_add_item_menu_ayuda(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
+        menu_add_item_menu_shortcut(array_menu_toys,'e');
+        menu_add_item_menu_se_cerrara(array_menu_toys);
+        menu_add_item_menu_genera_ventana(array_menu_toys);
+        
+
+        menu_add_item_menu(array_menu_toys,"ZX~~Life",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
+        menu_add_item_menu_tooltip(array_menu_toys,"This my ZEsarUX own version of the Game of Life :)");
+        menu_add_item_menu_ayuda(array_menu_toys,"The Game of Life, also known simply as Life, is a cellular automaton "
+            "devised by the British mathematician John Horton Conway in 1970. It is a zero-player game, meaning "
+            "that its evolution is determined by its initial state, requiring no further input. "
+            "One interacts with the Game of Life by creating an initial configuration and observing how it evolves. "
+            "It is Turing complete and can simulate a universal constructor or any other Turing machine. "
+            "This my ZEsarUX own version of the Game of Life :)");
+        menu_add_item_menu_shortcut(array_menu_toys,'l');
+        menu_add_item_menu_se_cerrara(array_menu_toys);
+        menu_add_item_menu_genera_ventana(array_menu_toys);
+
+
 
 
         menu_add_item_menu_separator(array_menu_toys);
-                //menu_add_item_menu(array_menu_toys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+              
         menu_add_ESC_item(array_menu_toys);
 
-        menu_add_item_menu_index_full_path(array_menu_toys,"Main Menu-> Procrastinate","Menú Principal-> Procrastinar","Menú Principal-> Procrastinar");
+        menu_add_item_menu_index_full_path(array_menu_toys,"Main Menu-> Extras","Menú Principal-> Extras","Menú Principal-> Extres");
 
         retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,
-            "Procrastinate","Procrastinar","Menú Procrastinar");
+            "Extras","Extras","Extres");
 
 
 
@@ -47835,8 +47838,8 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             }
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,
-                "~~Procrastinate","~~Procrastinar","~~Procrastinar");
-            menu_add_item_menu_shortcut(array_menu_principal,'p');
+                "E~~xtras","E~~xtras","E~~xtres");
+            menu_add_item_menu_shortcut(array_menu_principal,'x');
             menu_add_item_menu_tooltip(array_menu_principal,"Some toys to procrastinate real work");
             menu_add_item_menu_ayuda(array_menu_principal,"Some toys to procrastinate real work");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
