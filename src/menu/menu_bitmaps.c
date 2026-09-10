@@ -8129,6 +8129,35 @@ char *bitmap_button_ext_desktop_clock[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          " 	 //25
 };
 
+char *bitmap_button_ext_desktop_calculator[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",    //20
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          " 	 //25
+};
 
 
 /*
