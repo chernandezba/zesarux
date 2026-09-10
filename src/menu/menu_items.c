@@ -44563,9 +44563,11 @@ void menu_calculator_overlay(void)
 zxvision_window zxvision_window_calculator;
 
 
-float menu_calculator_first_operator=0;
-float menu_calculator_second_operator=0;
-float menu_calculator_pulsado_decimal_divisor=0;
+double menu_calculator_first_operator=0;
+double menu_calculator_second_operator=0;
+double menu_calculator_pulsado_decimal_divisor=0;
+int menu_calculator_pendiente_reset_cero=0;
+z80_byte menu_calculator_ultimo_operador=0;
 
 void menu_calculator_render(zxvision_window *w)
 {
@@ -44651,13 +44653,18 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 			case '7':
 			case '8':
 			case '9':
+				if (menu_calculator_pendiente_reset_cero) {
+					menu_calculator_pendiente_reset_cero=0;
+					menu_calculator_second_operator=0;
+				}
+					
 				if (!menu_calculator_pulsado_decimal_divisor) {
 					menu_calculator_second_operator *=10;
 					menu_calculator_second_operator += (tecla-'0');
 				}
 				else {
 					//sumarle digito decimal desplazado a la derecha
-					float digito=tecla-'0';
+					double digito=tecla-'0';
 					digito /=menu_calculator_pulsado_decimal_divisor;
 					menu_calculator_pulsado_decimal_divisor *=10;
 					menu_calculator_second_operator +=digito;
@@ -44667,11 +44674,39 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 			case '.':
 				menu_calculator_pulsado_decimal_divisor=10;
 			break;
+			
+			case '+':
+				menu_calculator_ultimo_operador=tecla;
+				menu_calculator_pulsado_decimal_divisor=0;
+				
+				menu_calculator_first_operator=menu_calculator_first_operator + menu_calculator_second_operator;
+				
+				//en pantalla solo se ve el second. hacemos esto para que se vea el resultado
+				menu_calculator_second_operator=menu_calculator_first_operator;
+				
+				menu_calculator_pendiente_reset_cero=1;
+			break;
+			
+			
+			case '=':
+			case 13:
+				switch (menu_calculator_ultimo_operador) {
+					case '+':
+						menu_calculator_pulsado_decimal_divisor=0;
+						
+						menu_calculator_second_operator=menu_calculator_first_operator + menu_calculator_second_operator;
+					break;
+						
+					
+				}
+				menu_calculator_first_operator=0;
+						
+				menu_calculator_pendiente_reset_cero=1;			
+					
+				
+			break;
 
-            case 11:
-                //arriba
-                //blablabla
-            break;
+           
 
 
 
