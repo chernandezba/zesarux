@@ -44691,6 +44691,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 			
 			case '+':
 			case '-':
+			case '*':
 				
 				menu_calculator_pulsado_decimal_divisor=0;
 				
@@ -44703,6 +44704,10 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 						
 						case '-':
 							menu_calculator_first_operator=menu_calculator_first_operator - menu_calculator_second_operator;
+						break;
+						
+						case '*':
+							menu_calculator_first_operator=menu_calculator_first_operator * menu_calculator_second_operator;
 						break;					
 						
 					}
@@ -44736,6 +44741,10 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 					case '-':		
 						menu_calculator_second_operator=menu_calculator_first_operator - menu_calculator_second_operator;
 					break;					
+					
+					case '*':		
+						menu_calculator_second_operator=menu_calculator_first_operator * menu_calculator_second_operator;
+					break;
 				}
 				menu_calculator_first_operator=0;
 						
