@@ -44483,9 +44483,10 @@ void menu_clock(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
+            case 32:
+            case 13:
+				//conmutar parpadeo segundos
+                menu_clock_parpadeo_segundos ^=1;
             break;
 
 

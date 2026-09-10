@@ -38,6 +38,7 @@ Improved Sinclair QL emulation:
 - Added support for text mode video drivers (stdout, simpletext)
 
 Improved ZX Vision:
+- Added Clock window
 - Improved menu organization, wording and consistency across the user interface
 - Draw window frame on background windows
 - Main menus when top menu is enabled do not have window title
