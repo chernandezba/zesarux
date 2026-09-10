@@ -26004,6 +26004,23 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
     //if (!strcmp(filesystem,"FAT16")) {
 }
 
+
+//Retorna hora en formato hh:mm:ss
+void util_get_time_string(char *texto)
+{
+	
+	
+	time_t tiempo = time(NULL);
+    struct tm tm = *localtime(&tiempo);
+
+    //printf("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+	sprintf(texto,"%02d:%02d:%02d",tm.tm_hour,tm.tm_min,tm.tm_sec);
+	
+}
+
+
+
 //Retorna texto %Y-%m-%d-%H-%M-%S, usado en quicksave y en dump zsf on panic
 //texto tiene que tener tamanyo 40, aunque cabe con menos, pero mejor asi  .   char time_string[40];
 void snapshot_get_date_time_string_common(char *texto,int todos_guiones)

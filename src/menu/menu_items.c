@@ -44368,6 +44368,22 @@ void menu_clock_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    
+    //HH:MM:SS
+    char tiempo[9];
+    
+    util_get_time_string(tiempo);
+    
+    //hacer parpadear los ":"
+    //TODO: esto deberia ir coordinado cada medio segundo del rtc, no del contador_segundo_infinito
+    int milis=contador_segundo_infinito % 1000;
+    
+    if (milis<500) {
+		tiempo[2]=' ';
+		tiempo[5]=' ';
+	}
+    
+    zxvision_print_string_defaults(menu_clock_window,1,0,tiempo);
 
 
     //Mostrar contenido
@@ -44400,8 +44416,8 @@ void menu_clock(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("clock",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=10;
+            alto_ventana=3;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
