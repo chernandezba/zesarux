@@ -44639,10 +44639,16 @@ void menu_calculator_render(zxvision_window *w)
 
         char caracter=menu_calculator_botones[i].caracter;
 
-        //indicar tecla ultima pulsada o tambien donde indica el raton
-        if (caracter==menu_calculator_ultima_tecla || (zxvision_mouse_en_ventana(w) && menu_mouse_x==x && menu_mouse_y-1==y)) {
+        //donde indica el raton
+        if (zxvision_mouse_en_ventana(w) && menu_mouse_x==x && menu_mouse_y-1==y) {
             tinta=ESTILO_GUI_TINTA_SELECCIONADO;
             papel=ESTILO_GUI_PAPEL_SELECCIONADO;
+        }
+
+        //indicar tecla ultima pulsada
+        if (caracter==menu_calculator_ultima_tecla) {
+            tinta=ESTILO_GUI_TINTA_OPCION_MARCADA;
+            papel=ESTILO_GUI_PAPEL_OPCION_MARCADA;
         }
 
         zxvision_print_char_simple(w,x,y,tinta,papel,0,caracter);
@@ -44686,8 +44692,8 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("calculator",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=21;
+            alto_ventana=14;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
