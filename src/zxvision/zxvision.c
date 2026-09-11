@@ -16071,6 +16071,20 @@ void zxvision_print_string_fillspc(zxvision_window *w,int x,int y,int tinta,int 
     zxvision_print_string(w,x,y,tinta,papel,parpadeo,texto);
 }
 
+void zxvision_print_string_fillspc_format(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,const char * format , ...)
+{
+    zxvision_fill_width_spaces(w,y);
+
+    char buffer_final[4096];
+
+    va_list args;
+    va_start (args, format);
+    vsprintf (buffer_final,format, args);
+    va_end (args);
+
+    zxvision_print_string(w,x,y,tinta,papel,parpadeo,buffer_final);
+}
+
 void zxvision_print_string_defaults_fillspc_format(zxvision_window *w,int x,int y,const char * format , ...)
 {
 

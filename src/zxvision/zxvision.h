@@ -516,6 +516,7 @@ extern void zxvision_print_string_defaults(zxvision_window *w,int x,int y,char *
 extern void zxvision_print_string_defaults_format (zxvision_window *w,int x,int y, const char * format , ...);
 extern void zxvision_print_char_defaults(zxvision_window *w,int x,int y,char c);
 extern void zxvision_print_string_fillspc(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,char *texto);
+extern void zxvision_print_string_fillspc_format(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,const char * format , ...);
 extern void zxvision_print_string_defaults_fillspc(zxvision_window *w,int x,int y,char *texto);
 extern void zxvision_print_string_defaults_fillspc_format(zxvision_window *w,int x,int y,const char * format , ...);
 

@@ -44613,12 +44613,19 @@ struct {
 void menu_calculator_render(zxvision_window *w)
 {
     //printf("render. mouse %d,%d\n",menu_mouse_x,menu_mouse_y);
+
+    //Poner fondo de texto con color, borrando antes a color normal
+    zxvision_fill_width_spaces(w,0);
+    zxvision_fill_width_spaces_paper_width(w,0,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,1,17);
+    //zxvision_fill_width_spaces_paper(w,0,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE);
+    //zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"                 a");
+
     if (menu_calculator_decimales==9999) {
-            zxvision_print_string_defaults_fillspc_format(w,1,0,"%f",menu_calculator_second_operator);
+        zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%f",menu_calculator_second_operator);
     }
 
     else {
-        zxvision_print_string_defaults_fillspc_format(w,1,0,"%.*f",menu_calculator_decimales,menu_calculator_second_operator);
+        zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%.*f",menu_calculator_decimales,menu_calculator_second_operator);
     }
 
     //render botones
@@ -44729,7 +44736,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
         //Mirar si pulsado boton con raton
         if (!tecla && mouse_left && zxvision_mouse_en_ventana(ventana)) {
-            printf("tecla desde mouse %d\n",tecla);
+            //printf("tecla desde mouse %d\n",tecla);
 
             tecla=menu_calculator_find_pressed_button();
 
