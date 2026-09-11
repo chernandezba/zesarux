@@ -44573,6 +44573,7 @@ z80_byte menu_calculator_ultimo_operador=0;
 int menu_calculator_hay_primer_operador=0;
 int menu_calculator_decimales=0;
 
+z80_byte menu_calculator_ultima_tecla=0;
 
 //para dibujar los botones
 #define MENU_CALCULATOR_SEPARACION_BOTONES 2
@@ -44624,7 +44625,17 @@ void menu_calculator_render(zxvision_window *w)
     for (i=0;menu_calculator_botones[i].caracter;i++) {
         int x=(menu_calculator_botones[i].x * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_X_BOTONES;
         int y=(menu_calculator_botones[i].y * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_Y_BOTONES;
-        zxvision_print_char_simple(w,x,y,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,menu_calculator_botones[i].caracter);
+
+        int tinta=ESTILO_GUI_TINTA_NORMAL;
+        int papel=ESTILO_GUI_PAPEL_NORMAL;
+
+        char caracter=menu_calculator_botones[i].caracter;
+        if (caracter==menu_calculator_ultima_tecla) {
+            tinta=ESTILO_GUI_TINTA_SELECCIONADO;
+            papel=ESTILO_GUI_PAPEL_SELECCIONADO;
+        }
+
+        zxvision_print_char_simple(w,x,y,tinta,papel,0,caracter);
     }
 
 }
@@ -44694,6 +44705,8 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
         menu_calculator_render(ventana);
         tecla=zxvision_common_getkey_refresh();
+
+        menu_calculator_ultima_tecla=tecla;
 
 
         switch (tecla) {
@@ -44793,6 +44806,10 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
             case '=':
             case 13:
+
+                //Si se pulsa enter que sea como pulsar =
+                menu_calculator_ultima_tecla='=';
+
                 menu_calculator_pulsado_decimal_divisor=0;
 
                 switch (menu_calculator_ultimo_operador) {
