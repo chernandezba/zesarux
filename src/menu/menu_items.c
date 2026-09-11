@@ -44640,6 +44640,24 @@ void menu_calculator_render(zxvision_window *w)
 
 }
 
+z80_byte menu_calculator_find_pressed_button(void)
+{
+    printf("mouse %d,%d\n",menu_mouse_x,menu_mouse_y);
+    int i;
+    for (i=0;menu_calculator_botones[i].caracter;i++) {
+        int x=(menu_calculator_botones[i].x * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_X_BOTONES;
+        int y=(menu_calculator_botones[i].y * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_Y_BOTONES;
+
+        char caracter=menu_calculator_botones[i].caracter;
+
+        //mouse_y=0 es el titulo
+        if (menu_mouse_x==x && menu_mouse_y-1==y) return caracter;
+
+    }
+
+    return 0;
+}
+
 void menu_calculator(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -44705,6 +44723,15 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
         menu_calculator_render(ventana);
         tecla=zxvision_common_getkey_refresh();
+
+        //Mirar si pulsado boton con raton
+        if (!tecla && mouse_left && zxvision_mouse_en_ventana(ventana)) {
+            printf("tecla desde mouse %d\n",tecla);
+
+            tecla=menu_calculator_find_pressed_button();
+
+            menu_espera_no_tecla();
+        }
 
         menu_calculator_ultima_tecla=tecla;
 
