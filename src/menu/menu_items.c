@@ -44573,6 +44573,42 @@ z80_byte menu_calculator_ultimo_operador=0;
 int menu_calculator_hay_primer_operador=0;
 int menu_calculator_decimales=0;
 
+
+//para dibujar los botones
+#define MENU_CALCULATOR_SEPARACION_BOTONES 2
+#define MENU_CALCULATOR_INICIO_X_BOTONES 1
+#define MENU_CALCULATOR_INICIO_Y_BOTONES 2
+
+
+struct {
+    int x,y;
+    char caracter;
+} menu_calculator_botones[]={
+    {1,0,'c'},
+    {3,0,'/'},
+
+    {0,1,'7'},
+    {1,1,'8'},
+    {2,1,'9'},
+    {3,1,'*'},
+
+    {0,2,'4'},
+    {1,2,'5'},
+    {2,2,'6'},
+    {3,2,'-'},
+
+    {0,3,'1'},
+    {1,3,'2'},
+    {2,3,'3'},
+    {3,3,'+'},
+
+    {1,4,'0'},
+    {2,4,'.'},
+    {3,4,'='},
+
+    {0,0,0} //Marca de fin el caracter a 0
+};
+
 void menu_calculator_render(zxvision_window *w)
 {
     if (menu_calculator_decimales==9999) {
@@ -44582,6 +44618,15 @@ void menu_calculator_render(zxvision_window *w)
     else {
         zxvision_print_string_defaults_fillspc_format(w,1,0,"%.*f",menu_calculator_decimales,menu_calculator_second_operator);
     }
+
+    //render botones
+    int i;
+    for (i=0;menu_calculator_botones[i].caracter;i++) {
+        int x=(menu_calculator_botones[i].x * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_X_BOTONES;
+        int y=(menu_calculator_botones[i].y * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_Y_BOTONES;
+        zxvision_print_char_simple(w,x,y,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,menu_calculator_botones[i].caracter);
+    }
+
 }
 
 void menu_calculator(MENU_ITEM_PARAMETERS)
@@ -44646,7 +44691,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
     do {
 
-//zxvision_print_char_simple(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,z80_byte caracter)
+
         menu_calculator_render(ventana);
         tecla=zxvision_common_getkey_refresh();
 
