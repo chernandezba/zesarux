@@ -44612,6 +44612,7 @@ struct {
 
 void menu_calculator_render(zxvision_window *w)
 {
+    //printf("render. mouse %d,%d\n",menu_mouse_x,menu_mouse_y);
     if (menu_calculator_decimales==9999) {
             zxvision_print_string_defaults_fillspc_format(w,1,0,"%f",menu_calculator_second_operator);
     }
@@ -44630,7 +44631,9 @@ void menu_calculator_render(zxvision_window *w)
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
         char caracter=menu_calculator_botones[i].caracter;
-        if (caracter==menu_calculator_ultima_tecla) {
+
+        //indicar tecla ultima pulsada o tambien donde indica el raton
+        if (caracter==menu_calculator_ultima_tecla || (zxvision_mouse_en_ventana(w) && menu_mouse_x==x && menu_mouse_y-1==y)) {
             tinta=ESTILO_GUI_TINTA_SELECCIONADO;
             papel=ESTILO_GUI_PAPEL_SELECCIONADO;
         }
@@ -44642,7 +44645,7 @@ void menu_calculator_render(zxvision_window *w)
 
 z80_byte menu_calculator_find_pressed_button(void)
 {
-    printf("mouse %d,%d\n",menu_mouse_x,menu_mouse_y);
+    //printf("mouse %d,%d\n",menu_mouse_x,menu_mouse_y);
     int i;
     for (i=0;menu_calculator_botones[i].caracter;i++) {
         int x=(menu_calculator_botones[i].x * MENU_CALCULATOR_SEPARACION_BOTONES)+MENU_CALCULATOR_INICIO_X_BOTONES;
