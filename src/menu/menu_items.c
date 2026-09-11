@@ -45829,7 +45829,7 @@ void menu_toys(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_toys);
 
 
-        menu_add_item_menu(array_menu_toys,"ZX~~Life",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
+        menu_add_item_menu(array_menu_toys,"ZXL~~ife",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
         menu_add_item_menu_tooltip(array_menu_toys,"This my ZEsarUX own version of the Game of Life :)");
         menu_add_item_menu_ayuda(array_menu_toys,"The Game of Life, also known simply as Life, is a cellular automaton "
             "devised by the British mathematician John Horton Conway in 1970. It is a zero-player game, meaning "
@@ -45837,7 +45837,7 @@ void menu_toys(MENU_ITEM_PARAMETERS)
             "One interacts with the Game of Life by creating an initial configuration and observing how it evolves. "
             "It is Turing complete and can simulate a universal constructor or any other Turing machine. "
             "This my ZEsarUX own version of the Game of Life :)");
-        menu_add_item_menu_shortcut(array_menu_toys,'l');
+        menu_add_item_menu_shortcut(array_menu_toys,'i');
         menu_add_item_menu_se_cerrara(array_menu_toys);
         menu_add_item_menu_genera_ventana(array_menu_toys);
 

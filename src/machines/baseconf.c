@@ -984,8 +984,9 @@ static z80_int baseconf_get_scanline_pixel(z80_byte mode,int x,int y)
         value=screen[adr];
         attr=screen[adr_attr];
         if (scr_refresca_sin_colores.v) attr=56;
-        else if (scr_refresca_show_attribute_grid.v)
+        else if (scr_refresca_show_attribute_grid.v) {
             attr=56+((((y>>3)+(x>>3))&1) ? 64 : 0);
+        }
         ink=(attr&7)+((attr&64) ? 8 : 0);
         paper=((attr>>3)&7)+((attr&64) ? 8 : 0);
         if ((attr&128) && estado_parpadeo.v) {
@@ -1079,8 +1080,9 @@ void baseconf_store_scanline_rainbow_border(void)
             if (central_line && x>=left_width && x<right_start) continue;
 
             if (x<left_width) {
-                if (baseconf_border_left_next_valid)
+                if (baseconf_border_left_next_valid) {
                     raw_colour=baseconf_border_left_next[(x*total_width)/left_width];
+                }
                 else raw_colour=state_colour[0];
             }
             else {
@@ -1098,8 +1100,7 @@ void baseconf_store_scanline_rainbow_border(void)
     }
 
     for (x=0;x<total_width;x++) {
-        state=post_retrace_start+
-              (x*(line_states-post_retrace_start))/total_width;
+        state=post_retrace_start+(x*(line_states-post_retrace_start))/total_width;
         if (state>=line_states) state=line_states-1;
         baseconf_border_left_next[x]=state_colour[state];
     }
@@ -1115,7 +1116,10 @@ void baseconf_store_scanline_rainbow_display(void)
     int wide_mode=(mode==0 || mode==2 || mode==6 || mode==7);
 
     //Ancho logico en pixeles de la imagen generada por el modo actual.
-    int source_width=wide_mode ? (mode==0 ? 320 : 640) : 256;
+    int source_width;
+    if (!wide_mode) source_width=256;
+    else if (mode==0) source_width=320;
+    else source_width=640;
 
     //Alto logico del area activa: 200 scanlines en modos anchos o 192 en modos ZX.
     int source_height=wide_mode ? 200 : 192;
