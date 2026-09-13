@@ -26035,28 +26035,27 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
 void util_get_time_string(char *texto)
 {
 
-
-	time_t tiempo = time(NULL);
+    time_t tiempo = time(NULL);
     struct tm tm = *localtime(&tiempo);
 
     //printf("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
-	sprintf(texto,"%02d:%02d:%02d",tm.tm_hour,tm.tm_min,tm.tm_sec);
+    sprintf(texto,"%02d:%02d:%02d",tm.tm_hour,tm.tm_min,tm.tm_sec);
 
 }
 
 //Retorna los milisegundos del rtc (la fracción de 1 segundo)
 int util_get_time_milliseconds(void)
 {
-	int milliseconds;
+    int milliseconds;
 
-	struct timeval tv;
+    struct timeval tv;
 
-	gettimeofday(&tv, NULL);
+    gettimeofday(&tv, NULL);
 
-	milliseconds=tv.tv_usec/1000;
+    milliseconds=tv.tv_usec/1000;
 
-	return milliseconds;
+    return milliseconds;
 
 }
 
@@ -26064,29 +26063,29 @@ int util_get_time_milliseconds(void)
 //texto tiene que tener tamanyo 40, aunque cabe con menos, pero mejor asi  .   char time_string[40];
 void snapshot_get_date_time_string_common(char *texto,int todos_guiones)
 {
-struct timeval tv;
-  struct tm* ptm;
-  //long microseconds;
+    struct timeval tv;
+    struct tm* ptm;
+    //long microseconds;
 
 
                     // 2015/01/01 11:11:11.999999 "
                     // 123456789012345678901234567
-  //const int longitud_timestamp=27;
+    //const int longitud_timestamp=27;
 
-  /* Obtain the time of day, and convert it to a tm struct. */
-  gettimeofday (&tv, NULL);
-  ptm = localtime (&tv.tv_sec);
-  /* Format the date and time, down to a single second. */
-  char time_string[40];
+    /* Obtain the time of day, and convert it to a tm struct. */
+    gettimeofday (&tv, NULL);
+    ptm = localtime (&tv.tv_sec);
+    /* Format the date and time, down to a single second. */
+    char time_string[40];
 
-  //buffer temporal para poderle indicar el sizeof
-  if (todos_guiones) strftime (time_string, sizeof(time_string), "%Y-%m-%d-%H-%M-%S", ptm);
-  else strftime (time_string, sizeof(time_string), "%Y/%m/%d %H:%M:%S", ptm);
+    //buffer temporal para poderle indicar el sizeof
+    if (todos_guiones) strftime (time_string, sizeof(time_string), "%Y-%m-%d-%H-%M-%S", ptm);
+    else strftime (time_string, sizeof(time_string), "%Y/%m/%d %H:%M:%S", ptm);
 
-  //copiar a texto final
-  strcpy(texto,time_string);
+    //copiar a texto final
+    strcpy(texto,time_string);
 
-  //printf ("texto fecha: %s\n",texto);
+    //printf ("texto fecha: %s\n",texto);
 }
 
 void snapshot_get_date_time_string(char *texto)
