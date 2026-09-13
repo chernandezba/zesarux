@@ -1617,7 +1617,18 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
     //simbolos para CPC
     if (MACHINE_IS_CPC) {
         switch(tecla) {
+            //shift + numero
+            case '!':
             case '"':
+            case '#':
+            case '$':
+            case '%':
+            case '&':
+            case '\'':
+            case '(':
+            case ')':
+            case '_':
+
                 //shift
                 if (pressrelease) {
                     cpc_keyboard_table[2] &= 255-32;
@@ -1625,11 +1636,62 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                 else {
                     cpc_keyboard_table[2] |=32;
                 }
+                switch(tecla) {
+                    case '!':
+                        convert_numeros_letras_puerto_teclado('1',pressrelease);
+                    break;
 
-                convert_numeros_letras_puerto_teclado('2',pressrelease);
+                    case '"':
+                        convert_numeros_letras_puerto_teclado('2',pressrelease);
+                    break;
+
+                    case '#':
+                        convert_numeros_letras_puerto_teclado('3',pressrelease);
+                    break;
+
+                    case '$':
+                        convert_numeros_letras_puerto_teclado('4',pressrelease);
+                    break;
+
+                    case '%':
+                        convert_numeros_letras_puerto_teclado('5',pressrelease);
+                    break;
+
+                    case '&':
+                        convert_numeros_letras_puerto_teclado('6',pressrelease);
+                    break;
+
+                    case '\'':
+                        convert_numeros_letras_puerto_teclado('7',pressrelease);
+                    break;
+
+                    case '(':
+                        convert_numeros_letras_puerto_teclado('8',pressrelease);
+                    break;
+
+                    case ')':
+                        convert_numeros_letras_puerto_teclado('9',pressrelease);
+                    break;
+
+                    case '_':
+                        convert_numeros_letras_puerto_teclado('0',pressrelease);
+                    break;
+
+                }
             break;
 
+
+
             case '.':
+                if (pressrelease) {
+                        cpc_keyboard_table[3] &=255-128;
+                }
+                else {
+                        cpc_keyboard_table[3] |=128;
+                }
+            break;
+
+            case '-':
                 if (pressrelease) {
                         cpc_keyboard_table[3] &=255-128;
                 }
