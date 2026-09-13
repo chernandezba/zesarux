@@ -1614,6 +1614,32 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
         break;
     }
 
+    //simbolos para CPC
+    if (MACHINE_IS_CPC) {
+        switch(tecla) {
+            case '"':
+                //shift
+                if (pressrelease) {
+                    cpc_keyboard_table[2] &= 255-32;
+                }
+                else {
+                    cpc_keyboard_table[2] |=32;
+                }
+
+                convert_numeros_letras_puerto_teclado('2',pressrelease);
+            break;
+
+            case '.':
+                if (pressrelease) {
+                        cpc_keyboard_table[3] &=255-128;
+                }
+                else {
+                        cpc_keyboard_table[3] |=128;
+                }
+            break;
+        }
+    }
+
 
     //simbolos para QL
     if (MACHINE_IS_QL)
@@ -26008,30 +26034,30 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
 //Retorna hora en formato hh:mm:ss
 void util_get_time_string(char *texto)
 {
-	
-	
+
+
 	time_t tiempo = time(NULL);
     struct tm tm = *localtime(&tiempo);
 
     //printf("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
 	sprintf(texto,"%02d:%02d:%02d",tm.tm_hour,tm.tm_min,tm.tm_sec);
-	
+
 }
 
 //Retorna los milisegundos del rtc (la fracción de 1 segundo)
 int util_get_time_milliseconds(void)
 {
 	int milliseconds;
-	
+
 	struct timeval tv;
-	
+
 	gettimeofday(&tv, NULL);
-	
+
 	milliseconds=tv.tv_usec/1000;
-	
+
 	return milliseconds;
-	
+
 }
 
 //Retorna texto %Y-%m-%d-%H-%M-%S, usado en quicksave y en dump zsf on panic
