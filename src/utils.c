@@ -1687,16 +1687,6 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
             break;
 
 
-
-            case '.':
-                if (pressrelease) {
-                        cpc_keyboard_table[3] &=255-128;
-                }
-                else {
-                        cpc_keyboard_table[3] |=128;
-                }
-            break;
-
             case '-':
             case '=':
                 if (pressrelease) {
@@ -1745,13 +1735,85 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
             case ':':
             case '*':
                 if (pressrelease) {
-                    cpc_keyboard_table[2] &=255-2;
+                    cpc_keyboard_table[3] &=255-32;
                 }
                 else {
-                    cpc_keyboard_table[2] |=2;
+                    cpc_keyboard_table[3] |=32;
                 }
 
                 if (tecla=='*') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case ';':
+            case '+':
+                if (pressrelease) {
+                    cpc_keyboard_table[3] &=255-16;
+                }
+                else {
+                    cpc_keyboard_table[3] |=16;
+                }
+
+                if (tecla=='+') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case ']':
+            case '}':
+                if (pressrelease) {
+                    cpc_keyboard_table[2] &=255-8;
+                }
+                else {
+                    cpc_keyboard_table[2] |=8;
+                }
+
+                if (tecla=='}') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case ',':
+            case '<':
+                if (pressrelease) {
+                    cpc_keyboard_table[4] &=255-128;
+                }
+                else {
+                    cpc_keyboard_table[4] |=128;
+                }
+
+                if (tecla=='<') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case '.':
+            case '>':
+                if (pressrelease) {
+                    cpc_keyboard_table[3] &=255-128;
+                }
+                else {
+                    cpc_keyboard_table[3] |=128;
+                }
+
+                if (tecla=='>') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case '/':
+            case '?':
+                if (pressrelease) {
+                    cpc_keyboard_table[3] &=255-64;
+                }
+                else {
+                    cpc_keyboard_table[3] |=64;
+                }
+
+                if (tecla=='?') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case '\\':
+            case '`':
+                if (pressrelease) {
+                    cpc_keyboard_table[2] &=255-64;
+                }
+                else {
+                    cpc_keyboard_table[2] |=64;
+                }
+
+                if (tecla=='`') ascii_to_keyboard_port_cpc_shift(pressrelease);
             break;
         }
     }
