@@ -8132,29 +8132,29 @@ char *bitmap_button_ext_desktop_clock[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_calculator[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-    "     xxxxxxxxxxxxxxx      ",
-    "    xxxxxxxxxxxxxxxxx     ",
-    "    xxxxxxxxxxxxxxxxx     ",
-    "    xxx...........xxx     ",
-    "    xxx...........xxx     ",
-    "    xxx...........xxx     ",
-    "    xxx...........xxx     ",
-    "    xxx...........xxx     ",
-    "    xxxxxxxxxxxxxxxxx     ",
-    "    xxxxxxxxxxxxxxxxx     ",   //10
-    "    xxx...x...x...xxx     ",
-    "    xxx...x...x...xxx     ",
-    "    xxx...x...x...xxx     ",
-    "    xxxxxxxxxxxxxxxxx     ",
-    "    xxx...x...x...xxx     ",
-    "    xxx...x...x...xxx     ",
-    "    xxx...x...x...xxx     ",
-    "    xxxxxxxxxxxxxxxxx     ",
-    "    xxx...x...x...xxx     ",
-    "    xxx...x...x...xxx     ",  //20
-    "    xxx...x...x...xxx     ",
-    "    xxxxxxxxxxxxxxxxx     ",
-    "     xxxxxxxxxxxxxxx      ",
+    "     bbbbbbbbbbbbbbb      ",
+    "    bbbbbbbbbbbbbbbbb     ",
+    "    bbbbbbbbbbbbbbbbb     ",
+    "    bbb...........bbb     ",
+    "    bbb...........bbb     ",
+    "    bbb...........bbb     ",
+    "    bbb...........bbb     ",
+    "    bbb...........bbb     ",
+    "    bbbbbbbbbbbbbbbbb     ",
+    "    bbbbbbbbbbbbbbbbb     ",   //10
+    "    bbb...b...b...bbb     ",
+    "    bbb...b...b...bbb     ",
+    "    bbb...b...b...bbb     ",
+    "    bbbbbbbbbbbbbbbbb     ",
+    "    bbb...b...b...bbb     ",
+    "    bbb...b...b...bbb     ",
+    "    bbb...b...b...bbb     ",
+    "    bbbbbbbbbbbbbbbbb     ",
+    "    bbb...b...b...bbb     ",
+    "    bbb...b...b...bbb     ",  //20
+    "    bbb...b...b...bbb     ",
+    "    bbbbbbbbbbbbbbbbb     ",
+    "     bbbbbbbbbbbbbbb      ",
     "                          ",
     "                          " 	 //25
 };
