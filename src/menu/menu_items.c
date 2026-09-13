@@ -44611,6 +44611,9 @@ struct {
     {0,0,0} //Marca de fin el caracter a 0
 };
 
+
+#define MENU_CALCULATOR_DECIMALES_RESULTADO (-1)
+
 void menu_calculator_render(zxvision_window *w)
 {
     //printf("render. mouse %d,%d\n",menu_mouse_x,menu_mouse_y);
@@ -44621,7 +44624,8 @@ void menu_calculator_render(zxvision_window *w)
     //zxvision_fill_width_spaces_paper(w,0,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE);
     //zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"                 a");
 
-    if (menu_calculator_decimales==9999) {
+    // Mostrar el resultado con el formato fijo por defecto de %f.
+    if (menu_calculator_decimales==MENU_CALCULATOR_DECIMALES_RESULTADO) {
         zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%f",menu_calculator_second_number);
     }
 
@@ -44854,7 +44858,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
                     //en pantalla solo se ve el second. hacemos esto para que se vea el resultado
                     menu_calculator_second_number=menu_calculator_first_number;
 
-                    menu_calculator_decimales=9999;
+                    menu_calculator_decimales=MENU_CALCULATOR_DECIMALES_RESULTADO;
 
                 }
 
@@ -44883,7 +44887,7 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
                     menu_calculator_pendiente_reset_cero=1;
                     menu_calculator_hay_primer_operador=0;
-                    menu_calculator_decimales=9999;
+                    menu_calculator_decimales=MENU_CALCULATOR_DECIMALES_RESULTADO;
                 }
 
 
