@@ -44563,8 +44563,8 @@ void menu_calculator_overlay(void)
 zxvision_window zxvision_window_calculator;
 
 
-double menu_calculator_first_operator=0;
-double menu_calculator_second_operator=0;
+double menu_calculator_first_number=0;
+double menu_calculator_second_number=0;
 double menu_calculator_pulsado_decimal_divisor=0;
 
 //pendiente reset a cero segundo operador al pulsar siguiente digito
@@ -44580,6 +44580,11 @@ z80_byte menu_calculator_ultima_tecla=0;
 #define MENU_CALCULATOR_INICIO_X_BOTONES 1
 #define MENU_CALCULATOR_INICIO_Y_BOTONES 2
 
+
+enum menu_calculator_estados {
+    CALC_INICIAL,
+    CALC_LEIDO_OPERADOR
+};
 
 struct {
     int x,y;
@@ -44621,11 +44626,11 @@ void menu_calculator_render(zxvision_window *w)
     //zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"                 a");
 
     if (menu_calculator_decimales==9999) {
-        zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%f",menu_calculator_second_operator);
+        zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%f",menu_calculator_second_number);
     }
 
     else {
-        zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%.*f",menu_calculator_decimales,menu_calculator_second_operator);
+        zxvision_print_string_format(w,1,0,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"%.*f",menu_calculator_decimales,menu_calculator_second_number);
     }
 
     //render botones
@@ -44755,8 +44760,8 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
         switch (tecla) {
 
             case 'c':
-                menu_calculator_first_operator=0;
-                menu_calculator_second_operator=0;
+                menu_calculator_first_number=0;
+                menu_calculator_second_number=0;
                 menu_calculator_pulsado_decimal_divisor=0;
 
                 menu_calculator_pendiente_reset_cero=0;
@@ -44778,20 +44783,20 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
             case '9':
                 if (menu_calculator_pendiente_reset_cero) {
                     menu_calculator_pendiente_reset_cero=0;
-                    menu_calculator_second_operator=0;
+                    menu_calculator_second_number=0;
                     menu_calculator_decimales=0;
                 }
 
                 if (!menu_calculator_pulsado_decimal_divisor) {
-                    menu_calculator_second_operator *=10;
-                    menu_calculator_second_operator += (tecla-'0');
+                    menu_calculator_second_number *=10;
+                    menu_calculator_second_number += (tecla-'0');
                 }
                 else {
                     //sumarle digito decimal desplazado a la derecha
                     double digito=tecla-'0';
                     digito /=menu_calculator_pulsado_decimal_divisor;
                     menu_calculator_pulsado_decimal_divisor *=10;
-                    menu_calculator_second_operator +=digito;
+                    menu_calculator_second_number +=digito;
                     menu_calculator_decimales++;
                 }
             break;
@@ -44811,33 +44816,33 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
                     switch(menu_calculator_ultimo_operador) {
                         case '+':
-                            menu_calculator_first_operator=menu_calculator_first_operator + menu_calculator_second_operator;
+                            menu_calculator_first_number=menu_calculator_first_number + menu_calculator_second_number;
                         break;
 
                         case '-':
-                            menu_calculator_first_operator=menu_calculator_first_operator - menu_calculator_second_operator;
+                            menu_calculator_first_number=menu_calculator_first_number - menu_calculator_second_number;
                         break;
 
                         case '*':
-                            menu_calculator_first_operator=menu_calculator_first_operator * menu_calculator_second_operator;
+                            menu_calculator_first_number=menu_calculator_first_number * menu_calculator_second_number;
                         break;
 
                         case '/':
-                            menu_calculator_first_operator=menu_calculator_first_operator / menu_calculator_second_operator;
+                            menu_calculator_first_number=menu_calculator_first_number / menu_calculator_second_number;
                         break;
 
                     }
 
 
                     //en pantalla solo se ve el second. hacemos esto para que se vea el resultado
-                    menu_calculator_second_operator=menu_calculator_first_operator;
+                    menu_calculator_second_number=menu_calculator_first_number;
 
                     menu_calculator_decimales=9999;
 
                 }
 
                 else {
-                    menu_calculator_first_operator=menu_calculator_second_operator;
+                    menu_calculator_first_number=menu_calculator_second_number;
                 }
 
                 menu_calculator_hay_primer_operador=1;
@@ -44857,22 +44862,22 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
                 switch (menu_calculator_ultimo_operador) {
                     case '+':
-                        menu_calculator_second_operator=menu_calculator_first_operator + menu_calculator_second_operator;
+                        menu_calculator_second_number=menu_calculator_first_number + menu_calculator_second_number;
                     break;
 
                     case '-':
-                        menu_calculator_second_operator=menu_calculator_first_operator - menu_calculator_second_operator;
+                        menu_calculator_second_number=menu_calculator_first_number - menu_calculator_second_number;
                     break;
 
                     case '*':
-                        menu_calculator_second_operator=menu_calculator_first_operator * menu_calculator_second_operator;
+                        menu_calculator_second_number=menu_calculator_first_number * menu_calculator_second_number;
                     break;
 
                     case '/':
-                        menu_calculator_second_operator=menu_calculator_first_operator / menu_calculator_second_operator;
+                        menu_calculator_second_number=menu_calculator_first_number / menu_calculator_second_number;
                     break;
                 }
-                menu_calculator_first_operator=0;
+                menu_calculator_first_number=0;
 
                 menu_calculator_pendiente_reset_cero=1;
                 menu_calculator_hay_primer_operador=0;
