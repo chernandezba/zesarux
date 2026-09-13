@@ -44822,7 +44822,15 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
             break;
 
             case '.':
-                menu_calculator_pulsado_decimal_divisor=10;
+                if (!menu_calculator_pulsado_decimal_divisor) {
+
+                    //Si se empieza numero con "." tal cual
+                    if (menu_calculator_pendiente_reset_cero) {
+                        menu_calculator_second_number=0;
+                        menu_calculator_decimales=0;
+                    }
+                    menu_calculator_pulsado_decimal_divisor=10;
+                }
             break;
 
             case '+':
@@ -44831,6 +44839,13 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
             case '/':
 
                 menu_calculator_pulsado_decimal_divisor=0;
+
+                // Aún no se ha escrito el segundo operando:
+                // sustituir el operador anterior sin efectuar cálculo.
+                if (menu_calculator_hay_primer_operador && menu_calculator_pendiente_reset_cero) {
+                    menu_calculator_ultimo_operador=tecla;
+                    break;
+                }
 
                 if (menu_calculator_hay_primer_operador) {
                     menu_calculator_first_number=menu_calculator_run_operation(menu_calculator_first_number,menu_calculator_second_number,menu_calculator_ultimo_operador);
@@ -44856,18 +44871,20 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
             case '=':
             case 13:
 
-                //Si se pulsa enter que sea como pulsar =
-                menu_calculator_ultima_tecla='=';
+                if (menu_calculator_hay_primer_operador) {
+                    //Si se pulsa enter que sea como pulsar =
+                    menu_calculator_ultima_tecla='=';
 
-                menu_calculator_pulsado_decimal_divisor=0;
+                    menu_calculator_pulsado_decimal_divisor=0;
 
-                menu_calculator_second_number=menu_calculator_run_operation(menu_calculator_first_number,menu_calculator_second_number,menu_calculator_ultimo_operador);
+                    menu_calculator_second_number=menu_calculator_run_operation(menu_calculator_first_number,menu_calculator_second_number,menu_calculator_ultimo_operador);
 
-                menu_calculator_first_number=0;
+                    menu_calculator_first_number=0;
 
-                menu_calculator_pendiente_reset_cero=1;
-                menu_calculator_hay_primer_operador=0;
-                menu_calculator_decimales=9999;
+                    menu_calculator_pendiente_reset_cero=1;
+                    menu_calculator_hay_primer_operador=0;
+                    menu_calculator_decimales=9999;
+                }
 
 
             break;
