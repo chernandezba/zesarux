@@ -1474,6 +1474,16 @@ void show_compile_info(void)
         printf ("%s",buffer);
 }
 
+void ascii_to_keyboard_port_cpc_shift(int pressrelease)
+{
+    //shift
+    if (pressrelease) {
+        cpc_keyboard_table[2] &= 255-32;
+    }
+    else {
+        cpc_keyboard_table[2] |=32;
+    }
+}
 
 //Segun tecla de entrada, genera puerto de teclado, lo pone o lo borra
 void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
@@ -1630,12 +1640,8 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
             case '_':
 
                 //shift
-                if (pressrelease) {
-                    cpc_keyboard_table[2] &= 255-32;
-                }
-                else {
-                    cpc_keyboard_table[2] |=32;
-                }
+                ascii_to_keyboard_port_cpc_shift(pressrelease);
+
                 switch(tecla) {
                     case '!':
                         convert_numeros_letras_puerto_teclado('1',pressrelease);
@@ -1692,12 +1698,60 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
             break;
 
             case '-':
+            case '=':
                 if (pressrelease) {
-                        cpc_keyboard_table[3] &=255-128;
+                        cpc_keyboard_table[3] &=255-2;
                 }
                 else {
-                        cpc_keyboard_table[3] |=128;
+                        cpc_keyboard_table[3] |=2;
                 }
+
+                if (tecla=='=') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case '^':
+                if (pressrelease) {
+                        cpc_keyboard_table[3] &=255-1;
+                }
+                else {
+                        cpc_keyboard_table[3] |=1;
+                }
+            break;
+
+            case '@':
+            case '|':
+                if (pressrelease) {
+                        cpc_keyboard_table[3] &=255-4;
+                }
+                else {
+                        cpc_keyboard_table[3] |=4;
+                }
+
+                if (tecla=='|') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case '[':
+            case '{':
+                if (pressrelease) {
+                    cpc_keyboard_table[2] &=255-2;
+                }
+                else {
+                    cpc_keyboard_table[2] |=2;
+                }
+
+                if (tecla=='{') ascii_to_keyboard_port_cpc_shift(pressrelease);
+            break;
+
+            case ':':
+            case '*':
+                if (pressrelease) {
+                    cpc_keyboard_table[2] &=255-2;
+                }
+                else {
+                    cpc_keyboard_table[2] |=2;
+                }
+
+                if (tecla=='*') ascii_to_keyboard_port_cpc_shift(pressrelease);
             break;
         }
     }
