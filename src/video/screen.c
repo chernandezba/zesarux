@@ -1481,6 +1481,8 @@ z80_byte compare_char_tabla_step(z80_byte *origen,z80_byte *inverse,z80_byte *ta
                         return caracter;
                 }
 
+                tabla_comparar=tabla_leemos;
+                copia_origen=origen;
 
                 //probar con texto inverso
 
