@@ -44581,10 +44581,6 @@ z80_byte menu_calculator_ultima_tecla=0;
 #define MENU_CALCULATOR_INICIO_Y_BOTONES 2
 
 
-enum menu_calculator_estados {
-    CALC_INICIAL,
-    CALC_LEIDO_OPERADOR
-};
 
 struct {
     int x,y;
@@ -44843,9 +44839,8 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
                 else {
                     menu_calculator_first_number=menu_calculator_second_number;
+                    menu_calculator_hay_primer_operador=1;
                 }
-
-                menu_calculator_hay_primer_operador=1;
 
                 menu_calculator_ultimo_operador=tecla;
                 menu_calculator_pendiente_reset_cero=1;
