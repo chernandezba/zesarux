@@ -310,7 +310,7 @@
 10440  RETurn result$
 10450 END DEFine zxqfill$
 10560 DEFine PROCedure zxmwait(zframes,zmix$)
-10561  zp=1:znext=zframes
+10561  zxmixer=248:zp=1:znext=zframes
 10562  IF LEN(zmix$) THEN znext=(CODE(zmix$(zp))-48)*10000+(CODE(zmix$(zp+1))-48)*1000+(CODE(zmix$(zp+2))-48)*100+(CODE(zmix$(zp+3))-48)*10+CODE(zmix$(zp+4))-48
 10563  IF LEN(zmix$) THEN znewmix=(CODE(zmix$(zp+5))-48)*100+(CODE(zmix$(zp+6))-48)*10+CODE(zmix$(zp+7))-48:zp=zp+8
 10564  FOR zframe=0 TO zframes-1
