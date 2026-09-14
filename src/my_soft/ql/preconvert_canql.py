@@ -222,6 +222,90 @@ def preserve_initial_envelope(baked):
             for music, frames, loop, events in baked]
 
 
+def queue_bytes(music: str) -> int:
+    # Bytes de la cola compilada por la ROM 1.94, no caracteres BASIC.
+    size = 0
+    for token in re.finditer(r"([ovlwnx])(\d+)|([#]?[A-Hp])", music):
+        command, value, note = token.groups()
+        if note: size += 3
+        elif command == "o": pass
+        elif command == "x": size += 3
+        elif command == "n": size += 4 if int(value) else 2
+        else: size += 2
+    return size
+
+
+def silent_frames(frames: int) -> str:
+    result = "v0"
+    while frames:
+        length = min(frames, 256)
+        result += f"l{length - 1}p"
+        frames -= length
+    return result
+
+
+def join_fragments(lines: list[str], targets: set[int]) -> list[str]:
+    # Une solo secuencias rectas sin mezclador ni bucles musicales. Mantiene
+    # destinos de salto, RETURN, FOR, pausas y otras instrucciones como barreras.
+    # Cada voz conserva margen sobre los 4096 bytes de cola de QSound.
+    result = []
+    pending = None
+    removed = 0
+
+    def flush():
+        nonlocal pending
+        if pending is None: return
+        line, voices, total = pending
+        fields = []
+        for music in voices:
+            fields += [quote(music), str(total), "0"]
+        fields += [str(total), '""']
+        result.append(f"{line} zxqplay{len(voices)} " + ",".join(fields))
+        pending = None
+
+    for source in lines:
+        if not source.strip(): continue
+        line, body = source.split(" ", 1)
+        if int(line) in targets: flush()
+        for statement in split_outside(body, ":"):
+            match = re.fullmatch(r"zxqplay([123])\s+(.+)", statement.strip(), re.I)
+            candidate = None
+            if match:
+                count = int(match[1]); args = split_outside(match[2], ",")
+                if args[-1].strip() == '""' and all(int(args[3*i+2]) == 0 for i in range(count)):
+                    total = int(args[-2])
+                    voices = [args[3*i].strip()[1:-1] +
+                              (silent_frames(total-int(args[3*i+1])) if int(args[3*i+1]) < total else "")
+                              for i in range(count)]
+                    candidate = (line, voices, total)
+            if candidate is None:
+                flush(); result.append(line + " " + statement)
+                continue
+            if pending is not None:
+                oldline, oldvoices, oldtotal = pending
+                _, voices, total = candidate
+                count = max(len(oldvoices), len(voices))
+                combined = [(oldvoices[i] if i < len(oldvoices) else silent_frames(oldtotal)) +
+                            (voices[i] if i < len(voices) else silent_frames(total))
+                            for i in range(count)]
+                if max(map(queue_bytes, combined)) <= 3500:
+                    pending = (oldline, combined, oldtotal + total)
+                    removed += 1
+                    continue
+                flush()
+            pending = candidate
+    flush()
+    # Reagrupa las instrucciones que conservan el mismo numero de linea.
+    grouped = []
+    for item in result:
+        line, body = item.split(" ", 1)
+        if grouped and grouped[-1].split(" ", 1)[0] == line:
+            grouped[-1] += ":" + body
+        else: grouped.append(item)
+    print(f"joined {removed} fragment boundaries")
+    return grouped
+
+
 def main(path: Path) -> None:
     lines = path.read_text().splitlines()
     targets = set()
@@ -270,7 +354,10 @@ def main(path: Path) -> None:
                 sources = [string_expr(arg, values) for arg in args]
                 tempo = tempo_of(sources[0]); baked = [qsound(source, tempo) for source in sources]
                 target = 3000 if count == 1 and baked[0][2] else max(item[1] for item in baked)
-                baked[0] = qsound(sources[0], tempo, emit_noise=True)
+                # Sin M el mezclador permanece en tono: no hacen falta
+                # comandos n ni corregir el mezclador desde BASIC cada frame.
+                if any(item[3] for item in baked):
+                    baked[0] = qsound(sources[0], tempo, emit_noise=True)
                 baked = preserve_initial_envelope(baked)
                 timeline = mixer_timeline(baked, target)
                 fields = []
@@ -303,6 +390,7 @@ def main(path: Path) -> None:
             continue
         output[first_play] = re.sub(r"^\d+", str(target), output[first_play], count=1)
         del output[placeholder]
+    output = join_fragments(output, targets)
     output[0] = output[0].replace("DIM zxpos(32):", "")
     output[0] = re.sub(r"^(\d+\s+)", r"\1zxmixer=248:", output[0], count=1)
     output.extend([
@@ -312,22 +400,24 @@ def main(path: Path) -> None:
         "10450 END DEFine zxqfill$", "",
         "10560 DEFine PROCedure zxmwait(zframes,zmix$)",
         # La ROM Spectrum (0A05) reinicia el mezclador a F8 en cada PLAY.
-        "10561  zxmixer=248:zp=1:znext=zframes",
+        "10561  zxmixer=248:zp=1:znext=zframes:IF LEN(zmix$)=0 AND zend>0 THEN zxready zend:RETurn",
         "10562  IF LEN(zmix$) THEN znext=(CODE(zmix$(zp))-48)*10000+(CODE(zmix$(zp+1))-48)*1000+(CODE(zmix$(zp+2))-48)*100+(CODE(zmix$(zp+3))-48)*10+CODE(zmix$(zp+4))-48",
         "10563  IF LEN(zmix$) THEN znewmix=(CODE(zmix$(zp+5))-48)*100+(CODE(zmix$(zp+6))-48)*10+CODE(zmix$(zp+7))-48:zp=zp+8",
         "10564  FOR zframe=0 TO zframes-1",
-        "10565   REPeat zmev",
-        "10566    IF zframe<znext THEN EXIT zmev",
-        "10567    zxmixer=znewmix:POKE_AY 7,zxmixer",
-        "10568    IF zp>LEN(zmix$) THEN znext=zframes:EXIT zmev",
-        "10569    znext=(CODE(zmix$(zp))-48)*10000+(CODE(zmix$(zp+1))-48)*1000+(CODE(zmix$(zp+2))-48)*100+(CODE(zmix$(zp+3))-48)*10+CODE(zmix$(zp+4))-48",
-        "10570    znewmix=(CODE(zmix$(zp+5))-48)*100+(CODE(zmix$(zp+6))-48)*10+CODE(zmix$(zp+7))-48:zp=zp+8",
-        "10571   END REPeat zmev",
-        "10572   POKE_AY 7,zxmixer:PAUSE 1:POKE_AY 7,zxmixer",
-        "10573  END FOR zframe",
-        "10574 END DEFine zxmwait", "",
+        "10565   IF zend>0 THEN IF PLAYING(zend)=0 THEN EXIT zframe",
+        "10566   REPeat zmev",
+        "10567    IF zframe<znext THEN EXIT zmev",
+        "10568    zxmixer=znewmix:POKE_AY 7,zxmixer",
+        "10569    IF zp>LEN(zmix$) THEN znext=zframes:EXIT zmev",
+        "10570    znext=(CODE(zmix$(zp))-48)*10000+(CODE(zmix$(zp+1))-48)*1000+(CODE(zmix$(zp+2))-48)*100+(CODE(zmix$(zp+3))-48)*10+CODE(zmix$(zp+4))-48",
+        "10571    znewmix=(CODE(zmix$(zp+5))-48)*100+(CODE(zmix$(zp+6))-48)*10+CODE(zmix$(zp+7))-48:zp=zp+8",
+        "10572   END REPeat zmev",
+        "10573   POKE_AY 7,zxmixer:PAUSE 1:POKE_AY 7,zxmixer",
+        "10574  END FOR zframe",
+        "10575 END DEFine zxmwait", "",
         "10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target,zmix$)",
         "10610  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
+        "10615  zend=0:IF l1=0 AND f1=target THEN zend=1",
         "10620  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":zxready 1:RELEASE",
         "10630  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
         "10635  SOUND_AY",
@@ -335,6 +425,8 @@ def main(path: Path) -> None:
         "10700 DEFine PROCedure zxqplay2(q1$,f1,l1,q2$,f2,l2,target,zmix$)",
         "10710  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10720  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
+        "10722  zend=0:IF l1=0 AND f1=target THEN zend=1",
+        "10724  IF l2=0 AND f2=target THEN zend=2",
         "10730  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":zxready 1:zxready 2:RELEASE",
         "10740  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
         "10742  IF l2=0 THEN zxready 2",
@@ -344,6 +436,9 @@ def main(path: Path) -> None:
         "10810  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10820  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
         "10830  IF l3 THEN q3$=zxqfill$(q3$,f3,target)",
+        "10832  zend=0:IF l1=0 AND f1=target THEN zend=1",
+        "10834  IF l2=0 AND f2=target THEN zend=2",
+        "10836  IF l3=0 AND f3=target THEN zend=3",
         "10840  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":PLAY 3,\"s\"&q3$&\"v0s\"",
         "10845  zxready 1:zxready 2:zxready 3:RELEASE",
         "10850  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
