@@ -24949,11 +24949,35 @@ int menu_decae_ajusta_valor_volumen(int valor_decae,int valor_volumen)
 
 }
 
+static const char *ay_envelope_shape[16] = {
+    "\\____",  //  0 - Decay
+    "\\____",  //  1 - Decay
+    "\\____",  //  2 - Decay
+    "\\____",  //  3 - Decay
+    "/----",   //  4 - Attack
+    "/----",   //  5 - Attack
+    "/----",   //  6 - Attack
+    "/----",   //  7 - Attack
+    "\\\\\\\\\\", //  8 - Sawtooth decay
+    "\\____",  //  9 - Decay, hold low
+    "\\/\\/\\", // 10 - Triangle, starting down
+    "\\----",  // 11 - Decay, hold high
+    "/////",   // 12 - Sawtooth attack
+    "/----",   // 13 - Attack, hold high
+    "/\\/\\/", // 14 - Triangle, starting up
+    "/____"    // 15 - Attack, hold low
+};
+
 //llena el string con el valor del volumen - para chip de sonido
 //mete tambien caracter de "decae" si conviene (si >=0 y <=15)
-void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae)
+//valor_envolvente si no es -1 es un indice al tipo de envolvente usado
+void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae,int valor_envolvente)
 {
-    if ( (registro_volumen & 16)!=0) sprintf (texto,"ENV            ");
+    if ( (registro_volumen & 16)!=0) {
+        if (valor_envolvente<0 || valor_envolvente>15) sprintf (texto,"ENV            ");
+        else sprintf (texto,"ENV %s      ",ay_envelope_shape[valor_envolvente]);
+    }
+
     else {
         registro_volumen=registro_volumen & 15;
         int i;
@@ -25050,7 +25074,7 @@ int menu_string_volumen_maxmin(char *texto,int valor_actual,int valor_previo,int
     }
 
     //char buf_volumen_canal[32];
-    menu_string_volumen(texto,barra_volumen,valor_previo);
+    menu_string_volumen(texto,barra_volumen,valor_previo,-1);
 
     return barra_volumen;
 

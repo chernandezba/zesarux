@@ -2071,26 +2071,26 @@ void menu_ay_registers_overlay(void)
             z80_byte volumen_canal;
 
             volumen_canal=15 - (sn_chip_registers[6] & 15);
-            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_A[0]);
+            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_A[0],-1);
             sprintf (textovolumen,"Volume A: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
 
             volumen_canal=15 - (sn_chip_registers[7] & 15);
-            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_B[0]);
+            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_B[0],-1);
             sprintf (textovolumen,"Volume B: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
 
             volumen_canal=15 - (sn_chip_registers[8] & 15);
-            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_C[0]);
+            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_C[0],-1);
             sprintf (textovolumen,"Volume C: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
 
 
             volumen_canal=15 - (sn_chip_registers[10] & 15);
-            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_noise);
+            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_noise,-1);
                                 //"Volume C: %s"
             sprintf (textovolumen,"V Noise:  %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
@@ -2191,7 +2191,7 @@ M1-M0= mode bits:
             z80_byte volumen_canal;
 
             volumen_canal=volumen_pitch1;
-            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_A[0]);
+            menu_string_volumen(volumen,volumen_canal,ayregisters_previo_valor_volume_A[0],-1);
             sprintf (textovolumen,"Volume: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
@@ -2269,17 +2269,17 @@ M1-M0= mode bits:
                 //if (ayregisters_previo_valor_volume_C[chip]<vol_C[chip]) ayregisters_previo_valor_volume_C[chip]=vol_C[chip];
 
 
-            menu_string_volumen(volumen,ay_3_8912_registros[chip][8],ayregisters_previo_valor_volume_A[chip]);
+            menu_string_volumen(volumen,ay_3_8912_registros[chip][8],ayregisters_previo_valor_volume_A[chip],ay_3_8912_registros[chip][13]);
             sprintf (textovolumen,"Volume A: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
 
-            menu_string_volumen(volumen,ay_3_8912_registros[chip][9],ayregisters_previo_valor_volume_B[chip]);
+            menu_string_volumen(volumen,ay_3_8912_registros[chip][9],ayregisters_previo_valor_volume_B[chip],ay_3_8912_registros[chip][13]);
             sprintf (textovolumen,"Volume B: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
 
-            menu_string_volumen(volumen,ay_3_8912_registros[chip][10],ayregisters_previo_valor_volume_C[chip]);
+            menu_string_volumen(volumen,ay_3_8912_registros[chip][10],ayregisters_previo_valor_volume_C[chip],ay_3_8912_registros[chip][13]);
             sprintf (textovolumen,"Volume C: %s",volumen);
             //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
             zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textovolumen);
@@ -5026,7 +5026,7 @@ void menu_audio_draw_sound_wave(void)
     menu_waveform_previous_volume=menu_decae_ajusta_valor_volumen(menu_waveform_previous_volume,menu_audio_draw_sound_wave_volumen_escalado);
 
     char texto_volumen[32];
-    menu_string_volumen(texto_volumen,menu_audio_draw_sound_wave_volumen_escalado,menu_waveform_previous_volume);
+    menu_string_volumen(texto_volumen,menu_audio_draw_sound_wave_volumen_escalado,menu_waveform_previous_volume,-1);
                                                                 //"Volume C: %s"
 
     sprintf (buffer_texto_medio,"Volume: %3d %s",menu_audio_draw_sound_wave_volumen,texto_volumen);
@@ -6295,17 +6295,17 @@ void menu_audio_new_ayplayer_overlay(void)
 
         linea=AYPLAYER_INICIO_LINEA_VU_METERS;
 
-        menu_string_volumen(volumen,ay_3_8912_registros[0][8],ayplayer_previo_valor_volume_A);
+        menu_string_volumen(volumen,ay_3_8912_registros[0][8],ayplayer_previo_valor_volume_A,ay_3_8912_registros[0][13]);
         sprintf (textovolumen,"Volume A: %s",volumen);
         //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
         zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,textovolumen);
 
-        menu_string_volumen(volumen,ay_3_8912_registros[0][9],ayplayer_previo_valor_volume_B);
+        menu_string_volumen(volumen,ay_3_8912_registros[0][9],ayplayer_previo_valor_volume_B,ay_3_8912_registros[0][13]);
         sprintf (textovolumen,"Volume B: %s",volumen);
         //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
         zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,textovolumen);
 
-        menu_string_volumen(volumen,ay_3_8912_registros[0][10],ayplayer_previo_valor_volume_C);
+        menu_string_volumen(volumen,ay_3_8912_registros[0][10],ayplayer_previo_valor_volume_C,ay_3_8912_registros[0][13]);
         sprintf (textovolumen,"Volume C: %s",volumen);
         //menu_escribe_linea_opcion(linea++,-1,1,textovolumen);
         zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,textovolumen);
@@ -6349,7 +6349,7 @@ void menu_audio_new_ayplayer_overlay(void)
         ayplayer_previo_valor_escalado=menu_decae_ajusta_valor_volumen(ayplayer_previo_valor_escalado,valor_escalado);
         //if (ayplayer_previo_valor_escalado<valor_escalado) ayplayer_previo_valor_escalado=valor_escalado;
 
-        menu_string_volumen(volumen,valor_escalado,ayplayer_previo_valor_escalado);
+        menu_string_volumen(volumen,valor_escalado,ayplayer_previo_valor_escalado,-1);
 
 
 
@@ -24464,7 +24464,7 @@ void menu_audio_general_sound_overlay(void)
 
 
 
-        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previos_volumes[i]);
+        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previos_volumes[i],-1);
         sprintf (buffer_linea,"Volume #%d: %02XH %s",i,gs_volumes[i],buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -24496,7 +24496,7 @@ void menu_audio_general_sound_overlay(void)
         //char buf_nivel[33];
 
 
-        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previos_dac[i]);
+        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previos_dac[i],-1);
         sprintf (buffer_linea,"DAC    #%d: %02XH %s",i,gs_dac_channels[i],buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -24530,7 +24530,7 @@ void menu_audio_general_sound_overlay(void)
         //char buf_nivel[33];
 
 
-        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previo_left);
+        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previo_left,-1);
         sprintf (buffer_linea,"Left Out:  %02XH %s",gs_dac_valor_final_left,buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -24559,7 +24559,7 @@ void menu_audio_general_sound_overlay(void)
         //char buf_nivel[33];
 
 
-        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previo_right);
+        menu_string_volumen(buf_nivel,nivel_actual,menu_audio_general_sound_previo_right,-1);
         sprintf (buffer_linea,"Right Out: %02XH %s",gs_dac_valor_final_right,buf_nivel);
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
@@ -39616,7 +39616,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
         menu_realtape_record_input_analize_volumen_escalado);
 
     char texto_volumen[32];
-    menu_string_volumen(texto_volumen,menu_realtape_record_input_analize_volumen_escalado,menu_realtape_record_input_analize_previo_volumen);
+    menu_string_volumen(texto_volumen,menu_realtape_record_input_analize_volumen_escalado,menu_realtape_record_input_analize_previo_volumen,-1);
                                                                 //"Volume C: %s"
 
 
