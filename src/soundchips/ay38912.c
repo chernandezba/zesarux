@@ -375,6 +375,7 @@ void ay_randomize(int chip)
         (ay_noise_lfsr[chip] >> 1) |
         (feedback << 16);
 
+    //printf("ay_noise_lfsr[chip] %05XH %d\n",ay_noise_lfsr[chip],ay_noise_lfsr[chip] & 1);
 
 }
 
