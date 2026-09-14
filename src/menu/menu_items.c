@@ -45212,13 +45212,16 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
 
     tooltips_mouse_ultima_pos_x_tooltip=menu_clive_game_window->x*menu_char_width+offset_x;
     tooltips_mouse_ultima_pos_y_tooltip=menu_clive_game_window->y*menu_char_width-4; //4 para que no este pegado justo a la ventana
-    tooltips_mouse_direccion_tooltip=-1;
+    tooltips_mouse_direccion_tooltip_updn=-1;
 
     //Si esta muy arriba clive, el texto por debajo de la ventana
     if (menu_clive_game_window->y<6) {
-        tooltips_mouse_direccion_tooltip=+1;
+        tooltips_mouse_direccion_tooltip_updn=+1;
         tooltips_mouse_ultima_pos_y_tooltip=(menu_clive_game_window->y+menu_clive_game_window->visible_height)*menu_char_width+4;
     }
+
+    //Si no va a caber entero hacia la derecha, forzar hacia la izquierda
+    if (tooltip_mouse_text_if_goes_left(menu_clive_mensaje_origen_hablar)) tooltips_mouse_direccion_tooltip_force_left=1;
 
     tooltip_mouse_visible.v=1;
     tooltip_mouse_visible_clive.v=1;
@@ -45231,6 +45234,7 @@ void menu_clive_game_remove_talking_text(void)
         //Quitar el overlay de texto de clive hablando
         tooltip_mouse_visible.v=0;
         tooltip_mouse_visible_clive.v=0;
+        tooltips_mouse_direccion_tooltip_force_left=0;
 
         //Redibujar para que desaparezca el texto hablado
         zxvision_zxdesktop_set_no_frameskip_next();

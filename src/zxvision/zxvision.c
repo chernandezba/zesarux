@@ -8183,6 +8183,9 @@ int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
 //Para arriba o para abajo
 int tooltips_mouse_direccion_tooltip_updn=+1;
 
+//Ir hacia la izquierda
+int tooltips_mouse_direccion_tooltip_force_left=0;
+
 #define TOOLTIPS_MOUSE_ALTO_CARACTER 6
 #define TOOLTIPS_MOUSE_ANCHO_CARACTER 4
 
@@ -8241,6 +8244,30 @@ void tooltip_mouse_draw_filled_rectangle(int xinicio,int yinicio,int ancho,int a
 
 }
 
+//Si el texto indicado no va a caber de izquierda a derecha y tiene que ir hacia la izquierda
+int tooltip_mouse_text_if_goes_left(char *texto)
+{
+    int x=tooltips_mouse_ultima_pos_x_tooltip;
+
+    //Para que la punta de la flecha apunte a donde estaba el mouse
+    x -=4;
+
+    //printf("Ancho total: %d x: %d\n",scr_get_menu_width(),x/menu_char_width);
+
+    int x_inicial=x;
+    int total_ancho=scr_get_menu_width()*menu_char_width;
+
+    int longitud_escribir=strlen(texto);
+
+    int ancho_caracter=TOOLTIPS_MOUSE_ANCHO_CARACTER;
+
+
+    int fin_cuadro=x_inicial+(longitud_escribir+2)*ancho_caracter;
+
+    if (fin_cuadro>total_ancho) return 1;
+    else return 0;
+}
+
 void tooltip_mouse_text_overlay(void)
 {
     if (tooltip_enabled.v==0) return;
@@ -8258,7 +8285,7 @@ void tooltip_mouse_text_overlay(void)
         //printf("Ancho total: %d x: %d\n",scr_get_menu_width(),x/menu_char_width);
 
         int x_inicial=x;
-        int total_ancho=scr_get_menu_width()*menu_char_width;
+        //int total_ancho=scr_get_menu_width()*menu_char_width;
 
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
@@ -8282,10 +8309,12 @@ void tooltip_mouse_text_overlay(void)
 
         int x_cuadro=x_inicial;
 
-        //int x_inicial=x;
-        //int total_ancho=scr_get_menu_width()*menu_char_width;
-        int fin_cuadro=x_inicial+(longitud_escribir+2)*ancho_caracter;
-        if (fin_cuadro>total_ancho) {
+
+        //int fin_cuadro=x_inicial+(longitud_escribir+2)*ancho_caracter;
+
+
+        //if (fin_cuadro>total_ancho || tooltips_mouse_direccion_tooltip_force_left) {
+        if (tooltip_mouse_text_if_goes_left(tooltips_mouse_ultimo_texto_tooltip) || tooltips_mouse_direccion_tooltip_force_left) {
             //printf("*****NO CABE***** %d %d\n",fin_cuadro,total_ancho);
 
             x_cuadro=x_cuadro-(ancho_caracter*longitud_escribir)+1;
