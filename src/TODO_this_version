@@ -158,7 +158,7 @@ o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
 pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
 
 
--App calculadora, simon
+-App simon
 
 
 ----
@@ -169,8 +169,6 @@ Pendientes ahora
 
 
 QL-Emulación CST Thor, Q40, Q60, Q68
-
-
 
 
 QL-poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
@@ -206,6 +204,7 @@ QL-Rabenstein. hay un img no admitido
 
 QL-En features ql agregar soporte mdv entero, img, win
 
+QL- canciones. corregido "at line 10430 bad name"
 
 
 ***Baseconf*****
@@ -311,4 +310,4 @@ necesita core 3.2.0 o inferior!
 
 
 -calculadora
-*falta icono
+ok *falta icono

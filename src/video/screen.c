@@ -13406,7 +13406,7 @@ void screen_text_repinta_pantalla_cpc(void)
 
                 }
 
-    scr_refresca_pantalla_cpc_text(screen_text_refresca_pantalla_cpc_fun_color,screen_text_refresca_pantalla_cpc_fun_caracter,screen_text_refresca_pantalla_cpc_fun_saltolinea);
+    scr_refresca_pantalla_cpc_text(screen_text_refresca_pantalla_cpc_fun_color,screen_text_refresca_pantalla_cpc_fun_caracter,screen_text_refresca_pantalla_cpc_fun_saltolinea,0);
 
 }
 
@@ -14607,7 +14607,9 @@ void scr_refresca_pantalla_cpc_get_sprite_mode_x(int x,int y,z80_byte *destino,i
 }
 
 
-void scr_refresca_pantalla_cpc_text(void (*fun_color) (z80_byte color,int *brillo, int *parpadeo), void (*fun_caracter) (int x,int y,int brillo, unsigned char inv,z80_byte caracter ) , void (*fun_saltolinea) (void) )
+void scr_refresca_pantalla_cpc_text(void (*fun_color) (z80_byte color,int *brillo, int *parpadeo),
+    void (*fun_caracter) (int x,int y,int brillo, unsigned char inv,z80_byte caracter ) ,
+    void (*fun_saltolinea) (void) , int solo_texto)
 {
 
         z80_byte modo_video=cpc_gate_registers[2] &3;
@@ -14757,7 +14759,7 @@ void scr_refresca_pantalla_cpc_text(void (*fun_color) (z80_byte color,int *brill
 
                 //Hagamos caracter artistico
 
-                if (texto_artistico.v==1) {
+                if (texto_artistico.v==1 && !solo_texto) {
                     caracter=scr_artistic_retorna_artistic_char(artistic_puntero_origen,artistic_incremento_origen);
                 }
                 else {

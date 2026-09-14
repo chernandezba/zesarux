@@ -74,6 +74,7 @@ Fixed showing joystick button values on Real Joystick information window when us
 Fixed drawing last line of waveform on window View Waveform
 Fixed pressing redefined top button with extra parameters
 Fixed ULA+ palette decoding on TBBlue. Thanks Ignacio Monge
+Fixed copy-paste and ZRCP commands send-ascii* for Amstrad CPC
 
 ----
 

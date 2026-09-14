@@ -1235,7 +1235,7 @@ void scrcurses_refresca_pantalla_cpc(void)
     }
 
 
-scr_refresca_pantalla_cpc_text(scrcurses_refresca_pantalla_cpc_fun_color,scrcurses_refresca_pantalla_cpc_fun_caracter,scrcurses_refresca_pantalla_cpc_fun_saltolinea);
+scr_refresca_pantalla_cpc_text(scrcurses_refresca_pantalla_cpc_fun_color,scrcurses_refresca_pantalla_cpc_fun_caracter,scrcurses_refresca_pantalla_cpc_fun_saltolinea,0);
 }
 
 

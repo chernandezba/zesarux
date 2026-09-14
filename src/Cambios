@@ -74,6 +74,7 @@ Corregido al mostrar valores de botones de joystick real en ventana de Real Joys
 Corregido al dibujar última linea de forma de onda en ventana View Waveform
 Corregido al pulsar un botón superior redefinido con parámetros adicionales
 Corregida decodificación de paleta de ULA+ en TBBlue. Gracias Ignacio Monge
+Corregido copia-pega y comandos ZRCP send-ascii* en Amstrad CPC
 
 ----
 

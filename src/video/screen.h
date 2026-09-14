@@ -925,7 +925,7 @@ extern void screen_text_repinta_pantalla_sam(void);
 
 extern char scr_artistic_retorna_artistic_char(z80_byte *origen, int incremento_origen);
 
-extern void scr_refresca_pantalla_cpc_text(void (*fun_color) (z80_byte color,int *brillo, int *parpadeo), void (*fun_caracter) (int x,int y,int brillo, unsigned char inv,z80_byte caracter ) , void (*fun_saltolinea) (void) );
+extern void scr_refresca_pantalla_cpc_text(void (*fun_color) (z80_byte color,int *brillo, int *parpadeo), void (*fun_caracter) (int x,int y,int brillo, unsigned char inv,z80_byte caracter ) , void (*fun_saltolinea) (void) , int solo_texto);
 
 extern void screen_text_repinta_pantalla_cpc(void);
 

@@ -1039,7 +1039,7 @@ void textspeech_refresca_pantalla_cpc_fun_caracter(int x GCC_UNUSED,int y GCC_UN
 
 void textspeech_enviar_speech_pantalla_cpc(void)
 {
-	scr_refresca_pantalla_cpc_text(textspeech_refresca_pantalla_cpc_fun_color,textspeech_refresca_pantalla_cpc_fun_caracter,textspeech_refresca_pantalla_cpc_fun_saltolinea);
+	scr_refresca_pantalla_cpc_text(textspeech_refresca_pantalla_cpc_fun_color,textspeech_refresca_pantalla_cpc_fun_caracter,textspeech_refresca_pantalla_cpc_fun_saltolinea,1);
 }
 
 
@@ -1204,7 +1204,7 @@ void ocr_pantalla_cpc_fun_caracter(int x GCC_UNUSED,int y GCC_UNUSED,int brillo 
 
 void ocr_enviar_speech_pantalla_cpc(void)
 {
-	scr_refresca_pantalla_cpc_text(ocr_pantalla_cpc_fun_color,ocr_pantalla_cpc_fun_caracter,ocr_pantalla_cpc_fun_saltolinea);
+	scr_refresca_pantalla_cpc_text(ocr_pantalla_cpc_fun_color,ocr_pantalla_cpc_fun_caracter,ocr_pantalla_cpc_fun_saltolinea,1);
 }
 
 
