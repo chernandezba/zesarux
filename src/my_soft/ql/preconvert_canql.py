@@ -94,12 +94,15 @@ def tempo_of(source: str) -> int:
     return 120
 
 
-def qsound(source: str, tempo: int) -> tuple[str, int, bool]:
+def qsound(source: str, tempo: int, emit_noise: bool = False) -> tuple[str, int, bool, list[tuple[int, int]]]:
     source, _ = expand(source)
     out, pos, octave, note_len, old_len = ["v15"], 0, 5, 5, 5
     q_octave = q_length = None
     triplet = tie = accidental = frames = 0
     comment = loop = False
+    mixer_events = []
+    envelope_volume = False
+    envelope_shape = 0
     while pos < len(source):
         char = source[pos]
         if comment:
@@ -129,18 +132,29 @@ def qsound(source: str, tempo: int) -> tuple[str, int, bool]:
             if value > 0: tempo = value
             pos = end; continue
         if upper == "O": octave = value; pos = end; continue
-        if upper == "V": out.append("v" + str(max(0, min(15, value)))); pos = end; continue
-        if upper == "U": out.append("v16"); pos += 1; continue
+        if upper == "V":
+            envelope_volume = False
+            out.append("v" + str(max(0, min(15, value)))); pos = end; continue
+        if upper == "U": envelope_volume = True; out.append("v16"); pos += 1; continue
         if upper == "W":
-            out.append("w" + str({1:4, 2:11, 3:13, 4:8, 5:12, 6:14, 7:10}.get(value, 0)))
+            envelope_shape = {1:4, 2:11, 3:13, 4:8, 5:12, 6:14, 7:10}.get(value, 0)
+            out.append("w" + str(envelope_shape))
             pos = end; continue
         if upper == "X": out.append("x" + str(min(32767, value))); pos = end; continue
-        if upper in "MYZ": pos = end; continue
+        if upper == "M":
+            mixer_events.append((frames, 255 - (value & 63)))
+            pos = end; continue
+        if upper in "YZ": pos = end; continue
         if char == "&":
             length = min(255, duration(note_len, tempo) + tie); tie = 0
             if length != q_length: out.append(f"l{length}"); q_length = length
             out.append("p"); frames += length
         elif upper in NOTES:
+            # Cada nota con U debe reiniciar la envolvente; PLAY solo cambia
+            # el periodo del tono al interpretar una letra musical.
+            if envelope_volume: out.append("w" + str(envelope_shape))
+            spectrum_note = (octave + int(char.isupper())) * 12 + NOTES[upper] + accidental
+            if emit_noise: out.append("n" + str(((~spectrum_note) & 127) >> 2))
             qo = max(0, min(7, octave - 1 + int(char.isupper())))
             semitone = NOTES[upper] + accidental + 5
             while semitone < 0: semitone += 12; qo -= 1
@@ -157,11 +171,47 @@ def qsound(source: str, tempo: int) -> tuple[str, int, bool]:
             triplet -= 1
             if not triplet and note_len >= 10: note_len = old_len
         pos += 1
-    return "".join(out), frames, loop
+    return "".join(out), frames, loop, mixer_events
+
+
+def mixer_timeline(baked: list[tuple[str, int, bool, list[tuple[int, int]]]], target: int) -> str:
+    events = []
+    for channel, (_, frames, loop, source_events) in enumerate(baked):
+        copies = range((target - 1) // frames + 1) if loop and frames else range(1)
+        for copy in copies:
+            offset = copy * frames
+            for sequence, (frame, mixer) in enumerate(source_events):
+                if offset + frame < target:
+                    events.append((offset + frame, channel, sequence, mixer))
+    collapsed = []
+    for frame, _, _, mixer in sorted(events):
+        if collapsed and collapsed[-1][0] == frame:
+            collapsed[-1] = (frame, mixer)
+        else:
+            collapsed.append((frame, mixer))
+    return "".join(f"{frame:05d}{mixer:03d}" for frame, mixer in collapsed)
 
 
 def quote(value: str) -> str:
     return '"' + value.replace('"', '""') + '"'
+
+
+def preserve_initial_envelope(baked):
+    # La ROM 1.94 inicializa x0/w0 en CADA lista PLAY. La envolvente es
+    # compartida: replica su configuracion inicial tambien en las otras voces.
+    envelope = {"x": "0", "w": "0"}
+    for music, _, _, _ in baked:
+        for token in re.finditer(r"([a-z])([0-9]+)|([A-Hp#])", music):
+            if token.group(3):
+                break
+            if token.group(1) in envelope:
+                envelope[token.group(1)] = token.group(2)
+    first_noise = re.search(r"n(\d+)", baked[0][0])
+    prefix = "x" + envelope["x"] + "w" + envelope["w"]
+    # Las listas nuevas tambien inicializan el registro compartido de ruido.
+    if first_noise: prefix += first_noise.group()
+    return [(prefix + music, frames, loop, events)
+            for music, frames, loop, events in baked]
 
 
 def main(path: Path) -> None:
@@ -212,10 +262,13 @@ def main(path: Path) -> None:
                 sources = [string_expr(arg, values) for arg in args]
                 tempo = tempo_of(sources[0]); baked = [qsound(source, tempo) for source in sources]
                 target = 3000 if count == 1 and baked[0][2] else max(item[1] for item in baked)
+                baked[0] = qsound(sources[0], tempo, emit_noise=True)
+                baked = preserve_initial_envelope(baked)
+                timeline = mixer_timeline(baked, target)
                 fields = []
-                for music, frames, loop in baked:
+                for music, frames, loop, _ in baked:
                     fields += [quote(music), str(frames), str(int(loop))]
-                fields.append(str(target))
+                fields += [str(target), quote(timeline)]
                 statement = "zxqplay" + str(count) + " " + ",".join(fields)
                 converted += 1
             if not static_assignment:
@@ -229,8 +282,8 @@ def main(path: Path) -> None:
                 continue
         output.append(lineno + " " + ":".join(rebuilt))
     if converted == 0: raise SystemExit("no zxplay calls found")
-    # Keep menu entry points without placeholder REM lines: assign each song's
-    # first baked PLAY call the original entry line number.
+    # Conserva las entradas del menu sin REM de relleno: asigna a cada cancion
+    # el numero de linea original de su primer PLAY preconvertido.
     for target in sorted(song_targets):
         placeholder = next((i for i, item in enumerate(output)
                             if item.startswith(f"{target} ")), None)
@@ -243,26 +296,42 @@ def main(path: Path) -> None:
         output[first_play] = re.sub(r"^\d+", str(target), output[first_play], count=1)
         del output[placeholder]
     output[0] = output[0].replace("DIM zxpos(32):", "")
+    output[0] = re.sub(r"^(\d+\s+)", r"\1zxmixer=248:", output[0], count=1)
     output.extend([
         "", "10400 DEFine FuNction zxqfill$(q$,frames,target)",
         "10410  zcopies=INT(target/frames)+2", "10420  result$=q$",
         "10430  FOR zcopy=2 TO zcopies:result$=result$&q$", "10440  RETurn result$",
         "10450 END DEFine zxqfill$", "",
-        "10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target)",
+        "10560 DEFine PROCedure zxmwait(zframes,zmix$)",
+        "10561  zp=1:znext=zframes",
+        "10562  IF LEN(zmix$) THEN znext=(CODE(zmix$(zp))-48)*10000+(CODE(zmix$(zp+1))-48)*1000+(CODE(zmix$(zp+2))-48)*100+(CODE(zmix$(zp+3))-48)*10+CODE(zmix$(zp+4))-48",
+        "10563  IF LEN(zmix$) THEN znewmix=(CODE(zmix$(zp+5))-48)*100+(CODE(zmix$(zp+6))-48)*10+CODE(zmix$(zp+7))-48:zp=zp+8",
+        "10564  FOR zframe=0 TO zframes-1",
+        "10565   REPeat zmev",
+        "10566    IF zframe<znext THEN EXIT zmev",
+        "10567    zxmixer=znewmix:POKE_AY 7,zxmixer",
+        "10568    IF zp>LEN(zmix$) THEN znext=zframes:EXIT zmev",
+        "10569    znext=(CODE(zmix$(zp))-48)*10000+(CODE(zmix$(zp+1))-48)*1000+(CODE(zmix$(zp+2))-48)*100+(CODE(zmix$(zp+3))-48)*10+CODE(zmix$(zp+4))-48",
+        "10570    znewmix=(CODE(zmix$(zp+5))-48)*100+(CODE(zmix$(zp+6))-48)*10+CODE(zmix$(zp+7))-48:zp=zp+8",
+        "10571   END REPeat zmev",
+        "10572   POKE_AY 7,zxmixer:PAUSE 1:POKE_AY 7,zxmixer",
+        "10573  END FOR zframe",
+        "10574 END DEFine zxmwait", "",
+        "10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target,zmix$)",
         "10610  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
-        "10620  SOUND_AY:HOLD:PLAY 1,q1$:RELEASE", "10630  zxwait target:SOUND_AY",
+        "10620  SOUND_AY:HOLD:PLAY 1,q1$:RELEASE", "10630  zxmwait target,zmix$:SOUND_AY",
         "10640 END DEFine zxqplay1", "",
-        "10700 DEFine PROCedure zxqplay2(q1$,f1,l1,q2$,f2,l2,target)",
+        "10700 DEFine PROCedure zxqplay2(q1$,f1,l1,q2$,f2,l2,target,zmix$)",
         "10710  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10720  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
-        "10730  SOUND_AY:HOLD:PLAY 1,q1$:PLAY 2,q2$:RELEASE", "10740  zxwait target:SOUND_AY",
+        "10730  SOUND_AY:HOLD:PLAY 1,q1$:PLAY 2,q2$:RELEASE", "10740  zxmwait target,zmix$:SOUND_AY",
         "10750 END DEFine zxqplay2", "",
-        "10800 DEFine PROCedure zxqplay3(q1$,f1,l1,q2$,f2,l2,q3$,f3,l3,target)",
+        "10800 DEFine PROCedure zxqplay3(q1$,f1,l1,q2$,f2,l2,q3$,f3,l3,target,zmix$)",
         "10810  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10820  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
         "10830  IF l3 THEN q3$=zxqfill$(q3$,f3,target)",
         "10840  SOUND_AY:HOLD:PLAY 1,q1$:PLAY 2,q2$:PLAY 3,q3$:RELEASE",
-        "10850  zxwait target:SOUND_AY", "10860 END DEFine zxqplay3",
+        "10850  zxmwait target,zmix$:SOUND_AY", "10860 END DEFine zxqplay3",
     ])
     output = [line for line in output if line.strip()]
     path.write_text("\n".join(output) + "\n")
