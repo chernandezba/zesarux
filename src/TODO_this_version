@@ -287,11 +287,6 @@ Y con snapshot de pogie (asi no parece que funcione!):
 *algo mas pendiente?
 
 
-***Monopoly*****
-
--Monopoly poner nombre de david si no está
-
-
 ---
 
 -Exploding fist:
@@ -311,3 +306,12 @@ necesita core 3.2.0 o inferior!
 
 -calculadora
 ok *falta icono
+
+
+----
+
+Process switcher: que mediante flechas izquierda - derecha se puedan ver los otros iconos que no quepan
+quiza la flecha izquierda/derecha es tal cual el scroll natural de la ventana, se debera redimensionar
+segun la cantidad de iconos
+
+y/o opcion para decir si mostrar 1 fila solo o mas
