@@ -2032,7 +2032,7 @@ struct s_zxdesktop_lowericons_info {
 
 extern char *tooltips_mouse_ultimo_texto_tooltip;
 extern int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
-extern int tooltips_mouse_direccion_tooltip;
+extern int tooltips_mouse_direccion_tooltip_updn;
 extern z80_bit tooltip_mouse_visible;
 extern z80_bit tooltip_mouse_visible_clive;
 

@@ -8181,7 +8181,7 @@ char *tooltips_mouse_ultimo_texto_tooltip;
 int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
 
 //Para arriba o para abajo
-int tooltips_mouse_direccion_tooltip=+1;
+int tooltips_mouse_direccion_tooltip_updn=+1;
 
 #define TOOLTIPS_MOUSE_ALTO_CARACTER 6
 #define TOOLTIPS_MOUSE_ANCHO_CARACTER 4
@@ -8269,10 +8269,10 @@ void tooltip_mouse_text_overlay(void)
 
         int ypos=tooltips_mouse_ultima_pos_y_tooltip;
 
-        int rectangulo_ypos=ypos+tooltips_mouse_direccion_tooltip*alto_caracter;
+        int rectangulo_ypos=ypos+tooltips_mouse_direccion_tooltip_updn*alto_caracter;
 
 
-        if (tooltips_mouse_direccion_tooltip==-1) {
+        if (tooltips_mouse_direccion_tooltip_updn==-1) {
             rectangulo_ypos=ypos-alto_caracter*4+1;
             ypos -=(alto_caracter-1);
         }
@@ -8294,7 +8294,7 @@ void tooltip_mouse_text_overlay(void)
         //dos mas de ancho
         tooltip_mouse_draw_filled_rectangle(x_cuadro,rectangulo_ypos,(longitud_escribir+2)*ancho_caracter,alto_caracter*3,papel,ESTILO_GUI_COLOR_RECUADRO);
 
-        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
+        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip_updn);
 
         //1 espacio a la izquierda
         x_cuadro+=ancho_caracter;
@@ -8305,7 +8305,7 @@ void tooltip_mouse_text_overlay(void)
 
             caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
 
-            tooltip_mouse_print_char(x_cuadro,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
+            tooltip_mouse_print_char(x_cuadro,ypos+tooltips_mouse_direccion_tooltip_updn*alto_caracter*2,caracter_escribir,tinta,papel);
         }
 
     }
@@ -8678,7 +8678,7 @@ void tooltips_mouse_timer_event(void)
             tooltips_mouse_ultima_pos_y_tooltip=get_pos_y_pixel_mouse_tooltip_mouse();
         }
 
-        tooltips_mouse_direccion_tooltip=tooltip.direccion_tooltip;
+        tooltips_mouse_direccion_tooltip_updn=tooltip.direccion_tooltip;
     }
 
 }
