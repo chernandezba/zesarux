@@ -82,8 +82,8 @@ DURATIONS = {1: 6, 2: 9, 3: 12, 4: 18, 5: 24, 6: 36,
 NOTES = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 
 
-def duration(kind: int, tempo: int) -> int:
-    return max(1, min(255, int(DURATIONS.get(kind, 24) * 125 / tempo + .5)))
+def duration(kind: int, tempo: int) -> float:
+    return DURATIONS.get(kind, 24) * 125 / tempo
 
 
 def tempo_of(source: str) -> int:
@@ -103,6 +103,7 @@ def qsound(source: str, tempo: int, emit_noise: bool = False) -> tuple[str, int,
     mixer_events = []
     envelope_volume = False
     envelope_shape = 0
+    exact_frames = 0.0
     while pos < len(source):
         char = source[pos]
         if comment:
@@ -146,24 +147,32 @@ def qsound(source: str, tempo: int, emit_noise: bool = False) -> tuple[str, int,
             pos = end; continue
         if upper in "YZ": pos = end; continue
         if char == "&":
-            length = min(255, duration(note_len, tempo) + tie); tie = 0
-            if length != q_length: out.append(f"l{length}"); q_length = length
+            exact_frames += min(255, duration(note_len, tempo) + tie); tie = 0
+            length = int(exact_frames + .5) - frames
+            # La ROM 1.94 vuelve al interprete un tick despues de llegar a cero.
+            q_ticks = max(0, length - 1)
+            if q_ticks != q_length: out.append(f"l{q_ticks}"); q_length = q_ticks
             out.append("p"); frames += length
         elif upper in NOTES:
             # Cada nota con U debe reiniciar la envolvente; PLAY solo cambia
             # el periodo del tono al interpretar una letra musical.
             if envelope_volume: out.append("w" + str(envelope_shape))
             spectrum_note = (octave + int(char.isupper())) * 12 + NOTES[upper] + accidental
-            if emit_noise: out.append("n" + str(((~spectrum_note) & 127) >> 2))
+            noise = ((~spectrum_note) & 127) >> 2
+            if emit_noise: out.append("n" + str(noise))
             qo = max(0, min(7, octave - 1 + int(char.isupper())))
             semitone = NOTES[upper] + accidental + 5
             while semitone < 0: semitone += 12; qo -= 1
             while semitone >= 12: semitone -= 12; qo += 1
             qo = max(0, min(7, qo)); accidental = 0
             names = ("C", "#C", "D", "#D", "E", "F", "#F", "G", "#G", "A", "#A", "H")
-            length = min(255, duration(note_len, tempo) + tie); tie = 0
+            exact_frames += min(255, duration(note_len, tempo) + tie); tie = 0
+            length = int(exact_frames + .5) - frames
+            # n no nulo consume otro tick al escribir el periodo de ruido.
+            overhead = 1 + int(emit_noise and noise != 0)
+            q_ticks = max(0, length - overhead)
             if qo != q_octave: out.append(f"o{qo}"); q_octave = qo
-            if length != q_length: out.append(f"l{length}"); q_length = length
+            if q_ticks != q_length: out.append(f"l{q_ticks}"); q_length = q_ticks
             out.append(names[semitone]); frames += length
         else:
             pos += 1; continue
@@ -206,10 +215,9 @@ def preserve_initial_envelope(baked):
                 break
             if token.group(1) in envelope:
                 envelope[token.group(1)] = token.group(2)
-    first_noise = re.search(r"n(\d+)", baked[0][0])
     prefix = "x" + envelope["x"] + "w" + envelope["w"]
-    # Las listas nuevas tambien inicializan el registro compartido de ruido.
-    if first_noise: prefix += first_noise.group()
+    # La barrera inicial s permite que todas las listas terminen su
+    # inicializacion antes de que la voz A establezca el ruido compartido.
     return [(prefix + music, frames, loop, events)
             for music, frames, loop, events in baked]
 
@@ -320,19 +328,34 @@ def main(path: Path) -> None:
         "10574 END DEFine zxmwait", "",
         "10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target,zmix$)",
         "10610  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
-        "10620  SOUND_AY:HOLD:PLAY 1,q1$:RELEASE", "10630  zxmwait target,zmix$:SOUND_AY",
+        "10620  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":zxready 1:RELEASE",
+        "10630  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
+        "10635  SOUND_AY",
         "10640 END DEFine zxqplay1", "",
         "10700 DEFine PROCedure zxqplay2(q1$,f1,l1,q2$,f2,l2,target,zmix$)",
         "10710  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10720  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
-        "10730  SOUND_AY:HOLD:PLAY 1,q1$:PLAY 2,q2$:RELEASE", "10740  zxmwait target,zmix$:SOUND_AY",
+        "10730  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":zxready 1:zxready 2:RELEASE",
+        "10740  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
+        "10742  IF l2=0 THEN zxready 2",
+        "10745  SOUND_AY",
         "10750 END DEFine zxqplay2", "",
         "10800 DEFine PROCedure zxqplay3(q1$,f1,l1,q2$,f2,l2,q3$,f3,l3,target,zmix$)",
         "10810  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10820  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
         "10830  IF l3 THEN q3$=zxqfill$(q3$,f3,target)",
-        "10840  SOUND_AY:HOLD:PLAY 1,q1$:PLAY 2,q2$:PLAY 3,q3$:RELEASE",
-        "10850  zxmwait target,zmix$:SOUND_AY", "10860 END DEFine zxqplay3",
+        "10840  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":PLAY 3,\"s\"&q3$&\"v0s\"",
+        "10845  zxready 1:zxready 2:zxready 3:RELEASE",
+        "10850  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
+        "10852  IF l2=0 THEN zxready 2",
+        "10854  IF l3=0 THEN zxready 3",
+        "10856  SOUND_AY", "10860 END DEFine zxqplay3",
+        "10920 DEFine PROCedure zxready(zchannel)",
+        "10930  REPeat zrwait",
+        "10940   IF PLAYING(zchannel)=0 THEN EXIT zrwait",
+        "10950   PAUSE 1",
+        "10960  END REPeat zrwait",
+        "10970 END DEFine zxready",
     ])
     output = [line for line in output if line.strip()]
     path.write_text("\n".join(output) + "\n")
