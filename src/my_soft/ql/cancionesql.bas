@@ -304,9 +304,9 @@
 10540  END FOR zwait
 10550 END DEFine zxwait
 10400 DEFine FuNction zxqfill$(q$,frames,target)
-10410  copies=INT(target/frames)+2
+10410  zcopies=INT(target/frames)+2
 10420  result$=q$
-10430  FOR copy=2 TO copies:result$=result$&q$
+10430  FOR zcopy=2 TO zcopies:result$=result$&q$
 10440  RETurn result$
 10450 END DEFine zxqfill$
 10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target)
