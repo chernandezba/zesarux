@@ -327,6 +327,8 @@ def main(path: Path) -> None:
             continue
         lineno, body = line.split(" ", 1)
         numeric_line = int(lineno)
+        if numeric_line == 8160:
+            body = body.replace("GO SUB lin:PAUSE", "zxprocessing 1:GO SUB lin:PAUSE")
         if 8240 <= numeric_line <= 8260 or 9000 <= numeric_line <= 10450 or 10600 <= numeric_line <= 10910:
             continue
         if lineno == "340": data340 = re.findall(r'"([^"]*)"', body)
@@ -416,23 +418,26 @@ def main(path: Path) -> None:
         "10574  END FOR zframe",
         "10575 END DEFine zxmwait", "",
         "10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target,zmix$)",
+        "10605  zxprocessing 1",
         "10610  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10615  zend=0:IF l1=0 AND f1=target THEN zend=1",
-        "10620  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":zxready 1:RELEASE",
+        "10620  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":zxready 1:zxprocessing 0:RELEASE",
         "10630  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
         "10635  SOUND_AY",
         "10640 END DEFine zxqplay1", "",
         "10700 DEFine PROCedure zxqplay2(q1$,f1,l1,q2$,f2,l2,target,zmix$)",
+        "10705  zxprocessing 1",
         "10710  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10720  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
         "10722  zend=0:IF l1=0 AND f1=target THEN zend=1",
         "10724  IF l2=0 AND f2=target THEN zend=2",
-        "10730  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":zxready 1:zxready 2:RELEASE",
+        "10730  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":zxready 1:zxready 2:zxprocessing 0:RELEASE",
         "10740  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
         "10742  IF l2=0 THEN zxready 2",
         "10745  SOUND_AY",
         "10750 END DEFine zxqplay2", "",
         "10800 DEFine PROCedure zxqplay3(q1$,f1,l1,q2$,f2,l2,q3$,f3,l3,target,zmix$)",
+        "10805  zxprocessing 1",
         "10810  IF l1 THEN q1$=zxqfill$(q1$,f1,target)",
         "10820  IF l2 THEN q2$=zxqfill$(q2$,f2,target)",
         "10830  IF l3 THEN q3$=zxqfill$(q3$,f3,target)",
@@ -440,7 +445,7 @@ def main(path: Path) -> None:
         "10834  IF l2=0 AND f2=target THEN zend=2",
         "10836  IF l3=0 AND f3=target THEN zend=3",
         "10840  SOUND_AY:PLAY 1,\"s\"&q1$&\"v0s\":PLAY 2,\"s\"&q2$&\"v0s\":PLAY 3,\"s\"&q3$&\"v0s\"",
-        "10845  zxready 1:zxready 2:zxready 3:RELEASE",
+        "10845  zxready 1:zxready 2:zxready 3:zxprocessing 0:RELEASE",
         "10850  zxmwait target,zmix$:IF l1=0 THEN zxready 1",
         "10852  IF l2=0 THEN zxready 2",
         "10854  IF l3=0 THEN zxready 3",
@@ -451,6 +456,11 @@ def main(path: Path) -> None:
         "10950   PAUSE 1",
         "10960  END REPeat zrwait",
         "10970 END DEFine zxready",
+        "11050 DEFine PROCedure zxprocessing(zshow)",
+        "11060  AT 0,0:PAPER 7:INK 0:OVER 0:FLASH 0",
+        "11065  IF zshow=0 THEN PRINT \"              \";:RETurn",
+        "11070  FLASH 1:PRINT \"Processing ...\";:FLASH 0",
+        "11080 END DEFine zxprocessing",
     ])
     output = [line for line in output if line.strip()]
     path.write_text("\n".join(output) + "\n")
