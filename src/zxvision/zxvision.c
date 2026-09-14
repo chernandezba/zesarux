@@ -24973,9 +24973,21 @@ static const char *ay_envelope_shape[16] = {
 //valor_envolvente si no es -1 es un indice al tipo de envolvente usado
 void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae,int valor_envolvente)
 {
+
+    char letra_vol='>';
+
+    /*if ( (registro_volumen & 16)!=0 && valor_envolvente>=0) {
+        registro_volumen=ultimo_valor_envolvente[0];
+        letra_vol='E';
+    }*/
+
+
     if ( (registro_volumen & 16)!=0) {
-        if (valor_envolvente<0 || valor_envolvente>15) sprintf (texto,"ENV            ");
-        else sprintf (texto,"ENV %s      ",ay_envelope_shape[valor_envolvente]);
+        if (valor_envolvente<0) sprintf (texto,"ENV            ");
+        else {
+            valor_envolvente=valor_envolvente&15;
+            sprintf (texto,"ENV %s      ",ay_envelope_shape[valor_envolvente]);
+        }
     }
 
     else {
@@ -25008,7 +25020,7 @@ void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae,
         //Si indice es menor que volumen, forzar a valor que volumen
         if (indice_decae<registro_volumen) indice_decae=registro_volumen;
 
-        if (indice_decae>=0 && indice_decae<=14 && indice_decae>=registro_volumen) texto[indice_decae+indicado_rojo*3]='>';
+        if (indice_decae>=0 && indice_decae<=14 && indice_decae>=registro_volumen) texto[indice_decae+indicado_rojo*3]=letra_vol;
 
         //printf ("registro volumen: %d indice decae: %d pos decae: %d\n",registro_volumen,indice_decae,indice_decae+indicado_rojo*3);
     }

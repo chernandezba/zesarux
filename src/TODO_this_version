@@ -315,3 +315,9 @@ quiza la flecha izquierda/derecha es tal cual el scroll natural de la ventana, s
 segun la cantidad de iconos
 
 y/o opcion para decir si mostrar 1 fila solo o mas
+
+
+quiza que en ay registers en vez de mostrar ENV lea el volumen tal cual? o quiza una tecla para conmutar modo visual
+y que aparte de enviarle valor envolvente, envie ultimo_valor_envolvente[chip] que es el volumen con el que saldra para ese envolvente
+
+en menu_string_volumen

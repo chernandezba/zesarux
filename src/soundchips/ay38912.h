@@ -40,6 +40,8 @@ extern z80_byte ay_3_8912_registro_sel[];
 
 extern z80_byte ay_3_8912_registros[][16];
 
+extern char ultimo_valor_envolvente[];
+
 //1'7734*1000000 (Hz) en Spectrum
 //En Amstrad, 1 MHz
 //En zonx zx81 , 1625000
