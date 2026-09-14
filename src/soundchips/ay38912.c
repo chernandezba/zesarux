@@ -204,10 +204,14 @@ int freq_ruido[MAX_AY_CHIPS];
 int contador_ruido[MAX_AY_CHIPS];
 
 //ultimo valor enviado para canal de ruido. valor con signo:
+//YA NO SE USA
 short ultimo_valor_ruido[MAX_AY_CHIPS];
 
 //valor randomize
 z80_int randomize_noise[MAX_AY_CHIPS];
+
+//nuevo algoritmo para el generador de ruido
+static unsigned int ay_noise_lfsr[MAX_AY_CHIPS];
 
 //
 //Fin variables que dependen del chip activo
@@ -267,6 +271,8 @@ void init_chip_ay(void)
         ultimo_valor_envolvente[chip]=0;
 
         ultimo_valor_ruido[chip]=+32767;
+
+        ay_noise_lfsr[chip]=1;
     }
 
     int i;
@@ -346,6 +352,30 @@ void ay_randomize(int chip)
     //printf ("randomize_noise: %d\n",randomize_noise);
 
 
+    /*
+    * El ruido del AY se genera mediante un registro de desplazamiento con
+    * realimentacion lineal (LFSR) de 17 bits. Los bits 0 y 3 se combinan
+    * mediante XOR para obtener el bit de realimentacion. El registro se
+    * desplaza una posicion hacia la derecha y el nuevo bit se introduce
+    * por el bit 16.
+    *
+    * Esto genera una secuencia determinista de bits con apariencia
+    * pseudoaleatoria, que constituye la señal de ruido del AY.
+    *
+    * El LFSR no debe inicializarse a cero, ya que el estado cero queda
+    * bloqueado indefinidamente.
+    */
+
+    unsigned int feedback;
+
+    feedback = ((ay_noise_lfsr[chip] >> 0) ^
+                (ay_noise_lfsr[chip] >> 3)) & 1;
+
+    ay_noise_lfsr[chip] =
+        (ay_noise_lfsr[chip] >> 1) |
+        (feedback << 16);
+
+
 }
 
 
@@ -415,7 +445,13 @@ COMMENT !
     }
 
     else if (tone.v==0 && noise.v==1)  {
-                valor=ultimo_valor_ruido[chip];
+                //valor=ultimo_valor_ruido[chip];
+
+                valor=(ay_noise_lfsr[chip] & 1 ? +32767 : -32767);
+
+
+
+
                 reset_silence_detection_counter();
                 //ay_player_silence_detection_counter=0;
         }
@@ -430,7 +466,9 @@ COMMENT !
         //en version 1.0 este /2 no estaba, era un error, por tanto se generaba al final un volumen mayor de lo normal,
         //cosa que podia hacer que el valor final del sonido cambiase de signo,
         //provocando ruido mas alto de lo normal
-        valor=(ultimo_valor_ruido[chip]+ultimo_valor_tono)/2;
+        //valor=(ultimo_valor_ruido[chip]+ultimo_valor_tono)/2;
+
+        valor=((ay_noise_lfsr[chip] & 1 ? +32767 : -32767)+ultimo_valor_tono)/2;
 
         reset_silence_detection_counter();
         //ay_player_silence_detection_counter=0;
