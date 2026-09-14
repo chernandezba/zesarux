@@ -8137,9 +8137,9 @@ char *bitmap_button_ext_desktop_calculator[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   .bbbbbbbbbbbbbbbbb.    ",
     "   .bbbbbbbbbbbbbbbbb.    ",
     "   .bbb...........bbb.    ",
-    "   .bbb..x...x.x..bbb.    ",
-    "   .bbb..x...xxx..bbb.    ",
-    "   .bbb..x.....x..bbb.    ",
+    "   .bbb...x..x.x..bbb.    ",
+    "   .bbb...x..xxx..bbb.    ",
+    "   .bbb...x....x..bbb.    ",
     "   .bbb...........bbb.    ",
     "   .bbbbbbbbbbbbbbbbb.    ",  //10
     "   .bbbbbbbbbbbbbbbbb.    ",
