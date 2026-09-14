@@ -45176,7 +45176,7 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
     //truncar si origen excede MENU_CLIVE_MAX_PHRASE_LENGTH
     if (longitud_origen>MENU_CLIVE_MAX_PHRASE_LENGTH) {
         longitud_origen=MENU_CLIVE_MAX_PHRASE_LENGTH;
-        printf("Truncar frase origen\n");
+        debug_printf(VERBOSE_DEBUG,"Clive. Truncating source phraseTruncar frase origen");
         strncpy(menu_clive_game_frase_hablada,menu_clive_mensaje_origen_hablar,MENU_CLIVE_MAX_PHRASE_LENGTH);
         menu_clive_game_frase_hablada[MENU_CLIVE_MAX_PHRASE_LENGTH]=0;
     }
@@ -45196,7 +45196,7 @@ void menu_clive_game_hablar_texto_siguiente_palabra(void)
 
         if (menu_clive_game_indice_texto_hablado<longitud_origen) {
             menu_clive_game_indice_texto_hablado++;
-            printf("Incrementar 1 caracter el texto\n");
+            debug_printf(VERBOSE_DEBUG,"Clive. Increasing text one character");
         }
         else {
             //dejar de mover la boca pero dejar el texto visible un rato
@@ -45297,12 +45297,12 @@ void menu_clive_game_handle_timers(void)
                         //Probabilidad de X entre 1000
                         if ((util_get_random_enhanced()%1000)<MENU_CLIVE_PROBABILIDAD_HABLAR) {
                             if (menu_clive_puede_hablar() ) {
-                                printf("Se pone a hablar\n");
+                                debug_printf(VERBOSE_DEBUG,"Clive. Start talking");
                                 menu_clive_game_state=CLIVE_TALKING;
                                 menu_clive_game_select_random_phrase();
                             }
                             else {
-                                printf("No puede hablar\n");
+                                debug_printf(VERBOSE_DEBUG,"Clive. Can not talk");
                             }
                         }
                     }
@@ -45320,7 +45320,7 @@ void menu_clive_game_handle_timers(void)
                 //Si no ha finalizado de decir la frase
                 if (menu_clive_game_talking_state!=MENU_CLIVE_TALKING_STATES) {
                     menu_clive_game_talking_state=util_get_random_enhanced()%MENU_CLIVE_TALKING_STATES;
-                    printf("Cambia a cara hablando %d\n",menu_clive_game_talking_state);
+                    debug_printf(VERBOSE_DEBUG,"Clive. Changing face talking number %d",menu_clive_game_talking_state);
                 }
                 menu_clive_game_hablar_texto_siguiente_palabra();
             }
@@ -45329,7 +45329,7 @@ void menu_clive_game_handle_timers(void)
             if (menu_clive_game_talking_state==MENU_CLIVE_TALKING_STATES) {
                 if (tiempo_ultimo_estado>MENU_CLIVE_TIEMPO_HABLANDO) {
                     //Lo enviamos a dormir
-                    printf("Se va a dormir\n");
+                    debug_printf(VERBOSE_DEBUG,"Clive. Going to sleep");
                     menu_clive_game_state=CLIVE_SLEEP;
                     menu_clive_game_remove_talking_text();
 
@@ -45464,7 +45464,7 @@ void menu_clive_game_handle_state_changes(void)
     }
 
     if (zxvision_mouse_en_ventana(menu_clive_game_window) && mouse_is_double_clicking) {
-        printf("Double click on Clive %d\n",contador_segundo_infinito);
+        debug_printf(VERBOSE_DEBUG,"Clive. Double click on Clive");
 
         //Si estaba hablando, dejar de hablar
         menu_clive_game_remove_talking_text();
@@ -45476,7 +45476,7 @@ void menu_clive_game_handle_state_changes(void)
 
         menu_clive_esta_mudo ^=1;
 
-        printf("Clive mudo o no: %d\n",menu_clive_esta_mudo);
+        debug_printf(VERBOSE_DEBUG,"Clive. Mute clive or not: %d",menu_clive_esta_mudo);
 
 
         menu_clive_game_state=CLIVE_MUTE_UNMUTE;
