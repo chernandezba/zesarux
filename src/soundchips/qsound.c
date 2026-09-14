@@ -112,11 +112,11 @@ void ql_traps_qsound(void)
         switch (m68k_get_reg(NULL,M68K_REG_D0)) {
 
             case 0:
-                printf("ay.reset. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.reset. TODO");
             break;
 
             case 1:
-                printf("ay.wrreg\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.wrreg");
                 //D1=Value, D2=register
                 //No testeado
                 out_port_ay(65533,m68k_get_reg(NULL,M68K_REG_D2) & 0xFF); //registro
@@ -124,7 +124,7 @@ void ql_traps_qsound(void)
             break;
 
             case 2:
-                printf("ay.rdreg. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.rdreg. TODO");
             break;
 
             case 3:
@@ -139,35 +139,35 @@ void ql_traps_qsound(void)
             break;
 
             case 4:
-                printf("ay.rdall. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.rdall. TODO");
             break;
 
             case 5:
-                printf("ay.play. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.play. TODO");
             break;
 
             case 6:
-                printf("ay.tstpl. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.tstpl. TODO");
             break;
 
             case 7:
-                printf("ay.hold. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.hold. TODO");
             break;
 
             case 8:
-                printf("ay.relse. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.relse. TODO");
             break;
 
             case 9:
-                printf("ay.noise. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.noise. TODO");
             break;
 
             case 10:
-                printf("ay.sound. TODO\n");
+                debug_printf (VERBOSE_DEBUG,"Qsound. ay.sound. TODO");
             break;
 
             default:
-                printf("Unknown qsound function D0=%X\n",m68k_get_reg(NULL,M68K_REG_D0));
+                debug_printf (VERBOSE_DEBUG,"Qsound. Unknown qsound function D0=%X",m68k_get_reg(NULL,M68K_REG_D0));
             break;
         }
     }
@@ -292,7 +292,7 @@ void qsound_load_rom(void)
 
     if (!ql_qsound_rom_enabled) return;
 
-    printf("Loading qsound rom\n");
+    debug_printf(VERBOSE_INFO,"Loading qsound rom");
 
     FILE *ptr_qsound_rom;
 
