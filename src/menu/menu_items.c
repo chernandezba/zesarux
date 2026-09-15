@@ -2286,54 +2286,56 @@ M1-M0= mode bits:
 
 
             int valor_volumen;
-            char buffer_envelope[20];
+            char buffer_envelope_A[20];
+            char buffer_envelope_B[20];
+            char buffer_envelope_C[20];
             int forma_envelope=ay_3_8912_registros[chip][13] & 15;
             char *string_forma_envelope=ay_envelope_shape[forma_envelope];
 
             //Canal A
-            buffer_envelope[0]=0;
+            buffer_envelope_A[0]=0;
             valor_volumen=ay_3_8912_registros[chip][8];
 
             if (valor_volumen & 16) {
                 valor_volumen=ultimo_valor_envolvente[chip];
-                strcpy(buffer_envelope,string_forma_envelope);
+                strcpy(buffer_envelope_A,string_forma_envelope);
             }
 
             menu_string_volumen(volumen,valor_volumen,ayregisters_previo_valor_volume_A[chip]);
             sprintf (textovolumen,"Volume A: %s",volumen);
             //$$G para que vuelva al color normal de tinta si es que se habia puesto en rojo en la barra de volumen
             //el espacio al final despues de %s porque si buffer_envelope es "", $$G necesita al menos un caracter despues para hacer efecto el color
-            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope);
+            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope_A);
 
 
             //Canal B
-            buffer_envelope[0]=0;
+            buffer_envelope_B[0]=0;
             valor_volumen=ay_3_8912_registros[chip][9];
 
             if (valor_volumen & 16) {
                 valor_volumen=ultimo_valor_envolvente[chip];
-                strcpy(buffer_envelope,string_forma_envelope);
+                strcpy(buffer_envelope_B,string_forma_envelope);
             }
 
 
             menu_string_volumen(volumen,valor_volumen,ayregisters_previo_valor_volume_B[chip]);
             sprintf (textovolumen,"Volume B: %s",volumen);
-            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope);
+            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope_B);
 
 
             //Canal C
-            buffer_envelope[0]=0;
+            buffer_envelope_C[0]=0;
             valor_volumen=ay_3_8912_registros[chip][10];
 
             if (valor_volumen & 16) {
                 valor_volumen=ultimo_valor_envolvente[chip];
-                strcpy(buffer_envelope,string_forma_envelope);
+                strcpy(buffer_envelope_C,string_forma_envelope);
             }
 
 
             menu_string_volumen(volumen,valor_volumen,ayregisters_previo_valor_volume_C[chip]);
             sprintf (textovolumen,"Volume C: %s",volumen);
-            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope);
+            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope_C);
 
 
 
