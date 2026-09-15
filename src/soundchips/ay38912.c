@@ -21,6 +21,8 @@
 
 /*
 
+Lo siguiente es un escaneo y OCR del manual de usuario del +2A:
+
 El sonido en tres canales es producido por el AY-3-8912, un circuito de sonido muy popu-
 lar; este dispositivo controla también las puertas RS232/MIDI y AUX.
 Las dos puertas serie so1o pueden ser controladas por programa. El +2A no incluye soft-
