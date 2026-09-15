@@ -2553,10 +2553,7 @@ void menu_ay_registers_crea_ventana(zxvision_window *ventana,int xventana,int yv
 
         ventana->writing_inverse_color=1;
 
-        //indicar nombre del grabado de geometria
-        //strcpy(ventana->geometry_name,"ayregisters");
-        //restaurar estado minimizado de ventana
-        //ventana->is_minimized=is_minimized;
+
 }
 
 void menu_ay_registers(MENU_ITEM_PARAMETERS)
@@ -2585,14 +2582,6 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("ayregisters",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
-            if (total_chips==1) {
-                //yventana=5;
-            }
-            else {
-                //yventana=0;
-            }
-
-            //xventana=menu_origin_x()+1;
             ancho_ventana=33;
 
             //El alto lo cambiamos segun el numero de chips
@@ -2607,14 +2596,6 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
             yventana=menu_center_y()-alto_ventana/2;
 
         }
-
-
-
-        //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
-        //No es necesario, pero es mas bonito... asi se recrea la ventana, si era muy pequeña, hacerla mas grande
-        //garantiza que se podra leer todo el texto
-        //int alto_anterior=alto_ventana;
-        //int ancho_anterior=ancho_ventana;
 
 
         menu_ay_registers_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -2669,36 +2650,6 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
         }
 
-        //printf ("tecla: %d\n",tecla);
-
-        //Si ha cambiado el tamaño
-        //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
-        /*
-        alto_ventana=ventana->visible_height;
-        ancho_ventana=ventana->visible_width;
-        xventana=ventana->x;
-        yventana=ventana->y;
-        if (alto_ventana!=alto_anterior || ancho_ventana!=ancho_anterior) {
-            //printf ("recrear ventana ay registers\n");
-            //Recrear ventana
-            int is_minimized=ventana->is_minimized;
-
-            zxvision_destroy_window(ventana);
-            //alto_anterior=alto_ventana;
-            //ancho_anterior=ancho_ventana;
-            menu_ay_registers_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize);
-            zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
-            zxvision_draw_window(ventana);
-
-            //Indicar tamanyo de antes minimizado, que es el que tenia al inicio
-            //dado que se recrea la ventana siempre que cambia tamaño (y si se minimiza tambien),
-            //queremos que se indique el tamaño que tenia antes de minimizar por si se deshace el minimizado
-            //ventana->height_before_max_min_imize=alto_ventana_inicial;
-            //ventana->width_before_max_min_imize=ancho_ventana_inicial;
-            //printf ("despues ventana ay registers\n");
-        }
-        */
-
 
     } while (tecla!=2 && tecla!=3);
 
@@ -2706,8 +2657,6 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
     menu_espera_no_tecla(); //Si no, se va al menu anterior.
     //En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
-
-
 
 
     util_add_window_geometry_compact(ventana);
