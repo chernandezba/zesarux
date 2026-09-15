@@ -41,6 +41,7 @@ Mejorado ZX Vision:
 - Agregada ventana de Reloj
 - Agregada ventana de Calculadora
 - Mejorada la organización, redacción y coherencia de los menús de la interfaz de usuario
+- Mejorado movimiento de ventana al mover con ratón
 - Dibujar marco ventana de ventanas en segundo plano
 - Menús principales cuando el menú superior está activado, no tienen título de ventana
 - Permitir ocultar menús del menú superior
@@ -57,6 +58,7 @@ Mejorado ZX Desktop:
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
 Agregado registros de General Sound registers a la ventana de Ver Sensores
+Audio Chip Registers: cuando un canal ha activado envolventes, mostrar volumen actual y forma del envolvente
 
 * Correcciones:
 

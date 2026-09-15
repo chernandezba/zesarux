@@ -5817,6 +5817,25 @@ void debug_view_basic(char *results_buffer)
 }
 
 
+static const char *ay_register_names[16] = {
+    "Tone A Lo",    // R0
+    "Tone A Hi",    // R1
+    "Tone B Lo",    // R2
+    "Tone B Hi",    // R3
+    "Tone C Lo",    // R4
+    "Tone C Hi",    // R5
+    "Noise",        // R6
+    "Mixer",        // R7
+    "Vol A",        // R8
+    "Vol B",        // R9
+    "Vol C",        // R10
+    "Env Lo",       // R11
+    "Env Hi",       // R12
+    "Env Shape",    // R13
+    "Port A",       // R14
+    "Port B"        // R15
+};
+
 void debug_get_ioports(char *stats_buffer)
 {
 
@@ -6696,7 +6715,7 @@ Bit	Purpose
 
                       int i;
                       for (i=0;i<16;i++) {
-                              sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
+                              sprintf (buf_linea,"%02X:  %02X %s\n",i,ay_3_8912_registros[j][i],ay_register_names[i]);
                               sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
                       }
 

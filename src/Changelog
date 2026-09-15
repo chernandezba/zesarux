@@ -41,6 +41,7 @@ Improved ZX Vision:
 - Added Clock window
 - Added Calculator window
 - Improved menu organization, wording and consistency across the user interface
+- Improved window movement when moving with mouse
 - Draw window frame on background windows
 - Main menus when top menu is enabled do not have window title
 - Allow to hide menus from top menu
@@ -57,6 +58,7 @@ Improved ZX Desktop:
 Special effects for video output are applied dynamically when moving cursor
 Moved search index file (zesarux_index_menu.idx) to user home directory
 Added General Sound registers to View Sensors window
+Audio Chip Registers: when a channel has enabled envelope, show current volumen and envelope shape
 
 * Fixes:
 

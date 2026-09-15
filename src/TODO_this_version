@@ -205,9 +205,6 @@ QL-Rabenstein. hay un img no admitido
 QL-En features ql agregar soporte mdv entero, img, win
 
 QL- canciones.
-*pausas en magnetic fields, islands, magnetic fields 5, sunshine, chariots of fire
-*walk of life parece toda mas aguda
-*da la sensacion que algunos pequeños silencios entre notas no se oyen, como que se juntan las notas y quiza no deberian estar tan juntas
 
 
 ***Baseconf*****
@@ -317,8 +314,4 @@ segun la cantidad de iconos
 y/o opcion para decir si mostrar 1 fila solo o mas
 
 
-quiza que en ay registers en vez de mostrar ENV lea el volumen tal cual? o quiza una tecla para conmutar modo visual
-y que aparte de enviarle valor envolvente, envie ultimo_valor_envolvente[chip] que es el volumen con el que saldra para ese envolvente
-o quiza al lado la forma:
-Volumen ======>     /|_____
-en menu_string_volumen
+-Al arrastrar una ventana si hay mucho uso de cpu la ventana "se queda atrás": deberia moverse siempre a donde esté el ratón

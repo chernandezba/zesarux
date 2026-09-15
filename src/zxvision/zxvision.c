@@ -9005,14 +9005,15 @@ int menu_escribe_texto_si_parpadeo(char *texto, int indice)
     return 1;
 }
 
-
+//Devuelve si hay $$X de cambio de tinta.
+//X esta entre '0' y '0'+15, y ademas tambien puede ser X=G, que indica "la tinta del estilo actual GUI"
 int menu_escribe_texto_si_cambio_tinta(char *texto,int indice)
 {
     if (menu_disable_special_chars.v) return 0;
 
     if (texto[indice++]!='$') return 0;
     if (texto[indice++]!='$') return 0;
-    if (texto[indice]<'0' || texto[indice]>'7'+8) return 0; //Soportar colores con brillo
+    if ((texto[indice]<'0' || texto[indice]>'7'+8) && texto[indice]!='G') return 0; //Soportar colores con brillo
     indice++;
 
     //Y siguiente caracter no es final de texto
@@ -9354,6 +9355,13 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
 }
 
 
+int zxvision_retorna_color_tinta_por_modificador(char caracter)
+{
+    if (caracter=='G') return ESTILO_GUI_TINTA_NORMAL;
+
+    else return caracter-'0';
+}
+
 //escribe una linea de texto
 //coordenadas relativas al interior de la pantalla de spectrum (0,0=inicio pantalla)
 
@@ -9384,7 +9392,7 @@ void menu_escribe_texto(int x,int y,int tinta,int papel,char *texto)
 
         //codigo control color tinta
         if (menu_escribe_texto_si_cambio_tinta(texto,i)) {
-            tinta=texto[i+2]-'0';
+            tinta=zxvision_retorna_color_tinta_por_modificador(texto[i+2]);
             i+=3;
             letra=texto[i];
         }
@@ -15911,7 +15919,7 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 
         //Codigo control color tinta
         if (menu_escribe_texto_si_cambio_tinta(texto,0)) {
-            tinta=texto[2]-'0';
+            tinta=zxvision_retorna_color_tinta_por_modificador(texto[2]);
             texto+=3;
             caracter_aux.caracter=*texto;
         }
@@ -17349,21 +17357,34 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
 }
 
 
-
+//offset en x desde donde mueve la ventana en el titulo
+int window_mouse_x_before_move_offset=0;
 
 
 void zxvision_handle_mouse_move_aux(zxvision_window *w)
 {
-                int movimiento_x=menu_mouse_x-window_mouse_x_before_move;
-                int movimiento_y=menu_mouse_y-window_mouse_y_before_move;
+                //int movimiento_x=menu_mouse_x-window_mouse_x_before_move;
+                //int movimiento_y=menu_mouse_y-window_mouse_y_before_move;
 
                 //printf ("Windows has been moved. menu_mouse_x: %d (%d) menu_mouse_y: %d (%d)\n",menu_mouse_x,movimiento_x,menu_mouse_y,movimiento_y);
 
 
 
                 //Actualizar posicion
-                int new_x=w->x+movimiento_x;
-                int new_y=w->y+movimiento_y;
+                int new_x;
+                int new_y;
+
+                //Actualizar por desplazamiento
+                //new_x=w->x+movimiento_x;
+                //new_y=w->y+movimiento_y;
+
+
+                //Actualizar por la posicion final del raton y teniendo en cuenta el offset x desde la barra de titulo (el offset y no hay que tenerlo en cuenta porque siempre sera 0
+                //al tener que mover la ventana desde la barra de titulo)
+                //Esto evita que la ventana "se quede atras" del calculo por desplazamiento cuando la cpu está saturada
+                new_x=zxvision_mouse_x+window_mouse_x_before_move_offset;
+                new_y=zxvision_mouse_y;
+
 
 
                 zxvision_set_x_position(w,new_x);
@@ -19395,6 +19416,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     window_is_being_moved=1;
                     window_mouse_x_before_move=menu_mouse_x;
                     window_mouse_y_before_move=menu_mouse_y;
+
+                    window_mouse_x_before_move_offset=w->x-zxvision_mouse_x;
                 }
 
                 //Si esta en esquina inferior derecha (donde se puede redimensionar) y se permite resize
@@ -24949,46 +24972,14 @@ int menu_decae_ajusta_valor_volumen(int valor_decae,int valor_volumen)
 
 }
 
-static const char *ay_envelope_shape[16] = {
-    "\\____",  //  0 - Decay
-    "\\____",  //  1 - Decay
-    "\\____",  //  2 - Decay
-    "\\____",  //  3 - Decay
-    "/----",   //  4 - Attack
-    "/----",   //  5 - Attack
-    "/----",   //  6 - Attack
-    "/----",   //  7 - Attack
-    "\\\\\\\\\\", //  8 - Sawtooth decay
-    "\\____",  //  9 - Decay, hold low
-    "\\/\\/\\", // 10 - Triangle, starting down
-    "\\----",  // 11 - Decay, hold high
-    "/////",   // 12 - Sawtooth attack
-    "/----",   // 13 - Attack, hold high
-    "/\\/\\/", // 14 - Triangle, starting up
-    "/____"    // 15 - Attack, hold low
-};
+
 
 //llena el string con el valor del volumen - para chip de sonido
 //mete tambien caracter de "decae" si conviene (si >=0 y <=15)
 //valor_envolvente si no es -1 es un indice al tipo de envolvente usado
-void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae,int valor_envolvente)
+void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae)
 {
-
-    char letra_vol='>';
-
-    /*if ( (registro_volumen & 16)!=0 && valor_envolvente>=0) {
-        registro_volumen=ultimo_valor_envolvente[0];
-        letra_vol='E';
-    }*/
-
-
-    if ( (registro_volumen & 16)!=0) {
-        if (valor_envolvente<0) sprintf (texto,"ENV            ");
-        else {
-            valor_envolvente=valor_envolvente&15;
-            sprintf (texto,"ENV %s      ",ay_envelope_shape[valor_envolvente]);
-        }
-    }
+    if ( (registro_volumen & 16)!=0) sprintf (texto,"ENV            ");
 
     else {
         registro_volumen=registro_volumen & 15;
@@ -25020,7 +25011,7 @@ void menu_string_volumen(char *texto,z80_byte registro_volumen,int indice_decae,
         //Si indice es menor que volumen, forzar a valor que volumen
         if (indice_decae<registro_volumen) indice_decae=registro_volumen;
 
-        if (indice_decae>=0 && indice_decae<=14 && indice_decae>=registro_volumen) texto[indice_decae+indicado_rojo*3]=letra_vol;
+        if (indice_decae>=0 && indice_decae<=14 && indice_decae>=registro_volumen) texto[indice_decae+indicado_rojo*3]='>';
 
         //printf ("registro volumen: %d indice decae: %d pos decae: %d\n",registro_volumen,indice_decae,indice_decae+indicado_rojo*3);
     }
@@ -25086,7 +25077,7 @@ int menu_string_volumen_maxmin(char *texto,int valor_actual,int valor_previo,int
     }
 
     //char buf_volumen_canal[32];
-    menu_string_volumen(texto,barra_volumen,valor_previo,-1);
+    menu_string_volumen(texto,barra_volumen,valor_previo);
 
     return barra_volumen;
 
