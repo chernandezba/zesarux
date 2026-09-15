@@ -45245,7 +45245,20 @@ void menu_clive_game_remove_talking_text(void)
 
         cls_menu_overlay();
 
+
+        //para que al redibujar la ventana activa salga con la barra de titulo activa
+        //Nota: todo esto es algo feo de hacer porque estamos forzando redibujado para borrar el texto hablado, desde una ventana
+        //que no es el core de zxvision, y hay que hacer "apaños" para que aparezca bien la barra de titulo de la ventana activa
+        int antes_ventana_tipo_activa=ventana_tipo_activa;
+
+        if (menu_abierto) {
+            zxvision_set_ventana_tipo_activa();
+        }
+
         zxvision_redraw_all_windows();
+
+        ventana_tipo_activa=antes_ventana_tipo_activa;
+
     }
 }
 

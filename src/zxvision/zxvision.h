@@ -1279,6 +1279,8 @@ extern void reset_menu_dibuja_menu_yendo_atras_submenus(void);
 
 extern void menu_dibuja_cuadrado_putpixel_background_reset_cache(void);
 
+extern int ventana_tipo_activa;
+
 extern int ultimo_menu_salido_con_flecha_izquierda;
 extern int ultimo_menu_salido_con_flecha_derecha;
 
