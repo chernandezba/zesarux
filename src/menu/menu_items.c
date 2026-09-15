@@ -2266,17 +2266,38 @@ M1-M0= mode bits:
     else {
 
     for (chip=0;chip<total_chips;chip++) {
-            //int valor_volumen;
-            char buffer_envelope_A[20];
-            char buffer_envelope_B[20];
-            char buffer_envelope_C[20];
+
+            char buffer_envelope_A[20]="";
+            char buffer_envelope_B[20]="";
+            char buffer_envelope_C[20]="";
             int forma_envelope=ay_3_8912_registros[chip][13] & 15;
             char *string_forma_envelope=ay_envelope_shape[forma_envelope];
 
+            //Canal A
+            vol_A[chip]=ay_3_8912_registros[chip][8];
 
-            vol_A[chip]=ay_3_8912_registros[chip][8] & 15;
-            vol_B[chip]=ay_3_8912_registros[chip][9] & 15;
-            vol_C[chip]=ay_3_8912_registros[chip][10] & 15;
+            if (vol_A[chip] & 16) {
+                vol_A[chip]=ultimo_valor_envolvente[chip];
+                strcpy(buffer_envelope_A,string_forma_envelope);
+            }
+
+            //Canal B
+            vol_B[chip]=ay_3_8912_registros[chip][9];
+
+            if (vol_B[chip] & 16) {
+                vol_B[chip]=ultimo_valor_envolvente[chip];
+                strcpy(buffer_envelope_B,string_forma_envelope);
+            }
+
+            //Canal C
+            vol_C[chip]=ay_3_8912_registros[chip][10];
+
+            if (vol_C[chip] & 16) {
+                vol_C[chip]=ultimo_valor_envolvente[chip];
+                strcpy(buffer_envelope_C,string_forma_envelope);
+            }
+
+
 
             //Controlar limites, dado que las variables entran sin inicializar
             if (ayregisters_previo_valor_volume_A[chip]>16) ayregisters_previo_valor_volume_A[chip]=16;
@@ -2289,16 +2310,7 @@ M1-M0= mode bits:
             ayregisters_previo_valor_volume_C[chip]=menu_decae_ajusta_valor_volumen(ayregisters_previo_valor_volume_C[chip],vol_C[chip]);
 
 
-
             //Canal A
-            buffer_envelope_A[0]=0;
-            vol_A[chip]=ay_3_8912_registros[chip][8];
-
-            if (vol_A[chip] & 16) {
-                vol_A[chip]=ultimo_valor_envolvente[chip];
-                strcpy(buffer_envelope_A,string_forma_envelope);
-            }
-
             menu_string_volumen(volumen,vol_A[chip],ayregisters_previo_valor_volume_A[chip]);
             sprintf (textovolumen,"Volume A: %s",volumen);
             //$$G para que vuelva al color normal de tinta si es que se habia puesto en rojo en la barra de volumen
@@ -2307,30 +2319,12 @@ M1-M0= mode bits:
 
 
             //Canal B
-            buffer_envelope_B[0]=0;
-            vol_B[chip]=ay_3_8912_registros[chip][9];
-
-            if (vol_B[chip] & 16) {
-                vol_B[chip]=ultimo_valor_envolvente[chip];
-                strcpy(buffer_envelope_B,string_forma_envelope);
-            }
-
-
             menu_string_volumen(volumen,vol_B[chip],ayregisters_previo_valor_volume_B[chip]);
             sprintf (textovolumen,"Volume B: %s",volumen);
             zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope_B);
 
 
             //Canal C
-            buffer_envelope_C[0]=0;
-            vol_C[chip]=ay_3_8912_registros[chip][10];
-
-            if (vol_C[chip] & 16) {
-                vol_C[chip]=ultimo_valor_envolvente[chip];
-                strcpy(buffer_envelope_C,string_forma_envelope);
-            }
-
-
             menu_string_volumen(volumen,vol_C[chip],ayregisters_previo_valor_volume_C[chip]);
             sprintf (textovolumen,"Volume C: %s",volumen);
             zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope_C);
@@ -2356,47 +2350,47 @@ M1-M0= mode bits:
             //Si hay 3 canales, los 3 siguientes items no se ven
             if (total_chips<3) {
 
-                                    //Frecuencia ruido
-                        int freq_temp=ay_3_8912_registros[chip][6] & 31;
-                        //printf ("Valor registros ruido : %d Hz\n",freq_temp);
-                        freq_temp=freq_temp*16;
+                //Frecuencia ruido
+                int freq_temp=ay_3_8912_registros[chip][6] & 31;
+                //printf ("Valor registros ruido : %d Hz\n",freq_temp);
+                freq_temp=freq_temp*16;
 
-                        //controlamos divisiones por cero
-                        if (!freq_temp) freq_temp++;
+                //controlamos divisiones por cero
+                if (!freq_temp) freq_temp++;
 
-                        int freq_ruido=FRECUENCIA_NOISE/freq_temp;
+                int freq_ruido=FRECUENCIA_NOISE/freq_temp;
 
-                        sprintf (textotono,"Frequency Noise: %6d Hz",freq_ruido);
-                        //menu_escribe_linea_opcion(linea++,-1,1,textotono);
-                        zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textotono);
-
-
-            //Envelope
-
-                        freq_temp=ay_3_8912_registros[chip][11]+256*(ay_3_8912_registros[chip][12] & 0xFF);
+                sprintf (textotono,"Frequency Noise: %6d Hz",freq_ruido);
+                //menu_escribe_linea_opcion(linea++,-1,1,textotono);
+                zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textotono);
 
 
-                        //controlamos divisiones por cero
-                        if (!freq_temp) freq_temp++;
-                        int freq_envelope=FRECUENCIA_ENVELOPE/freq_temp;
+                //Envelope
 
-                        //sprintf (textotono,"Freq Envelope(*10): %5d Hz",freq_envelope);
-
-            int freq_env_10=freq_envelope/10;
-            int freq_env_decimal=freq_envelope-(freq_env_10*10);
-
-            sprintf (textotono,"Freq Envelope:   %4d.%1d Hz",freq_env_10,freq_env_decimal);
-              //menu_escribe_linea_opcion(linea++,-1,1,textotono);
-            zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textotono);
+                freq_temp=ay_3_8912_registros[chip][11]+256*(ay_3_8912_registros[chip][12] & 0xFF);
 
 
+                //controlamos divisiones por cero
+                if (!freq_temp) freq_temp++;
+                int freq_envelope=FRECUENCIA_ENVELOPE/freq_temp;
 
-            char envelope_name[32];
-            z80_byte env_type=ay_3_8912_registros[chip][13] & 0x0F;
-            return_envelope_name(env_type,envelope_name);
-            sprintf (textotono,"Env.: %2d (%s)",env_type,envelope_name);
-            //menu_escribe_linea_opcion(linea++,-1,1,textotono);
-            zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textotono);
+                //sprintf (textotono,"Freq Envelope(*10): %5d Hz",freq_envelope);
+
+                int freq_env_10=freq_envelope/10;
+                int freq_env_decimal=freq_envelope-(freq_env_10*10);
+
+                sprintf (textotono,"Freq Envelope:   %4d.%1d Hz",freq_env_10,freq_env_decimal);
+                //menu_escribe_linea_opcion(linea++,-1,1,textotono);
+                zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textotono);
+
+
+
+                char envelope_name[32];
+                z80_byte env_type=ay_3_8912_registros[chip][13] & 0x0F;
+                return_envelope_name(env_type,envelope_name);
+                sprintf (textotono,"Env.: %2d (%s)",env_type,envelope_name);
+                //menu_escribe_linea_opcion(linea++,-1,1,textotono);
+                zxvision_print_string_defaults(menu_ay_registers_overlay_window,1,linea++,textotono);
 
 
             }
