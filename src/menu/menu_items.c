@@ -2545,7 +2545,6 @@ zxvision_window zxvision_ay_registers_overlay;
 void menu_ay_registers_crea_ventana(zxvision_window *ventana,int xventana,int yventana,int ancho_ventana,int alto_ventana,
     int is_minimized,int is_maximized,int ancho_antes_minimize,int alto_antes_minimize)
 {
-        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Audio Chip Registers");
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Audio Chip Registers",
             "ayregisters",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -2561,13 +2560,13 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
     menu_espera_no_tecla();
     menu_reset_counters_tecla_repeticion();
 
-        if (!menu_multitarea) {
-            menu_warn_message("This window needs multitask enabled");
-            return;
-        }
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
 
-        zxvision_window *ventana;
-        ventana=&zxvision_ay_registers_overlay;
+    zxvision_window *ventana;
+    ventana=&zxvision_ay_registers_overlay;
 
 
 
@@ -2667,9 +2666,8 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
     }
 
     else {
-
         zxvision_destroy_window(ventana);
-     }
+    }
 }
 
 
