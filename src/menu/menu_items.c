@@ -2305,7 +2305,8 @@ M1-M0= mode bits:
             menu_string_volumen(volumen,valor_volumen,ayregisters_previo_valor_volume_A[chip]);
             sprintf (textovolumen,"Volume A: %s",volumen);
             //$$G para que vuelva al color normal de tinta si es que se habia puesto en rojo en la barra de volumen
-            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G %s",textovolumen,buffer_envelope);
+            //el espacio al final despues de %s porque si buffer_envelope es "", $$G necesita al menos un caracter despues para hacer efecto el color
+            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope);
 
 
             //Canal B
@@ -2320,7 +2321,7 @@ M1-M0= mode bits:
 
             menu_string_volumen(volumen,valor_volumen,ayregisters_previo_valor_volume_B[chip]);
             sprintf (textovolumen,"Volume B: %s",volumen);
-            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G %s",textovolumen,buffer_envelope);
+            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope);
 
 
             //Canal C
@@ -2335,7 +2336,7 @@ M1-M0= mode bits:
 
             menu_string_volumen(volumen,valor_volumen,ayregisters_previo_valor_volume_C[chip]);
             sprintf (textovolumen,"Volume C: %s",volumen);
-            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G %s",textovolumen,buffer_envelope);
+            zxvision_print_string_defaults_fillspc_format(menu_ay_registers_overlay_window,1,linea++,"%s $$G%s ",textovolumen,buffer_envelope);
 
 
 
@@ -2592,7 +2593,7 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
             }
 
             //xventana=menu_origin_x()+1;
-            ancho_ventana=30;
+            ancho_ventana=33;
 
             //El alto lo cambiamos segun el numero de chips
             if (total_chips==1) {
