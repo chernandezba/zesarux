@@ -4065,6 +4065,15 @@ void tbblue_hard_reset(void)
       bit 0 = (R/W) Reading 1 indicates a Soft-reset. If written 1 causes a Soft Reset.
     */
 
+    /*
+     * El array es global y por tanto arranca completamente a cero al iniciar
+     * el emulador. Un hard reset debe reproducir ese mismo estado antes de
+     * aplicar los valores de reset distintos de cero. De otro modo quedan
+     * activos registros programados por NextZXOS, por ejemplo al entrar en
+     * un modo de compatibilidad 48K.
+     */
+    memset(tbblue_registers,0,sizeof(tbblue_registers));
+
     //Aqui no estoy distinguiendo entre hard reset y power-on reset, dado que al iniciar maquina siempre llama a hard reset
     tbblue_registers[2]=4+2;
 

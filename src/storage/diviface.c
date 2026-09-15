@@ -148,12 +148,30 @@ void diviface_tbblue_map_unmap(void)
      * 1FFD/7FFD. Si algun bit de bloqueo de ROM alternativa esta activo, la
      * pareja de bits es la que selecciona la ROM.
      */
+    z80_byte machine_type=tbblue_registers[3]&7;
     z80_byte active_rom;
     z80_byte altrom_locks=(tbblue_registers[0x8C] >> 4) & 3;
     if (altrom_locks) active_rom=altrom_locks;
     else active_rom=get_actual_rom_p2a();
 
-    int rom3_present=(active_rom==3);
+    int rom3_present;
+
+    /*
+     * Con AltROM visible el core no comprueba el numero de ROM normal, sino
+     * sram_pre_alt_128_n. NextZXOS selecciona la ROM 48K con 8C=A0 antes de
+     * entrar en LOAD; en modo +3/Next eso habilita los traps ROM3 aunque los
+     * bits de bloqueo no formen el numero de ROM 3.
+     */
+    if (machine_type==0) {
+        //En configuracion la zona baja es RAM/bootrom y no admite traps ROM3
+        rom3_present=0;
+    }
+    else if ((tbblue_registers[0x8C]&192)==128) {
+        if (machine_type==1) rom3_present=(altrom_locks!=1);
+        else if (altrom_locks) rom3_present=(altrom_locks&2)!=0;
+        else rom3_present=(puerto_32765&16)!=0;
+    }
+    else rom3_present=(active_rom==3);
 
     /* B8 incluye los ocho vectores RST, no solamente 00h, 08h y 38h. */
     if (reg_pc<=0x0038 && (reg_pc&7)==0) {

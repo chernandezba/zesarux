@@ -301,17 +301,9 @@ necesita core 3.2.0 o inferior!
 ---
 
 
--calculadora
-ok *falta icono
-
-
-----
-
 Process switcher: que mediante flechas izquierda - derecha se puedan ver los otros iconos que no quepan
 quiza la flecha izquierda/derecha es tal cual el scroll natural de la ventana, se debera redimensionar
 segun la cantidad de iconos
 
 y/o opcion para decir si mostrar 1 fila solo o mas
 
-
--Al arrastrar una ventana si hay mucho uso de cpu la ventana "se queda atrás": deberia moverse siempre a donde esté el ratón
