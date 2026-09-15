@@ -21,39 +21,39 @@
 
 /*
 
-El sonido en tres canales es producido por el AY-3-8912, un cir~uito de sonido muy popu-
-lar; este dispositivo controla tambi n las puertas RS232/MIDI y AUX.
-Las dos Puertas serie so1o pueden ser controladas por programa. El +2A no incluye soft-
-ware para el ~ontrol de la puerta AUX, el cual deberi ser ~estionado por e~ pr~~rama de
-usuario. En cambio, la puerta RS23~/MIDI es controlada Plenamentc por +3 BASIC.
-La manera en ue ~rabaja el AY-3-8912 es bastante ~ompleja; se recomienda a quienes
-~ sientan tentados a experimentar que consulten la ho~a de datos del AY-3-8912. No obs-
-tante, la siguiente informaci~n deberia ser suficiente para empezar.
+El sonido en tres canales es producido por el AY-3-8912, un circuito de sonido muy popu-
+lar; este dispositivo controla también las puertas RS232/MIDI y AUX.
+Las dos puertas serie so1o pueden ser controladas por programa. El +2A no incluye soft-
+ware para el control de la puerta AUX, el cual debería ser gestionado por el programa de
+usuario. En cambio, la puerta RS232/MIDI es controlada plenamente por +3 BASIC.
+La manera en que trabaja el AY-3-8912 es bastante compleja; se recomienda a quienes
+se sientan tentados a experimentar que consulten la hoja de datos del AY-3-8912. No obs-
+tante, la siguiente información deberia ser suficiente para empezar.
 El circuito de sonido contiene dieciseis registros; para seleccionarlos, primero se escribe
 el numero de registro en la puerta de escritura de direcciones, FFFDh (65533), y despues
-lee el valor del registro (en la misma direccion) o se escribe en la direccion de escritura
+lee el valor del registro (en la misma dirección) o se escribe en la direccion de escritura
 de registros de datos, BFFDh (49149). Una vez seleccionado un registro, se puede realizar
-cualquier numero de operaciones de lectura o escritura de datos. S~1o habr~ que volver
-escribir en la puerta de escritura de direcciones cuando se necesite seleccio~ar otro registro.
-La frecuencia de reloj basica de este circuito es 1.7734 MHz (con precisi~n del 0.01~~o).
+cualquier numero de operaciones de lectura o escritura de datos. So1o habrá que volver a
+escribir en la puerta de escritura de direcciones cuando se necesite seleccionar otro registro.
+La frecuencia de reloj básica de este circuito es 1.7734 MHz (con precision del 0.01%).
 Los registros hacen lo siguiente:
-RO � Ajuste fino del tono, canal A
-R1 � Ajuste aproximado del tono, canal A-
-R2 � Ajuste fino del tono, canal B
-R3 � Ajuste aproximado del tono, canal B
-R4 � Ajuste fino del tono, canal C
-R5 � Ajuste aproximado del tono, canal C
+RO Ajuste fino del tono, canal A
+R1 Ajuste aproximado del tono, canal A-
+R2 Ajuste fino del tono, canal B
+R3 Ajuste aproximado del tono, canal B
+R4 Ajuste fino del tono, canal C
+R5 Ajuste aproximado del tono, canal C
 
 El tono de cada canal es un valor de 12 bits que se forma combinando los bits D3-DO
 del registro de ajuste aproximado y los bits D7-DO del registro de ajuste fino. La uni-
-dad b~sica del tono es la frecuencia de reloj ~ividida por 16 (es decir, 110.83 KHz).
+dad basica del tono es la frecuencia de reloj dividida por 16 (es decir, 110.83 KHz).
 Como el contador es de 12 bits, se puede generar frecuencias de 27 Hz a 110 KHz.
 
-R6 � Control del generador de ruido, D4-DO
+R6 Control del generador de ruido, D4-DO
 El periodo del generador de ruido se toma contando los cinco bits inferiores del regis-
 tro de ruido cada periodo del reloj de sonido dividido por 16.
 
-R7 � Control del mezclador y de E/S
+R7 Control del mezclador y de E/S
 D7 No utilizado
 D6 1=puerta de entrada, 0=puerta de salida
 D5 Ruido en el canal C
@@ -68,23 +68,23 @@ Este registro controla la mezcla de ruido y tono para cada canal y la direccion
 puerta de E/S de ocho bits. Un cero en un bit de mezcla indica que la funcion
 activada.
 
-R8 � Control de amplitud del ca~al A
-R9 � Control de amplitud del canal B
-RA � Control de amplitud del canal C
+R8 Control de amplitud del ca~al A
+R9 Control de amplitud del canal B
+RA Control de amplitud del canal C
 D4
 1=utilizar generador de envolvente
 O=utilizar el valor de D3-DO como amplitud
 D3-DO Amplitud
-Estos tres registros controlan la amplitud de cada canal y si esta debe ser modul~h
+Estos tres registros controlan la amplitud de cada canal y si esta debe ser modulada
 o no por los registros de envolvente.
 
-RB � Ajuste aproximado del periodo de envolvente
-RC � Ajuste fino del periodo de envolvente
+RB Ajuste aproximado del periodo de envolvente
+RC Ajuste fino del periodo de envolvente
 Los valores de ocho bits de RB y RC se combinan para producir un numero de 16
-bits que se cuenta en unidades de 256 por el periodo del relo~ de sonido. La~ frecuea-
+bits que se cuenta en unidades de 256 por el periodo del relo~ de sonido. Las frecuen-
 cias de envolvente Pueden estar entre 0.1 Hz 6 KHz.
 
-RD � Control de envolventes
+RD Control de envolventes
 D3 Continua
 D2 Ataque
 Dl Alternada
@@ -92,15 +92,15 @@ DO Sostenida
 El diagrama de las formas de envolvente (Seccion 19 de este capitulo) da una ilustración
 gráfica de los posibles estados de este registro.
 
-Si est~ conectada la unidad de disquete externa, su control lo realiza el circuito controla-
-dor ~PD765A del interfaz externo. Tal como explicamos en la Secci~n 23, el registro dc
-datos de este di~positivn est en la direcci~n 3FFDh (16381); el re~istro de estado se en-
-cuentra en 2FFDh (12285). Est~ dispositivo es muy complejo, por lo ue no se debe expe-
-. rimenta~ con l si no se conoce perfectamente su funcionamiento (consultese la ho a de
+Si está conectada la unidad de disquete externa, su control lo realiza el circuito controla-
+dor ~PD765A del interfaz externo. Tal como explicamos en la Sección 23, el registro de
+datos de este dispositivo está en la dirección 3FFDh (16381); el registro de estado se en-
+cuentra en 2FFDh (12285). Este dispositivo es muy complejo, por lo que no se debe expe-
+rimentar con él si no se conoce perfectamente su funcionamiento (consultese la ho a de
 datos del fabricante).
 La puerta de impresora paralelo (Centronics) es basicamente un 'latch' de 8 bits (74273)
-cuya direcci~n es OFFDh (4093). La se~al STROBE para la impresora es generada Por la
-ULA, Y est~ accesible en el bit 4 dc la direc~.i~n 1FFDh (8189). El estado de la senal BUSY
+cuya dirección es OFFDh (4093). La señal STROBE para la impresora es generada Por la
+ULA, y está accesible en el bit 4 dc la dirección 1FFDh (8189). El estado de la senal BUSY
 procedente de la impresora puede ser leido en el bit 0 de la direccion OFFDh (4093).
 310
 
