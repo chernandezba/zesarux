@@ -276,7 +276,7 @@ Y con snapshot de pogie (asi no parece que funcione!):
 -El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
 >revisar que al cargar .snx desde quickload tambien soporte lo del file handle
 
--cargar en modo 48k no parece funcionar
+
 
 ***CPU info*****
 
