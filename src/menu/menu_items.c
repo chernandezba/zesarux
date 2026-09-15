@@ -2620,6 +2620,8 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
     menu_ay_registers_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
+    z80_byte tecla;
+    int salir=0;
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -2628,13 +2630,14 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
         return;
     }
 
-
-    z80_byte tecla;
-
     do {
+
+
         tecla=zxvision_common_getkey_refresh();
 
+
         switch (tecla) {
+
             case 'c':
                 if (MACHINE_IS_QL && ay_chip_present.v) {
                     menu_ay_registers_ql_selected_ay ^=1;
@@ -2643,23 +2646,32 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            default:
-                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
+
+            //Salir con ESC
+            case 2:
+                salir=1;
             break;
 
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+
+            default:
+                //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
+                //aqui no entrará alguna
+                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
+
+                //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
+                //zxvision_handle_opqa_wskl(ventana,tecla);
+            break;
         }
 
 
-    } while (tecla!=2 && tecla!=3);
-
-    //Gestionar salir con tecla background
-
-    menu_espera_no_tecla(); //Si no, se va al menu anterior.
-    //En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
+    } while (salir==0);
 
 
     util_add_window_geometry_compact(ventana);
-
 
     if (tecla==3) {
         zxvision_message_put_window_background();
