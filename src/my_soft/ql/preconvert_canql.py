@@ -244,8 +244,78 @@ def silent_frames(frames: int) -> str:
     return result
 
 
+def inline_music_subroutines(lines: list[str]) -> list[str]:
+    # Expande solo subrutinas formadas por llamadas musicales literales y
+    # RETURN. Cualquier otra instruccion conserva la llamada original.
+    positions = {int(line.split()[0]): i for i, line in enumerate(lines) if line.strip()}
+
+    def music_body(target):
+        start = positions.get(target)
+        if start is None: return None
+        body = []
+        for line in lines[start:]:
+            if not line.strip(): continue
+            for statement in split_outside(line.split(" ", 1)[1], ":"):
+                statement = statement.strip()
+                if statement.upper() == "RETURN": return body or None
+                if not re.fullmatch(r'zxqplay[123]\s+".*', statement, re.I): return None
+                body.append(statement)
+        return None
+
+    result = []
+    for line in lines:
+        if not line.strip(): continue
+        number, text = line.split(" ", 1)
+        statements = []
+        for statement in split_outside(text, ":"):
+            match = re.fullmatch(r"\s*GO\s+SUB\s+(\d+)\s*", statement, re.I)
+            body = music_body(int(match[1])) if match else None
+            statements.extend(body if body else [statement])
+        result.append(number + " " + ":".join(statements))
+    return result
+
+
+def finite_tone_loop(music: str, target: int, noise: bool = False) -> str | None:
+    # Materializa un bucle de tono hasta el final exacto del fragmento.
+    # El ruido es opcional: sus comandos tambien consumen tiempo de interrupcion.
+    tokens = re.findall(r"[ovlwnx]\d+|#?[A-Hp]" if noise else r"[ovlwx]\d+|#?[A-Hp]", music)
+    if "".join(tokens) != music or not any(re.fullmatch(r"#?[A-Hp]", t) for t in tokens):
+        return None
+    result = []
+    elapsed, length = 0, 5
+    while elapsed < target:
+        for token in tokens:
+            if re.fullmatch(r"#?[A-Hp]", token):
+                ticks = min(length + 1, target - elapsed)
+                if ticks != length + 1:
+                    result.append(f"l{ticks - 1}")
+                result.append(token)
+                elapsed += ticks
+                if elapsed == target:
+                    return "".join(result)
+            else:
+                result.append(token)
+                if token[0] == "l": length = int(token[1:])
+                # n no nulo ocupa un tick adicional en la ROM 1.94.
+                if token[0] == "n" and int(token[1:]):
+                    elapsed += 1
+                    if elapsed == target: return "".join(result)
+        if queue_bytes("".join(result)) > 3500:
+            return None
+    return ""
+
+
+def join_mixer(first: str, second: str, offset: int) -> str:
+    # Cada PLAY Spectrum reinicia el mezclador, incluso al unir fragmentos.
+    events = {int(first[p:p+5]): int(first[p+5:p+8]) for p in range(0, len(first), 8)}
+    events[offset] = 248
+    for p in range(0, len(second), 8):
+        events[offset + int(second[p:p+5])] = int(second[p+5:p+8])
+    return "".join(f"{frame:05d}{value:03d}" for frame, value in sorted(events.items()))
+
+
 def join_fragments(lines: list[str], targets: set[int]) -> list[str]:
-    # Une solo secuencias rectas sin mezclador ni bucles musicales. Mantiene
+    # Une secuencias rectas, materializando bucles y desplazando el mezclador. Mantiene
     # destinos de salto, RETURN, FOR, pausas y otras instrucciones como barreras.
     # Cada voz conserva margen sobre los 4096 bytes de cola de QSound.
     result = []
@@ -255,11 +325,11 @@ def join_fragments(lines: list[str], targets: set[int]) -> list[str]:
     def flush():
         nonlocal pending
         if pending is None: return
-        line, voices, total = pending
+        line, voices, total, mixer = pending
         fields = []
         for music in voices:
             fields += [quote(music), str(total), "0"]
-        fields += [str(total), '""']
+        fields += [str(total), quote(mixer)]
         result.append(f"{line} zxqplay{len(voices)} " + ",".join(fields))
         pending = None
 
@@ -272,24 +342,31 @@ def join_fragments(lines: list[str], targets: set[int]) -> list[str]:
             candidate = None
             if match:
                 count = int(match[1]); args = split_outside(match[2], ",")
-                if args[-1].strip() == '""' and all(int(args[3*i+2]) == 0 for i in range(count)):
+                if len(args) == count * 3 + 2:
                     total = int(args[-2])
-                    voices = [args[3*i].strip()[1:-1] +
-                              (silent_frames(total-int(args[3*i+1])) if int(args[3*i+1]) < total else "")
-                              for i in range(count)]
-                    candidate = (line, voices, total)
+                    voices = []
+                    for i in range(count):
+                        music = args[3*i].strip()[1:-1]
+                        if int(args[3*i+2]):
+                            music = finite_tone_loop(music, total, noise=True)
+                        elif int(args[3*i+1]) < total:
+                            music += silent_frames(total-int(args[3*i+1]))
+                        voices.append(music)
+                    if all(v is not None for v in voices) and max(map(queue_bytes, voices)) <= 3500:
+                        candidate = (line, voices, total, args[-1].strip()[1:-1])
             if candidate is None:
                 flush(); result.append(line + " " + statement)
                 continue
             if pending is not None:
-                oldline, oldvoices, oldtotal = pending
-                _, voices, total = candidate
+                oldline, oldvoices, oldtotal, oldmixer = pending
+                _, voices, total, mixer = candidate
                 count = max(len(oldvoices), len(voices))
                 combined = [(oldvoices[i] if i < len(oldvoices) else silent_frames(oldtotal)) +
                             (voices[i] if i < len(voices) else silent_frames(total))
                             for i in range(count)]
-                if max(map(queue_bytes, combined)) <= 3500:
-                    pending = (oldline, combined, oldtotal + total)
+                if oldtotal + total < 100000 and max(map(queue_bytes, combined)) <= 3500:
+                    merged_mixer = join_mixer(oldmixer, mixer, oldtotal) if oldmixer or mixer else ""
+                    pending = (oldline, combined, oldtotal + total, merged_mixer)
                     removed += 1
                     continue
                 flush()
@@ -306,7 +383,7 @@ def join_fragments(lines: list[str], targets: set[int]) -> list[str]:
     return grouped
 
 
-def main(path: Path) -> None:
+def main(path: Path, output_path: Path | None = None) -> None:
     lines = path.read_text().splitlines()
     targets = set()
     song_targets = set()
@@ -392,6 +469,7 @@ def main(path: Path) -> None:
             continue
         output[first_play] = re.sub(r"^\d+", str(target), output[first_play], count=1)
         del output[placeholder]
+    output = inline_music_subroutines(output)
     output = join_fragments(output, targets)
     output[0] = output[0].replace("DIM zxpos(32):", "")
     output[0] = re.sub(r"^(\d+\s+)", r"\1zxmixer=248:", output[0], count=1)
@@ -459,13 +537,13 @@ def main(path: Path) -> None:
         "11050 DEFine PROCedure zxprocessing(zshow)",
         "11060  AT 0,0:PAPER 7:INK 0:OVER 0:FLASH 0",
         "11065  IF zshow=0 THEN PRINT \"              \";:RETurn",
-        "11070  FLASH 1:PRINT \"Processing ...\";:FLASH 0",
+        "11070  FLASH 1:PRINT \"Procesando\";:FLASH 0",
         "11080 END DEFine zxprocessing",
     ])
     output = [line for line in output if line.strip()]
-    path.write_text("\n".join(output) + "\n")
+    (output_path or path).write_text("\n".join(output) + "\n")
     print(f"converted {converted} calls")
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1]))
+    main(Path(sys.argv[1]), Path(sys.argv[2]) if len(sys.argv) > 2 else None)
