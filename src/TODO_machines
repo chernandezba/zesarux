@@ -460,6 +460,10 @@ This strange thing "CASHE MEMORY"
 
 -----tbblue:
 
+-Revisar el hard reset después de cargar un juego en modo 48K desde el browser de Next. No vuelve correctamente a
+NextZXOS si se conserva la SRAM. Hay un apaño temporal en tbblue_hard_reset() que borra la SRAM desde 128 KiB hasta
+2 MiB, pero la FPGA real no parece borrar esa memoria: queda pendiente localizar qué estado no se reinicia bien.
+
 -Exploding fist next:
 *cargando desde browser de next, sale la intro y luego se cuelga
 *cargando con smartload, parece que carga archivos por esx pero no muestra nada en pantalla. Usa filemap, como Atic Atac...

@@ -4074,6 +4074,17 @@ void tbblue_hard_reset(void)
      */
     memset(tbblue_registers,0,sizeof(tbblue_registers));
 
+    /*
+     * Apaño temporal para que el hard reset pueda volver a NextZXOS después
+     * de haber entrado en modo 48K. Falta averiguar qué estado no se está
+     * reiniciando correctamente y hace necesario borrar esta SRAM.
+     *
+     * Empieza en el offset 0x020000 (131072 bytes, 128 KiB) y termina en
+     * 0x1FFFFF (byte 2097151, justo antes de 2048 KiB/2 MiB). Se borran
+     * 0x1E0000 bytes: 1966080 bytes, 1920 KiB o 1,875 MiB.
+     */
+    memset(memoria_spectrum+0x020000,0,0x1E0000);
+
     //Aqui no estoy distinguiendo entre hard reset y power-on reset, dado que al iniciar maquina siempre llama a hard reset
     tbblue_registers[2]=4+2;
 
