@@ -2612,16 +2612,16 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
     zxvision_draw_window(ventana);
 
+    z80_byte tecla;
 
-    //Cambiamos funcion overlay de texto de menu
-    //Se establece a la de funcion de onda + texto
-    //cambio overlay
-    zxvision_set_window_overlay(ventana,menu_ay_registers_overlay);
+    int salir=0;
 
     menu_ay_registers_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
-    z80_byte tecla;
-    int salir=0;
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_ay_registers_overlay);
+
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
