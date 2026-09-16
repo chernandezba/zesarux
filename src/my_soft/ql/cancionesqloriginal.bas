@@ -451,7 +451,7 @@
 8130  FOR n=1 TO a
 8140   READ lin,t$,a$,b$
 8150  END FOR n
-8160  CLS:GO SUB 35:GO SUB lin:PAUSE
+8160  CLS #0:CLS:GO SUB 35:GO SUB lin:PAUSE
 8170 END DEFine zxselect
 8180 DEFine PROCedure zxregs
 8190  FOR zn=0 TO 13
