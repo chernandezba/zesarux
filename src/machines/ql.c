@@ -86,62 +86,137 @@ void ql_basext_reset(void)
 
 void ql_basext_poll(void)
 {
+    // El llamador solo entra aqui con la extension habilitada. Se inspecciona
+    // el PC antes de ejecutar la instruccion para interceptar la instalacion
+    // y las llamadas a CPU_TURBO, dejando a QDOS gestionar el registro BASIC
+    // y la conversion del argumento mediante sus propias rutinas.
+    // Estados: 0 = esperar BP.INIT, 1 = ejecutar pasarela, 2 = arranque retomado.
+    // Comparar el PC permite saber DONDE esta entrando el 68000 emulado: no
+    // llamamos a QDOS desde C, sino que dejamos ejecutar sus instrucciones y
+    // actuamos al alcanzar las direcciones concretas indicadas abajo.
+    // Los NOP de nuestras rutinas son puntos de intercepcion: el NOP por si
+    // solo no hace nada; es este codigo C el que realiza el trabajo asociado.
     unsigned int pc=m68k_get_reg(NULL,M68K_REG_PC);
+    // FASE 1: aun no hemos instalado CPU_TURBO. Este if comprueba el estado,
+    // no el PC; dentro esperamos a que QDOS entre por primera vez en BP.INIT,
+    // su rutina para registrar extensiones BASIC. Aprovechamos esa entrada
+    // para ejecutar nuestra pasarela antes de la llamada original.
     if (!ql_basext_state) {
         // BP.INIT es un vector publico de QDOS, no una direccion de ROM fija.
+        // Su palabra en 0x110 se extiende con signo, como MOVEA.W en el 68000.
         unsigned int vector=(short)((ql_readbyte(0x110)<<8)|ql_readbyte(0x111));
+        // PC distinto del vector significa que la CPU esta en otra rutina:
+        // no intervenir hasta llegar exactamente a la entrada de BP.INIT.
+        // Tampoco intervenir si QDOS aun no ha establecido un vector valido.
         if (!vector || pc!=vector) return;
+
+        // Intercalar nuestra pasarela en la primera llamada: guarda registros,
+        // reserva RAM y registra CPU_TURBO antes de retomar el BP.INIT original.
         ql_basext_vector=vector;
         ql_basext_state=1;
         m68k_set_reg(M68K_REG_PC,QL_BASEXT_BOOT);
         return;
     }
+
+    // FASE 2: PC en el primer NOP de nuestra pasarela (BOOT+12). El 68000 ya
+    // ha ejecutado la peticion de memoria a QDOS. Intervenimos ahora porque
+    // necesitamos esa RAM para escribir la tabla y el codigo de CPU_TURBO.
+    // Al salir de este if, la pasarela continua y llama a BP.INIT para
+    // registrar la tabla que acabamos de preparar; el NOP no la registra.
     if (ql_basext_state==1 && pc==QL_BASEXT_BOOT+12) {
+        // Primer NOP de la pasarela, justo despues de TRAP #1 / MT.ALCHP.
+        // D0 contiene el error (cero si fue bien) y A0 la direccion reservada.
         unsigned int base=m68k_get_reg(NULL,M68K_REG_A0);
+        // Rechazar un error de QDOS o una reserva fuera del rango de RAM utilizable.
         if (m68k_get_reg(NULL,M68K_REG_D0) || base<0x20000 || base>ql_mem_limit-127) {
-            // Si falta memoria, continuar el arranque sin la extension.
+            // Si falta memoria, saltar el registro de la extension y pasar
+            // directamente al MOVEM que restaura los registros originales.
             m68k_set_reg(M68K_REG_PC,QL_BASEXT_BOOT+20);
             return;
         }
+
+        // Tabla para BP.INIT: cabecera de procedimientos, desplazamiento
+        // relativo 30 (desde base+2 hasta base+32), nombre de 9 caracteres,
+        // alineacion y terminadores. No se registra ninguna funcion BASIC.
         const unsigned char table[]={
             0,2,0,30,9,'C','P','U','_','T','U','R','B','O',0,0,0,0,0,0
         };
+        // La entrada residente pide a CA.GTLONG (vector 0x118) convertir el
+        // argumento a entero largo. El NOP siguiente permite recogerlo aqui;
+        // el RTS devuelve el control a BASIC conservando el resultado en D0.
         const unsigned char proc[]={
-            0x30,0x78,0x01,0x18,0x4e,0x90, // CA.GTLONG
-            0x4e,0x71,0x4e,0x75 // Intercepcion y RTS
+            // Codigo maquina 68000 copiado a la RAM del QL, no ejecutado por el host.
+            0x30,0x78,0x01,0x18, // +0: MOVEA.W ($0118).W,A0: leer el vector CA.GTLONG
+            0x4e,0x90,           // +4: JSR (A0): QDOS convierte el argumento BASIC a entero largo
+            0x4e,0x71,           // +6: NOP: ql_basext_poll intercepta este PC y aplica el turbo
+            0x4e,0x75            // +8: RTS: volver a BASIC; D0 contiene cero o el codigo de error
         };
         unsigned int i;
         for (i=0;i<sizeof(table);i++) ql_writebyte(base+i,table[i]);
         for (i=0;i<sizeof(proc);i++) ql_writebyte(base+32+i,proc[i]);
         ql_basext_entry=base+32;
+        // El siguiente tramo de la pasarela llama BP.INIT con esta tabla en A1.
         m68k_set_reg(M68K_REG_A1,base);
         return;
     }
+
+    // FASE 3: PC en el ultimo NOP de la pasarela (BOOT+24). Ya se ha intentado
+    // registrar CPU_TURBO y se han recuperado los registros originales.
+    // Cambiamos el PC para reanudar el BP.INIT que habiamos interceptado:
+    // asi QDOS sigue con su propio registro de extensiones y con el arranque.
     if (ql_basext_state==1 && pc==QL_BASEXT_BOOT+24) {
+        // Segundo NOP: ya se restauraron los registros. Retomar la entrada
+        // original sin apilar otra direccion de retorno ni repetir la instalacion.
         ql_basext_state=2;
         m68k_set_reg(M68K_REG_PC,ql_basext_vector);
         return;
     }
+
+    // Si no se pudo reservar la rutina, no existe una direccion de entrada
+    // de CPU_TURBO que podamos reconocer en las comparaciones de PC siguientes.
     if (!ql_basext_entry) return;
+
+    // USO DE LA ORDEN: PC en la primera instruccion de la rutina residente.
+    // Esto significa que SuperBASIC ha invocado CPU_TURBO. Comprobamos aqui
+    // el numero de argumentos antes de dejar ejecutar la llamada a CA.GTLONG;
+    // todavia no cambiamos la velocidad, porque falta convertir el argumento.
     if (pc==ql_basext_entry) {
+        // A3 y A5 delimitan los descriptores de argumentos BASIC (8 bytes cada
+        // uno). Exigir exactamente uno antes de ejecutar CA.GTLONG.
         if (m68k_get_reg(NULL,M68K_REG_A5)-m68k_get_reg(NULL,M68K_REG_A3)!=8) {
+            // Saltar directamente al RTS con Bad Parameter.
             m68k_set_reg(M68K_REG_D0,-15); // ERR.BP
             m68k_set_reg(M68K_REG_PC,ql_basext_entry+8);
         }
+
     }
+
+    // USO DE LA ORDEN: PC en el NOP situado seis bytes despues de la entrada.
+    // El 68000 ya ha vuelto de CA.GTLONG: ahora podemos leer el entero que
+    // QDOS obtuvo del argumento BASIC y aplicar la velocidad desde C.
+    // Despues dejamos continuar NOP/RTS para que la llamada vuelva a BASIC.
+    // Si el PC no coincide con ninguno de estos puntos, no hacemos nada.
     else if (pc==ql_basext_entry+6) {
+        // CA.GTLONG ya termino. Si fallo, dejar que NOP/RTS propaguen su error.
         if (m68k_get_reg(NULL,M68K_REG_D0)) return;
+
+        // A1 es relativo a A6: el entero largo esta en la pila aritmetica de
+        // SuperBASIC, en orden big-endian del 68000, no en memoria del host.
         unsigned int a6=m68k_get_reg(NULL,M68K_REG_A6);
         unsigned int a1=m68k_get_reg(NULL,M68K_REG_A1);
         unsigned int value=0,i;
         for (i=0;i<4;i++) value=(value<<8)|ql_readbyte(a6+a1+i);
-        // Liberar el argumento de la pila aritmetica, tambien si es invalido.
+        // Consumir los cuatro bytes y actualizar tanto A1 como BV.RIP en
+        // A6+0x58, para que BASIC vea la pila aritmetica equilibrada al volver.
         a1+=4;
         for (i=0;i<4;i++) ql_writebyte(a6+0x58+i,(a1>>(24-8*i))&255);
         m68k_set_reg(M68K_REG_A1,a1);
         //if (value>MAX_CPU_TURBO_SPEED) m68k_set_reg(M68K_REG_D0,-4); // ERR.OR
 
+        // Limitar el multiplicador al maximo que admite el turbo comun.
         if (value>MAX_CPU_TURBO_SPEED) value=MAX_CPU_TURBO_SPEED;
+
+        // Esta comprobacion no puede cumplirse mientras value sea unsigned.
         if (value<0) value=1;
 
 
@@ -150,23 +225,31 @@ void ql_basext_poll(void)
         // Cero selecciona ejecucion sin limite de tiempo real.
         int turbo;
 
+        // El argumento cero solicita ejecucion sin limite de tiempo real.
         if (value==0) {
+            // Top speed elimina la espera de tiempo real; no es un factor x0.
+            // Mantener el multiplicador base mientras esta activo ese modo.
             turbo=1;
             top_speed_timer.v=1;
-            printf("Activado top speed\n");
-        }
-        else {
-            turbo=value;
-            top_speed_timer.v=0;
-            printf("Cpu_speed=%d X\n",turbo);
+            debug_printf(VERBOSE_INFO,"Setting top speed because of a Super Basic command CPU_SPEED");
         }
 
+        else {
+            // Un valor positivo sale de top speed y selecciona el factor xN.
+            turbo=value;
+            top_speed_timer.v=0;
+            debug_printf(VERBOSE_INFO,"Setting cpu turbo=%d because of a Super Basic command CPU_SPEED",turbo);
+        }
+
+        // Evitar reconfigurar el turbo si el multiplicador ya es el solicitado.
         if (cpu_turbo_speed!=turbo) {
+            // Recalcular los parametros del turbo comun solo si cambia el factor.
             cpu_turbo_speed=turbo;
             cpu_set_turbo_speed();
         }
 
     }
+
 }
 
 //ultima direccion de memoria válida
