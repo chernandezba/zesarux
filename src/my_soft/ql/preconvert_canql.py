@@ -472,7 +472,7 @@ def main(path: Path, output_path: Path | None = None) -> None:
     output = inline_music_subroutines(output)
     output = join_fragments(output, targets)
     output[0] = output[0].replace("DIM zxpos(32):", "")
-    output[0] = re.sub(r"^(\d+\s+)", r"\1zxmixer=248:", output[0], count=1)
+    output[0] = re.sub(r"^(\d+\s+)", r"\1zxdetectturbo:zxmixer=248:", output[0], count=1)
     output.extend([
         "", "10400 DEFine FuNction zxqfill$(q$,frames,target)",
         "10410  zcopies=INT(target/frames)+2", "10420  result$=q$",
@@ -535,10 +535,29 @@ def main(path: Path, output_path: Path | None = None) -> None:
         "10960  END REPeat zrwait",
         "10970 END DEFine zxready",
         "11050 DEFine PROCedure zxprocessing(zshow)",
+        "11055  IF zxturbo THEN IF zshow THEN EMU_SPEED 0",
         "11060  AT 0,0:PAPER 7:INK 0:OVER 0:FLASH 0",
-        "11065  IF zshow=0 THEN PRINT \"              \";:RETurn",
+        "11065  IF zshow=0 THEN PRINT \"              \";:IF zxturbo THEN EMU_SPEED 1",
+        "11066  IF zshow=0 THEN RETurn",
         "11070  FLASH 1:PRINT \"Procesando\";:FLASH 0",
         "11080 END DEFine zxprocessing",
+        # QDOS original no ofrece captura fiable de errores sin Toolkit II.
+        # La rutina 68000 consulta las tablas relativas a A6 sin ejecutar la
+        # orden. Tipo 8 = procedimiento residente; compara sin distinguir caja.
+        # La busqueda entera se hace en CALL: FOR/LOCAL en BASIC pueden mover
+        # esas tablas y dejar obsoletos los punteros obtenidos con PEEK.
+        # Conserva D1-D3/A0-A3. Deposita el resultado largo en codigo+116.
+        "11100 DEFine PROCedure zxdetectturbo",
+        "11105  LOCal zcode,zi,zw",
+        "11110  zxturbo=0:zcode=RESPR(120):RESTORE 11200",
+        "11115  FOR zi=0 TO 118 STEP 2:READ zw:POKE_W zcode+zi,zw",
+        "11120  CALL zcode:zxturbo=PEEK_L(zcode+116)",
+        "11125 END DEFine zxdetectturbo",
+        "11200 DATA 18663,28912,28672,8302,24,53710,9326,28,54734,8814,32,54222",
+        "11210 DATA 45514,25600,64,3088,8,26112,50,12840,2,5169,4096,3074,9",
+        "11220 DATA 26112,34,18426,50,30216,21057,5169,4096,514,223,46107",
+        "11230 DATA 26112,12,20939,65518,28673,24576,8,20616,24576,65470",
+        "11240 DATA 16890,22,8320,19679,3854,28672,20085,17741,21855,21328,17733,17408,0,0",
     ])
     output = [line for line in output if line.strip()]
     (output_path or path).write_text("\n".join(output) + "\n")

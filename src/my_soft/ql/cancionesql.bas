@@ -1,4 +1,4 @@
-1 zxmixer=248:GO SUB 31:GO SUB 30:LET a=1:LET co=0:LET li=6:MODE 8:WINDOW 512,256,0,0:BORDER 0:PAPER 7:CLS:WINDOW 384,220,64,6:CSIZE 2,0:BORDER 0:PAPER 7:INK 0:WINDOW #0,384,20,64,226:CSIZE #0,2,0:BORDER #0,0:PAPER #0,7:INK #0,0:RESTORE 1600:CLS:CLS #0:PRINT "(c) Cesar Hernandez Bano 24/8/94":PRINT "Canciones recopiladas de la":PRINT "revista MICROHOBBY":PRINT "--------------------------------":AT #0,0,0:PRINT #0;"ELIGE CANCION CON CURSORES Y"\"{ ENTER }"
+1 zxdetectturbo:zxmixer=248:GO SUB 31:GO SUB 30:LET a=1:LET co=0:LET li=6:MODE 8:WINDOW 512,256,0,0:BORDER 0:PAPER 7:CLS:WINDOW 384,220,64,6:CSIZE 2,0:BORDER 0:PAPER 7:INK 0:WINDOW #0,384,20,64,226:CSIZE #0,2,0:BORDER #0,0:PAPER #0,7:INK #0,0:RESTORE 1600:CLS:CLS #0:PRINT "(c) Cesar Hernandez Bano 24/8/94":PRINT "Canciones recopiladas de la":PRINT "revista MICROHOBBY":PRINT "--------------------------------":AT #0,0,0:PRINT #0;"ELIGE CANCION CON CURSORES Y"\"{ ENTER }"
 2 zxmenu
 3 LET VO=0:GO TO 10
 4 zxselect:RUN
@@ -154,7 +154,7 @@
 8130  FOR n=1 TO a
 8140   READ lin,t$,a$,b$
 8150  END FOR n
-8160  CLS:GO SUB 35:EMU_SPEED 0:zxprocessing 1:GO SUB lin:PAUSE
+8160  CLS:GO SUB 35:zxprocessing 1:GO SUB lin:PAUSE
 8170 END DEFine zxselect
 8180 DEFine PROCedure zxregs
 8190  FOR zn=0 TO 13
@@ -249,26 +249,26 @@
 10574  END FOR zframe
 10575 END DEFine zxmwait
 10600 DEFine PROCedure zxqplay1(q1$,f1,l1,target,zmix$)
-10605  zxprocessing 1: EMU_SPEED 0
+10605  zxprocessing 1
 10610  IF l1 THEN q1$=zxqfill$(q1$,f1,target)
 10615  zend=0:IF l1=0 AND f1=target THEN zend=1
-10620  EMU_SPEED 1: SOUND_AY:PLAY 1,"s"&q1$&"v0s":zxready 1:zxprocessing 0:RELEASE
+10620  SOUND_AY:PLAY 1,"s"&q1$&"v0s":zxready 1:zxprocessing 0:RELEASE
 10630  zxmwait target,zmix$:IF l1=0 THEN zxready 1
 10635  SOUND_AY
 10640 END DEFine zxqplay1
 10700 DEFine PROCedure zxqplay2(q1$,f1,l1,q2$,f2,l2,target,zmix$)
-10705  zxprocessing 1: EMU_SPEED 0
+10705  zxprocessing 1
 10710  IF l1 THEN q1$=zxqfill$(q1$,f1,target)
 10720  IF l2 THEN q2$=zxqfill$(q2$,f2,target)
 10722  zend=0:IF l1=0 AND f1=target THEN zend=1
 10724  IF l2=0 AND f2=target THEN zend=2
-10730  EMU_SPEED 1: SOUND_AY:PLAY 1,"s"&q1$&"v0s":PLAY 2,"s"&q2$&"v0s":zxready 1:zxready 2:zxprocessing 0:RELEASE
+10730  SOUND_AY:PLAY 1,"s"&q1$&"v0s":PLAY 2,"s"&q2$&"v0s":zxready 1:zxready 2:zxprocessing 0:RELEASE
 10740  zxmwait target,zmix$:IF l1=0 THEN zxready 1
 10742  IF l2=0 THEN zxready 2
 10745  SOUND_AY
 10750 END DEFine zxqplay2
 10800 DEFine PROCedure zxqplay3(q1$,f1,l1,q2$,f2,l2,q3$,f3,l3,target,zmix$)
-10805  zxprocessing 1: EMU_SPEED 0
+10805  zxprocessing 1
 10810  IF l1 THEN q1$=zxqfill$(q1$,f1,target)
 10820  IF l2 THEN q2$=zxqfill$(q2$,f2,target)
 10830  IF l3 THEN q3$=zxqfill$(q3$,f3,target)
@@ -276,7 +276,7 @@
 10834  IF l2=0 AND f2=target THEN zend=2
 10836  IF l3=0 AND f3=target THEN zend=3
 10840  SOUND_AY:PLAY 1,"s"&q1$&"v0s":PLAY 2,"s"&q2$&"v0s":PLAY 3,"s"&q3$&"v0s"
-10845  EMU_SPEED 1: zxready 1:zxready 2:zxready 3:zxprocessing 0:RELEASE
+10845  zxready 1:zxready 2:zxready 3:zxprocessing 0:RELEASE
 10850  zxmwait target,zmix$:IF l1=0 THEN zxready 1
 10852  IF l2=0 THEN zxready 2
 10854  IF l3=0 THEN zxready 3
@@ -289,7 +289,20 @@
 10960  END REPeat zrwait
 10970 END DEFine zxready
 11050 DEFine PROCedure zxprocessing(zshow)
+11055  IF zxturbo THEN IF zshow THEN EMU_SPEED 0
 11060  AT 0,0:PAPER 7:INK 0:OVER 0:FLASH 0
-11065  IF zshow=0 THEN PRINT "              ";:RETurn
+11065  IF zshow=0 THEN PRINT "              ";:IF zxturbo THEN EMU_SPEED 1
+11066  IF zshow=0 THEN RETurn
 11070  FLASH 1:PRINT "Procesando";:FLASH 0
 11080 END DEFine zxprocessing
+11100 DEFine PROCedure zxdetectturbo
+11105  LOCal zcode,zi,zw
+11110  zxturbo=0:zcode=RESPR(120):RESTORE 11200
+11115  FOR zi=0 TO 118 STEP 2:READ zw:POKE_W zcode+zi,zw
+11120  CALL zcode:zxturbo=PEEK_L(zcode+116)
+11125 END DEFine zxdetectturbo
+11200 DATA 18663,28912,28672,8302,24,53710,9326,28,54734,8814,32,54222
+11210 DATA 45514,25600,64,3088,8,26112,50,12840,2,5169,4096,3074,9
+11220 DATA 26112,34,18426,50,30216,21057,5169,4096,514,223,46107
+11230 DATA 26112,12,20939,65518,28673,24576,8,20616,24576,65470
+11240 DATA 16890,22,8320,19679,3854,28672,20085,17741,21855,21328,17733,17408,0,0
