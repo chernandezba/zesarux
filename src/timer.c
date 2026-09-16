@@ -786,6 +786,7 @@ z80_bit interrupcion_fifty_generada={0};
 int timer_condicion_top_speed(void)
 {
         if (menu_abierto==1) return 0;
+        if (MACHINE_IS_QL && ql_emu_speed==0) return 1;
         if (top_speed_timer.v) return 1;
         return 0;
 }

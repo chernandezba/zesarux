@@ -44,6 +44,11 @@ typedef struct s_moto_bit moto_bit;
 
 extern int ql_total_frames;
 
+extern int ql_emu_speed;
+extern int ql_extension_emu_speed_enabled;
+extern void ql_basext_reset(void);
+extern void ql_basext_poll(void);
+
 //128kb de ROM + 1920 KB de RAM
 #define QL_MAXIMUM_MEM_LIMIT ((1024*2048)-1)
 

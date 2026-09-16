@@ -199,12 +199,12 @@ Disparo → F5
 El teclado ya emula todo esto
 Lo unico que tendria sentido es que al conectar un joystick por usb haga esas funciones de cursores, o F1-F5
 
-QL-Rabenstein. hay un img no admitido
+ok corregido QL-Rabenstein. hay un img no admitido
 
 
 QL-En features ql agregar soporte mdv entero, img, win
 
-QL- canciones.
+ok finalizado. las pausas existentes solo se podrian eliminar haciendo un player en assembler. QL- canciones.
 
 
 ***Baseconf*****

@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "ql.h"
+#include "cpu.h"
 #include "m68k.h"
 #include "debug.h"
 #include "utils.h"
@@ -54,6 +55,101 @@
 
 
 unsigned char *memoria_ql;
+
+// Pasarela temporal en el hueco no utilizado entre ROM e interfaces de E/S.
+// No modifica la ROM QDOS ni ocupa la ranura de cartuchos en C000H.
+#define QL_BASEXT_BOOT 0x10000
+static const unsigned char ql_basext_boot[] = {
+    0x48,0xe7,0xff,0xfe, // MOVEM.L D0-D7/A0-A6,-(SP)
+    0x72,0x7f,0x74,0x00,0x70,0x18,0x4e,0x41, // MT.ALCHP: 127 bytes
+    0x4e,0x71, // Intercepcion: construir la tabla en la RAM reservada
+    0x30,0x78,0x01,0x10,0x4e,0x90, // BP.INIT
+    0x4c,0xdf,0x7f,0xff, // Restaurar los registros
+    0x4e,0x71 // Intercepcion: continuar la llamada BP.INIT original
+};
+static unsigned int ql_basext_entry;
+static unsigned int ql_basext_vector;
+static int ql_basext_state;
+// Controla la instalacion; desactivarlo no desregistra una extension ya instalada.
+int ql_extension_emu_speed_enabled=1;
+int ql_emu_speed=1;
+
+void ql_basext_reset(void)
+{
+    ql_basext_entry=0;
+    ql_basext_vector=0;
+    ql_basext_state=0;
+    ql_emu_speed=1;
+}
+
+void ql_basext_poll(void)
+{
+    unsigned int pc=m68k_get_reg(NULL,M68K_REG_PC);
+    if (!ql_basext_state) {
+        // BP.INIT es un vector publico de QDOS, no una direccion de ROM fija.
+        unsigned int vector=(short)((ql_readbyte(0x110)<<8)|ql_readbyte(0x111));
+        if (!vector || pc!=vector) return;
+        ql_basext_vector=vector;
+        ql_basext_state=1;
+        m68k_set_reg(M68K_REG_PC,QL_BASEXT_BOOT);
+        return;
+    }
+    if (ql_basext_state==1 && pc==QL_BASEXT_BOOT+12) {
+        unsigned int base=m68k_get_reg(NULL,M68K_REG_A0);
+        if (m68k_get_reg(NULL,M68K_REG_D0) || base<0x20000 || base>ql_mem_limit-127) {
+            // Si falta memoria, continuar el arranque sin la extension.
+            m68k_set_reg(M68K_REG_PC,QL_BASEXT_BOOT+20);
+            return;
+        }
+        const unsigned char table[]={
+            0,2,0,30,9,'E','M','U','_','S','P','E','E','D',0,0,0,0,0,0
+        };
+        const unsigned char proc[]={
+            0x30,0x78,0x01,0x18,0x4e,0x90, // CA.GTLONG
+            0x4e,0x71,0x4e,0x75 // Intercepcion y RTS
+        };
+        unsigned int i;
+        for (i=0;i<sizeof(table);i++) ql_writebyte(base+i,table[i]);
+        for (i=0;i<sizeof(proc);i++) ql_writebyte(base+32+i,proc[i]);
+        ql_basext_entry=base+32;
+        m68k_set_reg(M68K_REG_A1,base);
+        return;
+    }
+    if (ql_basext_state==1 && pc==QL_BASEXT_BOOT+24) {
+        ql_basext_state=2;
+        m68k_set_reg(M68K_REG_PC,ql_basext_vector);
+        return;
+    }
+    if (!ql_basext_entry) return;
+    if (pc==ql_basext_entry) {
+        if (m68k_get_reg(NULL,M68K_REG_A5)-m68k_get_reg(NULL,M68K_REG_A3)!=8) {
+            m68k_set_reg(M68K_REG_D0,-15); // ERR.BP
+            m68k_set_reg(M68K_REG_PC,ql_basext_entry+8);
+        }
+    }
+    else if (pc==ql_basext_entry+6) {
+        if (m68k_get_reg(NULL,M68K_REG_D0)) return;
+        unsigned int a6=m68k_get_reg(NULL,M68K_REG_A6);
+        unsigned int a1=m68k_get_reg(NULL,M68K_REG_A1);
+        unsigned int value=0,i;
+        for (i=0;i<4;i++) value=(value<<8)|ql_readbyte(a6+a1+i);
+        // Liberar el argumento de la pila aritmetica, tambien si es invalido.
+        a1+=4;
+        for (i=0;i<4;i++) ql_writebyte(a6+0x58+i,(a1>>(24-8*i))&255);
+        m68k_set_reg(M68K_REG_A1,a1);
+        if (value>MAX_CPU_TURBO_SPEED) m68k_set_reg(M68K_REG_D0,-4); // ERR.OR
+        else {
+            ql_emu_speed=value;
+            // Reutilizar el turbo comun, como ZX-Uno y Next, sin alterar el core.
+            // Cero selecciona ejecucion sin limite de tiempo real.
+            int turbo=value ? value : 1;
+            if (cpu_turbo_speed!=turbo) {
+                cpu_turbo_speed=turbo;
+                cpu_set_turbo_speed();
+            }
+        }
+    }
+}
 
 //ultima direccion de memoria válida
 //128k de rom + 128k de ram por defecto
@@ -363,6 +459,9 @@ void ql_footer_extra_rom_c000(void)
 
 unsigned char ql_readbyte(unsigned int Address)
 {
+
+    if (ql_basext_state==1 && Address>=QL_BASEXT_BOOT && Address<QL_BASEXT_BOOT+sizeof(ql_basext_boot))
+        return ql_basext_boot[Address-QL_BASEXT_BOOT];
 
     //Si qsound activado
     if (ql_qsound_is_enabled) {

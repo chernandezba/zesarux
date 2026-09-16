@@ -1274,6 +1274,7 @@ util_stats_init();
         ql_qimi_reset();
 
         ql_total_frames=0;
+        ql_basext_reset();
     }
 
     if (MACHINE_IS_MK14) {

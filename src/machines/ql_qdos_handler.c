@@ -2411,6 +2411,7 @@ int ql_qdos_check_device_readonly(char *device)
 
 void ql_rom_traps(void)
 {
+    if (ql_extension_emu_speed_enabled) ql_basext_poll();
 
         //Debug: ver los frames que tarda hasta aparecer el menu F1
         /*
