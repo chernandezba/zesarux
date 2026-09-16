@@ -300,7 +300,43 @@
 11110  zxturbo=0:zcode=RESPR(120):RESTORE 11200
 11115  FOR zi=0 TO 118 STEP 2:READ zw:POKE_W zcode+zi,zw
 11120  CALL zcode:zxturbo=PEEK_L(zcode+116)
-11125 END DEFine zxdetectturbo
+11126  REMark Assembler 68000 de los DATA 11200-11240; desplazamientos en hexadecimal.
+11127  REMark MOVEM.L D1-D3/A0-A3,-(SP) ; conservar registros
+11128  REMark MOVEQ #0,D0 ; no encontrada
+11129  REMark MOVEA.L $18(A6),A0 ; inicio de tabla de nombres
+11130  REMark ADDA.L A6,A0
+11131  REMark MOVEA.L $1C(A6),A2 ; final usado de la tabla
+11132  REMark ADDA.L A6,A2
+11133  REMark MOVEA.L $20(A6),A1 ; base de las cadenas de nombres
+11134  REMark ADDA.L A6,A1
+11135  REMark bucle: CMPA.L A2,A0
+11136  REMark BCC.W fin
+11137  REMark CMPI.B #8,(A0) ; procedimiento residente
+11138  REMark BNE.W siguiente
+11139  REMark MOVE.W 2(A0),D1 ; desplazamiento del nombre
+11140  REMark MOVE.B (A1,D1.W),D2
+11141  REMark CMPI.B #9,D2 ; longitud de CPU_TURBO
+11142  REMark BNE.W siguiente
+11143  REMark LEA nombre(PC),A3
+11144  REMark MOVEQ #8,D3 ; comparar nueve caracteres
+11145  REMark caracter: ADDQ.W #1,D1
+11146  REMark MOVE.B (A1,D1.W),D2
+11147  REMark ANDI.B #$DF,D2 ; convertir a mayusculas
+11148  REMark CMP.B (A3)+,D2
+11149  REMark BNE.W siguiente
+11150  REMark DBRA D3,caracter
+11151  REMark MOVEQ #1,D0 ; encontrada
+11152  REMark BRA.W fin
+11153  REMark siguiente: ADDQ.L #8,A0 ; siguiente entrada
+11154  REMark BRA.W bucle
+11155  REMark fin: LEA resultado(PC),A0
+11156  REMark MOVE.L D0,(A0)
+11157  REMark MOVEM.L (SP)+,D1-D3/A0-A3
+11158  REMark MOVEQ #0,D0 ; CALL termina sin error
+11159  REMark RTS
+11160  REMark nombre: DC.B "CPU_TURBO",0
+11161  REMark resultado: DC.L 0 ; desplazamiento 116 desde zcode
+11199 END DEFine zxdetectturbo
 11200 DATA 18663,28912,28672,8302,24,53710,9326,28,54734,8814,32,54222
 11210 DATA 45514,25600,64,3088,8,26112,50,12840,2,5169,4096,3074,9
 11220 DATA 26112,34,18426,50,30216,21057,5169,4096,514,223,46107
