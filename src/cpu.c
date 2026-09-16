@@ -641,6 +641,8 @@ void cpu_set_turbo_speed(void)
     z80_bit antes_extended_stack_enabled;
     antes_extended_stack_enabled.v=extended_stack_enabled.v;
 
+    z80_bit antes_ay_chip_present;
+    antes_ay_chip_present.v=ay_chip_present.v;
 
     do_not_run_init_z88_memory_slots=1;
 
@@ -720,6 +722,8 @@ void cpu_set_turbo_speed(void)
 
 
     if (antes_extended_stack_enabled.v) set_extended_stack();
+
+    if (antes_ay_chip_present.v) ay_chip_present.v=1;
 
 
 
