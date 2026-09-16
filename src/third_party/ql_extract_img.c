@@ -357,11 +357,25 @@ parse_header(QLDisk *disk)
         return 0;
     }
 
-    if (disk->sectors_per_cylinder > 18)
+    /* La tabla de traduccion usada por QL5A tiene 18 entradas. */
+    if (strcmp(disk->format, "QL5A") == 0 &&
+        disk->sectors_per_cylinder > 18)
     {
         fprintf(stderr,
                 "ERROR: sectors/cylinder=%u; "
-                "este extractor admite hasta 18\n",
+                "QL5A admite hasta 18\n",
+                disk->sectors_per_cylinder);
+
+        return 0;
+    }
+
+    /* QL5B de alta densidad usa las dos tablas para 36 sectores. */
+    if (strcmp(disk->format, "QL5B") == 0 &&
+        disk->sectors_per_cylinder > 36)
+    {
+        fprintf(stderr,
+                "ERROR: sectors/cylinder=%u; "
+                "QL5B admite hasta 36\n",
                 disk->sectors_per_cylinder);
 
         return 0;
@@ -544,13 +558,6 @@ logical_sector_to_offset(
         return 0;
     }
 
-    if (strcmp(disk->format,
-               "QL5B") == 0)
-    {
-        physical_lba =
-            logical_sector;
-    }
-    else
     {
         uint32_t track;
         uint32_t within_cylinder;
@@ -568,9 +575,19 @@ logical_sector_to_offset(
             logical_sector %
             disk->sectors_per_cylinder;
 
-        translated =
-            disk->logical_to_physical[
-                within_cylinder];
+        if (strcmp(disk->format, "QL5B") == 0 &&
+            within_cylinder >= 18)
+        {
+            translated =
+                disk->physical_to_logical[
+                    within_cylinder - 18];
+        }
+        else
+        {
+            translated =
+                disk->logical_to_physical[
+                    within_cylinder];
+        }
 
         side =
             (translated & 0x80) ?
