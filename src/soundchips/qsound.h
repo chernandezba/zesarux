@@ -36,10 +36,16 @@ extern void ql_qsound_enable(void);
 extern void ql_qsound_disable(void);
 extern void ql_set_qsound_settings_on_enabled(void);
 
+extern void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data);
+extern unsigned char ql_readbyte_qsound_pia(unsigned int Address);
+
 extern unsigned char qsound_pia_data_port_a;
 extern unsigned char qsound_pia_control_port_a;
 extern unsigned char qsound_pia_data_port_b;
 extern unsigned char qsound_pia_control_port_b;
+
+extern unsigned char qsound_pia_ddr_a;
+extern unsigned char qsound_pia_ddr_b;
 
 #define QSOUND_ROM_FILE "qsound_V1.94.rom"
 

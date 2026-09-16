@@ -68,6 +68,11 @@ unsigned char qsound_pia_data_port_b=0;
 //de momento no usado
 unsigned char qsound_pia_control_port_b=0;
 
+//Los registros de datos A y B comparten direccion con estos registros.
+//CRA/CRB, bit 2, selecciona cual de los dos se accede.
+unsigned char qsound_pia_ddr_a=0;
+unsigned char qsound_pia_ddr_b=0;
+
 void ql_set_qsound_settings_on_enabled(void)
 {
     if (ql_qsound_is_enabled) {
@@ -223,6 +228,24 @@ Read 0xC3002 -> Read Register Value
 
 
 
+static void qsound_pia_apply_port_b(void)
+{
+    unsigned char output=qsound_pia_data_port_b & qsound_pia_ddr_b;
+    int bc1=output & 1;
+    int bdir=output & 8;
+
+    if (bdir) {
+        if (bc1) {
+            //Seleccionar registro AY.
+            out_port_ay(65533,qsound_pia_data_port_a);
+        }
+        else {
+            //Enviar valor al registro AY previamente seleccionado.
+            out_port_ay(49149,qsound_pia_data_port_a);
+        }
+    }
+}
+
 void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
 {
 
@@ -238,11 +261,10 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
         int registro=Address&3;
         //printf("Write Qsound PIA Address %X Register %d Value %02X\n",Address,registro,Data);
 
-        int bc1,bdir;
-
         switch (registro) {
             case 0:
-                qsound_pia_data_port_a=Data;
+                if (qsound_pia_control_port_a & 4) qsound_pia_data_port_a=Data;
+                else qsound_pia_ddr_a=Data;
             break;
 
             case 1:
@@ -250,19 +272,13 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
             break;
 
             case 2:
-                qsound_pia_data_port_b=Data;
-                bc1=Data &1;
-                bdir=Data & 8;
-
-                if (bdir) {
-                    if (bc1) {
-                        //seleccionar registro
-                        out_port_ay(65533,qsound_pia_data_port_a);
-                    }
-                    else {
-                        //enviar valor a registro
-	                    out_port_ay(49149,qsound_pia_data_port_a);
-                    }
+                if (qsound_pia_control_port_b & 4) {
+                    qsound_pia_data_port_b=Data;
+                    qsound_pia_apply_port_b();
+                }
+                else {
+                    qsound_pia_ddr_b=Data;
+                    qsound_pia_apply_port_b();
                 }
             break;
 
@@ -273,6 +289,38 @@ void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data)
     }
 
 
+}
+
+unsigned char ql_readbyte_qsound_pia(unsigned int Address)
+{
+    if (!ql_qsound_is_enabled || !ay_chip_present.v || !ql_qsound_pia_enabled) return 0xFF;
+
+    switch (Address & 3) {
+        case 0:
+            if (!(qsound_pia_control_port_a & 4)) return qsound_pia_ddr_a;
+
+            //Cuando AY esta en lectura (BDIR=0 y BC1=1), sus lineas de datos
+            //alimentan las entradas configuradas del puerto A del PIA.
+            unsigned char output_b=qsound_pia_data_port_b & qsound_pia_ddr_b;
+            if (!(output_b & 8) && (output_b & 1)) {
+                unsigned char ay_value=in_port_ay(0xFF);
+                return (qsound_pia_data_port_a & qsound_pia_ddr_a) |
+                       (ay_value & ~qsound_pia_ddr_a);
+            }
+            return qsound_pia_data_port_a;
+
+        case 1:
+            return qsound_pia_control_port_a;
+
+        case 2:
+            if (!(qsound_pia_control_port_b & 4)) return qsound_pia_ddr_b;
+            return qsound_pia_data_port_b;
+
+        case 3:
+            return qsound_pia_control_port_b;
+    }
+
+    return 0xFF;
 }
 
 
@@ -319,4 +367,3 @@ void qsound_load_rom(void)
 
 
 }
-

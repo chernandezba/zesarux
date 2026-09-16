@@ -68,7 +68,6 @@ int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 int ql_use_visionql_color_palette=0;
 
 void ql_writebyte_qsound(unsigned int Address, unsigned char Data);
-void ql_writebyte_qsound_pia(unsigned int Address, unsigned char Data);
 
 /*
 "The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
@@ -373,9 +372,7 @@ unsigned char ql_readbyte(unsigned int Address)
 
         //The 6821 PIO is decoded using A0,A1 and A13 to A19, so will be available in the top 8K of the card (0b 1100 001xxxxx xxxxxxAB or 0xC2000 to 0xC3FFF)
         if ((Address & 0xFE000) == 0xC2000 && ql_qsound_pia_enabled) {
-        //if ((Address & 0x8003)>=0x8000 && (Address & 0x8003)<=0x8003) {
-            int registro=Address&3;
-            printf("Read Qsound PIA Address %X Register %d\n",Address,registro);
+            return ql_readbyte_qsound_pia(Address);
         }
     }
 
