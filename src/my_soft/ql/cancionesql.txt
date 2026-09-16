@@ -1,0 +1,296 @@
+Este es un programa convertido de Spectrum al QL, el 16/09/2026
+Necesita:
+
+- Qsound
+- Minimo de 384 KB de RAM
+- Recomendado: extensión "CPU_TURBO" que se puede habilitar en ZEsarUX, para acelerar los procesos de carga de música
+
+
+ORIGEN Y OBJETIVO
+================
+
+CancionesQL es una adaptación a Sinclair QL SuperBASIC del programa de
+canciones para ZX Spectrum 128. El programa original utiliza las cadenas
+musicales de PLAY y el chip AY para interpretar las melodías. La versión QL
+mantiene el repertorio y su selección mediante un menú, pero utiliza QSound
+para generar el sonido.
+
+No se trata de reproducir una grabación ni de emular el BASIC del Spectrum.
+Las notas y los efectos se han traducido al lenguaje musical de QSound.
+Además de convertir las instrucciones BASIC y la presentación, ha sido
+necesario adaptar alturas, duraciones, repeticiones, envolventes, ruido y
+sincronización entre las tres voces.
+
+Los 384 KB son el mínimo recomendado para esta versión y su repertorio.
+Con 256 KB el programa puede cargar y algunas canciones funcionan, pero
+Magnetic Fields ha producido "at line 10840 out of memory" al preparar las
+tres listas PLAY. Con 384 KB esa canción ha funcionado correctamente. La
+memoria necesaria no es sólo la que ocupa el listado: también intervienen
+las cadenas temporales y las colas que QSound prepara para reproducirlas.
+
+
+ARCHIVOS Y PROCESO DE GENERACIÓN
+===============================
+
+cancionesqloriginal.bas
+    Es la versión fuente de la adaptación a QL, que conserva las cadenas
+    musicales en notación Spectrum y el conversor escrito en SuperBASIC.
+    No debe confundirse con el programa Spectrum sin adaptar. Sirve como
+    entrada del proceso de preconversión y como referencia para modificar
+    las canciones antes de generar la versión optimizada.
+
+preconvert_canql.py
+    Es el conversor que se ejecuta en el ordenador anfitrión con Python 3,
+    no dentro del QL. Analiza las construcciones utilizadas por este
+    programa y genera las cadenas QSound y las rutinas de reproducción.
+    No es un traductor general de cualquier programa BASIC de Spectrum.
+
+cancionesql.bas
+    Es el programa para cargar y ejecutar en el QL. Contiene las canciones
+    preconvertidas y las rutinas auxiliares necesarias para reproducirlas.
+    No necesita Python durante su ejecución.
+
+Para generar una versión nueva desde el directorio my_soft/ql:
+
+    python3 preconvert_canql.py cancionesqloriginal.bas cancionesql_nuevo.bas
+
+Desde la raíz del repositorio, esos archivos están en src/my_soft/ql.
+Se recomienda generar primero un archivo distinto, comparar el resultado
+y probarlo antes de sustituir cancionesql.bas. El generador escribe en el
+destino indicado y puede sobrescribirlo si ya existe.
+
+IMPORTANTE: si se omite el segundo argumento, el script escribe sobre el
+archivo de entrada. Es preferible indicar siempre origen y destino para
+no perder cancionesqloriginal.bas. Tampoco hay que usar como entrada la
+versión ya preconvertida: el script busca las llamadas zxplay del fuente.
+
+Los cambios manuales hechos exclusivamente en cancionesql.bas no pasan
+automáticamente al generador. Los cambios de música o del programa fuente
+deben mantenerse en cancionesqloriginal.bas; los de las rutinas generadas
+deben reflejarse en preconvert_canql.py. Antes de reemplazar la versión de
+uso conviene revisar también los ajustes de presentación y colores.
+
+
+DE LA CONVERSIÓN EN BASIC A LA PRECONVERSIÓN CON PYTHON
+=====================================================
+
+En las primeras versiones, el propio QL traducía las cadenas Spectrum
+antes de enviarlas a QSound. Esto permitió desarrollar y comprobar la
+adaptación, pero analizar caracteres, construir cadenas y repetir ese
+trabajo entre fragmentos era demasiado lento en SuperBASIC.
+
+Se probaron mejoras de reutilización y caché, pero no bastaban para dar
+continuidad a las canciones. La solución principal fue trasladar la
+traducción al script Python: el QL recibe las notas ya expresadas en el
+formato de QSound, en vez de reinterpretar la notación Spectrum cada vez.
+
+El script resuelve las asignaciones de cadenas, concatenaciones y cambios
+de partes de cadenas que reconoce en este repertorio. Así, las canciones
+que construían o modificaban sus frases durante la ejecución se pueden
+convertir a partir del resultado de esas operaciones, sin conservar todo
+ese trabajo durante la reproducción. También desarrolla determinadas
+subrutinas musicales y repeticiones cuando es posible y conveniente.
+
+Se eliminan asignaciones y rutinas de conversión que ya no hacen falta en
+el resultado. Se reajustan las entradas de canciones para evitar líneas
+REM de relleno y se eliminan líneas vacías. Esto no significa que cualquier
+programa con automodificación arbitraria pueda convertirse: el análisis
+está diseñado para las construcciones presentes en este programa.
+
+
+QUÉ SE HA ADAPTADO EN EL SONIDO
+==============================
+
+Altura de las notas
+------------------
+
+No basta con copiar las letras y las octavas de una cadena PLAY a otra.
+El conversor interpreta las reglas Spectrum, incluidas las diferencias
+entre mayúsculas y minúsculas y las alteraciones, y calcula la nota que
+debe emitir QSound. La correspondencia se corrigió durante las pruebas
+para evitar transposiciones y notas desplazadas de octava.
+
+Durante el desarrollo se comparó Axel F con una captura de sonido de la
+versión Spectrum, incluida la aportada como cancione_spectrum_audio_axelf.rwa.
+ZEsarUX permite obtener capturas mediante --aofile. Esa comparación sirvió
+como referencia para afinar el resultado; no equivale a una comprobación
+exhaustiva de todas las notas de todas las canciones.
+
+Duración, tempo y silencios
+--------------------------
+
+Se traducen las duraciones, los cambios de tempo, tresillos, duraciones
+enlazadas y los silencios explícitos. Se acumula el tiempo antes de
+redondearlo a frames para reducir la deriva entre voces causada por
+redondear cada nota de forma independiente.
+
+También se tiene en cuenta el tiempo que consume el intérprete de QSound:
+el conversor contiene ajustes comprobados para la ROM 1.94, incluido el
+tick adicional de determinadas operaciones y el de los comandos de ruido.
+Estos detalles importan aunque dos cadenas parezcan expresar sobre el
+papel la misma duración musical.
+
+Los silencios explícitos de la partitura no deben confundirse con los
+pequeños cortes de articulación entre notas que introduce el reproductor
+Spectrum. La fidelidad de estos últimos sigue siendo un punto pendiente.
+
+Volumen y envolventes
+--------------------
+
+Se traducen el volumen fijo y el uso de envolvente. Para las notas que
+necesitan reiniciarla se emiten los comandos correspondientes, no solamente
+la nueva frecuencia del tono. La configuración inicial se replica en las
+voces porque QSound inicializa parámetros al crear cada lista y la
+envolvente del AY es un recurso compartido.
+
+Ruido y mezclador
+----------------
+
+El AY tiene tres canales de tono, pero un generador de ruido compartido.
+El registro mezclador determina en qué canales se habilitan tono, ruido o
+ambos. Cambiar la frecuencia de un canal no garantiza que ese canal sea
+audible si su salida está deshabilitada en el mezclador.
+
+La adaptación genera comandos de periodo de ruido cuando son necesarios
+y construye una secuencia temporal de cambios del mezclador a partir de
+las órdenes Spectrum. La rutina SuperBASIC zxmwait aplica esos cambios
+mediante POKE_AY sobre el registro 7 y mantiene el estado durante la espera.
+Esto permitió recuperar los efectos de ruido y las combinaciones de tono
+y ruido que faltaban en las primeras versiones.
+
+Por ese motivo, el resultado no consiste exclusivamente en una única
+cadena PLAY por canción: algunas tareas de control siguen haciéndose en
+SuperBASIC. Las voces no representan tres generadores independientes de
+ruido y no deben traducirse como si lo fueran.
+
+
+SINCRONIZACIÓN Y REDUCCIÓN DE PAUSAS ENTRE FRAGMENTOS
+==================================================
+
+Las rutinas zxqplay1, zxqplay2 y zxqplay3 preparan una, dos o tres voces.
+Cada lista comienza con una barrera de espera "s". Después de cargar las
+listas y esperar a que estén preparadas, RELEASE permite arrancarlas
+juntas. Así no empieza la primera voz mientras BASIC aún está preparando
+la segunda o la tercera. Se añade también un final controlado para evitar
+dejar una nota sonando cuando termina un fragmento.
+
+QSound reproduce mediante su propio mecanismo, por lo que BASIC puede
+realizar tareas mientras suena la música. Sin embargo, el programa también
+debe esperar a los puntos adecuados y mantener los cambios del mezclador;
+no se puede acelerar sin más toda esa fase sin alterar la temporización.
+
+Para reducir las interrupciones, el generador une fragmentos consecutivos
+cuando puede hacerlo respetando el flujo del programa y la capacidad de
+las colas. Iguala duraciones con silencios cuando hace falta, desplaza los
+eventos de mezclador al unir fragmentos y desarrolla algunos bucles hasta
+la duración necesaria.
+
+La unión no es ilimitada: se estima el tamaño de la cola compilada por
+QSound, no sólo el número de caracteres de la cadena. Actualmente se usa
+un umbral de 3500 bytes por voz en estas decisiones. Fragmentos más largos
+reducen la cantidad de transiciones, pero aumentan la memoria necesaria.
+
+Preconvertir evita traducir la notación Spectrum en el QL, pero QSound
+todavía tiene que analizar sus propias cadenas PLAY y preparar las colas.
+Por ello pueden quedar pausas entre bloques aunque las notas ya estén
+preconvertidas. No se debe confundir ese trabajo con volver a ejecutar el
+conversor Spectrum original.
+
+
+CPU_TURBO Y EL INDICADOR PROCESANDO
+=================================
+
+Mientras se prepara música aparece "Procesando" con el atributo nativo de
+parpadeo del QL. Se reutiliza el canal de pantalla existente y el texto se
+borra al acabar la preparación.
+
+Si está disponible la extensión CPU_TURBO, se solicita CPU_TURBO 0 durante
+esa fase para ejecutar sin límite de tiempo real. Se mantiene la aceleración
+durante la preparación de las listas QSound y se vuelve a CPU_TURBO 1 justo
+antes de RELEASE. La música se reproduce a velocidad normal.
+
+En ZEsarUX puede habilitarse la extensión desde el menú correspondiente o
+mediante --ql-cpu-turbo-extension. Hace falta reiniciar el QL para que se
+registre en SuperBASIC. No es un requisito para ejecutar CancionesQL:
+zxdetectturbo comprueba si existe y, si no, el programa sigue funcionando
+sin aceleración, aunque las esperas de preparación serán más perceptibles.
+
+La detección usa una pequeña rutina 68000 almacenada en DATA, cuyos
+comentarios incluyen el listado assembler. Consulta las tablas de nombres
+de BASIC para localizar el procedimiento residente CPU_TURBO, sin intentar
+ejecutar una orden inexistente y sin depender de captura de errores de
+Toolkit II. Se reserva espacio para ella mediante RESPR(120).
+
+Se eligió CPU_TURBO para no confundir sus multiplicadores con EMU_SPEED de
+sQLux, cuya escala es distinta. No debe sustituirse un nombre por otro
+suponiendo que el valor 1 significa lo mismo en ambos emuladores.
+
+
+PRESENTACIÓN Y DOCUMENTACIÓN DE QSOUND
+====================================
+
+La interfaz se adaptó a ventanas QL teniendo como referencia las 32x22
+posiciones del canal principal Spectrum y las 32x2 del canal inferior.
+Se ajustaron dimensiones, posición, colores y selección del menú para
+evitar desbordamientos y texto con tinta y papel iguales.
+
+QSOUND-QPRINT.pdf es la documentación original y sirve como referencia
+para el lenguaje interno de PLAY, pero no describe todas las extensiones
+modernas. La implementación empleada durante el desarrollo es decisiva
+para interpretar la sintaxis, los tiempos y las operaciones disponibles.
+
+Por ejemplo, SOUND pasó a llamarse SOUND_AY a partir de la ROM 1.40, y
+versiones modernas incluyen operaciones como PLAYING(ch). El programa
+utiliza esas capacidades. Hay además erratas en el manual antiguo, como
+el ejemplo impreso "pr15..." que debía ser "pv15...". No conviene deducir
+la gramática sólo de ejemplos ni dar por equivalentes todas las ROM.
+
+
+PENDIENTES Y POSIBLES MEJORAS
+===========================
+
+1. Recuperar la articulación original entre notas.
+
+   Se ha observado que ciertos pequeños silencios que sí se perciben en
+   Spectrum no se aprecian en QL, dando sensación de notas demasiado unidas.
+   Queda ajustar esos cortes sin alargar la duración de las frases, sin
+   desincronizar voces y, especialmente, sin aumentar las pausas entre
+   fragmentos. No bastaría con añadir esperas BASIC entre cada nota.
+
+2. Desarrollar un reproductor en assembler 68000.
+
+   Un reproductor dedicado podría consumir eventos preconvertidos de
+   frecuencia, volumen, envolvente y mezclador, con menos trabajo del
+   intérprete BASIC. Podría reducir la preparación y controlar mejor los
+   tiempos. Sería una implementación nueva: habría que diseñar el formato,
+   la temporización, el acceso al dispositivo y su convivencia con QDOS.
+   Debería mantenerse portable entre máquinas y emuladores compatibles,
+   sin depender obligatoriamente de aceleraciones exclusivas de ZEsarUX.
+   La pequeña rutina assembler actual sólo detecta CPU_TURBO: no reproduce
+   música ni sustituye a QSound.
+
+3. Revisar memoria y reservas repetidas.
+
+   Conviene revisar RESPR(120), ya que el programa vuelve al menú mediante
+   RUN y puede repetir la reserva. También sería útil medir el máximo de
+   memoria temporal por canción. El fallo de Magnetic Fields con 256 KB
+   no demuestra por sí solo que esa reserva sea la causa: ocurre al cargar
+   las listas PLAY y también intervienen sus búferes y cadenas.
+   Una variante para menos RAM requeriría equilibrar tamaño de bloques y
+   continuidad; no se ha resuelto ese compromiso en la versión actual.
+
+4. Seguir reduciendo las pausas de preparación.
+
+   Se podría estudiar preparar el siguiente bloque mientras suena el
+   actual, o una gestión de búferes diferente, siempre respetando las
+   capacidades de QSound y los eventos compartidos. Son posibilidades a
+   investigar, no funciones ya implementadas ni una garantía de eliminar
+   todas las pausas simplemente aumentando la RAM o el turbo.
+
+5. Ampliar las pruebas de fidelidad y compatibilidad.
+
+   Queda realizar comparaciones sistemáticas de todo el repertorio con
+   Spectrum: alturas, articulación, ruido, envolventes y transiciones.
+   También conviene probar distintas ROM QSound, configuraciones de RAM,
+   emuladores y hardware real. El buen resultado auditivo de una canción
+   no garantiza que todas las combinaciones de efectos sean idénticas.

@@ -228,14 +228,14 @@ void ql_basext_poll(void)
             // Mantener el multiplicador base mientras esta activo ese modo.
             turbo=1;
             top_speed_timer.v=1;
-            debug_printf(VERBOSE_INFO,"Setting top speed because of a Super Basic command CPU_SPEED");
+            debug_printf(VERBOSE_INFO,"Setting top speed because of a Super Basic command CPU_TURBO");
         }
 
         else {
             // Un valor positivo sale de top speed y selecciona el factor xN.
             turbo=value;
             top_speed_timer.v=0;
-            debug_printf(VERBOSE_INFO,"Setting cpu turbo=%d because of a Super Basic command CPU_SPEED",turbo);
+            debug_printf(VERBOSE_INFO,"Setting cpu turbo=%d because of a Super Basic command CPU_TURBO",turbo);
         }
 
         // Evitar reconfigurar el turbo si el multiplicador ya es el solicitado.
