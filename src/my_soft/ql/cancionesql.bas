@@ -173,6 +173,7 @@
 8400 DEFine PROCedure zxanim1
 8410  FOR zn=1 TO LEN(M$)
 8420   FOR zp=30 TO zn-1+X STEP -1
+8425    IF zp<30 THEN AT Y,zp+1:OVER 0:PRINT " ";
 8430    AT Y,zp:PRINT M$(zn);
 8440   END FOR zp
 8450  END FOR zn
