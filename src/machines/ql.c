@@ -72,7 +72,7 @@ static unsigned int ql_basext_entry;
 static unsigned int ql_basext_vector;
 static int ql_basext_state;
 // Controla la instalacion; desactivarlo no desregistra una extension ya instalada.
-int ql_extension_emu_speed_enabled=1;
+int ql_extension_emu_speed_enabled=0;
 int ql_emu_speed=1;
 
 void ql_basext_reset(void)
