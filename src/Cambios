@@ -24,7 +24,7 @@ Mejorada emulación de Sinclair QL:
 - Mejorada la relación de aspecto de la pantalla del Sinclair QL. Los gráficos ahora reproducen la geometría del hardware original (1.476:1). Permitir también 4:3 y 1:1
 - Agregada paleta de colores de Vision-QL
 - Agregada emulación de Ratón QL QIMI
-- Agregada extensión EMU_SPEED al Super Basic para permitir cambiar la velocidad de la CPU
+- Agregada extensión CPU_TURBO al Super Basic para permitir cambiar la velocidad de la CPU
 - Agregada unidad flp2
 - Permitir smartload archivos tipo boot, basic o ejecutables, ejecutando sentencias lrun_ o exec_ automáticamente
 - Permitir smartload imágenes .mdv
@@ -1273,5 +1273,4 @@ Corregido tipo de forma de onda "Scroll" en View WaveForm
 
 
 Algunas otras correcciones y mejoras
-
 

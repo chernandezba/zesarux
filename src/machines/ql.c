@@ -72,15 +72,15 @@ static unsigned int ql_basext_entry;
 static unsigned int ql_basext_vector;
 static int ql_basext_state;
 // Controla la instalacion; desactivarlo no desregistra una extension ya instalada.
-int ql_extension_emu_speed_enabled=0;
-int ql_emu_speed=1;
+int ql_extension_cpu_turbo_enabled=0;
+int ql_cpu_turbo=1;
 
 void ql_basext_reset(void)
 {
     ql_basext_entry=0;
     ql_basext_vector=0;
     ql_basext_state=0;
-    ql_emu_speed=1;
+    ql_cpu_turbo=1;
     top_speed_timer.v=0;
 }
 
@@ -104,7 +104,7 @@ void ql_basext_poll(void)
             return;
         }
         const unsigned char table[]={
-            0,2,0,30,9,'E','M','U','_','S','P','E','E','D',0,0,0,0,0,0
+            0,2,0,30,9,'C','P','U','_','T','U','R','B','O',0,0,0,0,0,0
         };
         const unsigned char proc[]={
             0x30,0x78,0x01,0x18,0x4e,0x90, // CA.GTLONG
@@ -145,7 +145,7 @@ void ql_basext_poll(void)
         if (value<0) value=1;
 
 
-        ql_emu_speed=value;
+        ql_cpu_turbo=value;
         // Reutilizar el turbo comun, como ZX-Uno y Next, sin alterar el core.
         // Cero selecciona ejecucion sin limite de tiempo real.
         int turbo;

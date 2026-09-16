@@ -24,7 +24,7 @@ Improved Sinclair QL emulation:
 - Improved display aspect ratio. Graphics now match the original hardware geometry (1.476:1). Allow also 4:3 and 1:1
 - Added Vision-QL color palette
 - Added QL QIMI Mouse emulation
-- Added EMU_SPEED extension to Super Basic to allow to change CPU speed
+- Added CPU_TURBO extension to Super Basic to allow to change CPU speed
 - Added flp2 drive
 - Allow smartload of files type boot, basic or executables, running sentences lrun_ or exec_ automatically
 - Allow to smartload .mdv images
@@ -2652,4 +2652,3 @@ Inves sound emulation
 Experimental emulation of zx80, zx81
 Fixed opcodes adc,sbc with flags, overflow and halfcarry
 Added some opcodes using IX/IY h,l
-

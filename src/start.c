@@ -982,7 +982,7 @@ printf (
 
         "--denyturbotbblueeverywhere Limit setting turbo mode on TBBlue everywhere (default setting allowed)\n"
         "--tbblue-max-turbo-everywhere n    Max allowed turbo speed mode on TBBlue everywhere when enabling --denyturbotbblueeverywhere (default value: 4)\n"
-        "--ql-emu-speed-extension    Add EMU_SPEED extension to Sinclair QL Super Basic to allow to change CPU speed\n"
+        "--ql-cpu-turbo-extension    Add CPU_TURBO extension to Sinclair QL Super Basic to allow to change CPU speed\n"
 
         "--tbblue-fast-boot-mode     Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)\n"
         //no uso esto de momento "--tbblue-123b-port n        Sets the initial value for port 123b on hard reset, for tbblue-fast-boot-mode\n"
@@ -4189,8 +4189,8 @@ int parse_cmdline_options(int desde_commandline)
                 else tbblue_deny_turbo_everywhere_max_allowed=valor;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--ql-emu-speed-extension")) {
-                ql_extension_emu_speed_enabled=1;
+            else if (!strcmp(argv[puntero_parametro],"--ql-cpu-turbo-extension")) {
+                ql_extension_cpu_turbo_enabled=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--tbblue-fast-boot-mode")) {

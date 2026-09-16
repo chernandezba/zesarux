@@ -44,8 +44,8 @@ typedef struct s_moto_bit moto_bit;
 
 extern int ql_total_frames;
 
-extern int ql_emu_speed;
-extern int ql_extension_emu_speed_enabled;
+extern int ql_cpu_turbo;
+extern int ql_extension_cpu_turbo_enabled;
 extern void ql_basext_reset(void);
 extern void ql_basext_poll(void);
 
