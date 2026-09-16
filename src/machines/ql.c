@@ -216,9 +216,6 @@ void ql_basext_poll(void)
         // Limitar el multiplicador al maximo que admite el turbo comun.
         if (value>MAX_CPU_TURBO_SPEED) value=MAX_CPU_TURBO_SPEED;
 
-        // Esta comprobacion no puede cumplirse mientras value sea unsigned.
-        if (value<0) value=1;
-
 
         ql_cpu_turbo=value;
         // Reutilizar el turbo comun, como ZX-Uno y Next, sin alterar el core.
