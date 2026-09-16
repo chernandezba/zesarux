@@ -145,6 +145,10 @@
 8050   PAPER 7:INK 0:AT lin,col:OVER 0:PRINT zitems$(n);
 8060   LET lin=lin+1:IF lin=21 THEN LET lin=6:LET col=16
 8070  END FOR n
+8072  REMark Descartar teclas pendientes antes de aceptar una nueva seleccion
+8074  REPeat zvaciar
+8076   IF INKEY$(0)="" THEN EXIT zvaciar
+8078  END REPeat zvaciar
 8080 END DEFine zxmenu
 8090 DEFine PROCedure zxitem(zpaper,zink)
 8100  PAPER zpaper:INK zink:AT li,co:PRINT "               ";:AT li,co:PRINT zitems$(a);
