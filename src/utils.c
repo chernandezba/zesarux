@@ -4841,6 +4841,7 @@ int util_write_configfile(void)
 
                                                     ADD_STRING_CONFIG,"--tbblue-max-turbo-everywhere %d",tbblue_deny_turbo_everywhere_max_allowed);
 
+    if (ql_extension_emu_speed_enabled)             ADD_STRING_CONFIG,"--ql-emu-speed-extension");
 
     if (tbblue_fast_boot_mode.v)                    ADD_STRING_CONFIG,"--tbblue-fast-boot-mode");
 

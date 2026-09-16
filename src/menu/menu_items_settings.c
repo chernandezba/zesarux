@@ -16772,8 +16772,8 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_ql_cpu_emu_speed,NULL,
                 "Add EMU_SPEED extension","Agregar extensión EMU_SPEED","Afegir extensió EMU_SPEED");
             menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(ql_extension_emu_speed_enabled ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_cpu_settings,"Add EMU_SPEED extension to Super Basic to allow to change CPU speed");
-            menu_add_item_menu_ayuda(array_menu_cpu_settings,"Add EMU_SPEED extension to Super Basic to allow to change CPU speed. "
+            menu_add_item_menu_tooltip(array_menu_cpu_settings,"Add EMU_SPEED extension to Sinclair QL Super Basic to allow to change CPU speed");
+            menu_add_item_menu_ayuda(array_menu_cpu_settings,"Add EMU_SPEED extension to Sinclair QL Super Basic to allow to change CPU speed. "
                 "Requires Reset after enabling or disabling it");
         }
 
