@@ -36046,7 +36046,7 @@ void menu_debug_cpu_info_draw_cpu(void)
 
 
     int offset_x=menu_char_width;
-    int offset_y=menu_char_height;
+    int offset_y=menu_char_height*2;
 
 
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
@@ -36055,6 +36055,7 @@ void menu_debug_cpu_info_draw_cpu(void)
 }
 
 char menu_debug_cpu_info_overlay_last_speed[40]="";
+int antes_top_speed_timer=0;
 
 void menu_debug_cpu_info_overlay(void)
 {
@@ -36071,14 +36072,18 @@ void menu_debug_cpu_info_overlay(void)
     get_cpu_frequency_mhz_string(buffer_velocidad);
 
     //Si cambia la velocidad, forzar render
-    if (strcmp(menu_debug_cpu_info_overlay_last_speed,buffer_velocidad)) {
+    if (strcmp(menu_debug_cpu_info_overlay_last_speed,buffer_velocidad) || antes_top_speed_timer!=top_speed_timer.v) {
         //printf("Forzar redibujado por cambio velocidad\n");
         forzar_redibujado=1;
     }
 
+
+    antes_top_speed_timer=top_speed_timer.v;
+
     //Redibujar solo cuando es necesario
     if (menu_debug_cpu_info_window->dirty_user_must_draw_contents || forzar_redibujado) {
         zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s MHz (X%d)",buffer_velocidad,cpu_turbo_speed);
+        zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,1,(top_speed_timer.v ? "(Top Speed)" : "" ));
 
         menu_debug_cpu_info_draw_cpu();
         menu_debug_cpu_info_window->dirty_user_must_draw_contents=0;
@@ -36120,7 +36125,7 @@ void menu_debug_cpu_info(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("debugcpuinfo",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=23;
-            alto_ventana=9;
+            alto_ventana=10;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
