@@ -46,6 +46,7 @@
 #include "joystick.h"
 #include "menu_filesel.h"
 #include "qsound.h"
+#include "timer.h"
 
 
 #if defined(__APPLE__)
@@ -80,6 +81,7 @@ void ql_basext_reset(void)
     ql_basext_vector=0;
     ql_basext_state=0;
     ql_emu_speed=1;
+    top_speed_timer.v=0;
 }
 
 void ql_basext_poll(void)
@@ -137,17 +139,33 @@ void ql_basext_poll(void)
         a1+=4;
         for (i=0;i<4;i++) ql_writebyte(a6+0x58+i,(a1>>(24-8*i))&255);
         m68k_set_reg(M68K_REG_A1,a1);
-        if (value>MAX_CPU_TURBO_SPEED) m68k_set_reg(M68K_REG_D0,-4); // ERR.OR
-        else {
-            ql_emu_speed=value;
-            // Reutilizar el turbo comun, como ZX-Uno y Next, sin alterar el core.
-            // Cero selecciona ejecucion sin limite de tiempo real.
-            int turbo=value ? value : 1;
-            if (cpu_turbo_speed!=turbo) {
-                cpu_turbo_speed=turbo;
-                cpu_set_turbo_speed();
-            }
+        //if (value>MAX_CPU_TURBO_SPEED) m68k_set_reg(M68K_REG_D0,-4); // ERR.OR
+
+        if (value>MAX_CPU_TURBO_SPEED) value=MAX_CPU_TURBO_SPEED;
+        if (value<0) value=1;
+
+
+        ql_emu_speed=value;
+        // Reutilizar el turbo comun, como ZX-Uno y Next, sin alterar el core.
+        // Cero selecciona ejecucion sin limite de tiempo real.
+        int turbo;
+
+        if (value==0) {
+            turbo=1;
+            top_speed_timer.v=1;
+            printf("Activado top speed\n");
         }
+        else {
+            turbo=value;
+            top_speed_timer.v=0;
+            printf("Cpu_speed=%d X\n",turbo);
+        }
+
+        if (cpu_turbo_speed!=turbo) {
+            cpu_turbo_speed=turbo;
+            cpu_set_turbo_speed();
+        }
+
     }
 }
 
