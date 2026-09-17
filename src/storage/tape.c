@@ -3526,6 +3526,8 @@ Y si se detiene con break? como lo sabremos?
 
 8EFC: entrada de grabar bit de registro L?
 
+8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
+
 bloque navidad tzx
 
 00000000  00 4e 41 56 49 44 41 44  20 20 20 b1 0a 01 00 b1  |.NAVIDAD   .....|
@@ -3534,6 +3536,8 @@ bloque navidad tzx
 
 //TODO: que detecte si esta cinta insertada en salida
 //TODO: que grabe rapido, evitando enviar el sonido de los bytes o de los tonos guia
+
+//TODO: en que momento se desactivara el core? al hacer reset? identificamos si supertapecopier sigue en memoria leyendo algunas direcciones?
 
 z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
@@ -3544,10 +3548,10 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
         case 0x8ED2:
         case 0x8EDC:
             if (reg_pc==0x8ED2) {
-                printf("Saving flag %02X\n",reg_l);
+                printf("Saving flag %02X (index=%d)\n",reg_l,supertapecopier_memory_pointer);
             }
             if (reg_pc==0x8EDC) {
-                printf("Saving byte %02X\n",reg_l);
+                printf("Saving byte %02X (index=%d)\n",reg_l,supertapecopier_memory_pointer);
             }
 
             supertapecopier_put_byte(reg_l);
@@ -3560,6 +3564,18 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
             }
 
         break;
+
+        //8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
+        //Para no esperar al tiempo de grabar cada byte
+        case 0x8EFE:
+            reg_pc +=3;
+        break;
+
+        //Para saltarse los tonos guia
+        case 0x8EAC:
+            reg_pc=0x8ED0;
+        break;
+
 
         case 0x8F2E:
             printf("End of tape block\n");
