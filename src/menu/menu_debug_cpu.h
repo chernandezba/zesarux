@@ -198,7 +198,8 @@ extern int map_adventure_offset_y;
 "call address: Calls memory address, address is an expression\n" \
 "disassemble address: Dissassemble address, address is an expression\n" \
 "let varX=expression: Assign expression to a user variable, where X is in range 0..9\n" \
-"printc expression: Print ascii character to console\n" \
+"printc expression: Print ascii character to console; note this prints the character as it is, no filtering is done so some characters for example < 32 may produce strange results\n" \
+"printcf expression: Print ascii character to console but filtering characters < 32 or > 126\n" \
 "printe expression: Print expression following the same syntax as breakpoints and evaluate expression\n" \
 "printregs: Print registers\n" \
 "prints string: Prints string to console\n" \

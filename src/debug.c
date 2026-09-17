@@ -6920,7 +6920,7 @@ void debug_run_action_breakpoint(char *comando)
     }
 
 
-    else if (!strcmp(comando_sin_parametros,"printc")) {
+    else if (!strcmp(comando_sin_parametros,"printc") || !strcmp(comando_sin_parametros,"printcf") ) {
       breakpoint_action_parse_commands_argvc(parametros);
       if (breakpoint_action_command_argc<1) debug_printf (VERBOSE_DEBUG,"Command needs one parameter");
       else {
@@ -6928,9 +6928,14 @@ void debug_run_action_breakpoint(char *comando)
 
         caracter=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[0]);
 
-        debug_printf (VERBOSE_DEBUG,"Running printc command character: %d",caracter);
+        debug_printf (VERBOSE_DEBUG,"Running %s command character: %d",comando_sin_parametros,caracter);
+
+        if (!strcmp(comando_sin_parametros,"printcf")) {
+            if (caracter<32 || caracter>126) caracter='.';
+        }
 
         printf ("%c",caracter);
+        fflush(stdout);
       }
     }
 
