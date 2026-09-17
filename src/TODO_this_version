@@ -314,10 +314,10 @@ los traps que tenemos ahora
 Quiza en vez de byte a byte que envie un bloque de tap entero detectando cuando acaba?
 
 
-
+8ED2: enviar a grabar flag, en registro L
 8EDC: Lectura de byte, en registro L. Pero no el flag del inicio
 8EDD: Si DE=0, fin bloque -> mejor 8f2e
-8ed2: enviar a grabar flag, en registro L
+
 
 Y si se detiene con break? como lo sabremos?
 8f20: lectura de break
