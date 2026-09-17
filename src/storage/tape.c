@@ -3467,3 +3467,156 @@ int realtape_get_current_bit_playing(void)
     }
 
 }
+
+int supertapecopier_nested_id_core;
+
+enum supertapecopier_status {
+    SUPERTAPECOPIER_IDLE,
+    SUPERTAPECOPIER_READING_BYTES
+};
+
+
+enum supertapecopier_status supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
+
+int supertapecopier_memory_pointer=0;
+
+z80_byte *supertapecopier_memory_buffer=NULL;
+
+//mas que suficiente
+#define SUPERTAPECOPIER_MEMORY_SIZE (128*1024)
+
+void supertapecopier_put_byte(z80_byte v)
+{
+    //Por si acaso
+    if (supertapecopier_memory_buffer==NULL) return;
+
+    if (supertapecopier_memory_pointer>=SUPERTAPECOPIER_MEMORY_SIZE) return;
+
+    supertapecopier_memory_buffer[supertapecopier_memory_pointer++]=v;
+
+}
+
+/*
+-SuperTapecopier:  poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
+y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
+Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
+los traps que tenemos ahora
+Quiza en vez de byte a byte que envie un bloque de tap entero detectando cuando acaba?
+
+
+8ED2: enviar a grabar flag, en registro L
+8EDC: Lectura de byte, en registro L. Pero no el flag del inicio
+8EDD: Si DE=0, fin bloque -> mejor 8f2e
+
+
+Y si se detiene con break? como lo sabremos?
+8f20: lectura de break
+
+8f2e: retorno de break y tambien final de bloque -> Mejor este para saber final de bloque
+
+87bc: despues de final de bloque y mira si pulsado break (si pulsado break, flag C=0). si pulsado break entra en 87be
+
+--
+
+8F02: decrementar DE (longitud) incrementar IX (direccion)
+
+8ED7: ver final bloque
+
+8EE5: cuando es final de bloque y generar checksum. Acaba en L?
+
+8EFC: entrada de grabar bit de registro L?
+
+bloque navidad tzx
+
+00000000  00 4e 41 56 49 44 41 44  20 20 20 b1 0a 01 00 b1  |.NAVIDAD   .....|
+00000010  0a
+*/
+
+//TODO: que detecte si esta cinta insertada en salida
+//TODO: que grabe rapido, evitando enviar el sonido de los bytes o de los tonos guia
+
+z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
+{
+
+    int i;
+
+    switch (reg_pc) {
+        case 0x8ED2:
+        case 0x8EDC:
+            if (reg_pc==0x8ED2) {
+                printf("Saving flag %02X\n",reg_l);
+            }
+            if (reg_pc==0x8EDC) {
+                printf("Saving byte %02X\n",reg_l);
+            }
+
+            supertapecopier_put_byte(reg_l);
+
+
+            if (supertapecopier_status_block==SUPERTAPECOPIER_IDLE) {
+                supertapecopier_status_block=SUPERTAPECOPIER_READING_BYTES;
+
+                //TODO: initialize memory buffer
+            }
+
+        break;
+
+        case 0x8F2E:
+            printf("End of tape block\n");
+
+            //debug
+            for (i=0;i<supertapecopier_memory_pointer;i++) {
+                printf("%02X ",supertapecopier_memory_buffer[i]);
+            }
+            printf("\n");
+
+            //TODO: sabe memory buffer
+
+            supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
+            supertapecopier_memory_pointer=0;
+
+        break;
+    }
+
+
+    //Llamar a anterior
+    debug_nested_core_call_previous(supertapecopier_nested_id_core);
+
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    return 0;
+
+}
+
+//Establecer rutinas propias
+void supertapecopier_set_core_functions(void)
+{
+    debug_printf (VERBOSE_DEBUG,"Setting supertapecopier core functions");
+
+    supertapecopier_nested_id_core=debug_nested_core_add(cpu_core_loop_supertapecopier,"supertapecopier core");
+
+}
+
+//Restaurar rutinas de supertapecopier
+void supertapecopier_restore_core_functions(void)
+{
+    debug_printf (VERBOSE_DEBUG,"Restoring original core functions before supertapecopier");
+
+    debug_nested_core_del(supertapecopier_nested_id_core);
+
+}
+
+
+void tape_enable_core_supertapecopier(void)
+{
+    printf("Enabling supertape copier core\n");
+
+    supertapecopier_set_core_functions();
+
+    if (supertapecopier_memory_buffer==NULL) {
+        supertapecopier_memory_buffer=util_malloc(SUPERTAPECOPIER_MEMORY_SIZE,"Can not allocate memory for save buffer");
+    }
+
+    supertapecopier_memory_pointer=0;
+
+
+}

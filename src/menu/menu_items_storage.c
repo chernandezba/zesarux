@@ -666,6 +666,9 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 
                 noautoload.v=pre_noautoload.v;
                 salir_todos_menus=1;
+
+                //Si es super tape copier, activamos un core para poder interceptar las rutinas de grabacion
+                if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
             }
             else {
                 debug_printf(VERBOSE_ERR,"Tape copier %s not found",item_seleccionado.texto_misc);

@@ -307,37 +307,5 @@ y/o opcion para decir si mostrar 1 fila solo o mas
 ----
 
 
--SuperTapecopier:  poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
-y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
-Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
-los traps que tenemos ahora
-Quiza en vez de byte a byte que envie un bloque de tap entero detectando cuando acaba?
 
-
-8ED2: enviar a grabar flag, en registro L
-8EDC: Lectura de byte, en registro L. Pero no el flag del inicio
-8EDD: Si DE=0, fin bloque -> mejor 8f2e
-
-
-Y si se detiene con break? como lo sabremos?
-8f20: lectura de break
-
-8f2e: retorno de break y tambien final de bloque -> Mejor este para saber final de bloque
-
-87bc: despues de final de bloque y mira si pulsado break (si pulsado break, flag C=0). si pulsado break entra en 87be
-
---
-
-8F02: decrementar DE (longitud) incrementar IX (direccion)
-
-8ED7: ver final bloque
-
-8EE5: cuando es final de bloque y generar checksum. Acaba en L?
-
-8EFC: entrada de grabar bit de registro L?
-
-bloque navidad tzx
-
-00000000  00 4e 41 56 49 44 41 44  20 20 20 b1 0a 01 00 b1  |.NAVIDAD   .....|
-00000010  0a
 

@@ -34,6 +34,8 @@ extern int tap_out_close(void);
 extern void tap_load(void);
 extern void tap_save(void);
 
+extern void tape_enable_core_supertapecopier(void);
+
 extern char *tapefile;
 extern char *tape_out_file;
 extern z80_bit initial_tap_load;
