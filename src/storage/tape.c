@@ -3544,11 +3544,113 @@ z80_int temp_debug_previo_ix;
 
 z80_byte temp_xor_bytes=0;
 
+void supertapecopier_tap_save(void)
+{
+
+    if (supertapecopier_memory_buffer==NULL) return;
+
+    z80_byte flag=supertapecopier_memory_buffer[0];
+    //z80_int dir=reg_ix;
+    z80_int longitud;
+
+    reg_pc=pop_valor();
+
+    //debug_printf(VERBOSE_INFO,"Saving %d bytes at %d address with flag %d",longitud,dir,flag);
+
+
+    if (tape_out_block_open()) return;
+
+    //Escribimos longitud (contando flag+checksum)
+    longitud=supertapecopier_memory_pointer;
+
+    //Avisamos que vamos a escribir un bloque... en tzx se usa para meter el id correspondiente
+    tape_block_begin_save(longitud,flag);
+
+
+    //Solo hacer esto si no es un archivo tipo PZX
+    if (!tape_out_inserted_is_pzx) {
+
+        if (tape_block_save(&longitud, 2)!=2) {
+            debug_printf(VERBOSE_ERR,"Error writing length");
+
+            eject_tape_save();
+
+            tape_out_block_close();
+            return;
+        }
+
+    }
+
+
+        //Escribimos flag
+        /*if (tape_block_save(&flag, 1)!=1) {
+                debug_printf(VERBOSE_ERR,"Error writing flag");
+                //tape_out_file=0;
+        eject_tape_save();
+        //tape_save_inserted.v=0;
+        tape_out_block_close();
+                return;
+        }*/
+
+        //Escribimos flag,bytes,checksum
+        //longitud-=2;
+        //z80_byte checksum=flag;
+
+        /*
+        z80_byte leido;
+
+        z80_int dir=0;
+
+        for (;longitud;longitud--,dir++) {
+                leido=supertapecopier_memory_buffer[dir];
+                //checksum=checksum ^ leido;
+                if (tape_block_save(&leido, 1)!=1) {
+                    debug_printf(VERBOSE_ERR,"Error writing bytes");
+
+                    eject_tape_save();
+
+                    tape_out_block_close();
+                    return;
+                }
+        }
+        */
+
+        if (tape_block_save(supertapecopier_memory_buffer, longitud)!=longitud) {
+            debug_printf(VERBOSE_ERR,"Error writing bytes");
+
+            eject_tape_save();
+
+            tape_out_block_close();
+            return;
+        }
+
+
+        //Escribimos checksum
+        /*if (tape_block_save(&checksum, 1)!=1) {
+                debug_printf(VERBOSE_ERR,"Error writing checksum");
+                //tape_out_file=0;
+        eject_tape_save();
+        //tape_save_inserted.v=0;
+        tape_out_block_close();
+                return;
+        }*/
+
+
+    tape_out_block_close();
+
+
+
+}
+
+
+
 z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
     //Si la cpu esta interrumpida esperando a que llegue final de frame de video, aqui no interceptar
-    if (esperando_tiempo_final_t_estados.v==0) {
+    if (esperando_tiempo_final_t_estados.v==0 && tape_out_file && (tape_loadsave_inserted & TAPE_SAVE_INSERTED) ) {
+
+
 
         int i;
 
@@ -3566,6 +3668,7 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
                         //menu_set_menu_abierto(1);
                         //menu_fire_event_open_menu();
                     }
+
 
                     temp_debug_previo_ix=reg_ix;
                 }
@@ -3604,6 +3707,21 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
                 printf("\n");
 
                 //TODO: save memory buffer
+
+
+
+
+
+                audio_playing.v=0;
+
+                draw_tape_text();
+
+                supertapecopier_tap_save();
+
+                timer_reset();
+
+
+
 
                 supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
 

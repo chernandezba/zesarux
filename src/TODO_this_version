@@ -314,5 +314,6 @@ probando con navidad.tzx
 Suele meter 8 o 16 bytes de mas repetidos....
 Supongo que en algun caso al llegar a 0x8EDC no escribe realmente ese valor
 Cuando mete 8 bytes son en el offset 1833...
+* probar tap, tzx y pzx en salida
 
-
+-no descarga con ssl en linux ? ejemplo abadia del crimen en TAP
