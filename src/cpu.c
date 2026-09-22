@@ -1934,6 +1934,7 @@ void set_machine_params(void)
     interface007_enabled.v=0;
     dinamid3_enabled.v=0;
     textadv_location_desc_enabled.v=0;
+    supertapecopier_tape_traps.v=0;
 
     plus3dos_traps.v=0;
     pd765_enabled.v=0;

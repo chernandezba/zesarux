@@ -3682,6 +3682,7 @@ void cpu_core_loop_supertapecopier_continue(void)
 
 }
 
+z80_bit supertapecopier_tape_traps={0};
 
 
 z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
@@ -3703,10 +3704,42 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
 
 }
 
+int supertapecopiercore_is_enabled(void)
+{
+
+    return supertapecopier_tape_traps.v;
+
+    /*
+    int core_supertapecopier=1;
+
+    //Ver si el core de super tape copier traps esta activado
+    if (cpu_core_loop!=cpu_core_loop_nested_handler) {
+        core_supertapecopier=0;
+    }
+
+    else {
+        //Esta activo el handler. Vamos a ver si esta activo el if1 dentro
+        if (debug_nested_find_function_name(nested_list_core,"supertapecopier core")==NULL) {
+            //No estaba en la lista
+            core_supertapecopier=0;
+        }
+
+    }
+
+    return core_supertapecopier;
+    */
+}
+
 //Establecer rutinas propias
 void supertapecopier_set_core_functions(void)
 {
     debug_printf (VERBOSE_DEBUG,"Setting supertapecopier core functions");
+
+    //Si ya esta activo no intentar activar de nuevo o de lo contrario genera segfault al anidarse dos veces mismo core
+    //Nota: tambien podriamos detectarlo con una variable de enabled o no pero eso implica
+    //tenerla que resetearla a 0 en la funcion de set_machine_params... que podria hacerlo,
+    //pero es simplemente por usar otra alternativa
+    //if (supertapecopiercore_is_enabled()) return;
 
     supertapecopier_nested_id_core=debug_nested_core_add(cpu_core_loop_supertapecopier,"supertapecopier core");
 
@@ -3726,6 +3759,11 @@ void tape_enable_core_supertapecopier(void)
 {
     printf("Enabling supertape copier core\n");
 
+    if (supertapecopier_tape_traps.v) {
+        printf("already enabled\n");
+        return;
+    }
+
     supertapecopier_set_core_functions();
 
     if (supertapecopier_memory_buffer==NULL) {
@@ -3734,26 +3772,22 @@ void tape_enable_core_supertapecopier(void)
 
     supertapecopier_memory_pointer=0;
 
+    supertapecopier_tape_traps.v=1;
+
 
 }
 
-int supertapecopiercore_is_enabled(void)
+void tape_disable_core_supertapecopier(void)
 {
-    int core_supertapecopier=1;
-
-    //Ver si el core de super tape copier traps esta activado
-    if (cpu_core_loop!=cpu_core_loop_nested_handler) {
-        core_supertapecopier=0;
+    if (supertapecopier_tape_traps.v==0) {
+        printf("already disabled\n");
+        return;
     }
 
-    else {
-        //Esta activo el handler. Vamos a ver si esta activo el if1 dentro
-        if (debug_nested_find_function_name(nested_list_core,"supertapecopier core")==NULL) {
-            //No estaba en la lista
-            core_supertapecopier=0;
-        }
+    printf("Disabling supertape copier core\n");
 
-    }
+    supertapecopier_restore_core_functions();
 
-    return core_supertapecopier;
+    supertapecopier_tape_traps.v=0;
+
 }

@@ -686,8 +686,10 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
                 }
 
                 else {
-                    //Si es super tape copier, activamos un core para poder interceptar las rutinas de grabacion
-                    if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
+                    if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) {
+                        if (supertapecopiercore_is_enabled()) tape_disable_core_supertapecopier();
+                        else tape_enable_core_supertapecopier();
+                    }
                 }
 
 
