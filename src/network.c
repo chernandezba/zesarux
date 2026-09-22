@@ -184,6 +184,15 @@ int z_connect_ssl(int indice_tabla)
     sockets_list[indice_tabla].ssl_ctx = SSL_CTX_new (SSLv23_client_method ());
     //sockets_list[indice_tabla].ssl_ctx = SSL_CTX_new (TLSv1_client_method() );
 
+    if (sockets_list[indice_tabla].ssl_ctx == NULL) {
+        debug_printf(VERBOSE_DEBUG, "SSL_CTX_new FAILED");
+        ERR_print_errors_fp(stderr);
+        return -1;
+    }
+
+    debug_printf(VERBOSE_DEBUG, "SSL_new");
+
+
     // create an SSL connection and attach it to the socket
     sockets_list[indice_tabla].ssl_conn = SSL_new(sockets_list[indice_tabla].ssl_ctx);
 

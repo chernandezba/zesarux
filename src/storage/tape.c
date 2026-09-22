@@ -3534,15 +3534,11 @@ bloque navidad tzx
 00000010  0a
 */
 
-//TODO: que detecte si esta cinta insertada en salida
-//TODO: que grabe rapido, evitando enviar el sonido de los bytes o de los tonos guia
-
-//TODO: en que momento se desactivara el core? al hacer reset? identificamos si supertapecopier sigue en memoria leyendo algunas direcciones?
 
 
-z80_int temp_debug_previo_ix;
+//z80_int temp_debug_previo_ix;
 
-z80_byte temp_xor_bytes=0;
+//z80_byte temp_xor_bytes=0;
 
 void supertapecopier_tap_save(void)
 {
@@ -3550,18 +3546,19 @@ void supertapecopier_tap_save(void)
     if (supertapecopier_memory_buffer==NULL) return;
 
     z80_byte flag=supertapecopier_memory_buffer[0];
-    //z80_int dir=reg_ix;
+
     z80_int longitud;
 
-    reg_pc=pop_valor();
 
-    //debug_printf(VERBOSE_INFO,"Saving %d bytes at %d address with flag %d",longitud,dir,flag);
+    longitud=supertapecopier_memory_pointer;
+
+    debug_printf(VERBOSE_INFO,"Saving %d bytes to tape from Supertapecopier with flag %d",longitud-2,flag);
 
 
     if (tape_out_block_open()) return;
 
     //Escribimos longitud (contando flag+checksum)
-    longitud=supertapecopier_memory_pointer;
+
 
     //Avisamos que vamos a escribir un bloque... en tzx se usa para meter el id correspondiente
     tape_block_begin_save(longitud,flag);
@@ -3582,61 +3579,104 @@ void supertapecopier_tap_save(void)
     }
 
 
-        //Escribimos flag
-        /*if (tape_block_save(&flag, 1)!=1) {
-                debug_printf(VERBOSE_ERR,"Error writing flag");
-                //tape_out_file=0;
+    if (tape_block_save(supertapecopier_memory_buffer, longitud)!=longitud) {
+        debug_printf(VERBOSE_ERR,"Error writing bytes");
+
         eject_tape_save();
-        //tape_save_inserted.v=0;
+
         tape_out_block_close();
-                return;
-        }*/
-
-        //Escribimos flag,bytes,checksum
-        //longitud-=2;
-        //z80_byte checksum=flag;
-
-        /*
-        z80_byte leido;
-
-        z80_int dir=0;
-
-        for (;longitud;longitud--,dir++) {
-                leido=supertapecopier_memory_buffer[dir];
-                //checksum=checksum ^ leido;
-                if (tape_block_save(&leido, 1)!=1) {
-                    debug_printf(VERBOSE_ERR,"Error writing bytes");
-
-                    eject_tape_save();
-
-                    tape_out_block_close();
-                    return;
-                }
-        }
-        */
-
-        if (tape_block_save(supertapecopier_memory_buffer, longitud)!=longitud) {
-            debug_printf(VERBOSE_ERR,"Error writing bytes");
-
-            eject_tape_save();
-
-            tape_out_block_close();
-            return;
-        }
-
-
-        //Escribimos checksum
-        /*if (tape_block_save(&checksum, 1)!=1) {
-                debug_printf(VERBOSE_ERR,"Error writing checksum");
-                //tape_out_file=0;
-        eject_tape_save();
-        //tape_save_inserted.v=0;
-        tape_out_block_close();
-                return;
-        }*/
+        return;
+    }
 
 
     tape_out_block_close();
+
+
+}
+
+void cpu_core_loop_supertapecopier_continue(void)
+{
+
+
+    if (tape_out_file==0) return;
+
+    if ( (tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) return;
+
+    //Si este core sigue activo pero el usuario ha hecho reset o lo que sea.. buscar al menos 3 bytes
+    //que sean del programa
+    //839b="SuperTapeCopier"
+    if (peek_byte_no_time(0x839b)!='S' || peek_byte_no_time(0x839c)!='u' || peek_byte_no_time(0x839d)!='p') return;
+
+
+    //int i;
+
+    switch (reg_pc) {
+        case 0x8ED2:
+        case 0x8EDC:
+            if (reg_pc==0x8ED2) {
+                debug_printf(VERBOSE_DEBUG,"Supertape copier trap, tape save flag %02X (index=%d)",reg_l,supertapecopier_memory_pointer);
+            }
+            if (reg_pc==0x8EDC) {
+                debug_printf(VERBOSE_DEBUG,"Supertape copier trap, tape save byte %02X (index=%d) IX=%d",reg_l,supertapecopier_memory_pointer,reg_ix);
+
+                /*if (reg_ix!=temp_debug_previo_ix+1) {
+                    printf("IX no consecutivo\n");
+
+                }*/
+
+
+                //temp_debug_previo_ix=reg_ix;
+            }
+
+            if (supertapecopier_status_block==SUPERTAPECOPIER_IDLE) {
+                supertapecopier_status_block=SUPERTAPECOPIER_READING_BYTES;
+                supertapecopier_memory_pointer=0;
+                //temp_xor_bytes=0;
+            }
+
+            supertapecopier_put_byte(reg_l);
+
+            //temp_xor_bytes ^=reg_l;
+
+        break;
+
+        //8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
+        //Para no esperar al tiempo de grabar cada byte
+        case 0x8EFE:
+            reg_pc +=3;
+        break;
+
+        //Para saltarse los tonos guia
+        case 0x8EAC:
+            reg_pc=0x8ED0;
+        break;
+
+
+        case 0x8F2E:
+            debug_printf(VERBOSE_DEBUG,"Supertape copier trap, end of tape block");
+
+            //debug
+            /*for (i=0;i<supertapecopier_memory_pointer;i++) {
+                printf("%02X ",supertapecopier_memory_buffer[i]);
+            }
+            printf("\n");
+            */
+
+            //save memory buffer
+
+            audio_playing.v=0;
+
+            draw_tape_text();
+
+            supertapecopier_tap_save();
+
+            timer_reset();
+
+            supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
+
+
+        break;
+    }
 
 
 
@@ -3648,86 +3688,10 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
 {
 
     //Si la cpu esta interrumpida esperando a que llegue final de frame de video, aqui no interceptar
-    if (esperando_tiempo_final_t_estados.v==0 && tape_out_file && (tape_loadsave_inserted & TAPE_SAVE_INSERTED) ) {
+    if (esperando_tiempo_final_t_estados.v==0) {
 
+        cpu_core_loop_supertapecopier_continue();
 
-
-        int i;
-
-        switch (reg_pc) {
-            case 0x8ED2:
-            case 0x8EDC:
-                if (reg_pc==0x8ED2) {
-                    printf("Saving flag %02X (index=%d) IX=%d\n",reg_l,supertapecopier_memory_pointer,reg_ix);
-                }
-                if (reg_pc==0x8EDC) {
-                    printf("Saving byte %02X (index=%d) IX=%d R=%02XH esperando_tiempo_final_t_estados.v=%d temp_xor_bytes=%02XH\n",
-                        reg_l,supertapecopier_memory_pointer,reg_ix,reg_r,esperando_tiempo_final_t_estados.v,temp_xor_bytes);
-                    if (reg_ix!=temp_debug_previo_ix+1) {
-                        printf("IX no consecutivo\n");
-                        //menu_set_menu_abierto(1);
-                        //menu_fire_event_open_menu();
-                    }
-
-
-                    temp_debug_previo_ix=reg_ix;
-                }
-
-                if (supertapecopier_status_block==SUPERTAPECOPIER_IDLE) {
-                    supertapecopier_status_block=SUPERTAPECOPIER_READING_BYTES;
-                    supertapecopier_memory_pointer=0;
-                    temp_xor_bytes=0;
-                }
-
-                supertapecopier_put_byte(reg_l);
-
-                temp_xor_bytes ^=reg_l;
-
-            break;
-
-            //8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
-            //Para no esperar al tiempo de grabar cada byte
-            case 0x8EFE:
-                reg_pc +=3;
-            break;
-
-            //Para saltarse los tonos guia
-            case 0x8EAC:
-                reg_pc=0x8ED0;
-            break;
-
-
-            case 0x8F2E:
-                printf("End of tape block. temp_xor_bytes=%02XH\n",temp_xor_bytes);
-
-                //debug
-                for (i=0;i<supertapecopier_memory_pointer;i++) {
-                    printf("%02X ",supertapecopier_memory_buffer[i]);
-                }
-                printf("\n");
-
-                //TODO: save memory buffer
-
-
-
-
-
-                audio_playing.v=0;
-
-                draw_tape_text();
-
-                supertapecopier_tap_save();
-
-                timer_reset();
-
-
-
-
-                supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
-
-
-            break;
-        }
     }
 
 
