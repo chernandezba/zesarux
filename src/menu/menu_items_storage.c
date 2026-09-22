@@ -605,34 +605,47 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador ~~Primi 2  (48K)");
         menu_add_item_menu_misc(array_menu_common,"copiadorprimi2.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1); //indica que se lanza un copion
         menu_add_item_menu_shortcut(array_menu_common,'p');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador ~~Azul     (48K)");
         menu_add_item_menu_misc(array_menu_common,"copiador.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'a');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Duplitape         (48K)");
         menu_add_item_menu_misc(array_menu_common,"duplitape.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'d');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Duplitape2        (48K)");
         menu_add_item_menu_misc(array_menu_common,"duplitape2.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Copion9           (48K)");
         menu_add_item_menu_misc(array_menu_common,"copion9.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'c');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Mancopy           (48K)");
         menu_add_item_menu_misc(array_menu_common,"mancopy.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'m');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Lao-Copy 2        (48K)");
         menu_add_item_menu_misc(array_menu_common,"laocopy2.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'l');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~SuperTapeCopier  (128K)");
         menu_add_item_menu_misc(array_menu_common,"supertapecopier.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'s');
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," [%c] Tape save Traps",
+            (supertapecopiercore_is_enabled() ? 'X' : ' '));
+        menu_add_item_menu_misc(array_menu_common,"supertapecopier.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,0); //indica que es un tape save traps
 
         //menu_add_item_menu_separator(array_menu_common);
 
@@ -649,26 +662,35 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
             char buffer_nombre[PATH_MAX];
 
             if (find_sharedfile(copion_con_carpeta,buffer_nombre)) {
-                debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
-                strcpy(quickload_file,buffer_nombre);
-                quickfile=quickload_file;
-                //Forzar autoload
-                z80_bit pre_noautoload;
-                pre_noautoload.v=noautoload.v;
-                noautoload.v=0;
-                quickload(quickload_file);
+                if (item_seleccionado.valor_opcion) {
+                    debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
+                    strcpy(quickload_file,buffer_nombre);
+                    quickfile=quickload_file;
+                    //Forzar autoload
+                    z80_bit pre_noautoload;
+                    pre_noautoload.v=noautoload.v;
+                    noautoload.v=0;
+                    quickload(quickload_file);
 
-                //Y vaciamos el buffer de lectura de audio. Si lo tenemos activado,
-                //asi vaciamos y sincronizamos
-                //Nota: evidentemente al vaciar el buffer, si se estaba cargando, se cortara la carga,
-                //pero dado que hemos iniciado un copiador de cinta, no se estaba cargando nada ahora mismo
-                menu_realtape_empty_buffer();
+                    //Y vaciamos el buffer de lectura de audio. Si lo tenemos activado,
+                    //asi vaciamos y sincronizamos
+                    //Nota: evidentemente al vaciar el buffer, si se estaba cargando, se cortara la carga,
+                    //pero dado que hemos iniciado un copiador de cinta, no se estaba cargando nada ahora mismo
+                    menu_realtape_empty_buffer();
 
-                noautoload.v=pre_noautoload.v;
-                salir_todos_menus=1;
+                    noautoload.v=pre_noautoload.v;
+                    salir_todos_menus=1;
 
-                //Si es super tape copier, activamos un core para poder interceptar las rutinas de grabacion
-                if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
+                    //Si es super tape copier, activamos un core para poder interceptar las rutinas de grabacion
+                    if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
+                }
+
+                else {
+                    //Si es super tape copier, activamos un core para poder interceptar las rutinas de grabacion
+                    if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
+                }
+
+
             }
             else {
                 debug_printf(VERBOSE_ERR,"Tape copier %s not found",item_seleccionado.texto_misc);

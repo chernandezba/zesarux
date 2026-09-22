@@ -35,6 +35,7 @@ extern void tap_load(void);
 extern void tap_save(void);
 
 extern void tape_enable_core_supertapecopier(void);
+extern int supertapecopiercore_is_enabled(void);
 
 extern char *tapefile;
 extern char *tape_out_file;

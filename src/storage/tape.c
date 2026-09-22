@@ -3736,3 +3736,24 @@ void tape_enable_core_supertapecopier(void)
 
 
 }
+
+int supertapecopiercore_is_enabled(void)
+{
+    int core_supertapecopier=1;
+
+    //Ver si el core de super tape copier traps esta activado
+    if (cpu_core_loop!=cpu_core_loop_nested_handler) {
+        core_supertapecopier=0;
+    }
+
+    else {
+        //Esta activo el handler. Vamos a ver si esta activo el if1 dentro
+        if (debug_nested_find_function_name(nested_list_core,"supertapecopier core")==NULL) {
+            //No estaba en la lista
+            core_supertapecopier=0;
+        }
+
+    }
+
+    return core_supertapecopier;
+}
