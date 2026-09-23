@@ -29150,7 +29150,9 @@ void menu_visual_realtape_overlay(void)
 
     int minimo,maximo;
 
-    minimo=maximo=128;
+    //minimo=maximo=128;
+    minimo=255;
+    maximo=0;
 
     int indice;
 
@@ -29249,7 +29251,9 @@ void menu_visual_realtape_overlay(void)
                 return;
             }
 
-            minimo=maximo=128;
+            minimo=255;
+            maximo=0;
+
 
         }
     }

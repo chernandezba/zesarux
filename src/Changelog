@@ -72,6 +72,7 @@ Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
 Fixed disabling Search menu
 Fixed BMP saving for widths not divisible by 4
 Fixed generating pzx files by adding a one second pause between blocks
+Fixed showing tape waveform on Visual Real Tape
 Fixed Fade Out video effect
 Fixed downloading ZEsarUX extras from menu Network
 Fixed showing joystick button values on Real Joystick information window when using SDL

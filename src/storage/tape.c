@@ -2508,7 +2508,9 @@ void realtape_load_visuals(char *filename)
     int leidos=0;
     int posicion_visual=0;
 
-    minimo=maximo=128;
+    //minimo=maximo=128;
+    minimo=255;
+    maximo=0;
     z80_byte byte_leido;
 
     while (total_archivo>0) {
@@ -2530,7 +2532,7 @@ void realtape_load_visuals(char *filename)
 
             //por si acaso controlar maximo
             if (posicion_visual<realtape_visual_total_used) {
-                //printf("Writing position %4d value min %3d max %3d\n",posicion_visual,minimo,maximo);
+                //printf("Writing position %XH (leidos %XH) value min %3d max %3d\n",posicion_visual,leidos,minimo,maximo);
                 realtape_visual_data[posicion_visual][0]=minimo;
                 realtape_visual_data[posicion_visual][1]=maximo;
 
@@ -2542,7 +2544,8 @@ void realtape_load_visuals(char *filename)
                 return;
             }
 
-            minimo=maximo=128;
+            minimo=255;
+            maximo=0;
 
         }
     }
