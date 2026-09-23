@@ -36,7 +36,6 @@ extern void tap_save(void);
 
 extern void tape_enable_core_supertapecopier(void);
 extern void tape_disable_core_supertapecopier(void);
-extern int supertapecopiercore_is_enabled(void);
 
 extern z80_bit supertapecopier_tape_traps;
 

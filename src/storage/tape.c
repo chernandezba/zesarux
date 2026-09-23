@@ -3497,11 +3497,10 @@ void supertapecopier_put_byte(z80_byte v)
 }
 
 /*
--SuperTapecopier:  poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
+-SuperTapecopier:  meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
 y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
 Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
-los traps que tenemos ahora
-Quiza en vez de byte a byte que envie un bloque de tap entero detectando cuando acaba?
+los traps que detectan solo grabacion desde rom
 
 
 8ED2: enviar a grabar flag, en registro L
@@ -3603,7 +3602,7 @@ void cpu_core_loop_supertapecopier_continue(void)
     if ( (tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) return;
 
     //Si este core sigue activo pero el usuario ha hecho reset o lo que sea.. buscar al menos 3 bytes
-    //que sean del programa
+    //que sean del programa para saber que aun sigue ahi
     //839b="SuperTapeCopier"
     if (peek_byte_no_time(0x839b)!='S' || peek_byte_no_time(0x839c)!='u' || peek_byte_no_time(0x839d)!='p') return;
 
@@ -3704,42 +3703,13 @@ z80_byte cpu_core_loop_supertapecopier(z80_int dir GCC_UNUSED, z80_byte value GC
 
 }
 
-int supertapecopiercore_is_enabled(void)
-{
 
-    return supertapecopier_tape_traps.v;
-
-    /*
-    int core_supertapecopier=1;
-
-    //Ver si el core de super tape copier traps esta activado
-    if (cpu_core_loop!=cpu_core_loop_nested_handler) {
-        core_supertapecopier=0;
-    }
-
-    else {
-        //Esta activo el handler. Vamos a ver si esta activo el if1 dentro
-        if (debug_nested_find_function_name(nested_list_core,"supertapecopier core")==NULL) {
-            //No estaba en la lista
-            core_supertapecopier=0;
-        }
-
-    }
-
-    return core_supertapecopier;
-    */
-}
 
 //Establecer rutinas propias
 void supertapecopier_set_core_functions(void)
 {
     debug_printf (VERBOSE_DEBUG,"Setting supertapecopier core functions");
 
-    //Si ya esta activo no intentar activar de nuevo o de lo contrario genera segfault al anidarse dos veces mismo core
-    //Nota: tambien podriamos detectarlo con una variable de enabled o no pero eso implica
-    //tenerla que resetearla a 0 en la funcion de set_machine_params... que podria hacerlo,
-    //pero es simplemente por usar otra alternativa
-    //if (supertapecopiercore_is_enabled()) return;
 
     supertapecopier_nested_id_core=debug_nested_core_add(cpu_core_loop_supertapecopier,"supertapecopier core");
 
@@ -3757,10 +3727,10 @@ void supertapecopier_restore_core_functions(void)
 
 void tape_enable_core_supertapecopier(void)
 {
-    printf("Enabling supertape copier core\n");
+    debug_printf (VERBOSE_DEBUG,"Enabling supertape copier core");
 
     if (supertapecopier_tape_traps.v) {
-        printf("already enabled\n");
+        //printf("already enabled\n");
         return;
     }
 
@@ -3780,11 +3750,11 @@ void tape_enable_core_supertapecopier(void)
 void tape_disable_core_supertapecopier(void)
 {
     if (supertapecopier_tape_traps.v==0) {
-        printf("already disabled\n");
+        //printf("already disabled\n");
         return;
     }
 
-    printf("Disabling supertape copier core\n");
+    debug_printf (VERBOSE_DEBUG,"Disabling supertape copier core");
 
     supertapecopier_restore_core_functions();
 

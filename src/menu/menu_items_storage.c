@@ -643,13 +643,11 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'s');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," [%c] Tape save Traps",
-            (supertapecopiercore_is_enabled() ? 'X' : ' '));
+            (supertapecopier_tape_traps.v ? 'X' : ' '));
         menu_add_item_menu_misc(array_menu_common,"supertapecopier.zsf");
         menu_add_item_menu_valor_opcion(array_menu_common,0); //indica que es un tape save traps
 
-        //menu_add_item_menu_separator(array_menu_common);
 
-        //menu_add_ESC_item(array_menu_common);
 
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&storage_tape_copier_opcion_seleccionada,&item_seleccionado,array_menu_common,
@@ -660,8 +658,9 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
             char copion_con_carpeta[PATH_MAX];
             sprintf(copion_con_carpeta,"copiers/%s",item_seleccionado.texto_misc);
             char buffer_nombre[PATH_MAX];
-
             if (find_sharedfile(copion_con_carpeta,buffer_nombre)) {
+
+                //Cargamos un copiador
                 if (item_seleccionado.valor_opcion) {
                     debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
                     strcpy(quickload_file,buffer_nombre);
@@ -685,9 +684,10 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
                     if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
                 }
 
+                //Aplicamos tape traps sobre un copiador
                 else {
                     if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) {
-                        if (supertapecopiercore_is_enabled()) tape_disable_core_supertapecopier();
+                        if (supertapecopier_tape_traps.v) tape_disable_core_supertapecopier();
                         else tape_enable_core_supertapecopier();
                     }
                 }
