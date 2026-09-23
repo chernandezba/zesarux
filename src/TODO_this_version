@@ -321,4 +321,63 @@ hay fallo en SSL_CTX_new
 
 ok -pasar de pzx a audio no mete pausas entre bloques?
 
--visual real tape: zonas con silencio no aparece una linea horizontal sino un bloque
+ok -visual real tape: zonas con silencio no aparece una linea horizontal sino un bloque
+
+-visual real tape: considerar si en vez de mostrar minimos y maximos, mostrar valores medios. Esto
+muestra forma de onda real pero:
+*escalado vertical muy pequeño: hay que reescalar a maximo que queapa
+*si se reescala no se podra si hay valores que van a 0, como ejemplo dragon.tzx y otros tzx supuestamente
+
+el cambio seria guardar en array realtape_visual_data[0] el average. quiza incluso dejar 0 y 1 como ahora y 2 para average
+
+en tape.c:
+
+
+@ -2513,13 +2513,15 @@ void realtape_load_visuals(char *filename)
+     maximo=0;
+     z80_byte byte_leido;
+
++    long int acumulado=0;
++
+     while (total_archivo>0) {
+
+         byte_leido=*puntero;
+         puntero++;
+         //fread(&byte_leido,1,1,ptr_visual);
+
+-        //acumulado=acumulado+byte_leido;
++        acumulado=acumulado+byte_leido;
+         if (byte_leido<minimo) minimo=byte_leido;
+         if (byte_leido>maximo) maximo=byte_leido;
+
+@@ -2528,7 +2530,7 @@ void realtape_load_visuals(char *filename)
+
+         if ((leidos%tamanyo_trozo)==0) {
+             //siguiente trozo
+-            //acumulado /=tamanyo_trozo;
++            acumulado /=tamanyo_trozo;
+
+             //por si acaso controlar maximo
+             if (posicion_visual<realtape_visual_total_used) {
+@@ -2536,6 +2538,8 @@ void realtape_load_visuals(char *filename)
+                 realtape_visual_data[posicion_visual][0]=minimo;
+                 realtape_visual_data[posicion_visual][1]=maximo;
+
++                realtape_visual_data[posicion_visual][0]=acumulado;
++
+
+
+en menu_items.c:
+
+--- a/src/menu/menu_items.c
++++ b/src/menu/menu_items.c
+@@ -29168,6 +29168,8 @@ void menu_visual_realtape_overlay(void)
+         valor_leido_minimo=realtape_visual_data[indice][0];
+         valor_leido_maximo=realtape_visual_data[indice][1];
+
++        valor_leido_maximo=realtape_visual_data[indice][0];    -> este maximo realmente es el mismo que minimo y por tanto leen el average
++
+         //acumulado=acumulado+byte_leido;
+         if (valor_leido_minimo<minimo) minimo=valor_leido_minimo;
+         if (valor_leido_maximo>maximo) maximo=valor_leido_maximo;
+

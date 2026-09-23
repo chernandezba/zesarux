@@ -2513,6 +2513,8 @@ void realtape_load_visuals(char *filename)
     maximo=0;
     z80_byte byte_leido;
 
+    //long int acumulado=0;
+
     while (total_archivo>0) {
 
         byte_leido=*puntero;

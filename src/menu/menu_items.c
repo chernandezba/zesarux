@@ -29168,6 +29168,8 @@ void menu_visual_realtape_overlay(void)
         valor_leido_minimo=realtape_visual_data[indice][0];
         valor_leido_maximo=realtape_visual_data[indice][1];
 
+        //valor_leido_maximo=realtape_visual_data[indice][0];
+
         //acumulado=acumulado+byte_leido;
         if (valor_leido_minimo<minimo) minimo=valor_leido_minimo;
         if (valor_leido_maximo>maximo) maximo=valor_leido_maximo;
