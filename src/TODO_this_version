@@ -309,10 +309,14 @@ y/o opcion para decir si mostrar 1 fila solo o mas
 
 
 -SuperTapecopier:
-* probar tap, tzx y pzx en salida
+ok * probar tap en salida
+ok * probar tzx en salida
+ok * probar pzx en salida
 ok * que se habilite el tape trap automaticamente pero se pueda activar/desactivar desde el menu
 
 
 
 -no descarga con ssl en linux ? ejemplo abadia del crimen en TAP
 hay fallo en SSL_CTX_new
+
+-pasar de pzx a audio no mete pausas entre bloques?

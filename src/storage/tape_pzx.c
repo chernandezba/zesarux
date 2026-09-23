@@ -600,9 +600,30 @@ int tape_block_pzx_save(void *dir,int longitud)
 
 void tape_block_pzx_begin_save_ptr(FILE *ptr_archivo,int longitud,z80_byte flag,int in_fatfs, FIL *fil_pzxfile)
 {
+    z80_byte block_buffer[256];
 
+    //Escribir bloque pause siempre antes de cada bloque de datos
+    //00000060  20 20 c3 00 0a 00 c3 00  6e    50 41 55 53 04 00 00  |  ......nPAUS...|
+    //00000070  00   e0 67 35 00     50 55 4c  53 08 00 00 00 97 8c 78  |..g5.PULS......x|
 
+       block_buffer[0]='P';
+       block_buffer[1]='A';
+       block_buffer[2]='U';
+       block_buffer[3]='S';
 
+        //longitud
+       block_buffer[4]=4;
+       block_buffer[5]=0;
+       block_buffer[6]=0;
+       block_buffer[7]=0;
+
+       //Duracion 1 segundo (3500000 ciclos)
+       block_buffer[8]=0xe0;
+       block_buffer[9]=0x67;
+       block_buffer[10]=0x35;
+       block_buffer[11]=0;
+
+       zvfs_fwrite(in_fatfs,block_buffer, 12, ptr_archivo,fil_pzxfile);
 
 	//Escribir id 10
 	//pausa de 1000 ms
@@ -641,7 +662,7 @@ The standard pilot tone of Spectrum data block (leader >= 128) would be:
 0x8000+3223,2168,667,735
         */
 
-       z80_byte block_buffer[256];
+
        block_buffer[0]='P';
        block_buffer[1]='U';
        block_buffer[2]='L';
