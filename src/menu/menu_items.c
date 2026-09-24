@@ -29150,7 +29150,7 @@ void menu_visual_realtape_overlay(void)
 
     int minimo,maximo;
 
-    //minimo=maximo=128;
+
     minimo=255;
     maximo=0;
 
@@ -29160,19 +29160,6 @@ void menu_visual_realtape_overlay(void)
 
     int indice;
 
-    //printf("bloque posicion inicio %ld final %ld\n",menu_visual_realtape_bloque_posicion_inicio,menu_visual_realtape_bloque_posicion_final);
-    //printf("ajustado bloque posicion inicio %ld final %ld\n",
-    //    (menu_visual_realtape_bloque_posicion_inicio*maximo_x_dibujar)/total,
-    //    (menu_visual_realtape_bloque_posicion_final*maximo_x_dibujar)/total);
-
-
-    /*
-    Para escalar valor medio
-    realtape_visual_data_max_global=0;
-    realtape_visual_data_min_global=255;
-    realtape_visual_data_max_media_global=0;
-    realtape_visual_data_min_media_global=255;
-    */
 
 
     //DEBUG forzar valores. quitar esto!!
@@ -29181,27 +29168,20 @@ void menu_visual_realtape_overlay(void)
     //realtape_visual_data_max_media_global=128+20;
     //realtape_visual_data_min_media_global=128-20;
 
+    // Para escalar valor medio dentro del margen de minimo y maximo
 
-
-    //int amplitud_maximos_minimos=realtape_visual_data_max_global-realtape_visual_data_min_global;
-
-    //int amplitud_medios=realtape_visual_data_max_media_global-realtape_visual_data_min_media_global;
-
-    int amplitud_maximos_minimos;
-
-    int amplitud_medios;
-
-    //temp este es el calculo bueno
     int max_sin_signo=util_get_absolute(realtape_visual_data_max_global-128);
     int min_sin_signo=util_get_absolute(realtape_visual_data_min_global-128);
 
+    int amplitud_maximos_minimos;
     if (max_sin_signo>min_sin_signo) amplitud_maximos_minimos=max_sin_signo;
     else amplitud_maximos_minimos=min_sin_signo;
 
-    //temp este es el calculo bueno
+
     max_sin_signo=util_get_absolute(realtape_visual_data_max_media_global-128);
     min_sin_signo=util_get_absolute(realtape_visual_data_min_media_global-128);
 
+    int amplitud_medios;
     if (max_sin_signo>min_sin_signo) amplitud_medios=max_sin_signo;
     else amplitud_medios=min_sin_signo;
 
@@ -29222,8 +29202,6 @@ void menu_visual_realtape_overlay(void)
 
         //printf("valor medio: %3d indice: %d\n",valor_leido_medio,indice);
 
-
-        //acumulado=acumulado+byte_leido;
         if (valor_leido_minimo<minimo) minimo=valor_leido_minimo;
         if (valor_leido_maximo>maximo) maximo=valor_leido_maximo;
 
@@ -29307,34 +29285,16 @@ void menu_visual_realtape_overlay(void)
                     int min_signed=valor_medio_minimo-128;
                     int max_signed=valor_medio_maximo-128;
 
-                    //temp decir que el maximo es el maximo total, para escalar al maximo que se pueda
-                    //amplitud_maximos_minimos=255;
-
-                    //int factor=amplitud_maximos_minimos/amplitud_medios;
 
                     min_signed=(min_signed*amplitud_maximos_minimos)/amplitud_medios;
                     max_signed=(max_signed*amplitud_maximos_minimos)/amplitud_medios;
 
-                    //min_signed=min_signed*factor;
-                    //max_signed=max_signed*factor;
 
                     valor_medio_minimo=min_signed+128;
                     valor_medio_maximo=max_signed+128;
 
-                    //despues valor_medio_minimo 342 antes_valor_medio_minimo 143
-                    //valor_medio_maximo 342 antes_valor_medio_maximo 143
-                    //amplitud_maximos_minimos 243 amplitud_medios 17
                 }
 
-                //temporal debug, por si acaso
-                if (valor_medio_maximo>256 || valor_medio_maximo<-1) {
-                    printf("despues valor_medio_minimo %d antes_valor_medio_minimo %d "
-                            "valor_medio_maximo %d antes_valor_medio_maximo %d "
-                            "amplitud_maximos_minimos %d amplitud_medios %d\n",
-                        valor_medio_minimo,antes_valor_medio_minimo,
-                        valor_medio_maximo,antes_valor_medio_maximo,
-                        amplitud_maximos_minimos,amplitud_medios);
-                }
 
                 ymin=(valor_medio_minimo*alto)/256;
                 ymax=(valor_medio_maximo*alto)/256;
