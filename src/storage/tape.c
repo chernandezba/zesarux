@@ -2549,7 +2549,7 @@ void realtape_load_visuals(char *filename)
 
             //por si acaso controlar maximo
             if (posicion_visual<realtape_visual_total_used) {
-                //printf("Writing position %XH (leidos %XH) value min %3d max %3d\n",posicion_visual,leidos,minimo,maximo);
+                //printf("Writing position %XH (leidos %XH) value min %3d max %3d medio %d\n",posicion_visual,leidos,minimo,maximo,acumulado_medio);
                 realtape_visual_data[posicion_visual][0]=minimo;
                 realtape_visual_data[posicion_visual][1]=maximo;
                 realtape_visual_data[posicion_visual][2]=acumulado_medio;
