@@ -2437,9 +2437,10 @@ void realtape_get_byte(void)
 }
 
 
-//almacenar los datos que se veran en la ventana de visual real tape. Valores maximo y minimo ([0] minimo, [1] maximo)
+//almacenar los datos que se veran en la ventana de visual real tape.
+//Valores maximo y minimo  y medio ([0] minimo, [1] maximo, [2] medio)
 //Un minimo de REALTAPE_VISUAL_MAX_SIZE y maximo REALTAPE_VISUAL_MAX_SIZE*2
-z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][2];
+z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][3];
 
 int realtape_visual_total_used=REALTAPE_VISUAL_MAX_SIZE;
 
@@ -2459,7 +2460,7 @@ void init_visual_real_tape(void)
     //Ponerlo todo a onda plana
     int i;
     for (i=0;i<REALTAPE_VISUAL_MAX_SIZE*2;i++) {
-        realtape_visual_data[i][0]=realtape_visual_data[i][1]=128;
+        realtape_visual_data[i][0]=realtape_visual_data[i][1]=realtape_visual_data[i][2]=128;
     }
 
     //Inicializar array de posiciones
@@ -2513,15 +2514,16 @@ void realtape_load_visuals(char *filename)
     maximo=0;
     z80_byte byte_leido;
 
-    //long int acumulado=0;
+    z80_64bit acumulado=0;
 
     while (total_archivo>0) {
 
         byte_leido=*puntero;
+        //printf("byte leido: %d\n",byte_leido);
         puntero++;
         //fread(&byte_leido,1,1,ptr_visual);
 
-        //acumulado=acumulado+byte_leido;
+        acumulado=acumulado+(z80_64bit)byte_leido;
         if (byte_leido<minimo) minimo=byte_leido;
         if (byte_leido>maximo) maximo=byte_leido;
 
@@ -2530,13 +2532,17 @@ void realtape_load_visuals(char *filename)
 
         if ((leidos%tamanyo_trozo)==0) {
             //siguiente trozo
-            //acumulado /=tamanyo_trozo;
+            printf("Writing position %XH (leidos %XH) antes acumulado %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado,tamanyo_trozo);
+            acumulado /=tamanyo_trozo;
+
+            printf("Writing position %XH (leidos %XH) acumulado %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado,tamanyo_trozo);
 
             //por si acaso controlar maximo
             if (posicion_visual<realtape_visual_total_used) {
                 //printf("Writing position %XH (leidos %XH) value min %3d max %3d\n",posicion_visual,leidos,minimo,maximo);
                 realtape_visual_data[posicion_visual][0]=minimo;
                 realtape_visual_data[posicion_visual][1]=maximo;
+                realtape_visual_data[posicion_visual][2]=acumulado;
 
                 posicion_visual++;
             }
@@ -2548,6 +2554,7 @@ void realtape_load_visuals(char *filename)
 
             minimo=255;
             maximo=0;
+            acumulado=0;
 
         }
     }

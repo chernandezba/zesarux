@@ -29154,6 +29154,10 @@ void menu_visual_realtape_overlay(void)
     minimo=255;
     maximo=0;
 
+    int valor_medio_minimo,valor_medio_maximo;
+    valor_medio_minimo=255;
+    valor_medio_maximo=0;
+
     int indice;
 
     //printf("bloque posicion inicio %ld final %ld\n",menu_visual_realtape_bloque_posicion_inicio,menu_visual_realtape_bloque_posicion_final);
@@ -29163,16 +29167,21 @@ void menu_visual_realtape_overlay(void)
 
     for (indice=0;indice<realtape_visual_total_used;indice++) {
 
-        z80_byte valor_leido_maximo,valor_leido_minimo;
+        z80_byte valor_leido_maximo,valor_leido_minimo,valor_leido_medio;
 
         valor_leido_minimo=realtape_visual_data[indice][0];
         valor_leido_maximo=realtape_visual_data[indice][1];
+        valor_leido_medio=realtape_visual_data[indice][2];
 
-        //valor_leido_maximo=realtape_visual_data[indice][0];
+        //printf("valor medio: %3d indice: %d\n",valor_leido_medio,indice);
+
 
         //acumulado=acumulado+byte_leido;
         if (valor_leido_minimo<minimo) minimo=valor_leido_minimo;
         if (valor_leido_maximo>maximo) maximo=valor_leido_maximo;
+
+        if (valor_leido_medio<valor_medio_minimo) valor_medio_minimo=valor_leido_medio;
+        if (valor_leido_medio>valor_medio_maximo) valor_medio_maximo=valor_leido_medio;
 
 
         if ((indice%tamanyo_trozo_compensado)==0) {
@@ -29239,6 +29248,18 @@ void menu_visual_realtape_overlay(void)
                     zxvision_putpixel(menu_audio_visual_realtape_window,x+xorigen,(alto-1-y)+yorigen,color_fondo);
                 }
 
+                //dibujar valor medio con color ESTILO_GUI_COLOR_WAVEFORM_OSCURO
+
+                ymin=(valor_medio_minimo*alto)/256;
+                ymax=(valor_medio_maximo*alto)/256;
+
+
+                //condicion <= porque hay que llegar hasta el valor maximo
+                for (y=ymin;y<=ymax;y++) {
+                    zxvision_putpixel(menu_audio_visual_realtape_window,x+xorigen,(alto-1-y)+yorigen,ESTILO_GUI_COLOR_WAVEFORM_OSCURO);
+                }
+
+
                 //Si esta el cursor de cinta aqui, dibujar linea vertical
                 if (x==posicion_cinta_x) {
                     for (y=0;y<alto;y++) {
@@ -29255,6 +29276,9 @@ void menu_visual_realtape_overlay(void)
 
             minimo=255;
             maximo=0;
+
+            valor_medio_minimo=255;
+            valor_medio_maximo=0;
 
 
         }

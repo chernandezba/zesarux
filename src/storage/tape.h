@@ -178,7 +178,7 @@ extern int realtape_algorithm_new_noise_reduction;
 #define REALTAPE_VISUAL_MAX_SIZE 4096
 
 //almacenar los datos que se veran en la ventana de visual real tape. Valores maximo y minimo ([0] minimo, [1] maximo)
-extern z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][2];
+extern z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][3];
 
 extern int realtape_visual_total_used;
 

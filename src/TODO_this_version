@@ -381,3 +381,6 @@ en menu_items.c:
          if (valor_leido_minimo<minimo) minimo=valor_leido_minimo;
          if (valor_leido_maximo>maximo) maximo=valor_leido_maximo;
 
+-> Escalar valor de onda media para que se vea mas
+Quiza escalar maximo que no salga del bloque marcado de minimos maximos
+Igualmente revisar bloque de minimos maximos porque parece que a veces salen bloques mas grandes?
