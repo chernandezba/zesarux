@@ -2525,15 +2525,16 @@ void realtape_load_visuals(char *filename)
     realtape_visual_data_min_global=255;
     realtape_visual_data_max_media_global=0;
     realtape_visual_data_min_media_global=255;
-
+    //int temp_debug=4;
     while (total_archivo>0) {
 
         byte_leido=*puntero;
-        //printf("byte leido: %d\n",byte_leido);
-        puntero++;
-        //fread(&byte_leido,1,1,ptr_visual);
+        //if (temp_debug>0) printf("byte leido: %d\n",byte_leido);
 
-        acumulado_medio=acumulado_medio+(z80_64bit)byte_leido;
+        puntero++;
+
+
+        acumulado_medio +=byte_leido;
         if (byte_leido<minimo) minimo=byte_leido;
         if (byte_leido>maximo) maximo=byte_leido;
 
@@ -2541,6 +2542,7 @@ void realtape_load_visuals(char *filename)
         leidos++;
 
         if ((leidos%tamanyo_trozo)==0) {
+            //temp_debug--;
             //siguiente trozo
             //printf("Writing position %XH (leidos %XH) antes acumulado_medio %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado_medio,tamanyo_trozo);
             acumulado_medio /=tamanyo_trozo;
