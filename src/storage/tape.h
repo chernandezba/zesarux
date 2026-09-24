@@ -180,6 +180,11 @@ extern int realtape_algorithm_new_noise_reduction;
 //almacenar los datos que se veran en la ventana de visual real tape. Valores maximo y minimo ([0] minimo, [1] maximo)
 extern z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][3];
 
+extern z80_byte realtape_visual_data_max_global;
+extern z80_byte realtape_visual_data_min_global;
+extern z80_byte realtape_visual_data_max_media_global;
+extern z80_byte realtape_visual_data_min_media_global;
+
 extern int realtape_visual_total_used;
 
 extern int realtape_get_seconds_numbytes(long long int numero);

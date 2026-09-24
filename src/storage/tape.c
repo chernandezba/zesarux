@@ -2442,6 +2442,11 @@ void realtape_get_byte(void)
 //Un minimo de REALTAPE_VISUAL_MAX_SIZE y maximo REALTAPE_VISUAL_MAX_SIZE*2
 z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][3];
 
+z80_byte realtape_visual_data_max_global=0;
+z80_byte realtape_visual_data_min_global=0;
+z80_byte realtape_visual_data_max_media_global=0;
+z80_byte realtape_visual_data_min_media_global=0;
+
 int realtape_visual_total_used=REALTAPE_VISUAL_MAX_SIZE;
 
 char visual_realtape_textbrowse[MAX_TEXTO_BROWSER];
@@ -2514,7 +2519,12 @@ void realtape_load_visuals(char *filename)
     maximo=0;
     z80_byte byte_leido;
 
-    z80_64bit acumulado=0;
+    z80_64bit acumulado_medio=0;
+
+    realtape_visual_data_max_global=0;
+    realtape_visual_data_min_global=255;
+    realtape_visual_data_max_media_global=0;
+    realtape_visual_data_min_media_global=255;
 
     while (total_archivo>0) {
 
@@ -2523,7 +2533,7 @@ void realtape_load_visuals(char *filename)
         puntero++;
         //fread(&byte_leido,1,1,ptr_visual);
 
-        acumulado=acumulado+(z80_64bit)byte_leido;
+        acumulado_medio=acumulado_medio+(z80_64bit)byte_leido;
         if (byte_leido<minimo) minimo=byte_leido;
         if (byte_leido>maximo) maximo=byte_leido;
 
@@ -2532,17 +2542,17 @@ void realtape_load_visuals(char *filename)
 
         if ((leidos%tamanyo_trozo)==0) {
             //siguiente trozo
-            printf("Writing position %XH (leidos %XH) antes acumulado %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado,tamanyo_trozo);
-            acumulado /=tamanyo_trozo;
+            //printf("Writing position %XH (leidos %XH) antes acumulado_medio %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado_medio,tamanyo_trozo);
+            acumulado_medio /=tamanyo_trozo;
 
-            printf("Writing position %XH (leidos %XH) acumulado %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado,tamanyo_trozo);
+            //printf("Writing position %XH (leidos %XH) acumulado_medio %ld tamanyo_trozo %d\n",posicion_visual,leidos,acumulado_medio,tamanyo_trozo);
 
             //por si acaso controlar maximo
             if (posicion_visual<realtape_visual_total_used) {
                 //printf("Writing position %XH (leidos %XH) value min %3d max %3d\n",posicion_visual,leidos,minimo,maximo);
                 realtape_visual_data[posicion_visual][0]=minimo;
                 realtape_visual_data[posicion_visual][1]=maximo;
-                realtape_visual_data[posicion_visual][2]=acumulado;
+                realtape_visual_data[posicion_visual][2]=acumulado_medio;
 
                 posicion_visual++;
             }
@@ -2552,9 +2562,16 @@ void realtape_load_visuals(char *filename)
                 return;
             }
 
+            if (maximo>realtape_visual_data_max_global) realtape_visual_data_max_global=maximo;
+            if (minimo<realtape_visual_data_min_global) realtape_visual_data_min_global=minimo;
+            if (acumulado_medio>realtape_visual_data_max_media_global) realtape_visual_data_max_media_global=acumulado_medio;
+            if (acumulado_medio<realtape_visual_data_min_media_global) realtape_visual_data_min_media_global=acumulado_medio;
+
+
+
             minimo=255;
             maximo=0;
-            acumulado=0;
+            acumulado_medio=0;
 
         }
     }
