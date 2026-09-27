@@ -14146,6 +14146,12 @@ void menu_tape_autorewind(MENU_ITEM_PARAMETERS)
     tape_auto_rewind.v ^=1;
 }
 
+void menu_audio_beep_mic_mode(MENU_ITEM_PARAMETERS)
+{
+    beeper_mic_mixer_current_mode++;
+    if (beeper_mic_mixer_current_mode>BEEPER_MIC_MIXER_ONLY_MIC) beeper_mic_mixer_current_mode=BEEPER_MIC_MIXER_NORMAL;
+}
+
 //menu settings tape
 void menu_settings_tape(MENU_ITEM_PARAMETERS)
 {
@@ -14311,6 +14317,10 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
         if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_audio_beep_mic_mode,NULL,"    Beeper+MIC mode: [%s]",get_beeper_mic_mixer_mode_string());
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
+
             menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_audio_beep_filter_on_rom_save,NULL,"ROM SAVE filter");
             menu_add_item_menu_spanish_format(array_menu_settings_tape,"Filtro SAVE en ROM");
             menu_add_item_menu_catalan_format(array_menu_settings_tape,"Filtre SAVE a ROM");

@@ -49,6 +49,18 @@
 #define VISUALMEM_MICRODRIVE_ASSIGNED_BUFFER_SIZE MICRODRIVE_RAW_COMMON_SIZE
 
 
+enum beeper_mic_mixer_modes {
+    BEEPER_MIC_MIXER_NORMAL=0,
+    BEEPER_MIC_MIXER_MIC_AMPLIFIED,
+    BEEPER_MIC_MIXER_ONLY_BEEPER,
+    BEEPER_MIC_MIXER_ONLY_MIC
+};
+
+extern enum beeper_mic_mixer_modes beeper_mic_mixer_current_mode;
+
+extern char *get_beeper_mic_mixer_mode_string(void);
+
+
 extern z80_byte *visualmem_buffer;
 extern z80_byte *visualmem_read_buffer;
 extern z80_byte *visualmem_opcode_buffer;

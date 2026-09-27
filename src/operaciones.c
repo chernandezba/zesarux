@@ -8552,7 +8552,38 @@ z80_byte lee_puerto_sms(z80_byte puerto_h,z80_byte puerto_l)
 
 }
 
+/*
 
+Podria ser:
+-normal (mic no se oye practicamente)
+-mic amplified. se oye beeper tambien
+-only beeper. a 50. sin mic
+-only mic. a 50. sin beeper
+*/
+
+
+
+
+enum beeper_mic_mixer_modes beeper_mic_mixer_current_mode=BEEPER_MIC_MIXER_NORMAL;
+
+char *beeper_mic_mixer_modes_strings[]={
+    "Normal",
+    "Amplified MIC",
+    "Only Beeper",
+    "Only MIC"
+};
+
+
+char *beeper_mic_mixer_modes_string_unknown="Unknown";
+
+char *get_beeper_mic_mixer_mode_string(void)
+{
+    if (beeper_mic_mixer_current_mode>=BEEPER_MIC_MIXER_NORMAL && beeper_mic_mixer_current_mode<=BEEPER_MIC_MIXER_ONLY_MIC) return beeper_mic_mixer_modes_strings[beeper_mic_mixer_current_mode];
+    else {
+        //por si acaso se sale de rango
+        return beeper_mic_mixer_modes_string_unknown;
+    }
+}
 
 
 //Extracted from Fuse emulator
@@ -8560,6 +8591,16 @@ void set_value_beeper(int v)
 {
     static int beeper_ampl[] = { 0, AMPLITUD_TAPE, AMPLITUD_BEEPER,
                                 AMPLITUD_BEEPER+AMPLITUD_TAPE };
+
+    static int beeper_ampl_amplify_mic[] = { 0, AMPLITUD_TAPE_MIC_AMPLIFIED, AMPLITUD_BEEPER_MIC_AMPLIFIED,
+                                AMPLITUD_BEEPER_MIC_AMPLIFIED+AMPLITUD_TAPE_MIC_AMPLIFIED };
+
+    static int beeper_ampl_only_beeper[] = { 0, 0, AMPLITUD_BEEPER,
+                                AMPLITUD_BEEPER };
+
+    static int beeper_ampl_only_mic[] = { 0, AMPLITUD_BEEPER, 0,
+                                AMPLITUD_BEEPER };
+
 /*
   if( tape_is_playing() ) {
     // Timex machines have no loading noise
@@ -8570,9 +8611,25 @@ void set_value_beeper(int v)
   }
 */
 
+    switch (beeper_mic_mixer_current_mode) {
+        case BEEPER_MIC_MIXER_NORMAL:
+        default:
+            //Por defecto el sonido se genera en negativo y de ahi oscila
+            value_beeper = -beeper_ampl[3] + beeper_ampl[v]*2;
+        break;
 
-	//Por defecto el sonido se genera en negativo y de ahi oscila
-	value_beeper = -beeper_ampl[3] + beeper_ampl[v]*2;
+        case BEEPER_MIC_MIXER_MIC_AMPLIFIED:
+            value_beeper = -beeper_ampl_amplify_mic[3] + beeper_ampl_amplify_mic[v]*2;
+        break;
+
+        case BEEPER_MIC_MIXER_ONLY_BEEPER:
+            value_beeper = -beeper_ampl_only_beeper[3] + beeper_ampl_only_beeper[v]*2;
+        break;
+
+        case BEEPER_MIC_MIXER_ONLY_MIC:
+            value_beeper = -beeper_ampl_only_mic[3] + beeper_ampl_only_mic[v]*2;
+        break;
+    }
 
 
     //Si estamos en rutina de SAVE, enviar sonido teniendo en cuenta como referencia el 0 y de ahi hacia arriba o abajo

@@ -65,6 +65,9 @@ extern void audio_menu_tone_generator_play_note(char *nota,int duracion);
 #define AMPLITUD_BEEPER_GRABACION_ZX8081 25
 #define AMPLITUD_TAPE 2
 
+#define AMPLITUD_TAPE_MIC_AMPLIFIED 16
+#define AMPLITUD_BEEPER_MIC_AMPLIFIED 34
+
 extern int amplitud_speaker_actual_zx8081;
 extern int amplitud_speaker_actual_msx;
 extern int amplitud_speaker_actual_svi;
