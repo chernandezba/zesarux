@@ -15,7 +15,7 @@ Permitir hacer debug en consola de llamadas a esxdos
 Permitir visualizar y extraer archivos Hobeta (.$C, etc)
 Permitir usar imagenes ide de tamaño no estandar
 Permitir traps de cinta al grabar desde Super Tape Copier
-Permitir seleccionar modo de audio Beeper & MIC audio mode en Spectrum (por ejemplo para poder grabar sonido de carga)
+Permitir seleccionar modo de audio Beeper & MIC en Spectrum (por ejemplo para poder grabar sonido de carga)
 
 * Mejoras:
 
