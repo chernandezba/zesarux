@@ -306,6 +306,7 @@ y/o opcion para decir si mostrar 1 fila solo o mas
 
 ----
 -poder habilitar filtro de incremento de beeper en save no solo con la rom
+y eliminar   output_beep_filter_on_rom_save.v y output_beep_filter_alter_volume.v  ??
 
 
 -SuperTapecopier:

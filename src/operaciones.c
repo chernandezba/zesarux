@@ -8585,31 +8585,23 @@ char *get_beeper_mic_mixer_mode_string(void)
     }
 }
 
+static int beeper_ampl[] = { 0, AMPLITUD_TAPE, AMPLITUD_BEEPER,
+                            AMPLITUD_BEEPER+AMPLITUD_TAPE };
+
+static int beeper_ampl_amplify_mic[] = { 0, AMPLITUD_TAPE_MIC_AMPLIFIED, AMPLITUD_BEEPER_MIC_AMPLIFIED,
+                            AMPLITUD_BEEPER_MIC_AMPLIFIED+AMPLITUD_TAPE_MIC_AMPLIFIED };
+
+static int beeper_ampl_only_beeper[] = { 0, 0, AMPLITUD_BEEPER,
+                            AMPLITUD_BEEPER };
+
+static int beeper_ampl_only_mic[] = { 0, AMPLITUD_BEEPER, 0,
+                            AMPLITUD_BEEPER };
+
 
 //Extracted from Fuse emulator
 void set_value_beeper(int v)
 {
-    static int beeper_ampl[] = { 0, AMPLITUD_TAPE, AMPLITUD_BEEPER,
-                                AMPLITUD_BEEPER+AMPLITUD_TAPE };
 
-    static int beeper_ampl_amplify_mic[] = { 0, AMPLITUD_TAPE_MIC_AMPLIFIED, AMPLITUD_BEEPER_MIC_AMPLIFIED,
-                                AMPLITUD_BEEPER_MIC_AMPLIFIED+AMPLITUD_TAPE_MIC_AMPLIFIED };
-
-    static int beeper_ampl_only_beeper[] = { 0, 0, AMPLITUD_BEEPER,
-                                AMPLITUD_BEEPER };
-
-    static int beeper_ampl_only_mic[] = { 0, AMPLITUD_BEEPER, 0,
-                                AMPLITUD_BEEPER };
-
-/*
-  if( tape_is_playing() ) {
-    // Timex machines have no loading noise
-    if( !settings_current.sound_load || machine_current->timex ) on = on & 0x02;
-  } else {
-    // ULA book says that MIC only isn't enough to drive the speaker as output voltage is below the 1.4v threshold
-    if( on == 1 ) on = 0;
-  }
-*/
 
     switch (beeper_mic_mixer_current_mode) {
         case BEEPER_MIC_MIXER_NORMAL:
