@@ -14,6 +14,7 @@ Permitir prefijos $ y 0x para valores hexadecimales
 Permitir hacer debug en consola de llamadas a esxdos
 Permitir visualizar y extraer archivos Hobeta (.$C, etc)
 Permitir usar imagenes ide de tamaño no estandar
+Permitir traps de cinta al grabar desde Super Tape Copier
 
 * Mejoras:
 

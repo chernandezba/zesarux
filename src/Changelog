@@ -14,6 +14,7 @@ Allow preffix $ and 0x for hexadecimal values
 Allow to debug esxdos calls on debug console
 Allow to view and extract Hobeta files (.$C, etc)
 Allow to use non-standard size for ide images
+Allow tape traps saving from Super Tape Copier
 
 * Improvements:
 
