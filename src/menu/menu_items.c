@@ -16691,7 +16691,7 @@ void menu_online_browse_zxinfowos_query(char *query_result,char *hostname,char *
         char redirect_url[NETWORK_MAX_URL];
 
 
-        int retorno=menu_zsock_http(hostname,query_url,&http_code,&mem,&total_leidos,&mem_after_headers,1,add_headers,0,redirect_url,"");
+        int retorno=menu_zsock_http(hostname,query_url,&http_code,&mem,&total_leidos,&mem_after_headers,1,add_headers,1,redirect_url,"");
 
 
 
