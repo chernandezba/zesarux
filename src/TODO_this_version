@@ -316,3 +316,4 @@ ok * que se habilite el tape trap automaticamente pero se pueda activar/desactiv
 
 -no descarga con ssl en linux ? ejemplo abadia del crimen en TAP
 hay fallo en SSL_CTX_new
+-> corregido. Probar mingw
