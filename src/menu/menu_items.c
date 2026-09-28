@@ -46732,6 +46732,9 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
     process_switcher_sync_always_left_bottom_setting();
 
+    //no queremos que parpadee la zona inferior derecha de redimensionado si es mas pequeña de lo que cabe
+    ventana->do_not_warn_tried_write_beyond_size=1;
+
     zxvision_draw_window(ventana);
 
     z80_byte tecla;
