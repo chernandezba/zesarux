@@ -46215,6 +46215,7 @@ void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_
 zxvision_window *menu_process_switcher_sorted_list[PROCESS_SWITCHER_MAXIMUM_ICONS];
 
 int menu_process_switcher_total_icons=0;
+int anterior_menu_process_switcher_total_icons=0;
 
 zxvision_window *menu_process_switcher_get_window_n(int indice_buscar)
 {
@@ -46747,6 +46748,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
     //Por si acaso, si alguien pulsase en la ventana, antes de que se dibujase el primer overlay y cargada lista de ventanas,
     //si hubiera una lista anterior con algun puntero invalido, mejor decimos que de momento no hay iconos hasta que se ejecute el overlay
+    int anterior_menu_process_switcher_total_icons=menu_process_switcher_total_icons;
     menu_process_switcher_total_icons=0;
 
 
@@ -46755,6 +46757,23 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
     if (zxvision_currently_restoring_windows_on_start) {
             //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
             return;
+    }
+
+    //Si tiene setting de una sola fila, hacer que tenga mas ancho del visible para que quepan todos los iconos
+    if (setting_process_switcher_only_one_row.v) {
+        int ancho_deseado=anterior_menu_process_switcher_total_icons*PROCESS_SWITCHER_ICON_SEPARATION_X;
+        //en caracteres
+        int ancho_deseado_caracteres=ancho_deseado/menu_char_width;
+
+        printf("ancho_deseado_caracteres %d menu_process_switcher_total_icons %d\n",ancho_deseado_caracteres,menu_process_switcher_total_icons);
+
+        if (ventana->total_width<ancho_deseado_caracteres) {
+            printf("Redimensionando a %d caracteres\n",ancho_deseado_caracteres);
+            zxvision_set_total_width(ventana,ancho_deseado_caracteres);
+
+            //para que aparezcan las barras de scroll correctas
+            zxvision_draw_window(ventana);
+        }
     }
 
     do {

@@ -505,6 +505,7 @@ extern void zxvision_set_xy_position(zxvision_window *w,int x,int y);
 extern void zxvision_set_visible_width(zxvision_window *w,int visible_width);
 extern void zxvision_set_visible_height(zxvision_window *w,int visible_height);
 extern void zxvision_set_total_height(zxvision_window *w,int total_height);
+extern void zxvision_set_total_width(zxvision_window *w,int total_width);
 
 extern int zxvision_out_bonds(int x,int y,int ancho,int alto);
 
