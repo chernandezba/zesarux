@@ -45,6 +45,7 @@ Improved ZX Vision:
 - Added Calculator window
 - Improved menu organization, wording and consistency across the user interface
 - Improved window movement when moving with mouse
+- Process switcher now shows one row of processes by default
 - Draw window frame on background windows
 - Main menus when top menu is enabled do not have window title
 - Allow to hide menus from top menu
