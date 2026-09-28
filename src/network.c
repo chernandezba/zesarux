@@ -181,8 +181,7 @@ int z_connect_ssl(int indice_tabla)
     debug_printf (VERBOSE_DEBUG,"Connecting SSL");
 
     debug_printf (VERBOSE_DEBUG,"SSL_CTX_new");
-    sockets_list[indice_tabla].ssl_ctx = SSL_CTX_new (SSLv23_client_method ());
-    //sockets_list[indice_tabla].ssl_ctx = SSL_CTX_new (TLSv1_client_method() );
+    sockets_list[indice_tabla].ssl_ctx = SSL_CTX_new(TLS_client_method());
 
     if (sockets_list[indice_tabla].ssl_ctx == NULL) {
         debug_printf(VERBOSE_DEBUG, "SSL_CTX_new FAILED");
