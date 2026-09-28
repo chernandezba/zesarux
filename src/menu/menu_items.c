@@ -46735,6 +46735,11 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
     //no queremos que parpadee la zona inferior derecha de redimensionado si es mas pequeña de lo que cabe
     ventana->do_not_warn_tried_write_beyond_size=1;
 
+    //Para que al hacer scroll se mueva una cantidad casi igual a lo que ocupa un icono (esto dependera de menu_char_width y height)
+    ventana->scroll_size_x=PROCESS_SWITCHER_ICON_SEPARATION_X/menu_char_width;
+    ventana->scroll_size_y=PROCESS_SWITCHER_ICON_SEPARATION_Y/menu_char_height;
+
+
     zxvision_draw_window(ventana);
 
     z80_byte tecla;

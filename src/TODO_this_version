@@ -296,11 +296,8 @@ necesita core 3.2.0 o inferior!
 ---
 
 
-Process switcher: que mediante flechas izquierda - derecha se puedan ver los otros iconos que no quepan
-quiza la flecha izquierda/derecha es tal cual el scroll natural de la ventana, se debera redimensionar
-segun la cantidad de iconos
-
-y/o opcion para decir si mostrar 1 fila solo o mas
+Process switcher
+-quiza que el scroll que haga sea de tamaño icono
 
 
 
