@@ -11987,6 +11987,9 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->not_altered_by_massive_changes=0;
 
+    w->scroll_size_x=1;
+    w->scroll_size_y=1;
+
     w->last_spent_time_overlay=0;
 
     w->can_mouse_send_hotkeys=0;
@@ -14395,31 +14398,43 @@ void zxvision_set_offset_y_visible(zxvision_window *w,int y)
 
 void zxvision_send_scroll_down(zxvision_window *w)
 {
-    if (w->offset_y<(w->total_height-1)) {
-                        zxvision_set_offset_y(w,w->offset_y+1);
+    int i;
+    for (i=0;i<w->scroll_size_y;i++) {
+        if (w->offset_y<(w->total_height-1)) {
+                            zxvision_set_offset_y(w,w->offset_y+1);
+        }
     }
 }
 
 
 void zxvision_send_scroll_up(zxvision_window *w)
 {
-    if (w->offset_y>0) {
-        zxvision_set_offset_y(w,w->offset_y-1);
+    int i;
+    for (i=0;i<w->scroll_size_y;i++) {
+        if (w->offset_y>0) {
+            zxvision_set_offset_y(w,w->offset_y-1);
+        }
     }
 }
 
 
 void zxvision_send_scroll_left(zxvision_window *w)
 {
-    if (w->offset_x>0) {
-        zxvision_set_offset_x(w,w->offset_x-1);
+    int i;
+    for (i=0;i<w->scroll_size_x;i++) {
+        if (w->offset_x>0) {
+            zxvision_set_offset_x(w,w->offset_x-1);
+        }
     }
 }
 
 void zxvision_send_scroll_right(zxvision_window *w)
 {
-    if (w->offset_x<(w->total_width-1)) {
-        zxvision_set_offset_x(w,w->offset_x+1);
+    int i;
+    for (i=0;i<w->scroll_size_x;i++) {
+        if (w->offset_x<(w->total_width-1)) {
+            zxvision_set_offset_x(w,w->offset_x+1);
+        }
     }
 }
 

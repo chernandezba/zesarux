@@ -196,6 +196,10 @@ struct s_zxvision_window {
     //usado en process switcher por ejemplo
     int not_altered_by_massive_changes;
 
+    //Cuantas posiciones desplaza al hacer scroll
+    int scroll_size_x;
+    int scroll_size_y;
+
     //indica que se ha intentado escribir mas alla del tamanyo de la ventana
     int tried_write_beyond_size;
 
