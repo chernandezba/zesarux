@@ -2025,6 +2025,7 @@ printf("\n"
         "--process-switcher-immutable             Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window\n"
         "--process-switcher-always-visible        Process switcher is always visible (on top of all windows)\n"
         "--process-switcher-no-left-bottom        Do not force process switcher to be located at left-bottom part of the display\n"
+        "--process-switcher-no-one-row            Do not limit process switcher to only one row of icons\n"
         "--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
         );
@@ -6580,6 +6581,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-left-bottom")) {
                 setting_process_switcher_force_left_bottom.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-one-row")) {
+                setting_process_switcher_only_one_row.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--allow-background-windows")) {

@@ -3943,6 +3943,13 @@ void menu_settings_apps(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always located on left-bottom");
         menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always located on left-bottom");
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "Process switcher one row","Process switcher una fila","Process switcher una fila");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_only_one_row.v ? 'X' : ' ') );
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&setting_process_switcher_only_one_row);
+        menu_add_item_menu_tooltip(array_menu_common,"Process switcher shows only one row of icons");
+        menu_add_item_menu_ayuda(array_menu_common,"Process switcher shows only one row of icons");
+
         if (si_complete_video_driver() ) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_apps_ay_piano_grafico,NULL,"    Piano Type");
             menu_add_item_menu_spanish_catalan(array_menu_common,"    Tipo Piano","    Tipus Piano");

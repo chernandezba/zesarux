@@ -46202,6 +46202,8 @@ void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_
 
     int max_icons_per_row=menu_process_switcher_get_max_icons_per_row(ventana);
 
+    if (setting_process_switcher_only_one_row.v) max_icons_per_row=99999;
+
 
     *pos_x=indice_icono % max_icons_per_row;
     *pos_y=indice_icono / max_icons_per_row;

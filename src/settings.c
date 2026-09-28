@@ -380,6 +380,9 @@ z80_bit setting_process_switcher_always_visible={0};
 //Si process switcher siempre se ubica abajo a la izquierda por acciones del menu Windows (minimize all, cascade, etc)
 z80_bit setting_process_switcher_force_left_bottom={1};
 
+//Si process switcher solo muestra una unica fila de procesos
+z80_bit setting_process_switcher_only_one_row={1};
+
 //Logo de decimo aniversario.
 //En version X (10.10) estaba habilitado por defecto
 z80_bit xanniversary_logo={0};
