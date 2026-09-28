@@ -46765,10 +46765,10 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
         //en caracteres
         int ancho_deseado_caracteres=ancho_deseado/menu_char_width;
 
-        printf("ancho_deseado_caracteres %d menu_process_switcher_total_icons %d\n",ancho_deseado_caracteres,anterior_menu_process_switcher_total_icons);
+        //printf("ancho_deseado_caracteres %d menu_process_switcher_total_icons %d\n",ancho_deseado_caracteres,anterior_menu_process_switcher_total_icons);
 
         if (ventana->total_width<ancho_deseado_caracteres) {
-            printf("Redimensionando a %d caracteres\n",ancho_deseado_caracteres);
+            debug_printf(VERBOSE_INFO,"Resize process switcher to be %d characters width",ancho_deseado_caracteres);
             zxvision_set_total_width(ventana,ancho_deseado_caracteres);
 
             //para que aparezcan las barras de scroll correctas
@@ -46800,10 +46800,10 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
                     //dentro de ventana y no en zonas de scroll
 
-                    if (menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_y!=ventana->visible_height-1) {
+                    if (menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_x!=ventana->visible_width-1 && menu_mouse_y!=ventana->visible_height-1) {
 
                         if (mouse_left) {
-                            //printf("mouse click. menu_mouse_y %d visible height %d\n",menu_mouse_y,ventana->visible_height);
+                            //printf("mouse click. menu_mouse_xy %d,%d visible width height %d,%d\n",menu_mouse_x,menu_mouse_y,ventana->visible_width,ventana->visible_height);
                             menu_process_switcher_handle_click(ventana);
                             if (menu_process_switcher_conmutar_ventana) {
                                 salir=1;
