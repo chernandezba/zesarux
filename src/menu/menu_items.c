@@ -46796,8 +46796,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
             case 0:
 
-                if (mouse_left && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
-                    //printf("mouse_is_dragging: %d\n",mouse_is_dragging);
+                if (mouse_left && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_y!=ventana->visible_height-1) {
+                    //printf("mouse click. menu_mouse_y %d visible height %d\n",menu_mouse_y,ventana->visible_height);
                     menu_process_switcher_handle_click(ventana);
                     if (menu_process_switcher_conmutar_ventana) {
                         salir=1;
@@ -46807,8 +46807,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
                     }
                 }
 
-                if (zxvision_pressed_right_mouse_button() && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
-                    //printf("mouse_is_dragging: %d\n",mouse_is_dragging);
+                if (zxvision_pressed_right_mouse_button() && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_y!=ventana->visible_height-1) {
                     menu_process_switcher_handle_click_right(ventana);
                 }
 
