@@ -46765,7 +46765,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
         //en caracteres
         int ancho_deseado_caracteres=ancho_deseado/menu_char_width;
 
-        printf("ancho_deseado_caracteres %d menu_process_switcher_total_icons %d\n",ancho_deseado_caracteres,menu_process_switcher_total_icons);
+        printf("ancho_deseado_caracteres %d menu_process_switcher_total_icons %d\n",ancho_deseado_caracteres,anterior_menu_process_switcher_total_icons);
 
         if (ventana->total_width<ancho_deseado_caracteres) {
             printf("Redimensionando a %d caracteres\n",ancho_deseado_caracteres);
@@ -46796,19 +46796,27 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
             case 0:
 
-                if (mouse_left && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_y!=ventana->visible_height-1) {
-                    //printf("mouse click. menu_mouse_y %d visible height %d\n",menu_mouse_y,ventana->visible_height);
-                    menu_process_switcher_handle_click(ventana);
-                    if (menu_process_switcher_conmutar_ventana) {
-                        salir=1;
+                if (mouse_left || zxvision_pressed_right_mouse_button() ) {
 
-                        //y tecla como background
-                        tecla=3;
+                    //dentro de ventana y no en zonas de scroll
+
+                    if (menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_y!=ventana->visible_height-1) {
+
+                        if (mouse_left) {
+                            //printf("mouse click. menu_mouse_y %d visible height %d\n",menu_mouse_y,ventana->visible_height);
+                            menu_process_switcher_handle_click(ventana);
+                            if (menu_process_switcher_conmutar_ventana) {
+                                salir=1;
+
+                                //y tecla como background
+                                tecla=3;
+                            }
+                        }
+
+                        if (zxvision_pressed_right_mouse_button()) {
+                            menu_process_switcher_handle_click_right(ventana);
+                        }
                     }
-                }
-
-                if (zxvision_pressed_right_mouse_button() && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_y!=ventana->visible_height-1) {
-                    menu_process_switcher_handle_click_right(ventana);
                 }
 
             break;
