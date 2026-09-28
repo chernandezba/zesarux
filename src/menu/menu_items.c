@@ -46252,6 +46252,10 @@ int menu_process_switcher_get_index_icon_on_mouse(zxvision_window *ventana)
     offset_in_window_x /=menu_gui_zoom;
     offset_in_window_y /=menu_gui_zoom;
 
+    //Considerar scroll
+    offset_in_window_x +=(ventana->offset_x)*menu_char_width;
+    offset_in_window_y +=(ventana->offset_y)*menu_char_height;
+
     //Obtener coordenada del icono pulsado dentro de la ventana
     if (offset_in_window_x>=0 && offset_in_window_y>=0) {
         offset_in_window_x /=PROCESS_SWITCHER_ICON_SEPARATION_X;
