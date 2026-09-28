@@ -186,10 +186,6 @@ extern void set_value_beeper_on_array(char value);
 
 extern int audiovolume;
 
-extern z80_bit output_beep_filter_on_rom_save;
-
-extern z80_bit output_beep_filter_alter_volume;
-extern char output_beep_filter_volume;
 
 extern int audio_adjust_volume(int valor_enviar);
 

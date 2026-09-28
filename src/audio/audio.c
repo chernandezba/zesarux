@@ -701,12 +701,6 @@ z80_bit audio_noreset_audiobuffer_full={0};
 //Frecuencia teniendo en cuenta la velocidad de la cpu. inicializado a frecuencia normal
 int frecuencia_sonido_variable=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
 
-//Detectar cuando se hace un SAVE desde rom (spectrum) y enviar el sonido solo del bit MIC del puerto FEH (y no el EAR)
-//Por defecto desactivado para no interferir con otras roms que puedan generar sonido en esas direcciones
-z80_bit output_beep_filter_on_rom_save={0};
-
-z80_bit output_beep_filter_alter_volume={0};
-char output_beep_filter_volume=122;
 
 
 //Valor del sample de sonido que se envia cada vez. Usado en cada core_

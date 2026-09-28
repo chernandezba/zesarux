@@ -5458,6 +5458,9 @@ int util_write_configfile(void)
     if (spritechip_enabled.v)                       ADD_STRING_CONFIG,"--enablezgx");
     if (beeper_enabled.v==0)                        ADD_STRING_CONFIG,"--disablebeeper");
     if (beeper_real_enabled==0)                     ADD_STRING_CONFIG,"--disablerealbeeper");
+
+    if (beeper_mic_mixer_current_mode!=BEEPER_MIC_MIXER_NORMAL)     ADD_STRING_CONFIG,"--beepermicmode %d",beeper_mic_mixer_current_mode);
+
     if (ay_retorna_numero_chips()>1)                ADD_STRING_CONFIG,"--totalaychips %d",ay_retorna_numero_chips() );
 
     if (ay3_stereo_mode>0)                          ADD_STRING_CONFIG,"--ay-stereo-mode %d",ay3_stereo_mode);

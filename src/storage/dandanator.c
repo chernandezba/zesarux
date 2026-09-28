@@ -989,20 +989,6 @@ void dandanator_enable(void)
 	dandanator_active_bank=0;
 
 
-	/*Quitar audiofilter rom save porque interfiere con efecto colores menu:
-	Esto intercepta las llamadas a rom save direcciones entre if (reg_pc>1200 && reg_pc<1350
-	Pero precisamente dandanator hace cambio de colores de border en las direcciones:
-	1122, 1143, 1154, 1165, 1191, 1201, 1211.
-	O sea, hay dos direcciones que entran dentro de la condición y el resto no,
-	provocando que se haga sonido de una manera en dos direcciones, y de otra en las otras direcciones
-	Resultado: genera un sonido desagradable de 50 hz
-
-	*/
-
-	debug_printf(VERBOSE_DEBUG,"Disabling audio filter on rom save setting because it interfieres with Dandanator border effect");
-
-	output_beep_filter_on_rom_save.v=0;
-
 
 	dandanator_enabled.v=1;
 

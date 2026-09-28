@@ -59,6 +59,7 @@ enum beeper_mic_mixer_modes {
 extern enum beeper_mic_mixer_modes beeper_mic_mixer_current_mode;
 
 extern char *get_beeper_mic_mixer_mode_string(void);
+extern void beeper_mic_mixer_modes_strings_print(void);
 
 
 extern z80_byte *visualmem_buffer;

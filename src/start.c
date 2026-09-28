@@ -839,6 +839,11 @@ void zesarux_cmdline_help_expert(void)
         "--disableenvelopes               Disable AY Envelopes\n"
         "--disablebeeper                  Disable Beeper\n"
         "--disablerealbeeper              Disable real Beeper sound\n"
+        "--beepermicmode n                Controls the audio output for beeper&mic on Spectrum. n must be: ");
+        beeper_mic_mixer_modes_strings_print();
+
+
+    printf("\n"
         "--ay-autoenable                  Enable AY Chip automatically when it is needed\n"
         "--totalaychips  n                Number of ay chips. Default 1\n"
         "--ay-stereo-mode n               Mode of AY stereo emulated: 0=Mono, 1=ACB, 2=ABC, 3=BAC, 4=Custom. Default Mono\n"
@@ -6688,6 +6693,23 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--disablebeeper")) {
                 beeper_enabled.v=0;
+            }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--beepermicmode")) {
+
+                int valor;
+
+                siguiente_parametro_argumento();
+                valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor<BEEPER_MIC_MIXER_NORMAL || valor>BEEPER_MIC_MIXER_ONLY_MIC) {
+                    debug_printf (VERBOSE_ERR,"Invalid beepermicmode");
+                }
+                else {
+                    beeper_mic_mixer_current_mode=valor;
+                }
+
             }
 
             else if (!strcmp(argv[puntero_parametro],"--enableturbosound")) {
