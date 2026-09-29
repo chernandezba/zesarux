@@ -3499,6 +3499,27 @@ int realtape_get_current_bit_playing(void)
 
 }
 
+
+int copion_trap_memory_pointer=0;
+
+z80_byte *copion_trap_memory_buffer=NULL;
+
+//mas que suficiente
+#define COPION_TRAP_MEMORY_SIZE (128*1024)
+
+void copion_trap_put_byte(z80_byte v)
+{
+    //Por si acaso
+    if (copion_trap_memory_buffer==NULL) return;
+
+    if (copion_trap_memory_pointer>=COPION_TRAP_MEMORY_SIZE) return;
+
+    copion_trap_memory_buffer[copion_trap_memory_pointer++]=v;
+
+}
+
+
+
 int supertapecopier_nested_id_core;
 
 enum supertapecopier_status {
@@ -3509,23 +3530,7 @@ enum supertapecopier_status {
 
 enum supertapecopier_status supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
 
-int supertapecopier_memory_pointer=0;
 
-z80_byte *supertapecopier_memory_buffer=NULL;
-
-//mas que suficiente
-#define SUPERTAPECOPIER_MEMORY_SIZE (128*1024)
-
-void supertapecopier_put_byte(z80_byte v)
-{
-    //Por si acaso
-    if (supertapecopier_memory_buffer==NULL) return;
-
-    if (supertapecopier_memory_pointer>=SUPERTAPECOPIER_MEMORY_SIZE) return;
-
-    supertapecopier_memory_buffer[supertapecopier_memory_pointer++]=v;
-
-}
 
 /*
 -SuperTapecopier:  meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
@@ -3566,23 +3571,20 @@ bloque navidad tzx
 
 
 
-//z80_int temp_debug_previo_ix;
 
-//z80_byte temp_xor_bytes=0;
-
-void supertapecopier_tap_save(void)
+void copion_trap_tap_save(void)
 {
 
-    if (supertapecopier_memory_buffer==NULL) return;
+    if (copion_trap_memory_buffer==NULL) return;
 
-    z80_byte flag=supertapecopier_memory_buffer[0];
+    z80_byte flag=copion_trap_memory_buffer[0];
 
     z80_int longitud;
 
 
-    longitud=supertapecopier_memory_pointer;
+    longitud=copion_trap_memory_pointer;
 
-    debug_printf(VERBOSE_INFO,"Saving %d bytes to tape from Supertapecopier with flag %d",longitud-2,flag);
+    debug_printf(VERBOSE_INFO,"Saving %d bytes to tape from Copy program with flag %d",longitud-2,flag);
 
 
     if (tape_out_block_open()) return;
@@ -3609,7 +3611,7 @@ void supertapecopier_tap_save(void)
     }
 
 
-    if (tape_block_save(supertapecopier_memory_buffer, longitud)!=longitud) {
+    if (tape_block_save(copion_trap_memory_buffer, longitud)!=longitud) {
         debug_printf(VERBOSE_ERR,"Error writing bytes");
 
         eject_tape_save();
@@ -3644,10 +3646,10 @@ void cpu_core_loop_supertapecopier_continue(void)
         case 0x8ED2:
         case 0x8EDC:
             if (reg_pc==0x8ED2) {
-                debug_printf(VERBOSE_DEBUG,"Supertape copier trap, tape save flag %02X (index=%d)",reg_l,supertapecopier_memory_pointer);
+                debug_printf(VERBOSE_DEBUG,"Supertape copier trap, tape save flag %02X (index=%d)",reg_l,copion_trap_memory_pointer);
             }
             if (reg_pc==0x8EDC) {
-                debug_printf(VERBOSE_DEBUG,"Supertape copier trap, tape save byte %02X (index=%d) IX=%d",reg_l,supertapecopier_memory_pointer,reg_ix);
+                debug_printf(VERBOSE_DEBUG,"Supertape copier trap, tape save byte %02X (index=%d) IX=%d",reg_l,copion_trap_memory_pointer,reg_ix);
 
                 /*if (reg_ix!=temp_debug_previo_ix+1) {
                     printf("IX no consecutivo\n");
@@ -3660,11 +3662,11 @@ void cpu_core_loop_supertapecopier_continue(void)
 
             if (supertapecopier_status_block==SUPERTAPECOPIER_IDLE) {
                 supertapecopier_status_block=SUPERTAPECOPIER_READING_BYTES;
-                supertapecopier_memory_pointer=0;
+                copion_trap_memory_pointer=0;
                 //temp_xor_bytes=0;
             }
 
-            supertapecopier_put_byte(reg_l);
+            copion_trap_put_byte(reg_l);
 
             //temp_xor_bytes ^=reg_l;
 
@@ -3686,8 +3688,8 @@ void cpu_core_loop_supertapecopier_continue(void)
             debug_printf(VERBOSE_DEBUG,"Supertape copier trap, end of tape block");
 
             //debug
-            /*for (i=0;i<supertapecopier_memory_pointer;i++) {
-                printf("%02X ",supertapecopier_memory_buffer[i]);
+            /*for (i=0;i<copion_trap_memory_pointer;i++) {
+                printf("%02X ",copion_trap_memory_buffer[i]);
             }
             printf("\n");
             */
@@ -3698,7 +3700,7 @@ void cpu_core_loop_supertapecopier_continue(void)
 
             draw_tape_text();
 
-            supertapecopier_tap_save();
+            copion_trap_tap_save();
 
             timer_reset();
 
@@ -3767,11 +3769,11 @@ void tape_enable_core_supertapecopier(void)
 
     supertapecopier_set_core_functions();
 
-    if (supertapecopier_memory_buffer==NULL) {
-        supertapecopier_memory_buffer=util_malloc(SUPERTAPECOPIER_MEMORY_SIZE,"Can not allocate memory for save buffer");
+    if (copion_trap_memory_buffer==NULL) {
+        copion_trap_memory_buffer=util_malloc(COPION_TRAP_MEMORY_SIZE,"Can not allocate memory for save buffer");
     }
 
-    supertapecopier_memory_pointer=0;
+    copion_trap_memory_pointer=0;
 
     supertapecopier_tape_traps.v=1;
 
