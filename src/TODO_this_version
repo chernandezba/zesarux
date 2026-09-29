@@ -311,12 +311,7 @@ ok * que se habilite el tape trap automaticamente pero se pueda activar/desactiv
 
 
 -Hacer lo mismo que supertapecopier pero para lao copy:
-FF52: se ha leido byte en L. Creo que le envia checksum tambien, pero no le envia flag
-FF48: se tiene el flag en L
-mejor: ff54: se tiene el byte en L, incluido flag y checksum
-5110h: retorno de grabar bloque
-reusar supertapecopier_tap_save y supertapecopier_put_byte, mas bien cambiarlo de nombre para que lo usen los dos
 
--no descarga con ssl en linux ? ejemplo abadia del crimen en TAP
-hay fallo en SSL_CTX_new
--> corregido. Probar mingw. ok
+
+-Hex editor:
+*poder buscar bytes

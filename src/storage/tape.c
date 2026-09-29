@@ -3827,10 +3827,10 @@ void cpu_core_loop_laocopy_continue(void)
 
     //Si este core sigue activo pero el usuario ha hecho reset o lo que sea.. buscar al menos 3 bytes
     //que sean del programa para saber que aun sigue ahi
-    //839b="SuperTapeCopier"
-    /*
-    if (peek_byte_no_time(0x839b)!='S' || peek_byte_no_time(0x839c)!='u' || peek_byte_no_time(0x839d)!='p') return;
-    */
+    //17480="LAO-COPY"
+
+    if (peek_byte_no_time(17480)!='L' || peek_byte_no_time(17481)!='A' || peek_byte_no_time(17482)!='O') return;
+
 
 
     //int i;
