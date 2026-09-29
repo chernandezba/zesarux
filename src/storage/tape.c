@@ -3837,38 +3837,32 @@ void cpu_core_loop_laocopy_continue(void)
 
     switch (reg_pc) {
         case 0xFF54:
-        case 0x8EDC:
-
 
             debug_printf(VERBOSE_DEBUG,"Laocopy trap, tape save byte %02X (index=%d) IX=%d",reg_l,copion_trap_memory_pointer,reg_ix);
-
-
-
 
             if (laocopy_status_block==LAOCOPY_IDLE) {
                 laocopy_status_block=LAOCOPY_READING_BYTES;
                 copion_trap_memory_pointer=0;
-                //temp_xor_bytes=0;
+
             }
 
             copion_trap_put_byte(reg_l);
 
-            //temp_xor_bytes ^=reg_l;
+
 
         break;
 
-        /*
-        //8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
         //Para no esperar al tiempo de grabar cada byte
-        case 0x8EFE:
-            reg_pc +=3;
+        case 0xFF55:
+            reg_pc=0xFF77;
         break;
+
 
         //Para saltarse los tonos guia
-        case 0x8EAC:
-            reg_pc=0x8ED0;
+        case 0xFF22:
+            reg_pc=0xFF43;
         break;
-        */
+
 
 
         case 0x5110:
