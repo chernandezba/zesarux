@@ -29275,8 +29275,8 @@ void menu_visual_realtape_overlay(void)
 
                 //dibujar valor medio con color ESTILO_GUI_COLOR_WAVEFORM_OSCURO
 
-                int antes_valor_medio_minimo=valor_medio_minimo;
-                int antes_valor_medio_maximo=valor_medio_maximo;
+                //int antes_valor_medio_minimo=valor_medio_minimo;
+                //int antes_valor_medio_maximo=valor_medio_maximo;
 
                 //printf("antes valor_medio_minimo %d valor_medio_maximo %d\n",valor_medio_minimo,valor_medio_maximo);
 
