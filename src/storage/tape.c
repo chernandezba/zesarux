@@ -3832,9 +3832,6 @@ void cpu_core_loop_laocopy_continue(void)
     if (peek_byte_no_time(17480)!='L' || peek_byte_no_time(17481)!='A' || peek_byte_no_time(17482)!='O') return;
 
 
-
-    //int i;
-
     switch (reg_pc) {
         case 0xFF54:
 
@@ -3848,8 +3845,6 @@ void cpu_core_loop_laocopy_continue(void)
 
             copion_trap_put_byte(reg_l);
 
-
-
         break;
 
         //Para no esperar al tiempo de grabar cada byte
@@ -3857,13 +3852,10 @@ void cpu_core_loop_laocopy_continue(void)
             reg_pc=0xFF77;
         break;
 
-
         //Para saltarse los tonos guia
         case 0xFF22:
             reg_pc=0xFF43;
         break;
-
-
 
         case 0x5110:
             debug_printf(VERBOSE_DEBUG,"Laocopy copier trap, end of tape block");
