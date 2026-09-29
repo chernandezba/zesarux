@@ -637,6 +637,11 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_valor_opcion(array_menu_common,1);
         menu_add_item_menu_shortcut(array_menu_common,'l');
 
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," [%c] Tape save Traps",
+            (laocopy_tape_traps.v ? 'X' : ' '));
+        menu_add_item_menu_misc(array_menu_common,"laocopy2.zsf");
+        menu_add_item_menu_valor_opcion(array_menu_common,0); //indica que es un tape save traps
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~SuperTapeCopier  (128K)");
         menu_add_item_menu_misc(array_menu_common,"supertapecopier.zsf");
         menu_add_item_menu_valor_opcion(array_menu_common,1);
@@ -682,6 +687,8 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 
                     //Si es super tape copier, activamos un core para poder interceptar las rutinas de grabacion
                     if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) tape_enable_core_supertapecopier();
+
+                    if (!strcmp(item_seleccionado.texto_misc,"laocopy2.zsf")) tape_enable_core_laocopy();
                 }
 
                 //Aplicamos tape traps sobre un copiador
@@ -689,6 +696,11 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
                     if (!strcmp(item_seleccionado.texto_misc,"supertapecopier.zsf")) {
                         if (supertapecopier_tape_traps.v) tape_disable_core_supertapecopier();
                         else tape_enable_core_supertapecopier();
+                    }
+
+                    if (!strcmp(item_seleccionado.texto_misc,"laocopy2.zsf")) {
+                        if (laocopy_tape_traps.v) tape_disable_core_laocopy();
+                        else tape_enable_core_laocopy();
                     }
                 }
 

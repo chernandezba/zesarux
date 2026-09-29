@@ -3518,60 +3518,6 @@ void copion_trap_put_byte(z80_byte v)
 
 }
 
-
-
-int supertapecopier_nested_id_core;
-
-enum supertapecopier_status {
-    SUPERTAPECOPIER_IDLE,
-    SUPERTAPECOPIER_READING_BYTES
-};
-
-
-enum supertapecopier_status supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
-
-
-
-/*
--SuperTapecopier:  meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
-y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
-Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
-los traps que detectan solo grabacion desde rom
-
-
-8ED2: enviar a grabar flag, en registro L
-8EDC: Lectura de byte, en registro L. Pero no el flag del inicio
-8EDD: Si DE=0, fin bloque -> mejor 8f2e
-
-
-Y si se detiene con break? como lo sabremos?
-8f20: lectura de break
-
-8f2e: retorno de break y tambien final de bloque -> Mejor este para saber final de bloque
-
-87bc: despues de final de bloque y mira si pulsado break (si pulsado break, flag C=0). si pulsado break entra en 87be
-
---
-
-8F02: decrementar DE (longitud) incrementar IX (direccion)
-
-8ED7: ver final bloque
-
-8EE5: cuando es final de bloque y generar checksum. Acaba en L?
-
-8EFC: entrada de grabar bit de registro L?
-
-8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
-
-bloque navidad tzx
-
-00000000  00 4e 41 56 49 44 41 44  20 20 20 b1 0a 01 00 b1  |.NAVIDAD   .....|
-00000010  0a
-*/
-
-
-
-
 void copion_trap_tap_save(void)
 {
 
@@ -3625,6 +3571,58 @@ void copion_trap_tap_save(void)
 
 
 }
+
+
+int supertapecopier_nested_id_core;
+
+enum supertapecopier_status {
+    SUPERTAPECOPIER_IDLE,
+    SUPERTAPECOPIER_READING_BYTES
+};
+
+
+enum supertapecopier_status supertapecopier_status_block=SUPERTAPECOPIER_IDLE;
+
+
+
+/*
+-SuperTapecopier:  meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
+y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
+Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
+los traps que detectan solo grabacion desde rom
+
+
+8ED2: enviar a grabar flag, en registro L
+8EDC: Lectura de byte, en registro L. Pero no el flag del inicio
+8EDD: Si DE=0, fin bloque -> mejor 8f2e
+
+
+Y si se detiene con break? como lo sabremos?
+8f20: lectura de break
+
+8f2e: retorno de break y tambien final de bloque -> Mejor este para saber final de bloque
+
+87bc: despues de final de bloque y mira si pulsado break (si pulsado break, flag C=0). si pulsado break entra en 87be
+
+--
+
+8F02: decrementar DE (longitud) incrementar IX (direccion)
+
+8ED7: ver final bloque
+
+8EE5: cuando es final de bloque y generar checksum. Acaba en L?
+
+8EFC: entrada de grabar bit de registro L?
+
+8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
+
+bloque navidad tzx
+
+00000000  00 4e 41 56 49 44 41 44  20 20 20 b1 0a 01 00 b1  |.NAVIDAD   .....|
+00000010  0a
+*/
+
+
 
 void cpu_core_loop_supertapecopier_continue(void)
 {
@@ -3792,5 +3790,194 @@ void tape_disable_core_supertapecopier(void)
     supertapecopier_restore_core_functions();
 
     supertapecopier_tape_traps.v=0;
+
+}
+
+
+
+
+int laocopy_nested_id_core;
+
+enum laocopy_status {
+    LAOCOPY_IDLE,
+    LAOCOPY_READING_BYTES
+};
+
+
+enum laocopy_status laocopy_status_block=LAOCOPY_IDLE;
+
+
+
+
+/*
+FF52: se ha leido byte en L. Creo que le envia checksum tambien, pero no le envia flag
+FF48: se tiene el flag en L
+mejor: ff54: se tiene el byte en L, incluido flag y checksum
+5110h: retorno de grabar bloque
+reusar supertapecopier_tap_save y supertapecopier_put_byte, mas bien cambiarlo de nombre para que lo usen los dos
+*/
+
+void cpu_core_loop_laocopy_continue(void)
+{
+
+
+    if (tape_out_file==0) return;
+
+    if ( (tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) return;
+
+    //Si este core sigue activo pero el usuario ha hecho reset o lo que sea.. buscar al menos 3 bytes
+    //que sean del programa para saber que aun sigue ahi
+    //839b="SuperTapeCopier"
+    /*
+    if (peek_byte_no_time(0x839b)!='S' || peek_byte_no_time(0x839c)!='u' || peek_byte_no_time(0x839d)!='p') return;
+    */
+
+
+    //int i;
+
+    switch (reg_pc) {
+        case 0xFF54:
+        case 0x8EDC:
+
+
+            debug_printf(VERBOSE_DEBUG,"Laocopy trap, tape save byte %02X (index=%d) IX=%d",reg_l,copion_trap_memory_pointer,reg_ix);
+
+
+
+
+            if (laocopy_status_block==LAOCOPY_IDLE) {
+                laocopy_status_block=LAOCOPY_READING_BYTES;
+                copion_trap_memory_pointer=0;
+                //temp_xor_bytes=0;
+            }
+
+            copion_trap_put_byte(reg_l);
+
+            //temp_xor_bytes ^=reg_l;
+
+        break;
+
+        /*
+        //8EFE: mira si ha escrito 8 bits. si los ha hecho, continua en 8F01
+        //Para no esperar al tiempo de grabar cada byte
+        case 0x8EFE:
+            reg_pc +=3;
+        break;
+
+        //Para saltarse los tonos guia
+        case 0x8EAC:
+            reg_pc=0x8ED0;
+        break;
+        */
+
+
+        case 0x5110:
+            debug_printf(VERBOSE_DEBUG,"Laocopy copier trap, end of tape block");
+
+            //debug
+            /*for (i=0;i<copion_trap_memory_pointer;i++) {
+                printf("%02X ",copion_trap_memory_buffer[i]);
+            }
+            printf("\n");
+            */
+
+            //save memory buffer
+
+            audio_playing.v=0;
+
+            draw_tape_text();
+
+            copion_trap_tap_save();
+
+            timer_reset();
+
+            laocopy_status_block=LAOCOPY_IDLE;
+
+
+        break;
+    }
+
+
+
+}
+
+z80_bit laocopy_tape_traps={0};
+
+
+z80_byte cpu_core_loop_laocopy(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
+{
+
+    //Si la cpu esta interrumpida esperando a que llegue final de frame de video, aqui no interceptar
+    if (esperando_tiempo_final_t_estados.v==0) {
+
+        cpu_core_loop_laocopy_continue();
+
+    }
+
+
+    //Llamar a anterior
+    debug_nested_core_call_previous(laocopy_nested_id_core);
+
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    return 0;
+
+}
+
+
+
+//Establecer rutinas propias
+void laocopy_set_core_functions(void)
+{
+    debug_printf (VERBOSE_DEBUG,"Setting laocopy core functions");
+
+
+    laocopy_nested_id_core=debug_nested_core_add(cpu_core_loop_laocopy,"laocopy core");
+
+}
+
+//Restaurar rutinas de laocopy
+void laocopy_restore_core_functions(void)
+{
+    debug_printf (VERBOSE_DEBUG,"Restoring original core functions before laocopy");
+
+    debug_nested_core_del(laocopy_nested_id_core);
+
+}
+
+
+void tape_enable_core_laocopy(void)
+{
+    debug_printf (VERBOSE_DEBUG,"Enabling laocopy core");
+
+    if (laocopy_tape_traps.v) {
+        //printf("already enabled\n");
+        return;
+    }
+
+    laocopy_set_core_functions();
+
+    if (copion_trap_memory_buffer==NULL) {
+        copion_trap_memory_buffer=util_malloc(COPION_TRAP_MEMORY_SIZE,"Can not allocate memory for save buffer");
+    }
+
+    copion_trap_memory_pointer=0;
+
+    laocopy_tape_traps.v=1;
+
+
+}
+
+void tape_disable_core_laocopy(void)
+{
+    if (laocopy_tape_traps.v==0) {
+        //printf("already disabled\n");
+        return;
+    }
+
+    debug_printf (VERBOSE_DEBUG,"Disabling laocopy core");
+
+    laocopy_restore_core_functions();
+
+    laocopy_tape_traps.v=0;
 
 }
