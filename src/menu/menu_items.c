@@ -46390,9 +46390,10 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
     }
 }
 
+//dentro de ventana y no en zonas de scroll
 int menu_process_switcher_mouse_en_ventana(zxvision_window *w)
 {
-    if (zxvision_current_window==w && si_menu_mouse_en_ventana()) return 1;
+    if (zxvision_current_window==w && si_menu_mouse_en_ventana() && menu_mouse_x!=w->visible_width-1 && menu_mouse_y!=w->visible_height-1) return 1;
     else return 0;
 }
 
@@ -46806,9 +46807,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
                 if (mouse_left || zxvision_pressed_right_mouse_button() ) {
 
-                    //dentro de ventana y no en zonas de scroll
-
-                    if (menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging && menu_mouse_x!=ventana->visible_width-1 && menu_mouse_y!=ventana->visible_height-1) {
+                    if (menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
 
                         if (mouse_left) {
                             //printf("mouse click. menu_mouse_xy %d,%d visible width height %d,%d\n",menu_mouse_x,menu_mouse_y,ventana->visible_width,ventana->visible_height);
