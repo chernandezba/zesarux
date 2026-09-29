@@ -49466,6 +49466,11 @@ void zxdesktop_lowericon_cassete_std_accion_boton_derecho(void)
 void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
 {
 
+    char buffer_topspeed[40];
+    if (top_speed_timer.v==0) strcpy(buffer_topspeed,"Set top speed");
+    else strcpy(buffer_topspeed,"Set normal speed");
+
+
     char buffer_insert[20];
     if (realtape_inserted.v) strcpy(buffer_insert,"Eject tape");
     else strcpy(buffer_insert,"Open...");
@@ -49477,12 +49482,13 @@ void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
         if (realtape_playing.v) strcpy(buffer_play,"Pause");
         else strcpy(buffer_play,"Play");
 
-        opcion=menu_simple_three_choices("Real Tape","--Action--",buffer_insert,"Reinsert tape",buffer_play);
+        opcion=menu_simple_four_choices("Real Tape","--Action--",buffer_insert,"Reinsert tape",buffer_play,buffer_topspeed);
 
     }
     else {
         if (menu_realtape_cond()) {
-            opcion=menu_simple_two_choices("Real Tape","--Action--",buffer_insert,"Reinsert tape");
+            //No queremos esa tercera funcion pero si la cuarta, para poder quitar top speed si se habia habilitado
+            opcion=menu_simple_four_choices("Real Tape","--Action--",buffer_insert,"Reinsert tape","",buffer_topspeed);
         }
         //Solo permite abrir cinta
         else {
@@ -49493,6 +49499,8 @@ void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
     switch (opcion) {
 
         case 1:
+            if (top_speed_timer.v) menu_hardware_top_speed(0);
+
             if (realtape_inserted.v) menu_realtape_insert(0);
             else menu_realtape_open(0);
         break;
@@ -49506,6 +49514,11 @@ void zxdesktop_lowericon_cassete_real_accion_boton_derecho(void)
         case 3:
             menu_realtape_pause_unpause(0);
         break;
+
+        case 4:
+            menu_hardware_top_speed(0);
+        break;
+
 
     }
 

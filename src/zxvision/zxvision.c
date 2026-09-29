@@ -26328,6 +26328,8 @@ int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opc
 //retorna 3 si opcion 3
 //retorna 4 si opcion 4
 //retorna 0 si ESC
+//Si opcion="" se considera un separador. Nota: de momento solo se contempla en este de cuatro opciones,
+//si se necesita en las otras funciones, hay que ir agregando
 int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4)
 {
 
@@ -26346,13 +26348,17 @@ int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opci
 
             menu_add_item_menu_inicial_format(&array_menu_simple_four_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
 
-            menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+            if (opcion1[0]==0) menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_SEPARADOR,NULL,NULL,opcion1);
+            else menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
 
-            menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
+            if (opcion2[0]==0) menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_SEPARADOR,NULL,NULL,opcion2);
+            else menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
 
-            menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
+            if (opcion3[0]==0) menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_SEPARADOR,NULL,NULL,opcion3);
+            else menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
 
-            menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
+            if (opcion4[0]==0) menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_SEPARADOR,NULL,NULL,opcion4);
+            else menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
 
             //separador adicional para que quede mas grande la ventana y mas mono
             menu_add_item_menu_format(array_menu_simple_four_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
