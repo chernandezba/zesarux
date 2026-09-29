@@ -1015,13 +1015,6 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
         menu_add_item_menu_shortcut(array_menu_common,'d');
 
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_help,NULL,
-            "[He~^lp]");
-        menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
-        //La tecla H para help, que seria lo lógico, no la puedo usar como shortcut, dado que se utiliza como accion igual a F1 en items de menu
-        menu_add_item_menu_shortcut(array_menu_common,'l');
-
         if (breakpoint_edit_parameters.enabled) zxvision_print_string_defaults_fillspc(&ventana,1,9,"Breakpoint enabled");
         else zxvision_print_string(&ventana,1,9,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,"Breakpoint disabled");
 
@@ -1029,6 +1022,13 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
             "%s",(breakpoint_edit_parameters.enabled ? "[Disable]" : "[Enable]"));
         //menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
         menu_add_item_menu_tabulado(array_menu_common,1,10);
+
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_help,NULL,
+            "[He~^lp]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
+        //La tecla H para help, que seria lo lógico, no la puedo usar como shortcut, dado que se utiliza como accion igual a F1 en items de menu
+        menu_add_item_menu_shortcut(array_menu_common,'l');
 
 
         //Nombre de ventana solo aparece en el caso de stdout
