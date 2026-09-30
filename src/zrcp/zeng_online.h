@@ -142,6 +142,8 @@ struct zeng_online_room {
 
     char user_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para tener un minimo de seguridad
     //que no se pueden lanzar acciones sobre una habitacion sino se ha unido a dicha habitacion
+    //No quiere decir "password para cada usuario" sino que es un password único por habitación que todos los usuarios de esa habitación reciben al hacer join,
+    //para que solo puedan hacer acciones en esa habitación y no en otras
 
     char creator_password[ZENG_ROOM_PASSWORD_LENGTH+1]; //+1 para el 0 del final. un password simple, para las operaciones
       //del que ha creado la habitacion
