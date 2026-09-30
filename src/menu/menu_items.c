@@ -48741,6 +48741,11 @@ void menu_reinsert_std_tape(void)
 
 void menu_process_f_function_pause(void)
 {
+    paused_cpu_emulation.v ^=1;
+}
+
+void old_menu_process_f_function_pause(void)
+{
 
     //TODO: pulsando teclas F, como F5, no se sale de la pausa, pues dicha tecla no se interpreta como tecla en menu_get_pressed_key
 
