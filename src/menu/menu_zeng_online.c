@@ -198,6 +198,11 @@ int menu_zeng_online_write_message_room_cond(zxvision_window *w GCC_UNUSED)
     return !zeng_online_client_write_message_room_thread_running;
 }
 
+int menu_zeng_online_write_private_message_room_cond(zxvision_window *w GCC_UNUSED)
+{
+    return !zeng_online_client_write_private_message_room_thread_running;
+}
+
 int menu_zeng_online_kick_user_cond(zxvision_window *w GCC_UNUSED)
 {
     return !zeng_online_client_kick_user_thread_running;
@@ -1067,6 +1072,30 @@ void menu_zeng_online_disable_autojoin_room(MENU_ITEM_PARAMETERS)
 }
 
 
+
+void menu_zeng_online_send_private_message(MENU_ITEM_PARAMETERS)
+{
+
+    char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
+
+    if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,1,1)) {
+        //printf("menu kick user [%s]\n",buffer_uuid);
+
+        char message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
+        message[0]=0;
+
+        if (menu_ventana_scanf("Message?",message,ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1)<0) {
+            return;
+        }
+
+
+        zeng_online_client_write_private_message_room(buffer_uuid,message);
+        zxvision_simple_progress_window("Send private message", menu_zeng_online_write_private_message_room_cond,menu_zeng_online_connecting_common_print );
+    }
+
+    salir_todos_menus=1;
+
+}
 
 void menu_zeng_online_write_message_room(MENU_ITEM_PARAMETERS)
 {
@@ -2374,6 +2403,10 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_write_message_room,NULL,
                 "Broadcast message","Mensaje difusión","Missatge difusió");
+            menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_online_send_private_message,NULL,
+                "Private message","Mensaje privado","Missatge privat");
             menu_add_item_menu_genera_ventana(array_menu_common);
 
             if (zeng_online_i_am_master.v) {

@@ -81,6 +81,7 @@ pthread_t thread_zeng_online_client_destroy_room;
 pthread_t thread_zeng_online_client_autojoin_room;
 pthread_t thread_zeng_online_client_disable_autojoin_room;
 pthread_t thread_zeng_online_client_write_message_room;
+pthread_t thread_zeng_online_client_write_private_message_room;
 pthread_t thread_zeng_online_client_allow_message_room;
 pthread_t thread_zeng_online_client_list_users;
 pthread_t thread_zeng_online_client_get_profile_keys;
@@ -170,6 +171,7 @@ int zeng_online_client_destroy_room_thread_running=0;
 int zeng_online_client_autojoin_room_thread_running=0;
 int zeng_online_client_disable_autojoin_room_thread_running=0;
 int zeng_online_client_write_message_room_thread_running=0;
+int zeng_online_client_write_private_message_room_thread_running=0;
 int zeng_online_client_allow_message_room_thread_running=0;
 int zeng_online_client_list_users_thread_running=0;
 int zeng_online_client_get_profile_keys_thread_running=0;
@@ -1225,6 +1227,27 @@ int zeng_online_client_write_message_room_connect(void)
 
 }
 
+char param_zeng_online_client_write_private_message_room_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+1];
+char param_zeng_online_client_write_private_message_room_uuid[STATS_UUID_MAX_LENGTH+1];
+
+//Devuelve 0 si no conectado
+int zeng_online_client_write_private_message_room_connect(void)
+{
+
+    char buffer_enviar[1024];
+
+    //"send-private-message user_pass n nickname uuid message
+    sprintf(buffer_enviar,"zeng-online send-private-message %s %d \"%s\" \"%s\" \"%s\"\n",
+        created_room_user_password,
+        zeng_online_joined_to_room_number,
+        zeng_online_nickname,
+        param_zeng_online_client_write_private_message_room_uuid,
+        param_zeng_online_client_write_private_message_room_message);
+
+    return zoc_open_command_close(buffer_enviar,"send-private-message");
+
+}
+
 char param_zeng_online_client_kick_user_uuid[STATS_UUID_MAX_LENGTH+1];
 
 //Devuelve 0 si no conectado
@@ -1375,6 +1398,29 @@ void *zeng_online_client_write_message_room_function(void *nada GCC_UNUSED)
 
 
 	zeng_online_client_write_message_room_thread_running=0;
+
+	return 0;
+
+}
+
+void *zeng_online_client_write_private_message_room_function(void *nada GCC_UNUSED)
+{
+    zeng_online_client_write_private_message_room_thread_running=1;
+
+	//Conectar a remoto
+
+	if (!zeng_online_client_write_private_message_room_connect()) {
+		//Desconectar solo si el socket estaba conectado
+
+        //Desconectar los que esten conectados
+        //TODO zeng_disconnect_remote();
+
+		zeng_online_client_write_private_message_room_thread_running=0;
+		return 0;
+	}
+
+
+	zeng_online_client_write_private_message_room_thread_running=0;
 
 	return 0;
 
@@ -2051,6 +2097,24 @@ void zeng_online_client_write_message_room(char *message)
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
 	pthread_detach(thread_zeng_online_client_write_message_room);
+
+
+}
+
+void zeng_online_client_write_private_message_room(char *uuid,char *message)
+{
+
+	//Inicializar thread
+    strcpy(param_zeng_online_client_write_private_message_room_uuid,uuid);
+    strcpy(param_zeng_online_client_write_private_message_room_message,message);
+
+	if (pthread_create( &thread_zeng_online_client_write_private_message_room, NULL, &zeng_online_client_write_private_message_room_function, NULL) ) {
+		DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Can not create zeng online write private_message pthread");
+		return;
+	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng_online_client_write_private_message_room);
 
 
 }
