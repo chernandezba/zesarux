@@ -5,6 +5,7 @@ ZEsarUX 13.1 - xxxx edition. 10 Julio 2026
 Agregada (corregida en realidad) ZX Evo Baseconf
 Agregada opción en archivo de configuración para activar el uso de teclas numéricas en teclado Azerty sin tener que pulsar tecla Shift
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
+Permitir enviar mensages privados a usuarios en ZENG Online
 Permitir smartload de archivo SCL
 Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 Agregado soporte para disparar acciones de tipo Tecla-F desde el joystick (Reset CPU, Abrir ventana, NMI, etc). También, los eventos de joystick "Quicksave", "Rewind", "FForward" han sido eliminados y pueden ser disparados ahora como acciones

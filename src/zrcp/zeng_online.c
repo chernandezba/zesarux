@@ -749,7 +749,6 @@ void zoc_send_broadcast_message(int room_number,char *message)
 
 void zoc_send_private_message(int room_number,char *uuid_destination,char *message)
 {
-    printf("enviar private message a %s\n",uuid_destination);
     //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
     strcpy(zeng_online_rooms_list[room_number].private_message,message);
     strcpy(zeng_online_rooms_list[room_number].private_message_uuid,uuid_destination);
@@ -2181,6 +2180,8 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             "Message from %s: %s",
             comando_argv[3],
             comando_argv[5]);
+
+        DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Sending private message on room number %d to %d: %s",room_number,comando_argv[4],private_message);
         zoc_send_private_message(room_number,comando_argv[4],private_message);
 
     }
@@ -2360,10 +2361,10 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             return;
         }
 
-        printf("buscando private message para uuid [%s] y el mensaje es para uuid [%s]\n",comando_argv[3],zeng_online_rooms_list[room_number].private_message_uuid);
+        //printf("buscando private message para uuid [%s] y el mensaje es para uuid [%s]\n",comando_argv[3],zeng_online_rooms_list[room_number].private_message_uuid);
 
         if (!strcmp(comando_argv[3],zeng_online_rooms_list[room_number].private_message_uuid)) {
-            printf("Retornar private message\n");
+            //printf("Retornar private message\n");
             escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].private_message);
 
             //Una vez recibido se borra
@@ -2371,7 +2372,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             zeng_online_rooms_list[room_number].private_message[0]=0;
         }
         else {
-            printf("No hay private message\n");
+            //printf("No hay private message\n");
             escribir_socket(misocket,"");
         }
 
@@ -2952,7 +2953,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         //Y notificarlo con un broadcast message
         char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
-        sprintf(broadcast_message,"Joined %s",comando_argv[2]);
+        sprintf(broadcast_message,": Joined %s",comando_argv[2]);
         zoc_send_broadcast_message(room_number,broadcast_message);
 
 
