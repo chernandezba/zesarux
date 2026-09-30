@@ -522,6 +522,9 @@ z80_bit z80_halt_signal;
 
 z80_bit z80_wait_signal;
 
+//Pausado desde menu
+z80_bit paused_cpu_emulation={0};
+
 z80_byte *memoria_spectrum;
 
 

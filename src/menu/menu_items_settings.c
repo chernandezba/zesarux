@@ -16781,6 +16781,20 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_separator(array_menu_cpu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_cpu_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,NULL,NULL,
+            "Pause CPU","Pausar CPU","Pause CPU");
+        menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(paused_cpu_emulation.v ? 'X' : ' ' ));
+        menu_add_item_menu_opcion_conmuta(array_menu_cpu_settings,&paused_cpu_emulation);
+        menu_add_item_menu_es_avanzado(array_menu_cpu_settings);
+        menu_add_item_menu_tooltip(array_menu_cpu_settings,"When paused, CPU only runs NOP");
+        menu_add_item_menu_ayuda(array_menu_cpu_settings,"When paused, CPU only runs NOP");
+
+
+        menu_add_item_menu_separator(array_menu_cpu_settings);
+
+
 
         menu_add_ESC_item(array_menu_cpu_settings);
 
