@@ -318,3 +318,22 @@ en zx81 no siempre va bien
 
 -Zeng opción para enviar mensaje a un usuario concreto
 *acabarlo de probar
+
+-zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
+
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
+Debug:    ZENG Online: Set alive time for user 1588586687.178043
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 6 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 7 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 8 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 9 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 10 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 11 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 12 Source IP=127.0.0.1
+
+Deberia detectar la salida correcta
