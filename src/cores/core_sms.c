@@ -528,7 +528,7 @@ void core_sms_ciclo_fetch(void)
 #endif
 
                 //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                if (z80_halt_signal.v) {
+                if (z80_halt_signal.v || paused_cpu_emulation.v) {
                     byte_leido_core_sms=0;
                 }
                 else {

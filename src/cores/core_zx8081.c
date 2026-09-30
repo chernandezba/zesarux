@@ -149,11 +149,11 @@ void cpu_core_loop_zx8081(void)
 
 
             //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-            if (z80_halt_signal.v) {
+            if (z80_halt_signal.v || paused_cpu_emulation.v) {
                 byte_leido_core_zx8081=0;
 
                 //Ese halt tiene que durar 1 t estado
-                if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v/*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
+                if (z80_halt_signal.v && MACHINE_IS_ZX81_TYPE && nmi_generator_active.v/*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
             }
             else {
                 reg_pc++;

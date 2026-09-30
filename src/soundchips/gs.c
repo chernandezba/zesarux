@@ -763,7 +763,7 @@ void gs_run_scanline_cycles(void)
 
 
         //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-        if (z80_halt_signal.v) {
+        if (z80_halt_signal.v || paused_cpu_emulation.v) {
             byte_leido=0;
         }
         else {

@@ -315,3 +315,6 @@ ok * que se habilite el tape trap automaticamente pero se pueda activar/desactiv
 
 -Hex editor:
 *poder buscar bytes
+
+-pausa cpu
+en zx81 no siempre va bien
