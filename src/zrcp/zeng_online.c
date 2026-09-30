@@ -747,6 +747,15 @@ void zoc_send_broadcast_message(int room_number,char *message)
 
 }
 
+void zoc_send_private_message(int room_number,char *uuid_destination,char *message)
+{
+    printf("enviar private message a %s\n",uuid_destination);
+    //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
+    strcpy(zeng_online_rooms_list[room_number].private_message,message);
+    strcpy(zeng_online_rooms_list[room_number].private_message_uuid,uuid_destination);
+
+}
+
 void init_zeng_online_rooms(void)
 {
 
@@ -910,6 +919,9 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name,int st
     zeng_online_rooms_list[room_number].broadcast_message_id=0;
     zeng_online_rooms_list[room_number].broadcast_message[0]=0;
     zeng_online_rooms_list[room_number].broadcast_messages_allowed=1;
+
+    zeng_online_rooms_list[room_number].private_message[0]=0;
+    zeng_online_rooms_list[room_number].private_message_uuid[0]=0;
 
     zeng_online_rooms_list[room_number].kicked_user[0]=0;
 
@@ -2129,6 +2141,47 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
             comando_argv[4]);
         zoc_send_broadcast_message(room_number,broadcast_message);
 
+    }
+//    "send-message user_pass n nickname message       Sends broadcast message to room\n"
+  //  "send-private-message user_pass n nickname uuid message   Sends private message to room. nickname is the origin, uuid is the destination\n"
+    else if (!strcmp(comando_argv[0],"send-private-message")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<5) {
+            escribir_socket(misocket,"ERROR. Needs five parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+
+        char private_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
+
+        //No hace falta indicar room number dado que solo se mostraran mensajes de nuestro room
+        sprintf(private_message,
+            "Message from %s: %s",
+            comando_argv[3],
+            comando_argv[5]);
+        zoc_send_private_message(room_number,comando_argv[4],private_message);
 
     }
 
@@ -2274,6 +2327,53 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
 
         escribir_socket(misocket,zeng_online_rooms_list[room_number].broadcast_message);
+
+    }
+
+    //get-private-message user_pass n uuid
+    else if (!strcmp(comando_argv[0],"get-private-message")) {
+        if (!zeng_online_enabled) {
+            escribir_socket(misocket,"ERROR. ZENG Online is not enabled");
+            return;
+        }
+
+        if (comando_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters");
+            return;
+        }
+
+        int room_number=parse_string_to_number(comando_argv[2]);
+
+        if (room_number<0 || room_number>=zeng_online_current_max_rooms) {
+            escribir_socket_format(misocket,"ERROR. Room number beyond limit");
+            return;
+        }
+
+        if (!zeng_online_rooms_list[room_number].created) {
+            escribir_socket(misocket,"ERROR. Room is not created");
+            return;
+        }
+
+        //validar user_pass. comando_argv[1]
+        if (strcmp(comando_argv[1],zeng_online_rooms_list[room_number].user_password)) {
+            escribir_socket(misocket,"ERROR. Invalid user password for that room");
+            return;
+        }
+
+        printf("buscando private message para uuid [%s] y el mensaje es para uuid [%s]\n",comando_argv[3],zeng_online_rooms_list[room_number].private_message_uuid);
+
+        if (!strcmp(comando_argv[3],zeng_online_rooms_list[room_number].private_message_uuid)) {
+            printf("Retornar private message\n");
+            escribir_socket_format(misocket,"%s",zeng_online_rooms_list[room_number].private_message);
+
+            //Una vez recibido se borra
+            zeng_online_rooms_list[room_number].private_message_uuid[0]=0;
+            zeng_online_rooms_list[room_number].private_message[0]=0;
+        }
+        else {
+            printf("No hay private message\n");
+            escribir_socket(misocket,"");
+        }
 
     }
 

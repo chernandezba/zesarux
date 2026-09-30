@@ -60,7 +60,8 @@ veces
 
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre.
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
--en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
+
+-en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado -> lo tendrá que hacer la instancia master, haciendo pausa de cpu
 
 -probar fullscreen en todos drivers
 *permitir raton en full screen. probar fullscreen con zx desktop
@@ -143,6 +144,7 @@ ok - probar joystick "nes" en Windows, joystick logic3
 -Zeng opción para enviar mensaje a un usuario concreto
 *requiere comando para obtener mensaje de un usuario concreto, esto o bien se mantiene solo un mensaje a la vez y se quita al obtenerlo,
 o hay que tener una lista grande para diferentes mensajes de diferentes usuarios
+
 *mensaje que se obtenga y se envie por uuid o por nickname? hacerlo igual que hace el kill (si este lo hace por uuid, pues uuid, sino por nickname)
 *pull continuamente por ver si hay mensajes? igual que se hace para leer broadcast messages?
 *si al leer mensaje da error (por ejemplo por comando no soportado en versiones anteriores) no mostrar error al usuario.

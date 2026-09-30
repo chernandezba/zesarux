@@ -195,6 +195,9 @@ struct zeng_online_room {
     char broadcast_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
     int broadcast_messages_allowed;
 
+    char private_message[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH];
+    char private_message_uuid[STATS_UUID_MAX_LENGTH+1];
+
     //Usuarios logueados
     //Si "", indica que no hay user en esa posicion
     z_atomic_semaphore semaphore_joined_users;
