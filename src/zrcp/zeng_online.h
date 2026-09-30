@@ -56,7 +56,7 @@
 #define ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH 64
 
 //En el mensaje se le agrega:
-//Message from room XX user XX
+//Broadcast Message from room XX user XX
 //Mas que suficiente el margen de ZOC_MAX_NICKNAME_LENGTH+100
 #define ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH (ZENG_ONLINE_MAX_BROADCAST_MESSAGE_LENGTH+ZOC_MAX_NICKNAME_LENGTH+100+1)
 

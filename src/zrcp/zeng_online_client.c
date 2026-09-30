@@ -1162,7 +1162,7 @@ int zoc_get_message(int indice_socket,char *mensaje)
     //buffer retorno
     char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
-    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message-id",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-message",buffer,ZENG_BUFFER_INITIAL_CONNECT);
 
     //printf("get_message: [%s]\n",buffer);
 
@@ -1173,6 +1173,36 @@ int zoc_get_message(int indice_socket,char *mensaje)
     strcpy(mensaje,buffer);
 
     return 0;
+
+}
+
+
+void zoc_get_private_message(int indice_socket,char *mensaje)
+{
+    mensaje[0]=0;
+
+    char buffer_enviar[1024];
+
+    //get-message user_pass n
+    sprintf(buffer_enviar,"zeng-online get-private-message %s %d %s\n",
+        created_room_user_password,zeng_online_joined_to_room_number,stats_uuid);
+
+    #define ZENG_BUFFER_INITIAL_CONNECT 199
+
+    //buffer retorno
+    char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
+
+    int return_value=zoc_common_send_command_buffer(indice_socket,buffer_enviar,"get-private-message",buffer,ZENG_BUFFER_INITIAL_CONNECT);
+
+    //printf("get-private-message: [%s]\n",buffer);
+
+    if (!return_value) {
+        return;
+    }
+
+    strcpy(mensaje,buffer);
+
+    return;
 
 }
 
@@ -3539,32 +3569,42 @@ void zoc_common_get_messages_slave_master(int indice_socket)
         //fin prueba mostrar trafico
 
         int id_actual=zoc_get_message_id(indice_socket);
+        char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1]="";
+        int es_broadcast=1;
         if (id_actual!=zoc_last_message_id) {
             DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: There is a new message");
-            char buffer_mensaje[ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
+
             zoc_get_message(indice_socket,buffer_mensaje);
-            if (buffer_mensaje[0]) {
-
-                //Y lo mostramos en el footer
-                char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
-
-                sprintf(mensaje,"%s",buffer_mensaje);
-
-                //Por si acaso truncar al maximo que permite el footer
-                mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
-
-                put_footer_first_message(mensaje);
-
-                //Y enviarlo a speech
-                textspeech_print_speech(mensaje);
-
-                zoc_common_get_messages_received_counter++;
-
-            }
-
-
             zoc_last_message_id=id_actual;
         }
+
+
+        //ver tambien mensajes privados si no hay broadcast
+        if (buffer_mensaje[0]==0) {
+            es_broadcast=0;
+            zoc_get_private_message(indice_socket,buffer_mensaje);
+        }
+
+
+        if (buffer_mensaje[0]) {
+
+            //Y lo mostramos en el footer
+            char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH+ZENG_ONLINE_MAX_BROADCAST_MESSAGE_SHOWN_LENGTH+1];
+
+            sprintf(mensaje,"%s%s",(es_broadcast ? "Broadcast " : ""),buffer_mensaje);
+
+            //Por si acaso truncar al maximo que permite el footer
+            mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH]=0;
+
+            put_footer_first_message(mensaje);
+
+            //Y enviarlo a speech
+            textspeech_print_speech(mensaje);
+
+            zoc_common_get_messages_received_counter++;
+
+        }
+
     }
 }
 
