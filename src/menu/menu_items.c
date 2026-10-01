@@ -7857,12 +7857,12 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
             buffer_puntero[0]=0;
         }
 
-        sprintf (buffer_linea,"%smemptr%s [%c] fo~~llow C%sopy Bit~~Shift",string_atajos,buffer_puntero,
+        sprintf (buffer_linea,"%smemptr%s [%c] fo~~llow C%sopy ~~find Bit~~Shift",string_atajos,buffer_puntero,
             (menu_hexdump_follow_mode ? 'X' : ' '),
             string_atajos);
 
 
-        //menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
+
         zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
         sprintf (buffer_linea,"[%c] %sinvert [%c] Edi%st C%shar:%s",
