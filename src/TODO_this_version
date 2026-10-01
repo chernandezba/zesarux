@@ -308,5 +308,7 @@ Deberia detectar la salida correcta
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
+-> de momento master system
+
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
 -implementar timings ula TK90x

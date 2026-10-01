@@ -24136,6 +24136,9 @@ int util_get_available_drives(char *texto)
 int get_cpu_frequency(void)
 {
     int frames_per_second = MACHINE_IS_Z88 ? 200 : 50;
+
+    if (machine_60hz.v) frames_per_second=60;
+
     int cpu_hz = screen_testados_total * frames_per_second;
 
     //printf("get_cpu_frequency. screen_testados_total=%d cpu_hz=%d\n",screen_testados_total,cpu_hz);
