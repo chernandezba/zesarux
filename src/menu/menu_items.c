@@ -7857,9 +7857,18 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
             buffer_puntero[0]=0;
         }
 
-        sprintf (buffer_linea,"%smemptr%s [%c] fo~~llow C%sopy ~~find Bit~~Shift",string_atajos,buffer_puntero,
-            (menu_hexdump_follow_mode ? 'X' : ' '),
-            string_atajos);
+        char buffer_linea_short[64];
+        char buffer_linea_long[64];
+
+        sprintf (buffer_linea_long,"%smemptr%s [%c] fo%sllow C%sopy fi%snd Bit%sShift",
+            string_atajos,buffer_puntero,(menu_hexdump_follow_mode ? 'X' : ' '),
+            string_atajos,string_atajos,string_atajos,string_atajos);
+
+        sprintf (buffer_linea_short,"%smempt%s [%c] fo%sllw C%sopy fi%snd B%sShft",
+            string_atajos,buffer_puntero,(menu_hexdump_follow_mode ? 'X' : ' '),
+            string_atajos,string_atajos,string_atajos,string_atajos);
+
+        menu_get_legend_short_long(buffer_linea,ventana->visible_width,buffer_linea_short,buffer_linea_long);
 
 
 
@@ -8490,8 +8499,24 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
                 menu_debug_hexdump_direccion +=bytes_por_ventana;
             break;
 
-            case 'f':
-                menu_hexdump_find();
+            //No usar letras a-f porque se usan en edicion
+
+
+            case 'h':
+                if (!menu_hexdump_editando_en_zona_ascii)  {
+                    menu_debug_hexdump_with_ascii_modo_ascii++;
+                    if (menu_debug_hexdump_with_ascii_modo_ascii==3) menu_debug_hexdump_with_ascii_modo_ascii=0;
+                }
+            break;
+
+            case 'i':
+                if (!menu_hexdump_editando_en_zona_ascii) menu_hexdump_valor_xor ^= 255;
+            break;
+
+            case 'l':
+                if (!menu_hexdump_editando_en_zona_ascii)  {
+                    menu_debug_hexdump_follow();
+                }
             break;
 
             case 'm':
@@ -8502,6 +8527,12 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
                     //Y resetear cursor edicion
                     menu_hexdump_edit_position_x=0;
                     menu_hexdump_edit_position_y=0;
+                }
+            break;
+
+            case 'n':
+                if (!menu_hexdump_editando_en_zona_ascii)  {
+                    menu_hexdump_find();
                 }
             break;
 
@@ -8521,17 +8552,6 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'h':
-                if (!menu_hexdump_editando_en_zona_ascii)  {
-                    menu_debug_hexdump_with_ascii_modo_ascii++;
-                    if (menu_debug_hexdump_with_ascii_modo_ascii==3) menu_debug_hexdump_with_ascii_modo_ascii=0;
-                }
-            break;
-
-            case 'i':
-                if (!menu_hexdump_editando_en_zona_ascii) menu_hexdump_valor_xor ^= 255;
-            break;
-
             case 't':
                 if (!menu_hexdump_editando_en_zona_ascii) {
                     menu_hexdump_edit_mode ^= 1;
@@ -8546,17 +8566,15 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
             break;
 
             case 'u':
-                //Ver info subzonas
-                menu_debug_hexdump_info_subzones();
+                if (!menu_hexdump_editando_en_zona_ascii)  {
+                    //Ver info subzonas
+                    menu_debug_hexdump_info_subzones();
+                }
             break;
 
             //case 'l':
             //	menu_debug_hex_shows_inves_low_ram.v ^=1;
             //break;
-
-            case 'l':
-                menu_debug_hexdump_follow();
-            break;
 
             case 'z':
 
