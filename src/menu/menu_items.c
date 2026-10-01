@@ -8055,6 +8055,197 @@ void menu_debug_hexdump_follow(void)
 zxvision_window zxvision_window_debug_hexdump;
 
 
+//Dice si la direccion de memoria dir contiene los bytes de la lista.
+//Usando memory zones
+int menu_hexdump_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items,int case_insensitive)
+{
+    int i;
+
+    for (i=0;i<total_items;i++) {
+
+        //Antes de escribir o leer, normalizar zona memoria
+        menu_debug_set_memory_zone_attr();
+        int source=adjust_address_memory_size(dir+i);
+        z80_byte byte_leido=menu_debug_get_mapped_byte(source);
+
+
+        //z80_byte byte_leido=peek_byte_z80_moto(dir+i);
+
+
+        int byte_en_lista=lista[i];
+
+        if (case_insensitive) {
+            byte_leido=int_minuscula(byte_leido);
+            byte_en_lista=int_minuscula(byte_en_lista);
+        }
+
+        if (byte_leido!=byte_en_lista) {
+            //printf("Not equal address %d\n",dir);
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+//Busqueda desde direccion indicada una lista de bytes
+//menu_z80_moto_int dir,int *lista,int total_items
+void menu_hexdump_find_bytes_list_from(int *lista,int total_items,int case_insensitive)
+{
+    int dir;
+    int inicio=menu_debug_hexdump_direccion;
+
+    menu_debug_set_memory_zone_attr();
+    int final_find=menu_debug_memory_zone_size;
+
+
+    for (dir=inicio;dir<final_find;dir++) {
+        if (menu_hexdump_compare_bytes_address(dir,lista,total_items,case_insensitive)) {
+            menu_debug_hexdump_direccion=dir;
+
+            return;
+        }
+    }
+
+
+}
+
+//maximos bytes a buscar
+#define MAX_HEXDUMP_BYTES_FIND 30
+
+#define MAX_HEXDUMP_STRING_FIND_BUFFER (MAX_HEXDUMP_BYTES_FIND*4)
+
+char menu_hexdump_find_bytes_buffer[MAX_HEXDUMP_STRING_FIND_BUFFER]="";
+
+
+
+//Para buscar mas de 1 byte separado por espacio
+void menu_hexdump_find_bytes(void)
+{
+
+
+
+    int lista[MAX_HEXDUMP_BYTES_FIND];
+
+    //Buscar en la memoria direccionable (0...65535) si se encuentran los bytes indicados
+    //z80_byte byte_to_find;
+
+
+
+
+    menu_ventana_scanf("Values space separated",menu_hexdump_find_bytes_buffer,MAX_HEXDUMP_STRING_FIND_BUFFER);
+
+    //Si cadena vacia, no hacer nada
+    if (menu_hexdump_find_bytes_buffer[0]==0) return;
+
+    //ir procesando cada valor
+    int i;
+
+
+    //indice al string
+    int indice_numero=0;
+
+    int total_numeros=0;
+
+    int salir=0;
+
+    i=0;
+
+
+    while (!salir) {
+        if (menu_hexdump_find_bytes_buffer[i]==0) salir=1;
+
+        if (menu_hexdump_find_bytes_buffer[i]==' ' || menu_hexdump_find_bytes_buffer[i]==0) {
+
+            if (total_numeros==MAX_HEXDUMP_BYTES_FIND) {
+                menu_error_message("Maximum bytes in list reached");
+                return;
+            }
+
+            //temporalmente ponemos un 0 para parsearlo bien
+            char byte_antes=menu_hexdump_find_bytes_buffer[i];
+            menu_hexdump_find_bytes_buffer[i]=0;
+            int valor_find=parse_string_to_number(&menu_hexdump_find_bytes_buffer[indice_numero]);
+
+            menu_hexdump_find_bytes_buffer[i]=byte_antes;
+
+            lista[total_numeros]=valor_find;
+            //printf("numero: %d\n",valor_find);
+
+            indice_numero=i+1;
+            total_numeros++;
+
+        }
+
+        i++;
+    }
+
+
+    menu_hexdump_find_bytes_list_from(lista,total_numeros,0);
+
+
+
+}
+
+
+//maximos bytes a buscar
+#define MENU_HEXDUMP_FIND_STRING_MAX 100
+
+char menu_hexdump_find_string_buffer[MENU_HEXDUMP_FIND_STRING_MAX]="";
+
+
+//Para buscar texto
+void menu_hexdump_find_string(void)
+{
+
+    //maximos bytes a buscar
+    #define MENU_HEXDUMP_FIND_STRING_MAX 100
+
+    int lista[MENU_HEXDUMP_FIND_STRING_MAX];
+
+    //Buscar en la memoria direccionable (0...65535) si se encuentran los bytes indicados
+    //z80_byte byte_to_find;
+
+
+
+
+    menu_ventana_scanf("Write string",menu_hexdump_find_string_buffer,MENU_HEXDUMP_FIND_STRING_MAX);
+
+    //Si cadena vacia, no hacer nada
+    if (menu_hexdump_find_string_buffer[0]==0) return;
+
+    //ir procesando cada valor
+    int i;
+
+    for (i=0;menu_hexdump_find_string_buffer[i];i++) {
+        lista[i]=(unsigned char)menu_hexdump_find_string_buffer[i];
+    }
+
+    int total_numeros=i;
+
+
+    menu_hexdump_find_bytes_list_from(lista,total_numeros,1);
+
+}
+
+
+void menu_hexdump_find(void)
+{
+    int opcion=menu_simple_two_choices("Find","Find type","Bytes","String");
+
+    switch (opcion) {
+        case 1:
+            menu_hexdump_find_bytes();
+        break;
+
+        case 2:
+            menu_hexdump_find_string();
+        break;
+
+    }
+}
+
+
 void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -8297,6 +8488,10 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
             case 25:
                 //PgDn
                 menu_debug_hexdump_direccion +=bytes_por_ventana;
+            break;
+
+            case 'f':
+                menu_hexdump_find();
             break;
 
             case 'm':
@@ -26445,7 +26640,7 @@ void menu_find_bytes_view_results(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada_common,&item_seleccionado,array_menu_common,"View results");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada_common,&item_seleccionado,array_menu_common,"View results");
 
 
 
@@ -26750,7 +26945,7 @@ void menu_find_bytes(MENU_ITEM_PARAMETERS)
             else strcpy(tipo_busqueda,"(next)");
 
                 menu_add_item_menu_inicial_format(&array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_bytes_find,NULL,"Find bytes %s",tipo_busqueda);
-                menu_add_item_menu_tooltip(array_menu_find_bytes,"Find several byte on memory");
+                menu_add_item_menu_tooltip(array_menu_find_bytes,"Find several bytes on memory");
                 menu_add_item_menu_ayuda(array_menu_find_bytes,"Find some bytes on the 64 KB of mapped memory, considering the last address found (if any).\n"
                         "It can also be used to find POKEs, it's very easy: \n"
                         "I first recommend to disable Multitasking menu, to avoid losing lives where in the menu.\n"

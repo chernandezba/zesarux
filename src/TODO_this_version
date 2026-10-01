@@ -292,21 +292,6 @@ necesita core 3.2.0 o inferior!
 ---
 
 
-Process switcher
-ok -quiza que el scroll que haga sea de tamaño icono
-
-
-
-----
-
--SuperTapecopier:
-ok * probar tap en salida
-ok * probar tzx en salida
-ok * probar pzx en salida
-ok * que se habilite el tape trap automaticamente pero se pueda activar/desactivar desde el menu
-
-
--Hacer lo mismo que supertapecopier pero para lao copy:
 
 
 -Hex editor:

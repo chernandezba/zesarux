@@ -550,6 +550,8 @@ extern char letra_mayuscula(char c);
 
 extern char letra_minuscula(char c);
 
+extern int int_minuscula(int c);
+
 extern void string_a_minusculas(char *origen, char *destino);
 
 extern void string_a_mayusculas(char *origen, char *destino);
