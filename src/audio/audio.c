@@ -1323,10 +1323,6 @@ void envio_audio(void)
 {
 
 
-
-
-
-
 	//Si aofile, silencio=0
 	if (aofile_inserted.v) reset_silence_detection_counter();
 
@@ -1358,7 +1354,13 @@ void envio_audio(void)
 	//para aumentar buffer sonido
 	contador_frames_veces_buffer_audio++;
 
-	if (contador_frames_veces_buffer_audio==FRAMES_VECES_BUFFER_AUDIO) {
+    int frames_por_buffer_audio=FRAMES_VECES_BUFFER_AUDIO;
+
+    if (machine_60hz.v) {
+        frames_por_buffer_audio=6;
+    }
+
+	if (contador_frames_veces_buffer_audio>=frames_por_buffer_audio) {
 		contador_frames_veces_buffer_audio=0;
 
 	        //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
