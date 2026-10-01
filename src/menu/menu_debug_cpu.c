@@ -2688,6 +2688,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             case 17:
                 if (z80_halt_signal.v) strcpy(textoregistros,"CPU HALT");
                 else if (z80_wait_signal.v) strcpy(textoregistros,"CPU WAIT");
+                else if (paused_cpu_emulation.v) strcpy(textoregistros,"CPU PAUSE");
             break;
 
 
@@ -2950,6 +2951,10 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                         *columnas_modificadas |=(13L<<36);
                     }
                 }
+            break;
+
+            case 23:
+                if (paused_cpu_emulation.v) strcpy(textoregistros,"CPU PAUSE");
             break;
 
 
