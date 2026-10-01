@@ -9077,22 +9077,22 @@ void siguiente_frame_pantalla(void)
     if (machine_60hz.v) total_frames=60;
 
 
-        if (frames_total==total_frames) {
+    if (frames_total==total_frames) {
 
-                              //contador framedrop
-                                if (framedrop_total!=0) {
-                    //si no hay frameskip forzado
-                                        if (!frameskip && ultimo_fps!=total_frames) debug_printf(VERBOSE_INFO,"FPS: %d",ultimo_fps);
-                                }
+        //contador framedrop
+        if (framedrop_total!=0) {
+            //si no hay frameskip forzado
+            if (!frameskip && ultimo_fps!=total_frames) debug_printf(VERBOSE_INFO,"FPS: %d",ultimo_fps);
+        }
 
 
-                ultimo_fps=total_frames-framedrop_total;
+        ultimo_fps=total_frames-framedrop_total;
 
-                                framedrop_total=0;
-                                frames_total=0;
+        framedrop_total=0;
+        frames_total=0;
 
-                //Si conectado a zeng online, modo streaming y somos slave
-                zeng_online_client_alter_fps_streaming();
+        //Si conectado a zeng online, modo streaming y somos slave
+        zeng_online_client_alter_fps_streaming();
         }
 
 
