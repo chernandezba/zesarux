@@ -18,6 +18,7 @@ Allow to use non-standard size for ide images
 Allow tape traps saving from Super Tape Copier or Lao Copy 2
 Allow to select Beeper & MIC audio mode on Spectrum (to save loading sound, for example)
 Allow to pause CPU
+Allow to find bytes from Hexadecimal Editor
 
 * Improvements:
 

@@ -8107,14 +8107,23 @@ void menu_hexdump_find_bytes_list_from(int *lista,int total_items,int case_insen
     menu_debug_set_memory_zone_attr();
     int final_find=menu_debug_memory_zone_size;
 
+    int pasos=0;
 
-    for (dir=inicio;dir<final_find;dir++) {
-        if (menu_hexdump_compare_bytes_address(dir,lista,total_items,case_insensitive)) {
-            menu_debug_hexdump_direccion=dir;
+    for (pasos=0;pasos<2;pasos++) {
 
-            return;
+        for (dir=inicio;dir<final_find;dir++) {
+            if (menu_hexdump_compare_bytes_address(dir,lista,total_items,case_insensitive)) {
+                menu_debug_hexdump_direccion=dir;
+
+                return;
+            }
         }
+
+        //Si no lo encuentra desde la posicion inicial de dir, volver a 0
+        inicio=0;
     }
+
+    menu_warn_message("Bytes not found");
 
 
 }

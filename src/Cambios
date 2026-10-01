@@ -18,6 +18,7 @@ Permitir usar imagenes ide de tamaño no estandar
 Permitir traps de cinta al grabar desde Super Tape Copier o Lao Copy 2
 Permitir seleccionar modo de audio Beeper & MIC en Spectrum (por ejemplo para poder grabar sonido de carga)
 Permitir pausar la CPU
+Permitir buscar bytes desde el Editor Hexadecimal
 
 * Mejoras:
 
