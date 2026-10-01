@@ -184,13 +184,6 @@ void cpu_core_loop_ql(void)
             ql_last_trap=trap_number;
         }
 
-        //if (get_pc_register()==0x79ca) {
-        //        printf ("%x %x\n",byte_primero,byte_segundo);
-        //}
-
-        //	if (REG_IR==0x4E44) {
-        //		printf("Possible Trap 4 en %x\n",get_pc_register());
-        //	}
 
         if (paused_cpu_emulation.v) {
             t_estados +=4;
