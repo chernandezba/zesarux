@@ -144,9 +144,7 @@ void cpu_core_loop_ql(void)
     ql_rom_traps();
 
 
-
     if (esperando_tiempo_final_t_estados.v==0) {
-
 
 
 #ifdef EMULATE_CPU_STATS
@@ -154,19 +152,11 @@ void cpu_core_loop_ql(void)
 #endif
 
 
-
-
 	//Ejecutar opcode
 #ifdef EMULATE_VISUALMEM
         set_visualmemopcodebuffer(get_pc_register() % (ql_mem_limit+1) ); //Le hago el modulo porque a veces se sale de limite
 #endif
 
-        // Values to execute determine the interleave rate.
-        // Smaller values allow for more accurate interleaving with multiple
-        // devices/CPUs but is more processor intensive.
-        // 100000 is usually a good value to start at, then work from there.
-
-        // Note that I am not emulating the correct clock speed!
         z80_byte byte_primero=peek_byte_z80_moto(get_pc_register());
         z80_byte byte_segundo=peek_byte_z80_moto(get_pc_register()+1);
 
@@ -200,15 +190,11 @@ void cpu_core_loop_ql(void)
             ciclos_por_frame_calculados +=ciclos_ultimo_opcode;
             ciclos_por_scanline_calculados +=ciclos_ultimo_opcode;
 
-
-            //Simplemente incrementamos los t-estados un valor inventado, aunque luego al final parece ser parecido a la realidad
             t_estados+=ciclos_ultimo_opcode;
         }
 
 
     }
-
-
 
 
     //Esto representa final de scanline
@@ -314,12 +300,10 @@ void cpu_core_loop_ql(void)
             }
 
 
-
 /*
 * read addresses
 pc_intr equ     $18021  bits 4..0 set as pending level 2 interrupts
 */
-
 
 
             //SYNC/frame. hace parpadear pantalla
