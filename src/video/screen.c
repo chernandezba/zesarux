@@ -3797,6 +3797,11 @@ void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int p
 
     yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en();
 
+	//A 60 Hz, situar el footer al final del alto reservado por el driver.
+	if (machine_60hz.v) {
+		margeny_arr=screen_get_emulated_display_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom()-yorigen;
+	}
+
 
     y +=yorigen;
 
