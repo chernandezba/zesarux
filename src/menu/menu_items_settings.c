@@ -8747,7 +8747,18 @@ void menu_hardware_settings_optical_input(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_settings_50_60hz(MENU_ITEM_PARAMETERS)
+{
+    int frecuencia_cambiar=(machine_60hz.v ? 50 : 60);
 
+    char buffer_pregunta[40];
+    sprintf(buffer_pregunta,"Change to %d Hz?",frecuencia_cambiar);
+
+    if (menu_confirm_yesno(buffer_pregunta)) {
+        machine_60hz.v ^=1;
+        set_machine(NULL);
+    }
+}
 
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
@@ -8923,7 +8934,19 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
+
+
+        if (MACHINE_IS_SMS) {
+            menu_add_item_menu_separator(array_menu_hardware_settings);
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_50_60hz,NULL,
+                "[%d] Hz",(machine_60hz.v ? 60 : 50));
+            menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
+            menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
+        }
+
         menu_add_item_menu_separator(array_menu_hardware_settings);
+
+
 
         menu_add_ESC_item(array_menu_hardware_settings);
 
