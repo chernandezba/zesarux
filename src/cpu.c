@@ -2426,6 +2426,16 @@ void set_machine_params(void)
         //z80_cpu_current_type=Z80_TYPE_CMOS;
         //Pero a falta de confirmar, de momento no lo toco
 
+        if (machine_60hz.v) {
+            screen_invisible_borde_superior=8;
+            screen_borde_superior=56-25;
+
+            screen_total_borde_inferior=56-25;
+
+            original_timer_sleep_machine=16666;
+            set_emulator_speed();
+        }
+
     }
 
     else if (MACHINE_IS_SVI) {
@@ -2452,6 +2462,16 @@ void set_machine_params(void)
 
         screen_testados_linea=215;
 
+        if (machine_60hz.v) {
+            screen_invisible_borde_superior=8;
+            screen_borde_superior=56-25;
+
+            screen_total_borde_inferior=56-25;
+
+            original_timer_sleep_machine=16666;
+            set_emulator_speed();
+        }
+
     }
 
     else if (MACHINE_IS_SG1000) {
@@ -2464,6 +2484,16 @@ void set_machine_params(void)
 
 
         screen_testados_linea=228;
+
+        if (machine_60hz.v) {
+            screen_invisible_borde_superior=8;
+            screen_borde_superior=56-25;
+
+            screen_total_borde_inferior=56-25;
+
+            original_timer_sleep_machine=16666;
+            set_emulator_speed();
+        }
 
     }
 
@@ -2479,7 +2509,6 @@ void set_machine_params(void)
         screen_testados_linea=228;
 
         if (machine_60hz.v) {
-            //Valores usados en real video
             screen_invisible_borde_superior=8;
             screen_borde_superior=56-25;
 

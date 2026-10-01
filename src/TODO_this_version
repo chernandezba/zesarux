@@ -308,7 +308,12 @@ Deberia detectar la salida correcta
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
--> de momento master system
+-entrada en changelog
+-> de momento master system, sg1000, msx, colecovision
+pendientes 60 hz:
+
+
+
 ->en 60 hz igualmente el tamaño de ventana sigue siendo de 312 scanlines (quitando border no visible) por tanto
 con real video hay unas cuantas lineas en negro por debajo que no se usan
 Esto es beta pero en un futuro habria que ocultarlas pero.... creo que la interfaz de menu se basa en tener un minimo de 256x192

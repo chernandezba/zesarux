@@ -8936,7 +8936,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (MACHINE_IS_SMS) {
+        if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO) {
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_50_60hz,NULL,
                 "[%d] Hz",(machine_60hz.v ? 60 : 50));
