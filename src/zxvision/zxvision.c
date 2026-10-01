@@ -7990,7 +7990,12 @@ void menu_draw_last_fps(void)
         if (fps<0) return;
 
         //control de rango
-        if (fps>50) fps=50;
+        if (machine_60hz.v) {
+            if (fps>60) fps=60;
+        }
+        else {
+            if (fps>50) fps=50;
+        }
 
         //const int ancho_maximo=6;
         #define DRAW_FPS_ANCHO_MAXIMO 6

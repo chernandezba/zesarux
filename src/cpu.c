@@ -528,6 +528,7 @@ z80_bit paused_cpu_emulation={0};
 z80_byte *memoria_spectrum;
 
 
+z80_bit machine_60hz={0};
 
 //Si no cambiamos parametros de frameskip y otros cuando es maquina lenta (raspberry)
 //Desde ZEsarUX 10.3 no cambiar dichos parametros
@@ -2476,6 +2477,17 @@ void set_machine_params(void)
 
 
         screen_testados_linea=228;
+
+        if (machine_60hz.v) {
+            //Valores usados en real video
+            screen_invisible_borde_superior=8;
+            screen_borde_superior=56-25;
+
+            screen_total_borde_inferior=56-25;
+
+            original_timer_sleep_machine=16666;
+            set_emulator_speed();
+        }
 
     }
 

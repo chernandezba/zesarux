@@ -9071,16 +9071,22 @@ void siguiente_frame_pantalla(void)
     frames_video_total_infinito++;
 
     frames_total++;
-        if (frames_total==50) {
+
+    int total_frames=50;
+
+    if (machine_60hz.v) total_frames=60;
+
+
+        if (frames_total==total_frames) {
 
                               //contador framedrop
                                 if (framedrop_total!=0) {
                     //si no hay frameskip forzado
-                                        if (!frameskip && ultimo_fps!=50) debug_printf(VERBOSE_INFO,"FPS: %d",ultimo_fps);
+                                        if (!frameskip && ultimo_fps!=total_frames) debug_printf(VERBOSE_INFO,"FPS: %d",ultimo_fps);
                                 }
 
 
-                ultimo_fps=50-framedrop_total;
+                ultimo_fps=total_frames-framedrop_total;
 
                                 framedrop_total=0;
                                 frames_total=0;

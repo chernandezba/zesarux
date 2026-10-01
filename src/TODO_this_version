@@ -1,11 +1,20 @@
 
--Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
--> en teoria esto no deberia pasar. Ese limite es para sistemas de 32 bits al asignar:
-time_t tiempo = time(NULL);
-Esto en sistemas de 64 bits es una variable de 64 bits ya.
+-Revisar compatibilidad de timestamps posteriores a 2038:
+*stats.c: generate_stats_uuid convierte tv_sec a int. Usar un tipo de 64 bits
+y el formato de printf correspondiente.
+*timer_get_current_seconds devuelve long, que tiene 32 bits en Windows. Devolver
+time_t o z80_64bit.
+*QL RTC: calcular la epoca QL con 64 bits y convertir finalmente al contador
+emulado de 32 bits sin signo. En plataformas con long de 32 bits puede desbordar
+alrededor de 2029.
+*En Linux de 32 bits, comprobar soporte y activar _TIME_BITS=64 ademas de
+_FILE_OFFSET_BITS=64.
+*Corregir get_file_date_from_stat en macOS para pasar
+&buf_stat->st_mtimespec.tv_sec a localtime.
 
 
--quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
+-quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1))
+que cambie algo mas de filesel, como:
 **que indique que se pide carpeta y no archivo (aparte del titulo de la ventana que ya lo dice)
 **que no se deba salir con ESC
 **etc....
@@ -29,8 +38,6 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 
 
 
-
-
 -alguna manera que desde external audio source:
 abra hexedit con expresión follow de ix
 abra watches con watch DE, IX etc para la carga
@@ -39,9 +46,8 @@ defina también tamaños de esas ventanas?
 Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargando o copiando desde cinta
 ->quiza esto se podria hacer con envio de mensajes entre las dos ventanas (*send_message_function...)
 
--implementar máquinas de 60 Hz (timex, master system etc)
--modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
--implementar timings ula TK90x
+
+
 
 
 -Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
@@ -141,9 +147,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
 
 
-
-
-
 -driver audio que sea archivo raw. esto complementaria el output a audio del menu
 pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
 
@@ -189,12 +192,9 @@ Disparo → F5
 El teclado ya emula todo esto
 Lo unico que tendria sentido es que al conectar un joystick por usb haga esas funciones de cursores, o F1-F5
 
-ok corregido QL-Rabenstein. hay un img no admitido
-
 
 QL-En features ql agregar soporte mdv entero, img, win
 
-ok finalizado. las pausas existentes solo se podrian eliminar haciendo un player en assembler. QL- canciones.
 
 
 ***Baseconf*****
@@ -241,12 +241,6 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 * cd boot: que hace??
 
-***Clive*****
-
--Clive
-ok *cuando se va a dormir despues de hablar, si estoy en alguna ventana, esa ventana pierde la ventana de titulo normal
-
-
 
 ***Spectrum Next*****
 
@@ -268,13 +262,6 @@ Y con snapshot de pogie (asi no parece que funcione!):
 >revisar que al cargar .snx desde quickload tambien soporte lo del file handle
 
 
-
-***CPU info*****
-
--cpu info:
-*algo mas pendiente?
-
-
 ---
 
 -Exploding fist:
@@ -293,16 +280,9 @@ necesita core 3.2.0 o inferior!
 
 
 
-
--Hex editor:
-*poder buscar bytes
-
 -pausa cpu
 en zx81 no siempre va bien
 
-
--Zeng opción para enviar mensaje a un usuario concreto
-*acabarlo de probar
 
 -zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
 
@@ -322,3 +302,11 @@ Debug:    ZENG Online: Error returning data from command streaming-get-audio-con
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 12 Source IP=127.0.0.1
 
 Deberia detectar la salida correcta
+
+
+---
+
+
+-implementar máquinas de 60 Hz (timex, master system etc)
+-modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
+-implementar timings ula TK90x

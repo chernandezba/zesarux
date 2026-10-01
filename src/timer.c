@@ -1064,7 +1064,12 @@ void timer_check_interrupt(void)
 
         //printf ("contador_20ms: %d\n",contador_20ms);
 
-        if (contador_20ms<20000) return;
+        if (machine_60hz.v) {
+            if (contador_20ms<16666) return;
+        }
+        else {
+            if (contador_20ms<20000) return;
+        }
 
         //Cosas que suceden cada 20 ms aproximadamente
         /*digo aproximadamente porque:
