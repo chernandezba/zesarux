@@ -2519,10 +2519,13 @@ void audio_menu_tone_generator_get_output(char *valor_sonido_izquierdo,char *val
 
 char previous_valor_sonido_izquierdo,previous_valor_sonido_derecho;
 
+static int audio_contador_remuestreo_60hz=0;
+
 void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_derecho)
 {
 
 	int limite_buffer_audio;
+	int enviar_muestra=1;
 
 	limite_buffer_audio=AUDIO_BUFFER_SIZE*2;
 
@@ -2543,11 +2546,36 @@ void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_dere
         reset_silence_detection_counter();
     }
 
-	audio_buffer[audio_buffer_indice]=valor_sonido_izquierdo;
-	audio_buffer[audio_buffer_indice+1]=valor_sonido_derecho;
+	//A 60 Hz, 6 frames de 262 lineas generan 1572 muestras, pero el buffer
+	//solo admite 1560 (5 frames de 312 lineas). Como 1572/1560=131/130,
+	//se deben convertir cada 131 muestras generadas en 130 muestras de salida.
+	//Fusionar una de cada 131 con la anterior no es un remuestreo perfecto,
+	//pero es la solucion mas sencilla y evita cambiar la frecuencia de audio
+	//de 15600 Hz a 15720 Hz (262 lineas * 60 frames) en todos los drivers.
+	if (machine_60hz.v) {
+		audio_contador_remuestreo_60hz++;
 
-	if (audio_buffer_indice<limite_buffer_audio-2) {
-		audio_buffer_indice+=2;
+		if (audio_contador_remuestreo_60hz>=131) {
+			audio_contador_remuestreo_60hz=0;
+
+			if (audio_buffer_indice>=2) {
+				audio_buffer[audio_buffer_indice-2]=((int)audio_buffer[audio_buffer_indice-2]+valor_sonido_izquierdo)/2;
+				audio_buffer[audio_buffer_indice-1]=((int)audio_buffer[audio_buffer_indice-1]+valor_sonido_derecho)/2;
+				enviar_muestra=0;
+			}
+		}
+	}
+	else {
+		audio_contador_remuestreo_60hz=0;
+	}
+
+	if (enviar_muestra) {
+		audio_buffer[audio_buffer_indice]=valor_sonido_izquierdo;
+		audio_buffer[audio_buffer_indice+1]=valor_sonido_derecho;
+
+		if (audio_buffer_indice<limite_buffer_audio-2) {
+			audio_buffer_indice+=2;
+		}
 	}
 	//else {
 	//	printf ("NO. %d %d\n",audio_buffer_indice,limite_buffer_audio-2);
