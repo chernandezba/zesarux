@@ -308,9 +308,10 @@ Deberia detectar la salida correcta
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
--entrada en changelog
--> de momento master system, sg1000, msx, colecovision
-pendientes 60 hz:
+* revisar porque los cambios de tamaños de border se ha hecho "a ojo" reduciendo de manera igual borde inferior y superior y quiza no es asi
+*entrada en changelog
+* de momento master system, sg1000, msx, colecovision
+* pendientes 60 hz: svi, timex, next modo 60hz
 
 
 
