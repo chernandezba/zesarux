@@ -2933,6 +2933,25 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                 sprintf (textoregistros,"D7 %08X",m68k_get_reg(NULL, M68K_REG_D7) );
             break;
 
+            case 21:
+                sprintf (textoregistros,"TSTATE %d",t_estados);
+            break;
+
+            case 22:
+                sprintf (textoregistros,"FRAMES %u",frames_video_total_infinito);
+
+                if (cpu_step_mode.v) {
+                    if (frames_video_total_infinito!=debug_antes_frames_video_total_infinito) {
+                        *columnas_modificadas |=(8<<16);
+                        *columnas_modificadas |=(9<<20);
+                        *columnas_modificadas |=(10<<24);
+                        *columnas_modificadas |=(11L<<28);
+                        *columnas_modificadas |=(12L<<32);
+                        *columnas_modificadas |=(13L<<36);
+                    }
+                }
+            break;
+
 
         }
     }

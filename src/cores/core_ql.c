@@ -192,21 +192,25 @@ void cpu_core_loop_ql(void)
         //		printf("Possible Trap 4 en %x\n",get_pc_register());
         //	}
 
-        m68k_execute(1);
+        if (paused_cpu_emulation.v) {
+            t_estados +=4;
+        }
 
-        //Le pedimos 1 ciclo y el contador final nos indica cuanto ha tardado
-        int ciclos_ultimo_opcode=1-m68k_cycles_remaining();
-        //printf("Ciclos ultima instruccion: %d\n",ciclos_ultimo_opcode);
+        else {
 
-        ciclos_por_frame_calculados +=ciclos_ultimo_opcode;
-        ciclos_por_scanline_calculados +=ciclos_ultimo_opcode;
+            m68k_execute(1);
+
+            //Le pedimos 1 ciclo y el contador final nos indica cuanto ha tardado
+            int ciclos_ultimo_opcode=1-m68k_cycles_remaining();
+            //printf("Ciclos ultima instruccion: %d\n",ciclos_ultimo_opcode);
+
+            ciclos_por_frame_calculados +=ciclos_ultimo_opcode;
+            ciclos_por_scanline_calculados +=ciclos_ultimo_opcode;
 
 
-        //old
-        //t_estados +=4;
-
-        //Simplemente incrementamos los t-estados un valor inventado, aunque luego al final parece ser parecido a la realidad
-        t_estados+=ciclos_ultimo_opcode;
+            //Simplemente incrementamos los t-estados un valor inventado, aunque luego al final parece ser parecido a la realidad
+            t_estados+=ciclos_ultimo_opcode;
+        }
 
 
     }
