@@ -5,7 +5,7 @@ ZEsarUX 13.1 - xxxx edition. 10 Julio 2026
 Agregada (corregida en realidad) ZX Evo Baseconf
 Agregada opción en archivo de configuración para activar el uso de teclas numéricas en teclado Azerty sin tener que pulsar tecla Shift
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
-Agregado soporte de 60 hz para las máquinas: Master System, SG1000, MSX, Colecovision, Timex Sinclair 2068, Spectravideo
+Agregado soporte de 60 hz para las máquinas: Master System, SG1000, MSX, Colecovision, Spectravideo, Timex Sinclair 2068
 Permitir enviar mensages privados a usuarios en ZENG Online
 Permitir smartload de archivo SCL
 Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
