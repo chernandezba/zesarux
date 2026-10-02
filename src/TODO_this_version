@@ -310,7 +310,7 @@ Deberia detectar la salida correcta
 -implementar máquinas de 60 Hz (timex, master system etc)
 * entrada en features
 * de momento master system, sg1000, msx, colecovision, TIMEX_TS2068, svi
-* pendientes 60 hz: next modo 60hz
+* pendientes 60 hz: next modo 60hz, y algunas tk?
 * deja restos por debajo al cambiar a 60hz de lineas no usadas
 -> en scr_refresca_pantalla_rainbow_comun_spectrum ya corregido, uso:
 
