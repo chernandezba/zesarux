@@ -417,7 +417,11 @@ void core_spectrum_fin_frame_pantalla(void)
 
     int linea_estados=t_estados/screen_testados_linea;
 
-    while (linea_estados<312) {
+    int total_lineas=312;
+
+    if (machine_60hz.v) total_lineas=262;
+
+    while (linea_estados<total_lineas) {
         audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
         //audio_send_mono_sample(audio_valor_enviar_sonido_izquierdo);
                             linea_estados++;

@@ -2686,6 +2686,18 @@ void set_machine_params(void)
             ay_chip_present.v=1;
             enable_rainbow();
             enable_timex_video();
+
+            if (MACHINE_IS_TIMEX_TS2068) {
+                if (machine_60hz.v) {
+                    screen_invisible_borde_superior=8;
+                    screen_borde_superior=56-25;
+
+                    screen_total_borde_inferior=56-25;
+
+                    original_timer_sleep_machine=16666;
+                    set_emulator_speed();
+                }
+            }
         break;
 
         case 18:
