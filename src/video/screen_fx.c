@@ -671,9 +671,10 @@ void screen_scale_rainbow_21(z80_int *orig,int ancho,int alto,z80_int *dest)
 
 
 
-    for (y=0;y<alto;y+=2) {
+    //El escalado mezcla bloques de 2x2. Ignorar una posible ultima fila o columna impar
+    for (y=0;y<alto-1;y+=2) {
 
-        for (x=0;x<ancho;x+=2) {
+        for (x=0;x<ancho-1;x+=2) {
 
             //Hacemos gigascreen de pixel arriba-izq y de abajo-der
             color_1=*orig;
