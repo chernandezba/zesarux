@@ -935,6 +935,8 @@ extern z80_bit scr_refresca_show_attribute_grid;
 
 extern int get_frequency_refresh_video(void);
 
+extern void switch_machine_frequency_refresh_video(void);
+
 extern z80_bit no_fadeout_exit;
 
 extern void screen_set_window_zoom(int zx,int zy);

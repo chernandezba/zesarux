@@ -8755,8 +8755,7 @@ void menu_settings_50_60hz(MENU_ITEM_PARAMETERS)
     sprintf(buffer_pregunta,"Change to %d Hz?",frecuencia_cambiar);
 
     if (menu_confirm_yesno(buffer_pregunta)) {
-        machine_60hz.v ^=1;
-        set_machine(NULL);
+        switch_machine_frequency_refresh_video();
     }
 }
 
@@ -8939,7 +8938,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_SVI) {
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_50_60hz,NULL,
-                "Video refresh rate [%d Hz]",get_frequency_refresh_video() );
+                "Machine refresh rate [%d Hz]",get_frequency_refresh_video() );
             menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
             menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
         }

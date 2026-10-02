@@ -16046,3 +16046,10 @@ int get_frequency_refresh_video(void)
 {
     return (machine_60hz.v ? 60 : 50);
 }
+
+
+void switch_machine_frequency_refresh_video(void)
+{
+    machine_60hz.v ^=1;
+    set_machine(NULL);
+}
