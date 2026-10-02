@@ -3097,8 +3097,9 @@ void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,in
 
     int x,y;
 
-    for (y=0;y<alto;y++) {
-        for (x=0;x<ancho;x++) {
+    //El efecto trabaja con bloques de 2x2. Ignorar una posible ultima fila o columna impar, por ejemplo en modos 60hz salen lineas impares
+    for (y=0;y<alto-1;y++) {
+        for (x=0;x<ancho-1;x++) {
             //De cada 4 pixeles solo mostrar 1. Pero promediamos el color de los 4
             int mx=(x%2);
             int my=(y%2);
@@ -3774,5 +3775,3 @@ void screen_fx_disable(void)
 {
     screen_special_effects_enabled.v=0;
 }
-
-
