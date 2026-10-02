@@ -5835,9 +5835,9 @@ void zec_autoadjust_differentials_display(void)
         //Evitar valor inicial
         if (zoc_slave_differential_displays_limit_full_previous_fps>=0) {
 
-            //Si 50 fps y diferenciales 0
-            if (zoc_client_streaming_display_fps_last_interval==50 && zoc_slave_differential_displays_limit_full==0) {
-                //printf("50 FPS and 0 differentials. Ideal state. Do nothing\n");
+            //Si 50/60 fps y diferenciales 0
+            if (zoc_client_streaming_display_fps_last_interval==get_frequency_refresh_video() && zoc_slave_differential_displays_limit_full==0) {
+                //printf("50/60 FPS and 0 differentials. Ideal state. Do nothing\n");
             }
             else {
 
@@ -5998,7 +5998,7 @@ void zoc_client_manage_fps_diferential_display(void)
 {
 
     zoc_client_video_frames++;
-    if (zoc_client_video_frames==50) {
+    if (zoc_client_video_frames==get_frequency_refresh_video()) {
 
         zoc_client_video_frames=0;
 

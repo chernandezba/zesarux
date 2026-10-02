@@ -8035,13 +8035,16 @@ void menu_draw_fps(void)
         //printf("draw fps\n");
 
         //cada 1 segundo
-        draw_fps=50*1;
+        draw_fps=get_frequency_refresh_video();
 
         menu_draw_last_fps();
 
 }
 
 
+/*
+
+Codigo no usado. Se pretendia leer el nivel de bateria de una raspberry con bateria
 
 int menu_get_bateria_perc(void)
 {
@@ -8049,6 +8052,7 @@ int menu_get_bateria_perc(void)
         return 25;
 
 }
+*/
 
 
 

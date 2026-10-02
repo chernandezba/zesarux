@@ -2920,10 +2920,10 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         int fps;
         int divisor=frameskip+1;
         if (divisor==0) {
-            fps=50; //Esto no deberia suceder nunca. Pero lo hacemos por una posible division por 0 (si frameskip fuera -1)
+            fps=get_frequency_refresh_video(); //Esto no deberia suceder nunca. Pero lo hacemos por una posible division por 0 (si frameskip fuera -1)
         }
         else {
-            fps=50/divisor;
+            fps=get_frequency_refresh_video()/divisor;
         }
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip,NULL,
