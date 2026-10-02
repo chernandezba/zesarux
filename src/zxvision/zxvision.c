@@ -7989,13 +7989,13 @@ void menu_draw_last_fps(void)
         //algun error al leer fps
         if (fps<0) return;
 
+        int max_fps=get_frequency_refresh_video();
+
         //control de rango
-        if (machine_60hz.v) {
-            if (fps>60) fps=60;
-        }
-        else {
-            if (fps>50) fps=50;
-        }
+
+        if (fps>max_fps) fps=max_fps;
+
+
 
         //const int ancho_maximo=6;
         #define DRAW_FPS_ANCHO_MAXIMO 6

@@ -9077,9 +9077,7 @@ void siguiente_frame_pantalla(void)
 
     frames_total++;
 
-    int total_frames=50;
-
-    if (machine_60hz.v) total_frames=60;
+    int total_frames=get_frequency_refresh_video();
 
 
     if (frames_total==total_frames) {
@@ -16041,4 +16039,10 @@ void set_default_window_title_and_update(void)
 {
     set_default_window_title();
     update_window_title();
+}
+
+
+int get_frequency_refresh_video(void)
+{
+    return (machine_60hz.v ? 60 : 50);
 }

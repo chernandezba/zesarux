@@ -6570,8 +6570,7 @@ void menu_ula_advanced(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total line TLength: %d",screen_testados_linea);
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total scanlines: %d",screen_scanlines);
         menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total T-states: %d",screen_testados_total);
-        int frecuencia_video=(machine_60hz.v ? 60 : 50);
-        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total Hz: %d",screen_testados_total*frecuencia_video);
+        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total Hz: %d",screen_testados_total*get_frequency_refresh_video() );
 
         menu_add_item_menu_separator(array_menu_hardware_advanced);
         //menu_add_item_menu(array_menu_hardware_advanced,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
@@ -8940,7 +8939,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_SVI) {
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_50_60hz,NULL,
-                "[%d] Hz",(machine_60hz.v ? 60 : 50));
+                "[%d] Hz",get_frequency_refresh_video() );
             menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
             menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
         }
