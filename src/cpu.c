@@ -2459,6 +2459,15 @@ void set_machine_params(void)
 
         screen_testados_linea=228;
 
+        if (machine_60hz.v) {
+            screen_invisible_borde_superior = 16; // 3 VSYNC + 13 blanking
+            screen_borde_superior = 27;
+            screen_total_borde_inferior = 27;     // 24 borde + 3 blanking
+
+            original_timer_sleep_machine=16666;
+            set_emulator_speed();
+        }
+
     }
 
     else if (MACHINE_IS_COLECO) {
