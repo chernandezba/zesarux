@@ -311,7 +311,23 @@ Deberia detectar la salida correcta
 * entrada en features
 * de momento master system, sg1000, msx, colecovision, TIMEX_TS2068, svi
 * pendientes 60 hz: next modo 60hz
+* deja restos por debajo al cambiar a 60hz de lineas no usadas
+-> en scr_refresca_pantalla_rainbow_comun_spectrum ya corregido, uso:
 
+    //Rellenar la parte de pantalla no usada por debajo en modos 60 HZ
+    if (machine_60hz.v) {
+        for (;y<rainbow_buffer_current_height;y++) {
+
+            for (x=0;x<ancho;x++) {
+                scr_putpixel_zoom_rainbow(x,y,0);
+            }
+
+
+        }
+    }
+
+Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he puesto en scr_refresca_pantalla_rainbow_comun
+-> en teoria ya bien. acabarlo de revisar
 
 
 ->en 60 hz igualmente el tamaño de ventana sigue siendo de 312 scanlines (quitando border no visible) por tanto

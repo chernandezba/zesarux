@@ -469,6 +469,8 @@ extern int get_total_alto_rainbow_cached;
 #define get_total_ancho_rainbow(x) (get_total_ancho_rainbow_cached)
 #define get_total_alto_rainbow(x) (get_total_alto_rainbow_cached)
 
+extern int rainbow_buffer_current_width;
+extern int rainbow_buffer_current_height;
 
 extern void set_t_scanline_draw_zero(void);
 extern void t_scanline_next_line(void);

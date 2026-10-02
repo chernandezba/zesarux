@@ -1235,6 +1235,11 @@ void recalcular_get_total_alto_rainbow(void)
 
 int anterior_tamanyo_rainbow=-1;
 
+//Esto lo uso en modos 60hz, por que generalmente se usa get_total_ancho_rainbow() y get_total_alto_rainbow()
+//pero esos retornan el tamaño reducido de 60hz y en cambio necesito el tamaño real del rainbow buffer
+int rainbow_buffer_current_width=0;
+int rainbow_buffer_current_height=0;
+
 void init_rainbow(void)
 {
 
@@ -1246,6 +1251,9 @@ void init_rainbow(void)
 
     ancho=screen_get_emulated_display_width_no_zoom();
     alto=screen_get_emulated_display_height_no_zoom();
+
+    rainbow_buffer_current_width=ancho;
+    rainbow_buffer_current_height=alto;
 
 
     tamanyo=ancho*alto*sizeof(z80_int);
@@ -4945,6 +4953,18 @@ void scr_refresca_pantalla_rainbow_comun(void)
             scr_putpixel_zoom_rainbow(x,y,color_pixel);
         }
     }
+
+    //Rellenar la parte de pantalla no usada por debajo en modos 60 HZ
+    if (machine_60hz.v) {
+        for (;y<rainbow_buffer_current_height;y++) {
+
+            for (x=0;x<ancho;x++) {
+                scr_putpixel_zoom_rainbow(x,y,0);
+            }
+
+
+        }
+    }
 }
 
 
@@ -5195,6 +5215,8 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
     //Efectos especiales (FX)
     puntero=screen_rainbow_effects(puntero,ancho,alto);
 
+    //printf("Render %d,%d\n",ancho,alto);
+
 
     for (y=0;y<alto;y++) {
         //Truco para tener a partir de una posicion y modo timex 512x192
@@ -5214,6 +5236,19 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
                 color_pixel=*puntero++;
                 scr_putpixel_zoom_rainbow(x,y,color_pixel);
             }
+        }
+    }
+
+
+    //Rellenar la parte de pantalla no usada por debajo en modos 60 HZ
+    if (machine_60hz.v) {
+        for (;y<rainbow_buffer_current_height;y++) {
+
+            for (x=0;x<ancho;x++) {
+                scr_putpixel_zoom_rainbow(x,y,0);
+            }
+
+
         }
     }
 
