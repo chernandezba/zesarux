@@ -2689,10 +2689,10 @@ void set_machine_params(void)
 
             if (MACHINE_IS_TIMEX_TS2068) {
                 if (machine_60hz.v) {
-                    screen_invisible_borde_superior=8;
-                    screen_borde_superior=56-25;
+                    screen_invisible_borde_superior=21;
+                    screen_borde_superior=24;
 
-                    screen_total_borde_inferior=56-25;
+                    screen_total_borde_inferior=25;
 
                     original_timer_sleep_machine=16666;
                     set_emulator_speed();
