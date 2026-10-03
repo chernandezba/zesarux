@@ -4747,7 +4747,13 @@ int debug_change_register(char *texto)
 
     //Parsear valor, es una expresion tal cual
     //valor_registro=parse_string_to_number(&texto[i]);
-    valor_registro=exp_par_evaluate_expression_to_number(&texto[i]);
+    {
+        //Un valor que no se entiende no se escribe. Antes se guardaba un 0 sin
+        //avisar, y un "PC=840F" dejaba el PC a cero sin dar ninguna explicacion
+        int error_code;
+        valor_registro=exp_par_evaluate_expression_to_number_error(&texto[i],&error_code);
+        if (error_code) return 3;
+    }
 
   if (CPU_IS_SCMP) {
 

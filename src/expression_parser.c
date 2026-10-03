@@ -2324,35 +2324,36 @@ int exp_par_evaluate_expression(char *entrada,char *salida,char *string_detoken)
 //Usado por ejemplo en breakpoint condition "putv" en que no hace falta que evaluemos si expresion con error o no
 int exp_par_evaluate_expression_to_number(char *entrada)
 {
+	int error_code;
+	return exp_par_evaluate_expression_to_number_error(entrada,&error_code);
+}
 
 
-	//Mis tokens de salida
+//Igual que la anterior, pero ademas indica si la expresion estaba mal. Hace
+//falta en los comandos que escriben un valor leido del usuario y deben avisar
+//del error en lugar de escribir un 0 silencioso: set-register con "PC=840F"
+//(hexadecimal sin sufijo ni prefijo, que no se puede parsear) escribia 0 sin
+//decir nada.
+int exp_par_evaluate_expression_to_number_error(char *entrada,int *error_code_ret)
+{
 	token_parser tokens[MAX_PARSER_TOKENS_NUM];
 	int result;
 
-	//printf ("\nText to token: %s\n",string_texto);
 	result=exp_par_exp_to_tokens(entrada,tokens);
-	//printf ("result: %d\n",result);
-	if (result>=0) {
-
-			int error_code;
-
-			int resultado=exp_par_evaluate_token(tokens,MAX_PARSER_TOKENS_NUM,&error_code);
-            if (error_code) {
-                //Error evaluating
-                return 0;
-            }
-            else {
-                //OK
-                return resultado;
-            }
-
-
-	}
-	else {
-        //Error parsing
-        return 0;
-
+	if (result<0) {
+		//Error de parseo
+		if (error_code_ret) *error_code_ret=1;
+		return 0;
 	}
 
+	int error_code;
+	int resultado=exp_par_evaluate_token(tokens,MAX_PARSER_TOKENS_NUM,&error_code);
+	if (error_code) {
+		if (error_code_ret) *error_code_ret=error_code;
+		return 0;
+	}
+
+	if (error_code_ret) *error_code_ret=0;
+	return resultado;
 }
+
