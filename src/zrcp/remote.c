@@ -5651,8 +5651,17 @@ else if (!strcmp(comando_sin_parametros,"set-memory-zone") || !strcmp(comando_si
     }
 
     else if (!strcmp(comando_sin_parametros,"set-register") || !strcmp(comando_sin_parametros,"sr")) {
-        if (debug_change_register(parametros)) {
-            escribir_socket (misocket,"Error changing register");
+        int codigo_cambio=debug_change_register(parametros);
+        if (codigo_cambio) {
+            //El 4 es "el valor no se pudo parsear". Se distingue del resto porque
+            //es el caso que mas confunde: un "PC=840F" sin sufijo H es
+            //hexadecimal y antes se guardaba como 0 sin decir nada
+            if (codigo_cambio==4) {
+                escribir_socket (misocket,"ERROR. Bad number");
+            }
+            else {
+                escribir_socket (misocket,"Error changing register");
+            }
         }
         else {
             print_registers(buffer_retorno);

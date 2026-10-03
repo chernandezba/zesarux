@@ -4752,7 +4752,7 @@ int debug_change_register(char *texto)
         //avisar, y un "PC=840F" dejaba el PC a cero sin dar ninguna explicacion
         int error_code;
         valor_registro=exp_par_evaluate_expression_to_number_error(&texto[i],&error_code);
-        if (error_code) return 3;
+        if (error_code) return 4; //4 = valor no parseable (3 ya es nombre de registro desconocido)
     }
 
   if (CPU_IS_SCMP) {
