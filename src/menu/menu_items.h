@@ -70,6 +70,7 @@ extern void menu_toys_zxlife(MENU_ITEM_PARAMETERS);
 extern void menu_clive_game(MENU_ITEM_PARAMETERS);
 extern void menu_clock(MENU_ITEM_PARAMETERS);
 extern void menu_calculator(MENU_ITEM_PARAMETERS);
+extern void menu_simon(MENU_ITEM_PARAMETERS);
 extern void process_switcher_sync_immutable_setting(void);
 extern void process_switcher_sync_always_visible_setting(void);
 extern void process_switcher_sync_always_left_bottom_setting(void);
