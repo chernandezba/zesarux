@@ -45257,6 +45257,35 @@ enum menu_simon_lights {
 enum menu_simon_lights menu_simon_enabled_light=SIMON_LEFT;
 
 
+int menu_simon_delay_frames_entre_cambios=50;
+int menu_simon_delay_frames_entre_cambios_contador=0;
+
+
+
+#define SIMON_MAX_LISTA_REPETIR 50
+
+//total de botones que hay que repetir
+int menu_simon_lista_repetir_total=0;
+
+//cuando el ordenador te lo repite, en cual esta repitiendo ahora
+int menu_simon_lista_repetir_indice_replay=0;
+
+//Si esta repitiendo el ordenador o por el contrario espera que el usuario lo repita
+
+enum menu_simon_estado {
+    SIMON_REPITIENDO_ORDENADOR,
+    SIMON_REPITIENDO_USUARIO,
+    SIMON_AGREGAR_NUEVO_COLOR
+};
+
+enum menu_simon_estado menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+
+//indice donde el usuario esta repitiendo
+int menu_simon_indice_usuario_repetir=0;
+
+enum menu_simon_lights menu_simon_lista_repetir[SIMON_MAX_LISTA_REPETIR];
+
+
 #define MENU_SIMON_WIDTH 10
 #define MENU_SIMON_HEIGHT 10
 
@@ -45419,7 +45448,53 @@ void menu_simon_overlay(void)
     if (menu_simon_window->is_minimized) return;
 
 
-    menu_simon_draw_enabled_light(menu_simon_window);
+
+    //Si esta repitiendo el ordenador la secuencia
+    if (menu_simon_estado==SIMON_REPITIENDO_ORDENADOR) {
+
+
+        //cambiar a siguiente color si toca
+        menu_simon_delay_frames_entre_cambios_contador++;
+
+        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios) {
+            printf("nuevo frame\n");
+            menu_simon_delay_frames_entre_cambios_contador=0;
+
+            //si hay que generar uno nuevo
+
+            if (menu_simon_lista_repetir_indice_replay>=menu_simon_lista_repetir_total) {
+                //generar uno nuevo
+                printf("agregar nuevo color\n");
+                menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+            }
+
+            else {
+                menu_simon_enabled_light=menu_simon_lista_repetir[menu_simon_lista_repetir_indice_replay];
+                printf("Repetir indice %d color %d\n",menu_simon_lista_repetir_indice_replay,menu_simon_enabled_light);
+                menu_simon_lista_repetir_indice_replay++;
+                menu_simon_draw_enabled_light(menu_simon_window);
+            }
+        }
+
+    }
+
+    if (menu_simon_estado==SIMON_AGREGAR_NUEVO_COLOR) {
+        //si hay que generar uno nuevo
+
+        int luz=util_get_random_enhanced() % 4;
+        menu_simon_lista_repetir[menu_simon_lista_repetir_total++]=luz;
+        printf("nuevo color %d total: %d\n",luz,menu_simon_lista_repetir_total);
+
+        //TODO: ver si llega al maximo de colores, fin de partida
+
+        //Y empezar de nuevo la repeticion
+        menu_simon_lista_repetir_indice_replay=0;
+
+        menu_simon_estado=SIMON_REPITIENDO_ORDENADOR;
+
+    }
+
+
 
 
     //Mostrar contenido
