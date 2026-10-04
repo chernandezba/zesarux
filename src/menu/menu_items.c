@@ -45246,15 +45246,15 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 zxvision_window *menu_simon_window;
 
 enum menu_simon_lights {
-    SIMON_UP,
+    SIMON_UP=0,
+    SIMON_RIGHT,
     SIMON_DOWN,
     SIMON_LEFT,
-    SIMON_RIGHT,
     SIMON_NONE
 };
 
 
-enum menu_simon_lights menu_simon_enabled_light=SIMON_UP;
+enum menu_simon_lights menu_simon_enabled_light=SIMON_LEFT;
 
 
 #define MENU_SIMON_WIDTH 10
@@ -45263,6 +45263,17 @@ enum menu_simon_lights menu_simon_enabled_light=SIMON_UP;
 void menu_simon_put_space_color(zxvision_window *w,int x,int y,int color)
 {
     zxvision_print_char_simple(w,x,y,7,color,0,' ');
+}
+
+//Escribe bloque de cuadrado de color concreto, con *2
+void menu_simon_put_space_color_double(zxvision_window *w,int x,int y,int color)
+{
+
+    menu_simon_put_space_color(w,x,y,color);
+    menu_simon_put_space_color(w,x+1,y,color);
+    menu_simon_put_space_color(w,x,y+1,color);
+    menu_simon_put_space_color(w,x+1,y+1,color);
+
 }
 
 void menu_simon_put_space(zxvision_window *w,int x,int y)
@@ -45325,68 +45336,77 @@ void menu_simon_draw_enabled_light(zxvision_window *w)
         menu_simon_put_space(w,x-i*2,    y_inicial+i*2+1);
     }
 
-return;
 
-/*
     //Y ahora las zonas de colores
     //Rojo amarillo verde cyan
     //2      6       4     5
 
     if (menu_simon_enabled_light==SIMON_NONE) return;
 
-    //Zona roja
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y_inicial,color_rojo);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y_inicial,color_rojo);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+6,y_inicial,color_rojo);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y_inicial+2,color_rojo);
+    switch (menu_simon_enabled_light)
+    {
 
-    set_splash_zesarux_logo_put_space_color(x_inicial+1,  y_inicial,color_rojo);
-    set_splash_zesarux_logo_put_space_color(x_inicial+3,y_inicial+2,color_rojo);
-    set_splash_zesarux_logo_put_space_color(x_inicial+8,y_inicial,color_rojo);
-    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial+2,color_rojo);
-    if (paso==1) return;
+        case SIMON_UP:
+            //Zona roja
+            menu_simon_put_space_color_double(w,x_inicial+2,y_inicial,color_rojo);
+            menu_simon_put_space_color_double(w,x_inicial+4,y_inicial,color_rojo);
+            menu_simon_put_space_color_double(w,x_inicial+6,y_inicial,color_rojo);
+            menu_simon_put_space_color_double(w,x_inicial+4,y_inicial+2,color_rojo);
 
-
-    //Zona amarilla
-    x=x_inicial+(ancho_z-1)*2;
-    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+2,color_amarillo);
-    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+4,color_amarillo);
-    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+6,color_amarillo);
-    set_splash_zesarux_logo_put_space_color_double(x-2,y_inicial+4,color_amarillo);
-
-    set_splash_zesarux_logo_put_space_color(x+1,y_inicial+1,color_amarillo);
-    set_splash_zesarux_logo_put_space_color(x-1,y_inicial+3,color_amarillo);
-    set_splash_zesarux_logo_put_space_color(x-1,y_inicial+6,color_amarillo);
-    set_splash_zesarux_logo_put_space_color(x+1,y_inicial+8,color_amarillo);
-    if (paso==2) return;
-
-    //Zona verde
-    y=y_inicial+(alto_z-1)*2;
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y,color_verde);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y,color_verde);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+6,y,color_verde);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y-2,color_verde);
-
-    set_splash_zesarux_logo_put_space_color(x_inicial+1,y+1,color_verde);
-    set_splash_zesarux_logo_put_space_color(x_inicial+3,y-1,color_verde);
-    set_splash_zesarux_logo_put_space_color(x_inicial+6,y-1,color_verde);
-    set_splash_zesarux_logo_put_space_color(x_inicial+8,y+1,color_verde);
-    if (paso==3) return;
+            menu_simon_put_space_color(w,x_inicial+1,  y_inicial,color_rojo);
+            menu_simon_put_space_color(w,x_inicial+3,y_inicial+2,color_rojo);
+            menu_simon_put_space_color(w,x_inicial+8,y_inicial,color_rojo);
+            menu_simon_put_space_color(w,x_inicial+6,y_inicial+2,color_rojo);
+        break;
 
 
-    //Zona cyan
-    x=x_inicial+(ancho_z-1)*2;
-    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+2,color_cyan);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+4,color_cyan);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+6,color_cyan);
-    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y_inicial+4,color_cyan);
+        case SIMON_RIGHT:
+            //Zona amarilla
+            x=x_inicial+(ancho_z-1)*2;
+            menu_simon_put_space_color_double(w,x,y_inicial+2,color_amarillo);
+            menu_simon_put_space_color_double(w,x,y_inicial+4,color_amarillo);
+            menu_simon_put_space_color_double(w,x,y_inicial+6,color_amarillo);
+            menu_simon_put_space_color_double(w,x-2,y_inicial+4,color_amarillo);
 
-    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+1,color_cyan);
-    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+3,color_cyan);
-    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+6,color_cyan);
-    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+8,color_cyan);
+            menu_simon_put_space_color(w,x+1,y_inicial+1,color_amarillo);
+            menu_simon_put_space_color(w,x-1,y_inicial+3,color_amarillo);
+            menu_simon_put_space_color(w,x-1,y_inicial+6,color_amarillo);
+            menu_simon_put_space_color(w,x+1,y_inicial+8,color_amarillo);
+        break;
 
-*/
+        case SIMON_DOWN:
+            //Zona verde
+            y=y_inicial+(alto_z-1)*2;
+            menu_simon_put_space_color_double(w,x_inicial+2,y,color_verde);
+            menu_simon_put_space_color_double(w,x_inicial+4,y,color_verde);
+            menu_simon_put_space_color_double(w,x_inicial+6,y,color_verde);
+            menu_simon_put_space_color_double(w,x_inicial+4,y-2,color_verde);
+
+            menu_simon_put_space_color(w,x_inicial+1,y+1,color_verde);
+            menu_simon_put_space_color(w,x_inicial+3,y-1,color_verde);
+            menu_simon_put_space_color(w,x_inicial+6,y-1,color_verde);
+            menu_simon_put_space_color(w,x_inicial+8,y+1,color_verde);
+        break;
+
+        case SIMON_LEFT:
+            //Zona cyan
+            x=x_inicial+(ancho_z-1)*2;
+            menu_simon_put_space_color_double(w,x_inicial,y_inicial+2,color_cyan);
+            menu_simon_put_space_color_double(w,x_inicial,y_inicial+4,color_cyan);
+            menu_simon_put_space_color_double(w,x_inicial,y_inicial+6,color_cyan);
+            menu_simon_put_space_color_double(w,x_inicial+2,y_inicial+4,color_cyan);
+
+            menu_simon_put_space_color(w,x_inicial,y_inicial+1,color_cyan);
+            menu_simon_put_space_color(w,x_inicial+2,y_inicial+3,color_cyan);
+            menu_simon_put_space_color(w,x_inicial+2,y_inicial+6,color_cyan);
+            menu_simon_put_space_color(w,x_inicial,y_inicial+8,color_cyan);
+        break;
+
+        case SIMON_NONE:
+        default:
+        break;
+
+    }
 
 }
 
