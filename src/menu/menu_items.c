@@ -45245,6 +45245,150 @@ void menu_calculator(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_simon_window;
 
+enum menu_simon_lights {
+    SIMON_UP,
+    SIMON_DOWN,
+    SIMON_LEFT,
+    SIMON_RIGHT,
+    SIMON_NONE
+};
+
+
+enum menu_simon_lights menu_simon_enabled_light=SIMON_UP;
+
+
+#define MENU_SIMON_WIDTH 10
+#define MENU_SIMON_HEIGHT 10
+
+void menu_simon_put_space_color(zxvision_window *w,int x,int y,int color)
+{
+    zxvision_print_char_simple(w,x,y,7,color,0,' ');
+}
+
+void menu_simon_put_space(zxvision_window *w,int x,int y)
+{
+    menu_simon_put_space_color(w,x,y,0);
+}
+
+
+
+void menu_simon_draw_enabled_light(zxvision_window *w)
+{
+
+
+//Dibuja el logo especial de X aniversario pero en diferentes pasos:
+//0: solo la X
+//1: zona roja
+//2: zona roja y amarilla
+//3: zona roja y amarilla y verde
+//4 o mayor: zona roja y amarilla y verde y cyan
+//void set_splash_zesarux_logo_paso_xanniversary(int paso)
+
+    int x,y;
+
+    int ancho_z=5;
+    int alto_z=5;
+
+    int x_inicial=MENU_SIMON_WIDTH-ancho_z;  //Centrado
+    int y_inicial=1;
+
+
+    int color_fondo=7;
+    int color_rojo=2;
+    int color_amarillo=6;
+    int color_verde=4;
+    int color_cyan=5;
+
+
+
+    //Primero todo texto en gris. Envolvemos un poco mas
+    for (y=y_inicial-1;y<y_inicial+ancho_z*2+1;y++) {
+        for (x=x_inicial-1;x<x_inicial+ancho_z*2+1;x++) {
+            //putchar_menu_overlay_parpadeo(x,y,' ',0,color_fondo,0);
+            zxvision_print_char_simple(w,x,y,0,color_fondo,0,' ');
+        }
+    }
+
+
+
+    int i;
+    //Linea X hacia la derecha
+    for (i=0;i<ancho_z;i++) {
+        menu_simon_put_space(w,x_inicial+i*2,    y_inicial+i*2);
+        menu_simon_put_space(w,x_inicial+i*2+1,  y_inicial+i*2+1);
+    }
+
+    //Linea X hacia la izquierda
+    x=x_inicial+(ancho_z-1)*2;
+    for (i=ancho_z-1;i>=0;i--) {
+        menu_simon_put_space(w,x-i*2+1,  y_inicial+i*2);
+        menu_simon_put_space(w,x-i*2,    y_inicial+i*2+1);
+    }
+
+return;
+
+/*
+    //Y ahora las zonas de colores
+    //Rojo amarillo verde cyan
+    //2      6       4     5
+
+    if (menu_simon_enabled_light==SIMON_NONE) return;
+
+    //Zona roja
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+6,y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y_inicial+2,color_rojo);
+
+    set_splash_zesarux_logo_put_space_color(x_inicial+1,  y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color(x_inicial+3,y_inicial+2,color_rojo);
+    set_splash_zesarux_logo_put_space_color(x_inicial+8,y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial+2,color_rojo);
+    if (paso==1) return;
+
+
+    //Zona amarilla
+    x=x_inicial+(ancho_z-1)*2;
+    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+2,color_amarillo);
+    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+4,color_amarillo);
+    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+6,color_amarillo);
+    set_splash_zesarux_logo_put_space_color_double(x-2,y_inicial+4,color_amarillo);
+
+    set_splash_zesarux_logo_put_space_color(x+1,y_inicial+1,color_amarillo);
+    set_splash_zesarux_logo_put_space_color(x-1,y_inicial+3,color_amarillo);
+    set_splash_zesarux_logo_put_space_color(x-1,y_inicial+6,color_amarillo);
+    set_splash_zesarux_logo_put_space_color(x+1,y_inicial+8,color_amarillo);
+    if (paso==2) return;
+
+    //Zona verde
+    y=y_inicial+(alto_z-1)*2;
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y,color_verde);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y,color_verde);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+6,y,color_verde);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y-2,color_verde);
+
+    set_splash_zesarux_logo_put_space_color(x_inicial+1,y+1,color_verde);
+    set_splash_zesarux_logo_put_space_color(x_inicial+3,y-1,color_verde);
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y-1,color_verde);
+    set_splash_zesarux_logo_put_space_color(x_inicial+8,y+1,color_verde);
+    if (paso==3) return;
+
+
+    //Zona cyan
+    x=x_inicial+(ancho_z-1)*2;
+    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+2,color_cyan);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+4,color_cyan);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+6,color_cyan);
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y_inicial+4,color_cyan);
+
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+1,color_cyan);
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+3,color_cyan);
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+6,color_cyan);
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+8,color_cyan);
+
+*/
+
+}
 
 void menu_simon_overlay(void)
 {
@@ -45255,8 +45399,7 @@ void menu_simon_overlay(void)
     if (menu_simon_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    menu_simon_draw_enabled_light(menu_simon_window);
 
 
     //Mostrar contenido
