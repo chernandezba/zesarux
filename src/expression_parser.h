@@ -272,4 +272,6 @@ extern int exp_par_is_number(char *texto,int *final);
 
 extern int exp_par_evaluate_expression_to_number(char *entrada);
 
+extern int exp_par_evaluate_expression_to_number_error(char *entrada,int *error_code_ret);
+
 #endif
