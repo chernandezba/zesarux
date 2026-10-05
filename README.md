@@ -180,10 +180,10 @@ __FEATURES__
 * Emulates hi-res modes on ZX Spectrum (rainbow effects and others) and ZX80/ZX81 (UDG, CHR$128, WRX, HRG and some other hi-res modes)
 
 * Supports lots of video effects:
-- Reduce, Unsteady, Flip Vertical, Flip Horizontal, Rotate, Twirl, Interferences, Sea, Waves, Magnetic Field, Shear, Lens, Radar
-- Zoom, Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
-- Scanlines, Sepia, Red, RGB, Decolorize, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
-- Restore Original, Copy to buffer, Mix from Buffer, Load BMP
+    - Reduce, Unsteady, Flip Vertical, Flip Horizontal, Rotate, Twirl, Interferences, Sea, Waves, Magnetic Field, Shear, Lens, Radar
+    - Zoom, Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
+    - Scanlines, Sepia, Red, RGB, Decolorize, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
+    - Restore Original, Copy to buffer, Mix from Buffer, Load BMP
 
 * Can generate Anaglyph images for 3D glasses (red-blue glasses)
 

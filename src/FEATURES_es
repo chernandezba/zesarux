@@ -71,10 +71,10 @@
 * Emula modos hi-res en ZX Spectrum (efectos rainbow y otros) y ZX80/ZX81 (UDG, CHR$128, WRX, HRG y otros modos hi-res)
 
 * Soporta un montón de efectos de video:
-- Reducir, Temblar, Invertir Vertical, Invertir Horizontal, Rotar, Remolino, Interferencias, Mar, Ondas, Campo Magnético, Cizalla, Lente, Radar
-- Zoom, Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, LED RGB, Pérdida Hsync, Pérdida Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
-- Scanlines, Sepia, Rojo, RGB, Decolorizar, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
-- Restaurar Original, Copiar a buffer, Mezclar desde Buffer, Cargar BMP
+    - Reducir, Temblar, Invertir Vertical, Invertir Horizontal, Rotar, Remolino, Interferencias, Mar, Ondas, Campo Magnético, Cizalla, Lente, Radar
+    - Zoom, Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, LED RGB, Pérdida Hsync, Pérdida Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
+    - Scanlines, Sepia, Rojo, RGB, Decolorizar, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
+    - Restaurar Original, Copiar a buffer, Mezclar desde Buffer, Cargar BMP
 
 * Puede generar imágenes anaglifas para gafas 3D (gafas rojo-azul)
 
