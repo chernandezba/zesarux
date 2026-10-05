@@ -10955,7 +10955,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"sendtextkeystrokesstatus","send keystr",menu_send_text_keystrokes_status,bitmap_button_ext_desktop_sendtextkeystrokesstatus},
     {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
     {"shortcutshelper",     "shrtcuthlp",   menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
-    {"simon",               "simon",        menu_simon,bitmap_button_ext_desktop_userdefined},
+    {"simon",               "simon",        menu_simon,bitmap_button_ext_desktop_simon},
     {"inspectrumanalyzer",  "spec anlys",   menu_input_spectrum_analyzer,bitmap_button_ext_desktop_inspectrumanalyzer},
     {"sprites",             "sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
     {"tsconftbbluespritenav","sprite nav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_tsconftbbluespritenav},

@@ -11,7 +11,7 @@ Allow to smartload a SCL file
 Added device icons: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 Added support for triggering F-function actions from joystick (Reset CPU, Open window, NMI, etc). Also, joystick events "Quicksave", "Rewind", "FForward" have been removed and can be triggered now as actions
 Allow to select output file from the External Audio Source window
-Added another toy "Clive" to Procrastinate menu
+Added another toys "Clive" and "Simon" to Procrastinate menu
 Allow preffix $ and 0x for hexadecimal values
 Allow to debug esxdos calls on debug console
 Allow to view and extract Hobeta files (.$C, etc)
