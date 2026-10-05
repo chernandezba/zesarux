@@ -102,6 +102,8 @@
 
 * Soporta carga de cinta real mediante archivos de formatos (RWA, SMP, WAV) en rutinas ROM estándar para ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace
 
+* Convierte grabaciones de cintas ZX81 a archivos P/P81, con una vista de la forma de onda y de los pulsos, bits y bytes decodificados
+
 * Simula carga de cinta real en rutinas ROM estándar para ZX Spectrum, ZX80, ZX81
 
 * Soporta traps de grabación de cinta para Super Tape Copier y Lao Copy 2

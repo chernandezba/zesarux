@@ -211,6 +211,8 @@ __FEATURES__
 
 * Handles real audio loading (RWA, SMP, WAV) on standard ROM routines for ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace
 
+* Converts ZX81 tape audio recordings to P/P81 files, with a waveform view of decoded pulses, bits and bytes
+
 * Simulates real tape loading on standard ROM routines for ZX Spectrum, ZX80, ZX81
 
 * Supports tape save traps for Super Tape Copier and Lao Copy 2
