@@ -45261,7 +45261,7 @@ int menu_simon_delay_frames_entre_cambios=50;
 int menu_simon_delay_frames_entre_cambios_contador=0;
 
 
-
+//Numero maximo de posiciones a recordar, quien llegue a esto es que tiene una memoria privilegiada
 #define SIMON_MAX_LISTA_REPETIR 50
 
 //total de botones que hay que repetir
@@ -45277,7 +45277,8 @@ enum menu_simon_estado {
     SIMON_REPITIENDO_USUARIO,
     SIMON_AGREGAR_NUEVO_COLOR,
     SIMON_USUARIO_EQUIVOCADO,
-    SIMON_ESPERAR_NUEVO_JUEGO
+    SIMON_ESPERAR_NUEVO_JUEGO,
+    SIMON_END_GAME_LIMIT
 };
 
 enum menu_simon_estado menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
@@ -45339,6 +45340,11 @@ void menu_simon_draw_enabled_light_sound(int frecuencia)
 
         audio_menu_tone_generator_play_freq(frecuencia,duracion);
     }
+}
+
+void menu_simon_show_final_score(void)
+{
+    zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,15,"Score: %d",menu_simon_lista_repetir_total);
 }
 
 
@@ -45532,20 +45538,37 @@ void menu_simon_overlay(void)
     }
 
     if (menu_simon_estado==SIMON_AGREGAR_NUEVO_COLOR) {
-        //si hay que generar uno nuevo
 
-        int luz=util_get_random_enhanced() % 4;
-        menu_simon_lista_repetir[menu_simon_lista_repetir_total++]=luz;
-        printf("nuevo color %d total: %d\n",luz,menu_simon_lista_repetir_total);
+        if (menu_simon_lista_repetir_total==SIMON_MAX_LISTA_REPETIR) {
+            menu_simon_estado=SIMON_END_GAME_LIMIT;
+        }
 
-        //TODO: ver si llega al maximo de colores, fin de partida
+        else {
 
-        //Y empezar de nuevo la repeticion
-        menu_simon_lista_repetir_indice_replay=0;
+            //si hay que generar uno nuevo
 
-        menu_simon_estado=SIMON_REPITIENDO_ORDENADOR;
+            int luz=util_get_random_enhanced() % 4;
+            menu_simon_lista_repetir[menu_simon_lista_repetir_total++]=luz;
+            printf("nuevo color %d total: %d\n",luz,menu_simon_lista_repetir_total);
 
-        if (menu_simon_delay_frames_entre_cambios>10) menu_simon_delay_frames_entre_cambios-=3;
+            //TODO: ver si llega al maximo de colores, fin de partida
+
+            //Y empezar de nuevo la repeticion
+            menu_simon_lista_repetir_indice_replay=0;
+
+            menu_simon_estado=SIMON_REPITIENDO_ORDENADOR;
+
+            if (menu_simon_delay_frames_entre_cambios>10) menu_simon_delay_frames_entre_cambios-=3;
+        }
+
+    }
+
+    if (menu_simon_estado==SIMON_END_GAME_LIMIT) {
+
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"Congratulations!");
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,14,"You reached game limit!");
+        menu_simon_show_final_score();
+        menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
 
     }
 
@@ -45595,6 +45618,8 @@ void menu_simon_overlay(void)
 
 
         if (menu_simon_delay_frames_entre_cambios_contador>=60) {
+            menu_simon_show_final_score();
+            zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"Sorry, you failed");
             menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
             menu_simon_enabled_light=SIMON_NONE;
 
@@ -45609,7 +45634,7 @@ void menu_simon_overlay(void)
     }
 
     if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
-        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"n: new game");
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,16,"n: new game");
     }
 
 
