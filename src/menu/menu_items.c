@@ -45706,21 +45706,15 @@ void menu_simon_handle_user_movement(enum menu_simon_lights luz)
 
         menu_simon_estado=SIMON_USUARIO_EQUIVOCADO;
 
-
-
-        //TODO pasar a error
     }
 
     else {
+        audio_menu_tone_generator_stop();
+
         menu_simon_enabled_light=luz;
 
         menu_simon_indice_usuario_repetir++;
 
-        /*if (menu_simon_indice_usuario_repetir>=menu_simon_lista_repetir_total) {
-            //generar uno nuevo
-            printf("agregar nuevo color\n");
-            menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
-        }*/
 
     }
 
