@@ -203,7 +203,7 @@ __FEATURES__
 
 * Allows to save screen to formats: SCR, PBM, BMP, TXT, STL (3D Model)
 
-* Supports loading from real tape (any external audio source, like tape player, mp3 player, etc)
+* Supports loading from real tape (any external audio source, like tape player, mp3 player, etc), with tools to view the tape waveform and frequency spectrum and to help adjust the azimuth
 
 * Supports real tape loading of file formats: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, P81, O. It handles loading of turbo load tapes or any type of tape loading for standard/non standard loading routines
 
@@ -227,6 +227,8 @@ __FEATURES__
 
 * Handles cartridge formats: DCK, ROM, COL, SG
 
+* Supports MSX cartridges with ASCII 8 KB and 16 KB, Konami (with or without SCC), and R-Type memory mappers
+
 * Handles RZX playback
 
 * Emulates the following Copy Interfaces: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface (One, 128 and Three), Phoenix, Ramjet, Spec-Mate, Transtape
@@ -237,7 +239,7 @@ __FEATURES__
 
 * Emulates Nec PD765 floppy disk controller, used on Spectrum +3, CPC 664, CPC 6128, PCW
 
-* Emulates ZX Microdrive on ZX Spectrum and QL: on ZX Spectrum supports MDR (standard file system format) and raw format (extension RMD). On QL is simulated by rom traps, accessing files from your computer and also from MDV (QLAY format)
+* Emulates ZX Microdrive on ZX Spectrum and QL: on ZX Spectrum supports MDR (standard file system format) and raw format (extension RMD), including tape gaps, sync bytes and bad sectors. On QL is simulated by rom traps, accessing files from your computer and also from MDV (QLAY format)
 
 * Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be smartloaded or converted from file selector pressing space
 

@@ -94,7 +94,7 @@
 
 * Premite grabar pantalla a formatos: SCR, PBM, BMP, TXT, STL (Modelo 3D)
 
-* Permite cargar desde cinta real (cualquier fuente externa de sonido, como lector de casette, reproductor mp3, etc)
+* Permite cargar desde cinta real (cualquier fuente externa de sonido, como lector de casette, reproductor mp3, etc), con herramientas para ver la forma de onda y el espectro de frecuencias de la cinta y ayudar a ajustar el azimut
 
 * Soporta carga de cinta real mediante formatos de archivos: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, P81, O. Soporta carga turbo de cintas o cualquier otro tipo de carga de cintas para rutinas de carga estándar/no estándar
 
@@ -118,6 +118,8 @@
 
 * Soporta formatos de cartucho: DCK, ROM, COL, SG
 
+* Soporta cartuchos MSX con mappers de memoria ASCII de 8 KB y 16 KB, Konami (con o sin SCC) y R-Type
+
 * Soporta reproducción RZX
 
 * Emula los siguientes Interfaces de Copia: Defcon, Dinamid3, Hilow Barbanegra, Interface007, Microhobby Pokeador Automatico, Multiface (One, 128 y Three), Phoenix, Ramjet, Spec-Mate, Transtape
@@ -128,7 +130,7 @@
 
 * Emula controladora de disco Nec PD765, utilizada en Spectrum +3, CPC 664, CPC 6128, PCW
 
-* Emula ZX Microdrive en ZX Spectrum y QL: en ZX Spectrum soporta MDR (formato de sistema de archivos estándar) y formato en crudo "raw" (extensión RMD). En QL se simula mediante traps a la rom accediendo a archivos de tu ordenador y también desde MDV (formato QLAY)
+* Emula ZX Microdrive en ZX Spectrum y QL: en ZX Spectrum soporta MDR (formato de sistema de archivos estándar) y formato en crudo "raw" (extensión RMD), incluidas zonas de separación, bytes de sincronización y sectores defectuosos. En QL se simula mediante traps a la rom accediendo a archivos de tu ordenador y también desde MDV (formato QLAY)
 
 * Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. Los archivos .scl se pueden cargar de forma inteligente o convertir desde el selector de archivos pulsando espacio
 
