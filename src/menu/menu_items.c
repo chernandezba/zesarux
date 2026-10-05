@@ -45276,10 +45276,11 @@ enum menu_simon_estado {
     SIMON_REPITIENDO_ORDENADOR,
     SIMON_REPITIENDO_USUARIO,
     SIMON_AGREGAR_NUEVO_COLOR,
-    SIMON_USUARIO_EQUIVOCADO
+    SIMON_USUARIO_EQUIVOCADO,
+    SIMON_ESPERAR_NUEVO_JUEGO
 };
 
-enum menu_simon_estado menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+enum menu_simon_estado menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
 
 //indice donde el usuario esta repitiendo
 int menu_simon_indice_usuario_repetir=0;
@@ -45582,23 +45583,33 @@ void menu_simon_overlay(void)
 
         //Si es los ultimos frames de ese mismo color, quitarlo para que se vea "parpadear" cuando sea el mismo color
 
-        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios-5) {
+        if ((menu_simon_delay_frames_entre_cambios_contador % 20)>15) {
             printf("Apagar luz al repetir por usuario\n");
             //menu_simon_delay_frames_entre_cambios_contador=0;
             menu_simon_enabled_light=SIMON_NONE;
         }
 
-        //Y si ya se ha acabado de escuchar el ultimo del usuario, empezar nuevo juego
-        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios) {
-            menu_simon_lista_repetir_total=0;
-            menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
-            menu_simon_delay_frames_entre_cambios=50;
+        else {
+            menu_simon_enabled_light=menu_simon_lista_repetir[menu_simon_indice_usuario_repetir];
+        }
 
+
+        if (menu_simon_delay_frames_entre_cambios_contador>=60) {
+            menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
+            menu_simon_enabled_light=SIMON_NONE;
+
+            /*menu_simon_lista_repetir_total=0;
+            menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+            menu_simon_delay_frames_entre_cambios=50;*/
         }
 
 
         //printf("Esperando usuario\n");
         menu_simon_draw_enabled_light(menu_simon_window);
+    }
+
+    if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"n: new game");
     }
 
 
@@ -45616,7 +45627,8 @@ void menu_simon_handle_user_movement(enum menu_simon_lights luz)
         printf("ERROR color\n");
 
         menu_simon_estado=SIMON_USUARIO_EQUIVOCADO;
-        menu_simon_enabled_light=menu_simon_lista_repetir[menu_simon_indice_usuario_repetir];
+
+
 
         //TODO pasar a error
     }
@@ -45662,6 +45674,15 @@ void menu_simon_handle_user_down(zxvision_window *w)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_simon;
 
+void menu_simon_new_game(void)
+{
+    menu_simon_lista_repetir_total=0;
+    menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+    menu_simon_delay_frames_entre_cambios=50;
+    zxvision_cls(&zxvision_window_simon);
+
+}
+
 
 void menu_simon(MENU_ITEM_PARAMETERS)
 {
@@ -45702,11 +45723,6 @@ void menu_simon(MENU_ITEM_PARAMETERS)
     }
 
     zxvision_draw_window(ventana);
-
-    //TODO: de momento siempre al entrar se reinicia la partida
-    menu_simon_lista_repetir_total=0;
-    menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
-    menu_simon_delay_frames_entre_cambios=50;
 
 
 
@@ -45767,6 +45783,13 @@ void menu_simon(MENU_ITEM_PARAMETERS)
             case 11:
                 if (menu_simon_estado==SIMON_REPITIENDO_USUARIO) {
                     menu_simon_handle_user_up(ventana);
+                }
+            break;
+
+
+            case 'n':
+                if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
+                    menu_simon_new_game();
                 }
             break;
 
