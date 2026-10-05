@@ -45629,14 +45629,14 @@ void menu_simon_overlay(void)
 
         //Si es los ultimos frames de ese mismo color, quitarlo para que se vea "parpadear" cuando sea el mismo color
 
-        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios-5) {
+        if (menu_simon_delay_frames_entre_cambios_contador>=50-5) {
             printf("Apagar luz al repetir por usuario\n");
             //menu_simon_delay_frames_entre_cambios_contador=0;
             menu_simon_enabled_light=SIMON_NONE;
         }
 
         //Y si ya se ha acabado de escuchar el ultimo del usuario, agregar nuevo
-        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios) {
+        if (menu_simon_delay_frames_entre_cambios_contador>=50) {
             if (menu_simon_indice_usuario_repetir>=menu_simon_lista_repetir_total) {
                 //generar uno nuevo
                 printf("agregar nuevo color\n");
@@ -45697,6 +45697,9 @@ void menu_simon_overlay(void)
 void menu_simon_handle_user_movement(enum menu_simon_lights luz)
 {
     menu_simon_delay_frames_entre_cambios_contador=0;
+
+    //Truco para acertar siempre
+    //luz=menu_simon_lista_repetir[menu_simon_indice_usuario_repetir];
 
     if (menu_simon_lista_repetir[menu_simon_indice_usuario_repetir]!=luz) {
         printf("ERROR color\n");
