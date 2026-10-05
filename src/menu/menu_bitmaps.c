@@ -8162,32 +8162,32 @@ char *bitmap_button_ext_desktop_calculator[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_simon[ZESARUX_ASCII_LOGO_ALTO]={
     //01234567890123456789012345
-    "wwwwwwwwwwwwwwwwwwwwwwwwww",     //0
-    "wxxrrrrrrrrrrrrrrrrrrrrxxw",
-    "wxxrrrrrrrrrrrrrrrrrrrrxxw",
-    "wccxxrrrrrrrrrrrrrrrrxxyyw",
-    "wccxxrrrrrrrrrrrrrrrrxxyyw",
-    "wccccxxrrrrrrrrrrrrxxyyyyw",
-    "wccccxxrrrrrrrrrrrrxxyyyyw",
-    "wccccccxxrrrrrrrrxxyyyyyyw",
-    "wccccccxxrrrrrrrrxxyyyyyyw",
-    "wccccccccxxrrrrxxyyyyyyyyw",
-    "wccccccccxxrrrrxxyyyyyyyyw",	//10
-    "wccccccccccxxxxyyyyyyyyyyw",
-    "wccccccccccxxxxyyyyyyyyyyw",
-    "wccccccccccxxxxyyyyyyyyyyw",
-    "wccccccccccxxxxyyyyyyyyyyw",
-    "wccccccccxxggggxxyyyyyyyyw",
-    "wccccccccxxggggxxyyyyyyyyw",
-    "wccccccxxggggggggxxyyyyyyw",
-    "wccccccxxggggggggxxyyyyyyw",
-    "wccccxxggggggggggggxxyyyyw",
-    "wccccxxggggggggggggxxyyyyw",    //20
-    "wccxxggggggggggggggggxxyyw",
-    "wccxxggggggggggggggggxxyyw",
-    "wxxggggggggggggggggggggxxw",
-    "wxxggggggggggggggggggggxxw",
-    "wwwwwwwwwwwwwwwwwwwwwwwwww" 		//25
+    "         xxxxxxxx         ",    //0
+    "       xxxrrrrrrxxx       ",
+    "     xxrrrrrrrrrrrrxx     ",
+    "    xxrrrrrrrrrrrrrrxx    ",
+    "   xxrrrrrrrrrrrrrrrrxx   ",
+    "  xxcxxrrrrrrrrrrrrxxyxx  ",
+    "  xccxxrrrrrrrrrrrrxxyyx  ",
+    " xcccccxxrrrrrrrrxxyyyyyx ",
+    " xcccccxxrrrrrrrrxxyyyyyx ",
+    "xxcccccccxxrrrrxxyyyyyyyxx",
+    "xccccccccxxrrrrxxyyyyyyyyx",    //10
+    "xccccccccccxxxxyyyyyyyyyyx",
+    "xccccccccccxxxxyyyyyyyyyyx",
+    "xccccccccccxxxxyyyyyyyyyyx",
+    "xccccccccccxxxxyyyyyyyyyyx",
+    "xccccccccxxggggxxyyyyyyyyx",
+    "xxcccccccxxggggxxyyyyyyyxx",
+    " xcccccxxggggggggxxyyyyyx ",
+    " xcccccxxggggggggxxyyyyyx ",
+    "  xccxxggggggggggggxxyyx  ",
+    "  xxcxxggggggggggggxxyxx  ",    //20
+    "   xxggggggggggggggggxx   ",
+    "    xxggggggggggggggxx    ",
+    "     xxggggggggggggxx     ",
+    "       xxxggggggxxx       ",
+    "         xxxxxxxx         "    //25
 };
 
 /*
