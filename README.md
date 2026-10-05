@@ -143,6 +143,8 @@ __FEATURES__
 
 * Almost perfect emulation of timing of all Spectrum machines
 
+* Supports 60 Hz modes on Master System, SG1000, MSX, Colecovision, Spectravideo and Timex Sinclair 2068
+
 * Emulates undocumented Z80 flags, features, and MEMPTR register
 
 * Emulates idle bus port, contended memory, ULA early/late timings
@@ -211,6 +213,8 @@ __FEATURES__
 
 * Simulates real tape loading on standard ROM routines for ZX Spectrum, ZX80, ZX81
 
+* Supports tape save traps for Super Tape Copier and Lao Copy 2
+
 * Handles snapshot formats: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, P81, O, Z81, ACE
 
 * Handles microdrive formats: MDR, RMD and MDV
@@ -235,7 +239,7 @@ __FEATURES__
 
 * Emulates ZX Microdrive on ZX Spectrum and QL: on ZX Spectrum supports MDR (standard file system format) and raw format (extension RMD). On QL is simulated by rom traps, accessing files from your computer and also from MDV (QLAY format)
 
-* Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be converted from file selector pressing space
+* Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be smartloaded or converted from file selector pressing space
 
 * Emulates ZX Spectrum MMC Interfaces: ZXMMC, ZXMMC+, DivMMC
 
@@ -261,11 +265,15 @@ __FEATURES__
 
 * Handles RAM, EPROM, Intel Flash and Hybrid (RAM+EPROM) cards on Z88
 
-* Handles QL microdrive/floppy file access using files from your computer. Allows reading Q-emuLator file headers. Allows EXECuting files without headers
+* Handles QL microdrive/floppy file access using files from your computer, MDV, QDOS QL5A/QL5B IMG and WIN images, and a second floppy drive. Allows reading Q-emuLator file headers, EXECuting files without headers and smartloading boot, BASIC and executable files
+
+* Emulates QL QIMI mouse, additional ROMs, configurable video aspect ratio and Vision-QL palette, and selectable real-time clock source and timezone
 
 * Handles compressed formats zip (with internal decompressor), and tar, rar, gz through external utilities
 
 * Emulates AY Audio Chip, Turbosound (2 AY Channels), 3 AY Channels, MIDI channels, different DAC: Specdrum, Covox, ACB/ABC/BAC/CBA Stereo
+
+* Allows selecting Beeper and MIC audio on Spectrum
 
 * Emulates General Sound
 
@@ -277,7 +285,7 @@ __FEATURES__
 
 * Experimental simulation of the Sam Coupe Audio Chip (SAA1099)
 
-* Emulates i8049 QL sound
+* Emulates i8049 and Qsound on QL
 
 * Simulates Nagravision Audio effect
 
@@ -288,6 +296,8 @@ __FEATURES__
 * Supports RAM packs on Jupiter Ace up to 51 KB
 
 * Joystick emulation with real joystick and keyboard cursors: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors, CPC, MSX, Spectravideo, Cascade, DKTronics. Autofire function too
+
+* Joystick buttons can trigger configurable F-function actions, such as CPU reset, NMI or opening a window
 
 * Allow to use a steering wheel joystick on Spectrum racing games as an analog controller
 
@@ -347,7 +357,7 @@ __FEATURES__
 
 * Use artificial intelligence to get realistic images for location description on Text Adventure games
 
-* File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, pzx, trd, dsk, mdv, hdf, ddh, etc. Can also browse inside file system images (.mmc, .img, etc)
+* File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, pzx, trd, dsk, mdv, hdf, ddh, Hobeta files, etc. Can also browse inside file system images (.mmc, .img, etc)
 
 * Accessibility support: Print char traps allows to capture generated text from almost any program or game, using standard ROM calls (RST 10H) or even non standard print character routines. Can send generated text from a game to a text-to-speech program. It's ready for text to speech support for blind or visually impaired people. Menu emulator can also be read by a text-to-speech program.
 
@@ -361,10 +371,9 @@ __FEATURES__
 
 * Supports execution on Docker, tested on Debian, Ubuntu and Fedora containers
 
-* Other features: Visualmem menu, CPU Statistics, Toy ZXeyes, Toy ZXlife, Ascii Table, Sensors
+* Other features: Visualmem menu, CPU Statistics, Toys ZXeyes, ZXlife, Clive and Simon, Clock, Calculator, Ascii Table, Sensors
 
 * Includes seven easter eggs. Can you find them? :)
-
 
 
 __Some screenshots__

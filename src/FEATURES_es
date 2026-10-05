@@ -34,6 +34,8 @@
 
 * Emulación casi perfecta de los tiempos de todas las máquinas Spectrum
 
+* Soporta modos de 60 Hz en Master System, SG1000, MSX, Colecovision, Spectravideo y Timex Sinclair 2068
+
 * Emula flags y características no documentadas del Z80 y registro MEMPTR
 
 * Emula bus idle, memoria contenida y tiempos de ULA early/late
@@ -102,6 +104,8 @@
 
 * Simula carga de cinta real en rutinas ROM estándar para ZX Spectrum, ZX80, ZX81
 
+* Soporta traps de grabación de cinta para Super Tape Copier y Lao Copy 2
+
 * Soporta formatos de snapshot: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, P81, O, Z81, ACE
 
 * Soporta formatos de microdrive: MDR, RMD y MDV
@@ -126,7 +130,7 @@
 
 * Emula ZX Microdrive en ZX Spectrum y QL: en ZX Spectrum soporta MDR (formato de sistema de archivos estándar) y formato en crudo "raw" (extensión RMD). En QL se simula mediante traps a la rom accediendo a archivos de tu ordenador y también desde MDV (formato QLAY)
 
-* Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. scl files pueden convertirse desde el selector de archivos pulsando espacio
+* Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. Los archivos .scl se pueden cargar de forma inteligente o convertir desde el selector de archivos pulsando espacio
 
 * Emula ZX Spectrum MMC Interfaces: ZXMMC, ZXMMC+, DivMMC
 
@@ -152,11 +156,15 @@
 
 * Soporta tarjetas RAM, EPROM, Intel Flash y Hybrid (RAM+EPROM) en Z88
 
-* Soporta QL microdrive/floppy acceso de archivos usando archivos de tu ordenador. Permite leer cabeceras tipo Q-emuLator. Permite EXECutar archivos sin cabeceras
+* Soporta acceso a archivos de microdrive y disquete del QL desde archivos del ordenador, imágenes MDV, IMG QDOS QL5A/QL5B y WIN, y una segunda unidad de disquete. Permite leer cabeceras tipo Q-emuLator, ejecutar archivos sin cabeceras y cargar de forma inteligente archivos de arranque, BASIC y ejecutables
+
+* Emula ratón QIMI del QL, ROM adicionales, relación de aspecto de vídeo y paleta Vision-QL configurables, y selección de fuente y zona horaria del reloj de tiempo real
 
 * Soporta formatos comprimidos zip (con decompresor interno), y tar, rar, gz a través de utilidades externas
 
 * Emula AY Audio Chip, Turbosound (2 canales AY), 3 Canales AY, canales MIDI, diferentes DAC: Specdrum, Covox, ACB/ABC/BAC/CBA Stereo
+
+* Permite seleccionar el audio Beeper y MIC en Spectrum
 
 * Emula General Sound
 
@@ -168,7 +176,7 @@
 
 * Simulación experimental del Chip de Audio del Sam Coupe
 
-* Emula sonido i8049 del QL
+* Emula sonido i8049 y Qsound del QL
 
 * Simula efecto de Audio Nagravision
 
@@ -179,6 +187,8 @@
 * Soporta RAM packs en Jupiter Ace hasta 51 KB
 
 * Emulación Joystick con joystick real (en GNU/Linux y Windows) y cursores de teclado: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors, CPC, MSX, Spectravideo, Cascade, DKTronics. Función autodisparo también
+
+* Los botones del joystick pueden activar acciones configurables de teclas F, como reiniciar la CPU, lanzar una NMI o abrir una ventana
 
 * Permitir usar un joystick de tipo volante en juegos de carreras de Spectrum como un mando analógico
 
@@ -238,7 +248,7 @@
 
 * Uso de inteligencia artificial para obtener imágenes realistas para el texto de descripción de la ubicación en Aventuras Conversacionales
 
-* Menú de utilidades de Archivos: Permite ver, expandir y convertir diferentes formatos de archivos comunes: tap, tzx, trd, dsk, mdv, hdf, etc. También puede navegar dentro de imágenes de sistemas de archivos (.mmc, .img, etc)
+* Menú de utilidades de Archivos: Permite ver, expandir y convertir diferentes formatos de archivos comunes: tap, tzx, trd, dsk, mdv, hdf, archivos Hobeta, etc. También puede navegar dentro de imágenes de sistemas de archivos (.mmc, .img, etc)
 
 * Accesibilidad: Print char traps permite capturar texto generado desde casi cualquier programa o juego, que usen llamadas estándar a la ROM (RST 10H) o incluso rutinas de impresión de caracteres no estándar. Puede enviar texto generado desde un juego a un programa de texto-a-voz (text to speech). Está preparado para soporte de texto a voz para personas ciegas o con problemas de visión. El menú del emulador también se puede leer por un programa de texto-a-voz.
 
@@ -252,7 +262,6 @@
 
 * Soporta ejecución en Docker, probado en contenedores Debian, Ubuntu y Fedora
 
-* Otras características: Visualmem menu, CPU Statistics, Juguete ZXeyes, Juguete ZXlife, Tabla Ascii, Sensors
+* Otras características: Visualmem menu, CPU Statistics, juguetes ZXeyes, ZXlife, Clive y Simón, Reloj, Calculadora, Tabla Ascii, Sensors
 
 * Incluye siete huevos de pascua. Puedes encontrarlos? :)
-
