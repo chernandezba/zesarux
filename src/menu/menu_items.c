@@ -45300,6 +45300,8 @@ int menu_simon_lista_repetir_total=0;
 //cuando el ordenador te lo repite, en cual esta repitiendo ahora
 int menu_simon_lista_repetir_indice_replay=0;
 
+int menu_simon_sonido_habilitado=1;
+
 //Si esta repitiendo el ordenador o por el contrario espera que el usuario lo repita
 
 enum menu_simon_estado {
@@ -45350,8 +45352,6 @@ int menu_simon_nota_sonando=0;
 void menu_simon_draw_enabled_light_sound(int frecuencia)
 {
 
-    //if (frecuencia==menu_simon_nota_sonando) return;
-
     if (audio_menu_tone_generator_active.v) return;
 
     else {
@@ -45359,17 +45359,17 @@ void menu_simon_draw_enabled_light_sound(int frecuencia)
 
         int duracion=menu_simon_delay_frames_entre_cambios;
 
-        //if error. El sonido de error es de unos 42 Hz, durante 1,5 segundos.
+        //El sonido de error es de unos 42 Hz, durante 1,5 segundos.
         if (menu_simon_estado==SIMON_USUARIO_EQUIVOCADO) {
             frecuencia=42;
             duracion=75;
         }
 
-        //zxvision_sound_event_aux(s,menu_simon_delay_frames_entre_cambios);
-        printf("Activar sonido frecuencia %d Hz\n",frecuencia);
+
+        //printf("Activar sonido frecuencia %d Hz\n",frecuencia);
         menu_simon_nota_sonando=frecuencia;
 
-        audio_menu_tone_generator_play_freq(frecuencia,duracion);
+        if (menu_simon_sonido_habilitado) audio_menu_tone_generator_play_freq(frecuencia,duracion);
     }
 }
 
@@ -45382,14 +45382,6 @@ void menu_simon_show_final_score(void)
 void menu_simon_draw_enabled_light(zxvision_window *w)
 {
 
-
-//Dibuja el logo especial de X aniversario pero en diferentes pasos:
-//0: solo la X
-//1: zona roja
-//2: zona roja y amarilla
-//3: zona roja y amarilla y verde
-//4 o mayor: zona roja y amarilla y verde y cyan
-//void set_splash_zesarux_logo_paso_xanniversary(int paso)
 
     int x,y;
 
@@ -45437,7 +45429,6 @@ void menu_simon_draw_enabled_light(zxvision_window *w)
     //Rojo amarillo verde cyan
     //2      6       4     5
 
-    //    zxvision_sound_event_aux("C2",50);
 
     switch (menu_simon_enabled_light)
     {
@@ -45541,7 +45532,7 @@ void menu_simon_overlay(void)
         }
 
         if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios) {
-            printf("nuevo frame\n");
+            //printf("nuevo frame\n");
             menu_simon_delay_frames_entre_cambios_contador=0;
 
             //si hay que generar uno nuevo
@@ -45560,7 +45551,7 @@ void menu_simon_overlay(void)
 
             else {
                 menu_simon_enabled_light=menu_simon_lista_repetir[menu_simon_lista_repetir_indice_replay];
-                printf("Repetir indice %d color %d\n",menu_simon_lista_repetir_indice_replay,menu_simon_enabled_light);
+                //printf("Repetir indice %d color %d\n",menu_simon_lista_repetir_indice_replay,menu_simon_enabled_light);
                 menu_simon_lista_repetir_indice_replay++;
                 menu_simon_draw_enabled_light(menu_simon_window);
             }
@@ -45581,9 +45572,7 @@ void menu_simon_overlay(void)
 
             int luz=util_get_random_enhanced() % 4;
             menu_simon_lista_repetir[menu_simon_lista_repetir_total++]=luz;
-            printf("nuevo color %d total: %d\n",luz,menu_simon_lista_repetir_total);
-
-            //TODO: ver si llega al maximo de colores, fin de partida
+            //printf("nuevo color %d total: %d\n",luz,menu_simon_lista_repetir_total);
 
             //Y empezar de nuevo la repeticion
             menu_simon_lista_repetir_indice_replay=0;
@@ -45616,7 +45605,7 @@ void menu_simon_overlay(void)
     if (menu_simon_estado==SIMON_END_GAME_LIMIT) {
 
         zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"Congratulations!");
-        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,14,"You reached game limit!");
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,14,"You finished this level!");
         menu_simon_show_final_score();
         menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
 
@@ -45630,16 +45619,12 @@ void menu_simon_overlay(void)
         //Si es los ultimos frames de ese mismo color, quitarlo para que se vea "parpadear" cuando sea el mismo color
 
         if (menu_simon_delay_frames_entre_cambios_contador>=50-5) {
-            printf("Apagar luz al repetir por usuario\n");
-            //menu_simon_delay_frames_entre_cambios_contador=0;
             menu_simon_enabled_light=SIMON_NONE;
         }
 
         //Y si ya se ha acabado de escuchar el ultimo del usuario, agregar nuevo
         if (menu_simon_delay_frames_entre_cambios_contador>=50) {
             if (menu_simon_indice_usuario_repetir>=menu_simon_lista_repetir_total) {
-                //generar uno nuevo
-                printf("agregar nuevo color\n");
                 menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
             }
         }
@@ -45657,8 +45642,6 @@ void menu_simon_overlay(void)
         //Si es los ultimos frames de ese mismo color, quitarlo para que se vea "parpadear" cuando sea el mismo color
 
         if ((menu_simon_delay_frames_entre_cambios_contador % 20)>15) {
-            printf("Apagar luz al repetir por usuario\n");
-            //menu_simon_delay_frames_entre_cambios_contador=0;
             menu_simon_enabled_light=SIMON_NONE;
         }
 
@@ -45672,10 +45655,6 @@ void menu_simon_overlay(void)
             zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"Sorry, you failed");
             menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
             menu_simon_enabled_light=SIMON_NONE;
-
-            /*menu_simon_lista_repetir_total=0;
-            menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
-            menu_simon_delay_frames_entre_cambios=50;*/
         }
 
 
@@ -45685,6 +45664,7 @@ void menu_simon_overlay(void)
 
     if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
         zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,16,"~~n: new game ~~l: level %d",menu_simon_nivel);
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,17,"~~s: sound [%s]",(menu_simon_sonido_habilitado ? "On" : "Off"));
     }
 
 
@@ -45702,7 +45682,7 @@ void menu_simon_handle_user_movement(enum menu_simon_lights luz)
     //luz=menu_simon_lista_repetir[menu_simon_indice_usuario_repetir];
 
     if (menu_simon_lista_repetir[menu_simon_indice_usuario_repetir]!=luz) {
-        printf("ERROR color\n");
+        //printf("ERROR color\n");
 
         menu_simon_estado=SIMON_USUARIO_EQUIVOCADO;
 
@@ -45722,22 +45702,22 @@ void menu_simon_handle_user_movement(enum menu_simon_lights luz)
 }
 
 
-void menu_simon_handle_user_left(zxvision_window *w)
+void menu_simon_handle_user_left(void)
 {
     menu_simon_handle_user_movement(SIMON_LEFT);
 }
 
-void menu_simon_handle_user_right(zxvision_window *w)
+void menu_simon_handle_user_right(void)
 {
     menu_simon_handle_user_movement(SIMON_RIGHT);
 }
 
-void menu_simon_handle_user_up(zxvision_window *w)
+void menu_simon_handle_user_up(void)
 {
     menu_simon_handle_user_movement(SIMON_UP);
 }
 
-void menu_simon_handle_user_down(zxvision_window *w)
+void menu_simon_handle_user_down(void)
 {
     menu_simon_handle_user_movement(SIMON_DOWN);
 }
@@ -45774,8 +45754,8 @@ void menu_simon(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("simon",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=24;
-            alto_ventana=20;
+            ancho_ventana=26;
+            alto_ventana=21;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -45821,7 +45801,6 @@ void menu_simon(MENU_ITEM_PARAMETERS)
 
 
 
-
     do {
 
 
@@ -45833,28 +45812,28 @@ void menu_simon(MENU_ITEM_PARAMETERS)
             //izquierda
             case 8:
                 if (menu_simon_estado==SIMON_REPITIENDO_USUARIO) {
-                    menu_simon_handle_user_left(ventana);
+                    menu_simon_handle_user_left();
                 }
             break;
 
             //derecha
             case 9:
                 if (menu_simon_estado==SIMON_REPITIENDO_USUARIO) {
-                    menu_simon_handle_user_right(ventana);
+                    menu_simon_handle_user_right();
                 }
             break;
 
             //abajo
             case 10:
                 if (menu_simon_estado==SIMON_REPITIENDO_USUARIO) {
-                    menu_simon_handle_user_down(ventana);
+                    menu_simon_handle_user_down();
                 }
             break;
 
             //arriba
             case 11:
                 if (menu_simon_estado==SIMON_REPITIENDO_USUARIO) {
-                    menu_simon_handle_user_up(ventana);
+                    menu_simon_handle_user_up();
                 }
             break;
 
@@ -45870,6 +45849,10 @@ void menu_simon(MENU_ITEM_PARAMETERS)
                     menu_simon_nivel++;
                     if (menu_simon_nivel>4) menu_simon_nivel=1;
                 }
+            break;
+
+            case 's':
+                menu_simon_sonido_habilitado ^=1;
             break;
 
 
