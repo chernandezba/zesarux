@@ -102,7 +102,8 @@ extern void audiodriver_start_record_input(void);
 extern int audio_is_recording_input;
 extern char audio_last_record_input_sample;
 
-
+extern void audio_menu_tone_generator_play_freq(int frecuencia,int duracion);
+extern z80_bit audio_menu_tone_generator_active;
 
 extern int audiorecord_input_return_fifo_total_size(void);
 extern int audiorecord_input_fifo_return_size(void);

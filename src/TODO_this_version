@@ -337,10 +337,10 @@ Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he
 
 
 -simon
-*no se ve el ultimo color que pulsa el usuario ni suena esa ultima nota
-*requiere activar accesibilidad->sonidos interfaz para que se escuchen. no deberia
+ok *no se ve el ultimo color que pulsa el usuario ni suena esa ultima nota
+ok *requiere activar accesibilidad->sonidos interfaz para que se escuchen. no deberia
 *al generarse un error se tiene que ir a otro estado. y no resetear estado de error al entrar en ventana
 *detectar cuando se llega al maximo de .. 50 sonidos?
 *acelerar velocidad a medida que hay mas
-*al pulsar el usuario mismo boton, no se oye la segunda vez
+ok *al pulsar el usuario mismo boton, no se oye la segunda vez
 *entrada changelog

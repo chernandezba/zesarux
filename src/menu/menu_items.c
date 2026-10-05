@@ -45275,7 +45275,8 @@ int menu_simon_lista_repetir_indice_replay=0;
 enum menu_simon_estado {
     SIMON_REPITIENDO_ORDENADOR,
     SIMON_REPITIENDO_USUARIO,
-    SIMON_AGREGAR_NUEVO_COLOR
+    SIMON_AGREGAR_NUEVO_COLOR,
+    SIMON_USUARIO_EQUIVOCADO
 };
 
 enum menu_simon_estado menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
@@ -45310,17 +45311,32 @@ void menu_simon_put_space(zxvision_window *w,int x,int y)
     menu_simon_put_space_color(w,x,y,0);
 }
 
-char menu_simon_nota_sonando[10]="";
+int menu_simon_nota_sonando=0;
 
 
-void menu_simon_draw_enabled_light_sound(char *s)
+void menu_simon_draw_enabled_light_sound(int frecuencia)
 {
-    if (!strcmp(s,menu_simon_nota_sonando)) return;
+
+    //if (frecuencia==menu_simon_nota_sonando) return;
+
+    if (audio_menu_tone_generator_active.v) return;
 
     else {
         audio_menu_tone_generator_stop();
-        zxvision_sound_event_aux(s,menu_simon_delay_frames_entre_cambios);
-        strcpy(menu_simon_nota_sonando,s);
+
+        int duracion=menu_simon_delay_frames_entre_cambios;
+
+        //if error. El sonido de error es de unos 42 Hz, durante 1,5 segundos.
+        if (menu_simon_estado==SIMON_USUARIO_EQUIVOCADO) {
+            frecuencia=42;
+            duracion=75;
+        }
+
+        //zxvision_sound_event_aux(s,menu_simon_delay_frames_entre_cambios);
+        printf("Activar sonido frecuencia %d Hz\n",frecuencia);
+        menu_simon_nota_sonando=frecuencia;
+
+        audio_menu_tone_generator_play_freq(frecuencia,duracion);
     }
 }
 
@@ -45400,7 +45416,7 @@ void menu_simon_draw_enabled_light(zxvision_window *w)
             menu_simon_put_space_color(w,x_inicial+8,y_inicial,color_rojo);
             menu_simon_put_space_color(w,x_inicial+6,y_inicial+2,color_rojo);
 
-            menu_simon_draw_enabled_light_sound("C4");
+            menu_simon_draw_enabled_light_sound(310);
         break;
 
 
@@ -45417,7 +45433,7 @@ void menu_simon_draw_enabled_light(zxvision_window *w)
             menu_simon_put_space_color(w,x-1,y_inicial+6,color_amarillo);
             menu_simon_put_space_color(w,x+1,y_inicial+8,color_amarillo);
 
-            menu_simon_draw_enabled_light_sound("D4");
+            menu_simon_draw_enabled_light_sound(252);
         break;
 
         case SIMON_DOWN:
@@ -45433,7 +45449,7 @@ void menu_simon_draw_enabled_light(zxvision_window *w)
             menu_simon_put_space_color(w,x_inicial+6,y-1,color_verde);
             menu_simon_put_space_color(w,x_inicial+8,y+1,color_verde);
 
-            menu_simon_draw_enabled_light_sound("E4");
+            menu_simon_draw_enabled_light_sound(415);
         break;
 
         case SIMON_LEFT:
@@ -45449,13 +45465,13 @@ void menu_simon_draw_enabled_light(zxvision_window *w)
             menu_simon_put_space_color(w,x_inicial+2,y_inicial+6,color_cyan);
             menu_simon_put_space_color(w,x_inicial,y_inicial+8,color_cyan);
 
-            menu_simon_draw_enabled_light_sound("F4");
+            menu_simon_draw_enabled_light_sound(209);
         break;
 
         case SIMON_NONE:
         default:
             audio_menu_tone_generator_stop();
-            menu_simon_nota_sonando[0]=0;
+            menu_simon_nota_sonando=0;
         break;
 
     }
@@ -45534,6 +45550,53 @@ void menu_simon_overlay(void)
 
 
     if (menu_simon_estado==SIMON_REPITIENDO_USUARIO) {
+
+        menu_simon_delay_frames_entre_cambios_contador++;
+
+        //Si es los ultimos frames de ese mismo color, quitarlo para que se vea "parpadear" cuando sea el mismo color
+
+        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios-5) {
+            printf("Apagar luz al repetir por usuario\n");
+            //menu_simon_delay_frames_entre_cambios_contador=0;
+            menu_simon_enabled_light=SIMON_NONE;
+        }
+
+        //Y si ya se ha acabado de escuchar el ultimo del usuario, agregar nuevo
+        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios) {
+            if (menu_simon_indice_usuario_repetir>=menu_simon_lista_repetir_total) {
+                //generar uno nuevo
+                printf("agregar nuevo color\n");
+                menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+            }
+        }
+
+
+        //printf("Esperando usuario\n");
+        menu_simon_draw_enabled_light(menu_simon_window);
+    }
+
+
+    if (menu_simon_estado==SIMON_USUARIO_EQUIVOCADO) {
+
+        menu_simon_delay_frames_entre_cambios_contador++;
+
+        //Si es los ultimos frames de ese mismo color, quitarlo para que se vea "parpadear" cuando sea el mismo color
+
+        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios-5) {
+            printf("Apagar luz al repetir por usuario\n");
+            //menu_simon_delay_frames_entre_cambios_contador=0;
+            menu_simon_enabled_light=SIMON_NONE;
+        }
+
+        //Y si ya se ha acabado de escuchar el ultimo del usuario, empezar nuevo juego
+        if (menu_simon_delay_frames_entre_cambios_contador>=menu_simon_delay_frames_entre_cambios) {
+            menu_simon_lista_repetir_total=0;
+            menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+            menu_simon_delay_frames_entre_cambios=50;
+
+        }
+
+
         //printf("Esperando usuario\n");
         menu_simon_draw_enabled_light(menu_simon_window);
     }
@@ -45547,9 +45610,13 @@ void menu_simon_overlay(void)
 
 void menu_simon_handle_user_movement(enum menu_simon_lights luz)
 {
+    menu_simon_delay_frames_entre_cambios_contador=0;
 
     if (menu_simon_lista_repetir[menu_simon_indice_usuario_repetir]!=luz) {
         printf("ERROR color\n");
+
+        menu_simon_estado=SIMON_USUARIO_EQUIVOCADO;
+        menu_simon_enabled_light=menu_simon_lista_repetir[menu_simon_indice_usuario_repetir];
 
         //TODO pasar a error
     }
@@ -45559,11 +45626,11 @@ void menu_simon_handle_user_movement(enum menu_simon_lights luz)
 
         menu_simon_indice_usuario_repetir++;
 
-        if (menu_simon_indice_usuario_repetir>=menu_simon_lista_repetir_total) {
-                //generar uno nuevo
-                printf("agregar nuevo color\n");
-                menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
-        }
+        /*if (menu_simon_indice_usuario_repetir>=menu_simon_lista_repetir_total) {
+            //generar uno nuevo
+            printf("agregar nuevo color\n");
+            menu_simon_estado=SIMON_AGREGAR_NUEVO_COLOR;
+        }*/
 
     }
 
