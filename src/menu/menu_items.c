@@ -45666,8 +45666,8 @@ void menu_simon_overlay(void)
             menu_simon_enabled_light=menu_simon_lista_repetir[menu_simon_indice_usuario_repetir];
         }
 
-
-        if (menu_simon_delay_frames_entre_cambios_contador>=60) {
+        //Tiempo durante el que te avisa del error
+        if (menu_simon_delay_frames_entre_cambios_contador>=120) {
             menu_simon_show_final_score();
             zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,13,"Sorry, you failed");
             menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
@@ -45774,7 +45774,7 @@ void menu_simon(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("simon",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
+            ancho_ventana=24;
             alto_ventana=20;
 
             xventana=menu_center_x()-ancho_ventana/2;
