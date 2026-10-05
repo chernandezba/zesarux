@@ -45262,7 +45262,37 @@ int menu_simon_delay_frames_entre_cambios_contador=0;
 
 
 //Numero maximo de posiciones a recordar, quien llegue a esto es que tiene una memoria privilegiada
-#define SIMON_MAX_LISTA_REPETIR 50
+
+//Nivel 1: 8 posiciones
+//Nivel 2: 14 posiciones
+//Nivel 3: 20 posiciones
+//Nivel 4: 31 posiciones
+
+int menu_simon_nivel=1;
+
+int menu_simon_get_max_posiciones_segun_nivel(void)
+{
+    switch (menu_simon_nivel) {
+        case 1:
+            return 8;
+        break;
+
+        case 2:
+            return 14;
+        break;
+
+        case 3:
+            return 20;
+        break;
+
+        case 4:
+        default:
+            return 31;
+        break;
+    }
+}
+
+#define SIMON_MAX_LISTA_POSICIONES_ARRAY 31
 
 //total de botones que hay que repetir
 int menu_simon_lista_repetir_total=0;
@@ -45278,7 +45308,8 @@ enum menu_simon_estado {
     SIMON_AGREGAR_NUEVO_COLOR,
     SIMON_USUARIO_EQUIVOCADO,
     SIMON_ESPERAR_NUEVO_JUEGO,
-    SIMON_END_GAME_LIMIT
+    SIMON_END_GAME_LIMIT,
+    SIMON_CELEBRATING
 };
 
 enum menu_simon_estado menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
@@ -45286,7 +45317,7 @@ enum menu_simon_estado menu_simon_estado=SIMON_ESPERAR_NUEVO_JUEGO;
 //indice donde el usuario esta repitiendo
 int menu_simon_indice_usuario_repetir=0;
 
-enum menu_simon_lights menu_simon_lista_repetir[SIMON_MAX_LISTA_REPETIR];
+enum menu_simon_lights menu_simon_lista_repetir[SIMON_MAX_LISTA_POSICIONES_ARRAY];
 
 
 #define MENU_SIMON_WIDTH 10
@@ -45539,8 +45570,9 @@ void menu_simon_overlay(void)
 
     if (menu_simon_estado==SIMON_AGREGAR_NUEVO_COLOR) {
 
-        if (menu_simon_lista_repetir_total==SIMON_MAX_LISTA_REPETIR) {
-            menu_simon_estado=SIMON_END_GAME_LIMIT;
+        if (menu_simon_lista_repetir_total==menu_simon_get_max_posiciones_segun_nivel()) {
+            menu_simon_estado=SIMON_CELEBRATING;
+            menu_simon_delay_frames_entre_cambios_contador=0;
         }
 
         else {
@@ -45559,6 +45591,24 @@ void menu_simon_overlay(void)
             menu_simon_estado=SIMON_REPITIENDO_ORDENADOR;
 
             if (menu_simon_delay_frames_entre_cambios>10) menu_simon_delay_frames_entre_cambios-=3;
+        }
+
+    }
+
+    if (menu_simon_estado==SIMON_CELEBRATING) {
+        int luz=(menu_simon_delay_frames_entre_cambios_contador / 10) % 4;
+        menu_simon_enabled_light=luz;
+
+        //En el frame antes de cambiar el color, quitar el sonido para que el siguiente suenee
+        if ((menu_simon_delay_frames_entre_cambios_contador % 10)==9) menu_simon_enabled_light=SIMON_NONE;
+
+        menu_simon_draw_enabled_light(menu_simon_window);
+
+        menu_simon_delay_frames_entre_cambios_contador++;
+
+        //5 segundos celebrando
+        if (menu_simon_delay_frames_entre_cambios_contador>=50*5) {
+            menu_simon_estado=SIMON_END_GAME_LIMIT;
         }
 
     }
@@ -45634,7 +45684,7 @@ void menu_simon_overlay(void)
     }
 
     if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
-        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,16,"n: new game");
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,16,"n: new game l: level %d",menu_simon_nivel);
     }
 
 
@@ -45815,6 +45865,13 @@ void menu_simon(MENU_ITEM_PARAMETERS)
             case 'n':
                 if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
                     menu_simon_new_game();
+                }
+            break;
+
+            case 'l':
+                if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
+                    menu_simon_nivel++;
+                    if (menu_simon_nivel>4) menu_simon_nivel=1;
                 }
             break;
 
