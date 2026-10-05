@@ -45684,7 +45684,7 @@ void menu_simon_overlay(void)
     }
 
     if (menu_simon_estado==SIMON_ESPERAR_NUEVO_JUEGO) {
-        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,16,"n: new game l: level %d",menu_simon_nivel);
+        zxvision_print_string_defaults_fillspc_format(menu_simon_window,1,16,"~~n: new game ~~l: level %d",menu_simon_nivel);
     }
 
 
@@ -45799,7 +45799,7 @@ void menu_simon(MENU_ITEM_PARAMETERS)
 
     zxvision_draw_window(ventana);
 
-
+    ventana->writing_inverse_color=1;
 
 
     z80_byte tecla;
