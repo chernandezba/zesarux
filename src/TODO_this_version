@@ -151,9 +151,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 pero facilitaria poder lanzar ZEsarUX desde consola. funciona --aofile xxx con --ao null?
 
 
--App simon
-
-
 ----
 
 Pendientes ahora
@@ -241,6 +238,7 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 * cd boot: que hace??
 
+- captura pantalla de baseconf en la home de proyecto en github
 
 ***Spectrum Next*****
 
