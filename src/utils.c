@@ -5885,7 +5885,7 @@ int util_write_configfile(void)
         if (realjoystick_actions_array[i].asignado.v) {
             char texto_button[20];
             int button_type;
-            z80_byte caracter;
+            //z80_byte caracter;
             button_type=realjoystick_actions_array[i].button_type;
 
             util_write_config_aux_realjoystick(button_type, realjoystick_actions_array[i].button, texto_button);

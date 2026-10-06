@@ -261,7 +261,7 @@ int ql_pantalla_proporcion_real=QL_SIZE_TYPE_1476;
 
 int ql_use_visionql_color_palette=0;
 
-void ql_writebyte_qsound(unsigned int Address, unsigned char Data);
+void ql_writebyte_qsound(unsigned int Address);
 
 /*
 "The pixels of the original QL's 512×256 screen are 1.355 times as high as they are wide.
@@ -365,7 +365,7 @@ void ql_qimi_reset(void)
     ql_qimi_irq_enabled=0;
 }
 
-void ql_qimi_writebyte(unsigned int Address, unsigned char Data)
+void ql_qimi_writebyte(unsigned int Address)
 {
     if (Address==114622) {
         //printf("Enabled IRQ\n");
@@ -494,7 +494,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
     //QIMI 114588=0x1BF9C)
     if (ql_qimi_mouse_enabled && (Address==0x1BFBC || Address==0x1BF9C || Address==0x1BFBE)) {
         //printf("QIMI write Address %XH %d value %02X\n",Address,Address,Data);
-        ql_qimi_writebyte(Address,Data);
+        ql_qimi_writebyte(Address);
         return;
     }
 
@@ -525,7 +525,7 @@ void ql_writebyte(unsigned int Address, unsigned char Data)
 
     memoria_ql[Address]=valor;
 
-    ql_writebyte_qsound(Address,Data);
+    ql_writebyte_qsound(Address);
 
     #ifdef EMULATE_VISUALMEM
 

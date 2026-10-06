@@ -180,7 +180,7 @@ void ql_traps_qsound(void)
 
 
 
-void ql_writebyte_qsound(unsigned int Address, unsigned char Data)
+void ql_writebyte_qsound(unsigned int Address)
 {
 
 
