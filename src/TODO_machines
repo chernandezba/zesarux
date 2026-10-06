@@ -21,6 +21,15 @@ http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Com
 
 
 
+QL -soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
+Arriba → F4
+Abajo → F2
+Izquierda → F1
+Derecha → F3
+Disparo → F5
+El teclado ya emula todo esto
+Lo unico que tendria sentido es que al conectar un joystick por usb haga esas funciones de cursores, o F1-F5
+
 
 
 Acciones sobre los dos microdrive y el floppy separar en menús

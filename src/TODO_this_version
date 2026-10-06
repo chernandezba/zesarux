@@ -48,8 +48,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
-
-
 -Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
 
 ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
@@ -63,11 +61,9 @@ Ademas en algunos casos (no recuerdo que combinacion ahora), al hacer reinsert (
 veces
 
 
-
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre.
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
 
--en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado -> lo tendrá que hacer la instancia master, haciendo pausa de cpu
 
 -probar fullscreen en todos drivers
 *permitir raton en full screen. probar fullscreen con zx desktop
@@ -109,11 +105,7 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 -fullscreen en cpc, sin border, en mac , no se ve bien
 
 
--Efecto de encefalograma en FX video effects. Pixel que vaya de izquierda a derecha y se mueva en vertical cuando:
-* sonido en algún canal AY
-* o a intervalo regular, indicando como parametro las "pulsaciones" de corazón
-* que permita indicar el color, o quizá siempre verde "fosforito"
-* si el usuario quiere persistencia que le agregue efecto adicional de persistencia
+
 
 
 -Mover algunos items del archivo "TODO" a los otros TODO* correspondientes
@@ -169,28 +161,11 @@ QL-si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
 QL-Qsound AY
-*hacer resto de funciones de rom traps de qsound no solo write all
+*hacer resto de funciones de rom traps de qsound no solo write all: dado que no hay juegos, que yo sepa, que las usen, no puedo validarlo
 *oldtower_m a veces se cuelga al iniciar
 *opciones de config file: de momento solo qsound enabled, faltan settings traps etc (necesarios?)
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?
-
-
-QL- poner en features características nuevas de QL: mouse, qsound etc etc
-
-
-
-QL -soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
-Arriba → F4
-Abajo → F2
-Izquierda → F1
-Derecha → F3
-Disparo → F5
-El teclado ya emula todo esto
-Lo unico que tendria sentido es que al conectar un joystick por usb haga esas funciones de cursores, o F1-F5
-
-
-QL-En features ql agregar soporte mdv entero, img, win
 
 
 
@@ -306,21 +281,8 @@ Deberia detectar la salida correcta
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
-* entrada en features
 * pendientes 60 hz: next modo 60hz, y algunas tk?
--> en scr_refresca_pantalla_rainbow_comun_spectrum ya corregido, uso:
 
-    //Rellenar la parte de pantalla no usada por debajo en modos 60 HZ
-    if (machine_60hz.v) {
-        for (;y<rainbow_buffer_current_height;y++) {
-
-            for (x=0;x<ancho;x++) {
-                scr_putpixel_zoom_rainbow(x,y,0);
-            }
-
-
-        }
-    }
 
 Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he puesto en scr_refresca_pantalla_rainbow_comun
 -> en teoria ya bien. acabarlo de revisar

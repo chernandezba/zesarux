@@ -136,3 +136,8 @@ Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y 
 
 
 
+-Efecto de encefalograma en FX video effects. Pixel que vaya de izquierda a derecha y se mueva en vertical cuando:
+* sonido en algún canal AY
+* o a intervalo regular, indicando como parametro las "pulsaciones" de corazón
+* que permita indicar el color, o quizá siempre verde "fosforito"
+* si el usuario quiere persistencia que le agregue efecto adicional de persistencia
