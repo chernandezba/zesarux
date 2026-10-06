@@ -45579,6 +45579,7 @@ void menu_simon_overlay(void)
 
             menu_simon_estado=SIMON_REPITIENDO_ORDENADOR;
 
+            //Y cada vez se repiten los sonidos mas rápidamente
             if (menu_simon_delay_frames_entre_cambios>10) menu_simon_delay_frames_entre_cambios-=3;
         }
 

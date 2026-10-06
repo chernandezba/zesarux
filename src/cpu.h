@@ -54,9 +54,9 @@ Examples
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
 #define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "10 July 2026"
-#define EMULATOR_SHORT_DATE "10/07/2026"
-#define EMULATOR_GAME_EDITION "xxx"
+#define EMULATOR_DATE "06 October 2026"
+#define EMULATOR_SHORT_DATE "06/10/2026"
+#define EMULATOR_GAME_EDITION "Zorro"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
 
@@ -70,7 +70,7 @@ Examples
 //final
 #define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
 
-#define EDITION_NAME_GAME "editionnamegame.tzx"
+#define EDITION_NAME_GAME "editionnamegame.tap"
 
 
 //8 bits
