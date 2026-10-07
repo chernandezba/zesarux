@@ -434,6 +434,8 @@ void core_spectrum_fin_frame_pantalla(void)
 
     t_estados -=screen_testados_total;
 
+    if (MACHINE_IS_BASECONF) baseconf_check_pending_nmi();
+
     //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
     //t_estados=0;
     //->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto

@@ -90,6 +90,7 @@ static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
 static int baseconf_nmi_entry_pending;
 static int baseconf_nmi_exit_countdown;
+static int baseconf_nmi_from_bf_pending;
 static z80_byte baseconf_ide_high_latch;
 static z80_byte baseconf_ide_low_latch;
 static int baseconf_ide_read_high_pending;
@@ -380,6 +381,16 @@ void baseconf_handle_nmi(void)
     baseconf_nmi_exit_countdown=0;
 }
 
+void baseconf_check_pending_nmi(void)
+{
+    /* La NMI solicitada por #BF llega con el siguiente pulso INT aunque
+       las interrupciones enmascarables estén deshabilitadas. */
+    if (baseconf_nmi_from_bf_pending) {
+            baseconf_nmi_from_bf_pending=0;
+            generate_nmi();
+    }
+}
+
 int baseconf_memory_write_allowed(z80_int direccion)
 {
     int mapa=(puerto_32765&16) ? 4 : 0;
@@ -419,6 +430,20 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
                        ((baseconf_shadow_mode_port_77&3)<<5) |
                        (baseconf_dos_signal ? 0x10 : 0) |
                        (baseconf_last_port_77&0x0f);
+        case 0x0d: {
+                /* Los bits de color leídos tienen el mismo formato invertido
+                   que los datos escritos en #FF; 2 y 3 no están definidos. */
+                z80_int color=baseconf_palette[baseconf_border_colour&15];
+                z80_byte r=(color>>8)&15;
+                z80_byte g=(color>>4)&15;
+                z80_byte b=color&15;
+                z80_byte componentes=((g&4)<<5) | ((r&4)<<4) |
+                        ((b&4)<<3) | ((g&8)<<1) |
+                        ((r&8)>>2) | ((b&8)>>3);
+                return (~componentes&0xf3) | 0x0c;
+        }
+        case 0x0f:
+                return baseconf_border_colour&15;
         case 0x13:
                 return baseconf_beta_drive_virtual;
         case 0x10:
@@ -1331,6 +1356,7 @@ void baseconf_hard_reset(void)
     baseconf_nmi_active=0;
     baseconf_nmi_entry_pending=0;
     baseconf_nmi_exit_countdown=0;
+    baseconf_nmi_from_bf_pending=0;
     baseconf_ide_high_latch=0xff;
     baseconf_ide_low_latch=0;
     baseconf_ide_read_high_pending=0;
@@ -1515,6 +1541,10 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
         //xxBFH
         //Habilita en ROM el permiso de escritura de los puertos shadow.
         else if ( (puerto&0x00FF)==0xBF ) {
+               /* El flanco descendente del bit 3 solicita una NMI. El
+                  servicio la usa al continuar el programa interrumpido. */
+               if ((baseconf_last_port_bf&8) && !(valor&8))
+                       baseconf_nmi_from_bf_pending=1;
                baseconf_last_port_bf=valor;
                baseconf_set_memory_pages();
         }
