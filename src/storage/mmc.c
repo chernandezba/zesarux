@@ -231,6 +231,7 @@ void mmc_footer_mmc_operating(int tarjeta)
 {
 
     //printf("mmc_footer_mmc_operating card %d\n",tarjeta);
+    //printf("mmc_last_command: %02XH\n",mmc_last_command);
 
 	generic_footertext_print_operating("MMC");
     watermark_tell_device_activity();
@@ -851,7 +852,17 @@ z80_byte mmc_read(void)
 	//Si seleccionada tarjeta invalida, volver sin mas
 	if (mmc_tarjeta_invalida_seleccionada) return 0;
 
-	mmc_footer_mmc_operating(mmc_card_selected);
+
+    //printf("MMC read.  mmc_last_command=%02XH\n",mmc_last_command);
+
+
+    int mostrar_actividad=1;
+    //No mostrar actividad de tarjeta en caso de READ_OCR pues esto baseconf lo hace continuamente en el menu
+
+    if (MACHINE_IS_BASECONF && (mmc_last_command==0x7A || mmc_last_command==0) ) mostrar_actividad=0;
+
+	if (mostrar_actividad) mmc_footer_mmc_operating(mmc_card_selected);
+
 
 	z80_byte value;
 
@@ -860,7 +871,6 @@ z80_byte mmc_read(void)
 		return mmc_r1;
 	}
 
-    //printf("MMC read. mmc_last_command=%02XH\n",mmc_last_command);
 
 	//Actuar segun mmc_last_command
 	switch (mmc_last_command) {
@@ -1258,14 +1268,25 @@ void mmc_write(z80_byte value)
             return;
         }
 
-	mmc_footer_mmc_operating(mmc_card_selected);
+    //printf("MMC write. mmc_last_command=%02XH\n",mmc_last_command);
+
 
 
 	if (mmc_index_command==0) {
-        //printf("MMC Se recibe comando %d (%02XH)\n",value,value);
+        //printf("MMC Se recibe write comando %d (%02XH). antes mmc_last_command=%02XH\n",value,value,mmc_last_command);
 		//Se recibe comando
 		mmc_last_command=value;
 		mmc_index_command++;
+
+        //Solo mostraremos actividad en footer/icono SD en caso de nuevo comando y no de escritura de parametros
+        //de comando. Esto es suficiente y ademas facilita filtrar los comandos de baseconf aqui abajo
+
+        int mostrar_actividad=1;
+        //No mostrar actividad de tarjeta en caso de READ_OCR pues esto baseconf lo hace continuamente en el menu
+
+        if (MACHINE_IS_BASECONF && (mmc_last_command==0x7A || mmc_last_command==0) ) mostrar_actividad=0;
+
+        if (mostrar_actividad) mmc_footer_mmc_operating(mmc_card_selected);
 	}
 
 	else {
