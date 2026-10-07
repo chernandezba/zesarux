@@ -7564,6 +7564,14 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 	if (MACHINE_IS_BASECONF) {
 		//printf ("Baseconf reading port %04XH on pc=%04XH\n",puerto,reg_pc);
 
+                if (puerto_l==0xff && baseconf_shadow_ports_available()) {
+                        z80_byte value=baseconf_read_beta_system_port();
+                        baseconf_beta_fdc_access(puerto);
+                        return value;
+                }
+
+                if (baseconf_beta_fdc_access(puerto)) return 0xff;
+
                 if (baseconf_shadow_ports_available() &&
                     (puerto_l==0x2f || puerto_l==0x4f ||
                      puerto_l==0x6f || puerto_l==0x8f))
@@ -9510,7 +9518,9 @@ acts as expected unless this registe is explicitly changed by the user/software.
 				}
 
 	if (MACHINE_IS_BASECONF) {
-		if (puerto_l==0xBF || puerto_l==0xBD || puerto_l==0xBE || puerto_l==0xFF ||
+		if (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
+                    puerto_l==0x7f || puerto_l==0xBF || puerto_l==0xBD ||
+                    puerto_l==0xBE || puerto_l==0xFF ||
                         puerto_l==0x2f || puerto_l==0x4f || puerto_l==0x6f || puerto_l==0x8f ||
                         puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || puerto==0x7ffd || puerto==0xeff7
 			|| puerto==0xEFF7 || puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)

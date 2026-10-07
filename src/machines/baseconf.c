@@ -78,6 +78,7 @@ static int baseconf_dos_signal;
    de RAM-disk en la página RAM FE y lo selecciona en lugar del FDC físico. */
 static z80_byte baseconf_beta_drive_virtual;
 static z80_byte baseconf_beta_drive_selected;
+static int baseconf_trdos_emulation_active;
 static z80_byte baseconf_extended_dos_ports[4];
 static z80_int baseconf_palette[16];
 static const z80_int baseconf_palette_default[16]={
@@ -275,8 +276,40 @@ void baseconf_ide_write(z80_byte puerto_l,z80_byte valor)
 
 static int baseconf_beta_virtual_drive_active(void)
 {
-    return baseconf_beta_drive_selected &&
-            baseconf_beta_drive_virtual==baseconf_beta_drive_selected;
+    /* #13BD contiene un bit por unidad; #FF selecciona la unidad en bits 0-1. */
+    if (!(baseconf_beta_drive_virtual &
+          (1 << (baseconf_beta_drive_selected & 3)))) return 0;
+
+    /* EVO Reset Service deja A virtual aunque indique "Ramdisk: NONE".
+       En ese caso, si ZEsarUX tiene un TRD insertado, usarlo como disco
+       físico. El directorio del ramdisk comienza en la página F4. */
+    if (trd_enabled.v && baseconf_ram_mem_table[0xf4][0]==0) return 0;
+
+    return 1;
+}
+
+z80_byte baseconf_read_beta_system_port(void)
+{
+    /* EVO-DOS virtual sondea INTRQ y DRQ; no hay un WD1793 físico aquí. */
+    return 0xc0 | (baseconf_beta_drive_selected & 0x3f);
+}
+
+int baseconf_beta_fdc_access(z80_int puerto)
+{
+    z80_byte bajo=puerto&0xff;
+    if (bajo!=0x1f && bajo!=0x3f && bajo!=0x5f &&
+        bajo!=0x7f && bajo!=0xff)
+        return 0;
+    if (!baseconf_dos_signal || !baseconf_beta_virtual_drive_active() ||
+        baseconf_nmi_active || baseconf_trdos_emulation_active ||
+        reg_pc>=0x4000 || baseconf_memory_segments_type[0] ||
+        !(baseconf_memory_segments[0]&1))
+        return 0;
+
+    /* El siguiente M1 tras un acceso al FDC virtual se obtiene de RAM FE. */
+    baseconf_trdos_emulation_active=1;
+    baseconf_set_memory_pages();
+    return 1;
 }
 
 void baseconf_pre_opcode_fetch(z80_int direccion)
@@ -1233,13 +1266,11 @@ void baseconf_set_memory_pages(void)
                 pagina=0;
                 pagina_es_ram=1;
         }
-        /* Un Beta Disk virtual seleccionado sustituye al FDC físico.
-            Su código y datos de servicio residen en la penúltima página RAM. */
         else if (i==0 && baseconf_nmi_active) {
                 pagina=0xff;
                 pagina_es_ram=1;
         }
-        else if (i==0 && baseconf_beta_virtual_drive_active()) {
+        else if (i==0 && baseconf_trdos_emulation_active) {
                 pagina=0xfe;
                 pagina_es_ram=1;
         }
@@ -1291,6 +1322,7 @@ void baseconf_hard_reset(void)
     baseconf_dos_signal=1;
     baseconf_beta_drive_virtual=0;
     baseconf_beta_drive_selected=0;
+    baseconf_trdos_emulation_active=0;
     for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
     for (i=0;i<16;i++) baseconf_palette[i]=baseconf_palette_default[i];
     baseconf_border_colour=0;
@@ -1429,21 +1461,27 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                 }
         }
 
-        /* OUT #xxBE desde el servicio residente restaura el mapeo anterior
-           después de los dos ciclos M1 de RETN. */
-        else if ((puerto&0x00ff)==0xbe && baseconf_nmi_active) {
+        /* OUT #xxBE sale del modo TR-DOS virtual de inmediato; la NMI
+           restaura el mapeo después de dos ciclos M1. */
+        else if ((puerto&0x00ff)==0xbe) {
                 baseconf_last_port_be=valor;
-                baseconf_nmi_exit_countdown=2;
+                if (baseconf_nmi_active) baseconf_nmi_exit_countdown=2;
+                else if (baseconf_trdos_emulation_active) {
+                        baseconf_trdos_emulation_active=0;
+                        baseconf_set_memory_pages();
+                }
         }
 
-        /* El registro de sistema Beta Disk contiene la unidad seleccionada.
-           Se decodifica para una unidad virtual aunque los puertos WD1793 no. */
+        else if (puerto_l==0x1f || puerto_l==0x3f ||
+                 puerto_l==0x5f || puerto_l==0x7f) {
+                baseconf_beta_fdc_access(puerto);
+        }
+
+        /* #xxFF siempre selecciona la unidad Beta Disk. Con A14 a cero,
+           la misma escritura actualiza además la paleta. */
         else if ((puerto&0x00ff)==0xff && baseconf_shadow_ports_available()) {
                 baseconf_last_port_ff=valor;
-                /* A14 del último acceso #xx77 selecciona el significado de #xxFF.
-                   Con A14 a cero programa la paleta; con A14 a uno es el registro
-                   de sistema Beta Disk. Software BaseConf como Hypnotoad no
-                   necesita BF.5 para escribir la paleta. */
+                baseconf_beta_drive_selected=valor;
                 if (!(baseconf_shadow_mode_port_77&0x40)) {
                         z80_int inverted_value=(~valor)&0xff;
                         z80_int inverted_port=(~puerto)&0xffff;
@@ -1463,10 +1501,8 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
                         //Los mismos colores que máquina Prism
                 }
-                else {
-                        baseconf_beta_drive_selected=valor;
-                        baseconf_set_memory_pages();
-                }
+                baseconf_set_memory_pages();
+                baseconf_beta_fdc_access(puerto);
         }
 
         else if (baseconf_shadow_ports_available() &&

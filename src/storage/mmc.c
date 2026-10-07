@@ -45,6 +45,8 @@ z80_byte mmc_csd[16]={11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11};
 
 //Registro OCR
 z80_byte mmc_ocr[5]={5,0,0,0,0};
+int baseconf_mmc_r7_index=-1;
+z80_byte baseconf_mmc_r7_echo;
 //primer byte: R1: xxx0sss1
 //sss: status: 010 data accepted
 //Siguientes 4 bytes indican voltaje y algun status bit. Indicamos 0 y es voltaje 1.45V-1.50V
@@ -721,6 +723,7 @@ void mmc_cs(z80_byte value)
 	mmc_csd_index=-1;
 	mmc_cid_index=-1;
 	mmc_ocr_index=-1;
+	baseconf_mmc_r7_index=-1;
 	mmc_stop_index=-1;
 
 
@@ -882,6 +885,16 @@ z80_byte mmc_read(void)
 		//0x48=CMD8=SEND_IF_COND. For only SDC V2. Check voltage range.
 		//Parece que es de deteccion de MMC/SD
 		case 0x48:
+			if (MACHINE_IS_BASECONF) {
+				if (baseconf_mmc_r7_index>=0) {
+					static const z80_byte r7_prefix[5]={0xff,1,0,0,1};
+					value=baseconf_mmc_r7_index<5 ? r7_prefix[baseconf_mmc_r7_index] : baseconf_mmc_r7_echo;
+					baseconf_mmc_r7_index++;
+					if (baseconf_mmc_r7_index==6) baseconf_mmc_r7_index=-1;
+					return value;
+				}
+				return 0xff;
+			}
 			debug_printf (VERBOSE_DEBUG,"MMC Read command CMD8 SEND_IF_COND unhandled");
 
 			//mmc_r1 |=4; //Devolver error
@@ -1161,8 +1174,19 @@ z80_byte mmc_read(void)
                 break;
 
                 case 0x7A:
-			debug_printf (VERBOSE_PARANOID,"MMC Read command READ_OCR");
+			if (!MACHINE_IS_BASECONF || mmc_ocr_index==0)
+				debug_printf (VERBOSE_PARANOID,"MMC Read command READ_OCR");
                         if (mmc_ocr_index>=0) {
+                                if (MACHINE_IS_BASECONF) {
+                                        // BaseConf espera R3: un byte R1 seguido de cuatro bytes OCR.
+                                        static const z80_byte baseconf_ocr[4]={0x80,0xff,0x80,0x00};
+                                        if (mmc_ocr_index==0) value=0xff;
+                                        else if (mmc_ocr_index==1) value=0;
+                                        else value=baseconf_ocr[mmc_ocr_index-2];
+                                        mmc_ocr_index++;
+                                        if (mmc_ocr_index==6) mmc_ocr_index=-1;
+                                        return value;
+                                }
                                 //valor primero, byte ncr time
                                 if (mmc_ocr_index==0) {
                                         //printf ("retornando ncr\n");
@@ -1269,6 +1293,16 @@ void mmc_write(z80_byte value)
 			//0x48=CMD8=SEND_IF_COND. For only SDC V2. Check voltage range.
 			//Parece que es de deteccion de MMC/SD
 			case 0x48:
+				if (MACHINE_IS_BASECONF) {
+					// CMD8 devuelve en R7 el patrón de comprobación recibido.
+					if (mmc_index_command==4) baseconf_mmc_r7_echo=value;
+					if (mmc_index_command==5) {
+						baseconf_mmc_r7_index=0;
+						mmc_index_command=0;
+					}
+					else mmc_index_command++;
+					break;
+				}
 				debug_printf (VERBOSE_DEBUG,"MMC Write command CMD8 SEND_IF_COND unhandled");
 				//mmc_r1 |=4; //devolver error
 			break;
@@ -1428,7 +1462,8 @@ void mmc_write(z80_byte value)
 			//Aunque en divmmc, si quitamos este comando no cambia nada
 			//En cambio si lo implementamos mal (por ejemplo devolviedo diferentes valores de retorno) la tarjeta no la detecta
 			case 0x7A:
-				debug_printf (VERBOSE_PARANOID,"MMC Write command READ_OCR");
+				if (!MACHINE_IS_BASECONF || mmc_index_command==5)
+					debug_printf (VERBOSE_PARANOID,"MMC Write command READ_OCR");
                                 //5 valores envia
                                 if (mmc_index_command==5) {
                                         //Ya se pueden enviar valores ocr
