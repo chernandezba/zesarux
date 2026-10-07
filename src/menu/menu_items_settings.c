@@ -8763,7 +8763,26 @@ void menu_settings_50_60hz(MENU_ITEM_PARAMETERS)
 
 void menu_settings_hardware_baseconf_modes_register_video(MENU_ITEM_PARAMETERS)
 {
-    baseconf_avr_modes_register ^=1;
+    baseconf_avr_modes_register ^=0x01;
+}
+
+void menu_settings_hardware_baseconf_modes_register_audio(MENU_ITEM_PARAMETERS)
+{
+    baseconf_avr_modes_register ^=0x02;
+}
+
+void menu_settings_hardware_baseconf_modes_register_video_timings(MENU_ITEM_PARAMETERS)
+{
+    int modo=(baseconf_avr_modes_register>>4) & 3;
+    modo++;
+
+    modo=modo & 3;
+    modo=modo <<4;
+
+    baseconf_avr_modes_register &= (0xFF-0x30);
+    baseconf_avr_modes_register |=modo;
+
+    //printf("baseconf_avr_modes_register: %02XH\n",baseconf_avr_modes_register);
 }
 
 void menu_settings_hardware_baseconf(MENU_ITEM_PARAMETERS)
@@ -8779,7 +8798,7 @@ void menu_settings_hardware_baseconf(MENU_ITEM_PARAMETERS)
            Bit 0: salida de vídeo, 0=TV, 1=VGA.
             Bit 1: salida de audio, 0=beeper/Covox, 1=tape out.
             Bits 2 y 3: reservados.
-            Bits 5 y 4: tiempos de pantalla, 00=Pentagon, 01=60 Hz,
+            Bits 4 y 5: tiempos de pantalla, 00=Pentagon, 01=60 Hz,
             10=Spectrum 48K, 11=Spectrum 128K.
             Bits 6 y 7: reservados. El valor inicial 31H indica 128K VGA.
                 z80_byte baseconf_avr_modes_register=0x31;
@@ -8788,8 +8807,23 @@ void menu_settings_hardware_baseconf(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Modes Register --- ");
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf_modes_register_video,NULL,
-            "Video output: [%s]",(baseconf_avr_modes_register & 1 ? "VGA" : "TV"));
+            "Video output:  [%s]",(baseconf_avr_modes_register & 0x01 ? "VGA" : "TV"));
+        menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
+        menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
 
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf_modes_register_audio,NULL,
+            "Audio output:  [%s]",(baseconf_avr_modes_register & 0x02 ? "Tape Out" : "Beeper/Covox"));
+        menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
+        menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
+
+        char *video_timings[]={"Pentagon","60 Hz","Spectrum 48K","Spectrum 128K"};
+
+        int modo=(baseconf_avr_modes_register>>4) & 3;
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf_modes_register_video_timings,NULL,
+            "Video timings: [%s]",video_timings[modo]);
+        menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
+        menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
 
 
         menu_add_item_menu_separator(array_menu_common);
