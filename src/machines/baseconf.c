@@ -107,7 +107,7 @@ static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
    año(6 bits), mes(4 bits) y día(5 bits); los dos últimos son el CRC del
    firmware y EVO Reset Service no los muestra. */
 static const z80_byte baseconf_version[16]={
-        'Z','X','E','v','o','T','S','&','B','A','S','E',0xf9,0x1c,0xff,0xff
+        'Z','X','E','v','o','T','S','&','B','A','S','E',0x81,0x34,0xff,0xff
 };
 static const z80_byte baseconf_avr_boot_version[16]={
         'Z','X','E','v','o','A','V','R','B','o','o','t',0x37,0x18,0xff,0xff
