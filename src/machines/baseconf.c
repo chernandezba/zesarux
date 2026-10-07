@@ -105,6 +105,23 @@ static int baseconf_ide_sectors_remaining;
 static z80_byte baseconf_cmos_extension_type;
 static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
+/* Registro de modos del AVR, leído en F0 tras seleccionar la extensión 3.
+   En la máquina real, el AVR cambia estos modos desde el teclado PS/2:
+   Scroll Lock alterna TV/VGA (LED encendido = VGA) y, según el manual de
+   BaseConf, Shift+Scroll Lock selecciona la temporización de 60 Hz.
+   Algunas versiones del firmware recorren con Scroll Lock ocho combinaciones:
+   alternan TV/VGA en cada pulsación y cambian entre Pentagon, 60 Hz, 48K y
+   128K cada dos pulsaciones. La secuencia depende del firmware del AVR.
+   Escribir 3 en F0-FF solo selecciona la consulta de este registro; no cambia
+   el modo de vídeo.
+   Bit 0: salida de vídeo, 0=TV, 1=VGA.
+   Bit 1: salida de audio, 0=beeper/Covox, 1=tape out.
+   Bits 2 y 3: reservados.
+   Bits 5 y 4: tiempos de pantalla, 00=Pentagon, 01=60 Hz,
+   10=Spectrum 48K, 11=Spectrum 128K.
+   Bits 6 y 7: reservados. El valor inicial 31H indica 128K VGA. */
+z80_byte baseconf_avr_modes_register=0x31;
+
 /* El firmware del AVR expone estas identificaciones mediante los registros
    F0-FF del RTC Gluk. Los bytes 12 y 13 contienen la fecha empaquetada como
    año(6 bits), mes(4 bits) y día(5 bits); los dos últimos son el CRC del
@@ -556,6 +573,8 @@ z80_byte baseconf_read_cmos(void)
         return baseconf_version[indice&0x0f];
     if (baseconf_cmos_extension_type==1)
         return baseconf_avr_boot_version[indice&0x0f];
+    if (baseconf_cmos_extension_type==3 && indice==0xf0)
+        return baseconf_avr_modes_register;
 
     return 0xff;
 }
