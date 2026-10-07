@@ -106,8 +106,6 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 
 
 
-
-
 -Mover algunos items del archivo "TODO" a los otros TODO* correspondientes
 
 - Sin ZX desktop con topbar, submenus se despliegan en Y=0
@@ -171,12 +169,6 @@ QL-Qsound AY
 
 ***Baseconf*****
 
--zxevo baseconf rom buena:
-md5sum zxevo_baseconf.rom
-d9cdd73ad75df44489b01550af6e4cbd  zxevo_baseconf.rom
-
--show registers in console y ademas que muestre desensamblado
--> esto mejor con transation log?
 
 -modo video que aparezca en debug->baseconf->video info
 ->mas info adicional?
@@ -214,6 +206,7 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 * cd boot: que hace??
 
 - captura pantalla de baseconf en la home de proyecto en github
+
 
 ***Spectrum Next*****
 

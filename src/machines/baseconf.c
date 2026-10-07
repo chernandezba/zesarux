@@ -373,6 +373,16 @@ void baseconf_post_opcode_fetch(z80_byte *opcode)
                     /* El servicio usa el puerto del borde para restaurar la
                        paleta y termina seleccionando el color cero. */
                     baseconf_border_colour=baseconf_nmi_saved_border_colour;
+                    out_254=(out_254&~7) | (baseconf_border_colour&7);
+                    /* El modo rainbow dibuja el borde desde los cambios
+                       registrados por T-estado, no desde el color actual. */
+                    if (rainbow_enabled.v) {
+                            int posicion=t_estados;
+                            if (pentagon_timing.v) posicion-=2;
+                            else posicion &= ~3;
+                            if (posicion>=0 && posicion<CURRENT_FULLBORDER_ARRAY_LENGTH)
+                                    fullbuffer_border[posicion]=baseconf_border_colour;
+                    }
                     baseconf_set_memory_pages();
             }
     }
