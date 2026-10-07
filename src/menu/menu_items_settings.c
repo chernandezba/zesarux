@@ -143,6 +143,7 @@
 #include "pcw.h"
 #include "tv.h"
 #include "qsound.h"
+#include "baseconf.h"
 
 
 
@@ -250,6 +251,7 @@ int settings_smartload_opcion_seleccionada=0;
 int topmenu_items_visibility_opcion_seleccionada=0;
 int hardware_realjoystick_actions_opcion_seleccionada=0;
 int hardware_rtc_settings_opcion_seleccionada=0;
+int settings_hardware_baseconf_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -8759,6 +8761,72 @@ void menu_settings_50_60hz(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_settings_hardware_baseconf_modes_register_video(MENU_ITEM_PARAMETERS)
+{
+    baseconf_avr_modes_register ^=1;
+}
+
+void menu_settings_hardware_baseconf(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        /*
+           Bit 0: salida de vídeo, 0=TV, 1=VGA.
+            Bit 1: salida de audio, 0=beeper/Covox, 1=tape out.
+            Bits 2 y 3: reservados.
+            Bits 5 y 4: tiempos de pantalla, 00=Pentagon, 01=60 Hz,
+            10=Spectrum 48K, 11=Spectrum 128K.
+            Bits 6 y 7: reservados. El valor inicial 31H indica 128K VGA.
+                z80_byte baseconf_avr_modes_register=0x31;
+        */
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Modes Register --- ");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf_modes_register_video,NULL,
+            "Video output: [%s]",(baseconf_avr_modes_register & 1 ? "VGA" : "TV"));
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> Baseconf","Menú Principal-> Opciones-> Hardware-> Baseconf","Menú Principal-> Opcions-> Hardware-> Baseconf");
+
+        retorno_menu=menu_dibuja_menu(&settings_hardware_baseconf_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Baseconf Settings","Opciones Baseconf","Opcions Baseconf" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 {
@@ -8796,6 +8864,14 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Audio settings");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Audio settings");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+
+        if (MACHINE_IS_BASECONF) {
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf,NULL,"Baseconf");
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Baseconf settings");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Baseconf settings");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
+
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,
