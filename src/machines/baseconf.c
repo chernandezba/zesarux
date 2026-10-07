@@ -86,11 +86,13 @@ static const z80_int baseconf_palette_default[16]={
         0,15,3840,3855,240,255,4080,4095
 };
 static z80_byte baseconf_border_colour;
+static z80_byte baseconf_nmi_saved_border_colour;
 static z80_int baseconf_nmi_breakpoint;
 static int baseconf_nmi_active;
 static int baseconf_nmi_entry_pending;
 static int baseconf_nmi_exit_countdown;
 static int baseconf_nmi_from_bf_pending;
+static int baseconf_nmi_from_bf_delivery;
 static z80_byte baseconf_ide_high_latch;
 static z80_byte baseconf_ide_low_latch;
 static int baseconf_ide_read_high_pending;
@@ -368,6 +370,9 @@ void baseconf_post_opcode_fetch(z80_byte *opcode)
             baseconf_nmi_exit_countdown--;
             if (!baseconf_nmi_exit_countdown) {
                     baseconf_nmi_active=0;
+                    /* El servicio usa el puerto del borde para restaurar la
+                       paleta y termina seleccionando el color cero. */
+                    baseconf_border_colour=baseconf_nmi_saved_border_colour;
                     baseconf_set_memory_pages();
             }
     }
@@ -379,6 +384,11 @@ void baseconf_handle_nmi(void)
         servicio residente. El mapeo se hará tras leer el NOP de 0066. */
     baseconf_nmi_entry_pending=1;
     baseconf_nmi_exit_countdown=0;
+    /* El servicio solicita otra NMI con #BF al continuar. En esa segunda
+       entrada se conserva el color anterior al servicio, no el del menú. */
+    if (!baseconf_nmi_from_bf_delivery)
+            baseconf_nmi_saved_border_colour=baseconf_border_colour;
+    baseconf_nmi_from_bf_delivery=0;
 }
 
 void baseconf_check_pending_nmi(void)
@@ -387,6 +397,7 @@ void baseconf_check_pending_nmi(void)
        las interrupciones enmascarables estén deshabilitadas. */
     if (baseconf_nmi_from_bf_pending) {
             baseconf_nmi_from_bf_pending=0;
+            baseconf_nmi_from_bf_delivery=1;
             generate_nmi();
     }
 }
@@ -1351,12 +1362,14 @@ void baseconf_hard_reset(void)
     for (i=0;i<4;i++) baseconf_extended_dos_ports[i]=0;
     for (i=0;i<16;i++) baseconf_palette[i]=baseconf_palette_default[i];
     baseconf_border_colour=0;
+    baseconf_nmi_saved_border_colour=0;
     baseconf_border_left_next_valid=0;
     baseconf_nmi_breakpoint=0;
     baseconf_nmi_active=0;
     baseconf_nmi_entry_pending=0;
     baseconf_nmi_exit_countdown=0;
     baseconf_nmi_from_bf_pending=0;
+    baseconf_nmi_from_bf_delivery=0;
     baseconf_ide_high_latch=0xff;
     baseconf_ide_low_latch=0;
     baseconf_ide_read_high_pending=0;
