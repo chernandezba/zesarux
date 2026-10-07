@@ -1263,10 +1263,10 @@ void mmc_write(z80_byte value)
         return;
     }
 
-        //Si seleccionada tarjeta invalida, volver sin mas
-        if (mmc_tarjeta_invalida_seleccionada) {
-            return;
-        }
+    //Si seleccionada tarjeta invalida, volver sin mas
+    if (mmc_tarjeta_invalida_seleccionada) {
+        return;
+    }
 
     //printf("MMC write. mmc_last_command=%02XH\n",mmc_last_command);
 
@@ -1342,28 +1342,28 @@ void mmc_write(z80_byte value)
 				else mmc_index_command++;
 			break;
 
-                        //SEND_CID
-                        case 0x4a:
-				debug_printf (VERBOSE_PARANOID,"MMC Write command SEND_CID");
-                                //5 valores envia
-                                if (mmc_index_command==5) {
-                                        //Ya se pueden enviar valores csd
-                                        mmc_cid_index=0;
-                                        //Reseteamos indice
-                                        mmc_index_command=0;
-                                }
-                                else mmc_index_command++;
-                        break;
+            //SEND_CID
+            case 0x4a:
+                debug_printf (VERBOSE_PARANOID,"MMC Write command SEND_CID");
+                //5 valores envia
+                if (mmc_index_command==5) {
+                        //Ya se pueden enviar valores csd
+                        mmc_cid_index=0;
+                        //Reseteamos indice
+                        mmc_index_command=0;
+                }
+                else mmc_index_command++;
+            break;
 
 
-                case 0x4C:
+            case 0x4C:
                     //debug_printf (VERBOSE_PARANOID,"MMC Write command STOP_TRANSMISSION");
 
 
 			        if (mmc_index_command==5) {
                         //Estado idle
                         mmc_r1=1;
-			mmc_stop_index=0;
+			            mmc_stop_index=0;
                         //Reseteamos indice
                         mmc_index_command=0;
                     }
@@ -1383,8 +1383,8 @@ void mmc_write(z80_byte value)
 
 				//5 valores y el ff del final
 				if (mmc_index_command==6) {
-                                        //Reseteamos indice
-                                        mmc_index_command=0;
+                    //Reseteamos indice
+                    mmc_index_command=0;
 
 					//Devolvemos datos
 					//printf ("Reading byte at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[0],mmc_parameters_sent[1],
@@ -1397,7 +1397,7 @@ void mmc_write(z80_byte value)
 					if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(direccion);
 					mmc_read_index=0;
                                 }
-                        break;
+            break;
 
 			//READ MULTIPLE BLOCK
 			case 0x52:
