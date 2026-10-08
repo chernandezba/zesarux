@@ -88,7 +88,11 @@ static int baseconf_trdos_emulation_active;
 static z80_byte baseconf_extended_dos_ports[4];
 // Entradas RGB de la paleta programable de dieciséis colores.
 static z80_int baseconf_palette[16];
-// Paleta RGB que BaseConf instala después de un hard reset.
+/* Paleta inicial tras un hard reset: copia las primeras 16 entradas de
+   initial_prism_palette_zero (prism.c). Cada valor es RGB444 (0xRGB).
+   Orden Spectrum en cada fila: negro, azul, rojo, magenta, verde, cian,
+   amarillo y blanco. La primera fila usa intensidad 7 (normal) y la
+   segunda intensidad 15 (brillante). */
 static const z80_int baseconf_palette_default[16]={
         0,7,1792,1799,112,119,1904,1911,
         0,15,3840,3855,240,255,4080,4095
@@ -1844,22 +1848,13 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
 
 
 
-    if (simulate_screen_zx8081.v==1) {
-        //simular modo video zx80/81
-        scr_simular_video_zx8081();
-        return;
-    }
-
-
     z80_byte *screen=get_base_mem_pantalla();
 
     //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
     z80_byte x_hi;
 
     for (y=0;y<192;y++) {
-        //direccion=16384 | devuelve_direccion_pantalla(0,y);
 
-        //direccion=16384 | screen_addr_table[(y<<5)];
         direccion=screen_addr_table[(y<<5)];
 
 
@@ -1872,13 +1867,11 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
             byte_leido=screen[direccion];
             attribute=screen[dir_atributo];
 
-            //Prueba de un modo de video inventado en que el color de la tinta sale de los 4 bits de la zona de pixeles
-            //int ink1,ink2;
+
 
             if (scr_refresca_sin_colores.v) {
                 attribute=56;
-                //ink1=(byte_leido >>4)&0xF;
-                //ink2=(byte_leido    )&0xF;
+
 
             }
 
@@ -1896,12 +1889,12 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
             bright=(attribute) &64;
             flash=(attribute)&128;
             if (flash) {
-                    //intercambiar si conviene
-                    if (estado_parpadeo.v) {
-                            aux=paper;
-                            paper=ink;
-                            ink=aux;
-                    }
+                //intercambiar si conviene
+                if (estado_parpadeo.v) {
+                        aux=paper;
+                        paper=ink;
+                        ink=aux;
+                }
             }
 
             if (bright) {
@@ -1912,21 +1905,7 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
             for (bit=0;bit<8;bit++) {
 
                 color= ( byte_leido & 128 ? ink : paper );
-                //if (scr_refresca_sin_colores.v) {
-                //	if (bit<=3) color= ( byte_leido & 128 ? ink1 : paper );
-                //	else color= ( byte_leido & 128 ? ink2 : paper );
-                //}
 
-                /*
-
-                Prueba cutre de visualizar la imagen en un plano 3D
-                int xfinal,yfinal;
-                //191-y porque el 0,0 lo tenemos arriba del todo pero la funcion de 3D lo asume abajo del todo
-                zxvision_widgets_draw_particles_3d_convert(x_hi+bit,191-y,0,&xfinal,&yfinal);
-                scr_putpixel_zoom(xfinal,191-yfinal,color);
-                if (xfinal<0) printf("X %d\n",xfinal);
-
-                */
 
                 baseconf_putpixel_scaled(x_hi+bit,y,
                                          baseconf_get_palette_colour(color),
@@ -1935,11 +1914,6 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
                 byte_leido=byte_leido<<1;
             }
 
-
-            //temp
-            //else {
-            //	printf ("no refrescamos zona x %d fila %d\n",x,fila);
-            //}
 
 
             direccion++;
