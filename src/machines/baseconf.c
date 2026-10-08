@@ -38,27 +38,25 @@
 #include "betadisk.h"
 
 
-//Si la sd esta activa o no
+// Indica si la interfaz SD de BaseConf está habilitada.
 int baseconf_sd_enabled=1;
 
+// Estado de selección de chip de la tarjeta SD.
 int baseconf_sd_cs=0;
 
-//Direcciones donde estan cada pagina de rom. 32 paginas de 16 kb
+// Punteros a las 32 páginas de ROM de 16 KiB.
 z80_byte *baseconf_rom_mem_table[32];
 
-//Direcciones donde estan cada pagina de ram, en paginas de 16 kb
+// Punteros a las 256 páginas de RAM de 16 KiB.
 z80_byte *baseconf_ram_mem_table[256];
 
-
-//Direcciones actuales mapeadas, bloques de 16 kb
+// Punteros a las cuatro páginas de 16 KiB visibles por la CPU.
 z80_byte *baseconf_memory_paged[4];
 
-
-//Numeros de bloques de memoria asignados
+// Números de página resueltos para las cuatro ventanas de la CPU.
 z80_byte baseconf_memory_segments[4];
 
-//Tipos de bloques de memoria asignados
-//0: rom. otra cosa: ram
+// Tipo de cada ventana: cero para ROM y valor distinto de cero para RAM.
 z80_byte baseconf_memory_segments_type[4];
 
 /*
@@ -70,39 +68,68 @@ z80_byte baseconf_memory_segments_type[4];
  * El bit 7 de los flags habilita la sustitución de los bits de página desde
  * #7FFD; el bit 6 selecciona RAM. Los números de página se guardan sin invertir.
  */
+// Números de página programados en los dos bancos de registros MMU.
 static z80_byte baseconf_mmu_pages[8];
+// Banderas de tipo y sustitución de página de cada registro MMU.
 static z80_byte baseconf_mmu_flags[8];
+// Fuente de 2 KiB escribible por la CPU para los modos de texto.
 static z80_byte baseconf_text_font[2048];
+// Señal que activa la ROM TR-DOS y sus puertos shadow.
 static int baseconf_dos_signal;
 /* Estado del Beta Disk virtual de PentEvo. El firmware guarda el servicio
    de RAM-disk en la página RAM FE y lo selecciona en lugar del FDC físico. */
+// Máscara de unidades Beta Disk cuyo medio procede del RAM-disk.
 static z80_byte baseconf_beta_drive_virtual;
+// Número de unidad Beta Disk seleccionado actualmente.
 static z80_byte baseconf_beta_drive_selected;
+// Indica que la ventana ROM está sustituida por el servicio TR-DOS en RAM.
 static int baseconf_trdos_emulation_active;
+// Últimos valores de los cuatro puertos de DOS extendido.
 static z80_byte baseconf_extended_dos_ports[4];
+// Entradas RGB de la paleta programable de dieciséis colores.
 static z80_int baseconf_palette[16];
+// Paleta RGB que BaseConf instala después de un hard reset.
 static const z80_int baseconf_palette_default[16]={
         0,7,1792,1799,112,119,1904,1911,
         0,15,3840,3855,240,255,4080,4095
 };
+// Índice de color actual del borde de cuatro bits.
 static z80_byte baseconf_border_colour;
+// Color del borde guardado antes de entrar en el servicio NMI.
 static z80_byte baseconf_nmi_saved_border_colour;
+// Dirección M1 donde se intercepta la entrada del servicio NMI.
 static z80_int baseconf_nmi_breakpoint;
+// Indica que la ROM de servicio NMI está activa.
 static int baseconf_nmi_active;
+// Marca una entrada NMI pendiente de completar tras el fetch.
 static int baseconf_nmi_entry_pending;
+// Número de fetches pendientes para detectar la salida del servicio NMI.
 static int baseconf_nmi_exit_countdown;
+// Marca una NMI solicitada desde el puerto BF.
 static int baseconf_nmi_from_bf_pending;
+// Evita repetir la entrega de la NMI solicitada desde BF.
 static int baseconf_nmi_from_bf_delivery;
+// Byte alto retenido durante accesos de dieciséis bits al IDE.
 static z80_byte baseconf_ide_high_latch;
+// Byte bajo retenido durante escrituras de dieciséis bits al IDE.
 static z80_byte baseconf_ide_low_latch;
+// Indica que falta leer el byte alto de una palabra IDE.
 static int baseconf_ide_read_high_pending;
+// Indica que falta completar una palabra de escritura IDE.
 static int baseconf_ide_write_low_pending;
+// Indica que el byte alto IDE llegó por el puerto 11.
 static int baseconf_ide_write_high_from_port_11;
+// Último valor escrito en el registro de control IDE.
 static z80_byte baseconf_ide_control;
+// Comando IDE cuya transferencia de sectores se está contabilizando.
 static z80_byte baseconf_ide_transfer_command;
+// Bytes transferidos del sector IDE actual.
 static int baseconf_ide_transfer_bytes;
+// Sectores pendientes del comando IDE actual.
 static int baseconf_ide_sectors_remaining;
+// Tipo de extensión AVR seleccionado en las celdas CMOS F0-FF.
 static z80_byte baseconf_cmos_extension_type;
+// Segundo de reloj ya aplicado al registro de actualización del RTC.
 static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
 /* Registro de modos del AVR, leído en F0 tras seleccionar la extensión 3.
@@ -126,9 +153,11 @@ z80_byte baseconf_avr_modes_register=0x31;
    F0-FF del RTC Gluk. Los bytes 12 y 13 contienen la fecha empaquetada como
    año(6 bits), mes(4 bits) y día(5 bits); los dos últimos son el CRC del
    firmware y EVO Reset Service no los muestra. */
+// Identificación de la versión BaseConf expuesta por la extensión CMOS cero.
 static const z80_byte baseconf_version[16]={
         'Z','X','E','v','o','T','S','&','B','A','S','E',0x81,0x34,0xff,0xff
 };
+// Identificación de AVR Boot expuesta por la extensión CMOS uno.
 static const z80_byte baseconf_avr_boot_version[16]={
         'Z','X','E','v','o','A','V','R','B','o','o','t',0x37,0x18,0xff,0xff
 };
@@ -136,6 +165,7 @@ static const z80_byte baseconf_avr_boot_version[16]={
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
 
+// Traduce puerto_l IDE al índice del registro ATA; devuelve -1 si no corresponde.
 static int baseconf_ide_register(z80_byte puerto_l)
 {
     switch (puerto_l) {
@@ -150,12 +180,14 @@ static int baseconf_ide_register(z80_byte puerto_l)
     }
 }
 
+// Comprueba si puerto_l pertenece a la interfaz IDE; devuelve 1 si corresponde.
 int baseconf_ide_port(z80_byte puerto_l)
 {
     return puerto_l==0x10 || puerto_l==0x11 || puerto_l==0xc8 ||
            baseconf_ide_register(puerto_l)>=0;
 }
 
+// Descarta las mitades pendientes de una transferencia IDE; sin parámetros ni retorno.
 static void baseconf_ide_sync_data(void)
 {
     baseconf_ide_read_high_pending=0;
@@ -163,6 +195,7 @@ static void baseconf_ide_sync_data(void)
     baseconf_ide_write_high_from_port_11=0;
 }
 
+// Avanza el LBA de los registros IDE al siguiente sector; sin parámetros ni retorno.
 static void baseconf_ide_increment_lba(void)
 {
     unsigned int lba;
@@ -182,6 +215,7 @@ static void baseconf_ide_increment_lba(void)
     ide_register_drive_head=(ide_register_drive_head&0xf0) | ((lba>>24)&0x0f);
 }
 
+// Inicia el seguimiento de sectores para comando IDE; entrada: comando; sin retorno.
 static void baseconf_ide_begin_transfer(z80_byte comando)
 {
     baseconf_ide_transfer_command=0;
@@ -196,6 +230,7 @@ static void baseconf_ide_begin_transfer(z80_byte comando)
     }
 }
 
+// Cuenta bytes transferidos y actualiza sectores y LBA; entrada: bytes; sin retorno.
 static void baseconf_ide_data_transferred(int bytes)
 {
     if (!baseconf_ide_transfer_command) return;
@@ -216,6 +251,7 @@ static void baseconf_ide_data_transferred(int bytes)
     else baseconf_ide_transfer_command=0;
 }
 
+// Lee el registro IDE de puerto_l y devuelve su byte, incluida la división de palabras.
 z80_byte baseconf_ide_read(z80_byte puerto_l)
 {
     int registro=baseconf_ide_register(puerto_l);
@@ -246,6 +282,7 @@ z80_byte baseconf_ide_read(z80_byte puerto_l)
     return ide_read_command_block_register(registro);
 }
 
+// Escribe valor en el registro IDE de puerto_l; sin retorno.
 void baseconf_ide_write(z80_byte puerto_l,z80_byte valor)
 {
     int registro=baseconf_ide_register(puerto_l);
@@ -294,6 +331,7 @@ void baseconf_ide_write(z80_byte puerto_l,z80_byte valor)
     if (registro==7) baseconf_ide_begin_transfer(valor);
 }
 
+// Comprueba si la unidad Beta seleccionada usa RAM-disk; devuelve 1 si está activa.
 static int baseconf_beta_virtual_drive_active(void)
 {
     /* #13BD contiene un bit por unidad; #FF selecciona la unidad en bits 0-1. */
@@ -308,12 +346,14 @@ static int baseconf_beta_virtual_drive_active(void)
     return 1;
 }
 
+// Devuelve el estado Beta Disk virtual junto con la unidad seleccionada.
 z80_byte baseconf_read_beta_system_port(void)
 {
     /* EVO-DOS virtual sondea INTRQ y DRQ; no hay un WD1793 físico aquí. */
     return 0xc0 | (baseconf_beta_drive_selected & 0x3f);
 }
 
+// Atiende un acceso al puerto FDC virtual y devuelve 1 si activa EVO-DOS en RAM.
 int baseconf_beta_fdc_access(z80_int puerto)
 {
     z80_byte bajo=puerto&0xff;
@@ -332,6 +372,7 @@ int baseconf_beta_fdc_access(z80_int puerto)
     return 1;
 }
 
+// Actualiza DOS, NMI y traps antes del fetch en direccion; sin retorno.
 void baseconf_pre_opcode_fetch(z80_int direccion)
 {
     int mapa=(puerto_32765&16) ? 4 : 0;
@@ -368,6 +409,7 @@ void baseconf_pre_opcode_fetch(z80_int direccion)
             betadisk_handle_trdos_traps();
 }
 
+// Completa la entrada o salida NMI tras el fetch; entrada/salida: opcode; sin retorno.
 void baseconf_post_opcode_fetch(z80_byte *opcode)
 {
     /* BaseConf inyecta por hardware un NOP en 0066 y conecta la página FF
@@ -405,6 +447,7 @@ void baseconf_post_opcode_fetch(z80_byte *opcode)
     }
 }
 
+// Prepara el servicio NMI y guarda el borde; sin parámetros ni retorno.
 void baseconf_handle_nmi(void)
 {
     /* Tanto la tecla NMI como el breakpoint hardware preparan la entrada al
@@ -418,6 +461,7 @@ void baseconf_handle_nmi(void)
     baseconf_nmi_from_bf_delivery=0;
 }
 
+// Entrega una NMI solicitada desde BF cuando corresponde; sin parámetros ni retorno.
 void baseconf_check_pending_nmi(void)
 {
     /* La NMI solicitada por #BF llega con el siguiente pulso INT aunque
@@ -429,6 +473,7 @@ void baseconf_check_pending_nmi(void)
     }
 }
 
+// Comprueba la protección de escritura en direccion; devuelve 1 si se puede escribir.
 int baseconf_memory_write_allowed(z80_int direccion)
 {
     int mapa=(puerto_32765&16) ? 4 : 0;
@@ -441,6 +486,7 @@ int baseconf_memory_write_allowed(z80_int direccion)
     return (baseconf_mmu_flags[mapa+(direccion>>14)]&32)==0;
 }
 
+// Lee el registro de configuración indicado por puerto_h; devuelve su valor.
 z80_byte baseconf_read_config_port(z80_byte puerto_h)
 {
     int i;
@@ -496,6 +542,7 @@ z80_byte baseconf_read_config_port(z80_byte puerto_h)
     }
 }
 
+// Lee el puerto de DOS extendido indicado por puerto_l; devuelve su valor.
 z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
 {
     switch (puerto_l) {
@@ -507,6 +554,7 @@ z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
     }
 }
 
+// Lee la celda CMOS seleccionada y sus extensiones AVR; devuelve el byte obtenido.
 z80_byte baseconf_read_cmos(void)
 {
     z80_byte indice=zxevo_last_port_dff7;
@@ -579,6 +627,7 @@ z80_byte baseconf_read_cmos(void)
     return 0xff;
 }
 
+// Escribe valor en la celda CMOS seleccionada o elige extensión AVR; sin retorno.
 void baseconf_write_cmos(z80_byte valor)
 {
     z80_byte indice=zxevo_last_port_dff7;
@@ -593,17 +642,29 @@ void baseconf_write_cmos(z80_byte valor)
     zxevo_nvram[indice]=valor;
 }
 
+// Último valor escrito en el puerto 77 de vídeo y turbo.
 z80_byte baseconf_last_port_77;
+// Último valor escrito en el puerto 77 de la interfaz SD.
 z80_byte baseconf_last_port_sd_77;
+// Bits de control shadow del puerto 77, separados de los de vídeo.
 z80_byte baseconf_shadow_mode_port_77;
+// Último valor escrito en el puerto BF de configuración.
 z80_byte baseconf_last_port_bf;
+// Último valor escrito en EFF7 de vídeo, memoria y velocidad.
 z80_byte baseconf_last_port_eff7;
+// Último valor escrito en el puerto BD de breakpoint NMI.
 z80_byte baseconf_last_port_bd;
+// Último valor escrito en el puerto BE de control NMI.
 z80_byte baseconf_last_port_be;
+// Último valor escrito en el puerto FF de vídeo.
 z80_byte baseconf_last_port_ff;
+// Último valor escrito en el puerto 57 de Beta Disk.
 z80_byte baseconf_last_port_57;
+// Índice CMOS seleccionado mediante DFF7.
 z80_byte baseconf_last_port_dff7;
+// Último dato de CMOS leído o escrito mediante BFF7.
 z80_byte baseconf_last_port_bff7;
+// Último valor escrito en el puerto 7FFD de paginación Spectrum.
 z80_byte baseconf_last_port_7ffd;
 
 /*
@@ -612,15 +673,21 @@ baseconf_last_port_extended_dos[1] // xx4F
 baseconf_last_port_extended_dos[2] // xx6F
 baseconf_last_port_extended_dos[3] // xx8F
 */
+// Últimos valores escritos en los cuatro puertos de DOS extendido.
 z80_byte baseconf_last_port_extended_dos[4];
 
+// Último valor escrito en el puerto FF7 del gestor de memoria.
 z80_byte baseconf_last_port_ff7;
+// Último valor escrito en el puerto 7F7 del gestor de memoria.
 z80_byte baseconf_last_port_7f7;
+// Último valor escrito en el puerto BF7 del gestor de memoria.
 z80_byte baseconf_last_port_bf7;
 
+// Velocidad de CPU aplicada por última vez, en décimas de MHz.
 static int baseconf_cpu_speed_selected=70;
 
 
+// Aplica la velocidad de CPU indicada por los puertos BaseConf; sin parámetros ni retorno.
 static void baseconf_set_cpu_speed(void)
 {
     int nueva_velocidad;
@@ -655,6 +722,7 @@ static void baseconf_set_cpu_speed(void)
 //Ver Xpeccy: los puertos y el mapa de memoria BaseConf están en ./src/libxpeccy/hardware/pentevo.c
 //http://github.com/samstyle/Xpeccy
 
+// Comprueba si los puertos shadow están visibles; devuelve 1 si se puede acceder.
 int baseconf_shadow_ports_available(void)
 {
 
@@ -675,11 +743,13 @@ int baseconf_shadow_ports_available(void)
 }
 
 
+// Punto auxiliar de prueba para direccion; actualmente no realiza acciones ni devuelve valor.
 void lee_byte_evo_aux(z80_int direccion GCC_UNUSED)
 {
         //TODO: funcion que se usa en el core baseconf de testing
 }
 
+// Copia valor a la fuente de texto si direccion está redirigida; sin retorno.
 void baseconf_write_memory_aux(z80_int direccion,z80_byte valor)
 {
     /* BF.bit2 redirige cada escritura de memoria de la CPU a los 2 KB
@@ -689,6 +759,7 @@ void baseconf_write_memory_aux(z80_int direccion,z80_byte valor)
     }
 }
 
+// Combina los bits de los puertos de vídeo y devuelve el identificador de modo.
 z80_byte baseconf_get_video_mode(void)
 {
     return (baseconf_last_port_eff7&0x20) |
@@ -696,17 +767,20 @@ z80_byte baseconf_get_video_mode(void)
         (baseconf_last_port_77&7);
 }
 
+// Comprueba el modo de vídeo actual; devuelve 1 si es un modo de texto.
 int baseconf_text_mode_active(void)
 {
     z80_byte mode=baseconf_get_video_mode();
     return mode==6 || mode==7;
 }
 
+// Convierte el índice colour de BaseConf al índice de color de ZEsarUX; devuelve este último.
 static z80_int baseconf_get_palette_colour(z80_byte colour)
 {
     return PRISM_INDEX_FIRST_COLOR+baseconf_palette[colour&15];
 }
 
+// Lee indice de la paleta BaseConf; devuelve su valor RGB.
 z80_int baseconf_get_palette_entry(z80_byte indice)
 {
     return baseconf_palette[indice&15];
@@ -715,6 +789,7 @@ z80_int baseconf_get_palette_entry(z80_byte indice)
 /* Todos los modos BaseConf se renderizan en un área activa de 640x400.
    Se mantiene escalado entero: 256x192 -> 512x384, 320x200 -> 640x400 y
    640x200 -> 640x400. El área sin usar se convierte en border adicional. */
+// Dibuja colour en (x,y), con escalas scale_x/scale_y y offsets offset_x/offset_y; sin retorno.
 static void baseconf_putpixel_scaled(int x,int y,z80_int colour,
                                     int scale_x,int scale_y,
                                     int offset_x,int offset_y)
@@ -728,6 +803,7 @@ static void baseconf_putpixel_scaled(int x,int y,z80_int colour,
                     scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
 }
 
+// Escribe en offset_x/offset_y y width/height la geometría del modo actual; sin retorno.
 static void baseconf_get_mode_geometry(int *offset_x,int *offset_y,
                                        int *width,int *height)
 {
@@ -747,6 +823,7 @@ static void baseconf_get_mode_geometry(int *offset_x,int *offset_y,
     }
 }
 
+// Dibuja colour en (x,y) usando el zoom global; sin retorno.
 static void baseconf_putpixel_absolute(int x,int y,z80_int colour)
 {
     int dx,dy;
@@ -758,6 +835,7 @@ static void baseconf_putpixel_absolute(int x,int y,z80_int colour)
             scr_putpixel(px+dx,py+dy,colour);
 }
 
+// Dibuja el borde del modo BaseConf actual; sin parámetros ni retorno.
 static void screen_baseconf_refresca_border(void)
 {
     int x,y,offset_x,offset_y,width,height;
@@ -792,12 +870,14 @@ static void screen_baseconf_refresca_border(void)
         }
 }
 
+// Actualiza el color del borde con puerto y value; sin retorno.
 void baseconf_set_border_colour(z80_int puerto,z80_byte value)
 {
     /* A3 está invertido y proporciona el cuarto bit de color del border. */
     baseconf_border_colour=(value&7) | ((~puerto)&8);
 }
 
+// Devuelve el índice de color actual del borde BaseConf.
 z80_byte baseconf_get_border_colour(void)
 {
     return baseconf_border_colour;
@@ -805,6 +885,7 @@ z80_byte baseconf_get_border_colour(void)
 
 /* ALCO: 256x192, un color de 4 bits por píxel. Cuatro flujos de bytes
    entrelazados ocupan las dos páginas de pantalla Spectrum adyacentes. */
+// Dibuja la pantalla completa en modo ALCO; sin parámetros ni retorno.
 void screen_baseconf_refresca_alco_mode(void)
 {
     int x,y;
@@ -828,6 +909,7 @@ void screen_baseconf_refresca_alco_mode(void)
     }
 }
 
+// Dibuja la pantalla completa en modo ATM EGA; sin parámetros ni retorno.
 void screen_baseconf_refresca_ega_mode(void)
 {
     int x,y;
@@ -870,6 +952,7 @@ void screen_baseconf_refresca_ega_mode(void)
 
 /* ATM hardware multicolor es un bitmap de 640x200 con un byte de atributos
    por cada grupo de ocho píxeles de alta resolución. */
+// Dibuja la pantalla completa en modo multicolor ATM; sin parámetros ni retorno.
 void screen_baseconf_refresca_atm_multicolor_mode(void)
 {
     int x,y;
@@ -890,6 +973,7 @@ void screen_baseconf_refresca_atm_multicolor_mode(void)
     }
 }
 
+// Dibuja la pantalla completa en modo de texto ATM; sin parámetros ni retorno.
 void screen_baseconf_refresca_atm_text_mode(void)
 {
     int x,y;
@@ -921,6 +1005,7 @@ void screen_baseconf_refresca_atm_text_mode(void)
     }
 }
 
+// Dibuja la pantalla completa en modo multicolor ZX; sin parámetros ni retorno.
 void screen_baseconf_refresca_hw_multicolor_mode(void)
 {
     int x,y;
@@ -942,6 +1027,7 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
     }
 }
 
+// Dibuja la pantalla completa en modo de texto EVO; sin parámetros ni retorno.
 void screen_baseconf_refresca_text_mode(void)
 {
     int x,y;
@@ -980,6 +1066,7 @@ void screen_baseconf_refresca_text_mode(void)
 /* Devuelve el color de un pixel de la linea activa actual. El calculo es el
    mismo que usa el render de frame completo, pero permite almacenarlo cuando
    termina cada scanline. */
+// Obtiene el color del píxel (x,y) del modo indicado por mode; devuelve índice de paleta.
 static z80_int baseconf_get_scanline_pixel(z80_byte mode,int x,int y)
 {
     int vpage=(puerto_32765&8) ? 7 : 5;
@@ -1100,9 +1187,12 @@ static z80_int baseconf_get_scanline_pixel(z80_byte mode,int x,int y)
 /* El scanline de video comienza en display, continua por el border derecho,
    retrace y termina en el border izquierdo de la linea siguiente. Se guarda
    este ultimo tramo para dibujarlo al principio del siguiente scanline. */
+// Colores del borde izquierdo aplazados desde el scanline anterior.
 static z80_byte baseconf_border_left_next[BASECONF_DISPLAY_WIDTH+2*BASECONF_LEFT_BORDER_NO_ZOOM];
+// Indica si el búfer de borde izquierdo aplazado contiene datos válidos.
 static int baseconf_border_left_next_valid=0;
 
+// Registra el borde de la línea actual en el búfer rainbow; sin parámetros ni retorno.
 void baseconf_store_scanline_rainbow_border(void)
 {
     //Color del border resultante en cada T-estado del scanline actual.
@@ -1205,6 +1295,7 @@ void baseconf_store_scanline_rainbow_border(void)
     baseconf_border_left_next_valid=1;
 }
 
+// Registra la imagen de la línea actual en el búfer rainbow; sin parámetros ni retorno.
 void baseconf_store_scanline_rainbow_display(void)
 {
     //Modo de video BaseConf activo durante este scanline.
@@ -1270,6 +1361,7 @@ void baseconf_store_scanline_rainbow_display(void)
     }
 }
 
+// Recalcula el mapa de memoria tras un reset de CPU; sin parámetros ni retorno.
 void baseconf_reset_cpu(void)
 {
 
@@ -1279,6 +1371,7 @@ void baseconf_reset_cpu(void)
     baseconf_set_memory_pages();
 }
 
+// Construye los punteros a páginas ROM y RAM; sin parámetros ni retorno.
 void baseconf_init_memory_tables(void)
 {
 	debug_printf (VERBOSE_DEBUG,"Initializing BaseConf memory pages");
@@ -1301,6 +1394,7 @@ void baseconf_init_memory_tables(void)
 
 
 
+// Resuelve la MMU y actualiza las cuatro ventanas de memoria de CPU; sin parámetros ni retorno.
 void baseconf_set_memory_pages(void)
 {
 
@@ -1372,6 +1466,7 @@ void baseconf_set_memory_pages(void)
 }
 
 
+// Reinicia CPU, RAM y registros BaseConf al estado de encendido; sin parámetros ni retorno.
 void baseconf_hard_reset(void)
 {
 
@@ -1460,6 +1555,7 @@ Para RAM, en la ventana hay una sustitución de 3 o 6 bits, dependiendo del
 modo ZX Spectrum 128K o Pentagon 1024K. Los números de página no son los bits
 invertidos del puerto #7FFD.
 */
+// Sustituye bits de value según 7FFD y el modo 128K/Pentagon; devuelve página RAM.
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value)
 {
 
@@ -1492,6 +1588,7 @@ inclusión de TR-DOS: vale 1 cuando TR-DOS está incluido. También se incluyen
 los puertos shadow y TR-DOS al ejecutar código con offset #3Dxx en esta ventana.
 */
 
+// Sustituye el bit bajo de value según la señal DOS; devuelve página ROM.
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value)
 {
     value=value&254;
@@ -1499,6 +1596,7 @@ static z80_byte baseconf_change_rom_page_trdos(z80_byte value)
     return value;
 }
 
+// Aplica valor al puerto BaseConf indicado por puerto; sin retorno.
 void baseconf_out_port(z80_int puerto,z80_byte valor)
 {
 
@@ -1732,6 +1830,7 @@ segmento 0 pagina 0
 
 
 //Refresco pantalla sin rainbow
+// Dibuja la pantalla ZX estándar sin rainbow; sin parámetros ni retorno.
 void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
 {
     int x,y,bit;
@@ -1855,9 +1954,11 @@ void baseconf_refresca_pantalla_no_rainbow_standard_48k(void)
 
 
 
+// Activa los mensajes de diagnóstico al elegir un modo de vídeo.
 static int debug_video_mode=0;
 
 //Refresco pantalla sin rainbow
+// Elige y dibuja el modo BaseConf sin rainbow; sin parámetros ni retorno.
 void baseconf_refresca_pantalla_no_rainbow(void)
 {
 
@@ -1905,16 +2006,25 @@ void baseconf_refresca_pantalla_no_rainbow(void)
 }
 
 
+// Descripción del modo ALCO de 256 por 192 píxeles.
 char *baseconf_videomode_string_13="ALCO 16 colour 256x192";
+// Descripción del modo ATM EGA de 320 por 200 píxeles.
 char *baseconf_videomode_string_0="ATM EGA 320x200";
+// Descripción del modo multicolor ZX de 256 por 192 píxeles.
 char *baseconf_videomode_string_23="ZX hardware multicolor 256x192";
+// Descripción del modo multicolor ATM de 640 por 200 píxeles.
 char *baseconf_videomode_string_2="ATM hardware multicolor 640x200";
+// Descripción del modo de texto ATM de 640 por 200 píxeles.
 char *baseconf_videomode_string_6="ATM text 640x200";
+// Descripción del modo de texto EVO de 640 por 200 píxeles.
 char *baseconf_videomode_string_7="EVO text 640x200";
+// Descripción del modo gráfico estándar ZX de 256 por 192 píxeles.
 char *baseconf_videomode_string_3="Standard ZX 256x192";
+// Búfer para describir un modo de vídeo no reconocido.
 char baseconf_videomode_string_unk[200]="";
 
 
+// Devuelve una descripción del modo de vídeo actual.
 char *baseconf_get_video_mode_string(void)
 {
     z80_byte baseconf_mode=baseconf_get_video_mode();
@@ -1962,6 +2072,7 @@ char *baseconf_get_video_mode_string(void)
 
 }
 
+// Refresca pantalla y borde usando rainbow o dibujo completo; sin parámetros ni retorno.
 void baseconf_refresca_pantalla(void)
 {
     if (rainbow_enabled.v) {
