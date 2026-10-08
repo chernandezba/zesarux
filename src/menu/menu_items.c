@@ -36380,7 +36380,10 @@ void menu_debug_cpu_info_overlay(void)
 
     //Redibujar solo cuando es necesario
     if (menu_debug_cpu_info_window->dirty_user_must_draw_contents || forzar_redibujado) {
-        zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s MHz (X%d)",buffer_velocidad,cpu_turbo_speed);
+        //Indicar modo turbo si no es normal 1
+        char buffer_turbo[20]="";
+        if (cpu_turbo_speed!=1) sprintf(buffer_turbo," (X%d)",cpu_turbo_speed);
+        zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,0,"CPU @%s MHz%s",buffer_velocidad,buffer_turbo);
         zxvision_print_string_defaults_fillspc_format(menu_debug_cpu_info_window,1,1,(top_speed_timer.v ? "(Top Speed)" : "" ));
 
         menu_debug_cpu_info_draw_cpu();
