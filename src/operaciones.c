@@ -9541,7 +9541,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
                     puerto_l==0x7f || puerto_l==0xBF || puerto_l==0xBD ||
                     puerto_l==0xBE || puerto_l==0xFF ||
                         puerto_l==0x2f || puerto_l==0x4f || puerto_l==0x6f || puerto_l==0x8f ||
-                        puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || puerto==0x7ffd || puerto==0xeff7
+                        puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || (puerto&0x8002)==0 || puerto==0xeff7
 			|| puerto==0xEFF7 || puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)
 		{
 			//printf ("Out port baseconf port %04XH value %02XH. PC=%04XH\n",puerto,value,reg_pc);

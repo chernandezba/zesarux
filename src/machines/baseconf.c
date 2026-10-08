@@ -1771,7 +1771,9 @@ segmento 0 pagina 0
                 if (valor&1) baseconf_mmu_flags[segmento] |=32;
         }
 
-        else if (puerto==0x7ffd) {
+        /* #7FFD sólo decodifica A15 y A1, como en el Spectrum 128K.
+           OUT (#FD),A también selecciona este registro si A15 de A es cero. */
+        else if ((puerto&0x8002)==0) {
                 /* En modo de paginación 128K el bit 5 bloquea las escrituras
                    posteriores a #7FFD hasta reset. Las escrituras MMU mediante
                    #xFF7/#x7F7 continúan disponibles. */
