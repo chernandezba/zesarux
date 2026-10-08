@@ -7147,8 +7147,27 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 
 
+	/* BaseConf decodifica #xxDF y usa A10/A8 para distinguir botones, X e Y.
+	   Las demás máquinas conservan la decodificación parcial genérica. */
+	int kempston_mouse_port=0;
+	if (MACHINE_IS_BASECONF) {
+		if (puerto_l==0xdf) {
+			switch (puerto_h&5) {
+				case 0: kempston_mouse_port=1; break; // Botones (#FADF).
+				case 1: kempston_mouse_port=2; break; // Eje X (#FBDF).
+				case 5: kempston_mouse_port=3; break; // Eje Y (#FFDF).
+			}
+		}
+	}
+	else if ((puerto_l&32)==0 &&
+	         ((puerto_h&7)==3 || (puerto_h&7)==7 || (puerto_h&2)==2)) {
+		if ((puerto_h&7)==3) kempston_mouse_port=2;
+		else if ((puerto_h&7)==7) kempston_mouse_port=3;
+		else if ((puerto_h&3)==2) kempston_mouse_port=1;
+	}
+
 	//kempston mouse. Solo con menu cerrado
-	if ( kempston_mouse_emulation.v  &&  (puerto_l&32) == 0  &&  ( (puerto_h&7)==3 || (puerto_h&7)==7 || (puerto_h&2)==2 ) ) {
+	if (kempston_mouse_emulation.v && kempston_mouse_port) {
 		//printf ("kempston mouse. port 0x%x%x\n",puerto_h,puerto_l);
 
         //IN 64479 - return X axis (0-255)
@@ -7172,21 +7191,21 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         //Lo mejor es que al abrir el menu, se envie valor fijo, y así no se provocan movimientos indeseados
 
 
-		if ((puerto_h&7)==3) {
+		if (kempston_mouse_port==2) {
             if (!zxvision_key_not_sent_emulated_mach() ) {
                 //X-Axis
                 acumulado=kempston_mouse_x*kempston_mouse_factor_sensibilidad;
             }
 		}
 
-        if ((puerto_h&7)==7) {
+        if (kempston_mouse_port==3) {
             if (!zxvision_key_not_sent_emulated_mach() ) {
                 //Y-Axis
 			    acumulado=kempston_mouse_y*kempston_mouse_factor_sensibilidad;
             }
         }
 
-        if ((puerto_h&3)==2) {
+        if (kempston_mouse_port==1) {
             //Buttons
 			acumulado=255;
 
