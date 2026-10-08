@@ -2795,10 +2795,6 @@ void set_machine_params(void)
             fetch_opcode=fetch_opcode_baseconf;
             ay_chip_present.v=1;
 
-            //Baseconf tiene turbosound
-            ay_chip_selected=0;
-            total_ay_chips=2;
-
         break;
 
         case MACHINE_ID_COLECO:
