@@ -133,6 +133,16 @@ static int baseconf_ide_transfer_bytes;
 static int baseconf_ide_sectors_remaining;
 // Tipo de extensión AVR seleccionado en las celdas CMOS F0-FF.
 static z80_byte baseconf_cmos_extension_type;
+// Bytes pendientes del teclado PS/2 expuesto por la extensión AVR 2.
+static z80_byte baseconf_ps2_fifo[128];
+// Posición de lectura en la cola de códigos PS/2.
+static int baseconf_ps2_fifo_read;
+// Posición de escritura en la cola de códigos PS/2.
+static int baseconf_ps2_fifo_write;
+// Número de bytes pendientes en la cola de códigos PS/2.
+static int baseconf_ps2_fifo_count;
+// Estado anterior de las ocho filas de la matriz Spectrum.
+static z80_byte baseconf_ps2_previous_rows[8]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 // Segundo de reloj ya aplicado al registro de actualización del RTC.
 static time_t baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
@@ -168,6 +178,7 @@ static const z80_byte baseconf_avr_boot_version[16]={
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
+static void baseconf_ps2_scan_keyboard(void);
 
 // Traduce puerto_l IDE al índice del registro ATA; devuelve -1 si no corresponde.
 static int baseconf_ide_register(z80_byte puerto_l)
@@ -465,9 +476,12 @@ void baseconf_handle_nmi(void)
     baseconf_nmi_from_bf_delivery=0;
 }
 
-// Entrega una NMI solicitada desde BF cuando corresponde; sin parámetros ni retorno.
+// Muestrea el teclado PS/2 y entrega la NMI pendiente al terminar el frame; sin retorno.
 void baseconf_check_pending_nmi(void)
 {
+    /* Registrar las pulsaciones antes de que el software lea el FIFO evita
+       perder teclas breves entre dos consultas del juego. */
+    baseconf_ps2_scan_keyboard();
     /* La NMI solicitada por #BF llega con el siguiente pulso INT aunque
        las interrupciones enmascarables estén deshabilitadas. */
     if (baseconf_nmi_from_bf_pending) {
@@ -558,6 +572,72 @@ z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
     }
 }
 
+// Añade un byte a la cola PS/2 si queda espacio; sin retorno.
+static void baseconf_ps2_enqueue(z80_byte value)
+{
+    if (baseconf_ps2_fifo_count==(int)sizeof(baseconf_ps2_fifo)) return;
+    baseconf_ps2_fifo[baseconf_ps2_fifo_write]=value;
+    baseconf_ps2_fifo_write=(baseconf_ps2_fifo_write+1)%sizeof(baseconf_ps2_fifo);
+    baseconf_ps2_fifo_count++;
+}
+
+// Detecta cambios de la matriz y genera códigos PS/2 set 2; sin retorno.
+static void baseconf_ps2_scan_keyboard(void)
+{
+    static const z80_byte scan_codes[8][5]={
+        {0x12,0x1a,0x22,0x21,0x2a},
+        {0x1c,0x1b,0x23,0x2b,0x34},
+        {0x15,0x1d,0x24,0x2d,0x2c},
+        {0x16,0x1e,0x26,0x25,0x2e},
+        {0x45,0x46,0x3e,0x3d,0x36},
+        {0x4d,0x44,0x43,0x3c,0x35},
+        {0x5a,0x4b,0x42,0x3b,0x33},
+        {0x29,0x11,0x3a,0x31,0x32}
+    };
+    const z80_byte rows[8]={puerto_65278,puerto_65022,puerto_64510,puerto_63486,
+                             puerto_61438,puerto_57342,puerto_49150,puerto_32766};
+    z80_byte cursor_changed=((baseconf_ps2_previous_rows[3]^rows[3])&0x10) |
+                             ((baseconf_ps2_previous_rows[4]^rows[4])&0x1c);
+    int cursor_shift=!(rows[0]&1) || !(baseconf_ps2_previous_rows[0]&1);
+    int row,col;
+
+    if (baseconf_cmos_extension_type!=2) {
+        for (row=0;row<8;row++) baseconf_ps2_previous_rows[row]=rows[row];
+        return;
+    }
+
+    for (row=0;row<8;row++) {
+        z80_byte changed=(baseconf_ps2_previous_rows[row]^rows[row])&0x1f;
+        for (col=0;col<5;col++) {
+            z80_byte code=scan_codes[row][col];
+            int extended=0;
+            if (!(changed&(1<<col))) continue;
+            /* Las flechas de ZEsarUX llegan como Caps Shift + 5/6/7/8. */
+            if (cursor_shift && cursor_changed && row==0 && col==0) continue;
+            if (cursor_shift && row==3 && col==4) { code=0x6b; extended=1; }
+            if (cursor_shift && row==4 && col==4) { code=0x72; extended=1; }
+            if (cursor_shift && row==4 && col==3) { code=0x75; extended=1; }
+            if (cursor_shift && row==4 && col==2) { code=0x74; extended=1; }
+            if (extended) baseconf_ps2_enqueue(0xe0);
+            if (rows[row]&(1<<col)) baseconf_ps2_enqueue(0xf0);
+            baseconf_ps2_enqueue(code);
+        }
+        baseconf_ps2_previous_rows[row]=rows[row];
+    }
+}
+
+// Extrae un código PS/2 del FIFO del AVR; devuelve FFH si no hay teclas.
+static z80_byte baseconf_ps2_read(void)
+{
+    z80_byte value;
+    baseconf_ps2_scan_keyboard();
+    if (!baseconf_ps2_fifo_count) return 0xff;
+    value=baseconf_ps2_fifo[baseconf_ps2_fifo_read];
+    baseconf_ps2_fifo_read=(baseconf_ps2_fifo_read+1)%sizeof(baseconf_ps2_fifo);
+    baseconf_ps2_fifo_count--;
+    return value;
+}
+
 // Lee la celda CMOS seleccionada y sus extensiones AVR; devuelve el byte obtenido.
 z80_byte baseconf_read_cmos(void)
 {
@@ -625,6 +705,8 @@ z80_byte baseconf_read_cmos(void)
         return baseconf_version[indice&0x0f];
     if (baseconf_cmos_extension_type==1)
         return baseconf_avr_boot_version[indice&0x0f];
+    if (baseconf_cmos_extension_type==2)
+        return baseconf_ps2_read();
     if (baseconf_cmos_extension_type==3 && indice==0xf0)
         return baseconf_avr_modes_register;
 
@@ -1508,6 +1590,10 @@ void baseconf_hard_reset(void)
     baseconf_ide_transfer_bytes=0;
     baseconf_ide_sectors_remaining=0;
     baseconf_cmos_extension_type=0;
+    baseconf_ps2_fifo_read=0;
+    baseconf_ps2_fifo_write=0;
+    baseconf_ps2_fifo_count=0;
+    for (i=0;i<8;i++) baseconf_ps2_previous_rows[i]=0xff;
     baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
 
