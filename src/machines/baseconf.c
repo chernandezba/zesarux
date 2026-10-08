@@ -1821,7 +1821,7 @@ segmento 0 pagina 0
         }
 
         else {
-                printf ("unhandled out port %04XH value %02XH\n",puerto,valor);
+                //printf ("unhandled out port %04XH value %02XH\n",puerto,valor);
                 //sleep(1);
         }
 }
