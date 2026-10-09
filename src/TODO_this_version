@@ -280,6 +280,19 @@ Parece que para iniciar de la mmc:
 *tiene que ser fat32
 *arranca el archivo boot.$c
 ./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmco-persistent-writes --zoom 1
+
+
+Error que sale probando desde WC:
+
+machines/tsconf.c:1251:28: runtime error: index 135 out of bounds for type 'z80_byte *[32]' (aka 'unsigned char *[32]')
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:28
+
+
+
+*desde WC:
+-carga de spg va
+-carga de scl, trd o tap no va
+-musicas pt3 van
 ---
 
 
