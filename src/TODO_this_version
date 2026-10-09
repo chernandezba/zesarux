@@ -274,6 +274,15 @@ Deberia detectar la salida correcta
 
 ---
 
+tsconf
+
+Parece que para iniciar de la mmc:
+*tiene que ser fat32
+*arranca el archivo boot.$c
+./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmc-no-psistent-writes --zoom 1
+
+---
+
 
 -implementar máquinas de 60 Hz (timex, master system etc)
 * pendientes 60 hz: next modo 60hz, y algunas tk?

@@ -877,7 +877,7 @@ z80_byte mmc_read(void)
 
 		case 0x00:
 			//Viene de un cs
-			if (MACHINE_IS_TBBLUE) return 0xFF; //Temporal. Sin esto no puede cargar el config.ini
+			if (MACHINE_IS_TBBLUE || MACHINE_IS_TSCONF) return 0xFF;
 			return 0;
 		break;
 
@@ -895,7 +895,7 @@ z80_byte mmc_read(void)
 		//0x48=CMD8=SEND_IF_COND. For only SDC V2. Check voltage range.
 		//Parece que es de deteccion de MMC/SD
 		case 0x48:
-			if (MACHINE_IS_BASECONF) {
+			if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
 				if (baseconf_mmc_r7_index>=0) {
 					static const z80_byte r7_prefix[5]={0xff,1,0,0,1};
 					value=baseconf_mmc_r7_index<5 ? r7_prefix[baseconf_mmc_r7_index] : baseconf_mmc_r7_echo;
@@ -1052,7 +1052,7 @@ z80_byte mmc_read(void)
 					//(value>=32 && value<=127 ? value : '?') );
 				}
 
-                                if (MACHINE_IS_BASECONF) {
+                                if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                                         //CRC16-CCITT, most significant byte first.
                                         if (mmc_read_index==515) value=mmc_read_crc>>8;
                                         if (mmc_read_index==516) value=mmc_read_crc&0xff;
@@ -1061,7 +1061,7 @@ z80_byte mmc_read(void)
 
                                 //Si final
                                 mmc_read_index++;
-                                if (mmc_read_index==(MACHINE_IS_BASECONF ? 517 : 516)) mmc_read_index=-1;
+                                if (mmc_read_index==((MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) ? 517 : 516)) mmc_read_index=-1;
 
 
                                 return value;
@@ -1115,7 +1115,7 @@ z80_byte mmc_read(void)
                     //    (value>=32 && value<=127 ? value : '?') );
                 }
 
-                if (MACHINE_IS_BASECONF) {
+                if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                     //CRC16-CCITT del bloque, byte alto primero.
                     if (mmc_read_index==515) value=mmc_read_crc>>8;
                     if (mmc_read_index==516) value=mmc_read_crc&0xff;
@@ -1124,14 +1124,14 @@ z80_byte mmc_read(void)
 
                 //Si final
                 mmc_read_index++;
-                if (mmc_read_index==(MACHINE_IS_BASECONF ? 517 : 516)) mmc_read_index=-1;
+                if (mmc_read_index==((MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) ? 517 : 516)) mmc_read_index=-1;
 
 
                 //Siguiente bloque a leer
                 if (mmc_read_index==-1) {
                     mmc_read_index=0;
                     mmc_read_address +=512;
-                    if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(mmc_read_address);
+                    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) mmc_read_crc=mmc_crc16_block(mmc_read_address);
                     //debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address=%XH",mmc_read_address);
                 }
 
@@ -1187,7 +1187,7 @@ z80_byte mmc_read(void)
 			if (!MACHINE_IS_BASECONF || mmc_ocr_index==0)
 				debug_printf (VERBOSE_PARANOID,"MMC Read command READ_OCR");
                         if (mmc_ocr_index>=0) {
-                                if (MACHINE_IS_BASECONF) {
+                                if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                                         // BaseConf espera R3: un byte R1 seguido de cuatro bytes OCR.
                                         static const z80_byte baseconf_ocr[4]={0x80,0xff,0x80,0x00};
                                         if (mmc_ocr_index==0) value=0xff;
@@ -1268,6 +1268,9 @@ void mmc_write(z80_byte value)
         return;
     }
 
+    // En TSConf, FFH genera relojes SPI entre comandos; no inicia un comando nuevo.
+    if (MACHINE_IS_TSCONF && mmc_index_command==0 && value==0xFF) return;
+
     //printf("MMC write. mmc_last_command=%02XH\n",mmc_last_command);
 
 
@@ -1314,7 +1317,7 @@ void mmc_write(z80_byte value)
 			//0x48=CMD8=SEND_IF_COND. For only SDC V2. Check voltage range.
 			//Parece que es de deteccion de MMC/SD
 			case 0x48:
-				if (MACHINE_IS_BASECONF) {
+				if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
 					// CMD8 devuelve en R7 el patrón de comprobación recibido.
 					if (mmc_index_command==4) baseconf_mmc_r7_echo=value;
 					if (mmc_index_command==5) {
@@ -1394,7 +1397,7 @@ void mmc_write(z80_byte value)
                                                 mmc_parameters_sent[2],mmc_parameters_sent[3]);
 					//printf ("Direccion: 0x%X\n",direccion);
 					mmc_read_address=direccion;
-					if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(direccion);
+					if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) mmc_read_crc=mmc_crc16_block(direccion);
 					mmc_read_index=0;
                                 }
             break;
@@ -1421,7 +1424,7 @@ void mmc_write(z80_byte value)
                                         //printf ("Direccion: 0x%X\n",direccion);
                                         //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
                                         mmc_read_address=direccion;
-                                        if (MACHINE_IS_BASECONF) mmc_read_crc=mmc_crc16_block(direccion);
+									if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) mmc_read_crc=mmc_crc16_block(direccion);
                                         //debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK. Address: %XH",direccion);
 
 

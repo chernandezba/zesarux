@@ -32,6 +32,9 @@
 #include "ula.h"
 #include "operaciones.h"
 #include "zxevo.h"
+#include "baseconf.h"
+
+z80_byte tsconf_sd_read_buffer=0xff;
 
 //temporal para printf debug que mira contador_segundo
 //#include "timer.h"
@@ -966,6 +969,10 @@ mis opciones:
 
 void tsconf_reset_cpu(void)
 {
+    baseconf_sd_enabled=1;
+    baseconf_sd_cs=1;
+    tsconf_sd_read_buffer=0xff;
+
   tsconf_af_ports[0]=0;
 
   //Bit 4 de 32765 es bit 0 de #21AF. Por tanto poner ese bit 0 a 0
@@ -3242,14 +3249,3 @@ z80_byte tsconf_zifi_read_output_fifo_status(void)
     //0 - output FIFO is full
     return 1;
 }
-
-z80_byte temp_valor_puerto_57;
-
-z80_byte tsconf_read_port_57(void)
-{
-    //TODO: ni idea. demo zifi espera que sea FFH
-    //printf ("PC=%04XH\n",reg_pc);
-    temp_valor_puerto_57++;
-    return temp_valor_puerto_57;
-}
-
