@@ -7668,10 +7668,7 @@ if (MACHINE_IS_SPECTRUM_128_P2)
         }
 
         if (puerto_l==0x57) {
-            if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xFF;
-            z80_byte recibido=tsconf_sd_read_buffer;
-            tsconf_sd_read_buffer=mmc_read();
-            return recibido;
+            return tsconf_sd_read_byte();
         }
 
 

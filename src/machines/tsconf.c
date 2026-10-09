@@ -33,8 +33,18 @@
 #include "operaciones.h"
 #include "zxevo.h"
 #include "baseconf.h"
+#include "mmc.h"
 
 z80_byte tsconf_sd_read_buffer=0xff;
+
+// Lee el byte recibido en el ciclo SPI anterior y prepara el siguiente.
+z80_byte tsconf_sd_read_byte(void)
+{
+    if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xff;
+    z80_byte recibido=tsconf_sd_read_buffer;
+    tsconf_sd_read_buffer=mmc_read();
+    return recibido;
+}
 
 //temporal para printf debug que mira contador_segundo
 //#include "timer.h"
@@ -594,6 +604,13 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
 
             break;
 
+            case 4:
+                    // La DMA lee del mismo flujo SPI que el puerto 57H.
+                    source_pointer=tsconf_ram_mem_table[0];
+                    destination_pointer=tsconf_ram_mem_table[0];
+                    source_mask=destination_mask=0x3FFFFF;
+            break;
+
             case 8:
 
                     //printf ("RAM (Dst) is filled with word from RAM (Src)\n");
@@ -696,6 +713,12 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
                     //source +=2;
                     incremento_destino=incremento_origen=2;
 
+            break;
+
+            case 4:
+                    destination_pointer[destination]=tsconf_sd_read_byte();
+                    destination_pointer[(destination+1)&destination_mask]=tsconf_sd_read_byte();
+                    incremento_destino=2;
             break;
 
             case 8:

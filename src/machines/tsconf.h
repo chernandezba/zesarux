@@ -191,5 +191,6 @@ extern void tsconf_zifi_write_command_reg(z80_byte value);
 extern z80_byte tsconf_zifi_read_input_fifo_status(void);
 extern z80_byte tsconf_zifi_read_output_fifo_status(void);
 extern z80_byte tsconf_sd_read_buffer;
+extern z80_byte tsconf_sd_read_byte(void);
 
 #endif
