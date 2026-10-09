@@ -9445,6 +9445,15 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
     }
 
 
+    /* Las flechas de ZEsarUX mueven el joystick sin modificar la matriz ZX.
+       BaseConf también debe entregarlas al FIFO PS/2 del AVR. */
+    if (MACHINE_IS_BASECONF) {
+        if (tecla==UTIL_KEY_LEFT) baseconf_ps2_cursor_event(0,pressrelease);
+        if (tecla==UTIL_KEY_RIGHT) baseconf_ps2_cursor_event(1,pressrelease);
+        if (tecla==UTIL_KEY_DOWN) baseconf_ps2_cursor_event(2,pressrelease);
+        if (tecla==UTIL_KEY_UP) baseconf_ps2_cursor_event(3,pressrelease);
+    }
+
     switch (tecla) {
         case UTIL_KEY_SPACE:
         case 32:

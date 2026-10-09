@@ -113,6 +113,7 @@ extern void baseconf_pre_opcode_fetch(z80_int direccion);
 extern void baseconf_post_opcode_fetch(z80_byte *opcode);
 extern void baseconf_handle_nmi(void);
 extern void baseconf_check_pending_nmi(void);
+extern void baseconf_ps2_cursor_event(int direction,int pressed);
 extern int baseconf_memory_write_allowed(z80_int direccion);
 extern int baseconf_text_mode_active(void);
 extern z80_byte baseconf_get_video_mode(void);

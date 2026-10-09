@@ -581,6 +581,16 @@ static void baseconf_ps2_enqueue(z80_byte value)
     baseconf_ps2_fifo_count++;
 }
 
+// Envía una flecha PS/2: direction 0=izquierda, 1=derecha, 2=abajo, 3=arriba; pressed indica pulsación o liberación.
+void baseconf_ps2_cursor_event(int direction,int pressed)
+{
+    static const z80_byte codes[4]={0x6b,0x74,0x72,0x75};
+    if (baseconf_cmos_extension_type!=2 || direction<0 || direction>3) return;
+    baseconf_ps2_enqueue(0xe0);
+    if (!pressed) baseconf_ps2_enqueue(0xf0);
+    baseconf_ps2_enqueue(codes[direction]);
+}
+
 // Detecta cambios de la matriz y genera códigos PS/2 set 2; sin retorno.
 static void baseconf_ps2_scan_keyboard(void)
 {
