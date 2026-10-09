@@ -3967,6 +3967,7 @@ Bit	Function
 
     tbblue_registers[0x22]=0;
     tbblue_registers[0xC4]=0x81;
+    tbblue_im2_ula_in_service=0;
 
     tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0]=0;
     tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1]=255;
@@ -8856,6 +8857,15 @@ z80_byte tbblue_uartbridge_readstatus(void)
 }
 
 int tbblue_pendiente_retn_stackless=0;
+
+//Hw im2 mode: ULA interrupt has been accepted and its ISR has not yet exited with RETI
+int tbblue_im2_ula_in_service=0;
+
+void tbblue_reti(void)
+{
+    //Only RETI ends a hw im2 interrupt service routine. RET does not, so the ULA interrupt stays blocked
+    tbblue_im2_ula_in_service=0;
+}
 
 //prueba
 //int tbblue_prueba_dentro_nmi=0;
