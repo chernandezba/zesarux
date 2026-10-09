@@ -178,7 +178,18 @@ static const z80_byte baseconf_avr_boot_version[16]={
 
 static z80_byte baseconf_change_ram_page_7ffd(z80_byte value);
 static z80_byte baseconf_change_rom_page_trdos(z80_byte value);
-static void baseconf_ps2_scan_keyboard(void);
+void baseconf_ps2_scan_keyboard(void);
+
+// Reinicia la extensión PS/2 compartida por BaseConf y TSConf.
+void baseconf_ps2_reset(void)
+{
+    int i;
+    baseconf_cmos_extension_type=0;
+    baseconf_ps2_fifo_read=0;
+    baseconf_ps2_fifo_write=0;
+    baseconf_ps2_fifo_count=0;
+    for (i=0;i<8;i++) baseconf_ps2_previous_rows[i]=0xff;
+}
 
 // Traduce puerto_l IDE al índice del registro ATA; devuelve -1 si no corresponde.
 static int baseconf_ide_register(z80_byte puerto_l)
@@ -592,7 +603,7 @@ void baseconf_ps2_cursor_event(int direction,int pressed)
 }
 
 // Detecta cambios de la matriz y genera códigos PS/2 set 2; sin retorno.
-static void baseconf_ps2_scan_keyboard(void)
+void baseconf_ps2_scan_keyboard(void)
 {
     static const z80_byte scan_codes[8][5]={
         {0x12,0x1a,0x22,0x21,0x2a},
@@ -1599,11 +1610,7 @@ void baseconf_hard_reset(void)
     baseconf_ide_transfer_command=0;
     baseconf_ide_transfer_bytes=0;
     baseconf_ide_sectors_remaining=0;
-    baseconf_cmos_extension_type=0;
-    baseconf_ps2_fifo_read=0;
-    baseconf_ps2_fifo_write=0;
-    baseconf_ps2_fifo_count=0;
-    for (i=0;i<8;i++) baseconf_ps2_previous_rows[i]=0xff;
+    baseconf_ps2_reset();
     baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
 

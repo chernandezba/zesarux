@@ -74,6 +74,10 @@ Fixed ZX Vision:
 - Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 - Fixed clicking on previous menu and menu was closed randomly
 
+Fixed ZX Evo TSConf:
+- Fixed accessing SD/MMC card (SD Z-Controller)
+- Fixed reading keyboard on PS/2 mode (for Wild Commander for example)
+
 Fixed queries using Speccy Online Browser
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo

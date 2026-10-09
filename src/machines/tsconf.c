@@ -1249,6 +1249,8 @@ void tsconf_hard_reset(void)
 
   debug_printf(VERBOSE_DEBUG,"TSconf Hard reset cpu");
 
+  baseconf_ps2_reset();
+
   reset_cpu();
 
 

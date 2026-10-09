@@ -7563,7 +7563,11 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 		//Puertos nvram
 		if (puerto==0xeff7) return puerto_eff7;
 		if (puerto==0xdff7) return zxevo_last_port_dff7;
-		if (puerto==0xbff7) return zxevo_nvram[zxevo_last_port_dff7];
+		if (puerto==0xbff7) {
+            if ((puerto_eff7&128) && zxevo_last_port_dff7>=0xf0 && !(zxevo_nvram[0x0c]&0x80))
+                return baseconf_read_cmos();
+            return zxevo_nvram[zxevo_last_port_dff7];
+        }
 		if (puerto_l==0xaf) return tsconf_get_af_port(puerto_h);
 
 		//Puertos ZIFI
@@ -9429,7 +9433,11 @@ acts as expected unless this registe is explicitly changed by the user/software.
 
 					if (puerto==0xbff7) {
 						//Si esta permitida la escritura
-						if (puerto_eff7&128) zxevo_nvram[zxevo_last_port_dff7]=value;
+						if (puerto_eff7&128) {
+                            if (zxevo_last_port_dff7>=0xf0 && !(zxevo_nvram[0x0c]&0x80))
+                                baseconf_write_cmos(value);
+                            else zxevo_nvram[zxevo_last_port_dff7]=value;
+                        }
 					}
 
 					if (puerto_l==0xaf) tsconf_write_af_port(puerto_h,value);

@@ -279,8 +279,7 @@ tsconf
 Parece que para iniciar de la mmc:
 *tiene que ser fat32
 *arranca el archivo boot.$c
-./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmc-no-psistent-writes --zoom 1
-
+./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmco-persistent-writes --zoom 1
 ---
 
 

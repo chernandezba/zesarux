@@ -74,6 +74,10 @@ Corregido ZX Vision:
 - Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 - Corregido al pulsar en un menú previo y el menú se cerraba aleatoriamente
 
+Corregido ZX Evo TSConf:
+- Corregido al acceder a tarjeta SD/MMC (SD Z-Controller)
+- Corregido al leer teclado en modo PS/2 (para Wild Commander por ejemplo)
+
 Corregidas consultas usando el Speccy Online Browser
 Corregido arranque de Spectrum Next con NextZXOS 2.09
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo
