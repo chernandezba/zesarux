@@ -467,6 +467,14 @@ void core_spectrum_fin_frame_pantalla(void)
                     interrupcion_maskable_generada.v=0;
                 }
             }
+
+            //ZX Spectrum Next hardware IM 2 mode: check nextreg 0xC4 ULA interrupt enable
+            if (MACHINE_IS_TBBLUE && (tbblue_registers[0xC0] & 0x01)) {
+                //In hw IM 2 mode, check if ULA interrupt is enabled in nextreg 0xC4 bit 0
+                if (!(tbblue_registers[0xC4] & 0x01)) {
+                    interrupcion_maskable_generada.v=0;
+                }
+            }
         }
 
         //TSConf lo gestiona mediante interrupciones de frame
