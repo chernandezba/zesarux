@@ -170,6 +170,14 @@ int scorpion_trdos_is_active(void)
     return scorpion_trdos_active.v;
 }
 
+void scorpion_nmi(void)
+{
+    // MAGIC selecciona el monitor antes de leer la instrucción en 0066h.
+    scorpion_trdos_active.v=0;
+    puerto_8189=(puerto_8189 & ~1) | 2;
+    scorpion_mem_page_rom();
+}
+
 void scorpion_write_port_1ffd(z80_byte value)
 {
     puerto_8189=value;

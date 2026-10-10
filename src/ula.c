@@ -46,6 +46,7 @@
 #include "interface007.h"
 #include "dinamid3.h"
 #include "operaciones.h"
+#include "scorpion.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -329,6 +330,8 @@ void nmi_handle_pending_prepost_fetch(void)
     nmi_pending_pre_opcode=0;
     nmi_pending_post_opcode=0;
 
+    if (MACHINE_IS_SCORPION) scorpion_nmi();
+
     if (multiface_enabled.v) {
 		multiface_map_memory();
         multiface_lockout=0;
@@ -422,6 +425,11 @@ void generate_nmi_prepare_fetch(void)
     //Vamos a suponer que lo normal es que salte en 67h, o sea, con post_opcode
 
     nmi_pending_post_opcode=1;
+
+    if (MACHINE_IS_SCORPION) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }
 
     if (!MACHINE_IS_TBBLUE && multiface_enabled.v && multiface_type==MULTIFACE_TYPE_THREE) {
         //Pero en mf3 (no en tbblue), salta con pre
