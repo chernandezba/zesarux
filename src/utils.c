@@ -665,6 +665,8 @@ char *string_machines_list_description=
 
     " Pentagon Pentagon\n"
 
+    " Scorpion Scorpion ZS-256\n"
+
     " Chloe140 Chloe 140 SE\n"
     " Chloe280 Chloe 280 SE\n"
 
@@ -760,6 +762,7 @@ struct s_machines_info machines_info[]={
     {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM,FABRICANTE_MILES_GORDON},
 
     {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
+    {"Scorpion ZS-256",		            MACHINE_ID_SCORPION,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
     {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_TSLABS},
     {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
@@ -835,6 +838,7 @@ char *array_fabricantes_hotkey[]={
         "Ne~~xt Team",
         "~~Pentagon",
         "Scie~~nce of Cambridge",
+        "Scorpion",
         "Se~~ga",
         "~~Sinclair Research",
         "Spectravideo Intl",

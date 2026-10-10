@@ -406,6 +406,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_CZ_2000                  32
 #define MACHINE_ID_CZ_SPECTRUM              33
 #define MACHINE_ID_CZ_SPECTRUM_PLUS         34
+#define MACHINE_ID_SCORPION                 35
 
 #define MACHINE_ID_COLECO                   100
 
@@ -485,6 +486,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CZ_2000                  (current_machine_type==MACHINE_ID_CZ_2000)
 #define MACHINE_IS_CZ_SPECTRUM              (current_machine_type==MACHINE_ID_CZ_SPECTRUM)
 #define MACHINE_IS_CZ_SPECTRUM_PLUS         (current_machine_type==MACHINE_ID_CZ_SPECTRUM_PLUS)
+#define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION)
 
 #define MACHINE_IS_PRISM                    (current_machine_type==MACHINE_ID_PRISM)
 #define MACHINE_IS_TBBLUE                   (current_machine_type==MACHINE_ID_TBBLUE)
@@ -546,7 +548,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_SPECTRUM_48_PLUS_ENG         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
 #define MACHINE_IS_SPECTRUM_16_48               ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA || MACHINE_IS_CZ_2000 || MACHINE_IS_CZ_SPECTRUM || MACHINE_IS_CZ_SPECTRUM_PLUS)
 
-#define MACHINE_IS_SPECTRUM_128_P2              ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
+#define MACHINE_IS_SPECTRUM_128_P2              ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON || MACHINE_IS_SCORPION)
 #define MACHINE_IS_SPECTRUM_P2                  ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA))
 #define MACHINE_IS_SPECTRUM_P3                  (current_machine_type==MACHINE_ID_SPECTRUM_P3_40 || current_machine_type==MACHINE_ID_SPECTRUM_P3_41 || current_machine_type==MACHINE_ID_SPECTRUM_P3_SPA)
 

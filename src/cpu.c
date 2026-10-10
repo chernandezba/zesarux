@@ -1853,7 +1853,8 @@ void set_machine_params(void)
 32=CZ 2000
 33=CZ SPECTRUM
 34=CZ SPECTRUM_PLUS
-35-39=Reservadas otras Spectrum
+35=Scorpion ZS-256
+36-39=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000

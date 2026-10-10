@@ -2,7 +2,8 @@ ZEsarUX 13.1 - Zorro edition. 06 Octubre 2026
 
 * Cosas nuevas agregadas:
 
-Agregada (corregida en realidad) ZX Evo Baseconf
+Agregada máquina (corregida en realidad) ZX Evo Baseconf
+Agregada máquina Scorpion ZS-256
 Agregada opción en archivo de configuración para activar el uso de teclas numéricas en teclado Azerty sin tener que pulsar tecla Shift
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
 Agregado soporte de 60 hz para las máquinas: Master System, SG1000, MSX, Colecovision, Spectravideo, Timex Sinclair 2068

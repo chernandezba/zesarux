@@ -624,6 +624,7 @@ NedoPC
 New Horizons
 Pentagon
 Science of Cambridge
+Scorpion
 Sega
 Sinclair Research
 Spectravideo Intl
@@ -634,7 +635,7 @@ VTrucco/FB Labs
 ZXUno Team
 */
 
-#define TOTAL_FABRICANTES 23
+#define TOTAL_FABRICANTES 24
 
 //Deben estar en mismo orden alfabetico siempre, por ejemplo en array_fabricantes lo mismo que aqui
 #define FABRICANTE_AMSTRAD                      0
@@ -653,13 +654,15 @@ ZXUno Team
 #define FABRICANTE_NEXT_TEAM                    13
 #define FABRICANTE_PENTAGON                     14
 #define FABRICANTE_SCIENCE_OF_CAMBRIDGE         15
-#define FABRICANTE_SEGA                         16
-#define FABRICANTE_SINCLAIR                     17
-#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   18
-#define FABRICANTE_TIMEX_COMPUTERS              19
-#define FABRICANTE_TIMEX_SINCLAIR               20
-#define FABRICANTE_TSLABS                       21
-#define FABRICANTE_ZXUNO_TEAM                   22
+#define FABRICANTE_SCORPION                     16
+#define FABRICANTE_SEGA                         17
+#define FABRICANTE_SINCLAIR                     18
+#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   19
+#define FABRICANTE_TIMEX_COMPUTERS              20
+#define FABRICANTE_TIMEX_SINCLAIR               21
+#define FABRICANTE_TSLABS                       22
+#define FABRICANTE_ZXUNO_TEAM                   23
+
 
 
 extern char *array_fabricantes[];
