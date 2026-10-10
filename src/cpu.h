@@ -682,7 +682,7 @@ extern z80_bit windows_no_disable_console;
 
 
 
-
+extern void malloc_machine(int tamanyo);
 
 
 extern int exit_emulator_after_seconds;

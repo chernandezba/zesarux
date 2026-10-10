@@ -24,8 +24,17 @@
 
 #include "cpu.h"
 
+#define SCORPION_ROM_SIZE 64
+#define SCORPION_RAM_SIZE 256
+#define SCORPION_TOTAL_RAM_PAGES (SCORPION_RAM_SIZE/16)
+#define SCORPION_TOTAL_ROM_PAGES (SCORPION_ROM_SIZE/16)
 
+extern void scorpion_malloc_mem_machine(void);
 
+extern void scorpion_mem_page_rom(void);
+extern void scorpion_mem_page_ram(void);
+extern void scorpion_write_port_1ffd(z80_byte value);
 
+extern z80_byte *scorpion_ram_mem_table[];
 
 #endif

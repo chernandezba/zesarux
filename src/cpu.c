@@ -152,6 +152,7 @@
 #include "tv.h"
 #include "qsound.h"
 #include "core_ql.h"
+#include "scorpion.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1494,6 +1495,10 @@ void malloc_mem_machine(void) {
                 malloc_machine(65536);
                 random_ram(memoria_spectrum+16384,49152);
 
+        }
+
+        else if (MACHINE_IS_SCORPION) {
+            scorpion_malloc_mem_machine();
         }
 
         else if (MACHINE_IS_SPECTRUM_128_P2) {

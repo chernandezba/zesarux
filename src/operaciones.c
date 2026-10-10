@@ -95,6 +95,7 @@
 #include "utils_text_adventure.h"
 #include "lec.h"
 #include "zxmmcplus.h"
+#include "scorpion.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -9007,16 +9008,28 @@ Port: 10-- ---- ---- --0-
 			if (mem_paging_is_enabled()) {
 
 				puerto_32765=value;
-				//Paginar RAM y ROM
-                	        //32 kb rom, 128 ram
 
-	                        //asignar ram
-        	                mem_page_ram_128k();
+                if (MACHINE_IS_SCORPION) {
+                    //asignar ram
+                    scorpion_mem_page_ram();
 
-                	        //asignar rom
-                        	mem_page_rom_128k();
+                    //asignar rom
+                    scorpion_mem_page_rom();
+                }
 
-                if (zxmmcplus_enabled.v) zxmmcplus_sync_bit_7ffd();
+                else {
+
+                    //Paginar RAM y ROM
+                    //32 kb rom, 128 ram
+
+                    //asignar ram
+                    mem_page_ram_128k();
+
+                    //asignar rom
+                    mem_page_rom_128k();
+
+                    if (zxmmcplus_enabled.v) zxmmcplus_sync_bit_7ffd();
+                }
 
 			}
 
@@ -9024,6 +9037,17 @@ Port: 10-- ---- ---- --0-
 
         }
 	}
+
+    if (MACHINE_IS_SCORPION)
+    {
+		//Puerto tipicamente 8189
+
+		// the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
+		if ( (puerto & 61442 )== 4096) {
+			scorpion_write_port_1ffd(value);
+        }
+
+    }
 
 	if (MACHINE_IS_SPECTRUM_P2A_P3)
 	{
