@@ -329,11 +329,11 @@ condicion porque quiza se complica algunas cosillas
 
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
-*tablas de memoria 256kb ram, mapeo puertos ram y rom . continuar scorpion_malloc_mem_machine. bloqueo bit ram
+*bloqueo bit ram paginacion (bit 3)
 *se resetea con "PRINT K" o cualquier error de basic, probablemente porque no ha cargado las roms donde tocan ni pagina ram ni rom
 *nmi
 *trdos
 
-
+soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 -Para baseconf, tsconf y scorpion: no deberia salir la opcion de betadisk en menu zesarux de trd porque eso ya se gestiona internamente
