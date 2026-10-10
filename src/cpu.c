@@ -1081,7 +1081,13 @@ void reset_cpu(void)
 
 
     if (MACHINE_IS_SPECTRUM_128_P2) {
-        mem_set_normal_pages_128k();
+        if (MACHINE_IS_SCORPION) {
+            scorpion_set_normal_pages();
+        }
+
+        else {
+            mem_set_normal_pages_128k();
+        }
     }
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
