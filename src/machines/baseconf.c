@@ -191,6 +191,18 @@ void baseconf_ps2_reset(void)
     for (i=0;i<8;i++) baseconf_ps2_previous_rows[i]=0xff;
 }
 
+// Vacía las teclas PS/2 pendientes y sincroniza la matriz tras abrir el menú.
+void baseconf_ps2_clear_fifo(void)
+{
+    const z80_byte rows[8]={puerto_65278,puerto_65022,puerto_64510,puerto_63486,
+                             puerto_61438,puerto_57342,puerto_49150,puerto_32766};
+    int i;
+    baseconf_ps2_fifo_read=0;
+    baseconf_ps2_fifo_write=0;
+    baseconf_ps2_fifo_count=0;
+    for (i=0;i<8;i++) baseconf_ps2_previous_rows[i]=rows[i];
+}
+
 // Traduce puerto_l IDE al índice del registro ATA; devuelve -1 si no corresponde.
 static int baseconf_ide_register(z80_byte puerto_l)
 {
@@ -586,6 +598,7 @@ z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l)
 // Añade un byte a la cola PS/2 si queda espacio; sin retorno.
 static void baseconf_ps2_enqueue(z80_byte value)
 {
+    if (zxvision_key_not_sent_emulated_mach()) return;
     if (baseconf_ps2_fifo_count==(int)sizeof(baseconf_ps2_fifo)) return;
     baseconf_ps2_fifo[baseconf_ps2_fifo_write]=value;
     baseconf_ps2_fifo_write=(baseconf_ps2_fifo_write+1)%sizeof(baseconf_ps2_fifo);
@@ -600,6 +613,15 @@ void baseconf_ps2_cursor_event(int direction,int pressed)
     baseconf_ps2_enqueue(0xe0);
     if (!pressed) baseconf_ps2_enqueue(0xf0);
     baseconf_ps2_enqueue(codes[direction]);
+}
+
+// Envía una tecla de función al FIFO PS/2 si la extensión está activa.
+void baseconf_ps2_function_event(int function,int pressed)
+{
+    static const z80_byte codes[10]={0x05,0x06,0x04,0x0c,0x03,0x0b,0x83,0x0a,0x01,0x09};
+    if (baseconf_cmos_extension_type!=2 || function<1 || function>10) return;
+    if (!pressed) baseconf_ps2_enqueue(0xf0);
+    baseconf_ps2_enqueue(codes[function-1]);
 }
 
 // Detecta cambios de la matriz y genera códigos PS/2 set 2; sin retorno.

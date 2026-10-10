@@ -114,6 +114,8 @@ extern void baseconf_post_opcode_fetch(z80_byte *opcode);
 extern void baseconf_handle_nmi(void);
 extern void baseconf_check_pending_nmi(void);
 extern void baseconf_ps2_cursor_event(int direction,int pressed);
+extern void baseconf_ps2_function_event(int function,int pressed);
+extern void baseconf_ps2_clear_fifo(void);
 extern void baseconf_ps2_scan_keyboard(void);
 extern void baseconf_ps2_reset(void);
 extern int baseconf_memory_write_allowed(z80_int direccion);

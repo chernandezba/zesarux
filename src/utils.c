@@ -9452,6 +9452,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         if (tecla==UTIL_KEY_RIGHT) baseconf_ps2_cursor_event(1,pressrelease);
         if (tecla==UTIL_KEY_DOWN) baseconf_ps2_cursor_event(2,pressrelease);
         if (tecla==UTIL_KEY_UP) baseconf_ps2_cursor_event(3,pressrelease);
+        if (tecla>=UTIL_KEY_F1 && tecla<=UTIL_KEY_F10)
+            baseconf_ps2_function_event(tecla-UTIL_KEY_F1+1,pressrelease);
     }
 
     switch (tecla) {

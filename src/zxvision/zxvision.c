@@ -80,6 +80,7 @@
 #include "tbblue.h"
 #include "remote.h"
 #include "tsconf.h"
+#include "baseconf.h"
 #include "settings.h"
 #include "stats.h"
 #include "network.h"
@@ -29392,6 +29393,11 @@ void menu_inicio_reset_emulated_keys(void)
 
     reset_keyboard_ports();
 
+    //TODO: realmente aqui se entrara tambien
+    //aunque por ejemplo F5 no esté mapeado a abrir el menu y por tanto
+    //F5 nunca lo leera baseconf o tsconf
+    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) baseconf_ps2_clear_fifo();
+
     //Restaurar estado teclas especiales, para poder esperar a liberar dichas teclas, por ejemplo
     puerto_especial1=p_puerto_especial1;
     puerto_especial2=p_puerto_especial2;
@@ -29406,6 +29412,8 @@ void menu_inicio_reset_emulated_keys(void)
 
     menu_espera_no_tecla_no_mouse_movido();
     //menu_espera_no_tecla();
+
+    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) baseconf_ps2_clear_fifo();
 
     //printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
 }
