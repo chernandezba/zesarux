@@ -145,7 +145,8 @@ void scorpion_mem_page_rom(void)
 
     //TODO considerar mapeo TR-DOS
 
-    scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+    if (puerto_8189 & 1) scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
+    else scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
 
     printf("Mapeando rom %d\n",page_entra);
 }

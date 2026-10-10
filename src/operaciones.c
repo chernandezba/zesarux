@@ -754,7 +754,7 @@ void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)
 
     segmento=dir / 16384;
 
-    if (dir>16383) {
+    if (dir>16383 || (puerto_8189 & 1)) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -786,7 +786,7 @@ void poke_byte_scorpion(z80_int dir,z80_byte valor)
 
 
 
-    if (dir>16383) {
+    if (dir>16383 || (puerto_8189 & 1)) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -9087,7 +9087,7 @@ Port: 10-- ---- ---- --0-
 
 
 	//Puertos de Paginacion
-	if (MACHINE_IS_SPECTRUM_128_P2)
+	if (MACHINE_IS_SPECTRUM_128_P2 && !MACHINE_IS_SCORPION)
 	{
 		//Para 128k
 		//Puerto tipicamente 32765
@@ -9107,27 +9107,18 @@ Port: 10-- ---- ---- --0-
 
 				puerto_32765=value;
 
-                if (MACHINE_IS_SCORPION) {
-                    //asignar ram
-                    scorpion_mem_page_ram();
 
-                    //asignar rom
-                    scorpion_mem_page_rom();
-                }
+                //Paginar RAM y ROM
+                //32 kb rom, 128 ram
 
-                else {
+                //asignar ram
+                mem_page_ram_128k();
 
-                    //Paginar RAM y ROM
-                    //32 kb rom, 128 ram
+                //asignar rom
+                mem_page_rom_128k();
 
-                    //asignar ram
-                    mem_page_ram_128k();
+                if (zxmmcplus_enabled.v) zxmmcplus_sync_bit_7ffd();
 
-                    //asignar rom
-                    mem_page_rom_128k();
-
-                    if (zxmmcplus_enabled.v) zxmmcplus_sync_bit_7ffd();
-                }
 
 			}
 
@@ -9138,10 +9129,38 @@ Port: 10-- ---- ---- --0-
 
     if (MACHINE_IS_SCORPION)
     {
+
+        if (
+                (puerto & 0xD027) == 0x5025  ) {
+
+
+
+			if (mem_paging_is_enabled()) {
+
+				puerto_32765=value;
+
+
+                //asignar ram
+                scorpion_mem_page_ram();
+
+                //asignar rom
+                scorpion_mem_page_rom();
+
+
+
+
+			}
+
+
+
+        }
+
+
+
 		//Puerto tipicamente 8189
 
 		// the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
-		if ( (puerto & 61442 )== 4096) {
+		if ( (puerto & 0xD027)== 0x1025) {
 			scorpion_write_port_1ffd(value);
         }
 
