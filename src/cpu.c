@@ -2770,10 +2770,10 @@ void set_machine_params(void)
 
         case MACHINE_ID_SCORPION:
 
-            poke_byte=poke_byte_spectrum_128k;
-            peek_byte=peek_byte_spectrum_128k;
-            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-            poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+            poke_byte=poke_byte_scorpion;
+            peek_byte=peek_byte_scorpion;
+            peek_byte_no_time=peek_byte_no_time_scorpion;
+            poke_byte_no_time=poke_byte_no_time_scorpion;
             lee_puerto=lee_puerto_spectrum;
             ay_chip_present.v=1;
 

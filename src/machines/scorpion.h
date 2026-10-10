@@ -36,5 +36,6 @@ extern void scorpion_mem_page_ram(void);
 extern void scorpion_write_port_1ffd(z80_byte value);
 
 extern z80_byte *scorpion_ram_mem_table[];
+extern z80_byte *scorpion_memory_paged[];
 
 #endif

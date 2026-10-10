@@ -746,6 +746,62 @@ set_visualmembuffer(dir);
 	}
 }
 
+
+void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)
+{
+    int segmento;
+    z80_byte *puntero;
+
+    segmento=dir / 16384;
+
+    if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
+#ifdef EMULATE_VISUALMEM
+
+        set_visualmembuffer(dir);
+
+#endif
+        dir = dir & 16383;
+        puntero=scorpion_memory_paged[segmento]+dir;
+
+        *puntero=valor;
+    }
+}
+
+
+void poke_byte_scorpion(z80_int dir,z80_byte valor)
+{
+    int segmento;
+    z80_byte *puntero;
+
+    segmento=dir / 16384;
+
+#ifdef EMULATE_CONTEND
+    if (contend_pages_actual[segmento]) {
+        //printf ("t_estados: %d\n",t_estados);
+        t_estados += contend_table[ t_estados ];
+    }
+#endif
+    t_estados += 3;
+
+
+
+    if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
+#ifdef EMULATE_VISUALMEM
+
+        set_visualmembuffer(dir);
+
+#endif
+		dir = dir & 16383;
+		puntero=scorpion_memory_paged[segmento]+dir;
+
+//		printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
+		*puntero=valor;
+	}
+}
+
+
 void poke_byte_no_time_spectrum_128kp2a(z80_int dir,z80_byte valor)
 {
 int segmento;
@@ -1449,6 +1505,48 @@ z80_byte peek_byte_spectrum_128k(z80_int dir)
 	return *puntero;
 }
 
+
+z80_byte peek_byte_no_time_scorpion(z80_int dir)
+{
+	#ifdef EMULATE_VISUALMEM
+		set_visualmemreadbuffer(dir);
+	#endif
+
+	int segmento;
+	z80_byte *puntero;
+	segmento=dir / 16384;
+
+	dir = dir & 16383;
+	puntero=scorpion_memory_paged[segmento]+dir;
+
+	return *puntero;
+}
+
+
+z80_byte peek_byte_scorpion(z80_int dir)
+{
+	#ifdef EMULATE_VISUALMEM
+		set_visualmemreadbuffer(dir);
+	#endif
+
+	int segmento;
+	z80_byte *puntero;
+	segmento=dir / 16384;
+
+#ifdef EMULATE_CONTEND
+    if (contend_pages_actual[segmento]) {
+            t_estados += contend_table[ t_estados ];
+    }
+#endif
+    t_estados += 3;
+
+
+
+	dir = dir & 16383;
+	puntero=scorpion_memory_paged[segmento]+dir;
+
+	return *puntero;
+}
 
 
 
