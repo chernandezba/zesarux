@@ -468,6 +468,19 @@ void core_spectrum_fin_frame_pantalla(void)
                     interrupcion_maskable_generada.v=0;
                 }
             }
+
+            //ZX Spectrum Next hardware IM 2 mode: check nextreg 0xC4 ULA interrupt enable
+            if (MACHINE_IS_TBBLUE && (tbblue_registers[0xC0] & 0x01)) {
+                //In hw IM 2 mode, check if ULA interrupt is enabled in nextreg 0xC4 bit 0
+                if (!(tbblue_registers[0xC4] & 0x01)) {
+                    interrupcion_maskable_generada.v=0;
+                }
+
+                //Do not generate a new ULA interrupt while its ISR has not finished with RETI
+                if (tbblue_im2_ula_in_service) {
+                    interrupcion_maskable_generada.v=0;
+                }
+            }
         }
 
         //TSConf lo gestiona mediante interrupciones de frame
@@ -918,6 +931,10 @@ void core_spectrum_handle_interrupts(void)
             if (MACHINE_IS_TSCONF) temp_i=reg_i*256+tsconf_vector_fired_interrupt;
 
             else temp_i=get_im2_interrupt_vector();
+
+            //Hw im2 mode: ULA interrupt is in service until its ISR exits with RETI
+            if (MACHINE_IS_TBBLUE && (tbblue_registers[0xC0] & 0x01)) tbblue_im2_ula_in_service=1;
+
             dir_l=peek_byte(temp_i++);
             dir_h=peek_byte(temp_i);
             reg_pc=value_8_to_16(dir_h,dir_l);
