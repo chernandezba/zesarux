@@ -108,18 +108,46 @@ void scorpion_malloc_mem_machine(void)
 
 void scorpion_mem_page_ram(void)
 {
-    //TODO de momento solo 128kb de ram
+
     z80_byte page_entra=puerto_32765 & 7;
 
+//| `7FFDh` | D0–D2 | Seleccionan una página de 0 a 7. |
+//| `1FFDh` | D4 | Añade 8 al número de página cuando vale 1. |
+
+    if (puerto_8189 & 16) page_entra +=8;
+
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
+
+    printf("Mapeando ram %d\n",page_entra);
 }
 
 void scorpion_mem_page_rom(void)
 {
-    //TODO de momento solo 32kb rom
-    z80_byte page_entra=(puerto_32765 & 16) >> 4;
+
+    z80_byte page_entra;
+
+    /*
+
+| Página | Desplazamiento en la ROM | Contenido | Selección |
+|---|---:|---|---|
+| 0 | `0000h` | BASIC 128 | `1FFDh.D1=0`, `7FFDh.D4=0` |
+| 1 | `4000h` | BASIC 48 | `1FFDh.D1=0`, `7FFDh.D4=1` |
+| 2 | `8000h` | Monitor de servicio | `1FFDh.D1=1` |
+| 3 | `C000h` | TR-DOS | Se activa mediante la lógica de TR-DOS, no mediante la selección BASIC de `7FFDh`. |
+    */
+    if ((puerto_8189 & 2)==0) {
+        page_entra=(puerto_32765 & 16) >> 4;
+    }
+
+    else {
+        page_entra=2;
+    }
+
+    //TODO considerar mapeo TR-DOS
 
     scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+
+    printf("Mapeando rom %d\n",page_entra);
 }
 
 void scorpion_write_port_1ffd(z80_byte value)
