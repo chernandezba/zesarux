@@ -165,6 +165,11 @@ void scorpion_trdos_update(z80_int dir)
     }
 }
 
+int scorpion_trdos_is_active(void)
+{
+    return scorpion_trdos_active.v;
+}
+
 void scorpion_write_port_1ffd(z80_byte value)
 {
     puerto_8189=value;
