@@ -333,3 +333,7 @@ condicion porque quiza se complica algunas cosillas
 *se resetea con "PRINT K" o cualquier error de basic, probablemente porque no ha cargado las roms donde tocan ni pagina ram ni rom
 *nmi
 *trdos
+
+
+
+-Para baseconf, tsconf y scorpion: no deberia salir la opcion de betadisk en menu zesarux de trd porque eso ya se gestiona internamente
