@@ -2763,6 +2763,17 @@ void set_machine_params(void)
         break;
 
 
+        case MACHINE_ID_SCORPION:
+
+            poke_byte=poke_byte_spectrum_128k;
+            peek_byte=peek_byte_spectrum_128k;
+            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+            poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+
+        break;
+
         case MACHINE_ID_CHROME:
             poke_byte=poke_byte_chrome;
             peek_byte=peek_byte_chrome;
@@ -3379,8 +3390,12 @@ void rom_load(char *romfilename)
             romfilename="48es.rom";
             break;
 
-            case 21:
+            case MACHINE_ID_PENTAGON:
             romfilename="pentagon.rom";
+            break;
+
+            case MACHINE_ID_SCORPION:
+            romfilename="scorpion.rom";
             break;
 
             case MACHINE_ID_COLECO:
@@ -3560,6 +3575,13 @@ void rom_load(char *romfilename)
 
     else if (MACHINE_IS_SPECTRUM_16_48) {
         //Spectrum 16k rom
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+    }
+
+    else if (MACHINE_IS_SCORPION) {
         leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);

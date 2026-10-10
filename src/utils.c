@@ -4101,6 +4101,8 @@ int get_rom_size(int machine)
 
     if (MACHINE_IS_SPECTRUM_16_48) rom_size=16384;
 
+    else if (MACHINE_IS_SCORPION) rom_size=65536;
+
     else if (MACHINE_IS_SPECTRUM_128_P2) rom_size=32768;
 
     else if (MACHINE_IS_SPECTRUM_P2A_P3) rom_size=65536;
@@ -14265,6 +14267,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"TBBlue",19,bitmap_button_ext_desktop_my_machine_spectrum_next},
 
    {"Pentagon",21,bitmap_button_ext_desktop_my_machine_pentagon},
+   {"Scorpion",MACHINE_ID_SCORPION,bitmap_button_ext_desktop_userdefined},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},
    {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_tsconf},
