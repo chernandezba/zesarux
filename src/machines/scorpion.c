@@ -65,6 +65,7 @@ z80_byte *scorpion_rom_mem_table[SCORPION_TOTAL_ROM_PAGES];
 
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
+static z80_bit scorpion_trdos_active={0};
 
 void scorpion_init_memory_tables(void)
 {
@@ -88,6 +89,7 @@ void scorpion_init_memory_tables(void)
 
 void scorpion_set_normal_pages(void)
 {
+    scorpion_trdos_active.v=0;
     scorpion_memory_paged[0]=scorpion_rom_mem_table[0];
     scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
@@ -117,8 +119,6 @@ void scorpion_mem_page_ram(void)
     if (puerto_8189 & 16) page_entra +=8;
 
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
-
-    printf("Mapeando ram %d\n",page_entra);
 }
 
 void scorpion_mem_page_rom(void)
@@ -143,12 +143,26 @@ void scorpion_mem_page_rom(void)
         page_entra=2;
     }
 
-    //TODO considerar mapeo TR-DOS
-
-    if (puerto_8189 & 1) scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
+    if (scorpion_trdos_active.v) scorpion_memory_paged[0]=scorpion_rom_mem_table[3];
+    else if (puerto_8189 & 1) scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
     else scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+}
 
-    printf("Mapeando rom %d\n",page_entra);
+void scorpion_trdos_update(z80_int dir)
+{
+    //TR-DOS se activa al ejecutar en 3D00h-3DFFh desde BASIC 48.
+    //Se desactiva al ejecutar fuera de la zona de ROM.
+    if (scorpion_trdos_active.v) {
+        if (dir>=0x4000) {
+            scorpion_trdos_active.v=0;
+            scorpion_mem_page_rom();
+        }
+    }
+    else if (dir>=0x3D00 && dir<=0x3DFF &&
+             (puerto_8189 & 3)==0 && (puerto_32765 & 16)) {
+        scorpion_trdos_active.v=1;
+        scorpion_mem_page_rom();
+    }
 }
 
 void scorpion_write_port_1ffd(z80_byte value)

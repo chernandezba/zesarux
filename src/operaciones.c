@@ -1221,6 +1221,7 @@ z80_byte peek_byte_ace(z80_int dir)
 
 z80_byte fetch_opcode_spectrum(void)
 {
+    if (MACHINE_IS_SCORPION) scorpion_trdos_update(reg_pc);
 #ifdef EMULATE_VISUALMEM
 	set_visualmemopcodebuffer(reg_pc);
 #endif
@@ -7742,7 +7743,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
 //Final. Puertos de paginacion y puerto no asignado. No agregar nada despues de aqui
 //Puertos de Paginacion. En caso de 128k y +2, acaba escribiendo el valor leido del bus idle en el puerto de paginacion
-if (MACHINE_IS_SPECTRUM_128_P2)
+if (MACHINE_IS_SPECTRUM_128_P2 && !MACHINE_IS_SCORPION)
 {
 	//Para 128k
 	//Puerto tipicamente 32765

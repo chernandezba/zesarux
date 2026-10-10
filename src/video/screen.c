@@ -29,6 +29,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "mem128.h"
+#include "scorpion.h"
 #include "operaciones.h"
 #include "zx8081.h"
 #include "charset.h"
@@ -1612,6 +1613,10 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
             offset_ram_5=timex_home_ram_mem_table[0];
         }
 
+        else if (MACHINE_IS_SCORPION) {
+            offset_ram_5=scorpion_ram_mem_table[5];
+        }
+
         else {
             //modelos 128k y +2a
             offset_ram_5=ram_mem_table[5];
@@ -1654,6 +1659,10 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
 
 
             //modelos 128k
+            else if (MACHINE_IS_SCORPION) {
+                puntero=scorpion_rom_mem_table[1]+dir;
+            }
+
             else if (MACHINE_IS_SPECTRUM_128_P2) {
                 //ROM1
                 puntero=&memoria_spectrum[16384]+dir;
@@ -1674,7 +1683,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
 
             segmento=dir / 16384;
             dir = dir & 16383;
-            puntero=memory_paged[segmento];
+            puntero=MACHINE_IS_SCORPION ? scorpion_memory_paged[segmento] : memory_paged[segmento];
 
 
 

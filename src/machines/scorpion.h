@@ -32,10 +32,12 @@
 extern void scorpion_malloc_mem_machine(void);
 
 extern void scorpion_mem_page_rom(void);
+extern void scorpion_trdos_update(z80_int dir);
 extern void scorpion_mem_page_ram(void);
 extern void scorpion_write_port_1ffd(z80_byte value);
 
 extern z80_byte *scorpion_ram_mem_table[];
+extern z80_byte *scorpion_rom_mem_table[];
 extern z80_byte *scorpion_memory_paged[];
 extern void scorpion_set_normal_pages(void);
 
