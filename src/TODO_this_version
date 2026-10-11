@@ -324,18 +324,16 @@ https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.u
 
 
 -Scorpion
-*Consideraremos condicion MACHINE_IS_SPECTRUM_128_P2 aunque no es exactamente igual. Quiza hay que quitarlo de esa
-condicion porque quiza se complica algunas cosillas
-*separar fetch_opcode_spectrum para scorpion
+
+ok *separar fetch_opcode_spectrum para scorpion
 *tape traps load & save
 *activar covox scorpion?
 *rom de gmx y paginado. de momento usa rom de turbo
+*mover funciones peek y poke de scorpion a scorpion.h
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
-*bloqueo bit ram paginacion (bit 3)
-*se resetea con "PRINT K" o cualquier error de basic, probablemente porque no ha cargado las roms donde tocan ni pagina ram ni rom
-*nmi
-*trdos
+ok *bloqueo bit ram paginacion (bit 3)
+
 
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 

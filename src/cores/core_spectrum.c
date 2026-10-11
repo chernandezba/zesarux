@@ -760,6 +760,11 @@ void core_spectrum_handle_interrupts(void)
 
 
 
+    // En Scorpion, MAGIC solo entra en el monitor si la CPU ejecuta desde RAM.
+    if (MACHINE_IS_SCORPION && reg_pc<0x4000) {
+        interrupcion_non_maskable_generada.v=0;
+    }
+
     if (interrupcion_non_maskable_generada.v) {
         debug_anota_retorno_step_nmi();
         //printf ("generada nmi\n");

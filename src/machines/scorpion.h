@@ -37,6 +37,7 @@ extern int scorpion_trdos_is_active(void);
 extern void scorpion_mem_page_ram(void);
 extern void scorpion_write_port_1ffd(z80_byte value);
 extern void scorpion_nmi(void);
+extern z80_byte scorpion_read_ay_port_a(z80_byte ay_value);
 
 extern z80_byte *scorpion_ram_mem_table[];
 extern z80_byte *scorpion_rom_mem_table[];

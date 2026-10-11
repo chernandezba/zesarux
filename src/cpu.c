@@ -2806,6 +2806,8 @@ void set_machine_params(void)
             lee_puerto=lee_puerto_spectrum;
             ay_chip_present.v=1;
 
+            fetch_opcode=fetch_opcode_scorpion;
+
         break;
 
         case MACHINE_ID_CHROME:

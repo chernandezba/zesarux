@@ -1218,13 +1218,21 @@ z80_byte peek_byte_ace(z80_int dir)
 
 }
 
+z80_byte fetch_opcode_scorpion(void)
+{
+
+    scorpion_trdos_update(reg_pc);
+    if (scorpion_trdos_is_active()) betadisk_handle_trdos_traps();
+
+#ifdef EMULATE_VISUALMEM
+	set_visualmemopcodebuffer(reg_pc);
+#endif
+	return peek_byte_no_time (reg_pc);
+}
 
 z80_byte fetch_opcode_spectrum(void)
 {
-    if (MACHINE_IS_SCORPION) {
-        scorpion_trdos_update(reg_pc);
-        if (scorpion_trdos_is_active()) betadisk_handle_trdos_traps();
-    }
+
 #ifdef EMULATE_VISUALMEM
 	set_visualmemopcodebuffer(reg_pc);
 #endif
@@ -9165,7 +9173,7 @@ Port: 10-- ---- ---- --0-
 
 
 
-			if (mem_paging_is_enabled()) {
+			if ((puerto_32765 & 32)==0) {
 
 				puerto_32765=value;
 

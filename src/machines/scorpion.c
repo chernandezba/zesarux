@@ -75,6 +75,13 @@ z80_byte *scorpion_rom_mem_table[SCORPION_TOTAL_ROM_PAGES];
 z80_byte *scorpion_memory_paged[4];
 static z80_bit scorpion_trdos_active={0};
 
+z80_byte scorpion_read_ay_port_a(z80_byte ay_value)
+{
+    // En Turbo+ las entradas 0-3 y 5 leen D0-D4 de 7FFD; la entrada 4 lee D4 de 1FFD.
+    return (ay_value & 0xc0) | (puerto_32765 & 0x0f) |
+           (puerto_8189 & 0x10) | ((puerto_32765 & 0x10) << 1);
+}
+
 void scorpion_init_memory_tables(void)
 {
     //Primero rom y luego ram

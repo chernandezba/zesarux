@@ -1475,7 +1475,7 @@ audio_sine_table.o: audio/audio_sine_table.c audio/audio_sine_table.h audio/audi
 audionull.o: audio/audionull.c audio/audionull.h cpu.h debug.h audio/audio.h settings.h
 	\$(CC) \$(CFLAGS) -c audio/audionull.c
 
-ay38912.o: soundchips/ay38912.c soundchips/ay38912.h cpu.h audio/audio.h joystick.h debug.h zxvision/zxvision.h
+ay38912.o: soundchips/ay38912.c soundchips/ay38912.h cpu.h audio/audio.h joystick.h debug.h zxvision/zxvision.h machines/scorpion.h
 	\$(CC) \$(CFLAGS) -c soundchips/ay38912.c
 
 qsound.o: soundchips/qsound.c soundchips/qsound.h machines/ql.h audio/audio.h debug.h soundchips/ay38912.h utils.h cpus/m68k.h

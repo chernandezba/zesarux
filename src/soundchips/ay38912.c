@@ -121,6 +121,7 @@ RE, RF: Registros de AY-RS232 para midi externo
 #include "debug.h"
 #include "joystick.h"
 #include "zxvision.h"
+#include "scorpion.h"
 
 
 //Indica si esta presente el chip o no
@@ -978,6 +979,10 @@ z80_byte in_port_ay(z80_byte puerto_h)
         //Aplicar mascara de bits. Bits no usados en registros AY se ponen a 0
         //printf ("Retornando valor registro chip AY %02XH\n",r);
         valor_retorno &=ay_mascara_registros[r];
+
+        if (r==14 && ay_chip_selected==0 && MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+            valor_retorno=scorpion_read_ay_port_a(valor_retorno);
+        }
 
         return valor_retorno;
     }
