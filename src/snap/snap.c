@@ -3131,8 +3131,7 @@ void load_z80_snapshot_aux(char *archivo,z80_byte *buffer_lectura)
 
 					case 10:
 						//Scorpion 256k
-						current_machine_type=6;
-						debug_printf (VERBOSE_ERR,"Scorpion 256k is not emulated yet. Setting to Spectrum 128k");
+						current_machine_type=MACHINE_ID_SCORPION_ZS_256;
 					break;
 
 					case 11:

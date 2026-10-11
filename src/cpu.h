@@ -407,6 +407,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_CZ_SPECTRUM              33
 #define MACHINE_ID_CZ_SPECTRUM_PLUS         34
 #define MACHINE_ID_SCORPION_ZS_256          35
+#define MACHINE_ID_SCORPION_ZS_256_TURBO    36
+#define MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS   37
+#define MACHINE_ID_SCORPION_GMX             38
 
 #define MACHINE_ID_COLECO                   100
 
@@ -486,7 +489,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CZ_2000                  (current_machine_type==MACHINE_ID_CZ_2000)
 #define MACHINE_IS_CZ_SPECTRUM              (current_machine_type==MACHINE_ID_CZ_SPECTRUM)
 #define MACHINE_IS_CZ_SPECTRUM_PLUS         (current_machine_type==MACHINE_ID_CZ_SPECTRUM_PLUS)
-#define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256)
+#define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256 || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS || current_machine_type==MACHINE_ID_SCORPION_GMX)
 
 #define MACHINE_IS_PRISM                    (current_machine_type==MACHINE_ID_PRISM)
 #define MACHINE_IS_TBBLUE                   (current_machine_type==MACHINE_ID_TBBLUE)
@@ -542,7 +545,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Condiciones de maquinas activas
 //De maquinas Combinadas
 //
-#define MACHINE_IS_SPECTRUM                     (current_machine_type<40)
+#define MACHINE_IS_SPECTRUM                     (current_machine_type<50)
 
 #define MACHINE_IS_SPECTRUM_48_PLUS_SPA         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
 #define MACHINE_IS_SPECTRUM_48_PLUS_ENG         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)

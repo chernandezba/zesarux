@@ -328,6 +328,7 @@ https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.u
 condicion porque quiza se complica algunas cosillas
 *separar fetch_opcode_spectrum para scorpion
 *tape traps load & save
+*activar covox scorpion?
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
 *bloqueo bit ram paginacion (bit 3)

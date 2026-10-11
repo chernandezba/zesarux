@@ -1865,7 +1865,10 @@ void set_machine_params(void)
 33=CZ SPECTRUM
 34=CZ SPECTRUM_PLUS
 35=Scorpion ZS-256
-36-39=Reservadas otras Spectrum
+36=Scorpion ZS-256 Turbo
+37=Scorpion ZS-256 Turbo+
+38=Scorpion GMX
+39-49=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -2792,6 +2795,9 @@ void set_machine_params(void)
 
 
         case MACHINE_ID_SCORPION_ZS_256:
+        case MACHINE_ID_SCORPION_ZS_256_TURBO:
+        case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
+        case MACHINE_ID_SCORPION_GMX:
 
             poke_byte=poke_byte_scorpion;
             peek_byte=peek_byte_scorpion;
@@ -3423,6 +3429,9 @@ void rom_load(char *romfilename)
             break;
 
             case MACHINE_ID_SCORPION_ZS_256:
+            case MACHINE_ID_SCORPION_ZS_256_TURBO:
+            case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
+            case MACHINE_ID_SCORPION_GMX:
             romfilename="scorpion.rom";
             break;
 

@@ -23,7 +23,7 @@ And also:
 * Inves Spectrum +
 * Sam Coupe
 * Pentagon 
-* Scorpion ZS-256
+* Scorpion ZS-256, Scorpion ZS-256 Turbo, Scorpion ZS-256 Turbo+, Scorpion GMX
 * Chloe 140 SE, 280 SE
 * Chrome
 * Prism
@@ -124,7 +124,7 @@ __FEATURES__
     * Inves Spectrum +
     * Sam Coupe
     * Pentagon
-    * Scorpion ZS-256
+    * Scorpion ZS-256, Scorpion ZS-256 Turbo, Scorpion ZS-256 Turbo+, Scorpion GMX
     * Chloe 140 SE, 280 SE
     * Chrome
     * Prism

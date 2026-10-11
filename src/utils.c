@@ -666,7 +666,10 @@ char *string_machines_list_description=
 
     " Pentagon Pentagon\n"
 
-    " Scorpion Scorpion ZS-256\n"
+    " Scorpion    Scorpion ZS-256\n"
+    " Scorpiont   Scorpion ZS-256 Turbo\n"
+    " Scorpiontp  Scorpion ZS-256 Turbo+\n"
+    " Scorpiongmx Scorpion GMX\n"
 
     " Chloe140 Chloe 140 SE\n"
     " Chloe280 Chloe 280 SE\n"
@@ -763,7 +766,10 @@ struct s_machines_info machines_info[]={
     {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM,FABRICANTE_MILES_GORDON},
 
     {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
-    {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,                 MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion ZS-256 Turbo",		    MACHINE_ID_SCORPION_ZS_256_TURBO,           MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion ZS-256 Turbo+",		    MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion GMX",		            MACHINE_ID_SCORPION_GMX,                    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
     {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_TSLABS},
     {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
@@ -14273,6 +14279,9 @@ struct s_machines_short_names_id machines_short_names_id[]={
 
    {"Pentagon",21,bitmap_button_ext_desktop_my_machine_pentagon},
    {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_userdefined},
+   {"Scorpiont",MACHINE_ID_SCORPION_ZS_256_TURBO,bitmap_button_ext_desktop_userdefined},
+   {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_userdefined},
+   {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_userdefined},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},
    {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_tsconf},
