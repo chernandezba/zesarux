@@ -6338,7 +6338,7 @@ z80_byte idle_bus_port(z80_int puerto)
 
 	//Caso 48k, 128k, tsconf. Retornar atributo de pantalla
 	//Parece que si en tsconf no retornamos esto, no acaba de arrancar la bios
-	if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_TBBLUE || MACHINE_IS_PRISM || MACHINE_IS_TSCONF) {
+	if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_TBBLUE || MACHINE_IS_PRISM || MACHINE_IS_TSCONF || MACHINE_IS_SCORPION) {
 		z80_byte valor_idle=idle_bus_port_atribute();
 
 		//int t_estados_en_linea=(t_estados % screen_testados_linea);
@@ -7746,7 +7746,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
 //Final. Puertos de paginacion y puerto no asignado. No agregar nada despues de aqui
 //Puertos de Paginacion. En caso de 128k y +2, acaba escribiendo el valor leido del bus idle en el puerto de paginacion
-if (MACHINE_IS_SPECTRUM_128_P2 && !MACHINE_IS_SCORPION)
+if (MACHINE_IS_SPECTRUM_128_P2)
 {
 	//Para 128k
 	//Puerto tipicamente 32765
@@ -9091,7 +9091,7 @@ Port: 10-- ---- ---- --0-
 
 
 	//Puertos de Paginacion
-	if (MACHINE_IS_SPECTRUM_128_P2 && !MACHINE_IS_SCORPION)
+	if (MACHINE_IS_SPECTRUM_128_P2)
 	{
 		//Para 128k
 		//Puerto tipicamente 32765

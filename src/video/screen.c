@@ -1597,7 +1597,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
         return caracter;
     }
 
-    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068) {
+    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_SCORPION) {
         z80_byte *offset_ram_5;
 
         //Si zxuno sin bootm

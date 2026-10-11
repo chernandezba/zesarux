@@ -1081,13 +1081,13 @@ void reset_cpu(void)
 
 
     if (MACHINE_IS_SPECTRUM_128_P2) {
-        if (MACHINE_IS_SCORPION) {
-            scorpion_set_normal_pages();
-        }
 
-        else {
-            mem_set_normal_pages_128k();
-        }
+        mem_set_normal_pages_128k();
+
+    }
+
+    if (MACHINE_IS_SCORPION) {
+        scorpion_set_normal_pages();
     }
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
@@ -2162,6 +2162,23 @@ void set_machine_params(void)
             screen_invisible_borde_derecho=104;
             keyboard_issue2.v=0; //El puerto FEH de Inves se comporta como issue 3
         }
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        contend_read=contend_read_128k;
+        contend_read_no_mreq=contend_read_no_mreq_128k;
+        contend_write_no_mreq=contend_write_no_mreq_128k;
+
+        ula_contend_port_early=ula_contend_port_early_128k;
+        ula_contend_port_late=ula_contend_port_late_128k;
+
+
+        screen_testados_linea=228;
+        screen_invisible_borde_superior=7;
+        screen_invisible_borde_derecho=104;
+
+        contend_pages_128k_p2a=contend_pages_128k;
+
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {

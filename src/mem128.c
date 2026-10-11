@@ -812,6 +812,16 @@ int if_spectrum_basic_rom_paged_in(void)
         return 1;
     }
 
+    if (MACHINE_IS_SCORPION)  {
+
+        //maquina 128k. rom 1 mapeada
+        if ((puerto_32765 & 16) ==16) {
+
+            return 1;
+        }
+        else return 0;
+    }
+
     if (MACHINE_IS_SPECTRUM_128_P2)  {
 
         //maquina 128k. rom 1 mapeada

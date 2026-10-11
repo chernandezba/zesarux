@@ -121,6 +121,7 @@
 #include "qsound.h"
 #include "menu_bitmaps.h"
 #include "baseconf.h"
+#include "scorpion.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -3798,6 +3799,27 @@ void cpu_history_regs_bin_restore(int indice)
     }
   }
 
+  if (MACHINE_IS_SCORPION) {
+    if (puerto_32765!=nuevo_puerto_32765) {
+        //printf("Hay cambio de ram y/o rom en %04XH. puerto 32765=%02XH. indice=%d\n",reg_pc,nuevo_puerto_32765,indice);
+
+        //Quitar el bit de bloqueo de paginacion si es que hay alguno ahora mismo, o no podriamos paginar
+        puerto_32765 &= (255-32);
+
+
+        puerto_32765=nuevo_puerto_32765;
+
+        //asignar ram
+        scorpion_mem_page_ram();
+
+        //asignar rom
+        scorpion_mem_page_rom();
+
+
+
+    }
+  }
+
 
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
@@ -6068,7 +6090,8 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
                   sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
           }
 
-      if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_128_P2 || TBBLUE_MACHINE_P2A) {
+      if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || MACHINE_IS_CHLOE ||
+        superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_128_P2 || TBBLUE_MACHINE_P2A || MACHINE_IS_SCORPION) {
 
         //En el caso de zxuno, no mostrar si paginacion desactivada por DI7FFD
         int mostrar=1;

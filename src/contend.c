@@ -1474,6 +1474,18 @@ z80_byte *contend_table_no_mreq;
 		//Empieza en 14335 con 65432100 Segun http://www.worldofspectrum.org/faq/reference/48kreference.htm
 	}
 
+	if (MACHINE_IS_SCORPION) {
+		//como si fuera la de 128k
+                timings=contend_patron_65432100;
+
+
+
+		offset_time=3; //6,5,4,3,2,1,0,0 pattern starts at 14361 segun http://www.worldofspectrum.org/faq/reference/128kreference.htm
+                offset_patron=-1;
+
+
+	}
+
 	if (MACHINE_IS_SPECTRUM_128_P2) {
 		//128k
                 timings=contend_patron_65432100;

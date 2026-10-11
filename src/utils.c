@@ -173,6 +173,7 @@
 #include "ql_extract_img.h"
 #include "ql_extract_win.h"
 #include "qsound.h"
+#include "scorpion.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
@@ -4195,6 +4196,10 @@ int get_ram_size(void)
 
     else if (MACHINE_IS_CPC_HAS_64K) {
         total_ram=64*1024;
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        total_ram=256*1024;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
@@ -15110,6 +15115,23 @@ int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
         }
     }
 
+    else if (MACHINE_IS_SCORPION) {
+        //ram_mem_table
+        //Si banco >7, hacer poke normal
+        if (banco>7) {
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+            poke_byte_no_time(direccion,valor);
+        }
+        else {
+            //Poke con banco de memoria
+            direccion = direccion & 16383;
+            z80_byte *puntero;
+            puntero=scorpion_ram_mem_table[banco]+direccion;
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
+            *puntero=valor;
+        }
+    }
+
     else if (MACHINE_IS_ZXUNO)  {
         if (ZXUNO_BOOTM_ENABLED) {
             debug_printf (VERBOSE_ERR,"Can not poke in ZX-Uno mode with BOOTM enabled");
@@ -15944,6 +15966,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       //como fallback, por defecto en spectrum 48kb ram
       size=49152;
 
+      if (MACHINE_IS_SCORPION) {
+        size=256*1024;
+      }
+
       if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
         size=131072*mem128_multiplicador;
       }
@@ -16019,6 +16045,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       *readwrite=1; //1 read, 2 write
       //como fallback por defecto en spectrum 16kb rom
       size=16384;
+
+      if (MACHINE_IS_SCORPION) {
+        size=65536;
+      }
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
         size=32768;
@@ -16561,7 +16591,10 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
           p=&memoria_spectrum[address+16384];
 
 
-
+      if (MACHINE_IS_SCORPION) {
+        //Saltar los 64kb de rom
+        p=&memoria_spectrum[address+65536];
+      }
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
         //Saltar los 32kb de rom
