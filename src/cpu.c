@@ -3428,11 +3428,23 @@ void rom_load(char *romfilename)
             romfilename="pentagon.rom";
             break;
 
+            //TODO: no está claro las versiones de la rom a usar
+            //Esta ZS_256 puede usar sin problemas la 2.95 pero al ser el primer modelo de scorpion,
+            //creo que es logico usar una de las primeras roms
             case MACHINE_ID_SCORPION_ZS_256:
+            romfilename="scorpion_2.3j.rom";
+            break;
+
             case MACHINE_ID_SCORPION_ZS_256_TURBO:
+            romfilename="scorpion_2.95.rom";
+            break;
+
             case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
+            romfilename="scorpion_2.95.rom";
+            break;
+
             case MACHINE_ID_SCORPION_GMX:
-            romfilename="scorpion.rom";
+            romfilename="scorpion_2.95.rom";
             break;
 
             case MACHINE_ID_COLECO:

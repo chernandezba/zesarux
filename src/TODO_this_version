@@ -329,6 +329,7 @@ condicion porque quiza se complica algunas cosillas
 *separar fetch_opcode_spectrum para scorpion
 *tape traps load & save
 *activar covox scorpion?
+*rom de gmx y paginado. de momento usa rom de turbo
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
 *bloqueo bit ram paginacion (bit 3)
