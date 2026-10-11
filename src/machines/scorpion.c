@@ -196,3 +196,12 @@ void scorpion_write_port_1ffd(z80_byte value)
     //asignar rom
     scorpion_mem_page_rom();
 }
+
+
+
+void scorpion_set_cpu_speed(int turbo)
+{
+
+    cpu_turbo_speed=turbo;
+    cpu_set_turbo_speed();
+}

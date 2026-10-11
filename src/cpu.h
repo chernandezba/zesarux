@@ -489,6 +489,14 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CZ_2000                  (current_machine_type==MACHINE_ID_CZ_2000)
 #define MACHINE_IS_CZ_SPECTRUM              (current_machine_type==MACHINE_ID_CZ_SPECTRUM)
 #define MACHINE_IS_CZ_SPECTRUM_PLUS         (current_machine_type==MACHINE_ID_CZ_SPECTRUM_PLUS)
+
+
+#define MACHINE_IS_SCORPION_ZS_256          (current_machine_type==MACHINE_ID_SCORPION_ZS_256)
+#define MACHINE_IS_SCORPION_ZS_256_TURBO    (current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO)
+#define MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS (current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS)
+#define MACHINE_IS_SCORPION_GMX             (current_machine_type==MACHINE_ID_SCORPION_GMX)
+
+
 #define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256 || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS || current_machine_type==MACHINE_ID_SCORPION_GMX)
 
 #define MACHINE_IS_PRISM                    (current_machine_type==MACHINE_ID_PRISM)

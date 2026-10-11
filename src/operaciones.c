@@ -7743,6 +7743,32 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
 	}
 
+    //Control de turbo scorpion leyendo puertos 7ffd y 1ffd
+   if (MACHINE_IS_SCORPION_ZS_256_TURBO || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS)
+    {
+
+        //32765. turbo 2
+        if (
+                (puerto & 0xD027) == 0x5025  ) {
+
+
+                scorpion_set_cpu_speed(2);
+
+
+        }
+
+
+
+		//Puerto tipicamente 8189. turbo 1
+
+		// the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
+		if ( (puerto & 0xD027)== 0x1025) {
+			scorpion_set_cpu_speed(1);
+        }
+
+    }
+
+
 
 //Final. Puertos de paginacion y puerto no asignado. No agregar nada despues de aqui
 //Puertos de Paginacion. En caso de 128k y +2, acaba escribiendo el valor leido del bus idle en el puerto de paginacion
