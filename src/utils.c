@@ -763,7 +763,7 @@ struct s_machines_info machines_info[]={
     {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM,FABRICANTE_MILES_GORDON},
 
     {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
-    {"Scorpion ZS-256",		            MACHINE_ID_SCORPION,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
     {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_TSLABS},
     {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
@@ -14272,7 +14272,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"TBBlue",19,bitmap_button_ext_desktop_my_machine_spectrum_next},
 
    {"Pentagon",21,bitmap_button_ext_desktop_my_machine_pentagon},
-   {"Scorpion",MACHINE_ID_SCORPION,bitmap_button_ext_desktop_userdefined},
+   {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_userdefined},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},
    {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_tsconf},

@@ -2791,7 +2791,7 @@ void set_machine_params(void)
         break;
 
 
-        case MACHINE_ID_SCORPION:
+        case MACHINE_ID_SCORPION_ZS_256:
 
             poke_byte=poke_byte_scorpion;
             peek_byte=peek_byte_scorpion;
@@ -3422,7 +3422,7 @@ void rom_load(char *romfilename)
             romfilename="pentagon.rom";
             break;
 
-            case MACHINE_ID_SCORPION:
+            case MACHINE_ID_SCORPION_ZS_256:
             romfilename="scorpion.rom";
             break;
 

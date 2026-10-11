@@ -34,6 +34,14 @@
 #include "operaciones.h"
 #include "start.h"
 
+/*
+
+ZS-256	Paginación, ROM, monitor NMI y temporización Scorpion
+ZS-256 Turbo	Lo anterior + turbo a 7 MHz
+ZS-256 Turbo+	Diferencias de temporización, puertos y lógica
+Scorpion GMX	Nueva paginación, ROM ampliada y vídeo adicional
+
+*/
 
 /*
 
