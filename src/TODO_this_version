@@ -330,6 +330,8 @@ ok *separar fetch_opcode_spectrum para scorpion
 *activar covox scorpion?
 *rom de gmx y paginado. de momento usa rom de turbo
 *mover funciones peek y poke de scorpion a scorpion.h
+*memoria contended?
+*timings?
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
 ok *bloqueo bit ram paginacion (bit 3)
