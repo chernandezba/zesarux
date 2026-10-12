@@ -830,8 +830,9 @@ struct s_machines_info machines_info[]={
 
 };
 
+#define TOTAL_FABRICANTES_HOYKEY 25
 
-char *array_fabricantes_hotkey[]={
+char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "~~Amstrad",
         "Ascii C~~orp",
         "Cam~~bridge Computers",
@@ -859,8 +860,8 @@ char *array_fabricantes_hotkey[]={
         "~~ZXUno Team"
 };
 
-//Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
-char array_fabricantes_hotkey_letra[]="aobcd iurmyewxpngs  tlz";
+//Si letra es espacio->no hay letra. spectravideo o timex computer o scorpion no hay letras libres
+char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="aobcd kiurmyewxpn gs  tlz";
 
 
 //Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
