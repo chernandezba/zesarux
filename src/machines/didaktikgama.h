@@ -49,6 +49,10 @@ extern z80_byte peek_byte_didaktikgama(z80_int dir);
 
 extern void didaktikgama_out_port(z80_int puerto, z80_byte value);
 extern z80_byte didaktikgama_in_port(z80_int puerto);
+extern void didaktikgama_8255_set_input_pins(z80_byte a,z80_byte b,z80_byte c);
+extern void didaktikgama_8255_get_output_pins(z80_byte *a,z80_byte *mask_a,
+                                               z80_byte *b,z80_byte *mask_b,
+                                               z80_byte *c,z80_byte *mask_c);
 
 
 #endif
