@@ -1479,7 +1479,6 @@ z80_byte *contend_table_no_mreq;
 		timings=contend_patron_65432100;
 		offset_time=1;
 		offset_patron=-1;
-		//Empieza en 14335 con 65432100 Segun http://www.worldofspectrum.org/faq/reference/48kreference.htm
 	}
 
 	if (MACHINE_IS_SCORPION) {

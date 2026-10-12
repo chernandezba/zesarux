@@ -229,6 +229,12 @@ void didaktikgama_set_normal_pages(void)
     didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[0];
     didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[0]+16384;
 
+    // Solo la RAM fija de pantalla en 4000h-7FFFh tiene contienda con la ULA.
+    contend_pages_actual[0]=0;
+    contend_pages_actual[1]=1;
+    contend_pages_actual[2]=0;
+    contend_pages_actual[3]=0;
+
 }
 
 void didaktikgama_malloc_mem_machine(void)
