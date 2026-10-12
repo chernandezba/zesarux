@@ -276,6 +276,8 @@ extern z80_byte fetch_opcode_pcw(void);
 
 extern void poke_byte_spectrum_48k(z80_int dir,z80_byte valor);
 
+extern void poke_byte_spectrum_sync_rainbow(z80_int dir);
+
 extern z80_byte chardetect_automatic_poke_byte(z80_int dir,z80_byte valor);
 
 extern z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l);

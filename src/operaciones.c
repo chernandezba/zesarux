@@ -622,7 +622,7 @@ z80_byte fetch_opcode_vacio(void)
 //para que las celdas que la ULA real ya habia leido conserven el valor anterior a la escritura.
 //Sin esto, el valor nuevo se aplicaba retroactivamente a todas las celdas leidas durante el opcode,
 //produciendo columnas de atributos incorrectas en efectos multicolor (Nirvana, etc)
-static inline void poke_byte_spectrum_sync_rainbow(z80_int dir)
+void poke_byte_spectrum_sync_rainbow(z80_int dir)
 {
         if (rainbow_enabled.v) {
                 //0x4000-0x7FFF: banco 5 (pantalla normal en 128k, pantalla en 48k)

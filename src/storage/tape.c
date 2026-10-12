@@ -1408,6 +1408,11 @@ int tap_load_detect(void)
                                 return 1;
                 }
 
+                if (MACHINE_IS_DIDAKTIKGAMA) {
+
+                                return 1;
+                }
+
                 if (MACHINE_IS_SPECTRUM_128_P2)  {
 
                                 //maquina 128k. rom 1 mapeada
@@ -1643,6 +1648,12 @@ int tap_save_detect(void)
     if (MACHINE_IS_SPECTRUM_16_48) {
 
                     //maquina 16k, inves o 48k
+                    return 1;
+    }
+
+    if (MACHINE_IS_DIDAKTIKGAMA) {
+
+
                     return 1;
     }
 

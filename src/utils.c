@@ -174,6 +174,7 @@
 #include "ql_extract_win.h"
 #include "qsound.h"
 #include "scorpion.h"
+#include "didaktikgama.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
@@ -650,6 +651,8 @@ char *string_machines_list_description=
     " TK95     Microdigital TK95\n"
     " TK95S    Microdigital TK95 (Spanish)\n"
 
+    " Didaktik Didaktik Gama\n"
+
     //Czerweny CZ 1000, CZ 1500, CZ 2000, CZ 1000 Plus, CZ 1500 Plus, CZ Spectrum, CZ Spectrum Plus
 
     " CZ1000   Czerweny CZ 1000\n"
@@ -754,6 +757,8 @@ struct s_machines_info machines_info[]={
     {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
 
+    {"Didaktik Gama",		            MACHINE_ID_DIDAKTIKGAMA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_DIDAKTIK},
+
     {"TS2068",   			            MACHINE_ID_TIMEX_TS2068,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_SINCLAIR},
     {"TC2048",   			            MACHINE_ID_TIMEX_TC2048,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_COMPUTERS},
     {"TC2068",   			            MACHINE_ID_TIMEX_TC2068,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_COMPUTERS},
@@ -833,6 +838,7 @@ char *array_fabricantes_hotkey[]={
         "~~Chloe Corporation",
         "Coleco In~~dustries",
         "Czerweny Electronica",
+        "Dida~~ktik",
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
@@ -4196,6 +4202,10 @@ int get_ram_size(void)
 
     else if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SVI_318) {
         total_ram=16*1024;
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        total_ram=80*1024;
     }
 
     else if (MACHINE_IS_CPC_HAS_64K) {
@@ -14279,6 +14289,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_userdefined},
    {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_userdefined},
    {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_userdefined},
+   {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_userdefined},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},
    {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_tsconf},
@@ -15092,7 +15103,7 @@ int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
 int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
 {
     //Si estamos en maquina 48k
-    if (MACHINE_IS_SPECTRUM_16_48) {
+    if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_DIDAKTIKGAMA) {
         if (banco<8) {
             debug_printf (VERBOSE_ERR,"This poke is for a 128k machine and we are not in 128k machine (poke bank: %d)",banco);
             return -1;
@@ -15974,6 +15985,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_SCORPION) {
         size=256*1024;
+      }
+
+      if (MACHINE_IS_DIDAKTIKGAMA) {
+        size=80*1024;
       }
 
       if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {

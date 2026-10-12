@@ -45,6 +45,7 @@
 #include "svi.h"
 #include "if1.h"
 #include "scorpion.h"
+#include "didaktikgama.h"
 
 //Direcciones donde estan cada pagina de ram
 //Antes habian 8 solo (8 paginas de 16kb cada una)
@@ -192,6 +193,8 @@ z80_byte *get_base_mem_pantalla_continue(void)
 	if (superupgrade_enabled.v) return superupgrade_ram_memory_table[5];
 
 	if (MACHINE_IS_SPECTRUM_16_48) return &memoria_spectrum[16384];
+
+    if (MACHINE_IS_DIDAKTIKGAMA) return didaktikgama_memory_paged[1];
 
 	if (MACHINE_IS_SCORPION) {
 
@@ -811,6 +814,8 @@ int if_spectrum_basic_rom_paged_in(void)
         //maquina 16k, inves ,48k o tk
         return 1;
     }
+
+    if (MACHINE_IS_DIDAKTIKGAMA) return 1;
 
     if (MACHINE_IS_SCORPION)  {
 

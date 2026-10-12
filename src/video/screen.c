@@ -69,6 +69,7 @@
 #include "tape.h"
 #include "joystick.h"
 #include "atomic.h"
+#include "didaktikgama.h"
 
 
 //Incluimos estos dos para la funcion de fade out
@@ -1589,7 +1590,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
     if (ocr_settings_not_look_23606.v) return 0;
 
     z80_int puntero_tabla_caracteres;
-    if (MACHINE_IS_SPECTRUM_16_48) {
+    if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_DIDAKTIKGAMA) {
         puntero_tabla_caracteres=value_8_to_16(memoria_spectrum[23607],memoria_spectrum[23606])+256;
 
         caracter=compare_char_tabla_step(origen,inverse,&memoria_spectrum[puntero_tabla_caracteres],step);
@@ -1597,7 +1598,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
         return caracter;
     }
 
-    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_SCORPION) {
+    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_SCORPION || MACHINE_IS_DIDAKTIKGAMA) {
         z80_byte *offset_ram_5;
 
         //Si zxuno sin bootm

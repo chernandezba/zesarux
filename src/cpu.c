@@ -153,6 +153,7 @@
 #include "qsound.h"
 #include "core_ql.h"
 #include "scorpion.h"
+#include "didaktikgama.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1090,6 +1091,10 @@ void reset_cpu(void)
         scorpion_set_normal_pages();
     }
 
+    if (MACHINE_IS_DIDAKTIKGAMA) {
+        didaktikgama_reset();
+    }
+
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
         mem_set_normal_pages_p2a();
     }
@@ -1503,6 +1508,10 @@ void malloc_mem_machine(void) {
 
         }
 
+        else if (MACHINE_IS_DIDAKTIKGAMA) {
+            didaktikgama_malloc_mem_machine();
+        }
+
         else if (MACHINE_IS_SCORPION) {
             scorpion_malloc_mem_machine();
         }
@@ -1867,7 +1876,8 @@ void set_machine_params(void)
 35=Scorpion ZS-256
 36=Scorpion ZS-256 Turbo+
 37=Scorpion GMX
-38-49=Reservadas otras Spectrum
+38=Didaktik Gama
+39-49=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -2164,6 +2174,15 @@ void set_machine_params(void)
             screen_invisible_borde_derecho=104;
             keyboard_issue2.v=0; //El puerto FEH de Inves se comporta como issue 3
         }
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        contend_read=contend_read_48k;
+        contend_read_no_mreq=contend_read_no_mreq_48k;
+        contend_write_no_mreq=contend_write_no_mreq_48k;
+
+        ula_contend_port_early=ula_contend_port_early_48k;
+        ula_contend_port_late=ula_contend_port_late_48k;
     }
 
     else if (MACHINE_IS_SCORPION) {
@@ -2808,6 +2827,16 @@ void set_machine_params(void)
 
         break;
 
+        case MACHINE_ID_DIDAKTIKGAMA:
+
+            poke_byte=poke_byte_didaktikgama;
+            peek_byte=peek_byte_didaktikgama;
+            peek_byte_no_time=peek_byte_no_time_didaktikgama;
+            poke_byte_no_time=poke_byte_no_time_didaktikgama;
+            lee_puerto=lee_puerto_spectrum;
+
+        break;
+
         case MACHINE_ID_CHROME:
             poke_byte=poke_byte_chrome;
             peek_byte=peek_byte_chrome;
@@ -3443,6 +3472,10 @@ void rom_load(char *romfilename)
             romfilename="scorpion_2.95.rom";
             break;
 
+            case MACHINE_ID_DIDAKTIKGAMA:
+            romfilename="didaktikgama.rom";
+            break;
+
             case MACHINE_ID_COLECO:
             romfilename="coleco.rom";
             break;
@@ -3627,6 +3660,13 @@ void rom_load(char *romfilename)
     }
 
     else if (MACHINE_IS_SCORPION) {
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
         leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);

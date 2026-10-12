@@ -409,6 +409,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_SCORPION_ZS_256          35
 #define MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS   36
 #define MACHINE_ID_SCORPION_GMX             37
+#define MACHINE_ID_DIDAKTIKGAMA             38
 
 #define MACHINE_ID_COLECO                   100
 
@@ -493,6 +494,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_SCORPION_ZS_256          (current_machine_type==MACHINE_ID_SCORPION_ZS_256)
 #define MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS (current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS)
 #define MACHINE_IS_SCORPION_GMX             (current_machine_type==MACHINE_ID_SCORPION_GMX)
+
+#define MACHINE_IS_DIDAKTIKGAMA             (current_machine_type==MACHINE_ID_DIDAKTIKGAMA)
 
 
 #define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256 || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS || current_machine_type==MACHINE_ID_SCORPION_GMX)

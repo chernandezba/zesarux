@@ -122,6 +122,7 @@
 #include "menu_bitmaps.h"
 #include "baseconf.h"
 #include "scorpion.h"
+#include "didaktikgama.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
