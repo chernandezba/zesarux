@@ -2,7 +2,7 @@ ZEsarUX 13.1 - Zorro edition. 06 October 2026
 
 * New things added:
 
-Added machine (fixed actually) ZX Evo Baseconf
+Added machine ZX Evo Baseconf (fixed actually)
 Added machines Scorpion ZS-256, Scorpion ZS-256 Turbo+, Scorpion GMX
 Added machine Didaktik Gama
 Added configuration file setting for enabling to use numeric keys on Azerty keyboard, without having to press Shift
