@@ -105,9 +105,10 @@ void didaktikgama_mem_page_ram(void)
 
 void didaktikgama_reset(void)
 {
-    //TODO reset otros puertos 8255
-
+    didaktikgama_8255_port_a=0;
+    didaktikgama_8255_port_b=0;
     didaktikgama_8255_port_c=0;
+    didaktikgama_8255_port_d=0;
     didaktikgama_set_normal_pages();
 
 }
@@ -216,19 +217,38 @@ z80_byte peek_byte_didaktikgama(z80_int dir)
 
 void didaktikgama_out_port(z80_int puerto, z80_byte value)
 {
-
-
-    //TODO
-    printf("out port didaktik port %04XH value %02XH\n",puerto,value);
-
+    switch (puerto & 0xff) {
+        case 0x1f:
+            didaktikgama_8255_port_a=value;
+            break;
+        case 0x3f:
+            didaktikgama_8255_port_b=value;
+            break;
+        case 0x5f:
+            didaktikgama_8255_port_c=value;
+            didaktikgama_mem_page_ram();
+            break;
+        case 0x7f:
+            didaktikgama_8255_port_d=value;
+            if (!(value & 0x80)) {
+                // El modo BSR modifica un solo bit del puerto C.
+                z80_byte bit=1 << ((value >> 1) & 7);
+                if (value & 1) didaktikgama_8255_port_c |= bit;
+                else didaktikgama_8255_port_c &= ~bit;
+                didaktikgama_mem_page_ram();
+            }
+            break;
+    }
 }
 
 
 z80_byte didaktikgama_in_port(z80_int puerto)
 {
-
-
-    //TODO
-    printf("in port didaktik port %04XH\n",puerto);
-
+    switch (puerto & 0xff) {
+        case 0x1f: return didaktikgama_8255_port_a;
+        case 0x3f: return didaktikgama_8255_port_b;
+        case 0x5f: return didaktikgama_8255_port_c;
+        case 0x7f: return didaktikgama_8255_port_d;
+    }
+    return 0xff;
 }
