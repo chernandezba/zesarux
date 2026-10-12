@@ -45,7 +45,10 @@ z80_byte *didaktikgama_ram_mem_table[DIDAKTIKGAMA_TOTAL_RAM_PAGES];
 z80_byte *didaktikgama_memory_paged[4];
 static z80_bit didaktikgama_trdos_active={0};
 
-z80_byte didaktikgama_ram_paged=0;
+z80_byte didaktikgama_8255_port_a=0;
+z80_byte didaktikgama_8255_port_b=0;
+z80_byte didaktikgama_8255_port_c=0;
+z80_byte didaktikgama_8255_port_d=0;
 
 void didaktikgama_init_memory_tables(void)
 {
@@ -93,7 +96,7 @@ void didaktikgama_malloc_mem_machine(void)
 void didaktikgama_mem_page_ram(void)
 {
 
-    z80_byte page_entra=didaktikgama_ram_paged;
+    z80_byte page_entra=didaktikgama_8255_port_c &1;
 
     didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[page_entra];
     didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[page_entra]+16384;
@@ -102,9 +105,9 @@ void didaktikgama_mem_page_ram(void)
 
 void didaktikgama_reset(void)
 {
-    //TODO reset puertos
+    //TODO reset otros puertos 8255
 
-    didaktikgama_ram_paged=0;
+    didaktikgama_8255_port_c=0;
     didaktikgama_set_normal_pages();
 
 }
@@ -208,4 +211,24 @@ z80_byte peek_byte_didaktikgama(z80_int dir)
 	puntero=didaktikgama_memory_paged[segmento]+dir;
 
 	return *puntero;
+}
+
+
+void didaktikgama_out_port(z80_int puerto, z80_byte value)
+{
+
+
+    //TODO
+    printf("out port didaktik port %04XH value %02XH\n",puerto,value);
+
+}
+
+
+z80_byte didaktikgama_in_port(z80_int puerto)
+{
+
+
+    //TODO
+    printf("in port didaktik port %04XH\n",puerto);
+
 }

@@ -96,6 +96,7 @@
 #include "lec.h"
 #include "zxmmcplus.h"
 #include "scorpion.h"
+#include "didaktikgama.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -7034,6 +7035,17 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	z80_int puerto=value_8_to_16(puerto_h,puerto_l);
 
+    /*
+    Puerto	Dirección	Utilización
+    A	1Fh	E/S de 8 bits; habitualmente joystick
+    B	3Fh	E/S de 8 bits; permite conectar otro joystick
+    C	5Fh	E/S y control de paginación de RAM
+    Control	7Fh	Configuración del 8255
+    */
+    if (MACHINE_IS_DIDAKTIKGAMA && (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f || puerto_l==0x7f)) {
+        return didaktikgama_in_port(puerto);
+    }
+
 
 	if (puerto_l==0xFD) {
 		if (puerto_h==0xFF) {
@@ -9072,6 +9084,18 @@ Port: 10-- ---- ---- --0-
 49154=1100000000000010
 
 */
+
+    /*
+    Puerto	Dirección	Utilización
+    A	1Fh	E/S de 8 bits; habitualmente joystick
+    B	3Fh	E/S de 8 bits; permite conectar otro joystick
+    C	5Fh	E/S y control de paginación de RAM
+    Control	7Fh	Configuración del 8255
+    */
+    if (MACHINE_IS_DIDAKTIKGAMA && (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f || puerto_l==0x7f)) {
+        didaktikgama_out_port(puerto,value);
+    }
+
 
 	//Puertos Chip AY
 	if ( ((puerto & 49154) == 49152) || ((puerto & 49154) == 32768) ) {

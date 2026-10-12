@@ -47,5 +47,8 @@ extern void poke_byte_didaktikgama(z80_int dir,z80_byte valor);
 extern z80_byte peek_byte_no_time_didaktikgama(z80_int dir);
 extern z80_byte peek_byte_didaktikgama(z80_int dir);
 
+extern void didaktikgama_out_port(z80_int puerto, z80_byte value);
+extern z80_byte didaktikgama_in_port(z80_int puerto);
+
 
 #endif
