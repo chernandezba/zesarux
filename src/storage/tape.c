@@ -1453,6 +1453,14 @@ int tap_load_detect(void)
                 return 1;
         }
 
+        //No mirar que rom está mapeada
+        if (MACHINE_IS_SCORPION) {
+                if (peek_byte_no_time(reg_pc)!=0xDB) return 0;
+                if (peek_byte_no_time(reg_pc+1)!=0xFE) return 0;
+
+                return 1;
+        }
+
         //Para TSCONF, detectar como zxuno. Por PC y por instrucciones
         //no mirar rom porque no sabemos que rom estamos leyendo (si la rom 3 de carga en un +2a, si la rom 1 en un 128k, etc)
                 //Detectar por PC y por instrucciones
