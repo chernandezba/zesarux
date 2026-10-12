@@ -667,7 +667,6 @@ char *string_machines_list_description=
     " Pentagon Pentagon\n"
 
     " Scorpion    Scorpion ZS-256\n"
-    " Scorpiont   Scorpion ZS-256 Turbo\n"
     " Scorpiontp  Scorpion ZS-256 Turbo+\n"
     " Scorpiongmx Scorpion GMX\n"
 
@@ -767,7 +766,6 @@ struct s_machines_info machines_info[]={
 
     {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
     {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,                 MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
-    {"Scorpion ZS-256 Turbo",		    MACHINE_ID_SCORPION_ZS_256_TURBO,           MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion ZS-256 Turbo+",		    MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion GMX",		            MACHINE_ID_SCORPION_GMX,                    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
@@ -14279,7 +14277,6 @@ struct s_machines_short_names_id machines_short_names_id[]={
 
    {"Pentagon",21,bitmap_button_ext_desktop_my_machine_pentagon},
    {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_userdefined},
-   {"Scorpiont",MACHINE_ID_SCORPION_ZS_256_TURBO,bitmap_button_ext_desktop_userdefined},
    {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_userdefined},
    {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_userdefined},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},

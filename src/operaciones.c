@@ -7752,7 +7752,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 	}
 
     //Control de turbo scorpion leyendo puertos 7ffd y 1ffd
-   if (MACHINE_IS_SCORPION_ZS_256_TURBO || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS)
+   if (MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS)
     {
 
         //32765. turbo 2

@@ -1865,10 +1865,9 @@ void set_machine_params(void)
 33=CZ SPECTRUM
 34=CZ SPECTRUM_PLUS
 35=Scorpion ZS-256
-36=Scorpion ZS-256 Turbo
-37=Scorpion ZS-256 Turbo+
-38=Scorpion GMX
-39-49=Reservadas otras Spectrum
+36=Scorpion ZS-256 Turbo+
+37=Scorpion GMX
+38-49=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -2795,7 +2794,6 @@ void set_machine_params(void)
 
 
         case MACHINE_ID_SCORPION_ZS_256:
-        case MACHINE_ID_SCORPION_ZS_256_TURBO:
         case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
         case MACHINE_ID_SCORPION_GMX:
 
@@ -3435,10 +3433,6 @@ void rom_load(char *romfilename)
             //creo que es logico usar una de las primeras roms
             case MACHINE_ID_SCORPION_ZS_256:
             romfilename="scorpion_2.3j.rom";
-            break;
-
-            case MACHINE_ID_SCORPION_ZS_256_TURBO:
-            romfilename="scorpion_2.95.rom";
             break;
 
             case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
