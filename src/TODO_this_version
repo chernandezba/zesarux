@@ -326,7 +326,7 @@ https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.u
 -Scorpion
 
 ok *separar fetch_opcode_spectrum para scorpion
-*tape traps load & save
+
 *activar covox scorpion?
 *rom de gmx y paginado. de momento usa rom de turbo
 *mover funciones peek y poke de scorpion a scorpion.h
