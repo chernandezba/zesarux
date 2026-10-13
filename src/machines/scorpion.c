@@ -76,9 +76,45 @@ z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
 static z80_bit scorpion_trdos_active={0};
+/* Último valor escrito en 7EFD (la lectura de este puerto devuelve otro estado):
+ * D0 EWR: permite escribir en la memoria Flash.
+ * D1 Vpp: activa la tensión de programación de la Flash.
+ * D2 MagEnable: 0 permite la tecla Magic; 1 bloquea su NMI.
+ * D3 Graphic: 0 usa vídeo Spectrum; 1 usa el modo GMX de 640x200.
+ * D4 A16, D5 A17, D6 A18: eligen uno de ocho bloques de 64 KiB de Flash.
+ * D7 Normal/Turbo: 0 velocidad normal; 1 velocidad doble.
+ */
 static z80_byte scorpion_gmx_port_7efd;
+/* Último valor escrito en DFFD, extensión de RAM de tipo Profi:
+ * D0 SM0, D1 SM1, D2 SM2: bits 4, 5 y 6 del banco de 16 KiB en C000h.
+ * Los bits 0-2 proceden de 7FFD y el bit 3 de 1FFD.D4.
+ * D3-D7: sin función documentada para GMX.
+ */
 static z80_byte scorpion_gmx_port_dffd;
+/* Último valor escrito en 78FD (segunda ventana de RAM, 8000h-BFFFh):
+ * D0 SW0, D2 SW2, D3 SW3: bits 0, 2 y 3 del banco de 16 KiB.
+ * D1 SW1: bit 1 del banco, invertido físicamente; al reset vale 0
+ *          y queda seleccionada la página 2.
+ * D4 SW4, D5 SW5, D6 SW6: bits 4, 5 y 6 del banco.
+ * D7: sin función documentada en escritura; en lectura refleja el
+ *     bit 1 del color del borde.
+ */
 static z80_byte scorpion_gmx_port_78fd;
+/* Último valor escrito en el puerto global xx00:
+ * D0 CONF0, D1 CONF1, D2 CONF2: variante de configuración FLEX8000.
+ * D3 RECONF: solicita cargar esa configuración y reiniciar GMX.
+ * D4 FIXROM: fija A16-A18 de la Flash ante escrituras a 7EFD y reset.
+ * D5 BLKEXT: desactiva las ampliaciones GMX.
+ * D6 BLKEX2: junto con D5 desactiva los puertos xxFD y cambia la
+ *             decodificación de 7FFD al modo compatible.
+ * D7 ST/PENT: 0 temporización Scorpion; 1 temporización Pentagon.
+ * El reset no borra este registro.
+ */
+static z80_byte scorpion_gmx_port_00;
+/* Registro interno de lectura serie por 78FD: tras RECONF contiene
+ * 88h OR CONF0..CONF2. Cada lectura entrega el bit 0 y lo desplaza.
+ */
+static z80_byte scorpion_gmx_magic_shift;
 
 z80_byte scorpion_read_ay_port_a(z80_byte ay_value)
 {
@@ -232,8 +268,23 @@ void scorpion_write_port_1ffd(z80_byte value)
     scorpion_mem_page_rom();
 }
 
+/*
+ * Actualiza los registros de paginado y configuración de GMX.
+ * Entrada: port es la dirección del puerto; value es el byte escrito.
+ * Salida: ninguna. Puede cambiar el mapa de memoria o reiniciar la CPU.
+ */
 void scorpion_gmx_write_port(z80_int port,z80_byte value)
 {
+    if ((port & 0xff)==0) {
+        scorpion_gmx_port_00=value;
+        if (value & 8) {
+            // La reconfiguración conserva este puerto y reinicia el procesador.
+            scorpion_gmx_magic_shift=0x88 | (value & 7);
+            if (!(value & 0x10)) reset_cpu();
+        }
+        return;
+    }
+
     switch (port & 0xff00) {
         case 0xdf00:
             scorpion_gmx_port_dffd=value;
@@ -244,13 +295,19 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
             scorpion_memory_paged[2]=scorpion_ram_mem_table[(value ^ 2) & 0x7f];
             break;
         case 0x7e00:
-            scorpion_gmx_port_7efd=value;
+            scorpion_gmx_port_7efd=(scorpion_gmx_port_00 & 0x10) ?
+                ((value & 0x8f) | (scorpion_gmx_port_7efd & 0x70)) : value;
             scorpion_mem_page_rom();
             scorpion_set_cpu_speed((value & 0x80) ? 2 : 1);
             break;
     }
 }
 
+/*
+ * Lee los registros de estado de paginado de GMX.
+ * Entrada: port es la dirección del puerto solicitado.
+ * Salida: byte de estado; 78FD desplaza un bit de la configuración latente.
+ */
 z80_byte scorpion_gmx_read_port(z80_int port)
 {
     switch (port & 0xff00) {
@@ -258,12 +315,19 @@ z80_byte scorpion_gmx_read_port(z80_int port)
             return (puerto_32765 & 7) | ((puerto_8189 & 0x10) >> 1) |
                    ((scorpion_gmx_port_dffd & 7) << 4);
         case 0x7800:
-            return scorpion_gmx_port_78fd & 0x7f;
+        {
+            z80_byte result=(scorpion_gmx_port_78fd & 0x7f) |
+                            (scorpion_gmx_magic_shift & 1);
+            scorpion_gmx_magic_shift >>= 1;
+            return result;
+        }
         case 0x7e00:
             return ((puerto_32765 & 0x20) >> 5) |
                    ((puerto_32765 & 8) >> 2) |
                    ((scorpion_gmx_port_7efd & 0x80) >> 5) |
                    (scorpion_gmx_port_7efd & 8) |
+                   ((scorpion_gmx_port_00 & 0x80) >> 3) |
+                   (scorpion_gmx_port_00 & 0x20) |
                    ((puerto_8189 & 1) << 6);
     }
     return 0xff;

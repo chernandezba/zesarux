@@ -9088,6 +9088,9 @@ Port: 10-- ---- ---- --0-
 
     if (MACHINE_IS_SCORPION)
     {
+		if (MACHINE_IS_SCORPION_GMX && (puerto & 0xff)==0) {
+			scorpion_gmx_write_port(puerto,value);
+		}
 		if (MACHINE_IS_SCORPION_GMX && (puerto & 0x0023)==0x0021 &&
 			((puerto & 0xff00)==0xdf00 || (puerto & 0xff00)==0x7800 ||
 			 (puerto & 0xff00)==0x7e00)) {
