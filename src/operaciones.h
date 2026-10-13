@@ -262,7 +262,7 @@ extern z80_byte (*fetch_opcode)(void);
 
 extern z80_byte fetch_opcode_spectrum(void);
 extern z80_byte fetch_opcode_baseconf(void);
-extern z80_byte fetch_opcode_scorpion(void);
+
 extern z80_byte fetch_opcode_zx81(void);
 extern z80_byte fetch_opcode_ace(void);
 extern z80_byte fetch_opcode_cpc(void);
@@ -273,6 +273,8 @@ extern z80_byte fetch_opcode_sg1000(void);
 extern z80_byte fetch_opcode_sms(void);
 extern z80_byte fetch_opcode_svi(void);
 extern z80_byte fetch_opcode_pcw(void);
+
+
 
 extern void poke_byte_spectrum_48k(z80_int dir,z80_byte valor);
 
@@ -293,7 +295,7 @@ extern z80_byte lee_puerto_svi_no_time(z80_byte puerto_h,z80_byte puerto_l);
 
 
 extern void poke_byte_spectrum_128k(z80_int dir,z80_byte valor);
-extern void poke_byte_scorpion(z80_int dir,z80_byte valor);
+
 extern void poke_byte_spectrum_128kp2a(z80_int dir,z80_byte valor);
 extern void poke_byte_zxuno(z80_int dir,z80_byte valor);
 extern void poke_byte_spectrum_inves(z80_int dir,z80_byte valor);
@@ -314,7 +316,7 @@ extern void poke_byte_svi(z80_int dir,z80_byte valor);
 
 extern void poke_byte_no_time_spectrum_48k(z80_int dir,z80_byte valor);
 extern void poke_byte_no_time_spectrum_128k(z80_int dir,z80_byte valor);
-extern void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor);
+
 extern void poke_byte_no_time_spectrum_128kp2a(z80_int dir,z80_byte valor);
 extern void poke_byte_no_time_zxuno(z80_int dir,z80_byte valor);
 extern void poke_byte_no_time_spectrum_inves(z80_int dir,z80_byte valor);
@@ -336,7 +338,7 @@ extern void poke_byte_no_time_svi(z80_int dir,z80_byte valor);
 extern void poke_byte_zx81(z80_int dir,z80_byte valor);
 extern z80_byte peek_byte_spectrum_48k(z80_int dir);
 extern z80_byte peek_byte_spectrum_128k(z80_int dir);
-extern z80_byte peek_byte_scorpion(z80_int dir);
+
 extern z80_byte peek_byte_spectrum_128kp2a(z80_int dir);
 extern z80_byte peek_byte_zxuno(z80_int dir);
 extern z80_byte peek_byte_spectrum_16k(z80_int dir);
@@ -359,7 +361,7 @@ extern z80_byte peek_byte_svi(z80_int dir);
 extern z80_byte peek_byte_zx80_no_time(z80_int dir);
 extern z80_byte peek_byte_no_time_spectrum_48k(z80_int dir);
 extern z80_byte peek_byte_no_time_spectrum_128k(z80_int dir);
-extern z80_byte peek_byte_no_time_scorpion(z80_int dir);
+
 extern z80_byte peek_byte_no_time_spectrum_128kp2a(z80_int dir);
 extern z80_byte peek_byte_no_time_zxuno(z80_int dir);
 extern z80_byte peek_byte_no_time_spectrum_16k(z80_int dir);

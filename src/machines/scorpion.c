@@ -33,6 +33,7 @@
 #include "ula.h"
 #include "operaciones.h"
 #include "start.h"
+#include "betadisk.h"
 
 /*
 
@@ -212,3 +213,118 @@ void scorpion_set_cpu_speed(int turbo)
     cpu_turbo_speed=turbo;
     cpu_set_turbo_speed();
 }
+
+z80_byte fetch_opcode_scorpion(void)
+{
+
+    scorpion_trdos_update(reg_pc);
+    if (scorpion_trdos_is_active()) betadisk_handle_trdos_traps();
+
+#ifdef EMULATE_VISUALMEM
+	set_visualmemopcodebuffer(reg_pc);
+#endif
+	return peek_byte_no_time (reg_pc);
+}
+
+void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)
+{
+    int segmento;
+    z80_byte *puntero;
+
+    segmento=dir / 16384;
+
+    if (dir>16383 || (puerto_8189 & 1)) {
+		poke_byte_spectrum_sync_rainbow(dir);
+#ifdef EMULATE_VISUALMEM
+
+        set_visualmembuffer(dir);
+
+#endif
+        dir = dir & 16383;
+        puntero=scorpion_memory_paged[segmento]+dir;
+
+        *puntero=valor;
+    }
+}
+
+
+void poke_byte_scorpion(z80_int dir,z80_byte valor)
+{
+    int segmento;
+    z80_byte *puntero;
+
+    segmento=dir / 16384;
+
+#ifdef EMULATE_CONTEND
+    if (contend_pages_actual[segmento]) {
+        //printf ("t_estados: %d\n",t_estados);
+        t_estados += contend_table[ t_estados ];
+    }
+#endif
+    t_estados += 3;
+
+
+
+    if (dir>16383 || (puerto_8189 & 1)) {
+		poke_byte_spectrum_sync_rainbow(dir);
+#ifdef EMULATE_VISUALMEM
+
+        set_visualmembuffer(dir);
+
+#endif
+		dir = dir & 16383;
+		puntero=scorpion_memory_paged[segmento]+dir;
+
+//		printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
+		*puntero=valor;
+	}
+}
+
+
+
+
+z80_byte peek_byte_no_time_scorpion(z80_int dir)
+{
+	#ifdef EMULATE_VISUALMEM
+		set_visualmemreadbuffer(dir);
+	#endif
+
+	int segmento;
+	z80_byte *puntero;
+	segmento=dir / 16384;
+
+	dir = dir & 16383;
+	puntero=scorpion_memory_paged[segmento]+dir;
+
+	return *puntero;
+}
+
+
+z80_byte peek_byte_scorpion(z80_int dir)
+{
+	#ifdef EMULATE_VISUALMEM
+		set_visualmemreadbuffer(dir);
+	#endif
+
+	int segmento;
+	z80_byte *puntero;
+	segmento=dir / 16384;
+
+#ifdef EMULATE_CONTEND
+    if (contend_pages_actual[segmento]) {
+            t_estados += contend_table[ t_estados ];
+    }
+#endif
+    t_estados += 3;
+
+
+
+	dir = dir & 16383;
+	puntero=scorpion_memory_paged[segmento]+dir;
+
+	return *puntero;
+}
+
+
+
+

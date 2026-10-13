@@ -1538,7 +1538,7 @@ tsconf.o: machines/tsconf.c machines/tsconf.h cpu.h mem128.h debug.h contend.h z
 baseconf.o: machines/baseconf.c machines/baseconf.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h machines/zxevo.h
 	\$(CC) \$(CFLAGS) -c machines/baseconf.c
 
-scorpion.o: machines/scorpion.c machines/scorpion.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h start.h
+scorpion.o: machines/scorpion.c machines/scorpion.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h start.h storage/betadisk.h
 	\$(CC) \$(CFLAGS) -c machines/scorpion.c
 
 didaktikgama.o: machines/didaktikgama.c machines/didaktikgama.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h start.h

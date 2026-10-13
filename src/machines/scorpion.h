@@ -29,6 +29,28 @@
 #define SCORPION_TOTAL_RAM_PAGES (SCORPION_RAM_SIZE/16)
 #define SCORPION_TOTAL_ROM_PAGES (SCORPION_ROM_SIZE/16)
 
+
+#define SCORPIONGMX_DISPLAY_WIDTH 640
+#define SCORPIONGMX_DISPLAY_HEIGHT 400
+
+#define SCORPIONGMX_LEFT_BORDER_NO_ZOOM 40
+#define SCORPIONGMX_RIGHT_BORDER_NO_ZOOM 40
+#define SCORPIONGMX_TOP_BORDER_NO_ZOOM 88
+#define SCORPIONGMX_BOTTOM_BORDER_NO_ZOOM 88
+
+#define SCORPIONGMX_LEFT_BORDER SCORPIONGMX_LEFT_BORDER_NO_ZOOM*zoom_x
+#define SCORPIONGMX_RIGHT_BORDER SCORPIONGMX_RIGHT_BORDER_NO_ZOOM*zoom_x
+#define SCORPIONGMX_TOP_BORDER SCORPIONGMX_TOP_BORDER_NO_ZOOM*zoom_y
+#define SCORPIONGMX_BOTTOM_BORDER SCORPIONGMX_BOTTOM_BORDER_NO_ZOOM*zoom_y
+
+
+#define SCORPIONGMX_ROM_SIZE 512
+#define SCORPIONGMX_RAM_SIZE 2048
+
+#define SCORPIONGMX_TOTAL_ROM_PAGES (SCORPIONGMX_RAM_SIZE/16)
+#define SCORPIONGMX_TOTAL_RAM_PAGES (SCORPIONGMX_ROM_SIZE/16)
+
+
 extern void scorpion_malloc_mem_machine(void);
 
 extern void scorpion_mem_page_rom(void);
@@ -45,5 +67,11 @@ extern z80_byte *scorpion_memory_paged[];
 extern void scorpion_set_normal_pages(void);
 
 extern void scorpion_set_cpu_speed(int turbo);
+
+extern z80_byte fetch_opcode_scorpion(void);
+extern void poke_byte_scorpion(z80_int dir,z80_byte valor);
+extern void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor);
+extern z80_byte peek_byte_scorpion(z80_int dir);
+extern z80_byte peek_byte_no_time_scorpion(z80_int dir);
 
 #endif
