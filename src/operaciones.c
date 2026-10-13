@@ -9088,18 +9088,22 @@ Port: 10-- ---- ---- --0-
 
     if (MACHINE_IS_SCORPION)
     {
+		// Los puertos GMX también coinciden con la máscara parcial de 7FFD.
+		int puerto_gmx_extendido=MACHINE_IS_SCORPION_GMX &&
+			(puerto & 0x0023)==0x0021 &&
+			((puerto & 0xff00)==0xdf00 || (puerto & 0xff00)==0x7800 ||
+			 (puerto & 0xff00)==0x7a00 || (puerto & 0xff00)==0x7c00 ||
+			 (puerto & 0xff00)==0x7e00);
+
 		if (MACHINE_IS_SCORPION_GMX && (puerto & 0xff)==0) {
 			scorpion_gmx_write_port(puerto,value);
 		}
-		if (MACHINE_IS_SCORPION_GMX && (puerto & 0x0023)==0x0021 &&
-			((puerto & 0xff00)==0xdf00 || (puerto & 0xff00)==0x7800 ||
-			 (puerto & 0xff00)==0x7a00 || (puerto & 0xff00)==0x7c00 ||
-			 (puerto & 0xff00)==0x7e00)) {
+		if (puerto_gmx_extendido) {
 			scorpion_gmx_write_port(puerto,value);
 		}
 
         if (
-                (puerto & 0xD027) == 0x5025  ) {
+                (puerto & 0xD027) == 0x5025 && !puerto_gmx_extendido ) {
 
 
 
