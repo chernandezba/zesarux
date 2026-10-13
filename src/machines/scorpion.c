@@ -626,22 +626,11 @@ static void scorpiongmx_putpixel_absolute(int x,int y,z80_int colour)
 static void scorpiongmx_get_mode_geometry(int *offset_x,int *offset_y,
                                        int *width,int *height)
 {
-    //TODO otros modos?
-    /*z80_byte mode=baseconf_get_video_mode();
-
-    if (mode==0x13 || mode==0x23 || mode==3) {
-            *width=512;
-            *height=384;
-            *offset_x=(640-*width)/2;
-            *offset_y=(400-*height)/2;
-    }
-            */
-    //else {
-            *width=640;
-            *height=400;
-            *offset_x=0;
-            *offset_y=0;
-    //}
+    // La pantalla Spectrum 256x192 se dibuja a escala 2 dentro de 640x400.
+    *width=512;
+    *height=384;
+    *offset_x=(SCORPIONGMX_DISPLAY_WIDTH-*width)/2;
+    *offset_y=(SCORPIONGMX_DISPLAY_HEIGHT-*height)/2;
 }
 
 // Dibuja el borde del modo GMX actual; sin parámetros ni retorno.
