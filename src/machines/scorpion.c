@@ -112,6 +112,11 @@ void scorpion_set_normal_pages(void)
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
     scorpion_memory_paged[3]=scorpion_ram_mem_table[0];
 
+
+    //TODO
+    if (MACHINE_IS_SCORPION_GMX) {
+    }
+
 }
 
 void scorpion_malloc_mem_machine(void)
@@ -142,6 +147,10 @@ void scorpion_mem_page_ram(void)
 
     if (puerto_8189 & 16) page_entra +=8;
 
+    //TODO
+    if (MACHINE_IS_SCORPION_GMX) {
+    }
+
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
 }
 
@@ -165,6 +174,10 @@ void scorpion_mem_page_rom(void)
 
     else {
         page_entra=2;
+    }
+
+    //TODO
+    if (MACHINE_IS_SCORPION_GMX) {
     }
 
     if (scorpion_trdos_active.v) scorpion_memory_paged[0]=scorpion_rom_mem_table[3];
