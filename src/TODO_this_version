@@ -338,9 +338,10 @@ por tanto nunca devolveria 255
 
 *gmx:
 ok **memoria
-**modos de video ampliado
+acabar de probarlo **modos de video ampliado
 **kempston deberia retornar 0 si no está emulado, para que el menu nmi no se vuelva loco. es una maquina con kempston
 por tanto nunca devolveria 255
+*poner ultima rom?
 
 
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
