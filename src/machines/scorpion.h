@@ -69,6 +69,8 @@ extern z80_byte *scorpion_memory_paged[];
 extern void scorpion_set_normal_pages(void);
 
 extern void scorpion_set_cpu_speed(int turbo);
+extern void scorpion_gmx_set_normal_speed(void);
+extern void scorpion_gmx_set_turbo_speed(void);
 
 extern z80_byte fetch_opcode_scorpion(void);
 extern void poke_byte_scorpion(z80_int dir,z80_byte valor);

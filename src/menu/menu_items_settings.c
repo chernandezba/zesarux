@@ -144,6 +144,7 @@
 #include "tv.h"
 #include "qsound.h"
 #include "baseconf.h"
+#include "scorpion.h"
 
 
 
@@ -16788,6 +16789,16 @@ void menu_ql_cpu_turbo(MENU_ITEM_PARAMETERS)
     ql_extension_cpu_turbo_enabled ^=1;
 }
 
+void menu_cpu_gmx_set_turbo_cpu_speed(MENU_ITEM_PARAMETERS)
+{
+    scorpion_gmx_set_turbo_speed();
+}
+
+void menu_cpu_gmx_set_normal_cpu_speed(MENU_ITEM_PARAMETERS)
+{
+    scorpion_gmx_set_normal_speed();
+}
+
 
 //menu cpu settings
 void menu_cpu_settings(MENU_ITEM_PARAMETERS)
@@ -16811,7 +16822,18 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
                     "Some machines, like ZX-Uno or Chloe, change this setting");
 
 
-
+        if (MACHINE_IS_SCORPION_GMX) {
+            if (cpu_turbo_speed==1) {
+                menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_gmx_set_turbo_cpu_speed,NULL,
+                    "Set GMX Turbo CPU speed","Activar GMX Velocidad Turbo CPU","Activar GMX Velocitat Turbo CPU");
+                menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
+            }
+            else {
+                menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_gmx_set_normal_cpu_speed,NULL,
+                    "Set GMX Normal CPU speed","Activar GMX Velocidad Normal CPU","Activar GMX Velocitat Normnal CPU");
+                menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
+            }
+        }
 
 
         if (MACHINE_IS_ZXUNO) {

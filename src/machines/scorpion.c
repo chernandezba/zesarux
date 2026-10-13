@@ -342,6 +342,32 @@ void scorpion_set_cpu_speed(int turbo)
     cpu_set_turbo_speed();
 }
 
+/*
+ * Simula seleccionar la velocidad normal con el control físico de GMX.
+ * Entrada: ninguna.
+ * Salida: ninguna; deja la CPU a x1 y actualiza el estado de 7EFD.D7.
+ */
+void scorpion_gmx_set_normal_speed(void)
+{
+    if (!MACHINE_IS_SCORPION_GMX) return;
+
+    scorpion_gmx_port_7efd &= ~0x80;
+    scorpion_set_cpu_speed(1);
+}
+
+/*
+ * Simula seleccionar la velocidad turbo con el control físico de GMX.
+ * Entrada: ninguna.
+ * Salida: ninguna; deja la CPU a x2 y actualiza el estado de 7EFD.D7.
+ */
+void scorpion_gmx_set_turbo_speed(void)
+{
+    if (!MACHINE_IS_SCORPION_GMX) return;
+
+    scorpion_gmx_port_7efd |= 0x80;
+    scorpion_set_cpu_speed(2);
+}
+
 z80_byte fetch_opcode_scorpion(void)
 {
 
