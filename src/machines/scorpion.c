@@ -38,13 +38,14 @@
 /*
 
 ZS-256	Paginación, ROM, monitor NMI y temporización Scorpion
-ZS-256 Turbo	Lo anterior + turbo a 7 MHz
-ZS-256 Turbo+	Diferencias de temporización, puertos y lógica
+ZS-256 Turbo+	CPU Turbo, Diferencias de temporización, puertos y lógica
 Scorpion GMX	Nueva paginación, ROM ampliada y vídeo adicional
 
 */
 
 /*
+
+Scorpion ZS 256:
 
 RAM 256 KB
 
@@ -67,10 +68,10 @@ ROM 64 KB
 
 
 //Donde esta cada pagina de ram
-z80_byte *scorpion_ram_mem_table[SCORPION_TOTAL_RAM_PAGES];
+z80_byte *scorpion_ram_mem_table[SCORPIONGMX_TOTAL_RAM_PAGES];
 
 //Donde esta cada pagina de rom
-z80_byte *scorpion_rom_mem_table[SCORPION_TOTAL_ROM_PAGES];
+z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
@@ -90,12 +91,12 @@ void scorpion_init_memory_tables(void)
     int i;
     z80_byte *puntero=memoria_spectrum;
 
-    for (i=0;i<SCORPION_TOTAL_ROM_PAGES;i++) {
+    for (i=0;i<SCORPIONGMX_TOTAL_ROM_PAGES;i++) {
         scorpion_rom_mem_table[i]=puntero;
         puntero +=16384;
     }
 
-    for (i=0;i<SCORPION_TOTAL_RAM_PAGES;i++) {
+    for (i=0;i<SCORPIONGMX_TOTAL_RAM_PAGES;i++) {
         scorpion_ram_mem_table[i]=puntero;
         puntero +=16384;
     }
@@ -115,10 +116,17 @@ void scorpion_set_normal_pages(void)
 
 void scorpion_malloc_mem_machine(void)
 {
-    //64 KB ROM, 256 KB RAM
+    //64 KB ROM, 256 KB RAM en scorpion 256
+    //512 KB ROM, 2048 KB RAM en scorpion gmx
+    //asignamos el maximo
 
-    malloc_machine((SCORPION_ROM_SIZE+SCORPION_RAM_SIZE)*1024);
-    random_ram(memoria_spectrum+SCORPION_ROM_SIZE*1024,SCORPION_RAM_SIZE*1024);
+    int total_ram=(SCORPIONGMX_ROM_SIZE+SCORPIONGMX_RAM_SIZE)*1024;
+
+    //malloc_machine((SCORPION_ROM_SIZE+SCORPION_RAM_SIZE)*1024);
+    //random_ram(memoria_spectrum+SCORPION_ROM_SIZE*1024,SCORPION_RAM_SIZE*1024);
+
+    malloc_machine(total_ram);
+    //random_ram(memoria_spectrum+SCORPION_ROM_SIZE*1024,SCORPION_RAM_SIZE*1024);
 
     scorpion_init_memory_tables();
     scorpion_set_normal_pages();
@@ -275,7 +283,7 @@ void poke_byte_scorpion(z80_int dir,z80_byte valor)
 		dir = dir & 16383;
 		puntero=scorpion_memory_paged[segmento]+dir;
 
-//		printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
+		//printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
 		*puntero=valor;
 	}
 }

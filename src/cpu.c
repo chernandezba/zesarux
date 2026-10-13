@@ -3469,7 +3469,7 @@ void rom_load(char *romfilename)
             break;
 
             case MACHINE_ID_SCORPION_GMX:
-            romfilename="scorpion_2.95.rom";
+            romfilename="gmx13500.rom";
             break;
 
             case MACHINE_ID_DIDAKTIKGAMA:
