@@ -4113,6 +4113,8 @@ int get_rom_size(int machine)
 
     if (MACHINE_IS_SPECTRUM_16_48) rom_size=16384;
 
+    else if (MACHINE_IS_SCORPION_GMX) rom_size=SCORPIONGMX_ROM_SIZE*1024;
+
     else if (MACHINE_IS_SCORPION) rom_size=65536;
 
     else if (MACHINE_IS_SPECTRUM_128_P2) rom_size=32768;

@@ -76,6 +76,9 @@ z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
 static z80_bit scorpion_trdos_active={0};
+static z80_byte scorpion_gmx_port_7efd;
+static z80_byte scorpion_gmx_port_dffd;
+static z80_byte scorpion_gmx_port_78fd;
 
 z80_byte scorpion_read_ay_port_a(z80_byte ay_value)
 {
@@ -113,8 +116,10 @@ void scorpion_set_normal_pages(void)
     scorpion_memory_paged[3]=scorpion_ram_mem_table[0];
 
 
-    //TODO
     if (MACHINE_IS_SCORPION_GMX) {
+        scorpion_gmx_port_7efd=0;
+        scorpion_gmx_port_dffd=0;
+        scorpion_gmx_port_78fd=0;
     }
 
 }
@@ -147,8 +152,8 @@ void scorpion_mem_page_ram(void)
 
     if (puerto_8189 & 16) page_entra +=8;
 
-    //TODO
     if (MACHINE_IS_SCORPION_GMX) {
+        page_entra |= (scorpion_gmx_port_dffd & 7) << 4;
     }
 
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
@@ -176,11 +181,12 @@ void scorpion_mem_page_rom(void)
         page_entra=2;
     }
 
-    //TODO
     if (MACHINE_IS_SCORPION_GMX) {
+        page_entra |= (scorpion_gmx_port_7efd & 0x70) >> 2;
     }
 
-    if (scorpion_trdos_active.v) scorpion_memory_paged[0]=scorpion_rom_mem_table[3];
+    if (scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX && (puerto_8189 & 4)))
+        scorpion_memory_paged[0]=scorpion_rom_mem_table[(page_entra & ~3) | 3];
     else if (puerto_8189 & 1) scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
     else scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
 }
@@ -204,7 +210,7 @@ void scorpion_trdos_update(z80_int dir)
 
 int scorpion_trdos_is_active(void)
 {
-    return scorpion_trdos_active.v;
+    return scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX && (puerto_8189 & 4));
 }
 
 void scorpion_nmi(void)
@@ -224,6 +230,43 @@ void scorpion_write_port_1ffd(z80_byte value)
 
     //asignar rom
     scorpion_mem_page_rom();
+}
+
+void scorpion_gmx_write_port(z80_int port,z80_byte value)
+{
+    switch (port & 0xff00) {
+        case 0xdf00:
+            scorpion_gmx_port_dffd=value;
+            scorpion_mem_page_ram();
+            break;
+        case 0x7800:
+            scorpion_gmx_port_78fd=value;
+            scorpion_memory_paged[2]=scorpion_ram_mem_table[(value ^ 2) & 0x7f];
+            break;
+        case 0x7e00:
+            scorpion_gmx_port_7efd=value;
+            scorpion_mem_page_rom();
+            scorpion_set_cpu_speed((value & 0x80) ? 2 : 1);
+            break;
+    }
+}
+
+z80_byte scorpion_gmx_read_port(z80_int port)
+{
+    switch (port & 0xff00) {
+        case 0x7a00:
+            return (puerto_32765 & 7) | ((puerto_8189 & 0x10) >> 1) |
+                   ((scorpion_gmx_port_dffd & 7) << 4);
+        case 0x7800:
+            return scorpion_gmx_port_78fd & 0x7f;
+        case 0x7e00:
+            return ((puerto_32765 & 0x20) >> 5) |
+                   ((puerto_32765 & 8) >> 2) |
+                   ((scorpion_gmx_port_7efd & 0x80) >> 5) |
+                   (scorpion_gmx_port_7efd & 8) |
+                   ((puerto_8189 & 1) << 6);
+    }
+    return 0xff;
 }
 
 

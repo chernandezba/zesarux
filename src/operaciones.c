@@ -6927,6 +6927,11 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	z80_int puerto=value_8_to_16(puerto_h,puerto_l);
 
+    if (MACHINE_IS_SCORPION_GMX && (puerto & 0x0023)==0x0021 &&
+        (puerto_h==0x78 || puerto_h==0x7a || puerto_h==0x7e)) {
+        return scorpion_gmx_read_port(puerto);
+    }
+
     /*
     Puerto	Dirección	Utilización
     A	1Fh	E/S de 8 bits; habitualmente joystick
@@ -9083,6 +9088,11 @@ Port: 10-- ---- ---- --0-
 
     if (MACHINE_IS_SCORPION)
     {
+		if (MACHINE_IS_SCORPION_GMX && (puerto & 0x0023)==0x0021 &&
+			((puerto & 0xff00)==0xdf00 || (puerto & 0xff00)==0x7800 ||
+			 (puerto & 0xff00)==0x7e00)) {
+			scorpion_gmx_write_port(puerto,value);
+		}
 
         if (
                 (puerto & 0xD027) == 0x5025  ) {

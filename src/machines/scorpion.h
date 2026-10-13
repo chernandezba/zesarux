@@ -47,8 +47,8 @@
 #define SCORPIONGMX_ROM_SIZE 512
 #define SCORPIONGMX_RAM_SIZE 2048
 
-#define SCORPIONGMX_TOTAL_ROM_PAGES (SCORPIONGMX_RAM_SIZE/16)
-#define SCORPIONGMX_TOTAL_RAM_PAGES (SCORPIONGMX_ROM_SIZE/16)
+#define SCORPIONGMX_TOTAL_ROM_PAGES (SCORPIONGMX_ROM_SIZE/16)
+#define SCORPIONGMX_TOTAL_RAM_PAGES (SCORPIONGMX_RAM_SIZE/16)
 
 
 extern void scorpion_malloc_mem_machine(void);
@@ -58,6 +58,8 @@ extern void scorpion_trdos_update(z80_int dir);
 extern int scorpion_trdos_is_active(void);
 extern void scorpion_mem_page_ram(void);
 extern void scorpion_write_port_1ffd(z80_byte value);
+extern void scorpion_gmx_write_port(z80_int port,z80_byte value);
+extern z80_byte scorpion_gmx_read_port(z80_int port);
 extern void scorpion_nmi(void);
 extern z80_byte scorpion_read_ay_port_a(z80_byte ay_value);
 
