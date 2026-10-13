@@ -15987,7 +15987,12 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       size=49152;
 
       if (MACHINE_IS_SCORPION) {
-        size=256*1024;
+        if (MACHINE_IS_SCORPION_GMX) {
+            size=SCORPIONGMX_RAM_SIZE*1024;
+        }
+        else {
+            size=256*1024;
+        }
       }
 
       if (MACHINE_IS_DIDAKTIKGAMA) {
@@ -16071,7 +16076,12 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       size=16384;
 
       if (MACHINE_IS_SCORPION) {
-        size=65536;
+        if (MACHINE_IS_SCORPION_GMX) {
+            size=SCORPIONGMX_ROM_SIZE*1024;
+        }
+        else {
+            size=65536;
+        }
       }
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
@@ -16617,7 +16627,14 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
 
       if (MACHINE_IS_SCORPION) {
         //Saltar los 64kb de rom
-        p=&memoria_spectrum[address+65536];
+        if (MACHINE_IS_SCORPION_GMX) {
+            p=scorpion_ram_mem_table[0];
+            p +=address;
+        }
+
+        else {
+            p=&memoria_spectrum[address+65536];
+        }
       }
 
       if (MACHINE_IS_SPECTRUM_128_P2) {

@@ -661,6 +661,10 @@ Pressing DELETE opens the GMX Loader menu:
 
 The menu also has a Flash ROM programmer for updating the GMX firmware. The numbered options select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
 
+Q: Why does Scorpion GMX run at 2x speed, even in 128 BASIC or 48 BASIC?
+
+A: The GMX Boot ROM 1.3 V. 5.00 enables Turbo by writing bit 7 of port 7EFDh. Entering BASIC does not necessarily switch it back to Normal, so programs may continue running at 2x speed. This is consistent with the Scorpion ZS-256 Turbo user manual, which says that model starts in Turbo mode by default. To run at normal speed in ZEsarUX, use Settings -> CPU -> Set GMX Normal CPU speed. The GMX hardware also has a Normal/Turbo button that changes the speed with each press.
+
 
 ----------------------------------------------------------------------------
 
