@@ -639,6 +639,32 @@ See files on extras/docs/prism/ to know which roms are included in the Flash
 ----------------------------------------------------------------------------
 
 
+Scorpion
+--------
+
+Q: What are the different boot screens of Scorpion GMX? I don't understand Russian.
+
+A: On startup, GMX briefly displays a message asking you to press DELETE to enter “GMX Loader Set Up”. It also reports how much RAM it detected. If you do nothing, it continues booting into the usual Scorpion menu.
+
+Pressing DELETE opens the GMX Loader menu:
+
+- ENTER: Restart the computer using the current configuration.
+- 1: Initial startup configuration.
+- 2: Normal GMX configuration, with the GMX Shadow Monitor.
+- 3: Unavailable. Selecting it displays an error saying that the configuration file is missing or damaged; press any key to return.
+- 4: Pentagon 128 compatible configuration.
+- 5: Composit compatible configuration.
+- 6: GMX hardware test.
+- 7: Reserve configuration; in the documented firmware version it is equivalent to option 2.
+- SPACE: Change the current floppy drive.
+- P: Load ROM data from a disk in drive A:.
+
+The menu also has a Flash ROM programmer for updating the GMX firmware. The numbered options select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
+
+
+----------------------------------------------------------------------------
+
+
 ZX Spectrum Next
 ----------------
 
@@ -661,6 +687,7 @@ Q: I have enabled divmmc on Next bios, but seems it's not working (no esxdos or 
 A: Sometimes, enabling divmmc on Next bios requires closing and reopening ZEsarUX. The technical answer for this issue,
 is that enabling/disabling divmmc on Next is not done the same way as when you enable/disable it from ZEsarUX menu, 
 Next does not disables entirely divmmc, only automatic memory paging
+
 
 
 Q: Why can't enable divmmc paging (or full divmmc emulation) from command line/config file on Next? When exiting emulator, these settings are not saved on configuration file. But... if I force them to enable from command line, Next does not boot, and then doing a hard reset it boots ok
