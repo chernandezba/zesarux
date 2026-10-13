@@ -295,11 +295,20 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
             scorpion_memory_paged[2]=scorpion_ram_mem_table[(value ^ 2) & 0x7f];
             break;
         case 0x7e00:
+        {
+            z80_byte video_anterior=scorpion_gmx_port_7efd & 8;
             scorpion_gmx_port_7efd=(scorpion_gmx_port_00 & 0x10) ?
                 ((value & 0x8f) | (scorpion_gmx_port_7efd & 0x70)) : value;
+            if (video_anterior != (scorpion_gmx_port_7efd & 8)) {
+                printf("Scorpion GMX: video %s (7EFDh=%02Xh, PC=%04Xh)\n",
+                       (scorpion_gmx_port_7efd & 8) ? "640x200" : "256x192",
+                       scorpion_gmx_port_7efd,reg_pc);
+                fflush(stdout);
+            }
             scorpion_mem_page_rom();
             scorpion_set_cpu_speed((value & 0x80) ? 2 : 1);
             break;
+        }
     }
 }
 
@@ -481,4 +490,206 @@ z80_byte peek_byte_scorpion(z80_int dir)
 
 
 
+// Dibuja colour en (x,y), con escalas scale_x/scale_y y offsets offset_x/offset_y; sin retorno.
+static void scorpiongmx_putpixel_scaled(int x,int y,z80_int colour,
+                                    int scale_x,int scale_y,
+                                    int offset_x,int offset_y)
+{
+    int dx,dy;
+    int output_x=offset_x+x*scale_x;
+    int output_y=offset_y+y*scale_y;
 
+    for (dy=0;dy<scale_y;dy++)
+            for (dx=0;dx<scale_x;dx++)
+                    scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
+}
+
+//Refresco pantalla sin rainbow
+// Dibuja la pantalla ZX estándar sin rainbow; sin parámetros ni retorno.
+void scorpiongmx_refresca_pantalla_no_rainbow_standard_48k(void)
+{
+    int x,y,bit;
+    z80_int direccion,dir_atributo;
+    z80_byte byte_leido;
+    int color=0;
+    int fila;
+    //int zx,zy;
+
+    z80_byte attribute,ink,paper,bright,flash,aux;
+
+
+
+    z80_byte *screen=get_base_mem_pantalla();
+
+    //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+    z80_byte x_hi;
+
+    for (y=0;y<192;y++) {
+
+        direccion=screen_addr_table[(y<<5)];
+
+
+        fila=y/8;
+        dir_atributo=6144+(fila*32);
+        for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
+
+
+
+            byte_leido=screen[direccion];
+            attribute=screen[dir_atributo];
+
+
+
+            if (scr_refresca_sin_colores.v) {
+                attribute=56;
+
+
+            }
+
+            else {
+                if (scr_refresca_show_attribute_grid.v) {
+                    int cuad=(fila+x)%2;
+                    if (cuad) attribute=56+64;
+                    else attribute=56;
+                }
+            }
+
+
+            ink=attribute &7;
+            paper=(attribute>>3) &7;
+            bright=(attribute) &64;
+            flash=(attribute)&128;
+            if (flash) {
+                //intercambiar si conviene
+                if (estado_parpadeo.v) {
+                        aux=paper;
+                        paper=ink;
+                        ink=aux;
+                }
+            }
+
+            if (bright) {
+                ink +=8;
+                paper +=8;
+            }
+
+            for (bit=0;bit<8;bit++) {
+
+                color= ( byte_leido & 128 ? ink : paper );
+
+
+                scorpiongmx_putpixel_scaled(x_hi+bit,y,
+                                         color,
+                                         2,2,64,8);
+
+                byte_leido=byte_leido<<1;
+            }
+
+
+
+            direccion++;
+            dir_atributo++;
+        }
+
+    }
+
+}
+
+
+
+
+void scorpiongmx_refresca_pantalla_no_rainbow(void)
+{
+
+    /*
+    if modo video 640x200
+    bla bla
+    return
+    **/
+
+    scorpiongmx_refresca_pantalla_no_rainbow_standard_48k();
+}
+
+// Dibuja colour en (x,y) usando el zoom global; sin retorno.
+static void scorpiongmx_putpixel_absolute(int x,int y,z80_int colour)
+{
+    int dx,dy;
+    int px=x*zoom_x;
+    int py=y*zoom_y;
+
+    for (dy=0;dy<zoom_y;dy++)
+        for (dx=0;dx<zoom_x;dx++)
+            scr_putpixel(px+dx,py+dy,colour);
+}
+
+// Escribe en offset_x/offset_y y width/height la geometría del modo actual; sin retorno.
+static void scorpiongmx_get_mode_geometry(int *offset_x,int *offset_y,
+                                       int *width,int *height)
+{
+    //TODO otros modos?
+    /*z80_byte mode=baseconf_get_video_mode();
+
+    if (mode==0x13 || mode==0x23 || mode==3) {
+            *width=512;
+            *height=384;
+            *offset_x=(640-*width)/2;
+            *offset_y=(400-*height)/2;
+    }
+            */
+    //else {
+            *width=640;
+            *height=400;
+            *offset_x=0;
+            *offset_y=0;
+    //}
+}
+
+// Dibuja el borde del modo GMX actual; sin parámetros ni retorno.
+static void screen_scorpiongmx_refresca_border(void)
+{
+    int x,y,offset_x,offset_y,width,height;
+    int left,top,right,bottom;
+    int total_width,total_height;
+    z80_int colour=out_254 & 7;
+
+    scorpiongmx_get_mode_geometry(&offset_x,&offset_y,&width,&height);
+    total_width=SCORPIONGMX_DISPLAY_WIDTH+
+            (SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    total_height=SCORPIONGMX_DISPLAY_HEIGHT+
+            (SCORPIONGMX_TOP_BORDER_NO_ZOOM+SCORPIONGMX_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+
+    left=SCORPIONGMX_LEFT_BORDER_NO_ZOOM*border_enabled.v+offset_x;
+    top=SCORPIONGMX_TOP_BORDER_NO_ZOOM*border_enabled.v+offset_y;
+    right=left+width;
+    bottom=top+height;
+
+    for (y=0;y<top;y++)
+        for (x=0;x<total_width;x++)
+                scorpiongmx_putpixel_absolute(x,y,colour);
+
+    for (y=bottom;y<total_height;y++)
+        for (x=0;x<total_width;x++)
+                scorpiongmx_putpixel_absolute(x,y,colour);
+
+    for (y=top;y<bottom;y++) {
+        for (x=0;x<left;x++)
+                scorpiongmx_putpixel_absolute(x,y,colour);
+        for (x=right;x<total_width;x++)
+                scorpiongmx_putpixel_absolute(x,y,colour);
+        }
+}
+
+// Refresca pantalla y borde usando rainbow o dibujo completo; sin parámetros ni retorno.
+void scorpiongmx_refresca_pantalla(void)
+{
+    //De momento no refrescar por rainbow
+
+    //if (rainbow_enabled.v) {
+    //    scr_refresca_pantalla_rainbow_comun();
+    //}
+    //else {
+        scorpiongmx_refresca_pantalla_no_rainbow();
+        screen_scorpiongmx_refresca_border();
+        modificado_border.v=0;
+    //}
+}

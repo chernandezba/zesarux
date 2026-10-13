@@ -123,6 +123,7 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "svi.h"
 #include "pcw.h"
 #include "baseconf.h"
+#include "scorpion.h"
 
 //donde apunta el puntero de doble buffer. O si no hay doble buffer, apunta directamente a memoria de pantalla
 /*
@@ -475,6 +476,10 @@ void scrfbdev_refresca_pantalla(void)
 
         else if (MACHINE_IS_BASECONF)	{
             baseconf_refresca_pantalla();
+        }
+
+        else if (MACHINE_IS_SCORPION_GMX)	{
+            scorpiongmx_refresca_pantalla();
         }
 
 		  else { //Spectrum no TSConf
