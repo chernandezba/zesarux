@@ -16830,7 +16830,7 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
             }
             else {
                 menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_gmx_set_normal_cpu_speed,NULL,
-                    "Set GMX Normal CPU speed","Activar GMX Velocidad Normal CPU","Activar GMX Velocitat Normnal CPU");
+                    "Set GMX Normal CPU speed","Activar GMX Velocidad Normal CPU","Activar GMX Velocitat Normal CPU");
                 menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
             }
         }
