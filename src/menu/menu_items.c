@@ -164,6 +164,7 @@
 #include "lec.h"
 #include "qsound.h"
 #include "zxevo.h"
+#include "scorpion.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -2757,6 +2758,21 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
             zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: %02X. %s",baseconf_mode,baseconf_get_video_mode_string());
 
         }
+
+        if (MACHINE_IS_SCORPION_GMX) {
+
+            if (if_scorpiongmx_mode_640_200() ) {
+                zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: 640x200");
+            }
+
+            else {
+                zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: 256x192 standard");
+            }
+
+        }
+
+
+
 
         if (MACHINE_IS_TBBLUE) {
 
@@ -21855,14 +21871,14 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 
 
 
-        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX) {
             //menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_video_layers,NULL,"Video ~~Layers");
             menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
             menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
-        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX) {
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
             menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
             menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
@@ -36786,7 +36802,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
 
-        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
+        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
             if (MACHINE_IS_TSCONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"~~TSConf");
                 menu_add_item_menu_shortcut(array_menu_debug,'t');
@@ -36794,6 +36810,10 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             }
             if (MACHINE_IS_BASECONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"BaseConf");
+                menu_add_item_menu_tiene_submenu(array_menu_debug);
+            }
+            if (MACHINE_IS_SCORPION_GMX) {
+                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"Scorpion GMX");
                 menu_add_item_menu_tiene_submenu(array_menu_debug);
             }
             if (MACHINE_IS_TBBLUE) {

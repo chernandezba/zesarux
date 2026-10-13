@@ -100,6 +100,12 @@ static z80_byte scorpion_gmx_port_dffd;
  *     bit 1 del color del borde.
  */
 static z80_byte scorpion_gmx_port_78fd;
+/* Desplazamiento vertical del vídeo ampliado: 7AFD aporta D4-D7 del
+ * byte bajo y 7CFD aporta D0-D5 del byte alto. D0-D3 del byte bajo
+ * siempre valen cero. El resultado es un desplazamiento de 14 bits.
+ */
+static z80_byte scorpion_gmx_scroll_low;
+static z80_byte scorpion_gmx_scroll_high;
 /* Último valor escrito en el puerto global xx00:
  * D0 CONF0, D1 CONF1, D2 CONF2: variante de configuración FLEX8000.
  * D3 RECONF: solicita cargar esa configuración y reiniciar GMX.
@@ -156,6 +162,8 @@ void scorpion_set_normal_pages(void)
         scorpion_gmx_port_7efd=0;
         scorpion_gmx_port_dffd=0;
         scorpion_gmx_port_78fd=0;
+        scorpion_gmx_scroll_low=0;
+        scorpion_gmx_scroll_high=0;
     }
 
 }
@@ -293,6 +301,12 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
         case 0x7800:
             scorpion_gmx_port_78fd=value;
             scorpion_memory_paged[2]=scorpion_ram_mem_table[(value ^ 2) & 0x7f];
+            break;
+        case 0x7a00:
+            scorpion_gmx_scroll_low=value & 0xf0;
+            break;
+        case 0x7c00:
+            scorpion_gmx_scroll_high=value & 0x3f;
             break;
         case 0x7e00:
         {
@@ -598,16 +612,65 @@ void scorpiongmx_refresca_pantalla_no_rainbow_standard_48k(void)
 
 
 
+/* Dibuja el modo GMX de 640x200 desde sus páginas físicas de píxeles y
+ * atributos. Entrada: ninguna. Salida: ninguna; actualiza la imagen visible.
+ */
+static void scorpiongmx_refresca_pantalla_no_rainbow_640x200(void)
+{
+    int x,y,bit;
+    unsigned int scroll=((unsigned int)scorpion_gmx_scroll_high << 8) |
+                        scorpion_gmx_scroll_low;
+    int pagina=(puerto_32765 & 8) ? 0x3b : 0x39;
+    z80_byte *pixels=scorpion_ram_mem_table[pagina];
+    z80_byte *attributes=scorpion_ram_mem_table[pagina+0x40];
+
+    for (y=0;y<200;y++) {
+        unsigned int direccion=(scroll+y*80)%16000;
+
+        for (x=0;x<80;x++) {
+            z80_byte pixel=pixels[direccion];
+            z80_byte attribute=attributes[direccion];
+            z80_byte ink,paper;
+
+            if (scr_refresca_sin_colores.v) attribute=56;
+            else if (scr_refresca_show_attribute_grid.v)
+                attribute=((y/8+x)&1) ? 120 : 56;
+
+            ink=(attribute & 7) | ((attribute & 0x40) >> 3);
+            paper=((attribute >> 3) & 7) | ((attribute & 0x40) >> 3);
+
+            if ((attribute & 0x80) && estado_parpadeo.v) {
+                z80_byte aux=ink;
+                ink=paper;
+                paper=aux;
+            }
+
+            for (bit=0;bit<8;bit++) {
+                scorpiongmx_putpixel_scaled(x*8+bit,y,
+                                            (pixel & 0x80) ? ink : paper,
+                                            1,2,0,0);
+                pixel <<= 1;
+            }
+
+            direccion++;
+            if (direccion==16000) direccion=0;
+        }
+    }
+}
+
+
+int if_scorpiongmx_mode_640_200(void)
+{
+    if (scorpion_gmx_port_7efd & 8) return 1;
+    else return 0;
+}
+
 void scorpiongmx_refresca_pantalla_no_rainbow(void)
 {
-
-    /*
-    if modo video 640x200
-    bla bla
-    return
-    **/
-
-    scorpiongmx_refresca_pantalla_no_rainbow_standard_48k();
+    if (scorpion_gmx_port_7efd & 8)
+        scorpiongmx_refresca_pantalla_no_rainbow_640x200();
+    else
+        scorpiongmx_refresca_pantalla_no_rainbow_standard_48k();
 }
 
 // Dibuja colour en (x,y) usando el zoom global; sin retorno.
@@ -626,6 +689,14 @@ static void scorpiongmx_putpixel_absolute(int x,int y,z80_int colour)
 static void scorpiongmx_get_mode_geometry(int *offset_x,int *offset_y,
                                        int *width,int *height)
 {
+    if (scorpion_gmx_port_7efd & 8) {
+        *width=SCORPIONGMX_DISPLAY_WIDTH;
+        *height=SCORPIONGMX_DISPLAY_HEIGHT;
+        *offset_x=0;
+        *offset_y=0;
+        return;
+    }
+
     // La pantalla Spectrum 256x192 se dibuja a escala 2 dentro de 640x400.
     *width=512;
     *height=384;
