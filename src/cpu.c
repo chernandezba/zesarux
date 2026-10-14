@@ -2828,8 +2828,10 @@ void set_machine_params(void)
 
             /* Al cambiar a GMX se conecta por defecto; recalcular la velocidad
              * no debe deshacer la elección posterior del usuario en el menú. */
-            if (MACHINE_IS_SCORPION_GMX && last_machine_type!=current_machine_type)
+            if (MACHINE_IS_SCORPION_GMX && last_machine_type!=current_machine_type) {
                 zcontroller_enabled.v=1;
+                smuc_enabled.v=1;
+            }
 
         break;
 

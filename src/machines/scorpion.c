@@ -146,6 +146,9 @@ z80_bit zcontroller_enabled={0};
  * se apaga el ordenador. Aquí se representan con 128 bytes y el estado
  * necesario para actualizar el reloj.
  */
+/* Controla la presencia del SMUC, independientemente del disco IDE. */
+z80_bit smuc_enabled={0};
+
 /* FFBAh: D0 reinicia ATA, D4 es SDA, D6 es SCL y D7 selecciona
  * los registros alternativos ATA y la escritura en RTC. */
 static z80_byte scorpion_gmx_smuc_control=1;
@@ -450,7 +453,7 @@ static z80_byte scorpion_gmx_smuc_cmos_read(void)
  */
 int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
 {
-    if (!MACHINE_IS_SCORPION_GMX || !ide_enabled.v) return 0;
+    if (!MACHINE_IS_SCORPION_GMX || !smuc_enabled.v) return 0;
 
     if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
     if ((port & 0xa044)==(0x5fba & 0xa044)) {
@@ -482,7 +485,7 @@ int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
         if (reg==0) {
             *value=ide_read_command_block_register(0);
             scorpion_gmx_smuc_data_high=ide_read_command_block_register(0);
-            if (scorpion_gmx_smuc_identify_first_word) {
+            if (scorpion_gmx_smuc_identify_first_word && ide_enabled.v) {
                 // GMX espera un disco ATA fijo; el IDE genérico anuncia CF.
                 *value=0x40;
                 scorpion_gmx_smuc_data_high=0;
@@ -501,7 +504,7 @@ int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
  */
 int scorpion_gmx_smuc_write(z80_int port,z80_byte value)
 {
-    if (!MACHINE_IS_SCORPION_GMX || !ide_enabled.v) return 0;
+    if (!MACHINE_IS_SCORPION_GMX || !smuc_enabled.v) return 0;
 
     if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
     if ((port & 0xa044)==(0xffba & 0xa044)) {
@@ -532,7 +535,7 @@ int scorpion_gmx_smuc_write(z80_int port,z80_byte value)
             ide_write_command_block_register(0,scorpion_gmx_smuc_data_high);
         }
         else {
-            if (reg==7) scorpion_gmx_smuc_identify_first_word=(value==0xec);
+            if (reg==7) scorpion_gmx_smuc_identify_first_word=(value==0xec && ide_enabled.v);
             ide_write_command_block_register(reg,value);
         }
         return 1;
