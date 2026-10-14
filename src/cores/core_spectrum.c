@@ -59,6 +59,7 @@
 #include "tsconf.h"
 #include "tbblue.h"
 #include "baseconf.h"
+#include "scorpion.h"
 
 #include "scrstdout.h"
 #include "settings.h"
@@ -745,6 +746,10 @@ void core_spectrum_fin_scanline(void)
 
 void core_spectrum_handle_interrupts(void)
 {
+    // La espera de MAGIC no debe sacar a la CPU de HALT ni alterar las flags.
+    if (MACHINE_IS_SCORPION && interrupcion_non_maskable_generada.v &&
+        !scorpion_nmi_ram_fetch_seen() && !interrupcion_maskable_generada.v) return;
+
     debug_fired_interrupt=1;
 
     z80_adjust_flags_interrupt_block_opcode();
@@ -760,12 +765,9 @@ void core_spectrum_handle_interrupts(void)
 
 
 
-    // En Scorpion, MAGIC solo entra en el monitor si la CPU ejecuta desde RAM.
-    if (MACHINE_IS_SCORPION && reg_pc<0x4000) {
-        interrupcion_non_maskable_generada.v=0;
-    }
-
-    if (interrupcion_non_maskable_generada.v) {
+    // En Scorpion, MAGIC queda pendiente hasta el siguiente M1 desde RAM.
+    if (interrupcion_non_maskable_generada.v &&
+        (!MACHINE_IS_SCORPION || scorpion_nmi_ram_fetch_seen())) {
         debug_anota_retorno_step_nmi();
         //printf ("generada nmi\n");
         interrupcion_non_maskable_generada.v=0;

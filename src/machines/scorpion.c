@@ -77,6 +77,8 @@ z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
 static z80_bit scorpion_trdos_active={0};
+// Indica que MAGIC ya ha esperado una lectura M1 de una instrucción desde RAM.
+static int scorpion_magic_ram_fetch_seen;
 /* Último valor escrito en 7EFD (la lectura de este puerto devuelve otro estado):
  * D0 EWR: permite escribir en la memoria Flash.
  * D1 Vpp: activa la tensión de programación de la Flash.
@@ -190,6 +192,7 @@ void scorpion_init_memory_tables(void)
 void scorpion_set_normal_pages(void)
 {
     scorpion_trdos_active.v=0;
+    scorpion_magic_ram_fetch_seen=0;
     scorpion_memory_paged[0]=scorpion_rom_mem_table[0];
     scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
@@ -575,6 +578,7 @@ int scorpion_gmx_kempston_port_enabled(z80_int port)
 void scorpion_nmi(void)
 {
     // MAGIC selecciona el monitor antes de leer la instrucción en 0066h.
+    scorpion_magic_ram_fetch_seen=0;
     scorpion_trdos_active.v=0;
     puerto_8189=(puerto_8189 & ~1) | 2;
     scorpion_mem_page_rom();
@@ -712,10 +716,23 @@ z80_byte fetch_opcode_scorpion(void)
     scorpion_trdos_update(reg_pc);
     if (scorpion_trdos_is_active()) betadisk_handle_trdos_traps();
 
+    // MAGIC se enclava hasta el primer ciclo M1 que lee una instrucción de RAM.
+    if (!interrupcion_non_maskable_generada.v) scorpion_magic_ram_fetch_seen=0;
+    else if (reg_pc>=0x4000 || scorpion_memory_paged[0]==scorpion_ram_mem_table[0]) {
+        scorpion_magic_ram_fetch_seen=1;
+    }
+
 #ifdef EMULATE_VISUALMEM
 	set_visualmemopcodebuffer(reg_pc);
 #endif
 	return peek_byte_no_time (reg_pc);
+}
+
+/* Devuelve 1 cuando la NMI pendiente ya ha visto una lectura de instrucción
+   desde RAM; no recibe parámetros y devuelve 0 mientras MAGIC espera en ROM. */
+int scorpion_nmi_ram_fetch_seen(void)
+{
+    return scorpion_magic_ram_fetch_seen;
 }
 
 void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)
