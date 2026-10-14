@@ -257,6 +257,26 @@ int scorpion_trdos_is_active(void)
     return scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX && (puerto_8189 & 4));
 }
 
+/* Indica si el joystick Kempston puede responder a un puerto en GMX.
+ * Entrada: dirección del puerto. Salida: 1 si el joystick puede responder;
+ * 0 si TR-DOS está activo o la ROM de servicio consulta el puerto 1Fh.
+ */
+int scorpion_gmx_kempston_port_enabled(z80_int port)
+{
+    int page;
+
+    if (scorpion_trdos_is_active()) return 0;
+    if ((port & 0xff)!=0x1f) return 1;
+
+    for (page=0;page<SCORPIONGMX_TOTAL_ROM_PAGES;page++) {
+        if (scorpion_memory_paged[0]==scorpion_rom_mem_table[page]) {
+            return (page & 3)!=2;
+        }
+    }
+
+    return 1;
+}
+
 void scorpion_nmi(void)
 {
     // MAGIC selecciona el monitor antes de leer la instrucción en 0066h.

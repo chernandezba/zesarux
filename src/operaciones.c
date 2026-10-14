@@ -7330,9 +7330,13 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         }
 
-        //kempston joystick para maquinas no Inves
-        //Si A5=A6=A7=0 y A0=1, kempston joystick. El tipico es el puerto 31 (00011111)
-        if ( (puerto_l & (1+32+64+128)) == 1 && !(MACHINE_IS_INVES) ) {
+        // En GMX, A0-A2 deben valer 1 y A5 debe valer 0. TR-DOS
+        // desactiva Kempston; la ROM de servicio también consulta 1Fh.
+        // Las demás máquinas conservan la decodificación Kempston genérica.
+        int puerto_kempston=MACHINE_IS_SCORPION_GMX ?
+            ((puerto_l & 0x27)==0x07 && scorpion_gmx_kempston_port_enabled(puerto)) :
+            ((puerto_l & (1+32+64+128))==1);
+        if (puerto_kempston && !(MACHINE_IS_INVES)) {
 
                 if (joystick_emulation==JOYSTICK_KEMPSTON ||
                     (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
