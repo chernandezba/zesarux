@@ -385,6 +385,9 @@ void nmi_handle_pending_prepost_fetch(void)
 
 void generate_nmi(void)
 {
+	// En GMX, 7EFDh.D2 bloquea el botón MAGIC.
+	if (MACHINE_IS_SCORPION_GMX && !scorpion_gmx_magic_enabled()) return;
+
 	interrupcion_non_maskable_generada.v=1;
     //nmi_pending_post_opcode=1;
 

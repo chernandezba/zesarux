@@ -735,6 +735,13 @@ int scorpion_nmi_ram_fetch_seen(void)
     return scorpion_magic_ram_fetch_seen;
 }
 
+/* Indica si el botón MAGIC puede generar una NMI en GMX.
+   No recibe parámetros; devuelve 1 si 7EFDh.D2 está a cero, o 0 si está bloqueado. */
+int scorpion_gmx_magic_enabled(void)
+{
+    return (scorpion_gmx_port_7efd & 0x04)==0;
+}
+
 void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)
 {
     int segmento;
