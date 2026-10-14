@@ -7323,49 +7323,51 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         //kempston joystick en Inves
 	//En Inves, Si A5=0 solamente
-        if ( (puerto_l & 32) ==0 && (MACHINE_IS_INVES) ) {
+    if ( (puerto_l & 32) ==0 && (MACHINE_IS_INVES) ) {
 
-                if (joystick_emulation==JOYSTICK_KEMPSTON ||
-                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
-                 ) {
-			return get_kempston_value();
-                }
+            if (joystick_emulation==JOYSTICK_KEMPSTON ||
+                (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
+                ) {
+        return get_kempston_value();
+            }
 
+    }
+
+    // En GMX, A0-A2 deben valer 1 y A5 debe valer 0. TR-DOS
+    // desactiva Kempston; la ROM de servicio también consulta 1Fh.
+    // Las demás máquinas conservan la decodificación Kempston genérica.
+    int puerto_kempston=MACHINE_IS_SCORPION_GMX ?
+        ((puerto_l & 0x27)==0x07 && scorpion_gmx_kempston_port_enabled(puerto)) :
+        ((puerto_l & (1+32+64+128))==1);
+    if (puerto_kempston && !(MACHINE_IS_INVES)) {
+
+        if (joystick_emulation==JOYSTICK_KEMPSTON ||
+                (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
+                ) {
+            return get_kempston_value();
         }
 
-        // En GMX, A0-A2 deben valer 1 y A5 debe valer 0. TR-DOS
-        // desactiva Kempston; la ROM de servicio también consulta 1Fh.
-        // Las demás máquinas conservan la decodificación Kempston genérica.
-        int puerto_kempston=MACHINE_IS_SCORPION_GMX ?
-            ((puerto_l & 0x27)==0x07 && scorpion_gmx_kempston_port_enabled(puerto)) :
-            ((puerto_l & (1+32+64+128))==1);
-        if (puerto_kempston && !(MACHINE_IS_INVES)) {
 
-                if (joystick_emulation==JOYSTICK_KEMPSTON ||
-                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
-                 ) {
-			return get_kempston_value();
-                }
+        //Máquinas que tienen kempston "de serie", si está deshabiliado en ZEsarUX, debe retornar 0 en vez del valor de bus idle
+        //Kempston en zxuno, cuando no esta seleccionado kempston devolver 0 en vez de FF o si no, la bios no funciona
+        if (MACHINE_IS_ZXUNO) return 0;
 
-		//Kempston en zxuno, cuando no esta seleccionado kempston devolver 0 en vez de FF o si no, la bios no funciona
-	        if (MACHINE_IS_ZXUNO) return 0;
+        // El menu nmi de Scorpion GMX lee Kempston aunque no se haya seleccionado
+        // en el menú.
+        if (MACHINE_IS_SCORPION_GMX) return 0;
 
-                // El monitor GMX lee Kempston aunque no se haya seleccionado
-                // en el menú. Sin joystick, ninguna dirección está pulsada.
-                if (MACHINE_IS_SCORPION_GMX) return 0;
+        //Los juegos: alteregobeta, xnx, y todos los de los mojon twins, leen el joystick kempston
+        //Si retorno el valor del bus idle, esos juegos se saltan los menus , como si hubiese tecla pulsada
+        //Retorno 0, por si no se ha seleccionado joystick kempston en el menu de ZEsarUX
 
-                //Los juegos: alteregobeta, xnx, y todos los de los mojon twins, leen el joystick kempston
-                //Si retorno el valor del bus idle, esos juegos se saltan los menus , como si hubiese tecla pulsada
-                //Retorno 0, por si no se ha seleccionado joystick kempston en el menu de ZEsarUX
+        if (MACHINE_IS_TSCONF) return 0;
 
-                if (MACHINE_IS_TSCONF) return 0;
+    }
 
-        }
-
-        //ZXUNO
-        if ( MACHINE_IS_ZXUNO && (puerto==0xFC3B  || puerto==0xFD3B)) {
-		return zxuno_read_port(puerto);
-        }
+    //ZXUNO
+    if ( MACHINE_IS_ZXUNO && (puerto==0xFC3B  || puerto==0xFD3B)) {
+        return zxuno_read_port(puerto);
+    }
 
 
 	if (MACHINE_IS_TBBLUE) {
@@ -7467,22 +7469,22 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
                 return 255;
 
-        }
+    }
 
 
-        //Puerto DIVIDE
-        if (divide_ide_ports_enabled.v && ( (puerto_l&(128+64+32+2+1))==128+32+2+1) ) {
-                //printf ("Puerto DIVIDE Read: %02x%02xH command: %d PC=%X\n",puerto_h,puerto_l,(puerto_l>>2)&7,reg_pc);
+    //Puerto DIVIDE
+    if (divide_ide_ports_enabled.v && ( (puerto_l&(128+64+32+2+1))==128+32+2+1) ) {
+            //printf ("Puerto DIVIDE Read: %02x%02xH command: %d PC=%X\n",puerto_h,puerto_l,(puerto_l>>2)&7,reg_pc);
 
-                //So you can access all
-                //eight IDE-registers from so caled command block (rrr=0..7) at addresses
-                //xxxx xxxx  101r rr11
-                z80_byte ide_retorno=ide_read_command_block_register((puerto_l>>2)&7);
-                //printf("Retorno: %X\n",ide_retorno);
+            //So you can access all
+            //eight IDE-registers from so caled command block (rrr=0..7) at addresses
+            //xxxx xxxx  101r rr11
+            z80_byte ide_retorno=ide_read_command_block_register((puerto_l>>2)&7);
+            //printf("Retorno: %X\n",ide_retorno);
 
-                return ide_retorno;
+            return ide_retorno;
 
-        }
+    }
 
 
 
@@ -8949,7 +8951,7 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
 	z80_byte puerto_l=puerto&255;
 	z80_byte puerto_h=(puerto>>8)&0xFF;
 
-        scorpion_gmx_smuc_write(puerto,value);
+        if (scorpion_gmx_smuc_write(puerto,value)) return;
 
         //super wonder boy usa puerto 1fe
         //paperboy usa puertos xxfe
