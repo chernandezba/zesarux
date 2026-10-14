@@ -121,6 +121,20 @@ static z80_byte scorpion_gmx_scroll_high;
  */
 static z80_byte scorpion_gmx_port_00;
 
+/* SMUC (Scorpion & MOA Universal Controller) es la tarjeta de expansión
+ * que proporciona la interfaz ATA/IDE para discos y el acceso a otros
+ * periféricos. Las variables siguientes emulan sus registros y señales.
+ *
+ * La EEPROM 24LC16 es una memoria no volátil de 2 KiB del SMUC. El firmware
+ * puede guardar y recuperar datos en ella mediante el bus serie SDA/SCL;
+ * no forma parte de la RAM ni de la ROM paginada del Scorpion.
+ *
+ * La CMOS es el conjunto de registros del reloj de tiempo real: incluye
+ * hora, fecha, estado y una pequeña zona de configuración. En la tarjeta
+ * física el reloj y sus registros pueden mantenerse con una pila cuando
+ * se apaga el ordenador. Aquí se representan con 128 bytes y el estado
+ * necesario para actualizar el reloj.
+ */
 /* FFBAh: D0 reinicia ATA, D4 es SDA, D6 es SCL y D7 selecciona
  * los registros alternativos ATA y la escritura en RTC. */
 static z80_byte scorpion_gmx_smuc_control=1;
