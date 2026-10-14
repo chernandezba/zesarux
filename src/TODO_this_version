@@ -340,9 +340,7 @@ por tanto nunca devolveria 255
 ok **memoria
 acabar de probarlo **modos de video ampliado
 
-*que rom se deja al final?
-            //romfilename="gmx13500.rom";
-            romfilename="profgmx6xx043.9226se.rom";
+
 
 *usamos scorpiongmx-fat32.ide
 *usamos pruebascorpiongmx.mmc
