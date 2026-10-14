@@ -419,34 +419,35 @@ int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
 }
 
 /* Escribe un puerto SMUC conectado al IDE de ZEsarUX.
- * Entrada: puerto Z80 y valor escrito. Salida: ninguna.
+ * Entrada: puerto Z80 y valor escrito. Salida: 1 si el SMUC atendió
+ * el puerto; 0 si la escritura debe continuar hacia otros dispositivos.
  */
-void scorpion_gmx_smuc_write(z80_int port,z80_byte value)
+int scorpion_gmx_smuc_write(z80_int port,z80_byte value)
 {
-    if (!MACHINE_IS_SCORPION_GMX || !ide_enabled.v) return;
+    if (!MACHINE_IS_SCORPION_GMX || !ide_enabled.v) return 0;
 
-    if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return;
+    if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
     if ((port & 0xa044)==(0xffba & 0xa044)) {
         if (value & 1) ide_reset();
         scorpion_gmx_smuc_eeprom_write(value);
         scorpion_gmx_smuc_control=value;
-        return;
+        return 1;
     }
     if ((port & 0xa044)==(0xdfba & 0xa044)) {
         if (scorpion_gmx_smuc_control & 0x80)
             scorpion_gmx_smuc_cmos[scorpion_gmx_smuc_cmos_address & 0x7f]=value;
         else scorpion_gmx_smuc_cmos_address=value;
-        return;
+        return 1;
     }
     if ((port & 0xa044)==(0x7fba & 0xa044)) {
         scorpion_gmx_smuc_config=value;
-        return;
+        return 1;
     }
     if ((port & 0x8044)==(0xffbe & 0x8044)) {
-        if (scorpion_gmx_smuc_control & 0x80) return;
+        if (scorpion_gmx_smuc_control & 0x80) return 1;
         if (!(port & 0x2000)) {
             scorpion_gmx_smuc_data_high=value;
-            return;
+            return 1;
         }
         int reg=(port>>8)&7;
         if (reg==0) {
@@ -457,7 +458,9 @@ void scorpion_gmx_smuc_write(z80_int port,z80_byte value)
             if (reg==7) scorpion_gmx_smuc_identify_first_word=(value==0xec);
             ide_write_command_block_register(reg,value);
         }
+        return 1;
     }
+    return 0;
 }
 
 void scorpion_malloc_mem_machine(void)
