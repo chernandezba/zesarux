@@ -35,6 +35,7 @@
 #include "start.h"
 #include "betadisk.h"
 #include "ide.h"
+#include "mmc.h"
 
 /*
 
@@ -120,6 +121,13 @@ static z80_byte scorpion_gmx_scroll_high;
  * El reset no borra este registro.
  */
 static z80_byte scorpion_gmx_port_00;
+
+/* Z-Controller de KOE, interfaz SD externa usada por ProfROM:
+ * 77h.D0 alimenta la tarjeta y D1 deselecciona su CS cuando vale 1.
+ * La lectura de 77h devuelve D0=1 si no hay tarjeta y D1=1 si
+ * está protegida contra escritura. 57h intercambia bytes por SPI.
+ */
+static z80_byte scorpion_gmx_zcontroller_control;
 
 /* SMUC (Scorpion & MOA Universal Controller) es la tarjeta de expansión
  * que proporciona la interfaz ATA/IDE para discos y el acceso a otros
@@ -235,12 +243,55 @@ void scorpion_set_normal_pages(void)
             scorpion_gmx_smuc_eeprom_initialized=1;
         }
         scorpion_gmx_port_7efd=0;
+        scorpion_gmx_zcontroller_control=0;
         scorpion_gmx_port_dffd=0;
         scorpion_gmx_port_78fd=0;
         scorpion_gmx_scroll_low=0;
         scorpion_gmx_scroll_high=0;
     }
 
+}
+
+/* Lee los puertos SD del Z-Controller de GMX.
+ * Entrada: puerto Z80 y puntero al resultado. Salida: 1 si se atendió
+ * el puerto; 0 si no pertenece al Z-Controller.
+ */
+int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value)
+{
+    if (!MACHINE_IS_SCORPION_GMX) return 0;
+
+    if ((port & 0xff)==0x77) {
+        *value=(mmc_enabled[0].v ? 0 : 1) |
+               (mmc_write_protection[0].v ? 2 : 0);
+        return 1;
+    }
+    if ((port & 0xff)==0x57) {
+        *value=((scorpion_gmx_zcontroller_control & 3)==1) ? mmc_read() : 0xff;
+        return 1;
+    }
+    return 0;
+}
+
+/* Escribe los puertos SD del Z-Controller de GMX.
+ * Entrada: puerto Z80 y dato. Salida: 1 si se atendió el puerto;
+ * 0 si no pertenece al Z-Controller.
+ */
+int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value)
+{
+    if (!MACHINE_IS_SCORPION_GMX) return 0;
+
+    if ((port & 0xff)==0x77) {
+        int was_selected=(scorpion_gmx_zcontroller_control & 3)==1;
+        int is_selected=(value & 3)==1;
+        scorpion_gmx_zcontroller_control=value;
+        if (was_selected!=is_selected) mmc_cs(is_selected ? 2 : 3);
+        return 1;
+    }
+    if ((port & 0xff)==0x57) {
+        if ((scorpion_gmx_zcontroller_control & 3)==1) mmc_write(value);
+        return 1;
+    }
+    return 0;
 }
 
 /* Procesa el bus serie de la EEPROM 24LC16 del SMUC.
