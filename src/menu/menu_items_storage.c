@@ -157,6 +157,7 @@
 #include "zxmmcplus.h"
 #include "enhanced_zx81_read.h"
 #include "scorpion.h"
+#include "baseconf.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -12162,6 +12163,11 @@ void menu_storage_zcontroller_emulation(MENU_ITEM_PARAMETERS)
     zcontroller_enabled.v ^=1;
 }
 
+void menu_storage_baseconf_sd_interface(MENU_ITEM_PARAMETERS)
+{
+    baseconf_sd_interface_enabled.v ^=1;
+}
+
 //menu MMC/Divmmc
 void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 {
@@ -12366,6 +12372,15 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zcontroller_enabled.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
+            }
+            if (MACHINE_IS_BASECONF) {
+                menu_add_item_menu_separator(array_menu_mmc_divmmc);
+
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_baseconf_sd_interface,NULL,
+                    "BaseConf SD Enabled","SD BaseConf Activada","SD BaseConf Activada");
+                menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(baseconf_sd_interface_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Connect the built-in SD interface of BaseConf");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Connect the built-in SD interface of BaseConf. MMC Emulation controls whether a card is inserted");
             }
         //}
 

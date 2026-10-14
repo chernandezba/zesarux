@@ -7633,9 +7633,10 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
         /* Outside DOS these are the ZX Evo SPI ports.  The bootstrap
            uses INIR on xx57 to load its continuation into RAM page 0. */
-        if (puerto_l==0x77) return 0;
+        if (puerto_l==0x77) return baseconf_sd_interface_enabled.v ? 0 : 1;
         if (puerto_l==0x57) {
             int i;
+            if (!baseconf_sd_interface_enabled.v) return 0xff;
             if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xff;
             for (i=0;i<MMC_MAX_CARDS;i++) {
                 if (mmc_enabled[i].v) return mmc_read();

@@ -87,6 +87,7 @@ extern void baseconf_ide_write(z80_byte puerto_l,z80_byte valor);
 extern char *baseconf_get_video_mode_string(void);
 
 extern int baseconf_sd_enabled;
+extern z80_bit baseconf_sd_interface_enabled;
 
 extern int baseconf_sd_cs;
 

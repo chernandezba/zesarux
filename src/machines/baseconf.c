@@ -38,8 +38,11 @@
 #include "betadisk.h"
 
 
-// Indica si la interfaz SD de BaseConf está habilitada.
+// Estado de alimentación SD escrito por el firmware en el puerto 77h.
 int baseconf_sd_enabled=1;
+
+/* Presencia de la interfaz SD de BaseConf, controlada por el emulador. */
+z80_bit baseconf_sd_interface_enabled={0};
 
 // Estado de selección de chip de la tarjeta SD.
 int baseconf_sd_cs=0;
@@ -1940,6 +1943,7 @@ segmento 0 pagina 0
 		 baseconf_write_cmos(valor);
 					}
         else if ( (puerto&0x00FF)==0x77 ) {
+                if (!baseconf_sd_interface_enabled.v) return;
                 baseconf_last_port_sd_77=valor;
                 baseconf_sd_enabled=valor&1;
                 baseconf_sd_cs=(valor&2) ? 1 : 0;
@@ -1947,6 +1951,7 @@ segmento 0 pagina 0
         }
 
         else if ( (puerto&0x00FF)==0x57 ) {
+                if (!baseconf_sd_interface_enabled.v) return;
                 baseconf_last_port_57=valor;
                 if (baseconf_sd_enabled && !baseconf_sd_cs) mmc_write(valor);
         }
