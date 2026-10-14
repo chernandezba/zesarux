@@ -345,6 +345,9 @@ por tanto nunca devolveria 255
             //romfilename="gmx13500.rom";
             romfilename="profgmx6xx043.9226se.rom";
 
+*usamos scorpiongmx-fat32.ide
+*usamos pruebascorpiongmx.mmc
+
 
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 

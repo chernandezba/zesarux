@@ -129,6 +129,9 @@ static z80_byte scorpion_gmx_port_00;
  */
 static z80_byte scorpion_gmx_zcontroller_control;
 
+/* Habilita la interfaz Z-Controller; sin ella la tarjeta SD figura ausente. */
+z80_bit zcontroller_enabled={0};
+
 /* SMUC (Scorpion & MOA Universal Controller) es la tarjeta de expansión
  * que proporciona la interfaz ATA/IDE para discos y el acceso a otros
  * periféricos. Las variables siguientes emulan sus registros y señales.
@@ -261,12 +264,12 @@ int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value)
     if (!MACHINE_IS_SCORPION_GMX) return 0;
 
     if ((port & 0xff)==0x77) {
-        *value=(mmc_enabled[0].v ? 0 : 1) |
-               (mmc_write_protection[0].v ? 2 : 0);
+        *value=(zcontroller_enabled.v && mmc_enabled[0].v ? 0 : 1) |
+               (zcontroller_enabled.v && mmc_write_protection[0].v ? 2 : 0);
         return 1;
     }
     if ((port & 0xff)==0x57) {
-        *value=((scorpion_gmx_zcontroller_control & 3)==1) ? mmc_read() : 0xff;
+        *value=(zcontroller_enabled.v && (scorpion_gmx_zcontroller_control & 3)==1) ? mmc_read() : 0xff;
         return 1;
     }
     return 0;
@@ -279,6 +282,12 @@ int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value)
 int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value)
 {
     if (!MACHINE_IS_SCORPION_GMX) return 0;
+
+    if (!zcontroller_enabled.v) {
+        /* La interfaz ausente no transmite órdenes a la tarjeta. */
+        if ((port & 0xff)==0x77 || (port & 0xff)==0x57) return 1;
+        return 0;
+    }
 
     if ((port & 0xff)==0x77) {
         int was_selected=(scorpion_gmx_zcontroller_control & 3)==1;

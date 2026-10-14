@@ -156,6 +156,7 @@
 #include "zesarux.h"
 #include "zxmmcplus.h"
 #include "enhanced_zx81_read.h"
+#include "scorpion.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -12156,7 +12157,10 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 
 }
 
-
+void menu_storage_zcontroller_emulation(MENU_ITEM_PARAMETERS)
+{
+    zcontroller_enabled.v ^=1;
+}
 
 //menu MMC/Divmmc
 void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
@@ -12353,6 +12357,14 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
+
+            if (MACHINE_IS_SCORPION_GMX) {
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zcontroller_emulation,NULL,
+                    "Z-Controller Enabled","Z-Controller Activado","Z-Controller Activat");
+                menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zcontroller_enabled.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
+            }
         //}
 
 

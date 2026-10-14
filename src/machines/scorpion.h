@@ -61,6 +61,7 @@ extern int scorpion_gmx_smuc_read(z80_int port,z80_byte *value);
 extern int scorpion_gmx_smuc_write(z80_int port,z80_byte value);
 extern int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value);
 extern int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value);
+extern z80_bit zcontroller_enabled;
 extern void scorpion_mem_page_ram(void);
 extern void scorpion_write_port_1ffd(z80_byte value);
 extern void scorpion_gmx_write_port(z80_int port,z80_byte value);
