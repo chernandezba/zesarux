@@ -876,9 +876,11 @@ static void scorpiongmx_putpixel_scaled(int x,int y,z80_int colour,
     int output_x=offset_x+x*scale_x;
     int output_y=offset_y+y*scale_y;
 
-    for (dy=0;dy<scale_y;dy++)
-            for (dx=0;dx<scale_x;dx++)
-                    scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
+    for (dy=0;dy<scale_y;dy++) {
+        for (dx=0;dx<scale_x;dx++) {
+            scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
+        }
+    }
 }
 
 //Refresco pantalla sin rainbow
