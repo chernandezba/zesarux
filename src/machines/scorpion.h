@@ -57,6 +57,8 @@ extern void scorpion_mem_page_rom(void);
 extern void scorpion_trdos_update(z80_int dir);
 extern int scorpion_trdos_is_active(void);
 extern int scorpion_gmx_kempston_port_enabled(z80_int port);
+extern int scorpion_gmx_smuc_read(z80_int port,z80_byte *value);
+extern void scorpion_gmx_smuc_write(z80_int port,z80_byte value);
 extern void scorpion_mem_page_ram(void);
 extern void scorpion_write_port_1ffd(z80_byte value);
 extern void scorpion_gmx_write_port(z80_int port,z80_byte value);

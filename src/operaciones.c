@@ -6927,6 +6927,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	z80_int puerto=value_8_to_16(puerto_h,puerto_l);
 
+    z80_byte valor_smuc;
+    if (scorpion_gmx_smuc_read(puerto,&valor_smuc)) return valor_smuc;
+
     if (MACHINE_IS_SCORPION_GMX && (puerto & 0x0023)==0x0021 &&
         (puerto_h==0x78 || puerto_h==0x7a || puerto_h==0x7e)) {
         return scorpion_gmx_read_port(puerto);
@@ -8945,6 +8948,8 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
         //uno despues de otro
 	z80_byte puerto_l=puerto&255;
 	z80_byte puerto_h=(puerto>>8)&0xFF;
+
+        scorpion_gmx_smuc_write(puerto,value);
 
         //super wonder boy usa puerto 1fe
         //paperboy usa puertos xxfe
