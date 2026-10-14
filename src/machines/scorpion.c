@@ -593,6 +593,8 @@ void scorpion_nmi(void)
 {
     // MAGIC selecciona el monitor antes de leer la instrucción en 0066h.
     scorpion_magic_ram_fetch_seen=0;
+    // En GMX, MGEN bloquea nuevas pulsaciones y permite paginar con 7FFD.D5 activo.
+    if (MACHINE_IS_SCORPION_GMX) scorpion_gmx_port_7efd |= 0x04;
     scorpion_trdos_active.v=0;
     puerto_8189=(puerto_8189 & ~1) | 2;
     scorpion_mem_page_rom();
@@ -754,6 +756,14 @@ int scorpion_nmi_ram_fetch_seen(void)
 int scorpion_gmx_magic_enabled(void)
 {
     return (scorpion_gmx_port_7efd & 0x04)==0;
+}
+
+/* Indica si GMX acepta escrituras de paginación en 7FFDh.
+   No recibe parámetros; devuelve 1 si 7FFD.D5 no bloquea el puerto o
+   si 7EFD.D2 (MGEN) anula ese bloqueo. */
+int scorpion_gmx_7ffd_paging_enabled(void)
+{
+    return !(puerto_32765 & 0x20) || (scorpion_gmx_port_7efd & 0x04);
 }
 
 void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)

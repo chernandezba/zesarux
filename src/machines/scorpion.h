@@ -66,6 +66,7 @@ extern z80_byte scorpion_gmx_read_port(z80_int port);
 extern void scorpion_nmi(void);
 extern int scorpion_nmi_ram_fetch_seen(void);
 extern int scorpion_gmx_magic_enabled(void);
+extern int scorpion_gmx_7ffd_paging_enabled(void);
 extern z80_byte scorpion_read_ay_port_a(z80_byte ay_value);
 
 extern z80_byte *scorpion_ram_mem_table[];

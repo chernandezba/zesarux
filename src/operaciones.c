@@ -9122,7 +9122,8 @@ Port: 10-- ---- ---- --0-
 
 
 
-			if ((puerto_32765 & 32)==0) {
+			if (MACHINE_IS_SCORPION_GMX ? scorpion_gmx_7ffd_paging_enabled() :
+			    (puerto_32765 & 32)==0) {
 
 				puerto_32765=value;
 
