@@ -2878,6 +2878,8 @@ void set_machine_params(void)
             fetch_opcode=fetch_opcode_baseconf;
             ay_chip_present.v=1;
 
+            /* Al cambiar a BaseConf se conectan por defecto SD y Nemo IDE;
+             * recalcular la velocidad no debe deshacer su ajuste en el menú. */
             if (last_machine_type!=current_machine_type) {
                 baseconf_sd_interface_enabled.v=1;
                 baseconf_nemo_ide_enabled.v=1;
