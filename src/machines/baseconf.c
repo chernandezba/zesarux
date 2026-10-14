@@ -44,6 +44,9 @@ int baseconf_sd_enabled=1;
 /* Presencia de la interfaz SD de BaseConf, controlada por el emulador. */
 z80_bit baseconf_sd_interface_enabled={0};
 
+/* Presencia de la interfaz Nemo IDE integrada en BaseConf. */
+z80_bit baseconf_nemo_ide_enabled={0};
+
 // Estado de selección de chip de la tarjeta SD.
 int baseconf_sd_cs=0;
 
@@ -221,9 +224,10 @@ static int baseconf_ide_register(z80_byte puerto_l)
     }
 }
 
-// Comprueba si puerto_l pertenece a la interfaz IDE; devuelve 1 si corresponde.
+// Comprueba si la interfaz Nemo IDE atiende puerto_l; devuelve 1 si corresponde.
 int baseconf_ide_port(z80_byte puerto_l)
 {
+    if (!baseconf_nemo_ide_enabled.v) return 0;
     return puerto_l==0x10 || puerto_l==0x11 || puerto_l==0xc8 ||
            baseconf_ide_register(puerto_l)>=0;
 }

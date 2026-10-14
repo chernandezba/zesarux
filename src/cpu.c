@@ -2878,8 +2878,10 @@ void set_machine_params(void)
             fetch_opcode=fetch_opcode_baseconf;
             ay_chip_present.v=1;
 
-            if (last_machine_type!=current_machine_type)
+            if (last_machine_type!=current_machine_type) {
                 baseconf_sd_interface_enabled.v=1;
+                baseconf_nemo_ide_enabled.v=1;
+            }
 
         break;
 
