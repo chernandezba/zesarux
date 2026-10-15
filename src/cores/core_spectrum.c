@@ -485,7 +485,9 @@ void core_spectrum_fin_frame_pantalla(void)
         //en el Spectrum la INT comienza en el scanline 248, 0T
         //Pero en Pentagon la interrupción debe dispararse en el scanline 239 (contando desde 0), y 320 pixel clocks (o 160 T estados) tras comenzar dicho scanline
         //La generamos en pentagon desde otro sitio del bucle
-        if (MACHINE_IS_PENTAGON) interrupcion_maskable_generada.v=0;
+        if (MACHINE_IS_PENTAGON ||
+            (MACHINE_IS_SCORPION_GMX && scorpion_gmx_uses_pentagon_timing()))
+            interrupcion_maskable_generada.v=0;
 
 
     }
@@ -953,7 +955,9 @@ void core_spectrum_handle_interrupts_pentagon(void)
             //Pero en Pentagon la interrupción debe dispararse en el scanline 239 (contando desde 0), y 320 pixel clocks (o 160 T estados) tras comenzar dicho scanline
             //A los 160 estados
             int t_est_linea=t_estados % screen_testados_linea;
-            if (t_est_linea>=pentagon_inicio_interrupt) {
+            int inicio_int=pentagon_inicio_interrupt;
+            if (MACHINE_IS_SCORPION_GMX) inicio_int*=cpu_turbo_speed;
+            if (t_est_linea>=inicio_int) {
                 //printf ("Int Pentagon\n");
                 //printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);
 
@@ -1204,7 +1208,8 @@ void cpu_core_loop_spectrum(void)
 
 
     //En pentagon, disparar interrupcion antes del final de frame
-    if (MACHINE_IS_PENTAGON) {
+    if (MACHINE_IS_PENTAGON ||
+        (MACHINE_IS_SCORPION_GMX && scorpion_gmx_uses_pentagon_timing())) {
         core_spectrum_handle_interrupts_pentagon();
     }
 

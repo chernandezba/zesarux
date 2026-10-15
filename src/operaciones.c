@@ -8870,12 +8870,15 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
     if (rainbow_enabled.v) {
         //printf ("%d\n",t_estados);
         int i;
+        // GMX aplica el ajuste del puerto sin cambiar la geometría del menú.
+        int borde_pentagon=pentagon_timing.v ||
+            (MACHINE_IS_SCORPION_GMX && scorpion_gmx_uses_pentagon_timing());
 
         i=t_estados;
         //printf ("t_estados %d screen_testados_linea %d bord: %d\n",t_estados,screen_testados_linea,i);
 
         //Con esto se ve la ukflag, la confusio y la rage se ven perfectas
-        if (pentagon_timing.v) i -=2;
+        if (borde_pentagon) i -=2;
 
         else {
             //Maquinas no pentagon, pero de 128k
@@ -8890,7 +8893,7 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
             //Ajuste valor de indice a multiple de 4 (lo normal en la ULA)
             //O sea, quitamos los 2 bits inferiores
             //Excepto en pentagon
-            if (pentagon_timing.v==0) i=i&(0xFFFFFFFF-3);
+            if (!borde_pentagon) i=i&(0xFFFFFFFF-3);
 
             //En Inves. Snow in border
             if (MACHINE_IS_INVES) {

@@ -646,20 +646,20 @@ Q: What are the different boot screens of Scorpion GMX? I don't understand Russi
 
 A: On startup, GMX briefly displays a message asking you to press DELETE to enter “GMX Loader Set Up”. It also reports how much RAM it detected. If you do nothing, it continues booting into the usual Scorpion menu.
 
-Pressing DELETE opens the GMX Loader menu:
+Pressing DELETE opens the GMX Loader menu. The firmware currently used by ZEsarUX shows these entries:
 
-- ENTER: Restart the computer using the current configuration.
-- 1: Initial startup configuration.
-- 2: Normal GMX configuration, with the GMX Shadow Monitor.
-- 3: Unavailable. Selecting it displays an error saying that the configuration file is missing or damaged; press any key to return.
-- 4: Pentagon 128 compatible configuration.
-- 5: Composit compatible configuration.
-- 6: GMX hardware test.
-- 7: Reserve configuration; in the documented firmware version it is equivalent to option 2.
-- SPACE: Change the current floppy drive.
-- P: Load ROM data from a disk in drive A:.
+- 0: Restart.
+- 1: Startup configuration.
+- 2: Scorpion configuration.
+- 3: Absent; no configuration is stored in this slot.
+- 4: Pentagon configuration.
+- 5: Komposit configuration.
+- 6: OK Test (hardware test).
+- 7: Pentagon7 configuration.
+- D: Select a file.
+- P: Update the ROM.
 
-The menu also has a Flash ROM programmer for updating the GMX firmware. The numbered options select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
+The message at the bottom means "No disk with firmware selected". The numbered entries select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
 
 Q: Why does the Scorpion GMX show the CMOS, SMUC and hard disk test on startup, but skip it after Reset?
 
