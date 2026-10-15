@@ -1154,6 +1154,17 @@ int if_scorpiongmx_mode_640_200(void)
     else return 0;
 }
 
+/* Devuelve el desplazamiento vertical visible en líneas completas.
+ * Entrada: ninguna. Salida: líneas de 0 a 199; si el desplazamiento
+ * no es múltiplo de 80 bytes, se descarta la fracción de línea.
+ */
+int scorpion_gmx_get_scroll_lines(void)
+{
+    unsigned int offset=((unsigned int)scorpion_gmx_scroll_high << 8) |
+                        scorpion_gmx_scroll_low;
+    return (offset % 16000) / 80;
+}
+
 void scorpiongmx_refresca_pantalla_no_rainbow(void)
 {
     if (scorpion_gmx_port_7efd & 8)

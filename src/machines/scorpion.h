@@ -96,5 +96,6 @@ extern void scorpiongmx_store_scanline_rainbow_display(void);
 extern void scorpiongmx_store_scanline_rainbow_border(void);
 
 extern int if_scorpiongmx_mode_640_200(void);
+extern int scorpion_gmx_get_scroll_lines(void);
 
 #endif

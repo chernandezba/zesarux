@@ -2769,6 +2769,12 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
                 zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: 256x192 standard");
             }
 
+
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Vertical Scroll: %d",scorpion_gmx_get_scroll_lines());
+
+
+
         }
 
 
@@ -2926,10 +2932,10 @@ z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
             if (vdp_9918a_si_sms_video_mode4()) {
-                sprintf (texto_buffer,"Scroll Horizontal:    %d",vdp_9918a_sms_get_scroll_horizontal());
+                sprintf (texto_buffer,"Horizontal Scroll:    %d",vdp_9918a_sms_get_scroll_horizontal());
                 zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
-                sprintf (texto_buffer,"Scroll Vertical:      %d",vdp_9918a_sms_get_scroll_vertical());
+                sprintf (texto_buffer,"Vertical Scroll:      %d",vdp_9918a_sms_get_scroll_vertical());
                 zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
             }
 
