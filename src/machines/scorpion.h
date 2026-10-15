@@ -89,6 +89,8 @@ extern z80_byte peek_byte_scorpion(z80_int dir);
 extern z80_byte peek_byte_no_time_scorpion(z80_int dir);
 
 extern void scorpiongmx_refresca_pantalla(void);
+extern void scorpiongmx_store_scanline_rainbow_display(void);
+extern void scorpiongmx_store_scanline_rainbow_border(void);
 
 extern int if_scorpiongmx_mode_640_200(void);
 

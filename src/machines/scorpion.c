@@ -1167,17 +1167,161 @@ static void screen_scorpiongmx_refresca_border(void)
         }
 }
 
+/* Registra la línea de imagen GMX con la geometría de su modo actual.
+ * Entrada: estado de vídeo y scanline actual. Salida: píxeles en rainbow_buffer.
+ */
+void scorpiongmx_store_scanline_rainbow_display(void)
+{
+    int source_y=t_scanline_draw-screen_indice_inicio_pant;
+    int wide=(scorpion_gmx_port_7efd & 8)!=0;
+    int source_height=wide ? 200 : 192;
+    int source_width=wide ? 640 : 256;
+    int scale_x=wide ? 1 : 2;
+    int width=get_total_ancho_rainbow();
+    int offset_x=(width-source_width*scale_x)/2;
+    int top=(border_enabled.v ? SCORPIONGMX_TOP_BORDER_NO_ZOOM : 0)+
+            (SCORPIONGMX_DISPLAY_HEIGHT-source_height*2)/2;
+    int first_row,last_row,x,row,bit;
+    z80_byte *pixels=NULL,*attributes=NULL;
+    unsigned int scroll=0;
+
+    if (source_y<0 || source_y>=source_height) return;
+
+    /* El modo ancho usa ocho scanlines más de la zona que en modo ZX
+       corresponde al borde inferior, sin variar la temporización. */
+    first_row=source_y;
+    last_row=source_y+1;
+
+    if (!border_enabled.v && source_y==0) {
+        int position;
+        z80_int colour=out_254 & 7;
+        for (position=0;position<width*SCORPIONGMX_DISPLAY_HEIGHT;position++)
+            rainbow_buffer[position]=colour;
+    }
+
+    if (wide) {
+        int page=(puerto_32765 & 8) ? 0x3b : 0x39;
+        pixels=scorpion_ram_mem_table[page];
+        attributes=scorpion_ram_mem_table[page+0x40];
+        scroll=((unsigned int)scorpion_gmx_scroll_high << 8) |
+               scorpion_gmx_scroll_low;
+    }
+
+    for (row=first_row;row<last_row;row++) {
+        int output_y=top+row*2;
+        if (output_y<0 || output_y+1>=get_total_alto_rainbow()) continue;
+
+        for (x=0;x<source_width/8;x++) {
+            z80_byte pixel,attribute,ink,paper;
+
+            if (wide) {
+                unsigned int address=(scroll+row*80+x)%16000;
+                pixel=pixels[address];
+                attribute=attributes[address];
+            }
+            else {
+                pixel=scanline_buffer[x*2];
+                attribute=scanline_buffer[x*2+1];
+            }
+
+            if (scr_refresca_sin_colores.v) attribute=56;
+            else if (scr_refresca_show_attribute_grid.v)
+                attribute=((row/8+x)&1) ? 120 : 56;
+
+            ink=(attribute & 7) | ((attribute & 0x40) >> 3);
+            paper=((attribute >> 3) & 7) | ((attribute & 0x40) >> 3);
+            if ((attribute & 0x80) && estado_parpadeo.v) {
+                z80_byte aux=ink;
+                ink=paper;
+                paper=aux;
+            }
+
+            for (bit=0;bit<8;bit++) {
+                int output_x=offset_x+(x*8+bit)*scale_x;
+                z80_int colour=(pixel & 0x80) ? ink : paper;
+                int dy,dx;
+                for (dy=0;dy<2;dy++)
+                    for (dx=0;dx<scale_x;dx++)
+                        rainbow_buffer[(output_y+dy)*width+output_x+dx]=colour;
+                pixel<<=1;
+            }
+        }
+    }
+}
+
+/* Guarda el borde GMX respetando los cambios de color de este scanline.
+ * Entrada: fullbuffer_border y scanline actual. Salida: borde en rainbow_buffer.
+ */
+void scorpiongmx_store_scanline_rainbow_border(void)
+{
+    z80_byte state_colour[MAX_STATES_LINE];
+    static z80_byte left_next[SCORPIONGMX_DISPLAY_WIDTH+
+                              SCORPIONGMX_LEFT_BORDER_NO_ZOOM*2];
+    static int left_next_valid=0;
+    z80_byte colour=screen_border_last_color;
+    int wide=(scorpion_gmx_port_7efd & 8)!=0;
+    int source_height=wide ? 200 : 192;
+    int top_border=(288-source_height)/2;
+    int visible_y=t_scanline_draw-(screen_indice_inicio_pant-top_border);
+    int width=get_total_ancho_rainbow();
+    int left=wide ? SCORPIONGMX_LEFT_BORDER_NO_ZOOM :
+                    SCORPIONGMX_LEFT_BORDER_NO_ZOOM+64;
+    int right=width-left;
+    int line_start=t_scanline*screen_testados_linea;
+    int pre_retrace=screen_testados_indice_borde_derecho*cpu_turbo_speed;
+    int post_retrace=screen_testados_linea-
+                     (screen_total_borde_izquierdo/2)*cpu_turbo_speed;
+    int state,x,dy;
+
+    if (pre_retrace>screen_testados_linea) pre_retrace=screen_testados_linea;
+    if (post_retrace<pre_retrace) post_retrace=pre_retrace;
+    if (post_retrace>=screen_testados_linea)
+        post_retrace=screen_testados_linea-1;
+
+    for (state=0;state<screen_testados_linea;state++) {
+        z80_byte change=fullbuffer_border[line_start+state];
+        if (change!=255) colour=change;
+        state_colour[state]=colour;
+    }
+    screen_border_last_color=colour;
+
+    if (visible_y>=0 && visible_y<288) {
+        int output_y=visible_y*2;
+        int active=visible_y>=top_border && visible_y<top_border+source_height;
+        for (x=0;x<width;x++) {
+            z80_byte raw;
+            if (active && x>=left && x<right) continue;
+            if (x<left && left_next_valid)
+                raw=left_next[(x*width)/left];
+            else {
+                state=((x<left ? 0 : x-left)*pre_retrace)/
+                      (x<left ? 1 : width-left);
+                if (state>=pre_retrace) state=pre_retrace-1;
+                raw=state_colour[state];
+            }
+            for (dy=0;dy<2;dy++)
+                rainbow_buffer[(output_y+dy)*width+x]=raw & 7;
+        }
+    }
+
+    for (x=0;x<width;x++) {
+        state=post_retrace+
+              (x*(screen_testados_linea-post_retrace))/width;
+        if (state>=screen_testados_linea) state=screen_testados_linea-1;
+        left_next[x]=state_colour[state];
+    }
+    left_next_valid=1;
+}
+
 // Refresca pantalla y borde usando rainbow o dibujo completo; sin parámetros ni retorno.
 void scorpiongmx_refresca_pantalla(void)
 {
-    //De momento no refrescar por rainbow
-
-    //if (rainbow_enabled.v) {
-    //    scr_refresca_pantalla_rainbow_comun();
-    //}
-    //else {
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_rainbow_comun();
+    }
+    else {
         scorpiongmx_refresca_pantalla_no_rainbow();
         screen_scorpiongmx_refresca_border();
         modificado_border.v=0;
-    //}
+    }
 }

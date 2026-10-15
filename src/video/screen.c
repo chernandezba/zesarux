@@ -8497,6 +8497,11 @@ void screen_store_scanline_rainbow_solo_display_prism(void)
 //en cambio, si border esta activado, la primera linea del buffer sera de border
 void screen_store_scanline_rainbow_solo_display(void)
 {
+    if (MACHINE_IS_SCORPION_GMX) {
+        scorpiongmx_store_scanline_rainbow_display();
+        return;
+    }
+
     if (MACHINE_IS_BASECONF) {
         baseconf_store_scanline_rainbow_display();
         return;
@@ -9040,6 +9045,11 @@ void screen_store_scanline_rainbow_solo_border(void)
 {
 
 	if (border_enabled.v==0) return;
+
+    if (MACHINE_IS_SCORPION_GMX) {
+        scorpiongmx_store_scanline_rainbow_border();
+        return;
+    }
 
     if (MACHINE_IS_BASECONF) {
         baseconf_store_scanline_rainbow_border();
