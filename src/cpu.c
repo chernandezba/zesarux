@@ -999,6 +999,13 @@ void hard_reset_cpu(void)
 
     }
 
+    else if (MACHINE_IS_SCORPION_GMX) {
+        /* El apagado virtual borra el esquema elegido en xx00.
+           RESET por sí solo conserva Pentagon u otra configuración. */
+        scorpion_gmx_power_on();
+        reset_cpu();
+    }
+
 }
 
 void reset_cpu(void)
@@ -2207,6 +2214,9 @@ void set_machine_params(void)
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
+        /* Al cambiar de máquina se enciende GMX desde el esquema inicial.
+           Un RESET dentro de GMX conserva la configuración elegida en xx00. */
+        if (last_machine_type!=current_machine_type) scorpion_gmx_power_on();
         /* xx00.D7 cambia la posición de INT y la duración del cuadro.
            Los bordes Scorpion coinciden con el renderizado normal. */
         screen_testados_linea=224;

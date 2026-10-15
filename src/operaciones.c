@@ -9111,6 +9111,7 @@ Port: 10-- ---- ---- --0-
     {
 		// Los puertos GMX también coinciden con la máscara parcial de 7FFD.
 		int puerto_gmx_extendido=MACHINE_IS_SCORPION_GMX &&
+			!scorpion_gmx_is_pentagon_scheme() &&
 			(puerto & 0x0023)==0x0021 &&
 			((puerto & 0xff00)==0xdf00 || (puerto & 0xff00)==0x7800 ||
 			 (puerto & 0xff00)==0x7a00 || (puerto & 0xff00)==0x7c00 ||
@@ -9123,8 +9124,9 @@ Port: 10-- ---- ---- --0-
 			scorpion_gmx_write_port(puerto,value);
 		}
 
-        if (
-                (puerto & 0xD027) == 0x5025 && !puerto_gmx_extendido ) {
+        int puerto_paginacion_7ffd=scorpion_gmx_is_pentagon_scheme() ?
+            (puerto & 0x8002)==0 : (puerto & 0xD027)==0x5025;
+        if (puerto_paginacion_7ffd && !puerto_gmx_extendido) {
 
 
 
@@ -9154,7 +9156,7 @@ Port: 10-- ---- ---- --0-
 		//Puerto tipicamente 8189
 
 		// the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
-		if ( (puerto & 0xD027)== 0x1025) {
+		if (!scorpion_gmx_is_pentagon_scheme() && (puerto & 0xD027)==0x1025) {
 			scorpion_write_port_1ffd(value);
         }
 

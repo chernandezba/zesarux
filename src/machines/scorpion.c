@@ -121,6 +121,32 @@ static z80_byte scorpion_gmx_scroll_high;
  * El reset no borra este registro.
  */
 static z80_byte scorpion_gmx_port_00;
+/* Configuración FLEX8000 activa; RECONF de xx00 carga el esquema elegido.
+ * El esquema 4 corresponde al Pentagon128 de la ROM GMX.
+ */
+static z80_byte scorpion_gmx_active_scheme;
+/* Registro interno de lectura serie por 78FD: tras RECONF contiene
+ * 88h OR CONF0..CONF2. Cada lectura entrega el bit 0 y lo desplaza.
+ */
+static z80_byte scorpion_gmx_magic_shift;
+
+/* Inicializa el esquema y el registro serie al encender GMX de nuevo.
+ * Entrada: ninguna. Salida: ninguna; no se usa para el botón RESET.
+ */
+void scorpion_gmx_power_on(void)
+{
+    scorpion_gmx_port_00=0;
+    scorpion_gmx_active_scheme=0;
+    scorpion_gmx_magic_shift=0;
+}
+
+/* Consulta si GMX ha cargado el esquema de hardware Pentagon.
+ * Entrada: ninguna. Salida: 1 para el esquema 4; 0 para los demás.
+ */
+int scorpion_gmx_is_pentagon_scheme(void)
+{
+    return MACHINE_IS_SCORPION_GMX && scorpion_gmx_active_scheme==4;
+}
 
 /* Consulta la selección de temporización de xx00.D7.
  * Entrada: ninguna. Salida: 1 para Pentagon; 0 para Scorpion.
@@ -193,11 +219,6 @@ enum {
     SCORPION_SMUC_EEPROM_SEND,
     SCORPION_SMUC_EEPROM_ACK
 };
-/* Registro interno de lectura serie por 78FD: tras RECONF contiene
- * 88h OR CONF0..CONF2. Cada lectura entrega el bit 0 y lo desplaza.
- */
-static z80_byte scorpion_gmx_magic_shift;
-
 z80_byte scorpion_read_ay_port_a(z80_byte ay_value)
 {
     // En Turbo+ las entradas 0-3 y 5 leen D0-D4 de 7FFD; la entrada 4 lee D4 de 1FFD.
@@ -262,6 +283,7 @@ void scorpion_set_normal_pages(void)
         scorpion_gmx_port_78fd=0;
         scorpion_gmx_scroll_low=0;
         scorpion_gmx_scroll_high=0;
+        if (scorpion_gmx_is_pentagon_scheme()) scorpion_mem_page_rom();
     }
 
 }
@@ -272,7 +294,7 @@ void scorpion_set_normal_pages(void)
  */
 int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value)
 {
-    if (!MACHINE_IS_SCORPION_GMX) return 0;
+    if (!MACHINE_IS_SCORPION_GMX || scorpion_gmx_is_pentagon_scheme()) return 0;
 
     if ((port & 0xff)==0x77) {
         *value=(zcontroller_enabled.v && mmc_enabled[0].v ? 0 : 1) |
@@ -292,7 +314,7 @@ int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value)
  */
 int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value)
 {
-    if (!MACHINE_IS_SCORPION_GMX) return 0;
+    if (!MACHINE_IS_SCORPION_GMX || scorpion_gmx_is_pentagon_scheme()) return 0;
 
     if (!zcontroller_enabled.v) {
         /* La interfaz ausente no transmite órdenes a la tarjeta. */
@@ -461,7 +483,7 @@ static z80_byte scorpion_gmx_smuc_cmos_read(void)
  */
 int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
 {
-    if (!MACHINE_IS_SCORPION_GMX || !smuc_enabled.v) return 0;
+    if (!MACHINE_IS_SCORPION_GMX || scorpion_gmx_is_pentagon_scheme() || !smuc_enabled.v) return 0;
 
     if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
     if ((port & 0xa044)==(0x5fba & 0xa044)) {
@@ -512,7 +534,7 @@ int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
  */
 int scorpion_gmx_smuc_write(z80_int port,z80_byte value)
 {
-    if (!MACHINE_IS_SCORPION_GMX || !smuc_enabled.v) return 0;
+    if (!MACHINE_IS_SCORPION_GMX || scorpion_gmx_is_pentagon_scheme() || !smuc_enabled.v) return 0;
 
     if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
     if ((port & 0xa044)==(0xffba & 0xa044)) {
@@ -577,9 +599,9 @@ void scorpion_mem_page_ram(void)
 //| `7FFDh` | D0–D2 | Seleccionan una página de 0 a 7. |
 //| `1FFDh` | D4 | Añade 8 al número de página cuando vale 1. |
 
-    if (puerto_8189 & 16) page_entra +=8;
+    if (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 16)) page_entra +=8;
 
-    if (MACHINE_IS_SCORPION_GMX) {
+    if (MACHINE_IS_SCORPION_GMX && !scorpion_gmx_is_pentagon_scheme()) {
         page_entra |= (scorpion_gmx_port_dffd & 7) << 4;
     }
 
@@ -608,13 +630,18 @@ void scorpion_mem_page_rom(void)
         page_entra=2;
     }
 
-    if (MACHINE_IS_SCORPION_GMX) {
+    if (MACHINE_IS_SCORPION_GMX && scorpion_gmx_is_pentagon_scheme()) {
+        page_entra+=4;
+    }
+    else if (MACHINE_IS_SCORPION_GMX) {
         page_entra |= (scorpion_gmx_port_7efd & 0x70) >> 2;
     }
 
-    if (scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX && (puerto_8189 & 4)))
+    if (scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX &&
+        !scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 4)))
         scorpion_memory_paged[0]=scorpion_rom_mem_table[(page_entra & ~3) | 3];
-    else if (puerto_8189 & 1) scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
+    else if (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1))
+        scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
     else scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
 }
 
@@ -637,7 +664,8 @@ void scorpion_trdos_update(z80_int dir)
 
 int scorpion_trdos_is_active(void)
 {
-    return scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX && (puerto_8189 & 4));
+    return scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX &&
+        !scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 4));
 }
 
 /* Indica si el joystick Kempston puede responder a un puerto en GMX.
@@ -662,6 +690,12 @@ int scorpion_gmx_kempston_port_enabled(z80_int port)
 
 void scorpion_nmi(void)
 {
+    if (MACHINE_IS_SCORPION_GMX && scorpion_gmx_is_pentagon_scheme()) {
+        // MAGIC del Pentagon entra en la ROM TR-DOS, no en el monitor.
+        scorpion_trdos_active.v=1;
+        scorpion_mem_page_rom();
+        return;
+    }
     // MAGIC selecciona el monitor antes de leer la instrucción en 0066h.
     scorpion_magic_ram_fetch_seen=0;
     // En GMX, MGEN bloquea nuevas pulsaciones y permite paginar con 7FFD.D5 activo.
@@ -697,10 +731,14 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
         if (value & 8) {
             // La reconfiguración conserva este puerto y reinicia el procesador.
             scorpion_gmx_magic_shift=0x88 | (value & 7);
+            scorpion_gmx_active_scheme=value & 7;
             if (!(value & 0x10)) reset_cpu();
         }
         return;
     }
+
+    // La configuración Pentagon desconecta los puertos ampliados GMX.
+    if (scorpion_gmx_is_pentagon_scheme()) return;
 
     switch (port & 0xff00) {
         case 0xdf00:
@@ -742,6 +780,7 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
  */
 z80_byte scorpion_gmx_read_port(z80_int port)
 {
+    if (scorpion_gmx_is_pentagon_scheme()) return 0xff;
     switch (port & 0xff00) {
         case 0x7a00:
             return (puerto_32765 & 7) | ((puerto_8189 & 0x10) >> 1) |
@@ -833,6 +872,7 @@ int scorpion_nmi_ram_fetch_seen(void)
    No recibe parámetros; devuelve 1 si 7EFDh.D2 está a cero, o 0 si está bloqueado. */
 int scorpion_gmx_magic_enabled(void)
 {
+    if (scorpion_gmx_is_pentagon_scheme()) return 1;
     return (scorpion_gmx_port_7efd & 0x04)==0;
 }
 
@@ -841,6 +881,7 @@ int scorpion_gmx_magic_enabled(void)
    si 7EFD.D2 (MGEN) anula ese bloqueo. */
 int scorpion_gmx_7ffd_paging_enabled(void)
 {
+    if (scorpion_gmx_is_pentagon_scheme()) return !(puerto_32765 & 0x20);
     return !(puerto_32765 & 0x20) || (scorpion_gmx_port_7efd & 0x04);
 }
 
@@ -851,7 +892,7 @@ void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor)
 
     segmento=dir / 16384;
 
-    if (dir>16383 || (puerto_8189 & 1)) {
+    if (dir>16383 || (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1))) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -883,7 +924,7 @@ void poke_byte_scorpion(z80_int dir,z80_byte valor)
 
 
 
-    if (dir>16383 || (puerto_8189 & 1)) {
+    if (dir>16383 || (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1))) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 

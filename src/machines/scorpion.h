@@ -68,6 +68,8 @@ extern void scorpion_write_port_1ffd(z80_byte value);
 extern void scorpion_gmx_write_port(z80_int port,z80_byte value);
 extern z80_byte scorpion_gmx_read_port(z80_int port);
 extern int scorpion_gmx_uses_pentagon_timing(void);
+extern int scorpion_gmx_is_pentagon_scheme(void);
+extern void scorpion_gmx_power_on(void);
 extern void scorpion_nmi(void);
 extern int scorpion_nmi_ram_fetch_seen(void);
 extern int scorpion_gmx_magic_enabled(void);

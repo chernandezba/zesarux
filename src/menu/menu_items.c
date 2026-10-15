@@ -36639,13 +36639,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (MACHINE_IS_Z88 || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM || MACHINE_IS_TBBLUE || superupgrade_enabled.v || MACHINE_IS_TSCONF || MACHINE_IS_BASECONF) {
+        if (MACHINE_IS_Z88 || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM || MACHINE_IS_TBBLUE || superupgrade_enabled.v || MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX) {
             menu_add_item_menu(array_menu_debug,"~~Hard Reset",MENU_OPCION_NORMAL,menu_debug_hard_reset,NULL);
             menu_add_item_menu_shortcut(array_menu_debug,'h');
             menu_add_item_menu_tooltip(array_menu_debug,"Hard resets the machine");
             menu_add_item_menu_ayuda(array_menu_debug,"Hard resets the machine.\n"
                 "On Z88, it's the same as opening flap and pressing reset button.\n"
-                "On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine"
+                "On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine.\n"
+                "On Scorpion GMX, returns to the GMX boot loader from the selected hardware scheme."
                 );
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_se_cerrara(array_menu_debug);
