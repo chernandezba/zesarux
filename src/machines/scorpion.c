@@ -758,6 +758,10 @@ z80_byte scorpion_gmx_read_port(z80_int port)
 
 void scorpion_set_cpu_speed(int turbo)
 {
+    /* El pulso INT ocupa 36 T de vídeo; a 7 MHz dura 72 T de CPU.
+       GMX mantiene por ahora su temporización anterior. */
+    if (MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS)
+        cpu_duracion_pulso_interrupcion=36*turbo;
 
     cpu_turbo_speed=turbo;
     cpu_set_turbo_speed();

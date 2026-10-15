@@ -2186,7 +2186,27 @@ void set_machine_params(void)
         ula_contend_port_late=ula_contend_port_late_48k;
     }
 
-    else if (MACHINE_IS_SCORPION) {
+    else if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+        /* Scorpion tiene 224 T por línea y 312 líneas por cuadro.
+           El área visible usa el mismo borde que el renderizado normal. */
+        screen_testados_linea=224;
+        screen_invisible_borde_superior=8;
+        screen_borde_superior=56;
+        screen_total_borde_inferior=56;
+        screen_total_borde_izquierdo=48;
+        screen_total_borde_derecho=48;
+        screen_invisible_borde_derecho=96;
+
+        /* La RAM del Scorpion no introduce esperas por contención. */
+        contend_read=contend_read_scorpion;
+        contend_read_no_mreq=contend_read_no_mreq_scorpion;
+        contend_write_no_mreq=contend_write_no_mreq_scorpion;
+        ula_contend_port_early=ula_contend_port_early_scorpion;
+        ula_contend_port_late=ula_contend_port_late_scorpion;
+        cpu_duracion_pulso_interrupcion=36;
+    }
+
+    else if (MACHINE_IS_SCORPION_GMX) {
         contend_read=contend_read_128k;
         contend_read_no_mreq=contend_read_no_mreq_128k;
         contend_write_no_mreq=contend_write_no_mreq_128k;

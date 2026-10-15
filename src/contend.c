@@ -146,6 +146,41 @@ void ula_contend_port_late_zx8081( z80_int port GCC_UNUSED )
 
 }
 
+/* Scorpion no espera por el acceso a RAM. Entrada: dirección y duración
+   normal del acceso. Salida: ninguna; avanza el reloj de la CPU. */
+void contend_read_scorpion(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+/* Cuenta los ciclos sin MREQ del Scorpion sin añadir contención.
+   Entrada: dirección y duración. Salida: ninguna. */
+void contend_read_no_mreq_scorpion(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+/* Cuenta una escritura sin MREQ del Scorpion sin añadir contención.
+   Entrada: dirección y duración. Salida: ninguna. */
+void contend_write_no_mreq_scorpion(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+/* Cuenta el primer ciclo de acceso a puerto del Scorpion.
+   Entrada: dirección del puerto. Salida: ninguna. */
+void ula_contend_port_early_scorpion(z80_int port GCC_UNUSED)
+{
+    t_estados++;
+}
+
+/* Cuenta los dos ciclos restantes de acceso a puerto del Scorpion.
+   Entrada: dirección del puerto. Salida: ninguna. */
+void ula_contend_port_late_scorpion(z80_int port GCC_UNUSED)
+{
+    t_estados+=2;
+}
+
 
 //Jupiter Ace - no contended
 void contend_read_ace(z80_int direccion GCC_UNUSED,int time)
@@ -1481,7 +1516,14 @@ z80_byte *contend_table_no_mreq;
 		offset_patron=-1;
 	}
 
-	if (MACHINE_IS_SCORPION) {
+	if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+		// Scorpion no añade esperas de RAM ni de puertos.
+		timings=contend_patron_no_contend;
+		offset_time=0;
+		offset_patron=0;
+	}
+
+	if (MACHINE_IS_SCORPION_GMX) {
 		//como si fuera la de 128k
                 timings=contend_patron_65432100;
 
