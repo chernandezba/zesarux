@@ -1524,15 +1524,10 @@ z80_byte *contend_table_no_mreq;
 	}
 
 	if (MACHINE_IS_SCORPION_GMX) {
-		//como si fuera la de 128k
-                timings=contend_patron_65432100;
-
-
-
-		offset_time=3; //6,5,4,3,2,1,0,0 pattern starts at 14361 segun http://www.worldofspectrum.org/faq/reference/128kreference.htm
-                offset_patron=-1;
-
-
+		// La selección Scorpion/Pentagon cambia el barrido, no añade contención.
+		timings=contend_patron_no_contend;
+		offset_time=0;
+		offset_patron=0;
 	}
 
 	if (MACHINE_IS_SPECTRUM_128_P2) {

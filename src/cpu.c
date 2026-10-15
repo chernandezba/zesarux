@@ -2207,19 +2207,23 @@ void set_machine_params(void)
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
-        contend_read=contend_read_128k;
-        contend_read_no_mreq=contend_read_no_mreq_128k;
-        contend_write_no_mreq=contend_write_no_mreq_128k;
+        /* xx00.D7 cambia la posición de INT y la duración del cuadro.
+           Los bordes Scorpion coinciden con el renderizado normal. */
+        screen_testados_linea=224;
+        screen_invisible_borde_superior=scorpion_gmx_uses_pentagon_timing() ? 16 : 8;
+        screen_borde_superior=scorpion_gmx_uses_pentagon_timing() ? 64 : 56;
+        screen_total_borde_inferior=scorpion_gmx_uses_pentagon_timing() ? 48 : 56;
+        screen_total_borde_izquierdo=48;
+        screen_total_borde_derecho=48;
+        screen_invisible_borde_derecho=96;
 
-        ula_contend_port_early=ula_contend_port_early_128k;
-        ula_contend_port_late=ula_contend_port_late_128k;
-
-
-        screen_testados_linea=228;
-        screen_invisible_borde_superior=7;
-        screen_invisible_borde_derecho=104;
-
-        contend_pages_128k_p2a=contend_pages_128k;
+        /* GMX no añade esperas de RAM ni de puertos en estos modos. */
+        contend_read=contend_read_scorpion;
+        contend_read_no_mreq=contend_read_no_mreq_scorpion;
+        contend_write_no_mreq=contend_write_no_mreq_scorpion;
+        ula_contend_port_early=ula_contend_port_early_scorpion;
+        ula_contend_port_late=ula_contend_port_late_scorpion;
+        cpu_duracion_pulso_interrupcion=36;
 
     }
 

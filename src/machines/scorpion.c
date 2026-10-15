@@ -122,6 +122,14 @@ static z80_byte scorpion_gmx_scroll_high;
  */
 static z80_byte scorpion_gmx_port_00;
 
+/* Consulta la selección de temporización de xx00.D7.
+ * Entrada: ninguna. Salida: 1 para Pentagon; 0 para Scorpion.
+ */
+int scorpion_gmx_uses_pentagon_timing(void)
+{
+    return (scorpion_gmx_port_00 & 0x80)!=0;
+}
+
 /* Z-Controller de KOE, interfaz SD externa usada por ProfROM:
  * 77h.D0 alimenta la tarjeta y D1 deselecciona su CS cuando vale 1.
  * La lectura de 77h devuelve D0=1 si no hay tarjeta y D1=1 si
@@ -682,7 +690,10 @@ void scorpion_write_port_1ffd(z80_byte value)
 void scorpion_gmx_write_port(z80_int port,z80_byte value)
 {
     if ((port & 0xff)==0) {
+        int timing_anterior=scorpion_gmx_uses_pentagon_timing();
         scorpion_gmx_port_00=value;
+        if (timing_anterior!=scorpion_gmx_uses_pentagon_timing())
+            scorpion_set_cpu_speed(cpu_turbo_speed);
         if (value & 8) {
             // La reconfiguración conserva este puerto y reinicia el procesador.
             scorpion_gmx_magic_shift=0x88 | (value & 7);
@@ -758,13 +769,13 @@ z80_byte scorpion_gmx_read_port(z80_int port)
 
 void scorpion_set_cpu_speed(int turbo)
 {
-    /* El pulso INT ocupa 36 T de vídeo; a 7 MHz dura 72 T de CPU.
-       GMX mantiene por ahora su temporización anterior. */
-    if (MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS)
-        cpu_duracion_pulso_interrupcion=36*turbo;
-
     cpu_turbo_speed=turbo;
     cpu_set_turbo_speed();
+
+    /* El cambio de velocidad recalcula los parámetros de máquina y vuelve
+       a fijar el pulso en 36 T; a 7 MHz debe durar 72 T de CPU. */
+    if (MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS || MACHINE_IS_SCORPION_GMX)
+        cpu_duracion_pulso_interrupcion=36*turbo;
 }
 
 /*
