@@ -2217,7 +2217,7 @@ void set_machine_params(void)
         /* Al cambiar de máquina se enciende GMX desde el esquema inicial.
            Un RESET dentro de GMX conserva la configuración elegida en xx00. */
         if (last_machine_type!=current_machine_type) scorpion_gmx_power_on();
-        /* xx00.D7 cambia la posición de INT y la duración del cuadro.
+        /* xx00.D7 o el esquema 4 activan el cuadro y la INT Pentagon.
            Los bordes Scorpion coinciden con el renderizado normal. */
         screen_testados_linea=224;
         screen_invisible_borde_superior=scorpion_gmx_uses_pentagon_timing() ? 16 : 8;

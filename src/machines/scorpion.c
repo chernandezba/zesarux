@@ -148,12 +148,14 @@ int scorpion_gmx_is_pentagon_scheme(void)
     return MACHINE_IS_SCORPION_GMX && scorpion_gmx_active_scheme==4;
 }
 
-/* Consulta la selección de temporización de xx00.D7.
+/* Consulta la temporización efectiva de GMX.
  * Entrada: ninguna. Salida: 1 para Pentagon; 0 para Scorpion.
+ * El esquema 4 usa siempre 320 líneas e INT Pentagon, aunque xx00.D7
+ * no esté activado por separado.
  */
 int scorpion_gmx_uses_pentagon_timing(void)
 {
-    return (scorpion_gmx_port_00 & 0x80)!=0;
+    return scorpion_gmx_is_pentagon_scheme() || (scorpion_gmx_port_00 & 0x80)!=0;
 }
 
 /* Z-Controller de KOE, interfaz SD externa usada por ProfROM:
@@ -726,12 +728,15 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
     if ((port & 0xff)==0) {
         int timing_anterior=scorpion_gmx_uses_pentagon_timing();
         scorpion_gmx_port_00=value;
+        if (value & 8) {
+            // RECONF carga el esquema antes de actualizar la temporización.
+            scorpion_gmx_magic_shift=0x88 | (value & 7);
+            scorpion_gmx_active_scheme=value & 7;
+        }
         if (timing_anterior!=scorpion_gmx_uses_pentagon_timing())
             scorpion_set_cpu_speed(cpu_turbo_speed);
         if (value & 8) {
             // La reconfiguración conserva este puerto y reinicia el procesador.
-            scorpion_gmx_magic_shift=0x88 | (value & 7);
-            scorpion_gmx_active_scheme=value & 7;
             if (!(value & 0x10)) reset_cpu();
         }
         return;
