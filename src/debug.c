@@ -6105,7 +6105,8 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         }
     }
 
-      if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_P2A) {
+      if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || superupgrade_enabled.v ||
+        MACHINE_IS_CHROME || TBBLUE_MACHINE_P2A || MACHINE_IS_SCORPION) {
         //En el caso de zxuno, no mostrar si paginacion desactivada por DI1FFD
         int mostrar=1;
 

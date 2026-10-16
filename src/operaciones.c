@@ -6986,7 +6986,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
-    //Test betadisk
+    //Acceso betadisk
     if (betadisk_enabled.v || (MACHINE_IS_SCORPION && scorpion_trdos_is_active() && trd_enabled.v)) {
 
         if (betadisk_check_if_rom_area(reg_pc) || (MACHINE_IS_SCORPION && scorpion_trdos_is_active() && reg_pc<0x4000)) {
@@ -9033,7 +9033,7 @@ Port: 10-- ---- ---- --0-
 	}
 
 
-   //Test betadisk
+   //Acceso betadisk
     if (betadisk_enabled.v || (MACHINE_IS_SCORPION && scorpion_trdos_is_active() && trd_enabled.v)) {
         if (betadisk_check_if_rom_area(reg_pc) || (MACHINE_IS_SCORPION && scorpion_trdos_is_active() && reg_pc<0x4000)) {
 
