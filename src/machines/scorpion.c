@@ -114,7 +114,7 @@ z80_bit smuc_enabled={0};
  * D4 A16, D5 A17, D6 A18: eligen uno de ocho bloques de 64 KiB de Flash.
  * D7 Normal/Turbo: 0 velocidad normal; 1 velocidad doble.
  */
-static z80_byte scorpion_gmx_port_7efd;
+z80_byte scorpion_gmx_port_7efd;
 
 /* Último valor escrito en DFFD, extensión de RAM de tipo Profi:
  * D0 SM0, D1 SM1, D2 SM2: bits 4, 5 y 6 del banco de 16 KiB en C000h.
@@ -151,7 +151,7 @@ static z80_byte scorpion_gmx_scroll_high;
  * D7 ST/PENT: 0 temporización Scorpion; 1 temporización Pentagon.
  * El reset no borra este registro.
  */
-static z80_byte scorpion_gmx_port_00;
+z80_byte scorpion_gmx_port_00;
 
 /* Configuración FLEX8000 activa; RECONF de xx00 carga el esquema elegido.
  * El esquema 4 corresponde al Pentagon128 de la ROM GMX.

@@ -6125,6 +6125,11 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (buf_linea,"Scorpion GMX 78FD port: %02X\n",scorpion_gmx_port_78fd);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
+            sprintf (buf_linea,"Scorpion GMX 7EFD port: %02X\n",scorpion_gmx_port_7efd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Scorpion GMX XX00 port: %02X\n",scorpion_gmx_port_00);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
       }
 
     if (MACHINE_IS_PCW) {
