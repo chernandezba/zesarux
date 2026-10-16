@@ -83,6 +83,29 @@ static z80_bit scorpion_trdos_active={0};
 // Indica que MAGIC ya ha esperado una lectura M1 de una instrucción desde RAM.
 static int scorpion_magic_ram_fetch_seen;
 
+
+/* Habilita la interfaz Z-Controller; sin ella la tarjeta SD figura ausente. */
+z80_bit zcontroller_enabled={0};
+
+/* SMUC (Scorpion & MOA Universal Controller) es la tarjeta de expansión
+ * que proporciona la interfaz ATA/IDE para discos y el acceso a otros
+ * periféricos. Las variables siguientes emulan sus registros y señales.
+ *
+ * La EEPROM 24LC16 es una memoria no volátil de 2 KiB del SMUC. El firmware
+ * puede guardar y recuperar datos en ella mediante el bus serie SDA/SCL;
+ * no forma parte de la RAM ni de la ROM paginada del Scorpion.
+ *
+ * La CMOS es el conjunto de registros del reloj de tiempo real: incluye
+ * hora, fecha, estado y una pequeña zona de configuración. En la tarjeta
+ * física el reloj y sus registros pueden mantenerse con una pila cuando
+ * se apaga el ordenador. Aquí se representan con 128 bytes y el estado
+ * necesario para actualizar el reloj.
+ */
+/* Controla la presencia del SMUC, independientemente del disco IDE. */
+z80_bit smuc_enabled={0};
+
+
+
 /* Último valor escrito en 7EFD (la lectura de este puerto devuelve otro estado):
  * D0 EWR: permite escribir en la memoria Flash.
  * D1 Vpp: activa la tensión de programación de la Flash.
@@ -140,33 +163,7 @@ static z80_byte scorpion_gmx_active_scheme;
  */
 static z80_byte scorpion_gmx_magic_shift;
 
-/* Inicializa el esquema y el registro serie al encender GMX de nuevo.
- * Entrada: ninguna. Salida: ninguna; no se usa para el botón RESET.
- */
-void scorpion_gmx_power_on(void)
-{
-    scorpion_gmx_port_00=0;
-    scorpion_gmx_active_scheme=0;
-    scorpion_gmx_magic_shift=0;
-}
 
-/* Consulta si GMX ha cargado el esquema de hardware Pentagon.
- * Entrada: ninguna. Salida: 1 para el esquema 4; 0 para los demás.
- */
-int scorpion_gmx_is_pentagon_scheme(void)
-{
-    return MACHINE_IS_SCORPION_GMX && scorpion_gmx_active_scheme==4;
-}
-
-/* Consulta la temporización efectiva de GMX.
- * Entrada: ninguna. Salida: 1 para Pentagon; 0 para Scorpion.
- * El esquema 4 usa siempre 320 líneas e INT Pentagon, aunque xx00.D7
- * no esté activado por separado.
- */
-int scorpion_gmx_uses_pentagon_timing(void)
-{
-    return scorpion_gmx_is_pentagon_scheme() || (scorpion_gmx_port_00 & 0x80)!=0;
-}
 
 /* Z-Controller de KOE, interfaz SD externa usada por ProfROM:
  * 77h.D0 alimenta la tarjeta y D1 deselecciona su CS cuando vale 1.
@@ -175,25 +172,7 @@ int scorpion_gmx_uses_pentagon_timing(void)
  */
 static z80_byte scorpion_gmx_zcontroller_control;
 
-/* Habilita la interfaz Z-Controller; sin ella la tarjeta SD figura ausente. */
-z80_bit zcontroller_enabled={0};
 
-/* SMUC (Scorpion & MOA Universal Controller) es la tarjeta de expansión
- * que proporciona la interfaz ATA/IDE para discos y el acceso a otros
- * periféricos. Las variables siguientes emulan sus registros y señales.
- *
- * La EEPROM 24LC16 es una memoria no volátil de 2 KiB del SMUC. El firmware
- * puede guardar y recuperar datos en ella mediante el bus serie SDA/SCL;
- * no forma parte de la RAM ni de la ROM paginada del Scorpion.
- *
- * La CMOS es el conjunto de registros del reloj de tiempo real: incluye
- * hora, fecha, estado y una pequeña zona de configuración. En la tarjeta
- * física el reloj y sus registros pueden mantenerse con una pila cuando
- * se apaga el ordenador. Aquí se representan con 128 bytes y el estado
- * necesario para actualizar el reloj.
- */
-/* Controla la presencia del SMUC, independientemente del disco IDE. */
-z80_bit smuc_enabled={0};
 
 /* FFBAh: D0 reinicia ATA, D4 es SDA, D6 es SCL y D7 selecciona
  * los registros alternativos ATA y la escritura en RTC. */
@@ -249,6 +228,35 @@ static int scorpion_gmx_smuc_eeprom_release;
 /* Valor visible al leer el bus serie: D6 representa la línea SDA. */
 static z80_byte scorpion_gmx_smuc_eeprom_bus=0xff;
 
+
+/* Inicializa el esquema y el registro serie al encender GMX de nuevo.
+ * Entrada: ninguna. Salida: ninguna; no se usa para el botón RESET.
+ */
+void scorpion_gmx_power_on(void)
+{
+    scorpion_gmx_port_00=0;
+    scorpion_gmx_active_scheme=0;
+    scorpion_gmx_magic_shift=0;
+}
+
+/* Consulta si GMX ha cargado el esquema de hardware Pentagon.
+ * Entrada: ninguna. Salida: 1 para el esquema 4; 0 para los demás.
+ */
+int scorpion_gmx_is_pentagon_scheme(void)
+{
+    return MACHINE_IS_SCORPION_GMX && scorpion_gmx_active_scheme==4;
+}
+
+/* Consulta la temporización efectiva de GMX.
+ * Entrada: ninguna. Salida: 1 para Pentagon; 0 para Scorpion.
+ * El esquema 4 usa siempre 320 líneas e INT Pentagon, aunque xx00.D7
+ * no esté activado por separado.
+ */
+int scorpion_gmx_uses_pentagon_timing(void)
+{
+    return scorpion_gmx_is_pentagon_scheme() || (scorpion_gmx_port_00 & 0x80)!=0;
+}
+
 enum {
     SCORPION_SMUC_EEPROM_IDLE,
     SCORPION_SMUC_EEPROM_COMMAND,
@@ -264,67 +272,6 @@ z80_byte scorpion_read_ay_port_a(z80_byte ay_value)
            (puerto_8189 & 0x10) | ((puerto_32765 & 0x10) << 1);
 }
 
-void scorpion_init_memory_tables(void)
-{
-    //Primero rom y luego ram
-
-    int i;
-    z80_byte *puntero=memoria_spectrum;
-
-    for (i=0;i<SCORPIONGMX_TOTAL_ROM_PAGES;i++) {
-        scorpion_rom_mem_table[i]=puntero;
-        puntero +=16384;
-    }
-
-    for (i=0;i<SCORPIONGMX_TOTAL_RAM_PAGES;i++) {
-        scorpion_ram_mem_table[i]=puntero;
-        puntero +=16384;
-    }
-
-
-}
-
-void scorpion_set_normal_pages(void)
-{
-    scorpion_trdos_active.v=0;
-    scorpion_magic_ram_fetch_seen=0;
-    scorpion_memory_paged[0]=scorpion_rom_mem_table[0];
-    scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
-    scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
-    scorpion_memory_paged[3]=scorpion_ram_mem_table[0];
-
-
-    if (MACHINE_IS_SCORPION_GMX) {
-        scorpion_gmx_smuc_control=1;
-        scorpion_gmx_smuc_config=0;
-        scorpion_gmx_smuc_data_high=0;
-        scorpion_gmx_smuc_cmos_address=0;
-        scorpion_gmx_smuc_cmos_last_second=0;
-        scorpion_gmx_smuc_cmos_update_flag=0;
-        scorpion_gmx_smuc_identify_first_word=0;
-        scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_IDLE;
-        scorpion_gmx_smuc_eeprom_address=0;
-        scorpion_gmx_smuc_eeprom_input=0;
-        scorpion_gmx_smuc_eeprom_input_bits=0;
-        scorpion_gmx_smuc_eeprom_output=0;
-        scorpion_gmx_smuc_eeprom_output_bits=0;
-        scorpion_gmx_smuc_eeprom_release=1;
-        scorpion_gmx_smuc_eeprom_bus=0xff;
-        if (!scorpion_gmx_smuc_eeprom_initialized) {
-            int i;
-            for (i=0;i<2048;i++) scorpion_gmx_smuc_eeprom[i]=0xff;
-            scorpion_gmx_smuc_eeprom_initialized=1;
-        }
-        scorpion_gmx_port_7efd=0;
-        scorpion_gmx_zcontroller_control=0;
-        scorpion_gmx_port_dffd=0;
-        scorpion_gmx_port_78fd=0;
-        scorpion_gmx_scroll_low=0;
-        scorpion_gmx_scroll_high=0;
-        if (scorpion_gmx_is_pentagon_scheme()) scorpion_mem_page_rom();
-    }
-
-}
 
 /* Lee los puertos SD del Z-Controller de GMX.
  * Entrada: puerto Z80 y puntero al resultado. Salida: 1 si se atendió
@@ -610,6 +557,71 @@ int scorpion_gmx_smuc_write(z80_int port,z80_byte value)
     }
     return 0;
 }
+
+
+
+void scorpion_init_memory_tables(void)
+{
+    //Primero rom y luego ram
+
+    int i;
+    z80_byte *puntero=memoria_spectrum;
+
+    for (i=0;i<SCORPIONGMX_TOTAL_ROM_PAGES;i++) {
+        scorpion_rom_mem_table[i]=puntero;
+        puntero +=16384;
+    }
+
+    for (i=0;i<SCORPIONGMX_TOTAL_RAM_PAGES;i++) {
+        scorpion_ram_mem_table[i]=puntero;
+        puntero +=16384;
+    }
+
+
+}
+
+void scorpion_set_normal_pages(void)
+{
+    scorpion_trdos_active.v=0;
+    scorpion_magic_ram_fetch_seen=0;
+    scorpion_memory_paged[0]=scorpion_rom_mem_table[0];
+    scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
+    scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
+    scorpion_memory_paged[3]=scorpion_ram_mem_table[0];
+
+
+    if (MACHINE_IS_SCORPION_GMX) {
+        scorpion_gmx_smuc_control=1;
+        scorpion_gmx_smuc_config=0;
+        scorpion_gmx_smuc_data_high=0;
+        scorpion_gmx_smuc_cmos_address=0;
+        scorpion_gmx_smuc_cmos_last_second=0;
+        scorpion_gmx_smuc_cmos_update_flag=0;
+        scorpion_gmx_smuc_identify_first_word=0;
+        scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_IDLE;
+        scorpion_gmx_smuc_eeprom_address=0;
+        scorpion_gmx_smuc_eeprom_input=0;
+        scorpion_gmx_smuc_eeprom_input_bits=0;
+        scorpion_gmx_smuc_eeprom_output=0;
+        scorpion_gmx_smuc_eeprom_output_bits=0;
+        scorpion_gmx_smuc_eeprom_release=1;
+        scorpion_gmx_smuc_eeprom_bus=0xff;
+        if (!scorpion_gmx_smuc_eeprom_initialized) {
+            int i;
+            for (i=0;i<2048;i++) scorpion_gmx_smuc_eeprom[i]=0xff;
+            scorpion_gmx_smuc_eeprom_initialized=1;
+        }
+        scorpion_gmx_port_7efd=0;
+        scorpion_gmx_zcontroller_control=0;
+        scorpion_gmx_port_dffd=0;
+        scorpion_gmx_port_78fd=0;
+        scorpion_gmx_scroll_low=0;
+        scorpion_gmx_scroll_high=0;
+        if (scorpion_gmx_is_pentagon_scheme()) scorpion_mem_page_rom();
+    }
+
+}
+
 
 void scorpion_malloc_mem_machine(void)
 {
