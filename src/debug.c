@@ -6125,58 +6125,58 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (buf_linea," DFFD port: %02X\n",scorpion_gmx_port_dffd);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"Scorpion GMX 78FD port: %02X\n",scorpion_gmx_port_78fd);
+            sprintf (buf_linea," 78FD port: %02X\n",scorpion_gmx_port_78fd);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"Scorpion GMX 7EFD port: %02X\n",scorpion_gmx_port_7efd);
+            sprintf (buf_linea," 7EFD port: %02X\n",scorpion_gmx_port_7efd);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"Scorpion GMX XX00 port: %02X\n",scorpion_gmx_port_00);
+            sprintf (buf_linea," XX00 port: %02X\n",scorpion_gmx_port_00);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"Scorpion GMX FLEX8000 active scheme: %02X\n",scorpion_gmx_active_scheme);
+            sprintf (buf_linea," FLEX8000 active scheme: %02X\n",scorpion_gmx_active_scheme);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea,"Scorpion GMX Magic shift: %02X\n",scorpion_gmx_magic_shift);
+            sprintf (buf_linea," Magic shift: %02X\n",scorpion_gmx_magic_shift);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
             if (zcontroller_enabled.v) {
-                sprintf (buf_linea,"Scorpion GMX ZController control: %02X\n",scorpion_gmx_zcontroller_control);
+                sprintf (buf_linea," ZController control: %02X\n",scorpion_gmx_zcontroller_control);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
             }
 
             if (smuc_enabled.v) {
-                sprintf (buf_linea,"Scorpion GMX SMUC control: %02X\n",scorpion_gmx_smuc_control);
+                sprintf (buf_linea," SMUC control: %02X\n",scorpion_gmx_smuc_control);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC config: %02X\n",scorpion_gmx_smuc_config);
+                sprintf (buf_linea," SMUC config: %02X\n",scorpion_gmx_smuc_config);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC ATA data high: %02X\n",scorpion_gmx_smuc_data_high);
+                sprintf (buf_linea," SMUC ATA data high: %02X\n",scorpion_gmx_smuc_data_high);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC IDENTIFY first word pending: %d\n",scorpion_gmx_smuc_identify_first_word);
+                sprintf (buf_linea," SMUC IDENTIFY first word pending: %d\n",scorpion_gmx_smuc_identify_first_word);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM initialized: %d\n",scorpion_gmx_smuc_eeprom_initialized);
+                sprintf (buf_linea," SMUC EEPROM initialized: %d\n",scorpion_gmx_smuc_eeprom_initialized);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM state: %d\n",scorpion_gmx_smuc_eeprom_state);
+                sprintf (buf_linea," SMUC EEPROM state: %d\n",scorpion_gmx_smuc_eeprom_state);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM address: %03X\n",scorpion_gmx_smuc_eeprom_address);
+                sprintf (buf_linea," SMUC EEPROM address: %03X\n",scorpion_gmx_smuc_eeprom_address);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM input: %02X (%d bits)\n",scorpion_gmx_smuc_eeprom_input,scorpion_gmx_smuc_eeprom_input_bits);
+                sprintf (buf_linea," SMUC EEPROM input: %02X (%d bits)\n",scorpion_gmx_smuc_eeprom_input,scorpion_gmx_smuc_eeprom_input_bits);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM output: %02X (%d bits)\n",scorpion_gmx_smuc_eeprom_output,scorpion_gmx_smuc_eeprom_output_bits);
+                sprintf (buf_linea," SMUC EEPROM output: %02X (%d bits)\n",scorpion_gmx_smuc_eeprom_output,scorpion_gmx_smuc_eeprom_output_bits);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM SDA released: %d\n",scorpion_gmx_smuc_eeprom_release);
+                sprintf (buf_linea," SMUC EEPROM SDA released: %d\n",scorpion_gmx_smuc_eeprom_release);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea,"Scorpion GMX SMUC EEPROM bus: %02X\n",scorpion_gmx_smuc_eeprom_bus);
+                sprintf (buf_linea," SMUC EEPROM bus: %02X\n",scorpion_gmx_smuc_eeprom_bus);
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
             }
       }
