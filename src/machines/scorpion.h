@@ -79,6 +79,8 @@ extern z80_byte scorpion_read_ay_port_a(z80_byte ay_value);
 extern z80_byte *scorpion_ram_mem_table[];
 extern z80_byte *scorpion_rom_mem_table[];
 extern z80_byte *scorpion_memory_paged[];
+extern z80_byte scorpion_gmx_port_dffd;
+extern z80_byte scorpion_gmx_port_78fd;
 extern void scorpion_set_normal_pages(void);
 
 extern void scorpion_set_cpu_speed(int turbo);

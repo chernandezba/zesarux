@@ -6118,6 +6118,15 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         }
       }
 
+      if (MACHINE_IS_SCORPION_GMX) {
+            sprintf (buf_linea,"Scorpion GMX DFFD port: %02X\n",scorpion_gmx_port_dffd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Scorpion GMX 78FD port: %02X\n",scorpion_gmx_port_78fd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+      }
+
     if (MACHINE_IS_PCW) {
         int i;
         for (i=0;i<4;i++) {

@@ -661,6 +661,10 @@ Pressing DELETE opens the GMX Loader menu. The firmware currently used by ZEsarU
 
 The message at the bottom means "No disk with firmware selected". The numbered entries select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
 
+Q: What does the HDD boot menu option do on Scorpion GMX?
+
+A: HDD boot in the 128 BASIC menu starts the boot source configured in ProfROM's NMI monitor. To boot a file from the hard disk, open the NMI monitor, select D. Disk utility -> V. from drive, and set the boot type to "file". Then use H. HDD file to select a .spg, .sna or .$C file. Return to the 128 BASIC menu and select HDD boot.
+
 Q: Why does the Scorpion GMX show the CMOS, SMUC and hard disk test on startup, but skip it after Reset?
 
 A: A normal Reset keeps the initialized state in RAM, so the firmware takes the quicker startup path. To run the full startup test again, hold the Left Arrow key while resetting the machine. This brings back the screen that reports RAM, ROM, CMOS, SMUC and hard disk status.

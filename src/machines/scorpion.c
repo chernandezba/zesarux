@@ -94,7 +94,7 @@ static z80_byte scorpion_gmx_port_7efd;
  * Los bits 0-2 proceden de 7FFD y el bit 3 de 1FFD.D4.
  * D3-D7: sin función documentada para GMX.
  */
-static z80_byte scorpion_gmx_port_dffd;
+z80_byte scorpion_gmx_port_dffd;
 /* Último valor escrito en 78FD (segunda ventana de RAM, 8000h-BFFFh):
  * D0 SW0, D2 SW2, D3 SW3: bits 0, 2 y 3 del banco de 16 KiB.
  * D1 SW1: bit 1 del banco, invertido físicamente; al reset vale 0
@@ -103,7 +103,7 @@ static z80_byte scorpion_gmx_port_dffd;
  * D7: sin función documentada en escritura; en lectura refleja el
  *     bit 1 del color del borde.
  */
-static z80_byte scorpion_gmx_port_78fd;
+z80_byte scorpion_gmx_port_78fd;
 /* Desplazamiento vertical del vídeo ampliado: 7AFD aporta D4-D7 del
  * byte bajo y 7CFD aporta D0-D5 del byte alto. D0-D3 del byte bajo
  * siempre valen cero. El resultado es un desplazamiento de 14 bits.
@@ -605,6 +605,8 @@ void scorpion_mem_page_ram(void)
 
     if (MACHINE_IS_SCORPION_GMX && !scorpion_gmx_is_pentagon_scheme()) {
         page_entra |= (scorpion_gmx_port_dffd & 7) << 4;
+        // 78FD selecciona de forma independiente la página de 8000h-BFFFh.
+        scorpion_memory_paged[2]=scorpion_ram_mem_table[(scorpion_gmx_port_78fd ^ 2) & 0x7f];
     }
 
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
@@ -752,7 +754,7 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
             break;
         case 0x7800:
             scorpion_gmx_port_78fd=value;
-            scorpion_memory_paged[2]=scorpion_ram_mem_table[(value ^ 2) & 0x7f];
+            scorpion_mem_page_ram();
             break;
         case 0x7a00:
             scorpion_gmx_scroll_low=value & 0xf0;
