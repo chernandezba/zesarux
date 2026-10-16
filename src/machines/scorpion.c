@@ -77,9 +77,12 @@ z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
+
 static z80_bit scorpion_trdos_active={0};
+
 // Indica que MAGIC ya ha esperado una lectura M1 de una instrucción desde RAM.
 static int scorpion_magic_ram_fetch_seen;
+
 /* Último valor escrito en 7EFD (la lectura de este puerto devuelve otro estado):
  * D0 EWR: permite escribir en la memoria Flash.
  * D1 Vpp: activa la tensión de programación de la Flash.
@@ -89,12 +92,14 @@ static int scorpion_magic_ram_fetch_seen;
  * D7 Normal/Turbo: 0 velocidad normal; 1 velocidad doble.
  */
 static z80_byte scorpion_gmx_port_7efd;
+
 /* Último valor escrito en DFFD, extensión de RAM de tipo Profi:
  * D0 SM0, D1 SM1, D2 SM2: bits 4, 5 y 6 del banco de 16 KiB en C000h.
  * Los bits 0-2 proceden de 7FFD y el bit 3 de 1FFD.D4.
  * D3-D7: sin función documentada para GMX.
  */
 z80_byte scorpion_gmx_port_dffd;
+
 /* Último valor escrito en 78FD (segunda ventana de RAM, 8000h-BFFFh):
  * D0 SW0, D2 SW2, D3 SW3: bits 0, 2 y 3 del banco de 16 KiB.
  * D1 SW1: bit 1 del banco, invertido físicamente; al reset vale 0
@@ -104,12 +109,15 @@ z80_byte scorpion_gmx_port_dffd;
  *     bit 1 del color del borde.
  */
 z80_byte scorpion_gmx_port_78fd;
+
 /* Desplazamiento vertical del vídeo ampliado: 7AFD aporta D4-D7 del
  * byte bajo y 7CFD aporta D0-D5 del byte alto. D0-D3 del byte bajo
  * siempre valen cero. El resultado es un desplazamiento de 14 bits.
  */
 static z80_byte scorpion_gmx_scroll_low;
+
 static z80_byte scorpion_gmx_scroll_high;
+
 /* Último valor escrito en el puerto global xx00:
  * D0 CONF0, D1 CONF1, D2 CONF2: variante de configuración FLEX8000.
  * D3 RECONF: solicita cargar esa configuración y reiniciar GMX.
@@ -121,10 +129,12 @@ static z80_byte scorpion_gmx_scroll_high;
  * El reset no borra este registro.
  */
 static z80_byte scorpion_gmx_port_00;
+
 /* Configuración FLEX8000 activa; RECONF de xx00 carga el esquema elegido.
  * El esquema 4 corresponde al Pentagon128 de la ROM GMX.
  */
 static z80_byte scorpion_gmx_active_scheme;
+
 /* Registro interno de lectura serie por 78FD: tras RECONF contiene
  * 88h OR CONF0..CONF2. Cada lectura entrega el bit 0 y lo desplaza.
  */
@@ -188,29 +198,55 @@ z80_bit smuc_enabled={0};
 /* FFBAh: D0 reinicia ATA, D4 es SDA, D6 es SCL y D7 selecciona
  * los registros alternativos ATA y la escritura en RTC. */
 static z80_byte scorpion_gmx_smuc_control=1;
+
 /* 7FBAh: registro de configuración del SMUC; los bits 0-2 y 4-5
  * se leen siempre como unos en esta revisión del controlador. */
 static z80_byte scorpion_gmx_smuc_config;
+
 /* D8BEh conserva el byte alto del último dato ATA de 16 bits. */
 static z80_byte scorpion_gmx_smuc_data_high;
+
 /* DFBAh: dirección seleccionada y contenido de los registros CMOS. */
 static z80_byte scorpion_gmx_smuc_cmos_address;
+
 static z80_byte scorpion_gmx_smuc_cmos[128];
+
 /* Estado de la interrupción de actualización del reloj, registro C. */
 static time_t scorpion_gmx_smuc_cmos_last_second;
+
 static int scorpion_gmx_smuc_cmos_update_flag;
+
 /* Sustituye únicamente la palabra 0 de IDENTIFY por un disco ATA fijo. */
 static int scorpion_gmx_smuc_identify_first_word;
+
 /* EEPROM 24LC16 y estado de la transferencia serie por SDA/SCL. */
 static z80_byte scorpion_gmx_smuc_eeprom[2048];
+
+/* Indica si el contenido de la EEPROM ya se inicializó al encender GMX. */
 static int scorpion_gmx_smuc_eeprom_initialized;
+
+/* Fase actual de la transferencia serie: comando, dirección, datos o ACK. */
 static int scorpion_gmx_smuc_eeprom_state;
+
+/* Dirección de 11 bits del siguiente byte que se leerá o escribirá. */
 static int scorpion_gmx_smuc_eeprom_address;
+
+/* Acumula los bits recibidos por SDA hasta formar un byte. */
 static int scorpion_gmx_smuc_eeprom_input;
+
+/* Cuenta los bits recibidos del byte en curso. */
 static int scorpion_gmx_smuc_eeprom_input_bits;
+
+/* Byte de la EEPROM que se desplaza para enviarlo por SDA. */
 static int scorpion_gmx_smuc_eeprom_output;
+
+/* Cuenta los bits enviados del byte en curso. */
 static int scorpion_gmx_smuc_eeprom_output_bits;
+
+/* Indica si la EEPROM ha soltado SDA para que lo controle el maestro. */
 static int scorpion_gmx_smuc_eeprom_release;
+
+/* Valor visible al leer el bus serie: D6 representa la línea SDA. */
 static z80_byte scorpion_gmx_smuc_eeprom_bus=0xff;
 
 enum {
