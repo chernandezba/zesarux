@@ -6130,6 +6130,19 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
             sprintf (buf_linea,"Scorpion GMX XX00 port: %02X\n",scorpion_gmx_port_00);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea,"Scorpion GMX FLEX8000 active scheme: %02X\n",scorpion_gmx_active_scheme);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            if (zcontroller_enabled.v) {
+                sprintf (buf_linea,"Scorpion GMX ZController control: %02X\n",scorpion_gmx_zcontroller_control);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+
+            if (smuc_enabled.v) {
+                sprintf (buf_linea,"Scorpion GMX SMUC config: %02X\n",scorpion_gmx_smuc_config);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
       }
 
     if (MACHINE_IS_PCW) {

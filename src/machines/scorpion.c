@@ -156,7 +156,7 @@ z80_byte scorpion_gmx_port_00;
 /* Configuración FLEX8000 activa; RECONF de xx00 carga el esquema elegido.
  * El esquema 4 corresponde al Pentagon128 de la ROM GMX.
  */
-static z80_byte scorpion_gmx_active_scheme;
+z80_byte scorpion_gmx_active_scheme;
 
 /* Registro interno de lectura serie por 78FD: tras RECONF contiene
  * 88h OR CONF0..CONF2. Cada lectura entrega el bit 0 y lo desplaza.
@@ -170,7 +170,7 @@ static z80_byte scorpion_gmx_magic_shift;
  * La lectura de 77h devuelve D0=1 si no hay tarjeta y D1=1 si
  * está protegida contra escritura. 57h intercambia bytes por SPI.
  */
-static z80_byte scorpion_gmx_zcontroller_control;
+z80_byte scorpion_gmx_zcontroller_control;
 
 
 
@@ -180,7 +180,7 @@ static z80_byte scorpion_gmx_smuc_control=1;
 
 /* 7FBAh: registro de configuración del SMUC; los bits 0-2 y 4-5
  * se leen siempre como unos en esta revisión del controlador. */
-static z80_byte scorpion_gmx_smuc_config;
+z80_byte scorpion_gmx_smuc_config;
 
 /* D8BEh conserva el byte alto del último dato ATA de 16 bits. */
 static z80_byte scorpion_gmx_smuc_data_high;
