@@ -80,6 +80,7 @@ extern z80_byte *scorpion_ram_mem_table[];
 extern z80_byte *scorpion_rom_mem_table[];
 extern z80_byte *scorpion_memory_paged[];
 extern z80_byte scorpion_gmx_active_scheme;
+extern z80_byte scorpion_gmx_magic_shift;
 extern z80_byte scorpion_gmx_port_00;
 extern z80_byte scorpion_gmx_port_7efd;
 extern z80_byte scorpion_gmx_port_dffd;
@@ -88,6 +89,18 @@ extern z80_byte scorpion_gmx_zcontroller_control;
 extern void scorpion_set_normal_pages(void);
 
 extern z80_byte scorpion_gmx_smuc_config;
+extern z80_byte scorpion_gmx_smuc_control;
+extern z80_byte scorpion_gmx_smuc_data_high;
+extern int scorpion_gmx_smuc_identify_first_word;
+extern int scorpion_gmx_smuc_eeprom_initialized;
+extern int scorpion_gmx_smuc_eeprom_state;
+extern int scorpion_gmx_smuc_eeprom_address;
+extern int scorpion_gmx_smuc_eeprom_input;
+extern int scorpion_gmx_smuc_eeprom_input_bits;
+extern int scorpion_gmx_smuc_eeprom_output;
+extern int scorpion_gmx_smuc_eeprom_output_bits;
+extern int scorpion_gmx_smuc_eeprom_release;
+extern z80_byte scorpion_gmx_smuc_eeprom_bus;
 
 extern void scorpion_set_cpu_speed(int turbo);
 extern void scorpion_gmx_set_normal_speed(void);
