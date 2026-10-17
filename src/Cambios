@@ -80,6 +80,7 @@ Corregido ZX Evo TSConf:
 - Corregido al acceder a tarjeta SD/MMC (SD Z-Controller)
 - Corregido al leer teclado en modo PS/2 (para Wild Commander por ejemplo)
 
+Corregidos timings para TK90X modelos de 50 hz y 60 hz
 Corregidas consultas usando el Speccy Online Browser
 Corregido arranque de Spectrum Next con NextZXOS 2.09
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo

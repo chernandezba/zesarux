@@ -2000,14 +2000,6 @@ void set_machine_params(void)
     //en spectrum, 32. en pentagon, 36
     cpu_duracion_pulso_interrupcion=32;
 
-    if (last_machine_type!=current_machine_type) {
-        if (MACHINE_IS_MICRODIGITAL_TK90X) machine_60hz.v=1;
-        else if (MACHINE_IS_MICRODIGITAL_TK90X_SPA ||
-                 last_machine_type==MACHINE_ID_MICRODIGITAL_TK90X ||
-                 last_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_SPA) machine_60hz.v=0;
-    }
-
-
     z80_cpu_current_type=Z80_TYPE_GENERIC;
 
 

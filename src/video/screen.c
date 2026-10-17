@@ -12184,7 +12184,7 @@ int screen_get_emulated_display_height_no_zoom(void)
 
         else {
         if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA)
-            return machine_60hz.v ? 240 : 288;
+            return 288;
         return SCREEN_SPECTRUM_HEIGHT;
         }
 }
@@ -12353,7 +12353,8 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
 
         else {
         if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA)
-            return ALTO_PANTALLA+(machine_60hz.v ? 48 : 96)*border_enabled.v;
+            // Reservar los 40+56 píxeles del borde de 50 Hz también a 60 Hz; la zona sobrante se dibuja negra.
+            return ALTO_PANTALLA+96*border_enabled.v;
         return ALTO_PANTALLA+(TOP_BORDER_NO_ZOOM+BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
                 }
 }
