@@ -253,7 +253,10 @@ void core_spectrum_store_rainbow_current_atributes(void)
     if (rainbow_enabled.v) {
         if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
             //Sumamos el offset de prefetch de la ULA: latch de cada celda unos T-estados antes de mostrarse
-            int atributo_pos=((t_estados % screen_testados_linea)+ULA_PREFETCH_OFFSET_TSTATES)/4;
+            int tiempo_ula=t_estados;
+            if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA)
+                tiempo_ula-=95*cpu_turbo_speed;
+            int atributo_pos=((tiempo_ula % screen_testados_linea)+ULA_PREFETCH_OFFSET_TSTATES)/4;
             //Proteccion contra desbordamiento del buffer cerca del final de linea (zona border)
             if (atributo_pos>=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2) atributo_pos=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2-1;
             z80_byte *screen_atributo=get_base_mem_pantalla_attributes();
@@ -333,7 +336,7 @@ void core_spectrum_store_rainbow_current_atributes(void)
             //No podemos tocar scanline_buffer (linea anterior pendiente de renderizar), pero si
             //debemos capturar las primeras celdas de la linea siguiente ANTES de la escritura,
             //porque la ULA ya las habria leido. Se vuelcan al detectar el cambio de linea
-            else if ((int)(t_estados/screen_testados_linea)>t_scanline) {
+            else if ((int)(tiempo_ula/screen_testados_linea)>t_scanline) {
                 int linea_sig=t_scanline_draw+1;
                 if (linea_sig>=screen_indice_inicio_pant && linea_sig<screen_indice_fin_pant) {
 
@@ -1238,7 +1241,10 @@ void cpu_core_loop_spectrum(void)
 
 
     //A final de cada scanline
-    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+    int tiempo_ula=t_estados;
+    if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA)
+        tiempo_ula-=95*cpu_turbo_speed;
+    if ( (tiempo_ula/screen_testados_linea)>t_scanline || t_estados>=screen_testados_total ) {
         TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_fin_scanline);
         core_spectrum_fin_scanline();
         TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_fin_scanline);

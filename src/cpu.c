@@ -2000,6 +2000,13 @@ void set_machine_params(void)
     //en spectrum, 32. en pentagon, 36
     cpu_duracion_pulso_interrupcion=32;
 
+    if (last_machine_type!=current_machine_type) {
+        if (MACHINE_IS_MICRODIGITAL_TK90X) machine_60hz.v=1;
+        else if (MACHINE_IS_MICRODIGITAL_TK90X_SPA ||
+                 last_machine_type==MACHINE_ID_MICRODIGITAL_TK90X ||
+                 last_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_SPA) machine_60hz.v=0;
+    }
+
 
     z80_cpu_current_type=Z80_TYPE_GENERIC;
 
@@ -2174,6 +2181,24 @@ void set_machine_params(void)
 
         ula_contend_port_early=ula_contend_port_early_48k;
         ula_contend_port_late=ula_contend_port_late_48k;
+
+        if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+            // La ULA Microdigital emplea 228 T por línea en ambos modos.
+            screen_testados_linea=228;
+            screen_invisible_borde_derecho=104;
+            if (machine_60hz.v) {
+                screen_invisible_borde_superior=22;
+                screen_borde_superior=16;
+                screen_total_borde_inferior=32;
+                original_timer_sleep_machine=16666;
+                set_emulator_speed();
+            }
+            else {
+                screen_invisible_borde_superior=24;
+                screen_borde_superior=40;
+                screen_total_borde_inferior=56;
+            }
+        }
 
         //Ajustes para Inves
         if (MACHINE_IS_INVES) {

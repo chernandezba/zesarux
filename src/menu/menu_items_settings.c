@@ -9046,7 +9046,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_SVI) {
+        if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_TIMEX_TS2068 ||
+            MACHINE_IS_SVI || MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_50_60hz,NULL,
                 "Machine refresh rate [%d Hz]",get_frequency_refresh_video() );

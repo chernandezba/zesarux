@@ -330,7 +330,7 @@ por tanto nunca devolveria 255
 *activar covox scorpion?
 *rom de gmx y paginado. de momento usa rom de turbo
 *mover funciones peek y poke de scorpion a scorpion.h
-*memoria contended?
+ok *memoria contended
 *timings?
 *snapshots zsf
 
