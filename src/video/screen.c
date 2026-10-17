@@ -1829,6 +1829,11 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
     //Top border cambia en spectrum y zx8081 y ace
     int topborder=TOP_BORDER;
     if (MACHINE_IS_ZX8081ACE) topborder=ZX8081ACE_TOP_BORDER;
+    int bottomborder=BOTTOM_BORDER;
+    if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+        topborder=screen_borde_superior*zoom_y;
+        bottomborder=screen_total_borde_inferior*zoom_y;
+    }
 
     //color +=spectrum_palette_offset;
 
@@ -1841,9 +1846,17 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
     }
 
     //parte inferior
-    for (y=0;y<BOTTOM_BORDER;y++) {
+    for (y=0;y<bottomborder;y++) {
         for (x=0;x<ANCHO_PANTALLA*zoom_x+LEFT_BORDER*2;x++) {
             scr_putpixel(x,topborder+y+ALTO_PANTALLA*zoom_y,color);
+        }
+    }
+
+    if ((MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) && machine_60hz.v) {
+        // Mantener la altura de 50 Hz y rellenar con negro las líneas que sobran a 60 Hz.
+        for (y=topborder+ALTO_PANTALLA*zoom_y+bottomborder;
+             y<screen_get_emulated_display_height_no_zoom_border_en()*zoom_y;y++) {
+            for (x=0;x<ANCHO_PANTALLA*zoom_x+LEFT_BORDER*2;x++) scr_putpixel(x,y,0);
         }
     }
 
@@ -2455,6 +2468,11 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
     else if (MACHINE_IS_ZX8081ACE) {
         offsetx=LEFT_BORDER*border_enabled.v;
         offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+        offsetx=LEFT_BORDER*border_enabled.v;
+        offsety=screen_borde_superior*zoom_y*border_enabled.v;
     }
 
     else {
@@ -12292,6 +12310,10 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+QL_DISPLAY_HEIGHT+(QL_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
+        else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+        // El footer empieza tras el alto reservado de 50 Hz, incluida la franja negra en 60 Hz.
+        return alto_extdesktop+ALTO_PANTALLA+(96-screen_borde_superior)*border_enabled.v;
+        }
 
 
         else {
