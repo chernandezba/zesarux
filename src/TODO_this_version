@@ -298,7 +298,7 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
-* pendientes 60 hz: next modo 60hz, y algunas tk?
+* pendientes 60 hz: next modo 60hz,
 
 
 Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he puesto en scr_refresca_pantalla_rainbow_comun
@@ -307,7 +307,7 @@ Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he
 
 
 -modo 60 hz en atic atac, para next.
--implementar timings ula TK90x
+
 
 
 -visual floppy: opción para ver el floppy entero, con la carcasa, etc
