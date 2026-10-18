@@ -1878,7 +1878,7 @@ void gestionar_autoload_spectrum(void)
             case MACHINE_ID_SPECTRUM_16:
             case MACHINE_ID_SPECTRUM_48:
             case MACHINE_ID_INVES:
-            case MACHINE_ID_MICRODIGITAL_TK90X:
+            case MACHINE_ID_MICRODIGITAL_TK90X_POR:
             case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
             case MACHINE_ID_MICRODIGITAL_TK95:
             case MACHINE_ID_MICRODIGITAL_TK95_SPA:

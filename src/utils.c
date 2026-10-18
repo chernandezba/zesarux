@@ -752,7 +752,7 @@ struct s_machines_info machines_info[]={
     {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
 
     {"Inves Spectrum+",			        MACHINE_ID_INVES,                   MACHINE_FAMILY_SPECTRUM,FABRICANTE_INVESTRONICA},
-    {"TK90X",		                    MACHINE_ID_MICRODIGITAL_TK90X,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X",		                    MACHINE_ID_MICRODIGITAL_TK90X_POR,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK90X (Spanish)",	                MACHINE_ID_MICRODIGITAL_TK90X_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
@@ -14266,7 +14266,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG,bitmap_button_ext_desktop_my_machine_spectrum_48_spa},
    {"48ks",20,bitmap_button_ext_desktop_my_machine_spectrum_48_spa},
    {"Inves",2,bitmap_button_ext_desktop_my_machine_inves},
-   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X,bitmap_button_ext_desktop_my_machine_tk90x},
+   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X_POR,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK95",MACHINE_ID_MICRODIGITAL_TK95,bitmap_button_ext_desktop_my_machine_tk95},
    {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA,bitmap_button_ext_desktop_my_machine_tk95},

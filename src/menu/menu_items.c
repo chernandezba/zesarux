@@ -21979,7 +21979,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_PCW) strcpy(nombrebmp,"keyboard_pcw_8256.bmp");
     else if (MACHINE_IS_INVES) strcpy(nombrebmp,"keyboard_inves.bmp");
     else if (MACHINE_IS_ACE) strcpy(nombrebmp,"keyboard_ace.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) strcpy(nombrebmp,"keyboard_tk90x.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK90X_POR || MACHINE_IS_MICRODIGITAL_TK90X_SPA) strcpy(nombrebmp,"keyboard_tk90x.bmp");
     else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) strcpy(nombrebmp,"keyboard_tk95.bmp");
     else if (MACHINE_IS_MK14) strcpy(nombrebmp,"keyboard_mk14.bmp");
     else if (MACHINE_IS_MSX) strcpy(nombrebmp,"keyboard_msx.bmp");
@@ -23037,7 +23037,7 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_z88;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+    else if (MACHINE_IS_MICRODIGITAL_TK90X_POR || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
         return keyboard_map_table_coords_tk90x;
     }
 
@@ -30494,7 +30494,7 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
         break;
 
         case 5:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X;
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_POR;
         break;
 
         case 6:

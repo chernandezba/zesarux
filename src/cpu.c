@@ -2174,7 +2174,7 @@ void set_machine_params(void)
         ula_contend_port_early=ula_contend_port_early_48k;
         ula_contend_port_late=ula_contend_port_late_48k;
 
-        if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+        if (MACHINE_IS_MICRODIGITAL_TK90X_POR || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
             // La ULA Microdigital emplea 228 T por línea en ambos modos.
             screen_testados_linea=228;
             screen_invisible_borde_derecho=104;
@@ -2699,7 +2699,7 @@ void set_machine_params(void)
             lee_puerto=lee_puerto_spectrum;
         break;
 
-        case MACHINE_ID_MICRODIGITAL_TK90X:
+        case MACHINE_ID_MICRODIGITAL_TK90X_POR:
         case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
         case MACHINE_ID_MICRODIGITAL_TK95:
         case MACHINE_ID_MICRODIGITAL_TK95_SPA:
@@ -3432,7 +3432,7 @@ void rom_load(char *romfilename)
             romfilename="inves.rom";
             break;
 
-            case MACHINE_ID_MICRODIGITAL_TK90X:
+            case MACHINE_ID_MICRODIGITAL_TK90X_POR:
             romfilename="tk90x.rom";
             break;
 
