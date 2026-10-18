@@ -9586,6 +9586,31 @@ int last_menu_visualfloppy_write_protection=-1;
 
 int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco);
 
+int menu_visual_floppy_hole_pattern_color(int x,int y)
+{
+    //0xAAA es gris claro en la paleta Prism; 7 es el blanco habitual del menú.
+    return (((x/3)+(y/3))&1) ? PRISM_INDEX_FIRST_COLOR+0xAAA : 7;
+}
+
+void menu_visual_floppy_draw_clear_hole(int cx,int cy,int radius,int border_color,int filled)
+{
+    if (filled) {
+        int x,y;
+        int radius_squared=radius*radius;
+        for (y=cy-radius;y<=cy+radius;y++) {
+            for (x=cx-radius;x<=cx+radius;x++) {
+                int dx=x-cx, dy=y-cy;
+                if (dx*dx+dy*dy<radius_squared) {
+                    zxvision_putpixel(menu_visual_floppy_window,x,y,
+                        menu_visual_floppy_hole_pattern_color(x,y));
+                }
+            }
+        }
+    }
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,radius,radius,
+        border_color,zxvision_putpixel,360);
+}
+
 void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
 {
     int half_width=radius+8;
@@ -9675,6 +9700,16 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
         corner,corner,border_color,zxvision_putpixel,180,271);
     zxvision_draw_arc(menu_visual_floppy_window,slot_right-corner,slot_bottom-corner,
         corner,corner,border_color,zxvision_putpixel,270,360);
+
+    //Dos orificios transparentes, simétricos a los lados de la abertura superior.
+    int clear_hole_radius=radius/20;
+    if (clear_hole_radius<2) clear_hole_radius=2;
+    int clear_hole_offset=half_width*3/5;
+    int clear_hole_y=top+radius/5;
+    menu_visual_floppy_draw_clear_hole(cx-clear_hole_offset,clear_hole_y,
+        clear_hole_radius,border_color,opaque);
+    menu_visual_floppy_draw_clear_hole(cx+clear_hole_offset,clear_hole_y,
+        clear_hole_radius,border_color,opaque);
 
     //En la carcasa transparente sólo se superpone el nombre del disco.
     int label_left=left+8, label_right=right-8;
@@ -9795,14 +9830,14 @@ void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radiu
     int px,py;
     int radius_squared=aperture_radius*aperture_radius;
 
-    //La abertura es negra; la intersección alterna bloques de 2x2 amarillos y blancos.
+    //La abertura es negra; la intersección alterna bloques de 3x3 grises claros y blancos.
     for (py=y-aperture_radius;py<=y+aperture_radius;py++) {
         for (px=x-aperture_radius;px<=x+aperture_radius;px++) {
             int fixed_dx=px-x, fixed_dy=py-y;
             if (fixed_dx*fixed_dx+fixed_dy*fixed_dy<=radius_squared) {
                 int moving_dx=px-moving_x, moving_dy=py-moving_y;
                 int visible=moving_dx*moving_dx+moving_dy*moving_dy<=radius_squared;
-                int color=visible ? ((((px/2)+(py/2))&1) ? 6 : 7) : 0;
+                int color=visible ? menu_visual_floppy_hole_pattern_color(px,py) : 0;
                 zxvision_putpixel(menu_visual_floppy_window,px,py,color);
             }
         }
