@@ -307,8 +307,9 @@ Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he
 
 
 -modo 60 hz en atic atac, para next.
-
-
+-modo 60hz en pantalla solo se ve bien con real video. sin real video, solo se ve bien modelo tk90x
+creo que por la condicion especial en: scr_get_offset_putpixel_no_rainbow
+->de momento haremos que al conmutar a 60hz, active real video
 
 -visual floppy: opción para ver el floppy entero, con la carcasa, etc
 

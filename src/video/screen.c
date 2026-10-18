@@ -16182,5 +16182,11 @@ int get_frequency_refresh_video(void)
 void switch_machine_frequency_refresh_video(void)
 {
     machine_60hz.v ^=1;
+
+    if (machine_60hz.v) {
+        //De momento con 60 HZ solo se ve bien con real video (Excepto máquinas TK90X)
+        enable_rainbow();
+    }
+
     set_machine(NULL);
 }
