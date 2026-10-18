@@ -9579,6 +9579,164 @@ int menu_visualfloppy_header_visible=1;
 
 int menu_visualfloppy_coloured_effects=1;
 
+//0: disco, 1: carcasa transparente, 2: carcasa opaca
+int menu_visualfloppy_case_mode=0;
+int last_menu_visualfloppy_case_mode=-1;
+int last_menu_visualfloppy_write_protection=-1;
+
+void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
+{
+    int half_width=radius+8;
+    int half_height=radius+14;
+    int left=cx-half_width, right=cx+half_width;
+    int top=cy-half_height, bottom=cy+half_height;
+    int y, line;
+    int case_color=opaque ? 7 : 6;
+    int border_color=opaque ? 0 : 7;
+
+    //La carcasa opaca tapa la superficie magnética y sus marcas.
+    if (opaque) {
+        for (y=top;y<=bottom;y++) {
+            int inset=0;
+            if (y<top+5) inset=top+5-y;
+            if (y>bottom-5) inset=y-(bottom-5);
+            zxvision_draw_line(menu_visual_floppy_window,left+inset,y,right-inset,y,case_color,zxvision_putpixel);
+            if (inset) {
+                //Limpiar los triángulos exteriores: el relleno no debe formar esquinas rectas.
+                zxvision_draw_line(menu_visual_floppy_window,left,y,left+inset-1,y,
+                    HEATMAP_INDEX_FIRST_COLOR,zxvision_putpixel);
+                zxvision_draw_line(menu_visual_floppy_window,right-inset+1,y,right,y,
+                    HEATMAP_INDEX_FIRST_COLOR,zxvision_putpixel);
+            }
+        }
+    }
+
+    //Carcasa rectangular con esquinas recortadas, más alta que ancha.
+    zxvision_draw_line(menu_visual_floppy_window,left+5,top,right-5,top,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left,top+5,left,bottom-5,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,right,top+5,right,bottom-5,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left+5,bottom,right-5,bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left,top+5,left+5,top,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,right-5,top,right,top+5,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left,bottom-5,left+5,bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,right,bottom-5,right-5,bottom,border_color,zxvision_putpixel);
+
+    //La abertura de lectura queda centrada y muestra la superficie magnética.
+    int slot_half=radius/9;
+    if (slot_half<3) slot_half=3;
+    int slot_bottom=cy-radius/3;
+    if (opaque) {
+        for (y=top+3;y<=slot_bottom;y++) {
+            zxvision_draw_line(menu_visual_floppy_window,cx-slot_half+1,y,
+                cx+slot_half-1,y,1,zxvision_putpixel);
+        }
+    }
+    zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,top+2,cx+slot_half,top+2,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,top+2,cx-slot_half,slot_bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,cx+slot_half,top+2,cx+slot_half,slot_bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,slot_bottom,cx+slot_half,slot_bottom,border_color,zxvision_putpixel);
+
+    //Etiqueta de papel con renglones para escribir el contenido.
+    int label_left=left+8, label_right=right-8;
+    int label_top=cy+radius/2, label_bottom=bottom-5;
+    if (label_bottom>label_top+6) {
+        int label_height=label_bottom-label_top;
+        int text_zoom=label_height/28;
+        if (text_zoom<1) text_zoom=1;
+        for (y=label_top;y<=label_bottom;y++) {
+            zxvision_draw_line(menu_visual_floppy_window,label_left,y,label_right,y,7,zxvision_putpixel);
+        }
+        zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_right,label_top,0,zxvision_putpixel);
+        zxvision_draw_line(menu_visual_floppy_window,label_left,label_bottom,label_right,label_bottom,0,zxvision_putpixel);
+        zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_left,label_bottom,0,zxvision_putpixel);
+        zxvision_draw_line(menu_visual_floppy_window,label_right,label_top,label_right,label_bottom,0,zxvision_putpixel);
+        //Cuatro renglones repartidos en el espacio libre debajo del título.
+        int lines_top=label_top+7*text_zoom+5;
+        int lines_height=label_bottom-lines_top-2;
+        if (lines_height<4) {
+            lines_top=label_top+1;
+            lines_height=label_height-2;
+        }
+        for (line=1;line<=4;line++) {
+            int line_y=lines_top+(lines_height*line)/5;
+            zxvision_draw_line(menu_visual_floppy_window,label_left+4,line_y,label_right-4,line_y,0,zxvision_putpixel);
+        }
+
+        if (dskplusthree_file_name[0]) {
+            char file_no_dir[PATH_MAX];
+            char title[PATH_MAX];
+            util_get_file_no_directory(dskplusthree_file_name,file_no_dir);
+            util_get_file_without_extension(file_no_dir,title);
+            size_t title_length=strlen(title);
+
+            //La fuente mide siete unidades de alto y ocho de avance por carácter.
+            int max_chars=(label_right-label_left-8)/(8*text_zoom);
+            if (max_chars>(int)sizeof(title)-1) max_chars=sizeof(title)-1;
+            if (max_chars>0) {
+                int truncated=title_length>(size_t)max_chars;
+                if (title_length>(size_t)max_chars) title_length=max_chars;
+                title[title_length]=0;
+                if (truncated && title_length>=3) {
+                    title[title_length-3]='.';
+                    title[title_length-2]='.';
+                    title[title_length-1]='.';
+                }
+                zxvision_print_vectorial_text(menu_visual_floppy_window,label_left+4,label_top+2,
+                    text_zoom,1,title,zxvision_putpixel);
+            }
+        }
+    }
+
+    //El orificio queda abierto solamente cuando el disco está protegido.
+    if (dskplusthree_write_protection.v) {
+        for (y=top+7;y<=top+11;y++) {
+            zxvision_draw_line(menu_visual_floppy_window,left+5,y,left+9,y,border_color,zxvision_putpixel);
+        }
+    }
+}
+
+void menu_visual_floppy_draw_case_hub(int cx,int cy,int radius)
+{
+    int hub_radius=radius/6;
+    int r;
+    if (hub_radius<3) hub_radius=3;
+
+    //El eje central queda abierto; una marca radial muestra su rotación.
+    for (r=0;r<hub_radius;r++) {
+        zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,r,r,1,zxvision_putpixel,360);
+    }
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius,hub_radius,0,zxvision_putpixel,360);
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius/3,hub_radius/3,7,zxvision_putpixel,360);
+    int mark_x=cx+((hub_radius*3/4)*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000;
+    int mark_y=cy-((hub_radius*3/4)*util_get_sine(menu_visualfloppy_rotacion_disco))/10000;
+    zxvision_draw_line(menu_visual_floppy_window,cx,cy,mark_x,mark_y,7,zxvision_putpixel);
+}
+
+void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radius,int data_radius)
+{
+    int distance=data_radius-inner_radius/2;
+    int aperture_radius=radius/20;
+    if (aperture_radius<2) aperture_radius=2;
+    int x=cx+distance;
+    int moving_x=cx+(distance*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000;
+    int moving_y=cy-(distance*util_get_sine(menu_visualfloppy_rotacion_disco))/10000;
+    int px,py;
+    int radius_squared=aperture_radius*aperture_radius;
+
+    //Mostrar sólo la intersección de los dos círculos, incluso si es parcial.
+    for (py=cy-aperture_radius;py<=cy+aperture_radius;py++) {
+        for (px=x-aperture_radius;px<=x+aperture_radius;px++) {
+            int fixed_dx=px-x, fixed_dy=py-cy;
+            if (fixed_dx*fixed_dx+fixed_dy*fixed_dy<=radius_squared) {
+                int moving_dx=px-moving_x, moving_dy=py-moving_y;
+                int visible=moving_dx*moving_dx+moving_dy*moving_dy<=radius_squared;
+                zxvision_putpixel(menu_visual_floppy_window,px,py,visible ? 7 : 0);
+            }
+        }
+    }
+    zxvision_draw_ellipse(menu_visual_floppy_window,x,cy,aperture_radius,aperture_radius,0,zxvision_putpixel,360);
+}
+
 //Retorna en que radio está una pista concreta
 int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco)
 {
@@ -9948,6 +10106,16 @@ void menu_visual_floppy_overlay(void)
         //quitarle 2 caracter de radio. Fijo a 8 pixeles que es el maximo de un caracter en ancho o alto
         radio_exterior_disco -=(8*2);
 
+        if (menu_visualfloppy_case_mode) {
+            //Reservar las dos filas de opciones y un margen para la carcasa.
+            int area_top=2*menu_char_height+8;
+            int area_bottom=alto_ventana_pixeles-8;
+            int radio_maximo_alto=(area_bottom-area_top)/2-14;
+            centro_disco_y=(area_top+area_bottom)/2;
+            radio_exterior_disco -=9;
+            if (radio_exterior_disco>radio_maximo_alto) radio_exterior_disco=radio_maximo_alto;
+        }
+
         int radio_interior_disco=radio_exterior_disco/6;
 
         //Resto de dimensiones van relativas a radio_exterior_disco
@@ -9979,6 +10147,8 @@ void menu_visual_floppy_overlay(void)
             last_menu_visual_floppy_buffer_length==menu_visual_floppy_buffer_length &&
             last_menu_visualfloppy_rotacion_disco==menu_visualfloppy_rotacion_disco &&
             last_pd765_motor_status==pd765_motor_status
+            && last_menu_visualfloppy_case_mode==menu_visualfloppy_case_mode
+            && last_menu_visualfloppy_write_protection==dskplusthree_write_protection.v
             ) {
             //printf("no hay cambios\n");
             hay_cambios=0;
@@ -9987,6 +10157,8 @@ void menu_visual_floppy_overlay(void)
         last_menu_visualfloppy_rotacion_disco=menu_visualfloppy_rotacion_disco;
         last_menu_visual_floppy_buffer_length=menu_visual_floppy_buffer_length;
         last_pd765_motor_status=pd765_motor_status;
+        last_menu_visualfloppy_case_mode=menu_visualfloppy_case_mode;
+        last_menu_visualfloppy_write_protection=dskplusthree_write_protection.v;
 
         //Si motor moviendose
         //if (pd765_motor_status) {
@@ -9997,6 +10169,15 @@ void menu_visual_floppy_overlay(void)
 
 
         if (hay_cambios) {
+
+            if (menu_visualfloppy_case_mode) {
+                int half_width=radio_exterior_disco+9;
+                int half_height=radio_exterior_disco+15;
+                for (r=centro_disco_y-half_height;r<=centro_disco_y+half_height;r++) {
+                    zxvision_draw_line(menu_visual_floppy_window,centro_disco_x-half_width,r,
+                        centro_disco_x+half_width,r,HEATMAP_INDEX_FIRST_COLOR,zxvision_putpixel);
+                }
+            }
 
             //borrar todo el contenido de los circulos
             //alternativa mediante circulos desde interior hasta exterior
@@ -10058,8 +10239,10 @@ void menu_visual_floppy_overlay(void)
 
             //printf("%d %d,%d,%d\n",i,pista,sector,byte_en_sector);
 
-            menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
-            pista,sector,byte_en_sector,color);
+            if (menu_visualfloppy_case_mode!=2) {
+                menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
+                pista,sector,byte_en_sector,color);
+            }
 
             //Y decrementar intensidad, si no esta persistente
             if (!persistent && intensidad>0) intensidad--;
@@ -10074,6 +10257,7 @@ void menu_visual_floppy_overlay(void)
 
         //printf("\n");
 
+        if (menu_visualfloppy_case_mode!=2) {
         //Exterior
         zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
             radio_exterior_disco,radio_exterior_disco,color_contorno_disco,
@@ -10140,6 +10324,17 @@ void menu_visual_floppy_overlay(void)
             menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,6);
 
         }
+        }
+
+        if (menu_visualfloppy_case_mode) {
+            menu_visual_floppy_draw_case(centro_disco_x,centro_disco_y,radio_exterior_disco,
+                menu_visualfloppy_case_mode==2);
+            if (menu_visualfloppy_case_mode==2) {
+                menu_visual_floppy_draw_case_hub(centro_disco_x,centro_disco_y,radio_exterior_disco);
+                menu_visual_floppy_draw_case_index(centro_disco_x,centro_disco_y,
+                    radio_exterior_disco,radio_interior_disco,radio_fin_datos);
+            }
+        }
 
 
             //esto de momento no menu_visual_floppy_buffer_reset();
@@ -10196,6 +10391,12 @@ void menu_visualfloppy_switch_coloured_effects(MENU_ITEM_PARAMETERS)
     menu_visualfloppy_coloured_effects ^=1;
 }
 
+void menu_visual_floppy_switch_case(MENU_ITEM_PARAMETERS)
+{
+    menu_visualfloppy_case_mode=(menu_visualfloppy_case_mode+1)%3;
+    zxvision_cls(menu_visual_floppy_window);
+}
+
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -10217,7 +10418,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
+            ancho_ventana=52;
             alto_ventana=20;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -10290,6 +10491,13 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
             menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);
         }
+
+        menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_case,NULL
+            ,"~~View: %s",menu_visualfloppy_case_mode==0 ? "Disk" :
+                (menu_visualfloppy_case_mode==1 ? "Clear case" : "Opaque case"));
+        menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'v');
+        menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Cycle between disk, transparent case and opaque case");
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,34,0);
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
             ,"[%c] He~~ad",(menu_visualfloppy_header_visible ? 'X' : ' '));
