@@ -9764,15 +9764,23 @@ void menu_visual_floppy_draw_case_hub(int cx,int cy,int radius)
     int r;
     if (hub_radius<3) hub_radius=3;
 
-    //El centro blanco deja visibles el eje y la marca giratoria en negro.
+    //El centro blanco deja visibles el eje y cuatro radios giratorios negros.
     for (r=0;r<hub_radius;r++) {
         zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,r,r,7,zxvision_putpixel,360);
     }
     zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius,hub_radius,0,zxvision_putpixel,360);
     zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius/3,hub_radius/3,0,zxvision_putpixel,360);
-    int mark_x=cx+((hub_radius*3/4)*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000;
-    int mark_y=cy-((hub_radius*3/4)*util_get_sine(menu_visualfloppy_rotacion_disco))/10000;
-    zxvision_draw_line(menu_visual_floppy_window,cx,cy,mark_x,mark_y,0,zxvision_putpixel);
+    int spoke;
+    for (spoke=0;spoke<4;spoke++) {
+        int angle=(menu_visualfloppy_rotacion_disco+spoke*90)%360;
+        int inner=hub_radius/3;
+        int outer=hub_radius*3/4;
+        int start_x=cx+(inner*util_get_cosine(angle))/10000;
+        int start_y=cy-(inner*util_get_sine(angle))/10000;
+        int end_x=cx+(outer*util_get_cosine(angle))/10000;
+        int end_y=cy-(outer*util_get_sine(angle))/10000;
+        zxvision_draw_line(menu_visual_floppy_window,start_x,start_y,end_x,end_y,0,zxvision_putpixel);
+    }
 }
 
 void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radius,int data_radius)
@@ -9787,14 +9795,15 @@ void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radiu
     int px,py;
     int radius_squared=aperture_radius*aperture_radius;
 
-    //La abertura es negra; la intersección con el agujero giratorio se ve blanca.
+    //La abertura es negra; la intersección alterna bloques de 2x2 amarillos y blancos.
     for (py=y-aperture_radius;py<=y+aperture_radius;py++) {
         for (px=x-aperture_radius;px<=x+aperture_radius;px++) {
             int fixed_dx=px-x, fixed_dy=py-y;
             if (fixed_dx*fixed_dx+fixed_dy*fixed_dy<=radius_squared) {
                 int moving_dx=px-moving_x, moving_dy=py-moving_y;
                 int visible=moving_dx*moving_dx+moving_dy*moving_dy<=radius_squared;
-                zxvision_putpixel(menu_visual_floppy_window,px,py,visible ? 7 : 0);
+                int color=visible ? ((((px/2)+(py/2))&1) ? 6 : 7) : 0;
+                zxvision_putpixel(menu_visual_floppy_window,px,py,color);
             }
         }
     }
