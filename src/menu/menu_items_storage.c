@@ -9584,6 +9584,8 @@ int menu_visualfloppy_case_mode=1;
 int last_menu_visualfloppy_case_mode=-1;
 int last_menu_visualfloppy_write_protection=-1;
 
+int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco);
+
 void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
 {
     int half_width=radius+8;
@@ -9624,17 +9626,55 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
     //La abertura de lectura queda centrada y muestra la superficie magnética.
     int slot_half=radius/9;
     if (slot_half<3) slot_half=3;
+    int slot_left=cx-slot_half, slot_right=cx+slot_half;
+    //Situar la cápsula por encima del cabezal en la pista 0, con margen proporcional.
+    int top_head=cy-menu_visual_floppy_get_radio_pista(0,radius,(radius/6)*2);
+    int head_gap=radius/40;
+    if (head_gap<1) head_gap=1;
+    int slot_top=top_head-head_gap;
+    //El borde de la cápsula nunca debe sobresalir del disco al reducir la ventana.
+    if (slot_top<cy-radius+1) slot_top=cy-radius+1;
     int slot_bottom=cy-radius/3;
+    //Extremos semicirculares: el radio alcanza la mitad del ancho.
+    int corner=slot_half;
+    if (corner>(slot_bottom-slot_top)/2) corner=(slot_bottom-slot_top)/2;
     if (opaque) {
-        for (y=top+3;y<=slot_bottom;y++) {
-            zxvision_draw_line(menu_visual_floppy_window,cx-slot_half+1,y,
-                cx+slot_half-1,y,0,zxvision_putpixel);
+        //Rellenar la abertura negra con una línea horizontal por cada fila.
+        for (y=slot_top;y<=slot_bottom;y++) {
+            int inset=0;
+            int dy=0;
+            //En los extremos, dy mide la distancia vertical al centro del semicírculo.
+            //En la zona recta queda a cero y la línea utiliza todo el ancho.
+            if (y<slot_top+corner) dy=slot_top+corner-y;
+            if (y>slot_bottom-corner) dy=y-(slot_bottom-corner);
+            //Buscar el primer punto que cae dentro del círculo: x²+y² <= radio².
+            //inset recorta por igual ambos lados de la línea para formar la curva.
+            while (inset<corner &&
+                (corner-inset)*(corner-inset)+dy*dy>corner*corner) inset++;
+            //Dejar un píxel a cada lado para el contorno que se dibuja después.
+            if (slot_left+inset+1<=slot_right-inset-1) {
+                zxvision_draw_line(menu_visual_floppy_window,slot_left+inset+1,y,
+                    slot_right-inset-1,y,0,zxvision_putpixel);
+            }
         }
     }
-    zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,top+2,cx+slot_half,top+2,border_color,zxvision_putpixel);
-    zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,top+2,cx-slot_half,slot_bottom,border_color,zxvision_putpixel);
-    zxvision_draw_line(menu_visual_floppy_window,cx+slot_half,top+2,cx+slot_half,slot_bottom,border_color,zxvision_putpixel);
-    zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,slot_bottom,cx+slot_half,slot_bottom,border_color,zxvision_putpixel);
+    //Unir los lados rectos con cuatro arcos redondeados.
+    zxvision_draw_line(menu_visual_floppy_window,slot_left+corner,slot_top,
+        slot_right-corner,slot_top,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,slot_left+corner,slot_bottom,
+        slot_right-corner,slot_bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,slot_left,slot_top+corner,
+        slot_left,slot_bottom-corner,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,slot_right,slot_top+corner,
+        slot_right,slot_bottom-corner,border_color,zxvision_putpixel);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_left+corner,slot_top+corner,
+        corner,corner,border_color,zxvision_putpixel,90,181);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_right-corner,slot_top+corner,
+        corner,corner,border_color,zxvision_putpixel,0,91);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_left+corner,slot_bottom-corner,
+        corner,corner,border_color,zxvision_putpixel,180,271);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_right-corner,slot_bottom-corner,
+        corner,corner,border_color,zxvision_putpixel,270,360);
 
     //En la carcasa transparente sólo se superpone el nombre del disco.
     int label_left=left+8, label_right=right-8;
