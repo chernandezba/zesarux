@@ -9591,7 +9591,7 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
     int left=cx-half_width, right=cx+half_width;
     int top=cy-half_height, bottom=cy+half_height;
     int y, line;
-    int case_color=opaque ? 7 : 6;
+    int case_color=opaque ? 5 : 6;
     int border_color=opaque ? 0 : 7;
 
     //La carcasa opaca tapa la superficie magnética y sus marcas.
@@ -9628,7 +9628,7 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
     if (opaque) {
         for (y=top+3;y<=slot_bottom;y++) {
             zxvision_draw_line(menu_visual_floppy_window,cx-slot_half+1,y,
-                cx+slot_half-1,y,1,zxvision_putpixel);
+                cx+slot_half-1,y,0,zxvision_putpixel);
         }
     }
     zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,top+2,cx+slot_half,top+2,border_color,zxvision_putpixel);
@@ -9724,15 +9724,15 @@ void menu_visual_floppy_draw_case_hub(int cx,int cy,int radius)
     int r;
     if (hub_radius<3) hub_radius=3;
 
-    //El eje central queda abierto; una marca radial muestra su rotación.
+    //El centro blanco deja visibles el eje y la marca giratoria en negro.
     for (r=0;r<hub_radius;r++) {
-        zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,r,r,1,zxvision_putpixel,360);
+        zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,r,r,7,zxvision_putpixel,360);
     }
     zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius,hub_radius,0,zxvision_putpixel,360);
-    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius/3,hub_radius/3,7,zxvision_putpixel,360);
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius/3,hub_radius/3,0,zxvision_putpixel,360);
     int mark_x=cx+((hub_radius*3/4)*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000;
     int mark_y=cy-((hub_radius*3/4)*util_get_sine(menu_visualfloppy_rotacion_disco))/10000;
-    zxvision_draw_line(menu_visual_floppy_window,cx,cy,mark_x,mark_y,7,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,cx,cy,mark_x,mark_y,0,zxvision_putpixel);
 }
 
 void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radius,int data_radius)
@@ -9740,24 +9740,25 @@ void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radiu
     int distance=data_radius-inner_radius/2;
     int aperture_radius=radius/20;
     if (aperture_radius<2) aperture_radius=2;
-    int x=cx+distance;
+    int x=cx;
+    int y=cy+distance;
     int moving_x=cx+(distance*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000;
     int moving_y=cy-(distance*util_get_sine(menu_visualfloppy_rotacion_disco))/10000;
     int px,py;
     int radius_squared=aperture_radius*aperture_radius;
 
-    //La abertura es azul; la intersección con el agujero giratorio se ve negra.
-    for (py=cy-aperture_radius;py<=cy+aperture_radius;py++) {
+    //La abertura es negra; la intersección con el agujero giratorio se ve blanca.
+    for (py=y-aperture_radius;py<=y+aperture_radius;py++) {
         for (px=x-aperture_radius;px<=x+aperture_radius;px++) {
-            int fixed_dx=px-x, fixed_dy=py-cy;
+            int fixed_dx=px-x, fixed_dy=py-y;
             if (fixed_dx*fixed_dx+fixed_dy*fixed_dy<=radius_squared) {
                 int moving_dx=px-moving_x, moving_dy=py-moving_y;
                 int visible=moving_dx*moving_dx+moving_dy*moving_dy<=radius_squared;
-                zxvision_putpixel(menu_visual_floppy_window,px,py,visible ? 0 : 1);
+                zxvision_putpixel(menu_visual_floppy_window,px,py,visible ? 7 : 0);
             }
         }
     }
-    zxvision_draw_ellipse(menu_visual_floppy_window,x,cy,aperture_radius,aperture_radius,0,zxvision_putpixel,360);
+    zxvision_draw_ellipse(menu_visual_floppy_window,x,y,aperture_radius,aperture_radius,0,zxvision_putpixel,360);
 }
 
 //Retorna en que radio está una pista concreta
