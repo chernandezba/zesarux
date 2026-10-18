@@ -66,6 +66,7 @@ Improved ZX Desktop:
 - Allow to close a open window by right-click on its ZX Desktop icon
 - Check if item is on an invalid position when recovering it from Trash
 
+Add casing views to Visual Floppy (disk, clear case, opaque case)
 Special effects for video output are applied dynamically when moving cursor
 Moved search index file (zesarux_index_menu.idx) to user home directory
 Added General Sound registers to View Sensors window

@@ -9580,7 +9580,7 @@ int menu_visualfloppy_header_visible=1;
 int menu_visualfloppy_coloured_effects=1;
 
 //0: disco, 1: carcasa transparente, 2: carcasa opaca
-int menu_visualfloppy_case_mode=0;
+int menu_visualfloppy_case_mode=1;
 int last_menu_visualfloppy_case_mode=-1;
 int last_menu_visualfloppy_write_protection=-1;
 
@@ -9636,30 +9636,32 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
     zxvision_draw_line(menu_visual_floppy_window,cx+slot_half,top+2,cx+slot_half,slot_bottom,border_color,zxvision_putpixel);
     zxvision_draw_line(menu_visual_floppy_window,cx-slot_half,slot_bottom,cx+slot_half,slot_bottom,border_color,zxvision_putpixel);
 
-    //Etiqueta de papel con renglones para escribir el contenido.
+    //En la carcasa transparente sólo se superpone el nombre del disco.
     int label_left=left+8, label_right=right-8;
     int label_top=cy+radius/2, label_bottom=bottom-5;
     if (label_bottom>label_top+6) {
         int label_height=label_bottom-label_top;
         int text_zoom=label_height/28;
         if (text_zoom<1) text_zoom=1;
-        for (y=label_top;y<=label_bottom;y++) {
-            zxvision_draw_line(menu_visual_floppy_window,label_left,y,label_right,y,7,zxvision_putpixel);
-        }
-        zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_right,label_top,0,zxvision_putpixel);
-        zxvision_draw_line(menu_visual_floppy_window,label_left,label_bottom,label_right,label_bottom,0,zxvision_putpixel);
-        zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_left,label_bottom,0,zxvision_putpixel);
-        zxvision_draw_line(menu_visual_floppy_window,label_right,label_top,label_right,label_bottom,0,zxvision_putpixel);
-        //Cuatro renglones repartidos en el espacio libre debajo del título.
-        int lines_top=label_top+7*text_zoom+5;
-        int lines_height=label_bottom-lines_top-2;
-        if (lines_height<4) {
-            lines_top=label_top+1;
-            lines_height=label_height-2;
-        }
-        for (line=1;line<=4;line++) {
-            int line_y=lines_top+(lines_height*line)/5;
-            zxvision_draw_line(menu_visual_floppy_window,label_left+4,line_y,label_right-4,line_y,0,zxvision_putpixel);
+        if (opaque) {
+            for (y=label_top;y<=label_bottom;y++) {
+                zxvision_draw_line(menu_visual_floppy_window,label_left,y,label_right,y,7,zxvision_putpixel);
+            }
+            zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_right,label_top,0,zxvision_putpixel);
+            zxvision_draw_line(menu_visual_floppy_window,label_left,label_bottom,label_right,label_bottom,0,zxvision_putpixel);
+            zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_left,label_bottom,0,zxvision_putpixel);
+            zxvision_draw_line(menu_visual_floppy_window,label_right,label_top,label_right,label_bottom,0,zxvision_putpixel);
+            //Cuatro renglones repartidos en el espacio libre debajo del título.
+            int lines_top=label_top+7*text_zoom+5;
+            int lines_height=label_bottom-lines_top-2;
+            if (lines_height<4) {
+                lines_top=label_top+1;
+                lines_height=label_height-2;
+            }
+            for (line=1;line<=4;line++) {
+                int line_y=lines_top+(lines_height*line)/5;
+                zxvision_draw_line(menu_visual_floppy_window,label_left+4,line_y,label_right-4,line_y,0,zxvision_putpixel);
+            }
         }
 
         if (dskplusthree_file_name[0]) {
@@ -9682,7 +9684,7 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
                     title[title_length-1]='.';
                 }
                 zxvision_print_vectorial_text(menu_visual_floppy_window,label_left+4,label_top+2,
-                    text_zoom,1,title,zxvision_putpixel);
+                    text_zoom,opaque ? 1 : 7,title,zxvision_putpixel);
             }
         }
     }
