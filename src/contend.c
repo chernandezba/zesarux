@@ -1507,7 +1507,7 @@ z80_byte *contend_table_no_mreq;
 		offset_time=1;
 		offset_patron=-1;
 		//Empieza en 14335 con 65432100 Segun http://www.worldofspectrum.org/faq/reference/48kreference.htm
-		if (MACHINE_IS_MICRODIGITAL_TK90X_POR || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+		if (MACHINE_IS_MICRODIGITAL_TK90X) {
 			// La pantalla Microdigital empieza a 95 T de la línea 64 (50 Hz) o 38 (60 Hz).
 			offset_time=-95;
 		}
