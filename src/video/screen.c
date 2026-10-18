@@ -1830,7 +1830,7 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
     int topborder=TOP_BORDER;
     if (MACHINE_IS_ZX8081ACE) topborder=ZX8081ACE_TOP_BORDER;
     int bottomborder=BOTTOM_BORDER;
-    if (MACHINE_IS_MICRODIGITAL_TK90X) {
+    if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL) {
         topborder=screen_borde_superior*zoom_y;
         bottomborder=screen_total_borde_inferior*zoom_y;
     }
@@ -1852,7 +1852,7 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
         }
     }
 
-    if ((MACHINE_IS_MICRODIGITAL_TK90X) && machine_60hz.v) {
+    if ((MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL) && machine_60hz.v) {
         // Mantener la altura de 50 Hz y rellenar con negro las líneas que sobran a 60 Hz.
         for (y=topborder+ALTO_PANTALLA*zoom_y+bottomborder;
              y<screen_get_emulated_display_height_no_zoom_border_en()*zoom_y;y++) {
@@ -2470,7 +2470,7 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
         offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK90X) {
+    else if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL) {
         offsetx=LEFT_BORDER*border_enabled.v;
         offsety=screen_borde_superior*zoom_y*border_enabled.v;
     }
@@ -6353,7 +6353,7 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
     if (t_pixeles_por_estado==0) t_pixeles_por_estado=1;
 
     int indice_border=t_scanline*screen_testados_linea;
-    if (MACHINE_IS_MICRODIGITAL_TK90X)
+    if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL)
         indice_border+=95*cpu_turbo_speed;
     int inicio_retrace_horiz=indice_border+(ancho_pantalla+screen_total_borde_derecho)/t_pixeles_por_estado;
     int final_retrace_horiz=inicio_retrace_horiz+screen_invisible_borde_derecho/t_pixeles_por_estado;
@@ -12201,7 +12201,7 @@ int screen_get_emulated_display_height_no_zoom(void)
                 }
 
         else {
-        if (MACHINE_IS_MICRODIGITAL_TK90X)
+        if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL)
             return 288;
         return SCREEN_SPECTRUM_HEIGHT;
         }
@@ -12310,7 +12310,7 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+QL_DISPLAY_HEIGHT+(QL_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
-        else if (MACHINE_IS_MICRODIGITAL_TK90X) {
+        else if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL) {
         // El footer empieza tras el alto reservado de 50 Hz, incluida la franja negra en 60 Hz.
         return alto_extdesktop+ALTO_PANTALLA+(96-screen_borde_superior)*border_enabled.v;
         }
@@ -12374,7 +12374,7 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
                 }
 
         else {
-        if (MACHINE_IS_MICRODIGITAL_TK90X)
+        if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL)
             // Reservar los 40+56 píxeles del borde de 50 Hz también a 60 Hz; la zona sobrante se dibuja negra.
             return ALTO_PANTALLA+96*border_enabled.v;
         return ALTO_PANTALLA+(TOP_BORDER_NO_ZOOM+BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;

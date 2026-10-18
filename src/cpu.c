@@ -1849,8 +1849,8 @@ void set_machine_params(void)
 0=Sinclair 16k
 1=Sinclair 48k
 2=Inves Spectrum+
-3=tk90x
-4=tk90xs
+3=tk90x portuguese rom
+4=tk90xs spanish rom
 5=tk95
 6=Sinclair 128k
 7=Sinclair 128k Español
@@ -1885,7 +1885,9 @@ void set_machine_params(void)
 36=Scorpion ZS-256 Turbo+
 37=Scorpion GMX
 38=Didaktik Gama
-39-49=Reservadas otras Spectrum
+39=tk90x ula ferranti portuguese rom
+40=tk90xs ula ferranti spanish rom
+41-49=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -2174,7 +2176,7 @@ void set_machine_params(void)
         ula_contend_port_early=ula_contend_port_early_48k;
         ula_contend_port_late=ula_contend_port_late_48k;
 
-        if (MACHINE_IS_MICRODIGITAL_TK90X) {
+        if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL) {
             // La ULA Microdigital emplea 228 T por línea en ambos modos.
             screen_testados_linea=228;
             screen_invisible_borde_derecho=104;
@@ -2701,6 +2703,8 @@ void set_machine_params(void)
 
         case MACHINE_ID_MICRODIGITAL_TK90X_POR:
         case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+        case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR:
+        case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA:
         case MACHINE_ID_MICRODIGITAL_TK95:
         case MACHINE_ID_MICRODIGITAL_TK95_SPA:
             poke_byte=poke_byte_spectrum_48k;
@@ -3436,7 +3440,15 @@ void rom_load(char *romfilename)
             romfilename="tk90x.rom";
             break;
 
+            case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR:
+            romfilename="tk90x.rom";
+            break;
+
             case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+            romfilename="tk90xs.rom";
+            break;
+
+            case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA:
             romfilename="tk90xs.rom";
             break;
 

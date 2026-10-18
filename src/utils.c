@@ -646,8 +646,10 @@ char *string_machines_list_description=
     " TK82C    Microdigital TK82C\n"
     " TK83     Microdigital TK83\n"
     " TK85     Microdigital TK85\n"
-    " TK90X    Microdigital TK90X\n"
-    " TK90XS   Microdigital TK90X (Spanish)\n"
+    " TK90X    Microdigital TK90X (Portuguese ROM)\n"
+    " TK90XS   Microdigital TK90X (Spanish ROM)\n"
+    " TK90XF   Microdigital TK90X (ULA Ferranti, Portuguese ROM)\n"
+    " TK90XFS  Microdigital TK90X (ULA Ferranti, Spanish ROM)\n"
     " TK95     Microdigital TK95\n"
     " TK95S    Microdigital TK95 (Spanish)\n"
 
@@ -754,6 +756,8 @@ struct s_machines_info machines_info[]={
     {"Inves Spectrum+",			        MACHINE_ID_INVES,                   MACHINE_FAMILY_SPECTRUM,FABRICANTE_INVESTRONICA},
     {"TK90X (Portuguese ROM)",		    MACHINE_ID_MICRODIGITAL_TK90X_POR,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK90X (Spanish ROM)",	            MACHINE_ID_MICRODIGITAL_TK90X_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X (Ferr Portuguese ROM)",		    MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X (Ferr Spanish ROM)",	            MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
 
@@ -14268,6 +14272,8 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"Inves",2,bitmap_button_ext_desktop_my_machine_inves},
    {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X_POR,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
+   {"TK90XF",MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR,bitmap_button_ext_desktop_my_machine_tk90x},
+   {"TK90XFS",MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK95",MACHINE_ID_MICRODIGITAL_TK95,bitmap_button_ext_desktop_my_machine_tk95},
    {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA,bitmap_button_ext_desktop_my_machine_tk95},
    {"128k",6,bitmap_button_ext_desktop_my_machine_spectrum_128_eng},
