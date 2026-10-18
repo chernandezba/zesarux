@@ -9643,6 +9643,7 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
         int label_height=label_bottom-label_top;
         int text_zoom=label_height/28;
         if (text_zoom<1) text_zoom=1;
+        while (text_zoom>1 && label_top+2+16*text_zoom>label_bottom-4) text_zoom--;
         if (opaque) {
             for (y=label_top;y<=label_bottom;y++) {
                 zxvision_draw_line(menu_visual_floppy_window,label_left,y,label_right,y,7,zxvision_putpixel);
@@ -9652,7 +9653,7 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
             zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_left,label_bottom,0,zxvision_putpixel);
             zxvision_draw_line(menu_visual_floppy_window,label_right,label_top,label_right,label_bottom,0,zxvision_putpixel);
             //Cuatro renglones repartidos en el espacio libre debajo del título.
-            int lines_top=label_top+7*text_zoom+5;
+            int lines_top=label_top+2+16*text_zoom+3;
             int lines_height=label_bottom-lines_top-2;
             if (lines_height<4) {
                 lines_top=label_top+1;
@@ -9675,16 +9676,36 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
             int max_chars=(label_right-label_left-8)/(8*text_zoom);
             if (max_chars>(int)sizeof(title)-1) max_chars=sizeof(title)-1;
             if (max_chars>0) {
-                int truncated=title_length>(size_t)max_chars;
-                if (title_length>(size_t)max_chars) title_length=max_chars;
-                title[title_length]=0;
-                if (truncated && title_length>=3) {
-                    title[title_length-3]='.';
-                    title[title_length-2]='.';
-                    title[title_length-1]='.';
+                int split=title_length;
+                if (split>max_chars) {
+                    split=max_chars;
+                    //Si hay un espacio próximo al final, partir entre palabras.
+                    int word_end=split;
+                    while (word_end>max_chars/2 && title[word_end]!=' ') word_end--;
+                    if (word_end>max_chars/2) split=word_end;
                 }
+                char *second_line=title+split;
+                while (*second_line==' ') second_line++;
+                char split_char=title[split];
+                title[split]=0;
                 zxvision_print_vectorial_text(menu_visual_floppy_window,label_left+4,label_top+2,
                     text_zoom,opaque ? 1 : 7,title,zxvision_putpixel);
+                title[split]=split_char;
+                if (*second_line && label_top+2+16*text_zoom<=label_bottom-4) {
+                    size_t second_length=strlen(second_line);
+                    if (second_length>(size_t)max_chars) {
+                        second_length=max_chars;
+                        second_line[second_length]=0;
+                        if (second_length>=3) {
+                            second_line[second_length-3]='.';
+                            second_line[second_length-2]='.';
+                            second_line[second_length-1]='.';
+                        }
+                    }
+                    zxvision_print_vectorial_text(menu_visual_floppy_window,label_left+4,
+                        label_top+2+9*text_zoom,text_zoom,opaque ? 1 : 7,
+                        second_line,zxvision_putpixel);
+                }
             }
         }
     }
@@ -9725,14 +9746,14 @@ void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radiu
     int px,py;
     int radius_squared=aperture_radius*aperture_radius;
 
-    //Mostrar sólo la intersección de los dos círculos, incluso si es parcial.
+    //La abertura es azul; la intersección con el agujero giratorio se ve negra.
     for (py=cy-aperture_radius;py<=cy+aperture_radius;py++) {
         for (px=x-aperture_radius;px<=x+aperture_radius;px++) {
             int fixed_dx=px-x, fixed_dy=py-cy;
             if (fixed_dx*fixed_dx+fixed_dy*fixed_dy<=radius_squared) {
                 int moving_dx=px-moving_x, moving_dy=py-moving_y;
                 int visible=moving_dx*moving_dx+moving_dy*moving_dy<=radius_squared;
-                zxvision_putpixel(menu_visual_floppy_window,px,py,visible ? 7 : 0);
+                zxvision_putpixel(menu_visual_floppy_window,px,py,visible ? 0 : 1);
             }
         }
     }
