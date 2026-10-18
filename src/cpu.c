@@ -2176,7 +2176,7 @@ void set_machine_params(void)
         ula_contend_port_early=ula_contend_port_early_48k;
         ula_contend_port_late=ula_contend_port_late_48k;
 
-        if (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL) {
+        if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
             // La ULA Microdigital emplea 228 T por línea en ambos modos.
             screen_testados_linea=228;
             screen_invisible_borde_derecho=104;
