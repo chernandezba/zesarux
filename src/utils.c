@@ -758,7 +758,7 @@ struct s_machines_info machines_info[]={
     {"TK90X (Spanish)",	                MACHINE_ID_MICRODIGITAL_TK90X_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK90X (Ferranti Portuguese)",		MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK90X (Ferranti Spanish)",	    MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
-    {"TK95 (Portuguese)",		        MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK95 (Portuguese)",		        MACHINE_ID_MICRODIGITAL_TK95_POR,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
 
     {"Didaktik Gama",		            MACHINE_ID_DIDAKTIKGAMA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_DIDAKTIK},
@@ -14274,7 +14274,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK90XF",MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK90XFS",MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
-   {"TK95",MACHINE_ID_MICRODIGITAL_TK95,bitmap_button_ext_desktop_my_machine_tk95},
+   {"TK95",MACHINE_ID_MICRODIGITAL_TK95_POR,bitmap_button_ext_desktop_my_machine_tk95},
    {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA,bitmap_button_ext_desktop_my_machine_tk95},
    {"128k",6,bitmap_button_ext_desktop_my_machine_spectrum_128_eng},
    {"128ks",7,bitmap_button_ext_desktop_my_machine_spectrum_128_spa},

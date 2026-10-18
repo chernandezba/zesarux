@@ -21980,7 +21980,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_INVES) strcpy(nombrebmp,"keyboard_inves.bmp");
     else if (MACHINE_IS_ACE) strcpy(nombrebmp,"keyboard_ace.bmp");
     else if (MACHINE_IS_MICRODIGITAL_TK90X) strcpy(nombrebmp,"keyboard_tk90x.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) strcpy(nombrebmp,"keyboard_tk95.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK95) strcpy(nombrebmp,"keyboard_tk95.bmp");
     else if (MACHINE_IS_MK14) strcpy(nombrebmp,"keyboard_mk14.bmp");
     else if (MACHINE_IS_MSX) strcpy(nombrebmp,"keyboard_msx.bmp");
     else if (MACHINE_IS_PENTAGON) strcpy(nombrebmp,"keyboard_pentagon.bmp");
@@ -23041,7 +23041,7 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_tk90x;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
+    else if (MACHINE_IS_MICRODIGITAL_TK95) {
         return keyboard_map_table_coords_tk95;
     }
 
@@ -23107,7 +23107,7 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
             teclas_dobles=keyboard_map_additional_48p;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
+    else if (MACHINE_IS_MICRODIGITAL_TK95) {
         return keyboard_map_additional_tk95;
     }
 
@@ -30510,7 +30510,7 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
         break;
 
         case 9:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95;
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95_POR;
         break;
 
         case 10:

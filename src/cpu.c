@@ -2705,7 +2705,7 @@ void set_machine_params(void)
         case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
         case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR:
         case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA:
-        case MACHINE_ID_MICRODIGITAL_TK95:
+        case MACHINE_ID_MICRODIGITAL_TK95_POR:
         case MACHINE_ID_MICRODIGITAL_TK95_SPA:
             poke_byte=poke_byte_spectrum_48k;
             peek_byte=peek_byte_spectrum_48k;
@@ -3452,7 +3452,7 @@ void rom_load(char *romfilename)
             romfilename="tk90xs.rom";
             break;
 
-            case MACHINE_ID_MICRODIGITAL_TK95:
+            case MACHINE_ID_MICRODIGITAL_TK95_POR:
             romfilename="tk95.rom";
             break;
 
