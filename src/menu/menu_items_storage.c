@@ -9787,9 +9787,22 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
 
     //El orificio queda abierto solamente cuando el disco está protegido.
     if (dskplusthree_write_protection.v) {
-        for (y=top+7;y<=top+11;y++) {
-            zxvision_draw_line(menu_visual_floppy_window,left+5,y,left+9,y,border_color,zxvision_putpixel);
+        if (opaque) {
+            int x;
+            //Desplazar el patrón para que los dos tonos se vean dentro del cuadrado pequeño.
+            for (y=top+8;y<=top+10;y++) {
+                for (x=left+6;x<=left+8;x++) {
+                    zxvision_putpixel(menu_visual_floppy_window,x,y,
+                        menu_visual_floppy_hole_pattern_color(x-left-4,y-top-6));
+                }
+            }
         }
+        for (y=top+7;y<=top+11;y++) {
+            zxvision_putpixel(menu_visual_floppy_window,left+5,y,border_color);
+            zxvision_putpixel(menu_visual_floppy_window,left+9,y,border_color);
+        }
+        zxvision_draw_line(menu_visual_floppy_window,left+5,top+7,left+9,top+7,border_color,zxvision_putpixel);
+        zxvision_draw_line(menu_visual_floppy_window,left+5,top+11,left+9,top+11,border_color,zxvision_putpixel);
     }
 }
 
