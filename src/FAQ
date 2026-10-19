@@ -787,6 +787,22 @@ A: Do a hard reset and just after that, keep pressing Symbol Shift (CTRL or ALT)
 Q: How do I exit from TSConf Bios? F12 keys seems to do nothing
 A: F12 on a real TSConf means Reset. So to simulate it you just open the ZEsarUX menu Debug->Reset
 
+Q: What do "Reset to", "CS Reset to" and "bank" mean in the TS-BIOS setup?
+A: "Reset to" selects what starts after a normal reset. "CS Reset to" selects what starts when Caps Shift is held during reset. Both have the same choices:
+- ROM #00: start from the first 64 KiB ROM block (pages #00-#03).
+- ROM #04: start from the second 64 KiB ROM block (pages #04-#07). Its contents depend on the installed ROM image.
+- RAM #F8: start from RAM pages #F8-#FB, which must already contain executable code. A hard reset clears this RAM.
+- BD boot.$c: load boot.$c from the selected Boot Device. The "bank" setting does not apply.
+- BD sys.rom: present in this TS-BIOS menu, but its boot routine is not implemented; it does not load sys.rom.
+
+For ROM #00, ROM #04 and RAM #F8, "bank" selects a page within that four-page block:
+                 SYS    TR-DOS    Basic 128    Basic 48
+ROM #00          #00      #01         #02          #03
+ROM #04          #04      #05         #06          #07
+RAM #F8          #F8      #F9         #FA          #FB
+
+SYS uses direct page mapping. The other banks use Spectrum-compatible mapping; TR-DOS also enters through its DOS activation address. These names describe the selected page and mode, not what is actually stored there. In particular, choosing TR-DOS in ROM #04 does not make page #05 contain a TR-DOS ROM.
+
 Q: Some .spg games seem to fail loading
 A: Be sure you haven't enabled divmmc or divide paging, it's incompatible with some of them  
 

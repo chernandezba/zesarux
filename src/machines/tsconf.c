@@ -1211,7 +1211,8 @@ bit1/0
           //printf ("paginacion modo map\n");
           z80_byte page0=tsconf_af_ports[0x10];
 
-          page0=page0&(4+8+16); //In "map" mode Page0 selects ROM page bits 4..2
+          // En modo map, PAGE0 conserva los bits altos de la pagina RAM o ROM.
+          page0 &= (memconfig & 8) ? 0xfc : 0x1c;
 
           //TODO. No entiendo bien cuando entra aqui: 00 - after reset, only in "no map" mode, System ROM, suponemos que solo al encender la maquina,
           //cosa que no es cierta
