@@ -1400,7 +1400,9 @@ void tsconf_hard_reset(void)
     //Borro sprites. dejo paleta sin tocar pues hay alguna demo que usa la paleta por defecto (pixeldemo)
     for (i=0x200;i<0x400;i++) tsconf_fmaps[i]=0;
 
-       //Borrar toda memoria ram
+       // El hard reset no necesita borrar la RAM. Se conserva este código comentado
+       // por si en el futuro se decide volver a inicializarla aquí.
+       /*
         int d;
         z80_byte *puntero;
 
@@ -1410,6 +1412,7 @@ void tsconf_hard_reset(void)
                         *puntero=0;
                 }
         }
+       */
 
 
   //Valores por defecto
