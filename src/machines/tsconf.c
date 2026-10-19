@@ -35,8 +35,47 @@
 #include "baseconf.h"
 #include "scorpion.h"
 #include "mmc.h"
+#include "betadisk.h"
 
 z80_byte tsconf_sd_read_buffer=0xff;
+z80_bit tsconf_dos_signal={0};
+
+static z80_byte tsconf_beta_status;
+static z80_byte tsconf_beta_track;
+static z80_byte tsconf_beta_sector;
+static z80_byte tsconf_beta_data;
+
+int tsconf_beta_read_port(z80_byte port)
+{
+    if (!tsconf_dos_signal.v || !trd_enabled.v) return -1;
+
+    // Señales de fin de comando y datos mínimos para que la ROM detecte
+    // el TRD virtual antes de llegar a la rutina de transferencia.
+    switch (port) {
+        case 0xff: return 0xc0;
+        case 0x1f:
+            tsconf_beta_status ^=2;
+            return tsconf_beta_status;
+        case 0x3f: return tsconf_beta_track;
+        case 0x5f: return tsconf_beta_sector;
+        case 0x7f: return tsconf_beta_data;
+    }
+    return -1;
+}
+
+void tsconf_beta_write_port(z80_byte port,z80_byte value)
+{
+    if (!tsconf_dos_signal.v || !trd_enabled.v) return;
+
+    switch (port) {
+        case 0x1f:
+            if (value==0xc0) tsconf_beta_data=tsconf_beta_track;
+            break;
+        case 0x3f: tsconf_beta_track=value; break;
+        case 0x5f: tsconf_beta_sector=value; break;
+        case 0x7f: tsconf_beta_data=value; break;
+    }
+}
 
 // Deselecciona la tarjeta al desactivar el Z-Controller de TSConf.
 void tsconf_zcontroller_enabled_changed(void)
@@ -152,10 +191,6 @@ z80_byte *tsconf_ram_mem_table[256];
 
 //Direcciones actuales mapeadas, bloques de 16 kb
 z80_byte *tsconf_memory_paged[4];
-
-//En teoria esto se activa cuando hay traps tr-dos
-z80_bit tsconf_dos_signal={0};
-
 
 //Almacena tamanyo pantalla y border para modo actual
 //Los inicializamos con algo por si acaso
@@ -847,6 +882,12 @@ void tsconf_write_af_port(z80_byte puerto_h,z80_byte value)
 
   tsconf_af_ports[puerto_h]=value;
 
+  // Al escribir MemConfig termina el estado de arranque impuesto por RESET.
+  if (puerto_h==0x21) {
+    temp_tsconf_in_system_rom_flag=0;
+    if (value&4) tsconf_dos_signal.v=0;
+  }
+
   if (puerto_h==0) {
     tsconf_splash_video_size_mode_change();
 
@@ -1008,15 +1049,20 @@ void tsconf_reset_cpu(void)
 
   tsconf_af_ports[0]=0;
 
-  //Bit 4 de 32765 es bit 0 de #21AF. Por tanto poner ese bit 0 a 0
-    tsconf_af_ports[0x21] &=(255-1);
-    //puerto_32765 &=(255-16);
-
-    //TODO. Que otros puertos de tsconf se ponen a 0 en el reset?
-
-
-    //De momento hacemos que cuando se haga un reset, no se vuelve a la system rom
-    temp_tsconf_in_system_rom_flag=0;
+  // RESET arranca siempre TS-BIOS desde la ROM de sistema. La BIOS lee
+  // la NVRAM y aplica Reset to o CS Reset to según el teclado.
+  tsconf_af_ports[0x10]=0;
+  tsconf_af_ports[0x11]=5;
+  tsconf_af_ports[0x12]=2;
+  tsconf_af_ports[0x13]=0;
+  tsconf_af_ports[0x21]=4;
+  puerto_32765=0;
+  temp_tsconf_in_system_rom_flag=1;
+  tsconf_dos_signal.v=0;
+  tsconf_beta_status=0;
+  tsconf_beta_track=0;
+  tsconf_beta_sector=0;
+  tsconf_beta_data=0;
 
 
     tsconf_set_memory_pages();
@@ -1101,6 +1147,27 @@ int tsconf_in_system_rom(void)
             //cosa que no es cierta
 }
 
+void tsconf_update_dos_signal(z80_int address)
+{
+  if (address>=0x4000) {
+    if (tsconf_dos_signal.v) {
+      tsconf_dos_signal.v=0;
+      tsconf_set_memory_pages();
+    }
+  }
+  else if (address>=0x3c00 && address<=0x3dff &&
+           !(tsconf_get_memconfig()&12) &&
+           tsconf_get_rom_bank()%4==3 && !tsconf_dos_signal.v) {
+    // La lectura de una instrucción en #3Cxx/#3Dxx activa TR-DOS.
+    tsconf_dos_signal.v=1;
+    tsconf_set_memory_pages();
+  }
+
+  // La ROM de TR-DOS usa el mismo punto de transferencia de sectores
+  // que el TRD montado desde el menú.
+  if (tsconf_dos_signal.v) betadisk_handle_trdos_traps();
+}
+
 z80_byte tsconf_get_rom_bank(void)
 {
 /*
@@ -1136,7 +1203,7 @@ bit1/0
           //bit3 selects what is in #0000..#3FFF (0 - ROM, 1 - RAM).
 
           z80_byte banco=tsconf_af_ports[0x10];
-          return banco;
+          return (memconfig&8) ? banco : (banco&31);
         }
         else {
           z80_byte banco;
@@ -1152,9 +1219,7 @@ bit1/0
 
 
           else {
-            //if (tsconf_dos_signal.v) banco=1;
-            if (0) banco=1; //mejor no miramos dos_signal y gestionamos el salto de rom mediante el core_nested de betadisk,
-            //de tal manera que alli se comprueba si salta a tr-dos cuando esta en rom 3 llamando a esta funcion
+            if (tsconf_dos_signal.v) banco=1;
             else {
                 //printf ("32765 %d memconfig %d\n",puerto_32765&16,tsconf_af_ports[0x21] &1);
                 banco=((puerto_32765>>4)&1) | 2;

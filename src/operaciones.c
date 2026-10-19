@@ -7334,6 +7334,12 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
     }
 
+    // TR-DOS de TSConf comparte #1F con Kempston: atiende antes el FDC.
+    if (MACHINE_IS_TSCONF) {
+        int beta_value=tsconf_beta_read_port(puerto_l);
+        if (beta_value>=0) return beta_value;
+    }
+
     // En GMX, A0-A2 deben valer 1 y A5 debe valer 0. TR-DOS
     // desactiva Kempston; la ROM de servicio también consulta 1Fh.
     // Las demás máquinas conservan la decodificación Kempston genérica.
@@ -9508,6 +9514,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
 				//Puertos de Paginacion
 				if (MACHINE_IS_TSCONF)
 				{
+					tsconf_beta_write_port(puerto_l,value);
 					//Para 128k
 					//Puerto tipicamente 32765
 					//The additional memory features of the 128K/+2 are controlled to by writes to port 0x7ffd. As normal on Sinclair hardware, the port address is in fact only partially decoded and the hardware will respond to any port address with bits 1 and 15 reset. However, 0x7ffd should be used if at all possible to avoid conflicts with other hardware.

@@ -1196,6 +1196,7 @@ void cpu_core_loop_spectrum(void)
     else {
         if (esperando_tiempo_final_t_estados.v==0) {
             TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_ciclo_fetch);
+            if (MACHINE_IS_TSCONF) tsconf_update_dos_signal(reg_pc);
             //printf("antes ciclo fetch PC=%XH\n",reg_pc);
             core_spectrum_ciclo_fetch();
             //printf("despues ciclo fetch PC=%XH\n",reg_pc);
