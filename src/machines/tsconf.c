@@ -33,14 +33,24 @@
 #include "operaciones.h"
 #include "zxevo.h"
 #include "baseconf.h"
+#include "scorpion.h"
 #include "mmc.h"
 
 z80_byte tsconf_sd_read_buffer=0xff;
 
+// Deselecciona la tarjeta al desactivar el Z-Controller de TSConf.
+void tsconf_zcontroller_enabled_changed(void)
+{
+    if (zcontroller_enabled.v) return;
+    baseconf_sd_cs=1;
+    tsconf_sd_read_buffer=0xff;
+    mmc_cs(0xff);
+}
+
 // Lee el byte recibido en el ciclo SPI anterior y prepara el siguiente.
 z80_byte tsconf_sd_read_byte(void)
 {
-    if (!baseconf_sd_enabled || baseconf_sd_cs) return 0xff;
+    if (!zcontroller_enabled.v || !baseconf_sd_enabled || baseconf_sd_cs) return 0xff;
     z80_byte recibido=tsconf_sd_read_buffer;
     tsconf_sd_read_buffer=mmc_read();
     return recibido;

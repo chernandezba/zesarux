@@ -10854,23 +10854,28 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_betadisk);
 
+        //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadisk
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION) {
 
-        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
-            "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
-        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'k');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
+            menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
+                "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
+            menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_betadisk,'k');
+            menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
+            menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
 
 
-        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
-            "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
-        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'b');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
+            menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
+                "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
+            menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_betadisk,'b');
+            menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
+            menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
 
-        menu_add_item_menu_separator(array_menu_betadisk);
+            menu_add_item_menu_separator(array_menu_betadisk);
+        }
+
+
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
             "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
@@ -12496,6 +12501,7 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 void menu_storage_zcontroller_emulation(MENU_ITEM_PARAMETERS)
 {
     zcontroller_enabled.v ^=1;
+    if (MACHINE_IS_TSCONF) tsconf_zcontroller_enabled_changed();
 }
 
 void menu_storage_baseconf_sd_interface(MENU_ITEM_PARAMETERS)
@@ -12699,14 +12705,14 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
 
-            if (MACHINE_IS_SCORPION_GMX) {
+            if (MACHINE_IS_SCORPION_GMX || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_mmc_divmmc);
 
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zcontroller_emulation,NULL,
                     "Z-Controller Enabled","Z-Controller Activado","Z-Controller Activat");
                 menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zcontroller_enabled.v ? 'X' : ' ') );
-                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
-                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX and TSConf");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX and TSConf. MMC Emulation controls whether a card is inserted");
             }
             if (MACHINE_IS_BASECONF) {
                 menu_add_item_menu_separator(array_menu_mmc_divmmc);

@@ -331,8 +331,7 @@ por tanto nunca devolveria 255
 *activar covox scorpion?
 *rom de gmx y paginado. de momento usa rom de turbo
 *mover funciones peek y poke de scorpion a scorpion.h
-ok *memoria contended
-*timings?
+
 *snapshots zsf
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
@@ -354,7 +353,7 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 *probar gmx en otros drivers de video
 
--Para baseconf, tsconf y scorpion: no deberia salir la opcion de betadisk en menu zesarux de trd porque eso ya se gestiona internamente
+ok -Para baseconf, tsconf y scorpion: no deberia salir la opcion de betadisk en menu zesarux de trd porque eso ya se gestiona internamente
 
 
 -didaktik Gama

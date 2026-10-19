@@ -7725,7 +7725,7 @@ if (MACHINE_IS_SPECTRUM_128_P2)
 		//In Port ffdf unknown asked, PC after=0xe2a2
 
         if (puerto_l==0x77) {
-            return 0;
+            return zcontroller_enabled.v ? 0 : 1;
         }
 
         if (puerto_l==0x57) {
@@ -9587,14 +9587,16 @@ acts as expected unless this registe is explicitly changed by the user/software.
 					//if (puerto_l==0x57 || puerto_l==0x77) printf ("Writing SD port %04XH value %02XH\n",puerto,value);
 
                     if (puerto_l==0x77) {
-                        baseconf_sd_enabled=value&1;
-                        baseconf_sd_cs=(value&2) ? 1 : 0;
-                        tsconf_sd_read_buffer=0xff;
-                        mmc_cs(baseconf_sd_cs ? 0xff : 0xfe);
+                        if (zcontroller_enabled.v) {
+                            baseconf_sd_enabled=value&1;
+                            baseconf_sd_cs=(value&2) ? 1 : 0;
+                            tsconf_sd_read_buffer=0xff;
+                            mmc_cs(baseconf_sd_cs ? 0xff : 0xfe);
+                        }
                     }
 
                     if (puerto_l==0x57) {
-                        if (baseconf_sd_enabled && !baseconf_sd_cs) {
+                        if (zcontroller_enabled.v && baseconf_sd_enabled && !baseconf_sd_cs) {
                             mmc_write(value);
                             tsconf_sd_read_buffer=0xff;
                         }
