@@ -80,6 +80,8 @@ Corregido ZX Vision:
 
 Corregido ZX Evo TSConf:
 - Corregido al acceder a tarjeta SD/MMC (SD Z-Controller)
+- Corregido al acceder a TR-DOS y archivos .trd
+- Corregido al seleccionar diferentes roms de arranque en TS Bios
 - Corregido al leer teclado en modo PS/2 (para Wild Commander por ejemplo)
 
 Corregidos timings para TK90X y TK95 modelos de 50 hz y 60 hz

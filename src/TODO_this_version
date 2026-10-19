@@ -291,9 +291,12 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 
 
 *desde WC:
--carga de spg va
+ok -carga de spg va
 -carga de scl, trd o tap no va
--musicas pt3 van
+ok -musicas pt3 van
+
+
+-Nmi tsconf. va? que aparece?
 ---
 
 
@@ -311,7 +314,7 @@ Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he
 creo que por la condicion especial en: scr_get_offset_putpixel_no_rainbow
 ->de momento haremos que al conmutar a 60hz, active real video
 
--visual floppy: opción para ver el floppy entero, con la carcasa, etc
+ok -visual floppy: opción para ver el floppy entero, con la carcasa, etc
 
 -simon
 *ok todo?
@@ -329,7 +332,7 @@ https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.u
 por tanto nunca devolveria 255
 
 *activar covox scorpion?
-*rom de gmx y paginado. de momento usa rom de turbo
+
 *mover funciones peek y poke de scorpion a scorpion.h
 
 *snapshots zsf
@@ -342,6 +345,7 @@ acabar de probarlo **modos de video ampliado
 *probar la rom traducida profgmx6xx043.9226se.en.rom y publicarla en extras? comprimida para ocupar menos por ejemplo
 *en ansi06.scl habla de un modo turbo2+ 80x25. que es? y 384x304
 *gmx no tiene paleta de colores diferente?
+*alguna Demo scorpion gmx 80x25?
 
 *usamos scorpiongmx-fat32.ide
 *usamos pruebascorpiongmx.mmc

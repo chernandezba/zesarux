@@ -878,7 +878,8 @@ void core_spectrum_handle_interrupts(void)
     //justo despues de EI no debe generar interrupcion (incluso aunque antes del EI ya estuvieran habilitadas las interrupciones)
     //tampoco se puede generar en medio de un refetch de prefijo DD o FD
     //e interrupcion nmi tiene prioridad
-    if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch) {
+    if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch &&
+        !(MACHINE_IS_TSCONF && tsconf_vdos_interrupt_blocked())) {
 
         //printf ("Lanzada interrupcion spectrum normal\n");
 

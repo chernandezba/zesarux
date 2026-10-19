@@ -44,13 +44,48 @@ static z80_byte tsconf_beta_status;
 static z80_byte tsconf_beta_track;
 static z80_byte tsconf_beta_sector;
 static z80_byte tsconf_beta_data;
+static z80_byte tsconf_beta_drive;
+static z80_bit tsconf_vdos_active={0};
+static z80_bit tsconf_vdos_pending={0};
+
+int tsconf_vdos_is_active(void)
+{
+    return tsconf_vdos_active.v;
+}
+
+int tsconf_vdos_interrupt_blocked(void)
+{
+    return tsconf_vdos_active.v || tsconf_vdos_pending.v;
+}
+
+static int tsconf_beta_virtual_drive(void)
+{
+    return (tsconf_af_ports[0x29] & (1<<tsconf_beta_drive))!=0;
+}
+
+static void tsconf_set_vdos(int enabled)
+{
+    if (tsconf_vdos_active.v==enabled) return;
+    tsconf_vdos_active.v=enabled;
+    tsconf_set_memory_pages();
+}
 
 int tsconf_beta_read_port(z80_byte port)
 {
-    if (!tsconf_dos_signal.v || !trd_enabled.v) return -1;
+    if ((port&0x9f)!=0x1f && port!=0xff) return -1;
+    if (!tsconf_dos_signal.v && !tsconf_vdos_active.v && !(tsconf_af_ports[0x29]&0x80)) return -1;
 
-    // Señales de fin de comando y datos mínimos para que la ROM detecte
-    // el TRD virtual antes de llegar a la rutina de transferencia.
+    if (tsconf_vdos_active.v) {
+        tsconf_set_vdos(0);
+        return 0xff;
+    }
+    if (tsconf_dos_signal.v && tsconf_beta_virtual_drive()) {
+        tsconf_vdos_pending.v=1;
+        return 0xff;
+    }
+    if (!trd_enabled.v) return -1;
+
+    // Señales mínimas para que la ROM detecte el TRD insertado desde el menú.
     switch (port) {
         case 0xff: return 0xc0;
         case 0x1f:
@@ -65,7 +100,20 @@ int tsconf_beta_read_port(z80_byte port)
 
 void tsconf_beta_write_port(z80_byte port,z80_byte value)
 {
-    if (!tsconf_dos_signal.v || !trd_enabled.v) return;
+    if ((port&0x1f)!=0x1f) return;
+    if (!tsconf_dos_signal.v && !tsconf_vdos_active.v && !(tsconf_af_ports[0x29]&0x80)) return;
+
+    if (tsconf_vdos_active.v) {
+        if (port==0xff) tsconf_beta_drive=value&3;
+        else tsconf_set_vdos(0);
+        return;
+    }
+    if (tsconf_dos_signal.v && tsconf_beta_virtual_drive()) {
+        tsconf_set_vdos(1);
+        return;
+    }
+    if (port==0xff) tsconf_beta_drive=value&3;
+    if (!trd_enabled.v) return;
 
     switch (port) {
         case 0x1f:
@@ -883,6 +931,8 @@ void tsconf_write_af_port(z80_byte puerto_h,z80_byte value)
 
   tsconf_af_ports[puerto_h]=value;
 
+  if (puerto_h==0x29) tsconf_af_ports[puerto_h] &=0x8f;
+
   // Al escribir MemConfig termina el estado de arranque impuesto por RESET.
   if (puerto_h==0x21) {
     temp_tsconf_in_system_rom_flag=0;
@@ -912,11 +962,6 @@ void tsconf_write_af_port(z80_byte puerto_h,z80_byte value)
     puerto_32765 &=(255-16); //Reset bit 4
     //Si bit 0 de 21af, poner bit 4
     if (value&1) puerto_32765|=16;
-  }
-
-  //Port 0x7FFD is an alias of Page3, page3=tsconf_af_ports[0x13];
-  if (puerto_h==0x13) {
-    puerto_32765=value;
   }
 
   //Gestion fmaps
@@ -1045,6 +1090,10 @@ mis opciones:
 void tsconf_reset_cpu(void)
 {
     tsconf_7ffd_locked=0;
+    tsconf_vdos_active.v=0;
+    tsconf_vdos_pending.v=0;
+    tsconf_beta_drive=0;
+    tsconf_af_ports[0x29]=0;
     baseconf_sd_enabled=1;
     baseconf_sd_cs=1;
     tsconf_sd_read_buffer=0xff;
@@ -1170,23 +1219,28 @@ int tsconf_in_system_rom(void)
 
 void tsconf_update_dos_signal(z80_int address)
 {
-  if (address>=0x4000) {
+  if (tsconf_vdos_pending.v) {
+    tsconf_vdos_pending.v=0;
+    tsconf_set_vdos(1);
+  }
+  // VDOS puede ejecutar codigo en RAM alta y volver a la ROM de TR-DOS.
+  if ((address>=0x4000 || (tsconf_get_memconfig()&8)) && !tsconf_vdos_active.v) {
     if (tsconf_dos_signal.v) {
       tsconf_dos_signal.v=0;
       tsconf_set_memory_pages();
     }
   }
-  else if (address>=0x3c00 && address<=0x3dff &&
+  else if (address>=0x3d00 && address<=0x3dff &&
            !(tsconf_get_memconfig()&12) &&
            tsconf_get_rom_bank()%4==3 && !tsconf_dos_signal.v) {
-    // La lectura de una instrucción en #3Cxx/#3Dxx activa TR-DOS.
+    // La lectura de una instrucción en #3Dxx activa TR-DOS.
     tsconf_dos_signal.v=1;
     tsconf_set_memory_pages();
   }
 
-  // La ROM de TR-DOS usa el mismo punto de transferencia de sectores
-  // que el TRD montado desde el menú.
-  if (tsconf_dos_signal.v) betadisk_handle_trdos_traps();
+  // El trap solo atiende el disco físico emulado, nunca un VDOS montado.
+  if (tsconf_dos_signal.v && !tsconf_vdos_active.v && !tsconf_beta_virtual_drive())
+      betadisk_handle_trdos_traps();
 }
 
 z80_byte tsconf_get_rom_bank(void)
@@ -1294,7 +1348,11 @@ void tsconf_set_memory_pages(void)
     //memconfig
     //bit3 selects what is in #0000..#3FFF (0 - ROM, 1 - RAM).
 
-    if (tsconf_get_memconfig()&8) {
+    if (tsconf_vdos_active.v) {
+      debug_paginas_memoria_mapeadas[0]=0xff;
+      tsconf_memory_paged[0]=tsconf_ram_mem_table[0xff];
+    }
+    else if (tsconf_get_memconfig()&8) {
     debug_paginas_memoria_mapeadas[0]=rom_page;
     tsconf_memory_paged[0]=tsconf_ram_mem_table[rom_page];
   }

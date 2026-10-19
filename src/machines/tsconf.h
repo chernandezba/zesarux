@@ -60,6 +60,8 @@ extern int temp_tsconf_in_system_rom_flag;
 
 extern void tsconf_reset_cpu(void);
 extern void tsconf_update_dos_signal(z80_int address);
+extern int tsconf_vdos_is_active(void);
+extern int tsconf_vdos_interrupt_blocked(void);
 extern int tsconf_beta_read_port(z80_byte port);
 extern void tsconf_beta_write_port(z80_byte port,z80_byte value);
 extern void tsconf_zcontroller_enabled_changed(void);

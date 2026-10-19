@@ -3093,7 +3093,8 @@ void poke_byte_no_time_tsconf(z80_int dir,z80_byte valor)
 		if (dir<16384) {
 
 
-			if ((tsconf_get_memconfig()&8)==0) return; //si no ram en rom
+			// VDOS pagina la RAM #FF en esta ventana aunque MemConfig seleccione ROM.
+			if ((tsconf_get_memconfig()&8)==0 && !tsconf_vdos_is_active()) return;
 		}
 
 		dir = dir & 16383;
@@ -9577,11 +9578,12 @@ acts as expected unless this registe is explicitly changed by the user/software.
 
 	if (MACHINE_IS_BASECONF) {
 		if (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
-                    puerto_l==0x7f || puerto_l==0xBF || puerto_l==0xBD ||
-                    puerto_l==0xBE || puerto_l==0xFF ||
-                        puerto_l==0x2f || puerto_l==0x4f || puerto_l==0x6f || puerto_l==0x8f ||
-                        puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 || (puerto&0x0FFF)==0xbf7 || (puerto&0x8002)==0 || puerto==0xeff7
-			|| puerto==0xEFF7 || puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)
+            puerto_l==0x7f || puerto_l==0xBF || puerto_l==0xBD ||
+            puerto_l==0xBE || puerto_l==0xFF ||
+            puerto_l==0x2f || puerto_l==0x4f || puerto_l==0x6f || puerto_l==0x8f ||
+            puerto_l==0x77 || puerto_l==0x57 || (puerto&0x0FFF)==0xff7 || (puerto&0x0FFF)==0x7f7 ||
+            (puerto&0x0FFF)==0xbf7 || (puerto&0x8002)==0 || puerto==0xeff7 ||
+            puerto==0xDFF7 || puerto==0xDEF7 || puerto==0xBFF7 || puerto==0xBEF7)
 		{
 			//printf ("Out port baseconf port %04XH value %02XH. PC=%04XH\n",puerto,value,reg_pc);
 			baseconf_out_port(puerto,value);
