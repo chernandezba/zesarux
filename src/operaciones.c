@@ -9515,56 +9515,10 @@ acts as expected unless this registe is explicitly changed by the user/software.
 				if (MACHINE_IS_TSCONF)
 				{
 					tsconf_beta_write_port(puerto_l,value);
-					//Para 128k
-					//Puerto tipicamente 32765
-					//The additional memory features of the 128K/+2 are controlled to by writes to port 0x7ffd. As normal on Sinclair hardware, the port address is in fact only partially decoded and the hardware will respond to any port address with bits 1 and 15 reset. However, 0x7ffd should be used if at all possible to avoid conflicts with other hardware.
-
-
+					// El puerto #7FFD responde si A1 y A15 valen cero.
 					if ( (puerto & 32770) == 0 ) {
-
-						//printf ("paginacion pc: %d\n",reg_pc);
-						//printf ("puerto_32765: %d enviando valor: %d\n",puerto_32765,value);
-
-						//ver si paginacion desactivada
-						//if (puerto_32765 & 32) return;
-
-						//printf ("Paginando mediante 32765. valor: %02XH\n",value);
-
-
-						//if (1==1) {
-						if ((puerto_32765 & 32)==0) {
-                        //if (puerto==32765) {
-
-							puerto_32765=value;
-
-							//Port 0x7FFD is an alias of Page3, page3=tsconf_af_ports[0x13];
-							tsconf_af_ports[0x13]=value&7;
-
-
-
-							//Bit 4 de 32765 es bit 0 de #21AF
-							z80_byte memconfig=tsconf_af_ports[0x21];
-							memconfig &=(255-1); //Reset del bit 0
-
-							//Bit vshadow
-							z80_byte vpage=(value&8 ? 7 : 5);
-							tsconf_af_ports[1]=vpage;
-
-
-							//Y ponemos a 1 si conviene
-							if (value&16) memconfig |=1;
-
-							tsconf_af_ports[0x21]=memconfig;
-
-							//Paginar RAM y ROM
-							tsconf_set_memory_pages();
-
-
-						}
-
-						else {
-							//printf ("Paginacion 32765 desactivada\n");
-						}
+						// El modo Auto distingue el opcode OUT (n),A del opcode OUT (C),r.
+						tsconf_write_7ffd_port(value,peek_byte_no_time((reg_pc-2)&0xffff)==0xd3);
 			    }
 
 					//Puertos NVRAM

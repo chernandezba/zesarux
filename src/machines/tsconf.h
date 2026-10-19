@@ -45,6 +45,7 @@ extern z80_byte tsconf_last_port_dff7;
 //extern z80_byte tsconf_nvram[];
 
 extern void tsconf_write_af_port(z80_byte puerto_h,z80_byte value);
+extern void tsconf_write_7ffd_port(z80_byte value,int short_addressing);
 extern z80_byte tsconf_get_af_port(z80_byte index);
 extern void tsconf_init_memory_tables(void);
 extern void tsconf_set_memory_pages(void);

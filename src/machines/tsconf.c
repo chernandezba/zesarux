@@ -191,6 +191,7 @@ z80_byte *tsconf_ram_mem_table[256];
 
 //Direcciones actuales mapeadas, bloques de 16 kb
 z80_byte *tsconf_memory_paged[4];
+static int tsconf_7ffd_locked;
 
 //Almacena tamanyo pantalla y border para modo actual
 //Los inicializamos con algo por si acaso
@@ -1043,6 +1044,7 @@ mis opciones:
 
 void tsconf_reset_cpu(void)
 {
+    tsconf_7ffd_locked=0;
     baseconf_sd_enabled=1;
     baseconf_sd_cs=1;
     tsconf_sd_read_buffer=0xff;
@@ -1132,6 +1134,25 @@ z80_byte tsconf_get_memconfig(void)
 z80_byte tsconf_get_memconfig_lck(void)
 {
   return (tsconf_get_memconfig()>>6)&3;
+}
+
+void tsconf_write_7ffd_port(z80_byte value,int short_addressing)
+{
+    if (tsconf_7ffd_locked) return;
+
+    int modo=tsconf_get_memconfig_lck();
+    if (modo==2) modo=short_addressing ? 1 : 0;
+
+    z80_byte pagina=value&7;
+    if (modo!=1) pagina |= (value>>3)&0x18;
+    if (modo==3) pagina |= value&0x20;
+
+    puerto_32765=value;
+    tsconf_af_ports[0x13]=pagina;
+    tsconf_af_ports[1]=(value&8) ? 7 : 5;
+    tsconf_af_ports[0x21]=(tsconf_af_ports[0x21]&~1) | ((value>>4)&1);
+    if (modo!=3 && (value&0x20)) tsconf_7ffd_locked=1;
+    tsconf_set_memory_pages();
 }
 
 
@@ -1236,50 +1257,6 @@ bit1/0
 
 
 }
-
-z80_byte tsconf_get_ram_bank_c0(void)
-{
-    //De momento mapear como un 128k
-    z80_byte tsconf_lck=tsconf_get_memconfig_lck();
-
-    /*
-    00 512 kb  7ffd[7:6]=page3[4:3]
-    01 128 kb  7ffd[7:6]=00
-    10 auto    !a[13] ???????
-    11 1024kb   #7FFD[7:6] = Page3[4:3], #7FFD[5] = Page3[5]
-
-
-    Port 0x7FFD is an alias of Page3, thus selects page in 0xC000-0xFFFF window. Its behaviour depends on MemConfig LCK128 bits.
-    00 - 512k: #7FFD[7:6] -> Page3[4:3], #7FFD[2:0] -> Page3[2:0], Page3[7:5] = 0,
-    01 - 128k: #7FFD[2:0] -> Page3[2:0], Page3[7:3] = 0,
-    10 - Auto: OUT (#FD) works as mode 01, OUT (C), r works as mode 00,
-    11 - 1024k: #7FFD[7:6] -> Page3[4:3], #7FFD[2:0] -> Page3[2:0], #7FFD[5] -> Page3[5], Page3[7:6] = 0.
-
-
-    Port 0x7FFD is an alias of Page3, page3=tsconf_af_ports[0x13];
-    */
-
-    z80_byte banco=0;
-
-    switch (tsconf_lck) {
-
-        case 0:
-          banco=(puerto_32765&7)| ((puerto_32765>>3)&24);
-        break;
-
-        case 1:
-           banco=puerto_32765&7;
-        break;
-
-        default:
-          cpu_panic("TODO invalid value for tsconf_lck");
-        break;
-    }
-
-    return banco;
-
-}
-
 
 z80_byte tsconf_get_text_font_page(void)
 {
