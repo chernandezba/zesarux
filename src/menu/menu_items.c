@@ -43207,7 +43207,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
+        if (MACHINE_HAS_CF2_FLOPPY) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" CF2 F~~loppy");
             menu_add_item_menu_shortcut(array_menu_storage,'l');
             menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_COMPACT_FLOPPY));

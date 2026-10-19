@@ -9740,10 +9740,16 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
             }
         }
 
-        if (dskplusthree_file_name[0]) {
+        //Mostrar el nombre del DSK insertado o TRD
+        //Si es maquina con floppy +3: Mostrar DSK
+        char *nombre_etiqueta;
+        if (MACHINE_HAS_CF2_FLOPPY) nombre_etiqueta=dskplusthree_file_name;
+        else nombre_etiqueta=trd_file_name;
+
+        if (nombre_etiqueta[0]) {
             char file_no_dir[PATH_MAX];
             char title[PATH_MAX];
-            util_get_file_no_directory(dskplusthree_file_name,file_no_dir);
+            util_get_file_no_directory(nombre_etiqueta,file_no_dir);
             util_get_file_without_extension(file_no_dir,title);
             size_t title_length=strlen(title);
 

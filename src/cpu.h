@@ -634,7 +634,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Maquinas que tienen el chip de memoria vdp 9918a
 #define MACHINE_HAS_VDP_9918A (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS)
 
-
+//Maquinas con floppy de 3"
+#define MACHINE_HAS_CF2_FLOPPY (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW)
 
 
 
