@@ -293,6 +293,9 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 *desde WC:
 ok -carga de spg va
 -carga de scl, trd o tap no va
+--ok trd
+--ok scl
+--ok tap
 ok -musicas pt3 van
 
 
