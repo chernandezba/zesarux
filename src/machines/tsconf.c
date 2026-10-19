@@ -39,6 +39,7 @@
 
 z80_byte tsconf_sd_read_buffer=0xff;
 z80_bit tsconf_dos_signal={0};
+static z80_bit tsconf_powerup_pending={0};
 
 static z80_byte tsconf_beta_status;
 static z80_byte tsconf_beta_track;
@@ -1068,8 +1069,12 @@ mis opciones:
 
         */
 
-        if (tsconf_vdac_with_pwm.v==0) return 7;
-        else return 0;
+        {
+          z80_byte status=tsconf_vdac_with_pwm.v==0 ? 7 : 0;
+          if (tsconf_powerup_pending.v) status|=0x40;
+          tsconf_powerup_pending.v=0;
+          return status;
+        }
 
       break;
 
@@ -1386,6 +1391,8 @@ void tsconf_hard_reset(void)
   baseconf_ps2_reset();
 
   reset_cpu();
+  // El primer acceso a STATUS tras el arranque en frío anuncia el reinicio completo.
+  tsconf_powerup_pending.v=1;
 
 
     int i;
