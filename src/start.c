@@ -1795,6 +1795,7 @@ screen_effect_print_names();
 
         //"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
 
+        "--tsconf-vdac-with-pwm                  Enable TSConf vdac with pwm\n"
         "--snoweffect                            Enable snow effect support for Spectrum\n"
         "--enablegigascreen                      Enable Gigascreen video support\n"
         "--enableinterlaced                      Enable Interlaced video support\n"
@@ -6823,6 +6824,10 @@ int parse_cmdline_options(int desde_commandline)
 
                     }
 
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--tsconf-vdac-with-pwm")) {
+                tsconf_vdac_with_pwm.v=1;
             }
 
 

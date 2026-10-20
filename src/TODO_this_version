@@ -299,9 +299,12 @@ ok -carga de spg va
 ok -musicas pt3 van
 
 
--Nmi tsconf. va? que aparece?
-ok -update de la rom de tsconf?
 -NeoGS emular?
+
+-revision colores vdac , pwm etc: pendiente -> parece que activando PWM se ve bien . porque no viene activado por defecto?
+-en demorama y otras demos: scanline de separacion entre bloques parece tener un scanline de mas
+-demo newschool la cara del principio no se ve bien
+-pixeldemo no se ve bien
 ---
 
 

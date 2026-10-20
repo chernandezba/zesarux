@@ -263,6 +263,23 @@ Esto es tal cual tenia el soporte de TAP, al no guardar el flag, eso no se puede
 
 --- TSConf ---
 
+
+-TSConf: revisar emulación de colores, PWM y VDAC:
+
+La tabla RGB555 de 32768 colores es compartida con ZX-Uno Prism y partes del menú y del vídeo.
+Al generarla, ZEsarUX aplica los ajustes «TSConf palette depth» (2–5 bits) y «TSConf VDAC PWM»,
+por lo que cambiar opciones de TSConf altera colores de otras máquinas.
+
+Cada entrada de la paleta CRAM de TSConf tiene un bit 15 que selecciona su conversión: 0 = PWM, 1 = VDAC.
+ZEsarUX descarta ese bit y aplica un único modo a todos los colores. Por defecto usa VDAC (componente × 8);
+al activar la opción usa una escala PWM de 0–24, saturada a 255 desde 24. Esto puede mejorar unas demos y empeorar otras.
+La conversión PWM actual tampoco reproduce la curva gamma usada por el código de referencia de TS-Labs.
+
+Pendiente: mantener fija la tabla compartida y hacer la conversión exclusivamente para TSConf, respetando
+el bit 15 de cada color y sin perder los cambios de CRAM durante efectos de raster. Se puede aproximar PWM
+con el color más cercano de la tabla RGB555, o añadir una tabla exclusiva para reproducir sus intensidades exactas.
+Revisar también el valor VDVER del registro 00AF: actualmente anuncia VDAC2/FT812 por defecto.
+
 -Puerto 57 tsconf es mmc?? usado en zifi demo
 
 

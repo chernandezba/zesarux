@@ -5514,6 +5514,8 @@ int util_write_configfile(void)
     if (audiodac_enabled.v)                         ADD_STRING_CONFIG,"--enableaudiodac");
                                                     ADD_STRING_CONFIG,"--audiodactype \"%s\"",audiodac_types[audiodac_selected_type].name);
 
+    if (tsconf_vdac_with_pwm.v)                     ADD_STRING_CONFIG,"--tsconf-vdac-with-pwm");
+
     if (snow_effect_enabled.v)                      ADD_STRING_CONFIG,"--snoweffect");
     if (audiovolume!=100)                           ADD_STRING_CONFIG,"--audiovolume %d",audiovolume);
     if (audio_nagra_effect.v)                       ADD_STRING_CONFIG,"--nagraaudio");
