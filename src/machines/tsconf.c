@@ -773,6 +773,8 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
     }*/
 
 
+    int burst_address_mask=addr_align_size ? 0x1ff : 0xff;
+
     for (;burst_number>0;burst_number--){
         int i;
 
@@ -868,8 +870,12 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
         }
 
         //if (i!=burst_length-1) {
-        destination +=incremento_destino;
-        source +=incremento_origen;
+        // Con alineación, el avance dentro de la ráfaga vuelve al inicio del bloque.
+        // Solo al terminar la ráfaga se pasa al siguiente bloque de 256 o 512 bytes.
+        if (d_align) destination=(destination & ~burst_address_mask) | ((destination+incremento_destino) & burst_address_mask);
+        else destination +=incremento_destino;
+        if (s_align) source=(source & ~burst_address_mask) | ((source+incremento_origen) & burst_address_mask);
+        else source +=incremento_origen;
         //}
 
 
