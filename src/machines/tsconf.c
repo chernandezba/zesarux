@@ -2770,8 +2770,8 @@ int spritestiles=1;
                         color_final=*layer_five;
                         if (color_final==TSCONF_SCANLINE_TRANSPARENT_COLOR) {
                             color_final=*layer_six;
-                            //Si transparente, color 0
-                            if (color_final==TSCONF_SCANLINE_TRANSPARENT_COLOR) color_final=0;
+                            // Si no hay capa visible, el fondo es el color del borde.
+                            if (color_final==TSCONF_SCANLINE_TRANSPARENT_COLOR) color_final=tsconf_return_cram_color(tsconf_get_border_colour());
                         }
                     }
 
