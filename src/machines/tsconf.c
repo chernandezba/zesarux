@@ -166,6 +166,12 @@ static int tsconf_ula_y_reload;
 static int tsconf_ula_y_reload_next;
 static int tsconf_ula_y_reload_value;
 
+// VConfig y VPage escritos por la CPU se aplican a partir de la línea siguiente.
+static z80_byte tsconf_video_next_vconfig;
+static z80_byte tsconf_video_next_vpage;
+static z80_byte tsconf_video_render_vconfig;
+static z80_byte tsconf_video_render_vpage;
+
 //Si se usa vdac con full 15 bits, o con pwm: en ese caso, cada componente de 5 bits son diferentes hasta valor 24, a partir de ahi son iguales a 255:
 /*
 0  1   2    3   4  5   6   7   8   9   10   11    12  13   14   15   16   17   18   19   20   21   22   23   24
@@ -391,9 +397,9 @@ z80_byte tsconf_get_video_size_display(void)
 
 //Actualiza valores de variables de tamanyo pantalla segun modo de video actual
 //Modo de video ZX Spectrum solo tiene sentido con resolucion 256x192
-void tsconf_set_sizes_display(void)
+static void tsconf_set_sizes_display_vconfig(z80_byte vconfig)
 {
-  z80_byte videosize=tsconf_get_video_size_display();
+  z80_byte videosize=(vconfig>>6)&3;
 
 /*
   00 - 256x192: border size: 104x96
@@ -432,6 +438,11 @@ void tsconf_set_sizes_display(void)
   //printf ("Current video size. Pixel size: %dX%d Border size: %dX%d\n",
   //    tsconf_current_pixel_width,tsconf_current_pixel_height,tsconf_current_border_width*2,tsconf_current_border_height*2);
 
+}
+
+void tsconf_set_sizes_display(void)
+{
+    tsconf_set_sizes_display_vconfig(tsconf_af_ports[0]);
 }
 
 
@@ -1117,6 +1128,8 @@ void tsconf_reset_cpu(void)
 
 
     tsconf_set_memory_pages();
+    tsconf_video_next_vconfig=tsconf_video_render_vconfig=tsconf_af_ports[0];
+    tsconf_video_next_vpage=tsconf_video_render_vpage=tsconf_af_ports[1];
     tsconf_set_sizes_display();
 }
 
@@ -1468,6 +1481,8 @@ void tsconf_hard_reset(void)
   tsconf_af_ports[0x1F]=0;
 
   tsconf_set_memory_pages();
+  tsconf_video_next_vconfig=tsconf_video_render_vconfig=tsconf_af_ports[0];
+  tsconf_video_next_vpage=tsconf_video_render_vpage=tsconf_af_ports[1];
   tsconf_set_sizes_display();
   tsconf_set_emulator_setting_turbo();
 }
@@ -1765,7 +1780,7 @@ void tsconf_store_scanline_ula(void)
 
       int puntero_layer_ula=0;
 
-    z80_byte videomode=tsconf_get_video_mode_display();
+    z80_byte videomode=tsconf_video_render_vconfig&3;
 
 
     if (videomode==3) {
@@ -1776,14 +1791,14 @@ void tsconf_store_scanline_ula(void)
         z80_int puntero=0x0000;
 
         z80_byte *screen;
-        screen=tsconf_ram_mem_table[tsconf_get_vram_page() ];
+        screen=tsconf_ram_mem_table[tsconf_video_render_vpage];
 
         //int ancho_linea_caracteres=256;
         int x=0;
         int y=y_origen_pixeles;
         puntero=fila*256;
 
-        z80_byte font_page=tsconf_get_text_font_page();
+        z80_byte font_page=tsconf_video_render_vpage ^ 1;
 
         z80_byte *puntero_fuente;
         puntero_fuente=tsconf_ram_mem_table[font_page];
@@ -1872,7 +1887,7 @@ void tsconf_store_scanline_ula(void)
                     z80_int offset_final=offset % 16384;
 
                     // Los modos gráficos toman VPAGE como base de un bloque completo.
-                    z80_byte vram_base=tsconf_get_vram_page() & (videomode==1 ? 0xF8 : 0xF0);
+                    z80_byte vram_base=tsconf_video_render_vpage & (videomode==1 ? 0xF8 : 0xF0);
                     z80_byte vram_page=vram_base+pagina_offset;
                     z80_byte *screen;
 
@@ -2587,7 +2602,11 @@ int tsconf_if_tiles_one_enabled(void)
 //Para zona de border o pantalla
 void screen_store_scanline_rainbow_solo_display_tsconf(void)
 {
-
+    tsconf_video_render_vconfig=tsconf_video_next_vconfig;
+    tsconf_video_render_vpage=tsconf_video_next_vpage;
+    tsconf_video_next_vconfig=tsconf_af_ports[0];
+    tsconf_video_next_vpage=tsconf_af_ports[1];
+    tsconf_set_sizes_display_vconfig(tsconf_video_render_vconfig);
 
     int linea_render_visible=tsconf_get_current_visible_scanline();
 
@@ -2616,7 +2635,7 @@ void screen_store_scanline_rainbow_solo_display_tsconf(void)
 
   //Dibujamos las capas
     //Capa ULA
-    if (tsconf_if_ula_enabled() && tsconf_force_disable_layer_ula.v==0) {
+    if (!(tsconf_video_render_vconfig&32) && tsconf_force_disable_layer_ula.v==0) {
         tsconf_store_scanline_ula();
                 if (tsconf_reveal_layer_ula.v) {
                                 tsconf_reveal_layer_draw(tsconf_layer_ula);
