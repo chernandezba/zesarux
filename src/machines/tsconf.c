@@ -160,6 +160,12 @@ void tsconf_generate_im1_im2(z80_byte vector);
 
 z80_byte tsconf_af_ports[256];
 
+static int tsconf_ula_y_counter;
+static int tsconf_ula_y_last_scanline=-1;
+static int tsconf_ula_y_reload;
+static int tsconf_ula_y_reload_next;
+static int tsconf_ula_y_reload_value;
+
 //Si se usa vdac con full 15 bits, o con pwm: en ese caso, cada componente de 5 bits son diferentes hasta valor 24, a partir de ahi son iguales a 255:
 /*
 0  1   2    3   4  5   6   7   8   9   10   11    12  13   14   15   16   17   18   19   20   21   22   23   24
@@ -932,6 +938,8 @@ void tsconf_write_af_port(z80_byte puerto_h,z80_byte value)
 
   tsconf_af_ports[puerto_h]=value;
 
+  if (puerto_h==4 || puerto_h==5) tsconf_ula_y_reload=1;
+
   if (puerto_h==0x29) tsconf_af_ports[puerto_h] &=0x8f;
 
   // Al escribir MemConfig termina el estado de arranque impuesto por RESET.
@@ -1094,6 +1102,9 @@ mis opciones:
 
 void tsconf_reset_cpu(void)
 {
+    tsconf_ula_y_last_scanline=-1;
+    tsconf_ula_y_reload=0;
+    tsconf_ula_y_reload_next=0;
     tsconf_7ffd_locked=0;
     tsconf_vdos_active.v=0;
     tsconf_vdos_pending.v=0;
@@ -1385,6 +1396,10 @@ void tsconf_set_memory_pages(void)
 
 void tsconf_hard_reset(void)
 {
+
+  tsconf_ula_y_last_scanline=-1;
+  tsconf_ula_y_reload=0;
+  tsconf_ula_y_reload_next=0;
 
   debug_printf(VERBOSE_DEBUG,"TSconf Hard reset cpu");
 
@@ -1729,16 +1744,28 @@ void tsconf_store_scanline_ula(void)
 
     //printf("scanline_copia despues %d\n",scanline_copia);
 
-    int y_origen_pixeles=scanline_copia;
-
-    //sumar offset
     int y_offset=tsconf_af_ports[4]+256*(tsconf_af_ports[5]&1);
+    if (scanline_copia<0 || scanline_copia>=tsconf_current_pixel_height) return;
 
+    // El desplazamiento escrito se carga al comenzar la siguiente línea.
+    // Sin escritura, el contador gráfico avanza una fila por línea visible.
+    if (scanline_copia!=tsconf_ula_y_last_scanline) {
+        if (scanline_copia<tsconf_ula_y_last_scanline || tsconf_ula_y_last_scanline<0) {
+            tsconf_ula_y_counter=y_offset;
+        }
+        else if (tsconf_ula_y_reload_next) {
+            tsconf_ula_y_counter=tsconf_ula_y_reload_value;
+        }
+        else {
+            tsconf_ula_y_counter=(tsconf_ula_y_counter+scanline_copia-tsconf_ula_y_last_scanline)&511;
+        }
+        tsconf_ula_y_last_scanline=scanline_copia;
+        tsconf_ula_y_reload_next=tsconf_ula_y_reload;
+        tsconf_ula_y_reload_value=y_offset;
+        tsconf_ula_y_reload=0;
+    }
 
-    y_origen_pixeles +=y_offset;
-
-    //controlar si sale de rango
-    y_origen_pixeles=y_origen_pixeles % 512;
+    int y_origen_pixeles=tsconf_ula_y_counter;
 
 
 
