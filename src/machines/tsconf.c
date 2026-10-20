@@ -1714,25 +1714,12 @@ void tsconf_store_scanline_border_supinf_izqder(int tipo)
 
 
 
-void tsconf_store_scanline_ula(void)
+static void tsconf_advance_ula_y_counter(int scanline_copia)
 {
-
-
-
-    int scanline_copia=tsconf_get_current_visible_scanline();
-
-    //printf("scanline_copia %d tsconf_current_border_height %d\n",scanline_copia,tsconf_current_border_height);
-
-    //linea que se debe leer
-    scanline_copia -=tsconf_current_border_height;
-
-    //printf("scanline_copia despues %d\n",scanline_copia);
-
     int y_offset=tsconf_af_ports[4]+256*(tsconf_af_ports[5]&1);
-    if (scanline_copia<0 || scanline_copia>=tsconf_current_pixel_height) return;
 
     // El desplazamiento escrito se carga al comenzar la siguiente línea.
-    // Sin escritura, el contador gráfico avanza una fila por línea visible.
+    // El contador avanza también durante las líneas ocultas por NOGFX.
     if (scanline_copia!=tsconf_ula_y_last_scanline) {
         if (scanline_copia<tsconf_ula_y_last_scanline || tsconf_ula_y_last_scanline<0) {
             tsconf_ula_y_counter=y_offset;
@@ -1748,7 +1735,12 @@ void tsconf_store_scanline_ula(void)
         tsconf_ula_y_reload_value=y_offset;
         tsconf_ula_y_reload=0;
     }
+}
 
+void tsconf_store_scanline_ula(void)
+{
+    int scanline_copia=tsconf_get_current_visible_scanline()-tsconf_current_border_height;
+    if (scanline_copia<0 || scanline_copia>=tsconf_current_pixel_height) return;
     int y_origen_pixeles=tsconf_ula_y_counter;
 
 
@@ -2610,6 +2602,8 @@ void screen_store_scanline_rainbow_solo_display_tsconf(void)
         //No hay mas que eso en el scanline. volver
         return;
     }
+
+    tsconf_advance_ula_y_counter(linea_render_visible-tsconf_current_border_height);
 
     //Border laterales. Dibujar directamente en buffer rainbow
     tsconf_store_scanline_border_supinf_izqder(1);
