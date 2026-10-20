@@ -79,6 +79,9 @@ Fixed ZX Vision:
 - Fixed clicking on previous menu and menu was closed randomly
 
 Fixed ZX Evo TSConf:
+- Updated to last ROM
+- Fixed scroll counter, raster interrupt
+- Fixed DMA burst alignment
 - Fixed accessing SD/MMC card (SD Z-Controller)
 - Fixed accessing TR-DOS and .trd files
 - Fixed accessing .trd, .scl and .tap selected from the machine (for example on Wild commander)
