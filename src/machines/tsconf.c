@@ -2547,7 +2547,13 @@ void tsconf_store_scanline_tiles(z80_byte layer,z80_int *layer_tiles)
                 }
 
 
-                tsconf_store_scanline_puttiles(8, incx, tpal,sprite_origen);
+                if (tnum || (tsconf_af_ports[6]&(4<<layer))) {
+                    tsconf_store_scanline_puttiles(8, incx, tpal,sprite_origen);
+                }
+                else {
+                    // Con T0Z_EN/T1Z_EN a cero, el tile número cero es transparente.
+                    for (int pixel=0;pixel<8;pixel++) tsconf_put_tile_pixel(0,tpal);
+                }
 
     }
 
