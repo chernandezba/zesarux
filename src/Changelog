@@ -81,7 +81,7 @@ Fixed ZX Vision:
 Fixed ZX Evo TSConf:
 - Updated to last ROM
 - Fixed scroll counter, raster interrupt
-- Fixed DMA burst alignment
+- Fixed DMA burst alignment, burst wrapping
 - Fixed tile zero transparency
 - Fixed border color behind transparent layers
 - Fixed bright black palette entry

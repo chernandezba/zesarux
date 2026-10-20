@@ -81,7 +81,7 @@ Corregido ZX Vision:
 Corregido ZX Evo TSConf:
 - Actualizado a última ROM
 - Corregido contador de scroll scroll counter, interrupción raster
-- Corregido alineación de DMA en modo burst
+- Corregido alineación de DMA en modo burst, retorno en modo burst
 - Corregido transparencia del tile zero
 - Corregido color de borde detrás de capas transparentes
 - Corregido color negro brillante en paleta
