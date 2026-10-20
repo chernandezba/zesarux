@@ -254,8 +254,10 @@ void core_spectrum_store_rainbow_current_atributes(void)
         if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
             //Sumamos el offset de prefetch de la ULA: latch de cada celda unos T-estados antes de mostrarse
             int tiempo_ula=t_estados;
-            if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL)
+            if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
+                // La pantalla Microdigital empieza 95 T despues del inicio de la linea 64 (50 Hz) o 38 (60 Hz).
                 tiempo_ula-=95*cpu_turbo_speed;
+            }
             int atributo_pos=((tiempo_ula % screen_testados_linea)+ULA_PREFETCH_OFFSET_TSTATES)/4;
             //Proteccion contra desbordamiento del buffer cerca del final de linea (zona border)
             if (atributo_pos>=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2) atributo_pos=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2-1;
@@ -1244,8 +1246,11 @@ void cpu_core_loop_spectrum(void)
 
     //A final de cada scanline
     int tiempo_ula=t_estados;
-    if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL)
+    if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
+        // La pantalla Microdigital empieza 95 T despues del inicio de la linea 64 (50 Hz) o 38 (60 Hz).
         tiempo_ula-=95*cpu_turbo_speed;
+    }
+
     if ( (tiempo_ula/screen_testados_linea)>t_scanline || t_estados>=screen_testados_total ) {
         TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_fin_scanline);
         core_spectrum_fin_scanline();

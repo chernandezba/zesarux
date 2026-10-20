@@ -84,6 +84,8 @@ Corregido ZX Evo TSConf:
 - Corregido alineación de DMA en modo burst
 - Corregido transparencia del tile zero
 - Corregido color de borde detrás de capas transparentes
+- Corregido color negro brillante en paleta
+- Corregido resetear paleta de colores CRAM al cargar snapshots SPG
 - Corregido al acceder a tarjeta SD/MMC (SD Z-Controller)
 - Corregido al acceder a TR-DOS y archivos .trd
 - Corregido al seleccionar diferentes roms de arranque en TS Bios

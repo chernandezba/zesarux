@@ -273,7 +273,7 @@ Debug:    ZENG Online: Error returning data from command streaming-get-audio-con
 Deberia detectar la salida correcta
 
 
----
+------
 
 tsconf
 
@@ -301,11 +301,8 @@ ok -musicas pt3 van
 
 -NeoGS emular?
 
--revision colores vdac , pwm etc: pendiente -> parece que activando PWM se ve bien . porque no viene activado por defecto?
--en demorama y otras demos: scanline de separacion entre bloques parece tener un scanline de mas
--demo newschool la cara del principio no se ve bien
--pixeldemo no se ve bien
----
+-pixeldemo no se ve bien?
+------
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
@@ -323,18 +320,18 @@ creo que por la condicion especial en: scr_get_offset_putpixel_no_rainbow
 ->de momento haremos que al conmutar a 60hz, active real video
 
 ok -visual floppy: opción para ver el floppy entero, con la carcasa, etc
-
--simon
-*ok todo?
+*pestaña de proteccion de escritura no sale en sitio correcto
 
 
+
+------
 -pcw16
 
 https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
 
 https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
 
-
+------
 -Scorpion
 **kempston deberia retornar 0 si no está emulado, para que el menu nmi no se vuelva loco. es una maquina con kempston
 por tanto nunca devolveria 255
@@ -365,8 +362,7 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 *probar gmx en otros drivers de video
 
-ok -Para baseconf, tsconf y scorpion: no deberia salir la opcion de betadisk en menu zesarux de trd porque eso ya se gestiona internamente
-
+------
 
 -didaktik Gama
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
