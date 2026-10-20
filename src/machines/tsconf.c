@@ -529,27 +529,11 @@ void tsconf_return_dma_addr_linear_to_reg(int addr,z80_byte *bajo,z80_byte *medi
     *alto=addr;
 }
 
-int tsconf_align_address(int orig_destination,int destination,int addr_align_size)
+int tsconf_align_address(int orig_destination,int addr_align_size)
 {
-
-            int lower;
-
-                if (addr_align_size) { //1 alinear a 512
-                //printf ("alinear a 512\n");
-                lower=orig_destination&0x1FF;
-                destination=destination&0xFFFE00;
-                destination |=lower;
-                destination +=512;
-            }
-            else { //0 alinear a 256
-                //printf ("alinear a 256\n");
-                lower=orig_destination&0xFF;
-                destination=destination&0xFFFF00;
-                destination |=lower;
-                destination +=256;
-            }
-
-    return destination;
+    // La siguiente ráfaga comienza a una distancia fija del inicio de esta.
+    // Alinear desde el final puede saltarse una fila si acaba justo en su límite.
+    return (orig_destination+(addr_align_size ? 512 : 256))&0x3fffff;
 }
 
 /*int tsconf_align_address_prueba(int orig_destination,int destination,int addr_align_size)
@@ -882,11 +866,11 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
         }
 
         if (d_align) {
-            destination=tsconf_align_address(orig_destination,destination,addr_align_size);
+            destination=tsconf_align_address(orig_destination,addr_align_size);
         }
 
         if (s_align) {
-            source=tsconf_align_address(orig_source,source,addr_align_size);
+            source=tsconf_align_address(orig_source,addr_align_size);
         }
 
 
