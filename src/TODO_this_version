@@ -280,8 +280,8 @@ tsconf
 Parece que para iniciar de la mmc:
 *tiene que ser fat32
 *arranca el archivo boot.$c
-./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmco-persistent-writes --zoom 1
-
+./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmc-persistent-writes --zoom 1
+imagen ide pruebatsconffat32_ide.ide
 
 Error que sale probando desde WC:
 
@@ -302,7 +302,9 @@ ok -musicas pt3 van
 -NeoGS emular?
 
 
--ide smuc, ide nemo?
+-ide smuc
+-ide nemo: en proceso de emular. baseconf_ide_write, baseconf_nemo_ide_enabled etc habria que renombrar
+todos esos a zxevo_* y ponerlo en zxevo.c
 ------
 
 

@@ -13106,14 +13106,14 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX. IDE Emulation above controls whether a hard disk is connected to it");
             }
-            if (MACHINE_IS_BASECONF) {
+            if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_ide_divide);
 
                 menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_baseconf_nemo_ide,NULL,
                     "Nemo IDE Enabled","Nemo IDE Activado","Nemo IDE Activat");
                 menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(baseconf_nemo_ide_enabled.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf");
-                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf. IDE Emulation above controls whether a hard disk is connected to it");
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf. IDE Emulation above controls whether a hard disk is connected to it");
             }
 
 

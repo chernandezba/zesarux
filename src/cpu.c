@@ -2919,7 +2919,10 @@ void set_machine_params(void)
             ay_chip_present.v=1;
 
             // La SD de ZX Evolution usa la interfaz Z-Controller en TSConf.
-            if (last_machine_type!=current_machine_type) zcontroller_enabled.v=1;
+            if (last_machine_type!=current_machine_type) {
+                zcontroller_enabled.v=1;
+                baseconf_nemo_ide_enabled.v=1;
+            }
 
             //TSConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
             //por conveniencia, dado que se verá todo mejor asi que no con real video off

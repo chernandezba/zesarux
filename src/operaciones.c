@@ -7433,8 +7433,8 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     //Puerto ZXMMC+
     if (zxmmcplus_enabled.v && puerto_l==0x7f) return zxmmcplus_read_port();
 
-	//Puertos NemoIDE nativos de BaseConf
-	if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
+	//Puertos NemoIDE del ZX Evolution en BaseConf y TSConf
+	if ((MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) && baseconf_ide_port(puerto_l)) {
 		return baseconf_ide_read(puerto_l);
 	}
 
@@ -8966,6 +8966,12 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
         if (scorpion_gmx_smuc_write(puerto,value)) return;
         if (scorpion_gmx_zcontroller_write(puerto,value)) return;
 
+        // Nemo IDE de TSConf atiende estos puertos antes que los alias de ULA y #7FFD.
+        if (MACHINE_IS_TSCONF && baseconf_ide_port(puerto_l)) {
+                baseconf_ide_write(puerto_l,value);
+                return;
+        }
+
         //super wonder boy usa puerto 1fe
         //paperboy usa puertos xxfe
 	//Puerto 254 realmente es cualquier puerto par
@@ -9738,7 +9744,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
         zxmmcplus_mmc_cs(value);
     }
 
-    //Puertos IDE nativos de BaseConf
+    //Puertos NemoIDE nativos de BaseConf
     if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
             baseconf_ide_write(puerto_l,value);
     }
