@@ -1879,7 +1879,9 @@ void tsconf_store_scanline_ula(void)
                     //y offset final
                     z80_int offset_final=offset % 16384;
 
-                    z80_byte vram_page=tsconf_get_vram_page()+pagina_offset;
+                    // Los modos gráficos toman VPAGE como base de un bloque completo.
+                    z80_byte vram_base=tsconf_get_vram_page() & (videomode==1 ? 0xF8 : 0xF0);
+                    z80_byte vram_page=vram_base+pagina_offset;
                     z80_byte *screen;
 
                     screen=tsconf_ram_mem_table[vram_page]+offset_final;
