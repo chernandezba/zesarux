@@ -30,6 +30,12 @@ if [ $? != 0 ]; then
         exit 1
 fi
 
+tests/didaktik_mmu.sh
+if [ $? != 0 ]; then
+        echo "Error didaktik gama mmu tests"
+        exit 1
+fi
+
 tests/printtrap_test.sh
 if [ $? != 0 ]; then
         echo "Error printtrap tests"

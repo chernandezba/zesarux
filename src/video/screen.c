@@ -13623,7 +13623,7 @@ void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_cara
 {
 
     //Maquina 16/48/128/p2/p2a/p3
-    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3 || MACHINE_IS_DIDAKTIKGAMA) {
         if (reg_pc!=screen_text_printchar_return_trap_rom() ) puntero_printchar_caracter(caracter);
 
         else {
@@ -13925,7 +13925,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
         //Spectrum
         if (MACHINE_IS_SPECTRUM) {
             //Las normales 16_48_128_p2_p2a. Esto excluye zxuno, chloe, timex, prism, tbblue, pentagon, chrome, tsconf, baseconf
-            if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+            if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3 || MACHINE_IS_DIDAKTIKGAMA) {
                 //Si esta la rom del basic paginada
 
                 //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas

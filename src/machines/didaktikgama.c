@@ -259,7 +259,7 @@ void didaktikgama_mem_page_ram(void)
     didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[page_entra];
     didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[page_entra]+16384;
 
-    printf("Paging ram %d on 8000h-ffffh\n",page_entra);
+    //printf("Paging ram %d on 8000h-ffffh\n",page_entra);
 
 }
 

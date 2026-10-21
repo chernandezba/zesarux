@@ -1890,6 +1890,7 @@ void gestionar_autoload_spectrum(void)
             case MACHINE_ID_CZ_2000:
             case MACHINE_ID_CZ_SPECTRUM:
             case MACHINE_ID_CZ_SPECTRUM_PLUS:
+            case MACHINE_ID_DIDAKTIKGAMA:
                 //Ver para maquinas 48k
                 gestionar_autoload_spectrum_48kmode();
                 break;
