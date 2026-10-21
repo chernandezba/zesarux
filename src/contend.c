@@ -1513,8 +1513,9 @@ z80_byte *contend_table_no_mreq;
 		}
 	}
 
-    //TODO confirmar esto
 	if (MACHINE_IS_DIDAKTIKGAMA) {
+		// La Gama usa la ULA de 48K: 6,5,4,3,2,1,0,0 desde el T 14335
+		// y durante los 128 T de pantalla de cada una de las 192 líneas visibles.
 		timings=contend_patron_65432100;
 		offset_time=1;
 		offset_patron=-1;

@@ -2205,6 +2205,7 @@ void set_machine_params(void)
     }
 
     else if (MACHINE_IS_DIDAKTIKGAMA) {
+        // La Gama usa los parámetros de vídeo e INT de 48K ya establecidos arriba.
         contend_read=contend_read_48k;
         contend_read_no_mreq=contend_read_no_mreq_48k;
         contend_write_no_mreq=contend_write_no_mreq_48k;
