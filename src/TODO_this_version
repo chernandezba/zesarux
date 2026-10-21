@@ -376,8 +376,10 @@ ok *soporte ide gmx con smuc
 
 ---
 
+-----
+-en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
-en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE de cada uno
+-en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE de cada uno
 
 
 gmx:
