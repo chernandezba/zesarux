@@ -7335,6 +7335,11 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
     }
 
+    // El byte alto de Nemo IDE en #11 tiene prioridad sobre Kempston.
+    if (MACHINE_IS_TSCONF && baseconf_ide_port(puerto_l)) {
+        return baseconf_ide_read(puerto_l);
+    }
+
     // TR-DOS de TSConf comparte #1F con Kempston: atiende antes el FDC.
     if (MACHINE_IS_TSCONF) {
         int beta_value=tsconf_beta_read_port(puerto_l);
@@ -7433,8 +7438,8 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     //Puerto ZXMMC+
     if (zxmmcplus_enabled.v && puerto_l==0x7f) return zxmmcplus_read_port();
 
-	//Puertos NemoIDE del ZX Evolution en BaseConf y TSConf
-	if ((MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) && baseconf_ide_port(puerto_l)) {
+	//Puertos NemoIDE nativos de BaseConf
+	if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
 		return baseconf_ide_read(puerto_l);
 	}
 

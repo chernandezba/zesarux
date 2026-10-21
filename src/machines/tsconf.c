@@ -707,6 +707,14 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
                     source_mask=destination_mask=0x3FFFFF;
             break;
 
+            case 6:
+            case 7:
+                    // La DMA transfiere palabras entre IDE y RAM.
+                    source_pointer=tsconf_ram_mem_table[0];
+                    destination_pointer=tsconf_ram_mem_table[0];
+                    source_mask=destination_mask=0x3FFFFF;
+            break;
+
             case 8:
 
                     //printf ("RAM (Dst) is filled with word from RAM (Src)\n");
@@ -817,6 +825,20 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
                     destination_pointer[destination]=tsconf_sd_read_byte();
                     destination_pointer[(destination+1)&destination_mask]=tsconf_sd_read_byte();
                     incremento_destino=2;
+            break;
+
+            case 6:
+                    destination_pointer[destination]=baseconf_nemo_ide_enabled.v ? baseconf_ide_read(0x10) : 0xff;
+                    destination_pointer[(destination+1)&destination_mask]=baseconf_nemo_ide_enabled.v ? baseconf_ide_read(0x10) : 0xff;
+                    incremento_destino=2;
+            break;
+
+            case 7:
+                    if (baseconf_nemo_ide_enabled.v) {
+                        baseconf_ide_write(0x11,source_pointer[(source+1)&source_mask]);
+                        baseconf_ide_write(0x10,source_pointer[source]);
+                    }
+                    incremento_origen=2;
             break;
 
             case 8:
