@@ -642,6 +642,16 @@ See files on extras/docs/prism/ to know which roms are included in the Flash
 Scorpion
 --------
 
+Q: How do I access SD, IDE and TRD files on Scorpion GMX?
+
+A: Choose the method that matches where your files are stored:
+
+- SD: In Storage -> SD/MMC, select a FAT-formatted card image and enable MMC Emulation and Z-Controller Enabled. Open the GMX NMI menu (ZEsarUX: Debug -> Generate NMI), then select B. Save & Load -> ROM disk -> Fatall 0.25. Press Right Arrow to select the right panel, press 2 (Drive) and select the SD card to browse its files.
+- IDE: In Storage -> IDE, select a FAT-formatted disk image and enable IDE Emulation and SMUC Enabled. Fatall can also browse IDE: open it as above, select the right panel with Right Arrow, press 2 (Drive) and select the IDE disk. The separate HDD boot question below explains how to boot a program from IDE.
+- TRD file inside SD: GMX can browse the SD card with Fatall, but cannot mount a .trd stored there for use in TR-DOS.
+- TRD file inside IDE: After setting up IDE as above, open the GMX NMI menu and select Hard Disk Utility -> Mount on A:, then choose the .trd file on the IDE disk. In the emulated GMX startup menu, enter TR-DOS to use that disk.
+- TRD file on your computer: In ZEsarUX, select Storage -> Betadisk -> TRD File and enable TRD Emulation. In the emulated GMX startup menu, enter TR-DOS to use that disk.
+
 Q: What are the different boot screens of Scorpion GMX? I don't understand Russian.
 
 A: On startup, GMX briefly displays a message asking you to press DELETE to enter “GMX Loader Set Up”. It also reports how much RAM it detected. If you do nothing, it continues booting into the usual Scorpion menu.
@@ -780,6 +790,15 @@ A: You must enable Storage-> SD/MMC-> Enable SDHC addressing. Then, use Smartloa
 TSConf
 ------
 
+Q: How do I access SD, IDE and TRD files on TSConf?
+A: To change boot settings in the emulated machine, hold Symbol Shift (Ctrl or Alt) just after a hard reset to open TS-BIOS setup:
+
+- SD: In ZEsarUX, select a FAT-formatted card image in Storage -> SD/MMC and enable MMC Emulation and Z-Controller Enabled.
+- IDE: In ZEsarUX, select a FAT-formatted disk image in Storage -> IDE and enable IDE Emulation. Enable Nemo IDE Enabled or SMUC Enabled to match the TS-BIOS Boot Device you will select.
+- Browse SD or IDE: Put Wild Commander as boot.$c in the root of the card or disk image. In TS-BIOS, set Boot Device to SD Z-Controller, IDE Nemo M or IDE Smuc M to match that image, and set "Reset to" to "BD boot.$c". Reset the machine; Wild Commander will start and let you browse the files.
+- TRD file inside SD or IDE: Select the SD or IDE image in ZEsarUX and boot Wild Commander from it as described above. Select the .trd file, press Enter and choose the TR-DOS drive where it should be mounted.
+- TRD file on your computer: In ZEsarUX, select Storage -> Betadisk -> TRD File and enable TRD Emulation. In TS-BIOS, set "Reset to" to "ROM #00" and its "bank" to "TR-DOS", then reset to enter TR-DOS and access the disk.
+
 
 Q: When I do a hard reset, the screen goes to black and seems it runs nothing
 A: Do a hard reset and just after that, keep pressing Symbol Shift (CTRL or ALT) and you will return to the TSConf Bios
@@ -813,10 +832,13 @@ A: Be sure you haven't enabled divmmc or divide paging, it's incompatible with s
 BaseConf
 ------
 
+Q: How do I access SD, IDE and TRD files on BaseConf?
+A: Choose the method that matches where your files are stored:
 
-Q: How do I load a TRD file?
-A: You first need to have a MMC inserted. Then on the boot screen (EVO Reset Service) select R. Service, the C. Image to RAMDISK, select the TRD from the file browser.
-Then go to Z. TR-DOS boot and select the file to boot
+- SD: In Storage -> SD/MMC, select a FAT-formatted card image and enable MMC Emulation and BaseConf SD Enabled. Open File Browser in the EVO Reset Service; press D. Drive to select the SD card.
+- IDE: In Storage -> IDE, select a FAT-formatted disk image and enable IDE Emulation and Nemo IDE Enabled. Open File Browser in the EVO Reset Service; press D. Drive to select the IDE disk.
+- TRD file inside SD or IDE: First select the SD or IDE image in ZEsarUX and enable its interface as described above. In the EVO Reset Service, open File Browser and press D. Drive to choose the SD or IDE disk. Select the .trd file, press Enter, choose 0. Only load, then select Z. TR-DOS boot.
+- TRD file on your computer: In ZEsarUX, select Storage -> Betadisk -> TRD File and enable TRD Emulation. In the EVO Reset Service, select Z. TR-DOS boot to access the inserted disk.
 
 Q: What is FAT Boot on the EVO Reset Service?
 A: It's used to load Hobeta files, you can find an example on the mmc card called "TEST.$C"
