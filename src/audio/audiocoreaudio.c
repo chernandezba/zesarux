@@ -20,6 +20,10 @@
 */
 
 #include <stdio.h>
+#include <stdint.h>
+#include <sys/time.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <AudioUnit/AudioComponent.h>
 #include <AudioUnit/AudioUnit.h>
@@ -32,6 +36,7 @@
 
 
 #include "audio.h"
+#include "audio_ay_hq.h"
 #include "audiocoreaudio.h"
 #include "cpu.h"
 #include "debug.h"
@@ -60,6 +65,60 @@ static AudioUnit gOutputUnit;
 
 /* Records sound writer status information */
 static int audio_output_started;
+
+#define HQ_FIFO_FRAMES 16384u
+static int16_t hq_fifo[HQ_FIFO_FRAMES][2];
+static unsigned hq_write, hq_read;
+static int hq_mode;
+static unsigned fallback_phase;
+static unsigned hq_overruns, hq_underruns;
+static unsigned long long hq_frames, hq_device_frames, hq_missing_frames;
+static unsigned long long hq_first_underrun, hq_last_underrun;
+static int hq_peak;
+static unsigned long long hq_discarded_frames;
+static double hq_start_time;
+static double hq_now(void)
+{
+    struct timeval now; gettimeofday(&now,NULL);
+    return now.tv_sec+now.tv_usec/1000000.0;
+}
+
+static void hq_push(int16_t left, int16_t right)
+{
+    hq_frames++;
+    int peak=abs((int)left);
+    if (abs((int)right)>peak) peak=abs((int)right);
+    if (peak>hq_peak) hq_peak=peak;
+    unsigned w=__atomic_load_n(&hq_write,__ATOMIC_RELAXED);
+    unsigned rd=__atomic_load_n(&hq_read,__ATOMIC_ACQUIRE);
+    if (w-rd==HQ_FIFO_FRAMES) { hq_overruns++; return; }
+    hq_fifo[w%HQ_FIFO_FRAMES][0]=left;
+    hq_fifo[w%HQ_FIFO_FRAMES][1]=right;
+    __atomic_store_n(&hq_write,w+1,__ATOMIC_RELEASE);
+}
+
+static void hq_read_samples(int16_t *out, unsigned frames)
+{
+    unsigned rd=__atomic_load_n(&hq_read,__ATOMIC_RELAXED);
+    unsigned w=__atomic_load_n(&hq_write,__ATOMIC_ACQUIRE);
+    unsigned available=w-rd;
+    if (available<frames) {
+        if (!hq_underruns) hq_first_underrun=hq_device_frames;
+        hq_last_underrun=hq_device_frames;
+        hq_missing_frames+=frames-available;
+        hq_underruns++;
+    }
+    hq_device_frames+=frames;
+    for (unsigned i=0; i<frames; i++) {
+        if (i<available) {
+            *out++=hq_fifo[rd%HQ_FIFO_FRAMES][0];
+            *out++=hq_fifo[rd%HQ_FIFO_FRAMES][1];
+            rd++;
+        } else { *out++=0; *out++=0; }
+    }
+    __atomic_store_n(&hq_read,rd,__ATOMIC_RELEASE);
+}
+
 
 void audiocoreaudio_fifo_write(char *origen,int longitud);
 
@@ -141,11 +200,19 @@ get_default_sample_rate( AudioDeviceID device, Float64 *rate )
 
 int audiocoreaudio_init(void)
 {
+    hq_mode=audio_ay_hq_requested;
+    hq_write=hq_read=0;
+    hq_overruns=hq_underruns=0;
+    hq_frames=0; hq_peak=0;
+    hq_discarded_frames=0; hq_start_time=0;
+    hq_device_frames=hq_missing_frames=hq_first_underrun=hq_last_underrun=0;
+    fallback_phase=0;
+
 
 	//audio_driver_accepts_stereo.v=1;
 
 
-	debug_printf (VERBOSE_INFO,"Init CoreAudio Driver, %d Hz",FRECUENCIA_SONIDO);
+	debug_printf (VERBOSE_INFO,"Init CoreAudio Driver, %d Hz",hq_mode ? 44100 : FRECUENCIA_SONIDO);
 
 	buffer_actual=audio_buffer_one;
 
@@ -197,6 +264,13 @@ stereoptr=&pepe;
   deviceFormat.mChannelsPerFrame = *stereoptr ? 2 : 1;
   deviceFormat.mChannelsPerFrame = 2; //1=mono, 2=stereo
 
+  if (hq_mode) {
+    deviceFormat.mSampleRate=44100;
+    deviceFormat.mBytesPerPacket=4;
+    deviceFormat.mBytesPerFrame=4;
+    deviceFormat.mBitsPerChannel=16;
+  }
+
   /* Open the default output unit */
   AudioComponentDescription desc;
   desc.componentType = kAudioUnitType_Output;
@@ -212,7 +286,7 @@ stereoptr=&pepe;
   }
 
   err = AudioComponentInstanceNew( comp, &gOutputUnit );
-  if( comp == NULL ) {
+  if( err || !gOutputUnit ) {
     debug_printf( VERBOSE_ERR, "AudioComponentInstanceNew=%ld", (long)err );
     return 1;
   }
@@ -271,6 +345,11 @@ stereoptr=&pepe;
 
   /* wait to run sound until we have some sound to play */
   audio_output_started = 0;
+  if (hq_mode) {
+    audio_ay_hq_start(hq_push);
+    debug_printf(VERBOSE_INFO,"CoreAudio HQ: 44100 Hz, signed 16-bit stereo; unsupported modes use legacy resampling");
+  }
+
 
 
 
@@ -434,6 +513,16 @@ if (audio_playing.v==0) audio_playing.v=1;
 //sound_lowlevel_frame(buffer,AUDIO_BUFFER_SIZE);
 buffer_actual=buffer;
 
+  if (hq_mode && !audio_ay_hq_active()) {
+    /* Compatibilidad al cambiar de maquina, turbo, core o numero de chips. */
+    for (int i=0; i<AUDIO_BUFFER_SIZE; i++) {
+      fallback_phase+=44100;
+      while (fallback_phase >= (unsigned)FRECUENCIA_SONIDO) {
+        fallback_phase-=FRECUENCIA_SONIDO;
+        hq_push((int8_t)buffer[i*2]*256,(int8_t)buffer[i*2+1]*256);
+      }
+    }
+  }
 
   if( !audio_output_started ) {
     /* Start the rendering
@@ -441,6 +530,7 @@ buffer_actual=buffer;
        default device */
     OSStatus err ;
 
+    if (hq_mode) hq_start_time=hq_now();
 	err= AudioOutputUnitStart( gOutputUnit );
     if( err ) {
       debug_printf( VERBOSE_ERR, "AudioOutputUnitStart=%ld", (long)err );
@@ -450,7 +540,7 @@ buffer_actual=buffer;
     audio_output_started = 1;
   }
 
-audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
+if (!hq_mode) audiocoreaudio_fifo_write(buffer,AUDIO_BUFFER_SIZE);
 
 
 }
@@ -478,13 +568,21 @@ void audiocoreaudio_end(void)
 		return;
 	}
 
-	/* Remove the input callback */
+    audio_ay_hq_stop();
+    if (hq_mode) debug_printf(VERBOSE_INFO,"CoreAudio HQ: %llu frames, peak %d; %u underrun callbacks, %u dropped frames",hq_frames,hq_peak,hq_underruns,hq_overruns);
+    if (hq_mode) debug_printf(VERBOSE_INFO,"CoreAudio HQ: device %llu frames in %.3f seconds; discarded on pause %llu",hq_device_frames,hq_now()-hq_start_time,hq_discarded_frames);
+    if (hq_mode && hq_underruns) debug_printf(VERBOSE_INFO,"CoreAudio HQ: %llu missing frames; underruns at %.3f..%.3f seconds of device audio",hq_missing_frames,hq_first_underrun/44100.0,hq_last_underrun/44100.0);
+    AudioUnitUninitialize(gOutputUnit);
+
+    /* Remove the input callback */
 	callback.inputProc = 0;
 	callback.inputProcRefCon = 0;
 	if (AudioUnitSetProperty(gOutputUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callback, sizeof(callback)) != noErr) {
 		debug_printf (VERBOSE_ERR,"audiocoreaudio_end AudioUnitSetProperty failed");
 		return;
 	}
+
+	AudioComponentInstanceDispose(gOutputUnit);
 
 	/*if (CloseComponent(gOutputUnit) != noErr) {
 		debug_printf (VERBOSE_ERR,"audiocoreaudio_end CloseComponent failed");
@@ -518,6 +616,11 @@ int audiocoreaudio_fifo_return_size(void)
 
 void audiocoreaudio_get_buffer_info (int *buffer_size,int *current_size)
 {
+  if (hq_mode) {
+    *buffer_size=HQ_FIFO_FRAMES*4;
+    *current_size=(__atomic_load_n(&hq_write,__ATOMIC_ACQUIRE)-__atomic_load_n(&hq_read,__ATOMIC_ACQUIRE))*4;
+    return;
+  }
   *buffer_size=audiocoreaudio_return_fifo_buffer_size();
   *current_size=audiocoreaudio_fifo_return_size();
 }
@@ -603,6 +706,19 @@ OSStatus coreaudiowrite( void *inRefCon GCC_UNUSED,
   int len = deviceFormat.mBytesPerFrame * inNumberFrames;
   uint8_t* out = ioData->mBuffers[0].mData;
 
+  if (hq_mode) {
+    /* Al terminar ya no hay productor: no reproducir una cola agotada durante el cierre. */
+    if (audio_playing.v && !ending_emulator_flag) hq_read_samples((int16_t *)out,inNumberFrames);
+    else {
+      memset(out,0,len);
+      unsigned w=__atomic_load_n(&hq_write,__ATOMIC_ACQUIRE);
+      hq_discarded_frames+=w-__atomic_load_n(&hq_read,__ATOMIC_RELAXED);
+      __atomic_store_n(&hq_read,w,__ATOMIC_RELEASE);
+    }
+    return noErr;
+  }
+
+
 
 
 	//si esta el sonido desactivado, enviamos silencio
@@ -624,6 +740,7 @@ OSStatus coreaudiowrite( void *inRefCon GCC_UNUSED,
 			//debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiocoreaudio_fifo_return_size: %d",len,audiocoreaudio_fifo_return_size() );
 			//esto puede pasar con el detector de silencio
 
+			memset(out,0,len);
 			//retornar solo lo que tenemos
 			//audiocoreaudio_fifo_read(out,audiocoreaudio_fifo_return_size() );
 

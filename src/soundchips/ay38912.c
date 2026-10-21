@@ -116,6 +116,7 @@ RE, RF: Registros de AY-RS232 para midi externo
 
 
 #include "ay38912.h"
+#include "audio_ay_hq.h"
 #include "cpu.h"
 #include "audio.h"
 #include "debug.h"
@@ -245,6 +246,7 @@ z80_bit autoenable_ay_chip={0};
 
 void init_chip_ay(void)
 {
+    audio_ay_hq_reset();
 
 
 
@@ -1423,6 +1425,8 @@ void out_port_ay(z80_int puerto,z80_byte value)
         }
     }
     else if (puerto==49149) {
+        //Sincronizar antes de aplicar la escritura, incluido R13 repetido.
+        if (ay_chip_selected==0) audio_ay_hq_write(ay_3_8912_registro_sel[0]&15,value);
         //valor a registro
         ay_3_8912_registros[ay_chip_selected][ay_3_8912_registro_sel[ay_chip_selected]&15]=value;
 

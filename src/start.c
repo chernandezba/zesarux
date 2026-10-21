@@ -63,6 +63,7 @@
 #include "tape_smp.h"
 #include "audio.h"
 #include "audio_ayplayer.h"
+#include "audio_ay_hq.h"
 #include "screen.h"
 #include "screen_fx.h"
 #include "ay38912.h"
@@ -861,6 +862,7 @@ printf (
         "--nagraaudio                     Enable Nagravision audio filter\n"
         "--zx8081vsyncsound               Enable vsync/tape sound on ZX80/81\n"
         "--zx8081vsyncsounddetection      Enable vsync/tape sound detection on ZX80/81\n"
+        "--ay-hq-coreaudio                Experimental Spectrum AY: 44100 Hz, 16-bit CoreAudio output\n"
         "--ayplayer-add-dir d             Add directory containing AY files to playlist\n"
         "--ayplayer-load-playlist f       Load playlist file\n"
         "--ayplayer-start-playlist        Start playing playlist when start ZEsarUX\n"
@@ -6864,6 +6866,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-exit")) {
                 ay_player_exit_emulator_when_finish.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ay-hq-coreaudio")) {
+                audio_ay_hq_requested=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-shuffle")) {

@@ -38,6 +38,7 @@
 #include "cpu.h"
 #include "start.h"
 #include "audio.h"
+#include "audio_ay_hq.h"
 #include "audio_ayplayer.h"
 #include "debug.h"
 #include "zxvision.h"
@@ -1051,6 +1052,7 @@ void timer_check_interrupt(void)
 	}
 
     if (si_saltado_interrupcion ) {
+        audio_ay_hq_timer_tick();
 
 
         //printf ("despues timer_check_interrupt_thread. framedrop_total %d\n",framedrop_total);
