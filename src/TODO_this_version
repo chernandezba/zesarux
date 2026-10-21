@@ -48,7 +48,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
--Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
+
 
 ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
 Esto es porque primero se llama a tape_init() que inserta la cinta y posteriormente a autoload_snapshot();
@@ -351,9 +351,9 @@ por tanto nunca devolveria 255
 acabar de probarlo **modos de video ampliado
 *gigascreen. visor de imagenes gmxpv. imagen 0139.mcx
 *probar la rom traducida profgmx6xx043.9226se.en.rom y publicarla en extras? comprimida para ocupar menos por ejemplo
+
 *en ansi06.scl habla de un modo turbo2+ 80x25. que es? y 384x304
 *gmx no tiene paleta de colores diferente?
-*alguna Demo scorpion gmx 80x25?
 
 *usamos scorpiongmx-fat32.ide
 *usamos pruebascorpiongmx.mmc
@@ -380,4 +380,6 @@ ok *soporte ide gmx con smuc
 -en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
 ok -en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE de cada uno
+
+---
 
