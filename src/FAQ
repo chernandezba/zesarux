@@ -664,12 +664,32 @@ Pressing DELETE opens the GMX Loader menu. The firmware currently used by ZEsarU
 - 3: Absent; no configuration is stored in this slot.
 - 4: Pentagon configuration.
 - 5: Komposit configuration.
-- 6: OK Test (hardware test).
+- 6: DK Test (hardware test).
 - 7: Pentagon7 configuration.
 - D: Select a file.
 - P: Update the ROM.
 
 The message at the bottom means "No disk with firmware selected". The numbered entries select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
+
+Q: How can I test the Scorpion GMX 80x25 display mode?
+
+A: At the GMX Loader menu, select 6: DK Test. In the hardware test menu, press A to start the graphics screen test. It displays 25 rows of 80 characters filled with the word "SCORPION". Press T or G to scroll the display up or down by one text row, and Q to return to the normal video mode.
+
+Q: What do the keys in Scorpion GMX DK Test do?
+
+A: Select 6: DK Test in the GMX Loader menu. The main test keys are:
+
+- A: Show the 640x200 graphics test with 80x25 "SCORPION" characters. In this test, T scrolls up and G scrolls down by one text row.
+- Q: Return to the standard 256x192 video mode.
+- S / W: Switch the CPU to Turbo / Normal speed.
+- 1: Test screen attributes and graphics; 2: RAM data and address buses; 3: RAM paging; 4: RAM; 5: ROM.
+- 6: Test TR-DOS and the floppy controller. One of its subtests writes to the inserted disk.
+- 7: Test peripherals, including tape, sound, Kempston joystick, printer ports, interrupts and AY.
+- 8: Run a continuous RAM test; 9: Run a sequence of tests, including the floppy tests.
+- P: Write a byte to a selected I/O port; press P again to leave this test.
+- 0: Lock the configuration port until Reset; R: restart.
+
+During individual tests, keys 1-4 can restart, continue, repeat or stop the current test; their exact action depends on the test.
 
 Q: What does the HDD boot menu option do on Scorpion GMX?
 
