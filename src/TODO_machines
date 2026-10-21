@@ -254,6 +254,14 @@ Esto es tal cual tenia el soporte de TAP, al no guardar el flag, eso no se puede
 
 --- Chrome ---
 
+-La opción «2 Load DOS from ROM» del menú de inicio no parece hacer nada en ZEsarUX.
+ Debería iniciar desde la ROM interna el DOS de la interfaz de disquete +D
+ (G+DOS o UniDOS, según la ROM seleccionada) y permitir después el acceso a disquetes.
+ Investigar la ruta de arranque con ZRCP y emular el hardware +D integrado en Chrome:
+ paginado de su ROM y RAM, controladora de disquete y puertos asociados, además de
+ la conexión con imágenes de disco. +D y DISCiPLE comparten formato de disco, pero
+ son interfaces distintas y requieren sus respectivos DOS.
+
 
 
 -----------------------
