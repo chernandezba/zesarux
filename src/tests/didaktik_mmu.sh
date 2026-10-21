@@ -35,7 +35,7 @@ echo "Didaktik Gama MMU test."
 #su rutina de BASIC OUT pone el valor enviado en el byte alto del puerto. Así, OUT 53051,3 acaba escribiendo en 033Bh, y OUT 57147,1 en 013Bh.
 #el test tarda 25 segundos, con 30 de maximo tiene suficiente
 
-run_test ./zesarux --noconfigfile --ao null --machine Didaktik --hardware-debug-ports --exit-after 30 --vo stdout tests/testramdidaktik.tap
+run_test ./zesarux --noconfigfile --ao null --machine Didaktik --exit-after 30 --vo stdout tests/testramdidaktik.tap
 
 
 
