@@ -366,6 +366,7 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 *probar gmx en otros drivers de video
 ok *soporte ide gmx con smuc
 
+
 ------
 
 -didaktik Gama
@@ -383,3 +384,4 @@ ok -en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE 
 
 ---
 
+-autoload tap para scorpion, scorpion gmx, tsconf y baseconf no deberia quedarse en turbo
