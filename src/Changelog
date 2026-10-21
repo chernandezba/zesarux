@@ -79,6 +79,8 @@ Fixed ZX Vision:
 - Fixed clicking on previous menu and menu was closed randomly
 
 Fixed ZX Evo TSConf:
+- Added SD/MMC card (SD Z-Controller) emulation
+- Added IDE Nemo emulation
 - Updated to last ROM
 - Fixed scroll counter, raster interrupt
 - Fixed DMA burst alignment, burst wrapping
@@ -86,7 +88,6 @@ Fixed ZX Evo TSConf:
 - Fixed border color behind transparent layers
 - Fixed bright black palette entry
 - Fixed reset CRAM color palette when loading SPG snapshots
-- Fixed accessing SD/MMC card (SD Z-Controller)
 - Fixed accessing TR-DOS and .trd files
 - Fixed accessing .trd, .scl and .tap selected from the machine (for example on Wild commander)
 - Fixed selecting different boot roms on TS Bios
