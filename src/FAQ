@@ -671,9 +671,9 @@ Pressing DELETE opens the GMX Loader menu. The firmware currently used by ZEsarU
 
 The message at the bottom means "No disk with firmware selected". The numbered entries select GMX hardware configurations and their associated firmware, not just different ROM banks. ZEsarUX does not yet fully emulate every alternative GMX configuration.
 
-Q: How can I test the Scorpion GMX 80x25 display mode?
+Q: How can I test the Scorpion GMX 640x200 graphics mode?
 
-A: At the GMX Loader menu, select 6: DK Test. In the hardware test menu, press A to start the graphics screen test. It displays 25 rows of 80 characters filled with the word "SCORPION". Press T or G to scroll the display up or down by one text row, and Q to return to the normal video mode.
+A: At the GMX Loader menu, select 6: DK Test. In the hardware test menu, press A to start the graphics screen test. It displays 25 rows of 80 characters filled with the word "SCORPION". The 80x25 layout comes from drawing 8x8 characters on the 640x200 graphics screen; it is not a separate video mode. Press T or G to scroll the display up or down by one text row, and Q to return to the normal video mode.
 
 Q: What do the keys in Scorpion GMX DK Test do?
 
