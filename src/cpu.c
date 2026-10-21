@@ -114,6 +114,7 @@
 #include "pd765.h"
 #include "core_reduced_spectrum.h"
 #include "baseconf.h"
+#include "zxevo.h"
 #include "settings.h"
 #include "datagear.h"
 #include "network.h"
@@ -2921,7 +2922,7 @@ void set_machine_params(void)
             // La SD de ZX Evolution usa la interfaz Z-Controller en TSConf.
             if (last_machine_type!=current_machine_type) {
                 zcontroller_enabled.v=1;
-                baseconf_nemo_ide_enabled.v=1;
+                zxevo_nemo_ide_enabled.v=1;
             }
 
             //TSConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
@@ -2943,7 +2944,7 @@ void set_machine_params(void)
              * recalcular la velocidad no debe deshacer su ajuste en el menú. */
             if (last_machine_type!=current_machine_type) {
                 baseconf_sd_interface_enabled.v=1;
-                baseconf_nemo_ide_enabled.v=1;
+                zxevo_nemo_ide_enabled.v=1;
             }
 
         break;

@@ -828,15 +828,15 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
             break;
 
             case 6:
-                    destination_pointer[destination]=baseconf_nemo_ide_enabled.v ? baseconf_ide_read(0x10) : 0xff;
-                    destination_pointer[(destination+1)&destination_mask]=baseconf_nemo_ide_enabled.v ? baseconf_ide_read(0x10) : 0xff;
+                    destination_pointer[destination]=zxevo_nemo_ide_enabled.v ? zxevo_nemo_ide_read(0x10) : 0xff;
+                    destination_pointer[(destination+1)&destination_mask]=zxevo_nemo_ide_enabled.v ? zxevo_nemo_ide_read(0x10) : 0xff;
                     incremento_destino=2;
             break;
 
             case 7:
-                    if (baseconf_nemo_ide_enabled.v) {
-                        baseconf_ide_write(0x11,source_pointer[(source+1)&source_mask]);
-                        baseconf_ide_write(0x10,source_pointer[source]);
+                    if (zxevo_nemo_ide_enabled.v) {
+                        zxevo_nemo_ide_write(0x11,source_pointer[(source+1)&source_mask]);
+                        zxevo_nemo_ide_write(0x10,source_pointer[source]);
                     }
                     incremento_origen=2;
             break;

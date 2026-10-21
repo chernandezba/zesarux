@@ -7336,8 +7336,8 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     }
 
     // El byte alto de Nemo IDE en #11 tiene prioridad sobre Kempston.
-    if (MACHINE_IS_TSCONF && baseconf_ide_port(puerto_l)) {
-        return baseconf_ide_read(puerto_l);
+    if (MACHINE_IS_TSCONF && zxevo_nemo_ide_port(puerto_l)) {
+        return zxevo_nemo_ide_read(puerto_l);
     }
 
     // TR-DOS de TSConf comparte #1F con Kempston: atiende antes el FDC.
@@ -7439,8 +7439,8 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     if (zxmmcplus_enabled.v && puerto_l==0x7f) return zxmmcplus_read_port();
 
 	//Puertos NemoIDE nativos de BaseConf
-	if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
-		return baseconf_ide_read(puerto_l);
+	if (MACHINE_IS_BASECONF && zxevo_nemo_ide_port(puerto_l)) {
+		return zxevo_nemo_ide_read(puerto_l);
 	}
 
 	//Puertos 8-bit simple ide
@@ -8972,8 +8972,8 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
         if (scorpion_gmx_zcontroller_write(puerto,value)) return;
 
         // Nemo IDE de TSConf atiende estos puertos antes que los alias de ULA y #7FFD.
-        if (MACHINE_IS_TSCONF && baseconf_ide_port(puerto_l)) {
-                baseconf_ide_write(puerto_l,value);
+        if (MACHINE_IS_TSCONF && zxevo_nemo_ide_port(puerto_l)) {
+                zxevo_nemo_ide_write(puerto_l,value);
                 return;
         }
 
@@ -9750,8 +9750,8 @@ acts as expected unless this registe is explicitly changed by the user/software.
     }
 
     //Puertos NemoIDE nativos de BaseConf
-    if (MACHINE_IS_BASECONF && baseconf_ide_port(puerto_l)) {
-            baseconf_ide_write(puerto_l,value);
+    if (MACHINE_IS_BASECONF && zxevo_nemo_ide_port(puerto_l)) {
+            zxevo_nemo_ide_write(puerto_l,value);
     }
 
     //Puertos 8-bit simple ide

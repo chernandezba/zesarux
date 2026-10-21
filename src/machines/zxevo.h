@@ -34,4 +34,10 @@ extern z80_byte zxevo_last_port_dff7;
 
 extern void zxevo_reset_nvram(void);
 
+extern z80_bit zxevo_nemo_ide_enabled;
+extern int zxevo_nemo_ide_port(z80_byte puerto_l);
+extern z80_byte zxevo_nemo_ide_read(z80_byte puerto_l);
+extern void zxevo_nemo_ide_write(z80_byte puerto_l,z80_byte valor);
+extern void zxevo_nemo_ide_reset(void);
+
 #endif

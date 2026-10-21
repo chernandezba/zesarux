@@ -158,6 +158,7 @@
 #include "enhanced_zx81_read.h"
 #include "scorpion.h"
 #include "baseconf.h"
+#include "zxevo.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -12772,9 +12773,9 @@ void menu_storage_smuc_emulation(MENU_ITEM_PARAMETERS)
         smuc_enabled.v ^=1;
 }
 
-void menu_storage_baseconf_nemo_ide(MENU_ITEM_PARAMETERS)
+void menu_storage_zxevo_nemo_ide(MENU_ITEM_PARAMETERS)
 {
-        baseconf_nemo_ide_enabled.v ^=1;
+        zxevo_nemo_ide_enabled.v ^=1;
 }
 
 
@@ -13109,9 +13110,9 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_ide_divide);
 
-                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_baseconf_nemo_ide,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_zxevo_nemo_ide,NULL,
                     "Nemo IDE Enabled","Nemo IDE Activado","Nemo IDE Activat");
-                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(baseconf_nemo_ide_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(zxevo_nemo_ide_enabled.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf. IDE Emulation above controls whether a hard disk is connected to it");
             }
