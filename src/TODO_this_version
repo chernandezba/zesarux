@@ -385,3 +385,6 @@ ok -en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE 
 ---
 
 -autoload tap para scorpion, scorpion gmx, tsconf y baseconf no deberia quedarse en turbo
+
+
+-iconos para scorpion y didaktik gama
