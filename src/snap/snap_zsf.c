@@ -4587,11 +4587,11 @@ Byte Fields:
       bloque_comprimido[4]=value_16_to_8h(longitud);
       bloque_comprimido[5]=bloque;
 
-      int comprimido;
-      int tamanyo=save_zsf_copyblock_compress_uncompres(origen,&bloque_comprimido[6],longitud,&comprimido);
-      if (comprimido) bloque_comprimido[0]=1;
+      int si_comprimido;
+      int longitud_bloque=save_zsf_copyblock_compress_uncompres(origen,&bloque_comprimido[6],longitud,&si_comprimido);
+      if (si_comprimido) bloque_comprimido[0]=1;
       zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,bloque_comprimido,
-                      ZSF_DIDAKTIKGAMA_RAMBLOCK,tamanyo+6);
+                      ZSF_DIDAKTIKGAMA_RAMBLOCK,longitud_bloque+6);
     }
     free(bloque_comprimido);
   }
