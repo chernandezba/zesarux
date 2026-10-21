@@ -81,6 +81,7 @@ Fixed ZX Vision:
 Fixed ZX Evo TSConf:
 - Added SD/MMC card (SD Z-Controller) emulation
 - Added IDE Nemo emulation
+- Added IDE Smuc emulation
 - Updated to last ROM
 - Fixed scroll counter, raster interrupt
 - Fixed DMA burst alignment, burst wrapping

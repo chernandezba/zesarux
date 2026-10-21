@@ -81,6 +81,7 @@ Corregido ZX Vision:
 Corregido ZX Evo TSConf:
 - Agregado emulación tarjeta SD/MMC (SD Z-Controller)
 - Agregado emulación IDE Nemo
+- Agregado emulación IDE Smuc
 - Actualizado a última ROM
 - Corregido contador de scroll scroll counter, interrupción raster
 - Corregido alineación de DMA en modo burst, retorno en modo burst

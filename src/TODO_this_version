@@ -303,7 +303,7 @@ ok -musicas pt3 van
 
 
 -ide smuc
--ide nemo: en proceso de emular. baseconf_ide_write, baseconf_nemo_ide_enabled etc habria que renombrar
+ok -ide nemo
 todos esos a zxevo_* y ponerlo en zxevo.c
 ------
 
@@ -364,6 +364,7 @@ acabar de probarlo **modos de video ampliado
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 *probar gmx en otros drivers de video
+ok *soporte ide gmx con smuc
 
 ------
 

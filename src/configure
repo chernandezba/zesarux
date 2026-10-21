@@ -1767,7 +1767,7 @@ mmc.o: storage/mmc.c storage/mmc.h cpu.h debug.h utils.h zxvision/zxvision.h vid
 zxmmcplus.o: storage/zxmmcplus.c storage/zxmmcplus.h cpu.h debug.h utils.h operaciones.h zesarux.h storage/mmc.h mem128.h menu/menu_items.h video/screen.h
 	\$(CC) \$(CFLAGS) -c storage/zxmmcplus.c
 
-ide.o: storage/ide.c storage/ide.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h storage/divide.h menu/menu_items.h
+ide.o: storage/ide.c storage/ide.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h storage/divide.h menu/menu_items.h machines/scorpion.h machines/tsconf.h
 	\$(CC) \$(CFLAGS) -c storage/ide.c
 
 pd765.o: storage/pd765.c storage/pd765.h cpu.h debug.h utils.h dsk.h menu/menu_items.h menu/menu_items_storage.h video/screen.h settings.h machines/pcw.h timer.h
