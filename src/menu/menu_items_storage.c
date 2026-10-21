@@ -12770,7 +12770,7 @@ void menu_storage_ide_emulation(MENU_ITEM_PARAMETERS)
 
 void menu_storage_smuc_emulation(MENU_ITEM_PARAMETERS)
 {
-        smuc_enabled.v ^=1;
+        ide_smuc_enabled.v ^=1;
 }
 
 void menu_storage_zxevo_nemo_ide(MENU_ITEM_PARAMETERS)
@@ -13098,14 +13098,14 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE access ports");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
 
-            if (MACHINE_IS_SCORPION_GMX) {
+            if (MACHINE_IS_SCORPION_GMX || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_ide_divide);
 
                 menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_smuc_emulation,NULL,
                     "SMUC Enabled","SMUC Activado","SMUC Activat");
-                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(smuc_enabled.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX");
-                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX. IDE Emulation above controls whether a hard disk is connected to it");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_smuc_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX or TSConf");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX or TSConf. IDE Emulation above controls whether a hard disk is connected to it");
             }
             if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_ide_divide);

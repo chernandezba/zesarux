@@ -6929,7 +6929,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	z80_int puerto=value_8_to_16(puerto_h,puerto_l);
 
     z80_byte valor_smuc;
-    if (scorpion_gmx_smuc_read(puerto,&valor_smuc)) return valor_smuc;
+    if (ide_smuc_read(puerto,&valor_smuc)) return valor_smuc;
     if (scorpion_gmx_zcontroller_read(puerto,&valor_smuc)) return valor_smuc;
 
     if (MACHINE_IS_SCORPION_GMX && (puerto & 0x0023)==0x0021 &&
@@ -8968,7 +8968,7 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
 	z80_byte puerto_l=puerto&255;
 	z80_byte puerto_h=(puerto>>8)&0xFF;
 
-        if (scorpion_gmx_smuc_write(puerto,value)) return;
+        if (ide_smuc_write(puerto,value)) return;
         if (scorpion_gmx_zcontroller_write(puerto,value)) return;
 
         // Nemo IDE de TSConf atiende estos puertos antes que los alias de ULA y #7FFD.

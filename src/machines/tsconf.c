@@ -36,6 +36,7 @@
 #include "scorpion.h"
 #include "mmc.h"
 #include "betadisk.h"
+#include "ide.h"
 
 z80_byte tsconf_sd_read_buffer=0xff;
 z80_bit tsconf_dos_signal={0};
@@ -1422,6 +1423,7 @@ void tsconf_set_memory_pages(void)
 void tsconf_hard_reset(void)
 {
 
+  ide_smuc_reset();
   tsconf_ula_y_last_scanline=-1;
   tsconf_ula_y_reload=0;
   tsconf_ula_y_reload_next=0;

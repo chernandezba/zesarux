@@ -69,4 +69,23 @@ extern z80_byte ide_register_cylinder_high;
 extern z80_byte ide_register_drive_head;
 extern z80_byte ide_status_register;
 
+extern z80_bit ide_smuc_enabled;
+extern int ide_smuc_read(z80_int port,z80_byte *value);
+extern int ide_smuc_write(z80_int port,z80_byte value);
+extern void ide_smuc_reset(void);
+
+extern z80_byte ide_smuc_control;
+extern z80_byte ide_smuc_config;
+extern z80_byte ide_smuc_data_high;
+extern int ide_smuc_identify_first_word;
+extern int ide_smuc_eeprom_initialized;
+extern int ide_smuc_eeprom_state;
+extern int ide_smuc_eeprom_address;
+extern int ide_smuc_eeprom_input;
+extern int ide_smuc_eeprom_input_bits;
+extern int ide_smuc_eeprom_output;
+extern int ide_smuc_eeprom_output_bits;
+extern int ide_smuc_eeprom_release;
+extern z80_byte ide_smuc_eeprom_bus;
+
 #endif

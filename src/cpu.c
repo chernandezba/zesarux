@@ -2886,7 +2886,7 @@ void set_machine_params(void)
              * no debe deshacer la elección posterior del usuario en el menú. */
             if (MACHINE_IS_SCORPION_GMX && last_machine_type!=current_machine_type) {
                 zcontroller_enabled.v=1;
-                smuc_enabled.v=1;
+                ide_smuc_enabled.v=1;
             }
 
         break;
@@ -2923,6 +2923,7 @@ void set_machine_params(void)
             if (last_machine_type!=current_machine_type) {
                 zcontroller_enabled.v=1;
                 zxevo_nemo_ide_enabled.v=1;
+                ide_smuc_enabled.v=1;
             }
 
             //TSConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
