@@ -101,9 +101,11 @@
 #define ZSF_DATAGEAR_DMA 74
 #define ZSF_TEXT_NOTE 75
 #define ZSF_QL_RTC 76
+#define ZSF_DIDAKTIKGAMA_CONF 77
+#define ZSF_DIDAKTIKGAMA_RAMBLOCK 78
 
 //Id maximo de nombres
-#define MAX_ZSF_BLOCK_ID_NAMES 76
+#define MAX_ZSF_BLOCK_ID_NAMES 78
 
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar

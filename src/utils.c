@@ -20927,6 +20927,11 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 }
             break;
 
+            case ZSF_DIDAKTIKGAMA_CONF:
+                // La pantalla de la Gama está siempre en el bloque RAM fijo 0.
+                pagina_pantalla=0;
+            break;
+
             case ZSF_QL_RAMBLOCK:
                 /*
                 A ram binary block for a QL, of 16kb
@@ -21091,7 +21096,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
             case ZSF_ZXUNO_RAMBLOCK:
             case ZSF_TSCONF_RAMBLOCK:
             case ZSF_CHROME_RAMBLOCK:
-                //Codigo compatible tanto para 128k, zxuno, tsconf o chrome, los bloques con iguales excepto por el id
+            case ZSF_DIDAKTIKGAMA_RAMBLOCK:
+                // Formato de bloque compatible para 128K, ZXUno, TSConf, Chrome y Didaktik.
                 /*
                 -Block ID 6: ZSF_SPEC128_RAMBLOCK
                 A ram binary block for a spectrum 128, p2 or p2a machine
@@ -21156,7 +21162,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 ram_page=block_data[i];
                 i++;
 
-                //Paginas 5 o 7 de RAM
+                // Página de pantalla seleccionada por la configuración de la máquina.
                 if (ram_page==pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;
