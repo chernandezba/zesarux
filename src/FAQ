@@ -866,6 +866,17 @@ A: It's used to load Hobeta files, you can find an example on the mmc card calle
 ----------------------------------------------------------------------------
 
 
+Didaktik Gama
+-------------
+
+Q: How do I switch between the two RAM banks from BASIC?
+A: Use OUT 127,0 to select bank 0 or OUT 127,1 to select bank 1. The selected
+   bank occupies addresses 8000h-FFFFh; screen RAM at 4000h-7FFFh stays fixed.
+
+
+----------------------------------------------------------------------------
+
+
 CPC
 ---
 
