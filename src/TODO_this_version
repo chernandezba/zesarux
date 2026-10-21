@@ -372,3 +372,15 @@ ok *soporte ide gmx con smuc
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
 *timings?
 *snapshots zsf
+
+
+---
+
+
+en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE de cada uno
+
+
+gmx:
+
+
+-sd: nmi-> b.save & load -> rom disk-> fatall 0.25
