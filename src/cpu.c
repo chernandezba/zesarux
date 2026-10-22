@@ -2448,10 +2448,7 @@ void set_machine_params(void)
 
         z80_cpu_current_type=Z80_TYPE_CMOS;
 
-        //Temp timings 128k
-        screen_testados_linea=228;
-        screen_invisible_borde_superior=7;
-        screen_invisible_borde_derecho=104;
+        baseconf_update_timing(1);
 
     }
 

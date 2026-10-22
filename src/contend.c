@@ -32,6 +32,7 @@
 #include "zxuno.h"
 #include "ula.h"
 #include "tbblue.h"
+#include "baseconf.h"
 
 
 int contend_patron_65432100[] = { 5, 4, 3, 2, 1, 0, 0, 6 };
@@ -875,46 +876,84 @@ z80_int segmento;
 
 }
 
-//baseconf
-
-void contend_read_baseconf(z80_int direccion GCC_UNUSED,int time)
+#ifdef EMULATE_CONTEND
+// Indica si la página RAM mapeada comparte el acceso con el vídeo de BaseConf.
+static int baseconf_address_is_contended(z80_int direccion)
 {
-        //Y sumamos estados normales
-        t_estados += time;
+    int segmento=direccion>>14;
+    int raster=(baseconf_avr_modes_register>>4)&3;
+    int pagina=baseconf_memory_segments[segmento];
+
+    if (!contend_enabled.v || cpu_turbo_speed!=1 ||
+        !baseconf_memory_segments_type[segmento]) return 0;
+    if (raster==2) return pagina==5;
+    if (raster==3) return pagina<8 && (pagina&1);
+    return 0;
+}
+#endif
+
+// Suma la espera del acceso a RAM contendida y los ciclos de lectura.
+void contend_read_baseconf(z80_int direccion,int time)
+{
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(direccion))
+        t_estados+=contend_table[t_estados];
+#endif
+    t_estados+=time;
 
 }
 
-void contend_read_no_mreq_baseconf(z80_int direccion GCC_UNUSED,int time)
+// Suma la espera de un ciclo sin MREQ sobre una dirección contendida.
+void contend_read_no_mreq_baseconf(z80_int direccion,int time)
 {
-
-        //Y sumamos estados normales
-        t_estados += time;
-
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(direccion))
+        t_estados+=((baseconf_avr_modes_register&0x30)==0x30 ?
+            contend_table : contend_table_no_mreq)[t_estados];
+#endif
+    t_estados+=time;
 }
 
-void contend_write_no_mreq_baseconf(z80_int direccion GCC_UNUSED,int time)
+// Suma la espera de escritura sin MREQ sobre una dirección contendida.
+void contend_write_no_mreq_baseconf(z80_int direccion,int time)
 {
-
-        //Y sumamos estados normales
-        t_estados += time;
-
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(direccion))
+        t_estados+=((baseconf_avr_modes_register&0x30)==0x30 ?
+            contend_table : contend_table_no_mreq)[t_estados];
+#endif
+    t_estados+=time;
 }
 
 
-void ula_contend_port_early_baseconf( z80_int port GCC_UNUSED)
+// Aplica la primera espera del ciclo de puerto según su dirección.
+void ula_contend_port_early_baseconf(z80_int port)
 {
-
-
-  t_estados++;
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(port))
+        t_estados+=contend_table_no_mreq[t_estados];
+#endif
+    t_estados++;
 }
 
-void ula_contend_port_late_baseconf( z80_int port GCC_UNUSED)
+// Aplica las esperas restantes de un ciclo de puerto BaseConf.
+void ula_contend_port_late_baseconf(z80_int port)
 {
-
-
-        t_estados += 2;
-
-
+#ifdef EMULATE_CONTEND
+    if ((baseconf_avr_modes_register&0x30)>=0x20 &&
+        cpu_turbo_speed==1 && contend_enabled.v && port_from_ula(port)) {
+        t_estados+=contend_table_no_mreq[t_estados];
+        t_estados+=2;
+        return;
+    }
+    if (baseconf_address_is_contended(port)) {
+        t_estados+=contend_table_no_mreq[t_estados]; t_estados++;
+        t_estados+=contend_table_no_mreq[t_estados]; t_estados++;
+        t_estados+=contend_table_no_mreq[t_estados];
+        return;
+    }
+#endif
+    t_estados+=2;
 }
 
 
@@ -1570,8 +1609,22 @@ z80_byte *contend_table_no_mreq;
   }
 
     if (MACHINE_IS_BASECONF) {
-                //no tiene memoria contended
-                return;
+        int raster=(baseconf_avr_modes_register>>4)&3;
+        if (raster==2) {
+            timings=contend_patron_65432100;
+            offset_time=1;
+            offset_patron=-1;
+        }
+        else if (raster==3) {
+            timings=contend_patron_65432100;
+            offset_time=3;
+            offset_patron=-1;
+        }
+        else {
+            timings=contend_patron_no_contend;
+            offset_time=0;
+            offset_patron=0;
+        }
     }
 
     if (MACHINE_IS_MK14) {

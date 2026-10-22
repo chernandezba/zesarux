@@ -440,6 +440,7 @@ void core_spectrum_fin_frame_pantalla(void)
 
     t_estados -=screen_testados_total;
 
+    if (MACHINE_IS_BASECONF) baseconf_update_timing(0);
     if (MACHINE_IS_BASECONF) baseconf_check_pending_nmi();
     if (MACHINE_IS_TSCONF) baseconf_ps2_scan_keyboard();
 

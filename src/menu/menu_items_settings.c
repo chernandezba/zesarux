@@ -8772,16 +8772,12 @@ void menu_settings_hardware_baseconf_modes_register_audio(MENU_ITEM_PARAMETERS)
     baseconf_avr_modes_register ^=0x02;
 }
 
+// Recorre los raster de BaseConf implementados; sin parámetros ni retorno.
 void menu_settings_hardware_baseconf_modes_register_video_timings(MENU_ITEM_PARAMETERS)
 {
     int modo=(baseconf_avr_modes_register>>4) & 3;
-    modo++;
-
-    modo=modo & 3;
-    modo=modo <<4;
-
-    baseconf_avr_modes_register &= (0xFF-0x30);
-    baseconf_avr_modes_register |=modo;
+    modo=(modo==0) ? 2 : (modo==2 ? 3 : 0);
+    baseconf_avr_modes_register=(baseconf_avr_modes_register&~0x30)|(modo<<4);
 
     //printf("baseconf_avr_modes_register: %02XH\n",baseconf_avr_modes_register);
 }
@@ -8818,13 +8814,13 @@ void menu_settings_hardware_baseconf(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
         menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
 
-        char *video_timings[]={"Pentagon","60 Hz","Spectrum 48K","Spectrum 128K"};
+        char *video_timings[]={"Pentagon","60 Hz (unsupported)","Spectrum 48K","Spectrum 128K"};
 
         int modo=(baseconf_avr_modes_register>>4) & 3;
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf_modes_register_video_timings,NULL,
             "Video timings: [%s]",video_timings[modo]);
-        menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
-        menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
+        menu_add_item_menu_tooltip(array_menu_common,"Select Pentagon, Spectrum 48K or Spectrum 128K raster timing");
+        menu_add_item_menu_ayuda(array_menu_common,"Select Pentagon, Spectrum 48K or Spectrum 128K raster timing. The AVR 60 Hz mode is not emulated");
 
 
         menu_add_item_menu_separator(array_menu_common);

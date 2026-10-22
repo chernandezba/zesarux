@@ -104,6 +104,7 @@ extern z80_byte baseconf_last_port_ff7;
 extern z80_byte baseconf_last_port_7f7;
 extern z80_byte baseconf_last_port_bf7;
 extern z80_byte baseconf_avr_modes_register;
+extern void baseconf_update_timing(int force);
 
 extern int baseconf_shadow_ports_available(void);
 extern void baseconf_write_memory_aux(z80_int direccion,z80_byte valor);
