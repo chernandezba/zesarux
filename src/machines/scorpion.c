@@ -475,10 +475,17 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
             scorpion_gmx_port_7efd=(scorpion_gmx_port_00 & 0x10) ?
                 ((value & 0x8f) | (scorpion_gmx_port_7efd & 0x70)) : value;
             if (video_anterior != (scorpion_gmx_port_7efd & 8)) {
+
+                /*
                 printf("Scorpion GMX: video %s (7EFDh=%02Xh, PC=%04Xh)\n",
                        (scorpion_gmx_port_7efd & 8) ? "640x200" : "256x192",
-                       scorpion_gmx_port_7efd,reg_pc);
-                fflush(stdout);
+
+                */
+
+            char buffer_mensaje[256];
+            sprintf(buffer_mensaje,"Setting video mode %s",(scorpion_gmx_port_7efd & 8) ? "640x200" : "256x192");
+            screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+
             }
             scorpion_mem_page_rom();
             scorpion_set_cpu_speed((value & 0x80) ? 2 : 1);
