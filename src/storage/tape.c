@@ -642,7 +642,8 @@ int tap_open(void)
             reset_cpu();
 
             //Activamos top speed si conviene
-            if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_SVI && !MACHINE_IS_ACE && !MACHINE_IS_TBBLUE && !MACHINE_IS_SCORPION) {
+            if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_SVI && !MACHINE_IS_ACE &&
+                !MACHINE_IS_TBBLUE && !MACHINE_IS_SCORPION && !MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF) {
                 debug_printf (VERBOSE_INFO,"Set top speed from TAP open");
                 top_speed_timer.v=1;
             }
