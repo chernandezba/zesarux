@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "z80 tests. errores de flags normalmente en: BIT n,(HL). errores de memptr en ninguno"
+echo "z80 tests. van todos"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus extras/media/spectrum/tests/z80tests.tap
 

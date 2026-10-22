@@ -95,6 +95,7 @@ Fixed ZX Evo TSConf:
 - Fixed reading keyboard on PS/2 mode (for Wild Commander for example)
 
 Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
+Fixed MEMPTR after Z80 return instructions
 Fixed queries using Speccy Online Browser
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
