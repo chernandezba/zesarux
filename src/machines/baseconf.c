@@ -714,6 +714,16 @@ z80_byte baseconf_get_video_mode(void)
         (baseconf_last_port_77&7);
 }
 
+// Muestra el modo de vídeo nuevo si difiere de anterior; sin retorno.
+static void baseconf_show_video_mode_change(z80_byte anterior)
+{
+    if (anterior!=baseconf_get_video_mode()) {
+        char mensaje[256];
+        snprintf(mensaje,sizeof(mensaje),"Setting video mode %s",baseconf_get_video_mode_string());
+        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+    }
+}
+
 // Comprueba el modo de vídeo actual; devuelve 1 si es un modo de texto.
 int baseconf_text_mode_active(void)
 {
@@ -1630,18 +1640,22 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
         //xx77H
         else if ( (puerto&0x00FF)==0x77 && baseconf_shadow_ports_available() ) {
+               z80_byte video_anterior=baseconf_get_video_mode();
                 baseconf_shadow_mode_port_77=puerto_h;
                baseconf_last_port_77=valor;
                baseconf_set_cpu_speed();
 
                baseconf_set_memory_pages();
+               baseconf_show_video_mode_change(video_anterior);
         }
 
         else if (puerto==0xEFF7) {
+                z80_byte video_anterior=baseconf_get_video_mode();
                 //printf ("setting port EFF7 value\n");
                 baseconf_last_port_eff7=valor;
                 baseconf_set_cpu_speed();
                 baseconf_set_memory_pages();
+                baseconf_show_video_mode_change(video_anterior);
         }
 
 
