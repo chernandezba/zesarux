@@ -918,11 +918,11 @@ Estado de paginación y del MHB8255 de Didaktik Gama, 13 bytes:
 12: bit 0: INTE_B
 
 -Block ID 78: ZSF_DIDAKTIKGAMA_RAMBLOCK
-Tres bloques de RAM física. Cabecera de 6 bytes y datos:
+Cinco bloques de RAM física de 16 KiB. Cabecera de 6 bytes y datos:
 0: flags, bit 0 indica compresión por repeticiones
-1-2: dirección lógica de referencia (4000h para bloque 0, 8000h para 1 y 2)
-3-4: longitud descomprimida (4000h o 8000h)
-5: bloque 0 = RAM fija de 16 KiB; 1 y 2 = bancadas de 32 KiB
+1-2: dirección de referencia (4000h; no se usa al cargar)
+3-4: longitud descomprimida (4000h)
+5: bloques 0-4 en orden físico: RAM fija, dos mitades de cada bancada
 6...: datos
 
 
@@ -1427,7 +1427,7 @@ void load_zsf_didaktikgama_ramblock(z80_byte *block_data,int longitud_bloque)
 {
   int bloque=block_data[5];
   int longitud=value_8_to_16(block_data[4],block_data[3]);
-  z80_byte *destino=(bloque==0 ? &memoria_spectrum[16384] : didaktikgama_ram_mem_table[bloque-1]);
+  z80_byte *destino=&memoria_spectrum[(bloque+1)*16384];
   load_zsf_snapshot_block_data_addr(&block_data[6],destino,longitud,longitud_bloque-6,block_data[0] & 1);
 }
 
@@ -4567,33 +4567,32 @@ Byte Fields:
     save_zsf_didaktikgama_conf(conf);
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,conf,ZSF_DIDAKTIKGAMA_CONF,sizeof(conf));
 
-    // Un bloque para la RAM fija de pantalla y uno por cada bancada conmutable.
-    z80_byte *bloque_comprimido=malloc(32768*2+6);
-    if (bloque_comprimido==NULL) {
+    // Cinco bloques consecutivos de 16 KiB: RAM fija y ambas bancadas.
+    int longitud_ram=16384;
+    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+    if (compressed_ramblock==NULL) {
       debug_printf(VERBOSE_ERR,"Error allocating Didaktik Gama ZSF RAM block");
       return;
     }
 
     int bloque;
-    for (bloque=0;bloque<3;bloque++) {
-      int longitud=(bloque==0 ? 16384 : 32768);
-      int direccion=(bloque==0 ? 16384 : 32768);
-      z80_byte *origen=(bloque==0 ? &memoria_spectrum[16384] : didaktikgama_ram_mem_table[bloque-1]);
+    for (bloque=0;bloque<5;bloque++) {
+      z80_byte *origen=&memoria_spectrum[(bloque+1)*16384];
 
-      bloque_comprimido[0]=0;
-      bloque_comprimido[1]=value_16_to_8l(direccion);
-      bloque_comprimido[2]=value_16_to_8h(direccion);
-      bloque_comprimido[3]=value_16_to_8l(longitud);
-      bloque_comprimido[4]=value_16_to_8h(longitud);
-      bloque_comprimido[5]=bloque;
+      compressed_ramblock[0]=0;
+      compressed_ramblock[1]=value_16_to_8l(16384);
+      compressed_ramblock[2]=value_16_to_8h(16384);
+      compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+      compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+      compressed_ramblock[5]=bloque;
 
       int si_comprimido;
-      int longitud_bloque=save_zsf_copyblock_compress_uncompres(origen,&bloque_comprimido[6],longitud,&si_comprimido);
-      if (si_comprimido) bloque_comprimido[0]=1;
-      zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,bloque_comprimido,
+      int longitud_bloque=save_zsf_copyblock_compress_uncompres(origen,&compressed_ramblock[6],longitud_ram,&si_comprimido);
+      if (si_comprimido) compressed_ramblock[0]=1;
+      zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,compressed_ramblock,
                       ZSF_DIDAKTIKGAMA_RAMBLOCK,longitud_bloque+6);
     }
-    free(bloque_comprimido);
+    free(compressed_ramblock);
   }
 
 
