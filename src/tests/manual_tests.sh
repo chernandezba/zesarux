@@ -8,10 +8,11 @@ echo "z80doc tests. van todos"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus ./extras/media/spectrum/tests/z80doc.tap
 
-echo "fusetest. en 48k, 128k. skipped read 3ffd, 7ffd en 48k. en +2a falla ademas LDIR, Floating bus skipped, skipped read 3ffd, 7ffd"
+echo "fusetest. en 48k, 128k. skipped read 3ffd, 7ffd en 48k. en 128k todo ok. en +2a Floating bus skipped, skipped read 3ffd, 7ffd"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus ./extras/media/spectrum/tests/fusetest.tap
 ./zesarux --noconfigfile --advancedmenus --machine 128k ./extras/media/spectrum/tests/fusetest.tap
+./zesarux --noconfigfile --advancedmenus --machine p2as ./extras/media/spectrum/tests/fusetest.tap
 
 echo "Timing_Tests-48k_v1.0.sna. van todos"
 sleep 4
