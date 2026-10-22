@@ -14297,7 +14297,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"TBBlue",19,bitmap_button_ext_desktop_my_machine_spectrum_next},
 
    {"Pentagon",21,bitmap_button_ext_desktop_my_machine_pentagon},
-   {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_userdefined},
+   {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_my_machine_scorpion},
    {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_userdefined},
    {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_userdefined},
    {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_my_machine_didaktikgama},

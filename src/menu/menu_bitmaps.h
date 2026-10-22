@@ -250,6 +250,7 @@ extern char *bitmap_button_ext_desktop_my_machine_zx81[];
 extern char *bitmap_button_ext_desktop_my_machine_ts1000[];
 extern char *bitmap_button_ext_desktop_my_machine_ts1500[];
 extern char *bitmap_button_ext_desktop_my_machine_didaktikgama[];
+extern char *bitmap_button_ext_desktop_my_machine_scorpion[];
 
 extern char *bitmap_button_ext_desktop_my_machine_cz1000[];
 extern char *bitmap_button_ext_desktop_my_machine_cz1500[];
