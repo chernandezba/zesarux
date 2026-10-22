@@ -79,6 +79,8 @@ extern void contend_write_no_mreq_48k(z80_int direccion,int time);
 extern void contend_read_128k(z80_int direccion,int time);
 extern void contend_read_no_mreq_128k(z80_int direccion,int time);
 extern void contend_write_no_mreq_128k(z80_int direccion,int time);
+extern void contend_read_no_mreq_p2a(z80_int direccion GCC_UNUSED,int time);
+extern void contend_write_no_mreq_p2a(z80_int direccion GCC_UNUSED,int time);
 
 extern void ula_contend_port_early_ace( z80_int port );
 extern void ula_contend_port_early_cpc( z80_int port );

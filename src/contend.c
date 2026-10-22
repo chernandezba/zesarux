@@ -614,6 +614,17 @@ void contend_write_no_mreq_128k(z80_int direccion,int time)
 
 }
 
+// En +2A/+3 los ciclos sin MREQ no tienen contención.
+void contend_read_no_mreq_p2a(z80_int direccion GCC_UNUSED,int time)
+{
+	t_estados += time;
+}
+
+void contend_write_no_mreq_p2a(z80_int direccion GCC_UNUSED,int time)
+{
+	t_estados += time;
+}
+
 
 void ula_contend_port_early_128k( z80_int port )
 {

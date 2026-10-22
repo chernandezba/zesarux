@@ -2276,6 +2276,8 @@ void set_machine_params(void)
         if (MACHINE_IS_SPECTRUM_P2A_P3) {
             port_from_ula=port_from_ula_p2a;
             contend_pages_128k_p2a=contend_pages_p2a;
+            contend_read_no_mreq=contend_read_no_mreq_p2a;
+            contend_write_no_mreq=contend_write_no_mreq_p2a;
         }
 
         if (MACHINE_IS_PENTAGON) {
