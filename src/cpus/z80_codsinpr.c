@@ -1643,6 +1643,7 @@ void instruccion_192()
 
         if (!(Z80_FLAGS & FLAG_Z)) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
@@ -1731,6 +1732,7 @@ void instruccion_200()
 	contend_read_no_mreq( IR, 1 );
 	if (Z80_FLAGS & FLAG_Z) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 }
 
@@ -1738,6 +1740,7 @@ void instruccion_201()
 {
 //RET
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 }
 
 void instruccion_202()
@@ -1938,6 +1941,7 @@ void instruccion_208()
 	contend_read_no_mreq( IR, 1 );
         if (!(Z80_FLAGS & FLAG_C)) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
@@ -2034,6 +2038,7 @@ void instruccion_216()
 	contend_read_no_mreq( IR, 1 );
         if (Z80_FLAGS & FLAG_C) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
@@ -2188,6 +2193,7 @@ void instruccion_224()
 	contend_read_no_mreq( IR, 1 );
 	if (!(Z80_FLAGS & FLAG_PV)) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
@@ -2296,6 +2302,7 @@ void instruccion_232()
 	contend_read_no_mreq( IR, 1 );
         if (Z80_FLAGS & FLAG_PV) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
@@ -2422,6 +2429,7 @@ void instruccion_240()
 	contend_read_no_mreq( IR, 1 );
 	if (!(Z80_FLAGS & FLAG_S)) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
@@ -2526,6 +2534,7 @@ void instruccion_248()
 
         if (Z80_FLAGS & FLAG_S) {
 		reg_pc=pop_valor();
+		set_memptr(reg_pc);
 	}
 
 }
