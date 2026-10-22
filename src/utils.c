@@ -14300,7 +14300,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_userdefined},
    {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_userdefined},
    {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_userdefined},
-   {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_userdefined},
+   {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_my_machine_didaktikgama},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},
    {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_tsconf},

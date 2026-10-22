@@ -290,21 +290,10 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 
 
 
-*desde WC:
-ok -carga de spg va
--carga de scl, trd o tap no va
---ok trd
---ok scl
---ok tap
-ok -musicas pt3 van
-
 
 -NeoGS emular?
 
 
--ide smuc
-ok -ide nemo
-todos esos a zxevo_* y ponerlo en zxevo.c
 ------
 
 
@@ -371,8 +360,6 @@ ok *soporte ide gmx con smuc
 
 -didaktik Gama
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
-*timings?
-*snapshots zsf
 
 
 ---
@@ -380,7 +367,6 @@ ok *soporte ide gmx con smuc
 -----
 -en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
-ok -en baseconf, tsconf y gmx explicar como acceder a los dispositivos SD y IDE de cada uno
 
 ---
 

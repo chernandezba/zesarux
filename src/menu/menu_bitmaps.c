@@ -6593,6 +6593,37 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[EXT_DESKTOP_BUTTONS_A
 };
 
 
+//Icono "My machine" para un Didaktik Gama
+char *bitmap_button_ext_desktop_my_machine_didaktikgama[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+      "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwxwwxwwxwwxwwxwwxwwxGxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxwwxwwxwwxwwxwwxwwxwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+    "xxxxwwxwwxwwxwwxwwxwwxwwxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwwxwwxwwxwwxwwxwwxwwwxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
 //Icono "My machine" para un Inves
 char *bitmap_button_ext_desktop_my_machine_inves[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
