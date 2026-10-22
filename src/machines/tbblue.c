@@ -3965,6 +3965,10 @@ Bit	Function
     tbblue_registers[0xBA]=0x00;
     tbblue_registers[0xBB]=0xCD;
 
+    tbblue_registers[0x22]=0;
+    tbblue_registers[0xC4]=0x81;
+    tbblue_im2_ula_in_service=0;
+
     tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0]=0;
     tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1]=255;
     tbblue_clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2]=0;
@@ -4944,6 +4948,16 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
     }
 
     tbblue_registers[index_position]=value;
+
+    //Nextreg 0x22 and 0xC4 alias the line and ula interrupt enables. Line is the same polarity in both,
+    //ula is inverted: 0x22 bit 2 = disable ula interrupt, 0xC4 bit 0 = enable ula interrupt
+    if (index_position==0x22) {
+        tbblue_registers[0xC4]=(tbblue_registers[0xC4] & ~0x03) | (value&0x02) | ((value&0x04) ? 0 : 0x01);
+    }
+
+    if (index_position==0xC4) {
+        tbblue_registers[0x22]=(tbblue_registers[0x22] & ~0x06) | (value&0x02) | ((value&0x01) ? 0 : 0x04);
+    }
 
 
     switch(index_position)
@@ -8843,6 +8857,15 @@ z80_byte tbblue_uartbridge_readstatus(void)
 }
 
 int tbblue_pendiente_retn_stackless=0;
+
+//Hw im2 mode: ULA interrupt has been accepted and its ISR has not yet exited with RETI
+int tbblue_im2_ula_in_service=0;
+
+void tbblue_reti(void)
+{
+    //Only RETI ends a hw im2 interrupt service routine. RET does not, so the ULA interrupt stays blocked
+    tbblue_im2_ula_in_service=0;
+}
 
 //prueba
 //int tbblue_prueba_dentro_nmi=0;
