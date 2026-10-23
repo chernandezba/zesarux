@@ -1027,6 +1027,9 @@ void reset_cpu(void)
         eject_rzx_file();
     }
 
+    //Quitar la pausa de cpu si estaba
+    paused_cpu_emulation.v=0;
+
     reg_pc=0;
     reg_i=0;
 

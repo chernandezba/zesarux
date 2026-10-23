@@ -78,6 +78,7 @@ Audio Chip Registers: when a channel has enabled envelope, show current volumen 
 Fixed ZX Vision:
 - Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 - Fixed clicking on previous menu and menu was closed randomly
+- Fixed clicking mouse on file selector while cursor is on Name field
 
 Fixed ZX Evo TSConf:
 - Added SD/MMC card (SD Z-Controller) emulation

@@ -164,6 +164,7 @@ void cpu_core_loop_zx8081(void)
                 reg_r++;
                 z80_no_ejecutado_block_opcodes();
             }
+
             codsinpr[byte_leido_core_zx8081]  () ;
 
 

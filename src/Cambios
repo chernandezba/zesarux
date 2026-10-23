@@ -78,6 +78,7 @@ Audio Chip Registers: cuando un canal ha activado envolventes, mostrar volumen a
 Corregido ZX Vision:
 - Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 - Corregido al pulsar en un menú previo y el menú se cerraba aleatoriamente
+- Corregido al pulsar con ratón en selector de archivos cuando el cursor está en el campo del Nombre
 
 Corregido ZX Evo TSConf:
 - Agregado emulación tarjeta SD/MMC (SD Z-Controller)

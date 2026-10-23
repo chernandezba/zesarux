@@ -100,8 +100,6 @@ Pero entonces posiciona submenus tambien cuando no tenemos topbar y no hay zx de
 Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados, o pegados arriba, o pegados a la derecha
 
 
--fullscreen en cpc, sin border, en mac , no se ve bien
-
 
 
 -Mover algunos items del archivo "TODO" a los otros TODO* correspondientes
@@ -132,7 +130,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 ->lo contrario: multitask sin background windows, pues el menu funciona a la vez que la emulacion, pero solo se tiene una ventana activaa
 
 
--con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
 
 
 -driver audio que sea archivo raw. esto complementaria el output a audio del menu
@@ -163,7 +160,7 @@ QL-Qsound AY
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?
 
-
+------
 
 ***Baseconf*****
 
@@ -209,6 +206,9 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 -habilitar covox pentagon?
 
 -*snapshots zsf
+
+
+------
 
 ***Spectrum Next*****
 
@@ -372,4 +372,5 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 -timings tsconf
 
-ok -cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
+
+ok -con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
