@@ -52,6 +52,7 @@ Improved ZX Vision:
 - Added Calculator window
 - Improved menu organization, wording and consistency across the user interface
 - Improved window movement when moving with mouse
+- Handle function keys while top menu is open
 - Process switcher now shows one row of processes by default
 - Draw window frame on background windows
 - Main menus when top menu is enabled do not have window title
@@ -98,6 +99,7 @@ Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
 Fixed MEMPTR after Z80 return instructions
 Fixed Spectrum floating bus reads on 48K and 128K
 Fixed no-MREQ contention on Spectrum +2A and +3
+Fixed CPC rendering without border
 Fixed queries using Speccy Online Browser
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
