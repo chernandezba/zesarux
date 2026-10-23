@@ -100,6 +100,7 @@ Corregido MEMPTR despues de instrucciones return de Z80
 Corregido lecturas de bus flotante en Spectrum 48K y 128K
 Corregido contención no-MREQ en Spectrum +2A and +3
 Corregido renderizado de CPC sin border
+Corregido Cocoa (macOS) cambio de máquina en pantalla completa
 Corregidas consultas usando el Speccy Online Browser
 Corregido arranque de Spectrum Next con NextZXOS 2.09
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo

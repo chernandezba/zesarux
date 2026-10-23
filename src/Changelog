@@ -100,6 +100,7 @@ Fixed MEMPTR after Z80 return instructions
 Fixed Spectrum floating bus reads on 48K and 128K
 Fixed no-MREQ contention on Spectrum +2A and +3
 Fixed CPC rendering without border
+Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo

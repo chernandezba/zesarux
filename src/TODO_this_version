@@ -30,7 +30,6 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
 
 
--cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
@@ -373,8 +372,4 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 -timings tsconf
 
-
-ok-teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
-
-
-ok -full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
+ok -cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
