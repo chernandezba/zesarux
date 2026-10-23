@@ -148,7 +148,7 @@ void cpu_core_loop_zx8081(void)
 
 
 
-            //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+            //Si la cpu está detenida por señal HALT o pausada, reemplazar opcode por NOP
             if (z80_halt_signal.v || paused_cpu_emulation.v) {
                 byte_leido_core_zx8081=0;
 
@@ -159,11 +159,11 @@ void cpu_core_loop_zx8081(void)
                 reg_pc++;
             }
 
-            reg_r_antes_zx8081=reg_r;
-
-            reg_r++;
-
-            z80_no_ejecutado_block_opcodes();
+            if (!paused_cpu_emulation.v) {
+                reg_r_antes_zx8081=reg_r;
+                reg_r++;
+                z80_no_ejecutado_block_opcodes();
+            }
             codsinpr[byte_leido_core_zx8081]  () ;
 
 
@@ -188,17 +188,18 @@ void cpu_core_loop_zx8081(void)
 
 
 
-            if (pendiente_maskable_generada.v) {
-                pendiente_maskable_generada.v=0;
-                interrupcion_maskable_generada.v=1;
-            }
+            if (!paused_cpu_emulation.v) {
+                if (pendiente_maskable_generada.v) {
+                    pendiente_maskable_generada.v=0;
+                    interrupcion_maskable_generada.v=1;
+                }
 
-
-            if (iff1.v) {
-                //solo cuando cambia de 1 a 0 bit 6 de R
-                if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
-                    //interrupcion_maskable_generada.v=1;
-                    pendiente_maskable_generada.v=1;
+                if (iff1.v) {
+                    //solo cuando cambia de 1 a 0 bit 6 de R
+                    if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
+                        //interrupcion_maskable_generada.v=1;
+                        pendiente_maskable_generada.v=1;
+                    }
                 }
             }
 
@@ -434,7 +435,7 @@ void cpu_core_loop_zx8081(void)
 
 
     //Interrupcion de cpu. gestion im0/1/2. Esto se hace al cambio de bit6 de R en zx80/81
-    if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+    if (!paused_cpu_emulation.v && (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v)) {
         //printf("Generada maskable o nmi\n");
 
         debug_fired_interrupt=1;
