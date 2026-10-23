@@ -2098,8 +2098,17 @@ void scr_refresca_pantalla_y_border_cpc(void)
     }
 }
 
+//El CRTC inicial sitúa la imagen a 64 píxeles; el lienzo con borde reserva 80 para overscan.
+#define CPC_RAINBOW_NO_BORDER_ORIGIN_X 64
+
 void cpc_putpixel_zoom_rainbow(int x,z80_int *puntero_buf_rainbow,int color)
 {
+    if (!border_enabled.v) {
+        //Recortar la imagen CRTC a los 640 píxeles visibles sin borde.
+        x-=CPC_RAINBOW_NO_BORDER_ORIGIN_X;
+        if (x<0 || x>=CPC_DISPLAY_WIDTH) return;
+    }
+
     puntero_buf_rainbow[x]=color;
     //Siempre es x2 de alto
     puntero_buf_rainbow[x+get_total_ancho_rainbow()]=color;
@@ -2204,6 +2213,7 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
     //printf("%d\n",t_scanline_draw);
 
    int y_destino_rainbow=cpc_convert_scanline_to_final_y()*2;
+   if (!border_enabled.v) y_destino_rainbow-=CPC_TOP_BORDER_NO_ZOOM;
 
     if (y_destino_rainbow>cpc_last_drawn_line) {
         cpc_last_drawn_line=y_destino_rainbow;
@@ -2215,9 +2225,6 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
 
     //Nota: en cpc rom, vsync esta en 240 (posicion y=480). Pero tenemos una ventana de 544 de alto para soportar overscan
     //Por tanto, a no ser que el juego use modo overscan, la parte de abajo normalmente va a estar sin usar
-
-    //TODO: calculo con border desactivado
-
 
     //Limite inferior y superior. Sobretodo el inferior, pues puede ser negativo (en zona border invisible)
     //En teoria superior no deberia ser mayor, pero por si acaso
@@ -2271,9 +2278,8 @@ void screen_store_scanline_rainbow_solo_border_cpc(void)
     //printf("%d\n",t_scanline_draw);
 
    int y_destino_rainbow=cpc_convert_scanline_to_final_y()*2;
+   if (!border_enabled.v) y_destino_rainbow-=CPC_TOP_BORDER_NO_ZOOM;
    //printf("y destino: %d\n\n",y_destino_rainbow);
-
-    //TODO: calculo con border desactivado
 
     //Limite inferior y superior. Sobretodo el inferior, pues puede ser negativo (en zona border invisible)
     //En teoria superior no deberia ser mayor, pero por si acaso
@@ -2397,9 +2403,7 @@ void screen_store_scanline_rainbow_solo_display_cpc(void)
         //printf("%d\n",t_scanline_draw);
 
         int y_destino_rainbow=cpc_convert_scanline_to_final_y()*2;
-
-
-        //TODO: calculo con border desactivado
+        if (!border_enabled.v) y_destino_rainbow-=CPC_TOP_BORDER_NO_ZOOM;
 
 
 
