@@ -4548,6 +4548,11 @@ void menu_footer_zesarux_emulator(void)
                 sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " %s",zoc_return_connected_status() );
             }
 
+            else if (paused_cpu_emulation.v) {
+                //printf("Mostrando footer SIN estado conexion ZENG online\n");
+                sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " - PAUSED");
+            }
+
             else {
                 //printf("Mostrando footer SIN estado conexion ZENG online\n");
                 sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION);
