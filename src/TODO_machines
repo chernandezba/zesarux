@@ -1292,23 +1292,16 @@ O quizá esa rom es del 328 en vez del 318
 
 -mostar paginas memoria mapeadas en debug cpu
 
--Modo 50Hz o 60Hz para Master system?
 
 -fallos en varios juegos sms:
 
-outrun, F1: pista se desplaza raro al moverse izquierda/derecho
-creo que falla por esto ???:
- After each column is drawn, the starting column value is incremented by
- one. It wraps at 32. When bit 7 of register #1 is set, it is the column
- counter, not the starting column value, that is checked to see when the
- vertical scroll value will be set to zero on columns 24 to 31.
+
 
 terminator: se ven mal la mayoria de tiles
 
 road rash: se ralentiza mucho en juego y en intro
 pitufos: fase dos en rio se ve raro
 micromachines: se ve mal (pero esto creo que es debido a que usa mas de 192 lineas)
-bank panic: scroll mal, parece que se corrige con setting scroll hack
 space harrier: no va con line interrupt. hay que desactivarla para poder iniciar el juego y luego activarla para que se escuche musica,
 y haga efecto de cambio de colores en scanline concreto
 missile defense 3d: saltos de pantalla continuos
@@ -1317,16 +1310,17 @@ wonder boy: parece que se corrige con setting scroll hack
 
 -scroll incorrecto "parpadeo" con varios planos (algunos se corrige con setting wonder boy hack):
 aladdin
-astro flash
+
 missile defense 3d
 gp rider
 F1
 
 -scroll incorrecto "tipo juego carreras"
 out Run
-hang on
+
 road rash
-chase hq
+
+-hang on algun parpadeo raro en las curvas
 
 -juegos sms que directamente no inician:
 cosmic spacehead

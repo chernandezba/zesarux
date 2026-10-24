@@ -103,6 +103,7 @@ Fixed no-MREQ contention on Spectrum +2A and +3
 Fixed CPC rendering without border
 Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
+Fixed Master System scrolling and raster timing
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
 Fixed disabling Search menu

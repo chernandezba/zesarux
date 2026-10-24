@@ -374,3 +374,10 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 
 -en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
+
+
+-master system:
+outrun: corregido dibujado pista y tablero y nubes
+chasehq: tambien bien
+bank panic ok
+astro flash ok
