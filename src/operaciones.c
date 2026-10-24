@@ -7411,9 +7411,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         //Kempston en zxuno, cuando no esta seleccionado kempston devolver 0 en vez de FF o si no, la bios no funciona
         if (MACHINE_IS_ZXUNO) return 0;
 
-        // El menu nmi de Scorpion GMX lee Kempston aunque no se haya seleccionado
+        // El menu nmi de Scorpion lee Kempston aunque no se haya seleccionado
         // en el menú.
-        if (MACHINE_IS_SCORPION_GMX) return 0;
+        if (MACHINE_IS_SCORPION) return 0;
 
         //Los juegos: alteregobeta, xnx, y todos los de los mojon twins, leen el joystick kempston
         //Si retorno el valor del bus idle, esos juegos se saltan los menus , como si hubiese tecla pulsada

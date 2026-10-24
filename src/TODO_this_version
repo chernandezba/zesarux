@@ -248,10 +248,6 @@ necesita core 3.2.0 o inferior!
 
 
 
--pausa cpu
-en zx81 no siempre va bien
-
-
 -zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
 
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
@@ -297,11 +293,7 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
-* pendientes 60 hz: next modo 60hz,
-
-
-Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he puesto en scr_refresca_pantalla_rainbow_comun
--> en teoria ya bien. acabarlo de revisar
+* pendientes 60 hz: next modo 60hz
 
 
 
@@ -324,10 +316,7 @@ https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.u
 
 ------
 -Scorpion
-**kempston deberia retornar 0 si no está emulado, para que el menu nmi no se vuelva loco. es una maquina con kempston
-por tanto nunca devolveria 255
 
-*activar covox scorpion?
 
 *mover funciones peek y poke de scorpion a scorpion.h
 
