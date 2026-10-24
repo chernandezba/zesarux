@@ -8581,8 +8581,19 @@ z80_byte lee_puerto_sms_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
             //7EH & 193 = 0x40
 
             //0x7E : Reading: returns VDP V counter
-            //printf("scanline draw: %d\n",t_scanline_draw);
-            return t_scanline_draw;
+            // El contador del VDP comienza en cero al iniciarse la imagen activa.
+            // En el borrado vertical salta a otro tramo antes de volver a cero.
+            {
+                int linea_vdp=t_scanline_draw-screen_indice_inicio_pant;
+                if (linea_vdp<0) return (z80_byte)linea_vdp;
+                if (machine_60hz.v) {
+                    if (linea_vdp>=219) linea_vdp-=6;
+                }
+                else {
+                    if (linea_vdp>=243) linea_vdp-=57;
+                }
+                return (z80_byte)linea_vdp;
+            }
 
             //return 0xB0; //sonic por ejemplo espera este valor
         break;

@@ -270,13 +270,11 @@ value was $1D, the difference of it from 32 would be $02, hence the first
 column drawn is number 2 from the name table.
             */
 
-            //Creo que esto es la manera mas logica pese a la documentación
+            // El desplazamiento fino deja píxeles de fondo a la izquierda.
+            scroll_x_fino=scroll_x&7;
 
-            z80_byte scroll_negado=256-scroll_x;
-
-            scroll_x_fino=scroll_negado&7;
-
-            columna_scroll_x=(scroll_negado >>3)&31;
+            columna_scroll_x=((256-scroll_x)>>3)&31;
+            if (scroll_x_fino) columna_scroll_x=(columna_scroll_x+1)&31;
 
 
 
@@ -286,11 +284,10 @@ column drawn is number 2 from the name table.
             //TODO: la gestion de scroll fino en vertical y horizontal en modo rainbow, sera
             //algo distinto de este no rainbow (o deberia ser)
 
-            //1 columna mas si hay scroll horizontal
+            // La primera columna comienza tras los píxeles de fondo del scroll fino.
 
             int total_columnas=32;
 
-            if (scroll_x_fino) total_columnas++;
 
         //printf("%d\n",total_columnas);
 
@@ -379,11 +376,16 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                 //Similar para mayor de 192 cuando hay scroll y hacemos 25 filas (parte de la ultima 25)
                 if (ydestino>=0 && ydestino<=191) {
 
+                if (x==0 && !render_tiles_foreground) {
+                    int pixel_fondo=vdp_9918a_sms_get_final_color_border();
+                    for (bit=0;bit<scroll_x_fino;bit++) scr_putpixel_zoom(bit,ydestino,pixel_fondo);
+                }
+
                 for (bit=0;bit<char_width;bit++) {
 
                     int priority_pixel=priority_tile_bit;
 
-                    int xdestino=x*char_width+bit-scroll_x_fino;
+                    int xdestino=x*char_width+bit+scroll_x_fino;
 
                     if (mirror_x) {
                         byte_color=((byte_leido1)&1) | ((byte_leido2<<1)&2) | ((byte_leido3<<2)&4) | ((byte_leido4<<3)&8);
@@ -840,6 +842,7 @@ void vdp_9918a_render_rainbow_display_line_sms(int scanline,z80_int *scanline_bu
 
     //z80_byte scroll_y_signo=256-scroll_y;
 
+    int scanline_sin_scroll=scanline;
     scanline +=scroll_y_total;
 
     // In the regular 192-line display mode, the name table is 32x28 so the vertical scroll register wraps past 223
@@ -918,7 +921,7 @@ D0 - 1= No sync, display is monochrome, 0= Normal display
 
             //Las 2 primeras lineas no tendran scroll si bit D6
             //Esto lo usa juego Astro Flash
-            if (vdp_9918a_registers[0] & 64 && y<2) scroll_x=0;
+            if (vdp_9918a_registers[0] & 64 && scanline_sin_scroll<16) scroll_x=0;
 
 
             int columna_scroll_x;
@@ -940,13 +943,11 @@ value was $1D, the difference of it from 32 would be $02, hence the first
 column drawn is number 2 from the name table.
             */
 
-            //Creo que esto es la manera mas logica pese a la documentación
+            // El desplazamiento fino deja píxeles de fondo a la izquierda.
+            scroll_x_fino=scroll_x&7;
 
-            z80_byte scroll_negado=256-scroll_x;
-
-            scroll_x_fino=scroll_negado&7;
-
-            columna_scroll_x=(scroll_negado >>3)&31;
+            columna_scroll_x=((256-scroll_x)>>3)&31;
+            if (scroll_x_fino) columna_scroll_x=(columna_scroll_x+1)&31;
 
 
 
@@ -955,11 +956,13 @@ column drawn is number 2 from the name table.
 
             //TODO: scroll_x fino se ve raro en boot de master system por ejemplo
 
-            //1 columna mas si hay scroll horizontal
+            // La primera columna comienza tras los píxeles de fondo del scroll fino.
 
             int total_columnas=32;
 
-            if (scroll_x_fino) total_columnas++;
+            for (int i=0;i<scroll_x_fino;i++) {
+                destino_scanline_buffer[i]=vdp_9918a_sms_get_final_color_border();
+            }
 
         //printf("%d\n",total_columnas);
 
@@ -968,13 +971,21 @@ column drawn is number 2 from the name table.
 
 
             int final_x;
+            int fila_columna=final_y;
+            int scanline_fila_columna=scanline_fila;
+
+            // El bloqueo vertical usa el contador de columnas de pantalla, no la columna desplazada de la tabla.
+            if ((vdp_9918a_registers[0] & 128) && x>=24) {
+                fila_columna=scanline_sin_scroll/8;
+                scanline_fila_columna=scanline_sin_scroll%8;
+            }
 
 
             final_x=(x+columna_scroll_x) % 32;
 
 
 
-            int offset_tile=final_x*2+final_y*64;
+            int offset_tile=final_x*2+fila_columna*64;
             direccion_name_table=pattern_name_table+offset_tile;
 
 
@@ -1024,11 +1035,11 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
             //Si tiene mirror vertical, empezamos con la ultima linea del pattern
             if (mirror_y) {
-                pattern_address +=(7-scanline_fila)*4;
+                pattern_address +=(7-scanline_fila_columna)*4;
             }
             else {
                 //Y sumar el scanline. Cada linea de tile son 4 bytes
-                pattern_address +=scanline_fila*4;
+                pattern_address +=scanline_fila_columna*4;
             }
 
 
@@ -1060,7 +1071,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
 
                     int priority_pixel=priority_tile_bit;
 
-                    int xdestino=x*char_width+bit-scroll_x_fino;
+                    int xdestino=x*char_width+bit+scroll_x_fino;
 
                     if (mirror_x) {
                         byte_color=((byte_leido1)&1) | ((byte_leido2<<1)&2) | ((byte_leido3<<2)&4) | ((byte_leido4<<3)&8);
@@ -1132,7 +1143,7 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                                     color_paleta=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
                                 }
 
-                                *destino_scanline_buffer_foreground=SMS_INDEX_FIRST_COLOR+color_paleta;
+                                destino_scanline_buffer_foreground[xdestino]=SMS_INDEX_FIRST_COLOR+color_paleta;
 
 
                             }
@@ -1157,11 +1168,9 @@ n = Pattern index, any one of 512 patterns in VRAM can be selected.
                                     color_paleta=si_blanco_negro*(SMS_TOTAL_PALETTE_COLOURS-1);
                                 }
 
-                                *destino_scanline_buffer=SMS_INDEX_FIRST_COLOR+color_paleta;
+                                destino_scanline_buffer[xdestino]=SMS_INDEX_FIRST_COLOR+color_paleta;
                             }
                         }
-                        destino_scanline_buffer++;
-                        destino_scanline_buffer_foreground++;
 
                     }
 
@@ -1659,11 +1668,18 @@ void vdp_9918a_sms_raster_line_reset(void)
 
 void vdp_9918a_sms_handle_raster_interrupt(void)
 {
+    int linea_actual_interrupcion=t_scanline_draw-screen_invisible_borde_superior-screen_borde_superior;
+
+    // Fuera de la imagen activa el VDP recarga el contador en cada línea.
+    // Así recoge los cambios del registro 10 realizados durante VBlank.
+    if (linea_actual_interrupcion<0 || linea_actual_interrupcion>192) {
+        vdp_9918a_sms_raster_line_reset();
+        return;
+    }
 
     if (sms_disable_raster_interrupt.v) return;
 
     //Solo en zona de pantalla+1, no border
-    int linea_actual_interrupcion=t_scanline_draw-screen_invisible_borde_superior-screen_borde_superior;
     if (linea_actual_interrupcion>=1 && linea_actual_interrupcion<=191) {
 
         //printf("linea_actual_interrupcion %d\n",linea_actual_interrupcion);
@@ -1727,6 +1743,12 @@ void vdp_9918a_sms_handle_raster_interrupt(void)
 
 z80_byte vdp_9918a_sms_pre_write_reg(z80_byte vdp_register,z80_byte next_value)
 {
+
+
+    if (vdp_register==0 && (next_value & 128) && !rainbow_enabled.v && autodetect_rainbow.v) {
+        // El bloqueo vertical por columnas necesita conservar el dibujo de cada línea.
+        enable_rainbow();
+    }
 
     /*if (vdp_register==0) {
         if ((next_value & 0x10)==0) {
