@@ -76,6 +76,7 @@ const char *s_vdp_9918a_video_mode_sms_4="4 - SMS Graphic 256x192";
 
 */
 z80_byte sms_next_scroll_vertical_value=0;
+z80_byte sms_scroll_horizontal_latched=0;
 
 //int sms_pending_line_interrupt=0;
 
@@ -117,6 +118,7 @@ void vdp_9918a_sms_reset(void)
     }
 
     sms_next_scroll_vertical_value=0;
+    sms_scroll_horizontal_latched=0;
     //sms_pending_line_interrupt=0;
 
     //En SMS los registros se resetean asi:
@@ -895,7 +897,7 @@ starting row, and the lower three bits are the fine scroll value.
         //printf("y: %d final_y: %d\n",y,final_y);
 
             //scroll x
-            z80_byte scroll_x=vdp_9918a_sms_get_scroll_horizontal();
+            z80_byte scroll_x=sms_scroll_horizontal_latched;
 
             if (vdp_9918a_sms_lock_scroll_horizontal.v) scroll_x=0;
 
