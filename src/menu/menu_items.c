@@ -22017,6 +22017,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_MICRODIGITAL_TK85) strcpy(nombrebmp,"keyboard_tk85.bmp");
     else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
+    else if (MACHINE_IS_DIDAKTIKGAMA) strcpy(nombrebmp,"keyboard_didaktikgama.bmp");
     else strcpy(nombrebmp,"keyboard_48.bmp");
 
     //localizarlo
@@ -22148,6 +22149,17 @@ int keyboard_map_table_coords_p2[40*4]={
 462,44,498,78,420,44,458,78,382,42,420,78,340,44,378,78,300,44,340,78,
 472,82,536,118,430,84,468,118,392,84,428,118,350,84,390,120,312,84,348,120,
 200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
+};
+
+int keyboard_map_table_coords_didaktikgama[40*4]={
+8,166,54,190,       72,166,106,190,     120,166,158,190,    172,166,206,190,    220,166,256,190,
+46,116,80,140,      94,116,130,142,     146,116,180,140,    196,116,232,142,    245,116,280,140,
+34,68,68,92,        84,68,120,92,       132,68,168,92,      184,68,220,92,      235,68,266,92,
+8,20,44,44,         58,20,96,44,        110,20,144,44,      160,20,194,44,      210,20,244,44,
+458,20,492,44,      408,20,444,44,      358,20,394,44,      308,20,342,44,      260,20,294,44,
+484,68,518,92,      434,68,468,92,      384,68,418,92,      334,68,370,92,      284,68,316,92,
+494,116,530,142,    446,118,480,142,    396,118,428,142,    346,118,378,142,    296,118,328,142,
+468,166,530,190,    420,166,454,190,    370,166,404,190,    321,166,354,190,    270,166,304,190,
 };
 
 
@@ -22979,6 +22991,10 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_table_coords_p2;
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        return keyboard_map_table_coords_didaktikgama;
     }
 
     else if (MACHINE_IS_TBBLUE) {
