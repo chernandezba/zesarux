@@ -22164,14 +22164,14 @@ int keyboard_map_table_coords_didaktikgama[40*4]={
 };
 
 int keyboard_map_table_coords_scorpion[40*4]={
-3,122,90,160,130,124,170,162,170,124,210,160,210,124,250,160,252,124,290,160,
-108,82,150,120,150,84,190,120,192,84,230,120,230,84,270,120,272,84,310,120,
-100,42,140,80,140,44,180,82,180,44,220,80,222,44,260,78,258,44,300,78,
-80,2,120,40,120,2,160,42,160,2,200,40,200,2,240,40,242,2,280,38,
-440,2,480,38,400,2,438,38,360,2,400,38,322,2,358,38,280,2,320,38,
-460,44,498,80,420,44,458,80,380,42,416,80,340,44,380,80,302,42,340,80,
-472,82,537,120,432,84,468,120,392,82,430,120,352,82,388,120,312,84,350,120,
-200,164,378,198,4,162,40,198,370,124,408,158,330,124,368,160,290,124,330,162,
+68,221,153,254,     206,221,239,254,    247,221,282,254,    289,221,324,254,    332,221,366,254,
+183,178,217,213,    225,178,260,213,    268,178,302,213,    310,178,344,213,    353,178,387,213,
+173,135,208,170,    216,135,250,170,    258,135,292,170,    300,135,334,170,    342,135,376,170,
+153,93,187,126,     195,93,229,126,     237,93,272,126,     280,93,314,126,     323,93,357,126,
+535,93,569,126,     492,93,526,126,     450,93,484,126,     408,93,441,126,     365,93,399,126,
+555,135,588,170,    513,135,547,170,    470,135,504,170,    428,135,462,170,    385,135,419,170,
+598,136,630,171,    521,178,565,213,    479,178,512,213,    438,178,471,213,    395,178,428,213,
+280,263,458,296,    68,263,102,296,     460,221,493,254,    417,221,451,254,    375,221,409,254,
 };
 
 
@@ -22653,25 +22653,25 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
 
 //Teclas adicionales scorpion
 keyboard_help_double_key keyboard_map_additional_scorpion[]={
-    { 500,162, 537,198,     KEY_PORT_VALUE_SYMBOL,  NULL, 0},  //symbol derecha
-    { 452,124,536,158,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
-    { 504,42,537,119,       &puerto_49150,1,   NULL, 0}, //trozo del enter parte de arriba
-    { 2,82, 60, 120,        KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
-    { 2,44, 58,80,          &puerto_65278,1,        &puerto_61438,1 },  //delete
-    { 2,2,38,36,            &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
-    { 44,2,76,36,           &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, //inverse video
-    { 62,44,98,80,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT },//graph
-    { 60,82,108,118,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT },//edit
-    { 90,124,128,158,       &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
-    { 42,164,78,198,        &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // ;
-    { 82,164,116,198,       &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // "
-    { 122,164,158,198,      &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izq
-    { 162,164,196,198,      &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha der
-    { 382,164,418,198,      &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arr
-    { 422,164,458,198,      &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abaj
-    { 460,162,496,198,      &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
-    { 412,124,448,160,      &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
-    { 482,2,538,38,         &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+    { 593,263,628,296,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, // Symbol Shift derecho
+    { 544,221,629,254,     KEY_PORT_VALUE_SHIFT,   NULL, 0}, // Caps Shift derecho
+    { 574,179,630,212,     &puerto_49150,1,        NULL, 0}, // parte inferior de Enter
+    { 68,178,122,213,      KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, // modo extendido
+    { 68,135,122,170,      &puerto_65278,1,        &puerto_61438,1 }, // Delete
+    { 68,93,102,126,       &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, // True Video
+    { 111,93,144,126,      &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, // Inverse Video
+    { 132,135,165,170,     &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, // Graph
+    { 132,178,165,213,     &puerto_63486,1,        KEY_PORT_VALUE_SHIFT }, // Edit
+    { 164,221,197,254,     &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 110,263,144,296,     &puerto_65278,2,        KEY_PORT_VALUE_SYMBOL }, // dos puntos
+    { 152,263,186,296,     &puerto_49150,4,        KEY_PORT_VALUE_SYMBOL }, // guion
+    { 195,263,228,296,     &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izquierda
+    { 238,263,271,296,     &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha derecha
+    { 466,263,501,296,     &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arriba
+    { 509,263,543,296,     &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abajo
+    { 552,263,585,296,     &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // coma
+    { 500,221,535,254,     &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // punto
+    { 577,93,628,126,      &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // Break
 
     { 0,0,0,0,NULL,0,NULL,0 }
 };
