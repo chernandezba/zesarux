@@ -273,10 +273,13 @@ column drawn is number 2 from the name table.
             */
 
             // El desplazamiento fino deja píxeles de fondo a la izquierda.
-            scroll_x_fino=scroll_x&7;
+            scroll_x_fino=scroll_x&(VDP_9918A_SMS_SCROLL_TILE_WIDTH-1);
 
-            columna_scroll_x=((256-scroll_x)>>3)&31;
-            if (scroll_x_fino) columna_scroll_x=(columna_scroll_x+1)&31;
+            // El registro desplaza el fondo a la derecha. La resta localiza la
+            // primera columna del mapa; con scroll fino se omite la columna
+            // parcial del extremo izquierdo y se empieza por la siguiente.
+            columna_scroll_x=((VDP_9918A_SMS_SCROLL_PIXELS-scroll_x)/VDP_9918A_SMS_SCROLL_TILE_WIDTH)&(VDP_9918A_SMS_SCROLL_COLUMNS-1);
+            if (scroll_x_fino) columna_scroll_x=(columna_scroll_x+1)&(VDP_9918A_SMS_SCROLL_COLUMNS-1);
 
 
 
@@ -288,7 +291,7 @@ column drawn is number 2 from the name table.
 
             // La primera columna comienza tras los píxeles de fondo del scroll fino.
 
-            int total_columnas=32;
+            int total_columnas=VDP_9918A_SMS_SCROLL_COLUMNS;
 
 
         //printf("%d\n",total_columnas);
@@ -923,7 +926,8 @@ D0 - 1= No sync, display is monochrome, 0= Normal display
 
             //Las 2 primeras lineas no tendran scroll si bit D6
             //Esto lo usa juego Astro Flash
-            if (vdp_9918a_registers[0] & 64 && scanline_sin_scroll<16) scroll_x=0;
+            if ((vdp_9918a_registers[0] & VDP_9918A_SMS_REG0_LOCK_HORIZONTAL_SCROLL) &&
+                scanline_sin_scroll<VDP_9918A_SMS_SCROLL_TOP_FIXED_LINES) scroll_x=0;
 
 
             int columna_scroll_x;
@@ -946,10 +950,13 @@ column drawn is number 2 from the name table.
             */
 
             // El desplazamiento fino deja píxeles de fondo a la izquierda.
-            scroll_x_fino=scroll_x&7;
+            scroll_x_fino=scroll_x&(VDP_9918A_SMS_SCROLL_TILE_WIDTH-1);
 
-            columna_scroll_x=((256-scroll_x)>>3)&31;
-            if (scroll_x_fino) columna_scroll_x=(columna_scroll_x+1)&31;
+            // El registro desplaza el fondo a la derecha. La resta localiza la
+            // primera columna del mapa; con scroll fino se omite la columna
+            // parcial del extremo izquierdo y se empieza por la siguiente.
+            columna_scroll_x=((VDP_9918A_SMS_SCROLL_PIXELS-scroll_x)/VDP_9918A_SMS_SCROLL_TILE_WIDTH)&(VDP_9918A_SMS_SCROLL_COLUMNS-1);
+            if (scroll_x_fino) columna_scroll_x=(columna_scroll_x+1)&(VDP_9918A_SMS_SCROLL_COLUMNS-1);
 
 
 
@@ -960,7 +967,7 @@ column drawn is number 2 from the name table.
 
             // La primera columna comienza tras los píxeles de fondo del scroll fino.
 
-            int total_columnas=32;
+            int total_columnas=VDP_9918A_SMS_SCROLL_COLUMNS;
 
             for (int i=0;i<scroll_x_fino;i++) {
                 destino_scanline_buffer[i]=vdp_9918a_sms_get_final_color_border();
@@ -977,9 +984,10 @@ column drawn is number 2 from the name table.
             int scanline_fila_columna=scanline_fila;
 
             // El bloqueo vertical usa el contador de columnas de pantalla, no la columna desplazada de la tabla.
-            if ((vdp_9918a_registers[0] & 128) && x>=24) {
-                fila_columna=scanline_sin_scroll/8;
-                scanline_fila_columna=scanline_sin_scroll%8;
+            if ((vdp_9918a_registers[0] & VDP_9918A_SMS_REG0_LOCK_VERTICAL_SCROLL) &&
+                x>=VDP_9918A_SMS_SCROLL_RIGHT_FIXED_COLUMN) {
+                fila_columna=scanline_sin_scroll/VDP_9918A_SMS_SCROLL_TILE_WIDTH;
+                scanline_fila_columna=scanline_sin_scroll%VDP_9918A_SMS_SCROLL_TILE_WIDTH;
             }
 
 
@@ -1672,17 +1680,17 @@ void vdp_9918a_sms_handle_raster_interrupt(void)
 {
     int linea_actual_interrupcion=t_scanline_draw-screen_invisible_borde_superior-screen_borde_superior;
 
-    // Fuera de la imagen activa el VDP recarga el contador en cada línea.
-    // Así recoge los cambios del registro 10 realizados durante VBlank.
-    if (linea_actual_interrupcion<0 || linea_actual_interrupcion>192) {
+    // La línea 192 marca el fin de la imagen activa; a partir de la siguiente,
+    // el VDP recarga el contador en cada línea y recoge los cambios de R10 en VBlank.
+    if (linea_actual_interrupcion<0 || linea_actual_interrupcion>VDP_9918A_SMS_DISPLAY_LINES) {
         vdp_9918a_sms_raster_line_reset();
         return;
     }
 
     if (sms_disable_raster_interrupt.v) return;
 
-    //Solo en zona de pantalla+1, no border
-    if (linea_actual_interrupcion>=1 && linea_actual_interrupcion<=191) {
+    // Las interrupciones de línea se solicitan al terminar las líneas activas 0 a 190.
+    if (linea_actual_interrupcion>=1 && linea_actual_interrupcion<VDP_9918A_SMS_DISPLAY_LINES) {
 
         //printf("linea_actual_interrupcion %d\n",linea_actual_interrupcion);
         //printf("rasterline %d\n",vdp_9918a_sms_raster_line_counter);
@@ -1747,7 +1755,8 @@ z80_byte vdp_9918a_sms_pre_write_reg(z80_byte vdp_register,z80_byte next_value)
 {
 
 
-    if (vdp_register==0 && (next_value & 128) && !rainbow_enabled.v && autodetect_rainbow.v) {
+    if (vdp_register==0 && (next_value & VDP_9918A_SMS_REG0_LOCK_VERTICAL_SCROLL) &&
+        !rainbow_enabled.v && autodetect_rainbow.v) {
         // El bloqueo vertical por columnas necesita conservar el dibujo de cada línea.
         enable_rainbow();
     }

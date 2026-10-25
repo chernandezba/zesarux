@@ -30,6 +30,23 @@
 
 #define VDP_9918A_SMS_MODE4_MAPPED_PALETTE_COLOURS 32
 
+// En el modo de 192 líneas, el contador vertical salta de DAH a D5H en NTSC
+// y de F2H a BAH en PAL. Estos valores son del VDP, no de la geometría del borde.
+#define VDP_9918A_SMS_VCOUNTER_NTSC_WRAP_LINE 0xDB
+#define VDP_9918A_SMS_VCOUNTER_NTSC_RESTART_VALUE 0xD5
+#define VDP_9918A_SMS_VCOUNTER_PAL_WRAP_LINE 0xF3
+#define VDP_9918A_SMS_VCOUNTER_PAL_RESTART_VALUE 0xBA
+
+// Geometría y bloqueos de scroll del VDP en modo 4 de 192 líneas.
+#define VDP_9918A_SMS_DISPLAY_LINES 192
+#define VDP_9918A_SMS_SCROLL_TILE_WIDTH 8
+#define VDP_9918A_SMS_SCROLL_COLUMNS 32
+#define VDP_9918A_SMS_SCROLL_PIXELS 256
+#define VDP_9918A_SMS_SCROLL_RIGHT_FIXED_COLUMN 24
+#define VDP_9918A_SMS_SCROLL_TOP_FIXED_LINES 16
+#define VDP_9918A_SMS_REG0_LOCK_VERTICAL_SCROLL 0x80
+#define VDP_9918A_SMS_REG0_LOCK_HORIZONTAL_SCROLL 0x40
+
 extern int sms_writing_cram;
 //extern int sms_pending_line_interrupt;
 //extern z80_byte vdp_9918a_sms_raster_line_counter;
