@@ -22663,8 +22663,8 @@ keyboard_help_double_key keyboard_map_additional_scorpion[]={
     { 132,135,165,170,     &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, // Graph
     { 132,178,165,213,     &puerto_63486,1,        KEY_PORT_VALUE_SHIFT }, // Edit
     { 164,221,197,254,     &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, // Caps Lock
-    { 110,263,144,296,     &puerto_65278,2,        KEY_PORT_VALUE_SYMBOL }, // dos puntos
-    { 152,263,186,296,     &puerto_49150,4,        KEY_PORT_VALUE_SYMBOL }, // guion
+    { 110,263,144,296,     &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 152,263,186,296,     &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // comillas
     { 195,263,228,296,     &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izquierda
     { 238,263,271,296,     &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha derecha
     { 466,263,501,296,     &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arriba
