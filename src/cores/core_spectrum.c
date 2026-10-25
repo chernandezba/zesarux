@@ -37,6 +37,7 @@
 #include "debug.h"
 #include "tape.h"
 #include "audio.h"
+#include "audio_ay_hq.h"
 #include "screen.h"
 #include "ay38912.h"
 #include "operaciones.h"
@@ -438,6 +439,7 @@ void core_spectrum_fin_frame_pantalla(void)
     }
 
 
+    audio_ay_hq_end_frame();
     t_estados -=screen_testados_total;
 
     if (MACHINE_IS_BASECONF) baseconf_update_timing(0);
@@ -520,7 +522,8 @@ void core_spectrum_fin_frame_pantalla(void)
     }
 
 
-    if (!interrupcion_timer_generada.v) {
+    int hq_early_tick=audio_ay_hq_take_early_tick();
+    if (!interrupcion_timer_generada.v && !hq_early_tick) {
         //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
         //printf ("no demasiado\n");
         esperando_tiempo_final_t_estados.v=1;
@@ -550,6 +553,7 @@ void core_spectrum_fin_scanline(void)
     //printf ("fin scanline en %d\n",t_estados);
     //if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
 
+    audio_ay_hq_sync();
     if (si_siguiente_sonido() ) {
 
         //audio_valor_enviar_sonido=0;
@@ -564,14 +568,17 @@ void core_spectrum_fin_scanline(void)
             audio_apply_nagra_effect();
         }
 
+        int hq_beeper=0;
         if (beeper_enabled.v) {
             if (beeper_real_enabled==0) {
+                hq_beeper=value_beeper;
                 audio_valor_enviar_sonido_izquierdo += value_beeper;
                 audio_valor_enviar_sonido_derecho += value_beeper;
             }
 
             else {
                 char suma_beeper=get_value_beeper_sum_array();
+                hq_beeper=suma_beeper;
                 audio_valor_enviar_sonido_izquierdo += suma_beeper;
                 audio_valor_enviar_sonido_derecho += suma_beeper;
                 beeper_new_line();
@@ -656,6 +663,13 @@ void core_spectrum_fin_scanline(void)
             }
         }*/
 
+
+        /* El resto del mezclador conserva su resolucion de una linea.
+           El buffer antiguo sigue disponible para grabacion y visualizacion. */
+        if (audio_ay_hq_active()) {
+            int aux=audio_adjust_volume(hq_beeper);
+            audio_ay_hq_aux(aux,aux);
+        }
 
         //Enviar sample de sonido
         if (audio_tone_generator) {

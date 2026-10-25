@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/true-grue/ayumi",
+  "commit": "07c08b4874c359169e4a028edf73f046d8b763e2",
+  "normalization": "Trailing spaces removed; executable code unchanged",
+  "files": {
+    "ayumi.c": {
+      "upstream_sha256": "8824bc343726aa9dc7e4172b14f0e9a0a06ed3f21766277ffb9686b07f19401d",
+      "vendored_sha256": "8e11d7c78cd7d8ac63130bda71d1722714e20bc5a74c3aef48b6f0a1774ab90c"
+    },
+    "ayumi.h": {
+      "upstream_sha256": "506e3b75d8269d670d74f75115d3b385ad0f1c232bc797391bd97cc074f17099",
+      "vendored_sha256": "506e3b75d8269d670d74f75115d3b385ad0f1c232bc797391bd97cc074f17099"
+    },
+    "LICENSE": {
+      "upstream_sha256": "20bb643965c0ddd04e0b74aed83aa00c5ca0afb4805a681a60cbe4827cea66da",
+      "vendored_sha256": "e45be409a54a64d7473d15d7d5638959c6c7e6ce90a9f013a7f89351709a3acf"
+    }
+  }
+}
