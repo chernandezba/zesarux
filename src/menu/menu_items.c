@@ -22018,6 +22018,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
     else if (MACHINE_IS_DIDAKTIKGAMA) strcpy(nombrebmp,"keyboard_didaktikgama.bmp");
+    else if (MACHINE_IS_SCORPION) strcpy(nombrebmp,"keyboard_scorpion.bmp");
     else strcpy(nombrebmp,"keyboard_48.bmp");
 
     //localizarlo
@@ -22162,6 +22163,16 @@ int keyboard_map_table_coords_didaktikgama[40*4]={
 576,268,639,308,    518,268,564,308,    463,268,508,308,    409,268,453,308,    356,268,400,308,
 };
 
+int keyboard_map_table_coords_scorpion[40*4]={
+3,122,90,160,130,124,170,162,170,124,210,160,210,124,250,160,252,124,290,160,
+108,82,150,120,150,84,190,120,192,84,230,120,230,84,270,120,272,84,310,120,
+100,42,140,80,140,44,180,82,180,44,220,80,222,44,260,78,258,44,300,78,
+80,2,120,40,120,2,160,42,160,2,200,40,200,2,240,40,242,2,280,38,
+440,2,480,38,400,2,438,38,360,2,400,38,322,2,358,38,280,2,320,38,
+460,44,498,80,420,44,458,80,380,42,416,80,340,44,380,80,302,42,340,80,
+472,82,537,120,432,84,468,120,392,82,430,120,352,82,388,120,312,84,350,120,
+200,164,378,198,4,162,40,198,370,124,408,158,330,124,368,160,290,124,330,162,
+};
 
 
 int keyboard_map_table_coords_zxuno[40*4]={
@@ -22640,6 +22651,31 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+//Teclas adicionales scorpion
+keyboard_help_double_key keyboard_map_additional_scorpion[]={
+    { 500,162, 537,198,     KEY_PORT_VALUE_SYMBOL,  NULL, 0},  //symbol derecha
+    { 452,124,536,158,      KEY_PORT_VALUE_SHIFT,   NULL, 0}, //caps shift derecha
+    { 504,42,537,119,       &puerto_49150,1,   NULL, 0}, //trozo del enter parte de arriba
+    { 2,82, 60, 120,        KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, //extend mode
+    { 2,44, 58,80,          &puerto_65278,1,        &puerto_61438,1 },  //delete
+    { 2,2,38,36,            &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, //true video
+    { 44,2,76,36,           &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, //inverse video
+    { 62,44,98,80,          &puerto_61438,2,        KEY_PORT_VALUE_SHIFT },//graph
+    { 60,82,108,118,        &puerto_63486,1,        KEY_PORT_VALUE_SHIFT },//edit
+    { 90,124,128,158,       &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, //caps lock
+    { 42,164,78,198,        &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // ;
+    { 82,164,116,198,       &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // "
+    { 122,164,158,198,      &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izq
+    { 162,164,196,198,      &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha der
+    { 382,164,418,198,      &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arr
+    { 422,164,458,198,      &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abaj
+    { 460,162,496,198,      &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // ,
+    { 412,124,448,160,      &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // .
+    { 482,2,538,38,         &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Teclas adicionales zxuno
 keyboard_help_double_key keyboard_map_additional_zxuno[]={
     { 528,4,594,32,   &puerto_65278,1,        &puerto_61438,1 },  //delete
@@ -22993,6 +23029,10 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_p2;
     }
 
+    else if (MACHINE_IS_SCORPION) {
+        return keyboard_map_table_coords_scorpion;
+    }
+
     else if (MACHINE_IS_DIDAKTIKGAMA) {
         return keyboard_map_table_coords_didaktikgama;
     }
@@ -23125,6 +23165,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_MICRODIGITAL_TK95) {
         return keyboard_map_additional_tk95;
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        return keyboard_map_additional_scorpion;
     }
 
     else if (MACHINE_IS_TBBLUE) {
