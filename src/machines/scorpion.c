@@ -266,6 +266,10 @@ void scorpion_set_normal_pages(void)
     scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
     scorpion_memory_paged[3]=scorpion_ram_mem_table[0];
+    debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM;
+    debug_paginas_memoria_mapeadas[1]=5;
+    debug_paginas_memoria_mapeadas[2]=2;
+    debug_paginas_memoria_mapeadas[3]=0;
 
 
     if (MACHINE_IS_SCORPION_GMX) {
@@ -304,6 +308,7 @@ void scorpion_mem_page_ram(void)
 {
 
     z80_byte page_entra=puerto_32765 & 7;
+    z80_byte page_8000;
 
 //| `7FFDh` | D0–D2 | Seleccionan una página de 0 a 7. |
 //| `1FFDh` | D4 | Añade 8 al número de página cuando vale 1. |
@@ -313,10 +318,13 @@ void scorpion_mem_page_ram(void)
     if (MACHINE_IS_SCORPION_GMX && !scorpion_gmx_is_pentagon_scheme()) {
         page_entra |= (scorpion_gmx_port_dffd & 7) << 4;
         // 78FD selecciona de forma independiente la página de 8000h-BFFFh.
-        scorpion_memory_paged[2]=scorpion_ram_mem_table[(scorpion_gmx_port_78fd ^ 2) & 0x7f];
+        page_8000=(scorpion_gmx_port_78fd ^ 2) & 0x7f;
+        scorpion_memory_paged[2]=scorpion_ram_mem_table[page_8000];
+        debug_paginas_memoria_mapeadas[2]=page_8000;
     }
 
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
+    debug_paginas_memoria_mapeadas[3]=page_entra;
 }
 
 void scorpion_mem_page_rom(void)
@@ -349,11 +357,19 @@ void scorpion_mem_page_rom(void)
     }
 
     if (scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX &&
-        !scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 4)))
-        scorpion_memory_paged[0]=scorpion_rom_mem_table[(page_entra & ~3) | 3];
-    else if (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1))
+        !scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 4))) {
+        page_entra=(page_entra & ~3) | 3;
+        scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM+page_entra;
+    }
+    else if (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1)) {
         scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
-    else scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=0;
+    }
+    else {
+        scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM+page_entra;
+    }
 }
 
 void scorpion_trdos_update(z80_int dir)

@@ -7808,6 +7808,28 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
     //TODO SMS
 
+    if (MACHINE_IS_SCORPION) {
+        int pagina;
+        segmentos_totales=4;
+
+        for (pagina=0;pagina<segmentos_totales;pagina++) {
+            int mapped_page=debug_paginas_memoria_mapeadas[pagina];
+            int page=mapped_page & DEBUG_PAGINA_MAP_MASK;
+
+            segmentos[pagina].start=pagina*16384;
+            segmentos[pagina].length=16384;
+
+            if (mapped_page & DEBUG_PAGINA_MAP_ES_ROM) {
+                sprintf(segmentos[pagina].shortname,"O%02d",page);
+                sprintf(segmentos[pagina].longname,"ROM %d",page);
+            }
+            else {
+                sprintf(segmentos[pagina].shortname,"A%02d",page);
+                sprintf(segmentos[pagina].longname,"RAM %d",page);
+            }
+        }
+    }
+
     if (MACHINE_IS_DIDAKTIKGAMA) {
 
         segmentos_totales=3;
