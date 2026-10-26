@@ -263,6 +263,8 @@ static z80_byte *tsconf_cache_tags[512];
 static z80_byte tsconf_cache_data[512];
 static unsigned long long tsconf_cache_hits[4];
 static unsigned long long tsconf_cache_misses[4];
+static unsigned long long tsconf_cache_total_hits;
+static unsigned long long tsconf_cache_total_misses;
 
 /* Invalida las 512 entradas y reinicia los contadores de hit/miss.
    No recibe parámetros ni devuelve valor; se llama al reiniciar o cambiar
@@ -275,6 +277,8 @@ static void tsconf_cache_clear(void)
         tsconf_cache_hits[i]=0;
         tsconf_cache_misses[i]=0;
     }
+    tsconf_cache_total_hits=0;
+    tsconf_cache_total_misses=0;
 }
 
 /* Indica si la dirección de CPU 'address' apunta a RAM según el mapa actual.
@@ -296,6 +300,15 @@ void tsconf_get_cache_debug_info(int window,struct tsconf_cache_debug_info *info
     info->page=debug_paginas_memoria_mapeadas[window]&DEBUG_PAGINA_MAP_MASK;
     info->hits=tsconf_cache_hits[window];
     info->misses=tsconf_cache_misses[window];
+}
+
+/* Devuelve en 'hits' y 'misses' los accesos de todas las ventanas desde el
+   último reinicio o cambio de caché/velocidad. Estos totales no se reinician
+   al cambiar una página mapeada. */
+void tsconf_get_cache_debug_totals(unsigned long long *hits,unsigned long long *misses)
+{
+    *hits=tsconf_cache_total_hits;
+    *misses=tsconf_cache_total_misses;
 }
 
 /* Consulta o rellena la entrada asociada a la dirección de CPU 'address'.
@@ -330,8 +343,14 @@ int tsconf_cache_read_wait(z80_int address,int m1)
     int window=address>>14;
     if (cpu_turbo_speed!=4) return 0;
     if (tsconf_af_ports[0x2b]&(1<<window)) {
-        if (miss) tsconf_cache_misses[window]++;
-        else tsconf_cache_hits[window]++;
+        if (miss) {
+            tsconf_cache_misses[window]++;
+            tsconf_cache_total_misses++;
+        }
+        else {
+            tsconf_cache_hits[window]++;
+            tsconf_cache_total_hits++;
+        }
     }
     if (!miss) return 0;
     // A 14 MHz, el fallo espera al siguiente ciclo de la DRAM de 7 MHz.

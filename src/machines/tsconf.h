@@ -183,6 +183,7 @@ struct tsconf_cache_debug_info {
     unsigned long long misses;
 };
 extern void tsconf_get_cache_debug_info(int window,struct tsconf_cache_debug_info *info);
+extern void tsconf_get_cache_debug_totals(unsigned long long *hits,unsigned long long *misses);
 
 extern void tsconf_set_default_basic_palette(void);
 

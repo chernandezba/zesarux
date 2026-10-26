@@ -6461,13 +6461,9 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         int cache_window;
-        unsigned long long total_hits=0;
-        unsigned long long total_misses=0;
         for (cache_window=0;cache_window<4;cache_window++) {
             struct tsconf_cache_debug_info info;
             tsconf_get_cache_debug_info(cache_window,&info);
-            total_hits+=info.hits;
-            total_misses+=info.misses;
             unsigned long long total=info.hits+info.misses;
             int hit_percent=total ? (int)((info.hits*100)/total) : 0;
             int miss_percent=total ? (int)((info.misses*100)/total) : 0;
@@ -6480,13 +6476,16 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
                       info.hits,hit_percent,info.misses,miss_percent);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
+        unsigned long long total_hits;
+        unsigned long long total_misses;
+        tsconf_get_cache_debug_totals(&total_hits,&total_misses);
         unsigned long long total_accesos=total_hits+total_misses;
         int total_hit_percent=total_accesos ? (int)((total_hits*100)/total_accesos) : 0;
         int total_miss_percent=total_accesos ? (int)((total_misses*100)/total_accesos) : 0;
         sprintf (buf_linea," Total hits: %llu (%d%%), misses: %llu (%d%%)\n",
                   total_hits,total_hit_percent,total_misses,total_miss_percent);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        sprintf (buf_linea," Counters since page, cache or speed change\n");
+        sprintf (buf_linea," Window counters: since page change; total: since reset/cache/speed change\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"\nTSConf Registers:\n");
