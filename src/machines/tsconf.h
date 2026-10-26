@@ -175,6 +175,15 @@ extern int tsconf_cache_read_wait(z80_int address,int m1);
 extern z80_byte tsconf_cache_read(z80_int address);
 extern void tsconf_cache_invalidate(z80_int address);
 
+struct tsconf_cache_debug_info {
+    int enabled;
+    int is_ram;
+    z80_byte page;
+    unsigned long long hits;
+    unsigned long long misses;
+};
+extern void tsconf_get_cache_debug_info(int window,struct tsconf_cache_debug_info *info);
+
 extern void tsconf_set_default_basic_palette(void);
 
 extern void tsconf_set_emulador_settings(void);
