@@ -286,7 +286,7 @@ static int tsconf_cache_is_ram(z80_int address)
 
 /* Copia el estado actual de la ventana 'window' (0-3) en 'info'. Devuelve
    página mapeada, tipo de memoria, habilitación efectiva y contadores de
-   lecturas de CPU desde el último reinicio o cambio de configuración. */
+   lecturas de CPU desde el último cambio de página o configuración. */
 void tsconf_get_cache_debug_info(int window,struct tsconf_cache_debug_info *info)
 {
     int address=window<<14;
@@ -1484,6 +1484,10 @@ z80_byte tsconf_get_vram_page(void)
 
 void tsconf_set_memory_pages(void)
 {
+    z80_byte *pagina_anterior[4];
+    int ventana;
+    for (ventana=0;ventana<4;ventana++) pagina_anterior[ventana]=tsconf_memory_paged[ventana];
+
     z80_byte rom_page=tsconf_get_rom_bank();
 
 
@@ -1527,6 +1531,15 @@ void tsconf_set_memory_pages(void)
     debug_paginas_memoria_mapeadas[1]=ram_page_40;
     debug_paginas_memoria_mapeadas[2]=ram_page_80;
     debug_paginas_memoria_mapeadas[3]=ram_page_c0;
+
+    // Las estadísticas de cada ventana corresponden solo a su página actual.
+    // El cambio de página no invalida la caché física: solo reinicia sus contadores.
+    for (ventana=0;ventana<4;ventana++) {
+        if (pagina_anterior[ventana]!=tsconf_memory_paged[ventana]) {
+            tsconf_cache_hits[ventana]=0;
+            tsconf_cache_misses[ventana]=0;
+        }
+    }
 
   //printf ("32765: %02XH rom %d ram1 %d ram2 %d ram3 %d\n",puerto_32765,rom_page,ram_page_40,ram_page_80,ram_page_c0);
 

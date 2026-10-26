@@ -6486,7 +6486,7 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         sprintf (buf_linea," Total hits: %llu (%d%%), misses: %llu (%d%%)\n",
                   total_hits,total_hit_percent,total_misses,total_miss_percent);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        sprintf (buf_linea," Counters since reset or cache/speed change\n");
+        sprintf (buf_linea," Counters since page, cache or speed change\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"\nTSConf Registers:\n");
