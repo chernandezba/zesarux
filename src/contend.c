@@ -33,6 +33,7 @@
 #include "ula.h"
 #include "tbblue.h"
 #include "baseconf.h"
+#include "tsconf.h"
 
 
 int contend_patron_65432100[] = { 5, 4, 3, 2, 1, 0, 0, 6 };
@@ -973,9 +974,9 @@ void ula_contend_port_late_baseconf(z80_int port)
 
 //tsconf
 
-void contend_read_tsconf(z80_int direccion GCC_UNUSED,int time)
+void contend_read_tsconf(z80_int direccion,int time)
 {
-        //Y sumamos estados normales
+        if (time==4) t_estados += tsconf_cache_read_wait(direccion,1);
         t_estados += time;
 
 }

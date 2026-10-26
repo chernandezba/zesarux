@@ -2915,6 +2915,7 @@ void set_machine_params(void)
 
 
         case MACHINE_ID_TSCONF:
+            fetch_opcode=fetch_opcode_tsconf;
             poke_byte=poke_byte_tsconf;
             peek_byte=peek_byte_tsconf;
             peek_byte_no_time=peek_byte_no_time_tsconf;

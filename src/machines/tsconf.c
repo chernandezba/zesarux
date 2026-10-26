@@ -253,6 +253,83 @@ z80_byte *tsconf_ram_mem_table[256];
 
 //Direcciones actuales mapeadas, bloques de 16 kb
 z80_byte *tsconf_memory_paged[4];
+
+/* Caché de RAM de TSConf: 512 bytes de correspondencia directa. Solo actúa
+   a 14 MHz y en las ventanas habilitadas por CacheConfig (#2BAF). Cada fallo
+   carga dos bytes contiguos y añade la espera de acceso a DRAM; una lectura
+   posterior de esos bytes evita esa espera. Las escrituras de CPU invalidan
+   el par afectado. La ROM y los modos de 3,5/7 MHz no usan la caché. */
+static z80_byte *tsconf_cache_tags[512];
+static z80_byte tsconf_cache_data[512];
+
+/* Invalida las 512 entradas de la caché de TSConf. No recibe parámetros
+   ni devuelve valor; se llama al reiniciar la máquina. */
+static void tsconf_cache_clear(void)
+{
+    int i;
+    for (i=0;i<512;i++) tsconf_cache_tags[i]=NULL;
+}
+
+/* Indica si la dirección de CPU 'address' apunta a RAM según el mapa actual.
+   Devuelve 1 para RAM y 0 para ROM; la caché no actúa sobre la ROM. */
+static int tsconf_cache_is_ram(z80_int address)
+{
+    return address>=0x4000 || (tsconf_get_memconfig()&8) || tsconf_vdos_active.v;
+}
+
+/* Consulta o rellena la entrada asociada a la dirección de CPU 'address'.
+   Devuelve 0 si ya estaba en caché y 1 si hubo que leer la RAM física.
+   El relleno carga el par de bytes que comparte el acceso de DRAM. */
+static int tsconf_cache_fetch(z80_int address)
+{
+    int window=address>>14;
+    int index=address&511;
+    z80_byte *block=tsconf_memory_paged[window]+(address&0x3e00);
+    // CacheConfig (#2BAF): cada bit 0-3 habilita la caché en una ventana de 16 KiB.
+    // La caché solo interviene cuando la CPU funciona a 14 MHz.
+    int enabled=(cpu_turbo_speed==4) && (tsconf_af_ports[0x2b]&(1<<window));
+    if (enabled && tsconf_cache_tags[index]==block) return 0;
+
+    // Cada fallo carga dos bytes consecutivos de la RAM física.
+    int pair=index&~1;
+    int offset=(address&0x3fff)&~1;
+    tsconf_cache_data[pair]=tsconf_memory_paged[window][offset];
+    tsconf_cache_data[pair+1]=tsconf_memory_paged[window][offset+1];
+    tsconf_cache_tags[pair]=tsconf_cache_tags[pair+1]=enabled ? block : NULL;
+    return 1;
+}
+
+/* Calcula la espera adicional de una lectura de RAM en 'address'. 'm1' vale
+   1 para la lectura de opcode y 0 para una lectura de datos. Devuelve ciclos
+   de CPU adicionales; solo los fallos de caché a 14 MHz introducen espera. */
+int tsconf_cache_read_wait(z80_int address,int m1)
+{
+    if (!tsconf_cache_is_ram(address)) return 0;
+    int miss=tsconf_cache_fetch(address);
+    if (cpu_turbo_speed!=4 || !miss) return 0;
+    // A 14 MHz, el fallo espera al siguiente ciclo de la DRAM de 7 MHz.
+    if (m1) return (t_estados&1) ? 3 : 4;
+    return (t_estados&1) ? 3 : 2;
+}
+
+/* Lee la dirección de CPU 'address' a través de la caché de TSConf.
+   Devuelve el byte leído. El tiempo del acceso se cuenta por separado. */
+z80_byte tsconf_cache_read(z80_int address)
+{
+    if (!tsconf_cache_is_ram(address) || cpu_turbo_speed!=4) {
+        return tsconf_memory_paged[address>>14][address&0x3fff];
+    }
+    tsconf_cache_fetch(address);
+    return tsconf_cache_data[address&511];
+}
+
+/* Invalida el par de bytes de caché correspondiente a una escritura en la
+   dirección de CPU 'address'. No devuelve valor. */
+void tsconf_cache_invalidate(z80_int address)
+{
+    int pair=address&510;
+    tsconf_cache_tags[pair]=tsconf_cache_tags[pair+1]=NULL;
+}
 static int tsconf_7ffd_locked;
 
 //Almacena tamanyo pantalla y border para modo actual
@@ -482,10 +559,13 @@ void tsconf_set_emulator_setting_turbo(void)
 
 
                                 */
+        int velocidad_anterior=cpu_turbo_speed;
         z80_byte t=tsconf_af_ports[32] & 3;
         if (t==0) cpu_turbo_speed=1;
         else if (t==1) cpu_turbo_speed=2;
         else cpu_turbo_speed=4;
+
+        if (cpu_turbo_speed!=velocidad_anterior) tsconf_cache_clear();
 
 
         //printf ("Setting turbo: %d\n",cpu_turbo_speed);
@@ -959,6 +1039,7 @@ char *tsconf_dma_types[]={
 
 void tsconf_write_af_port(z80_byte puerto_h,z80_byte value)
 {
+  z80_byte cache_anterior=tsconf_af_ports[0x2b];
 
   tsconf_af_ports[puerto_h]=value;
 
@@ -1026,8 +1107,12 @@ ZXPAL      dw  #0000,#0010,#4000,#4010,#0200,#0210,#4200,#4210
   }
 
   if (puerto_h==32) {
+    tsconf_af_ports[0x2b]=(tsconf_af_ports[0x2b]&0xf0) | ((value&4) ? 15 : 0);
     tsconf_set_emulator_setting_turbo();
   }
+
+  if (puerto_h==0x2b) tsconf_af_ports[0x2b]&=15;
+  if (tsconf_af_ports[0x2b]!=cache_anterior) tsconf_cache_clear();
 
   //if (puerto_h>=0x1A && puerto_h<=0x1F) debug_printf (VERBOSE_DEBUG,"Writing DMA source/dest register %02XH",puerto_h);
 
@@ -1126,6 +1211,7 @@ mis opciones:
 
 void tsconf_reset_cpu(void)
 {
+    tsconf_cache_clear();
     tsconf_ula_y_last_scanline=-1;
     tsconf_ula_y_reload=0;
     tsconf_ula_y_reload_next=0;
@@ -1422,6 +1508,7 @@ void tsconf_set_memory_pages(void)
 
 void tsconf_hard_reset(void)
 {
+  tsconf_cache_clear();
 
   ide_smuc_reset();
   tsconf_ula_y_last_scanline=-1;
@@ -3314,9 +3401,7 @@ void tsconf_handle_frame_interrupts(void)
     //Ver en que posicion de t-estados por linea estamos
 
     int estados_en_linea=t_estados % screen_testados_linea;
-
-    //Dividir por turbo
-    //estados_en_linea /=cpu_turbo_speed;
+    int posicion_interrupcion=int_raster_x*cpu_turbo_speed;
 
     //primero comparar scanline
     if (t_scanline==int_raster_y) {
@@ -3324,7 +3409,7 @@ void tsconf_handle_frame_interrupts(void)
         //printf ("disparada raster y: %d  \n",int_raster_y);
         //Y ahora ver si nos "hemos" pasado de la posicion estados_en_linea anterior
 
-        if (estados_en_linea>=int_raster_x && estados_en_linea<tsconf_handle_frame_interrupts_prev_horiz) {
+        if (estados_en_linea>=posicion_interrupcion && estados_en_linea<tsconf_handle_frame_interrupts_prev_horiz) {
             //temp saltar sin tener en cuenta posicion X
             //if (t_scanline>tsconf_last_frame_y) {
 

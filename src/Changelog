@@ -85,6 +85,7 @@ Fixed ZX Evo TSConf:
 - Added IDE Nemo emulation
 - Added IDE Smuc emulation
 - Updated to last ROM
+- Improved TSConf CPU timing: added 14 MHz RAM wait states and cache emulation, and corrected raster interrupt timing in turbo modes
 - Fixed scroll counter, raster interrupt
 - Fixed DMA burst alignment, burst wrapping
 - Fixed tile zero transparency
