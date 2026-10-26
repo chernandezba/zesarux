@@ -253,7 +253,6 @@ necesita core 3.2.0 o inferior!
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
-Debug:    ZENG Online: Set alive time for user 1588586687.178043
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
@@ -282,8 +281,6 @@ Error que sale probando desde WC:
 
 machines/tsconf.c:1251:28: runtime error: index 135 out of bounds for type 'z80_byte *[32]' (aka 'unsigned char *[32]')
 SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:28
-
-
 
 
 -NeoGS emular?
@@ -318,8 +315,6 @@ https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.u
 -Scorpion
 
 
-*mover funciones peek y poke de scorpion a scorpion.h
-
 *snapshots zsf
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
@@ -336,14 +331,11 @@ acabar de probarlo **modos de video ampliado
 *usamos pruebascorpiongmx.mmc
 
 
-*realvideo scorpion y gmx ok
-
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 *probar gmx en otros drivers de video (sdl, x11, etc)
 
 
-*falta en debug indicar memory zones
 
 ------
 
@@ -354,13 +346,11 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 ---
 
 -----
+
 -en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
 
 ---
-
-
--timings tsconf
 
 
 -en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
