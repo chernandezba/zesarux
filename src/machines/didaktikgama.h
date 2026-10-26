@@ -35,6 +35,7 @@ extern void didaktikgama_malloc_mem_machine(void);
 
 
 extern void didaktikgama_mem_page_ram(void);
+extern z80_byte didaktikgama_get_current_ram_page(void);
 
 
 extern z80_byte *didaktikgama_ram_mem_table[];

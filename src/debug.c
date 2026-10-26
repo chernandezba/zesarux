@@ -7806,7 +7806,27 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         strcpy (segmentos[1].longname,"RAM (1 KB)");
     }
 
-            //TODO SMS
+    //TODO SMS
+
+    if (MACHINE_IS_DIDAKTIKGAMA) {
+
+        segmentos_totales=3;
+
+        segmentos[0].length=16384;
+        segmentos[0].start=0;
+        strcpy (segmentos[0].shortname,"ROM");
+        strcpy (segmentos[0].longname,"ROM");
+
+        segmentos[1].length=16384;
+        segmentos[1].start=16384;
+        strcpy (segmentos[1].shortname,"VRAM");
+        strcpy (segmentos[1].longname,"VRAM");
+
+        segmentos[2].length=32768;
+        segmentos[2].start=32768;
+        sprintf (segmentos[2].shortname,"BANK%c",'A'+didaktikgama_get_current_ram_page() );
+        sprintf (segmentos[2].longname,"BANK%c",'A'+didaktikgama_get_current_ram_page() );
+    }
 
 
     //Paginas RAM en CHLOE
