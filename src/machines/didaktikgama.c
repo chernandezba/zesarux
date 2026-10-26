@@ -253,8 +253,16 @@ void didaktikgama_mem_page_ram(void)
 {
 
     // PC0 tiene una resistencia a tierra cuando se configura como entrada.
-    z80_byte page_entra=(didaktikgama_8255_mode & 4) ? didaktikgama_8255_intr_b() :
-                          ((didaktikgama_8255_mode & 1) ? 0 : (didaktikgama_8255_port_c & 1));
+    z80_byte page_entra;
+    if (didaktikgama_8255_mode & 4) {
+        page_entra=didaktikgama_8255_intr_b();
+    }
+    else if (didaktikgama_8255_mode & 1) {
+        page_entra=0;
+    }
+    else {
+        page_entra=didaktikgama_8255_port_c & 1;
+    }
 
     didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[page_entra];
     didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[page_entra]+16384;
