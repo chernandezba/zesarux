@@ -28,7 +28,6 @@ extern void cpu_core_loop_spectrum(void);
 extern z80_byte byte_leido_core_spectrum;
 extern void core_spectrum_store_rainbow_current_atributes(void);
 extern int si_siguiente_sonido(void);
-extern void t_scanline_next_fullborder(void);
 extern void interrupcion_si_despues_lda_ir(void);
 
 #endif

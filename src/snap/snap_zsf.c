@@ -3398,11 +3398,14 @@ void load_zsf_baseconf_conf(z80_byte *header)
     baseconf_beta_drive_selected=header[61];
     baseconf_trdos_emulation_active=header[62];
     baseconf_border_colour=header[63];
-    //fullbuffer_border[0]=baseconf_border_colour; //Esto en otras maquinas no hace falta
-    screen_border_last_color=baseconf_border_colour; //Esto en otras maquinas no hace falta
-    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH); //Esto en otras maquinas no hace falta
 
-    //printf("restored border color %d\n",baseconf_border_colour);
+
+    //Necesario screen_border_last_color y t_scanline_next_fullborder() para el
+    //refresco de border en baseconf con realvideo, quiza el render de border
+    //se hace ligeramente diferente que otras maquinas y por eso es necesario
+    screen_border_last_color=baseconf_border_colour;
+    t_scanline_next_fullborder();
+
 
 
     baseconf_set_memory_pages();

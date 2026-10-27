@@ -10678,6 +10678,31 @@ void t_scanline_next_line(void)
 
 }
 
+//Usado en core spectrum normal y reduced
+void t_scanline_next_fullborder(void)
+{
+    //resetear buffer border
+
+    int i;
+
+    //No si esta desactivado en tbblue
+    if (MACHINE_IS_TBBLUE && tbblue_store_scanlines_border.v==0) return;
+
+    //a 255
+    //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
+    //mas rapido con memset
+    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
+
+	//Resetear buffer border para prism
+	if (MACHINE_IS_PRISM) {
+		for (i=0;i<CURRENT_PRISM_BORDER_BUFFER;i++) prism_ula2_border_colour_buffer[i]=65535;
+	}
+
+	//printf ("max buffer border : %d\n",i);
+
+
+}
+
 
 void screen_z88_return_sbr(z88_dir *dir)
 {

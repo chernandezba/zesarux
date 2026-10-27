@@ -474,6 +474,7 @@ extern int rainbow_buffer_current_height;
 
 extern void set_t_scanline_draw_zero(void);
 extern void t_scanline_next_line(void);
+extern void t_scanline_next_fullborder(void);
 
 extern void screen_z88_refresca_pantalla(void);
 

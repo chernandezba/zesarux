@@ -161,8 +161,6 @@ void core_sam_fin_frame_pantalla(void)
 {
 
 
-    //if (rainbow_enabled.v==1) t_scanline_next_fullborder();
-
     t_scanline=0;
 
     timer_get_elapsed_core_frame_post();
