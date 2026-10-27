@@ -121,6 +121,7 @@ extern z80_byte debug_tsconf_dma_rw;
 extern char *tsconf_dma_types[];
 
 extern z80_bit tsconf_dma_disabled;
+void tsconf_dma_advance(int cycles);
 
 
 extern int tsconf_if_ula_enabled(void);

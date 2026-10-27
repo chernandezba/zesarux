@@ -710,6 +710,60 @@ z80_byte debug_tsconf_dma_rw=0;
 
 z80_bit tsconf_dma_disabled={0};
 
+typedef struct {
+    int active, source, destination, burst_source, burst_destination;
+    int words_left, bursts_left, burst_length, cycles;
+    z80_byte s_align, d_align, align_size, device, direction, option;
+} tsconf_dma_state_t;
+
+static tsconf_dma_state_t tsconf_dma_state;
+void tsconf_dma_operation(int source,int destination,int burst_length,int burst_number,z80_byte s_align,z80_byte d_align,z80_byte addr_align_size,z80_byte dma_ddev,z80_byte dma_rw,z80_byte dma_opt);
+
+// Avanza la DMA con los ciclos de memoria transcurridos desde la última instrucción.
+// La transferencia se hace por palabras y sus registros cambian al terminar cada ráfaga.
+void tsconf_dma_advance(int cycles)
+{
+    tsconf_dma_state_t *dma=&tsconf_dma_state;
+    if (!dma->active || tsconf_dma_disabled.v) return;
+
+    dma->cycles+=cycles;
+    while (dma->active && dma->cycles>=2) {
+        dma->cycles-=2;
+        int source_before=dma->source;
+        int destination_before=dma->destination;
+        tsconf_dma_operation(dma->source,dma->destination,1,1,0,0,dma->align_size,
+            dma->device,dma->direction,dma->option);
+        dma->source=tsconf_return_dma_addr_reg_to_linear(tsconf_af_ports[0x1a],tsconf_af_ports[0x1b],tsconf_af_ports[0x1c]);
+        dma->destination=tsconf_return_dma_addr_reg_to_linear(tsconf_af_ports[0x1d],tsconf_af_ports[0x1e],tsconf_af_ports[0x1f]);
+        int mask=dma->align_size ? 0x1ff : 0xff;
+        if (dma->s_align) dma->source=(source_before & ~mask) | (dma->source & mask);
+        if (dma->d_align) dma->destination=(destination_before & ~mask) | (dma->destination & mask);
+        tsconf_return_dma_addr_linear_to_reg(dma->source,&tsconf_af_ports[0x1a],&tsconf_af_ports[0x1b],&tsconf_af_ports[0x1c]);
+        tsconf_return_dma_addr_linear_to_reg(dma->destination,&tsconf_af_ports[0x1d],&tsconf_af_ports[0x1e],&tsconf_af_ports[0x1f]);
+        dma->words_left--;
+        if (dma->words_left) continue;
+
+        dma->bursts_left--;
+        if (!dma->bursts_left) {
+            if (dma->s_align) dma->source=tsconf_align_address(dma->burst_source,dma->align_size);
+            if (dma->d_align) dma->destination=tsconf_align_address(dma->burst_destination,dma->align_size);
+            tsconf_return_dma_addr_linear_to_reg(dma->source,&tsconf_af_ports[0x1a],&tsconf_af_ports[0x1b],&tsconf_af_ports[0x1c]);
+            tsconf_return_dma_addr_linear_to_reg(dma->destination,&tsconf_af_ports[0x1d],&tsconf_af_ports[0x1e],&tsconf_af_ports[0x1f]);
+            dma->active=0;
+            tsconf_fire_dma_interrupt();
+            break;
+        }
+
+        if (dma->s_align) dma->source=tsconf_align_address(dma->burst_source,dma->align_size);
+        if (dma->d_align) dma->destination=tsconf_align_address(dma->burst_destination,dma->align_size);
+        dma->burst_source=dma->source;
+        dma->burst_destination=dma->destination;
+        dma->words_left=dma->burst_length;
+        tsconf_return_dma_addr_linear_to_reg(dma->source,&tsconf_af_ports[0x1a],&tsconf_af_ports[0x1b],&tsconf_af_ports[0x1c]);
+        tsconf_return_dma_addr_linear_to_reg(dma->destination,&tsconf_af_ports[0x1d],&tsconf_af_ports[0x1e],&tsconf_af_ports[0x1f]);
+    }
+}
+
 void tsconf_dma_put_pixel_blit2(z80_byte *destination, z80_byte byte_source, z80_byte addr_align_size,z80_byte dma_opt)
 {
     //addr_align_size: 0 4bpp. 1 8bb
@@ -785,17 +839,6 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
 
     z80_byte *source_pointer;
     z80_byte *destination_pointer;
-
-    //Guardamos estos valores en variable de debug para mostrarlos en menu debug, solo a titulo informativo
-    debug_tsconf_dma_source=source;
-    debug_tsconf_dma_destination=destination;
-    debug_tsconf_dma_burst_length=burst_length;
-    debug_tsconf_dma_burst_number=burst_number;
-    debug_tsconf_dma_s_align=s_align;
-    debug_tsconf_dma_d_align=d_align;
-    debug_tsconf_dma_addr_align_size=addr_align_size;
-    debug_tsconf_dma_ddev=dma_ddev;
-    debug_tsconf_dma_rw=dma_rw;
 
     z80_byte dma_operation=dma_ddev*2+dma_rw;
 
@@ -1193,11 +1236,35 @@ ZXPAL      dw  #0000,#0010,#4000,#4010,#0200,#0210,#4200,#4210
         //debug_printf (VERBOSE_DEBUG,"Writing DMA DMA source: %06XH dest: %06XH DMALen: %02XH A_SZ: %d D_ALGN: %d S_ALGN: %d DMACtrl: %02XH DMANum: %02XH",
         //	dmasource,dmadest,tsconf_af_ports[0x26],dma_a_sz,dma_d_algn,dma_s_algn,tsconf_af_ports[0x27],tsconf_af_ports[0x28]);
 
-        tsconf_dma_operation(dmasource,dmadest,dma_burst_length,dma_num,dma_s_algn,dma_d_algn,dma_a_sz,dma_ddev,dma_rw,dma_opt);
-
-        //void tsconf_dma_operation(int source,int destination,int burst_length,int burst_number,z80_byte s_align,z80_byte d_align,z80_byte addr_align_size,z80_byte dma_ddev,z80_byte dma_rw)
-
-        if (tsconf_dma_disabled.v==0) tsconf_fire_dma_interrupt();
+        // Un controlador DMA admite una sola transacción simultánea.
+        int dma_mode=dma_ddev*2+dma_rw;
+        int supported=(dma_mode==2 || dma_mode==3 || dma_mode==4 ||
+            dma_mode==6 || dma_mode==7 || dma_mode==8 || dma_mode==9 ||
+            dma_mode==11 || dma_mode==12);
+        if (!tsconf_dma_state.active && !tsconf_dma_disabled.v && supported) {
+            debug_tsconf_dma_source=dmasource;
+            debug_tsconf_dma_destination=dmadest;
+            debug_tsconf_dma_burst_length=dma_burst_length;
+            debug_tsconf_dma_burst_number=dma_num;
+            debug_tsconf_dma_s_align=dma_s_algn;
+            debug_tsconf_dma_d_align=dma_d_algn;
+            debug_tsconf_dma_addr_align_size=dma_a_sz;
+            debug_tsconf_dma_ddev=dma_ddev;
+            debug_tsconf_dma_rw=dma_rw;
+            tsconf_dma_state.active=1;
+            tsconf_dma_state.source=tsconf_dma_state.burst_source=dmasource;
+            tsconf_dma_state.destination=tsconf_dma_state.burst_destination=dmadest;
+            tsconf_dma_state.words_left=tsconf_dma_state.burst_length=dma_burst_length;
+            tsconf_dma_state.bursts_left=dma_num;
+            tsconf_dma_state.cycles=0;
+            tsconf_dma_state.s_align=dma_s_algn;
+            tsconf_dma_state.d_align=dma_d_algn;
+            tsconf_dma_state.align_size=dma_a_sz;
+            tsconf_dma_state.device=dma_ddev;
+            tsconf_dma_state.direction=dma_rw;
+            tsconf_dma_state.option=dma_opt;
+        }
+        else if (!supported) debug_printf(VERBOSE_DEBUG,"Unemulated dma type: rw: %d ddev: %02XH",dma_rw,dma_ddev);
 
 
   }
@@ -1247,7 +1314,7 @@ mis opciones:
           //return tsconf_af_ports[index] & 0x7f; //Quitar bit 7
 
           //Solo se usa bit 7, quitarlos todos
-          return 0;
+          return tsconf_dma_state.active ? 0x80 : 0;
       break;
 
   }
@@ -1257,6 +1324,7 @@ mis opciones:
 
 void tsconf_reset_cpu(void)
 {
+    tsconf_dma_state.active=0;
     tsconf_cache_clear();
     tsconf_ula_y_last_scanline=-1;
     tsconf_ula_y_reload=0;

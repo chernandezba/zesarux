@@ -1098,6 +1098,7 @@ void core_spectrum_ciclo_fetch(void)
 #endif
 
     int delta_t_estados=t_estados-t_estados_antes_opcode;
+    if (MACHINE_IS_TSCONF) tsconf_dma_advance(delta_t_estados*4/cpu_turbo_speed);
 
     //if (!core_refetch) duracion_ultimo_opcode=delta_t_estados;
     //else duracion_ultimo_opcode +=delta_t_estados;
