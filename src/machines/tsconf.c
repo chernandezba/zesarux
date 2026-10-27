@@ -721,7 +721,7 @@ static int tsconf_dma_recent_seconds;
 void tsconf_dma_operation(int source,int destination,int burst_length,int burst_number,z80_byte s_align,z80_byte d_align,z80_byte addr_align_size,z80_byte dma_ddev,z80_byte dma_rw,z80_byte dma_opt);
 
 // Reduce cada segundo el tiempo durante el que se muestra actividad reciente de la DMA.
-void tsconf_dma_second_timer(void)
+void tsconf_dma_decrease_info_timer(void)
 {
     if (tsconf_dma_recent_seconds>0) tsconf_dma_recent_seconds--;
 }

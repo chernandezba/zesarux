@@ -1345,8 +1345,6 @@ void timer_check_interrupt(void)
 
             contador_segundo=0;
 
-            if (MACHINE_IS_TSCONF) tsconf_dma_second_timer();
-
 
             //Estadisticas de vsync por second
             last_vsync_per_second=vsync_per_second;
@@ -1393,7 +1391,7 @@ void timer_check_interrupt(void)
                 }
             }
 
-
+            if (MACHINE_IS_TSCONF) tsconf_dma_decrease_info_timer();
 
             //Temporizador para decir si se ha detectado real joystick
             //dado que si no hay joystick, por defecto está habilitado el bit de joystick presente, pero luego

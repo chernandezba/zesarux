@@ -121,7 +121,7 @@ extern z80_byte debug_tsconf_dma_rw;
 extern char *tsconf_dma_types[];
 
 extern z80_bit tsconf_dma_disabled;
-void tsconf_dma_advance(int cycles);
+extern void tsconf_dma_advance(int cycles);
 
 typedef struct {
     int active;
@@ -133,8 +133,8 @@ typedef struct {
     int used_recently;
 } tsconf_dma_debug_state_t;
 
-void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state);
-void tsconf_dma_second_timer(void);
+extern void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state);
+extern void tsconf_dma_decrease_info_timer(void);
 
 
 extern int tsconf_if_ula_enabled(void);
