@@ -1319,7 +1319,10 @@ void old_pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
     pd765_put_buffer(return_value);
 }
-void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus)
+//end_of_cylinder vale 1 si la lectura terminó al completar el sector EOT,
+//sin que la señal TC la detuviera antes. Si no hubo otro error, la respuesta
+//llevará ST0=40H y ST1=80H (fin de cilindro).
+void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus,int end_of_cylinder)
 {
 
 
@@ -1538,6 +1541,11 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         pd765_read_command_must_stop_anormal_termination=1;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Abnormal termination by CRC error");
         //sleep(1);
+    }
+
+    if (end_of_cylinder && leido_st0==0 && leido_id_st1==0) {
+        leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT;
+        leido_id_st1 |=PD765_STATUS_REGISTER_ONE_EN_MASK;
     }
 
     if (put_values_in_bus) {
@@ -1842,7 +1850,7 @@ field are not checked when SK = 1.
 
 
     //Evaluar condiciones que hacen abortar el comando
-    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,0);
+    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,0,0);
 
 
 }
@@ -3415,7 +3423,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
         pd765_reset_buffer();
 
-        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,0);
 
 
         //E indicar fase ejecucion ha finalizado
@@ -3503,7 +3511,12 @@ z80_byte pd765_read_result_command_read_data(void)
                 //pd765_input_parameter_r++;
                 //pd765_read_command_searching_parameter_r++;
 
-                pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+                //Marcar fin de cilindro solo si se llegó al sector EOT de una lectura
+                //de una cara. Con MT activo puede continuar en la otra cara; READ TRACK
+                //usa EOT como cantidad de sectores, no como último identificador.
+                int end_of_cylinder=condition_end_sector && !pd765_input_parameter_mt &&
+                    pd765_command_received!=PD765_COMMAND_READ_TRACK;
+                pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,end_of_cylinder);
 
 
                 //E indicar fase ejecucion ha finalizado
@@ -3759,7 +3772,7 @@ void pd765_set_terminal_count_signal(void)
 
         pd765_reset_buffer();
 
-        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,0);
 
 
         //E indicar fase ejecucion ha finalizado
@@ -3790,7 +3803,7 @@ void pd765_set_terminal_count_signal(void)
         pd765_reset_buffer();
 
         //TODO: no estoy seguro de esto
-        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_write,1);
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_write,1,0);
 
 
         //E indicar fase ejecucion ha finalizado
