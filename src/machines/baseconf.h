@@ -62,6 +62,14 @@ extern z80_int baseconf_palette[];
 
 extern void baseconf_set_cpu_speed(void);
 
+extern z80_byte baseconf_extended_dos_ports[];
+
+extern z80_byte baseconf_beta_drive_virtual;
+extern z80_byte baseconf_beta_drive_selected;
+extern int baseconf_trdos_emulation_active;
+
+extern z80_byte baseconf_border_colour;
+
 //extern void baseconf_write_af_port(z80_byte puerto_h,z80_byte value);
 //extern z80_byte baseconf_get_af_port(z80_byte index);
 extern void baseconf_init_memory_tables(void);

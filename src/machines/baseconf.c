@@ -57,10 +57,10 @@ z80_byte *baseconf_ram_mem_table[BASECONF_RAM_PAGES];
 z80_byte *baseconf_memory_paged[4];
 
 // Números de página resueltos para las cuatro ventanas de la CPU.
-z80_byte baseconf_memory_segments[4];
+z80_byte baseconf_memory_segments[4]; //OK NO ZSF
 
 // Tipo de cada ventana: cero para ROM y valor distinto de cero para RAM.
-z80_byte baseconf_memory_segments_type[4];
+z80_byte baseconf_memory_segments_type[4]; //OK NO ZSF
 
 /*
  * BaseConf tiene dos conjuntos de cuatro registros de gestión de memoria.
@@ -82,13 +82,13 @@ int baseconf_dos_signal;  //OK ZSF
 /* Estado del Beta Disk virtual de PentEvo. El firmware guarda el servicio
    de RAM-disk en la página RAM FE y lo selecciona en lugar del FDC físico. */
 // Máscara de unidades Beta Disk cuyo medio procede del RAM-disk.
-static z80_byte baseconf_beta_drive_virtual;
+z80_byte baseconf_beta_drive_virtual; //OK ZSF
 // Número de unidad Beta Disk seleccionado actualmente.
-static z80_byte baseconf_beta_drive_selected;
+z80_byte baseconf_beta_drive_selected; //OK ZSF
 // Indica que la ventana ROM está sustituida por el servicio TR-DOS en RAM.
-static int baseconf_trdos_emulation_active;
+int baseconf_trdos_emulation_active; //OK ZSF
 // Últimos valores de los cuatro puertos de DOS extendido.
-static z80_byte baseconf_extended_dos_ports[4];
+z80_byte baseconf_extended_dos_ports[4]; //OK ZSF
 // Entradas RGB de la paleta programable de dieciséis colores.
 
 
@@ -140,7 +140,7 @@ static const z80_int baseconf_palette_default[16]={
         0,15,3840,3855,240,255,4080,4095
 };
 // Índice de color actual del borde de cuatro bits.
-static z80_byte baseconf_border_colour;
+z80_byte baseconf_border_colour;
 // Color del borde guardado antes de entrar en el servicio NMI.
 static z80_byte baseconf_nmi_saved_border_colour;
 // Dirección M1 donde se intercepta la entrada del servicio NMI.

@@ -3317,7 +3317,7 @@ Byte fields:
 
 }
 
-#define ZSF_BASECONF_CONF_BLOCK_LENGTH 56
+#define ZSF_BASECONF_CONF_BLOCK_LENGTH 64
 
 void store_zsf_baseconf_conf(z80_byte *baseconfconfblock)
 {
@@ -3346,7 +3346,17 @@ void store_zsf_baseconf_conf(z80_byte *baseconfconfblock)
         baseconfconfblock[24+i*2+1]=value_16_to_8h(baseconf_palette[i]);
     }
 
-    //baseconfconfblock[56]=....
+    baseconfconfblock[56]=baseconf_extended_dos_ports[0];
+    baseconfconfblock[57]=baseconf_extended_dos_ports[1];
+    baseconfconfblock[58]=baseconf_extended_dos_ports[2];
+    baseconfconfblock[59]=baseconf_extended_dos_ports[3];
+
+    baseconfconfblock[60]=baseconf_beta_drive_virtual;
+    baseconfconfblock[61]=baseconf_beta_drive_selected;
+    baseconfconfblock[62]=baseconf_trdos_emulation_active;
+    baseconfconfblock[63]=baseconf_border_colour;
+
+    //printf("border color %d\n",baseconf_border_colour);
 
 }
 
@@ -3378,7 +3388,18 @@ void load_zsf_baseconf_conf(z80_byte *header)
         baseconf_palette[i]=color;
     }
 
+    baseconf_extended_dos_ports[0]=header[56];
+    baseconf_extended_dos_ports[1]=header[57];
+    baseconf_extended_dos_ports[2]=header[58];
+    baseconf_extended_dos_ports[3]=header[59];
 
+
+    baseconf_beta_drive_virtual=header[60];
+    baseconf_beta_drive_selected=header[61];
+    baseconf_trdos_emulation_active=header[62];
+    baseconf_border_colour=header[63];
+
+    //printf("restored border color %d\n",baseconf_border_colour);
 
 
     baseconf_set_memory_pages();
