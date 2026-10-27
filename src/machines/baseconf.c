@@ -129,7 +129,7 @@ z80_byte baseconf_last_port_7f7; //OK ZSF
 z80_byte baseconf_last_port_bf7; //OK ZSF
 
 
-static z80_int baseconf_palette[16];
+z80_int baseconf_palette[BASECONF_PALETTE_ENTRIES];
 /* Paleta inicial tras un hard reset: copia las primeras 16 entradas de
    initial_prism_palette_zero (prism.c). Cada valor es RGB444 (0xRGB).
    Orden Spectrum en cada fila: negro, azul, rojo, magenta, verde, cian,

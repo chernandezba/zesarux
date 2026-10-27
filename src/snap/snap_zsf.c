@@ -3317,7 +3317,7 @@ Byte fields:
 
 }
 
-#define ZSF_BASECONF_CONF_BLOCK_LENGTH 24
+#define ZSF_BASECONF_CONF_BLOCK_LENGTH 56
 
 void store_zsf_baseconf_conf(z80_byte *baseconfconfblock)
 {
@@ -3339,6 +3339,14 @@ void store_zsf_baseconf_conf(z80_byte *baseconfconfblock)
     baseconfconfblock[21]=baseconf_shadow_mode_port_77;
     baseconfconfblock[22]=baseconf_last_port_bf;
     baseconfconfblock[23]=baseconf_last_port_eff7;
+
+
+    for (i=0;i<16;i++) {
+        baseconfconfblock[24+i*2]=value_16_to_8l(baseconf_palette[i]);
+        baseconfconfblock[24+i*2+1]=value_16_to_8h(baseconf_palette[i]);
+    }
+
+    //baseconfconfblock[56]=....
 
 }
 
@@ -3364,6 +3372,13 @@ void load_zsf_baseconf_conf(z80_byte *header)
     baseconf_shadow_mode_port_77=header[21];
     baseconf_last_port_bf=header[22];
     baseconf_last_port_eff7=header[23];
+
+    for (i=0;i<16;i++) {
+        z80_int color=header[24+i*2]+256*header[24+i*2+1];
+        baseconf_palette[i]=color;
+    }
+
+
 
 
     baseconf_set_memory_pages();
