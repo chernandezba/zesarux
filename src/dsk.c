@@ -516,7 +516,7 @@ int dsk_get_protection_scheme(char *buffer)
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_alkatraz)) {
         strcpy(buffer,"ALKATRAZ 1987");
-        return 1;
+        return 0;
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_three_inch)) {

@@ -102,6 +102,7 @@ Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
 Fixed MEMPTR after Z80 return instructions
 Fixed Spectrum floating bus reads on 48K and 128K
 Fixed no-MREQ contention on Spectrum +2A and +3
+Fixed PD765 end-of-cylinder status after EOT read (Alkatraz protected games now load)
 Fixed CPC rendering without border
 Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
