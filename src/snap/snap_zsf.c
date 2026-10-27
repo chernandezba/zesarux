@@ -3336,6 +3336,7 @@ void load_zsf_baseconf_conf(z80_byte *header)
     }
 
     baseconf_dos_signal=header[19];
+    baseconf_last_port_77=header[20];
 
 
     baseconf_set_memory_pages();
@@ -6581,7 +6582,7 @@ Byte Fields:
 if (MACHINE_IS_BASECONF) {
   //Configuracion
 
-  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 20
+  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 21
   z80_byte baseconfconfblock[ZSF_BASECONF_CONF_BLOCK_LENGTH];
 
 
@@ -6600,6 +6601,7 @@ if (MACHINE_IS_BASECONF) {
 
 
     baseconfconfblock[19]=baseconf_dos_signal;
+    baseconfconfblock[20]=baseconf_last_port_77;
 
 
 

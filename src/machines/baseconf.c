@@ -93,7 +93,7 @@ static z80_byte baseconf_extended_dos_ports[4];
 
 
 // Último valor escrito en el puerto 77 de vídeo y turbo.
-z80_byte baseconf_last_port_77;
+z80_byte baseconf_last_port_77; //OK ZSF
 // Último valor escrito en el puerto 77 de la interfaz SD.
 z80_byte baseconf_last_port_sd_77;
 // Bits de control shadow del puerto 77, separados de los de vídeo.
