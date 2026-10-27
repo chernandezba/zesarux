@@ -1257,6 +1257,7 @@ void baseconf_store_scanline_rainbow_border(void)
         state_colour[state]=colour;
     }
     screen_border_last_color=colour;
+    //printf("color %d\n",colour);
 
     //BaseConf genera 288 scanlines visibles, que se duplican verticalmente hasta 576.
     if (visible_y>=0 && visible_y<288) {

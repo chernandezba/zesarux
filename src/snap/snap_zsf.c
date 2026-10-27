@@ -3398,6 +3398,9 @@ void load_zsf_baseconf_conf(z80_byte *header)
     baseconf_beta_drive_selected=header[61];
     baseconf_trdos_emulation_active=header[62];
     baseconf_border_colour=header[63];
+    //fullbuffer_border[0]=baseconf_border_colour; //Esto en otras maquinas no hace falta
+    screen_border_last_color=baseconf_border_colour; //Esto en otras maquinas no hace falta
+    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH); //Esto en otras maquinas no hace falta
 
     //printf("restored border color %d\n",baseconf_border_colour);
 
