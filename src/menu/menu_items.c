@@ -9281,6 +9281,9 @@ void menu_debug_dma_draw(zxvision_window *w)
             zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
                 "Active: %s",dma_state.active ? "Yes" : "No");
 
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Used in last 5 seconds: %s",dma_state.active || dma_state.used_recently ? "Yes" : "No");
+
             menu_debug_dma_existe_dma=1;
 
             //Construimos 16 valores posibles segun rw (bit bajo) y ddev (bits altos)

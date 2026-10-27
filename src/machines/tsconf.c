@@ -717,7 +717,14 @@ typedef struct {
 } tsconf_dma_state_t;
 
 static tsconf_dma_state_t tsconf_dma_state;
+static int tsconf_dma_recent_seconds;
 void tsconf_dma_operation(int source,int destination,int burst_length,int burst_number,z80_byte s_align,z80_byte d_align,z80_byte addr_align_size,z80_byte dma_ddev,z80_byte dma_rw,z80_byte dma_opt);
+
+// Reduce cada segundo el tiempo durante el que se muestra actividad reciente de la DMA.
+void tsconf_dma_second_timer(void)
+{
+    if (tsconf_dma_recent_seconds>0) tsconf_dma_recent_seconds--;
+}
 
 // Devuelve el progreso actual de la DMA para la ventana de depuración.
 void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state)
@@ -728,6 +735,8 @@ void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state)
     state->words_left=tsconf_dma_state.words_left;
     state->bursts_left=tsconf_dma_state.bursts_left;
     state->smuc_selected=ide_smuc_dma_selected && ide_smuc_enabled.v;
+    if (tsconf_dma_recent_seconds>0) state->used_recently=1;
+    else state->used_recently=0;
 }
 
 // Avanza la DMA con los ciclos de memoria transcurridos desde la última instrucción.
@@ -744,6 +753,7 @@ void tsconf_dma_advance(int cycles)
         int destination_before=dma->destination;
         tsconf_dma_operation(dma->source,dma->destination,1,1,0,0,dma->align_size,
             dma->device,dma->direction,dma->option);
+        tsconf_dma_recent_seconds=5;
         dma->source=tsconf_return_dma_addr_reg_to_linear(tsconf_af_ports[0x1a],tsconf_af_ports[0x1b],tsconf_af_ports[0x1c]);
         dma->destination=tsconf_return_dma_addr_reg_to_linear(tsconf_af_ports[0x1d],tsconf_af_ports[0x1e],tsconf_af_ports[0x1f]);
         int mask=dma->align_size ? 0x1ff : 0xff;
@@ -1350,6 +1360,7 @@ mis opciones:
 void tsconf_reset_cpu(void)
 {
     tsconf_dma_state.active=0;
+    tsconf_dma_recent_seconds=0;
     tsconf_cache_clear();
     tsconf_ula_y_last_scanline=-1;
     tsconf_ula_y_reload=0;

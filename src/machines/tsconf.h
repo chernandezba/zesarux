@@ -130,9 +130,11 @@ typedef struct {
     int words_left;
     int bursts_left;
     int smuc_selected;
+    int used_recently;
 } tsconf_dma_debug_state_t;
 
 void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state);
+void tsconf_dma_second_timer(void);
 
 
 extern int tsconf_if_ula_enabled(void);

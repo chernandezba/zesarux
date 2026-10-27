@@ -50,6 +50,7 @@
 #include "printers.h"
 #include "z88.h"
 #include "zxuno.h"
+#include "tsconf.h"
 #include "textspeech.h"
 #include "mmc.h"
 #include "ide.h"
@@ -1343,6 +1344,8 @@ void timer_check_interrupt(void)
             //printf ("segundo\n");
 
             contador_segundo=0;
+
+            if (MACHINE_IS_TSCONF) tsconf_dma_second_timer();
 
 
             //Estadisticas de vsync por second

@@ -318,6 +318,20 @@ hay rutinas, como gestion de sprites y tiles, que se podrian mejorar ligeramente
 
 -Tsconf: escritura dma en fmaps. No he encontrado ningun juego que lo haga
 
+-TSConf: falta el arbitraje exacto de memoria entre CPU, vídeo, TSU y DMA. La DMA avanza
+con una temporización simplificada; para reproducir la contención real habría que asignar
+los turnos del bus de RAM en el instante preciso de cada acceso, también en modos turbo.
+
+-TSConf DMA: implementar RAM a SPI (modo 5) y probarlo con un programa que lo utilice.
+
+-TSConf DMA: probar IDE por SMUC en ambos sentidos con una demo o juego real; el código
+existe, pero aún no se ha validado así.
+
+-TSConf DMA: FDD a RAM queda pendiente de emular la controladora floppy de TSConf.
+
+-TSConf DMA: revisar los casos límite de los modos implementados (alineación, ráfagas,
+cruces de página y finalización de la interrupción) con pruebas funcionales.
+
 -tsconf:
 *tsconf:
 -limite sprites en scanline
