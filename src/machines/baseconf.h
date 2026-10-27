@@ -60,6 +60,8 @@ extern int baseconf_dos_signal;
 #define BASECONF_PALETTE_ENTRIES 16
 extern z80_int baseconf_palette[];
 
+extern void baseconf_set_cpu_speed(void);
+
 //extern void baseconf_write_af_port(z80_byte puerto_h,z80_byte value);
 //extern z80_byte baseconf_get_af_port(z80_byte index);
 extern void baseconf_init_memory_tables(void);

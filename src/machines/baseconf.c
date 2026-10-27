@@ -129,7 +129,7 @@ z80_byte baseconf_last_port_7f7; //OK ZSF
 z80_byte baseconf_last_port_bf7; //OK ZSF
 
 
-z80_int baseconf_palette[BASECONF_PALETTE_ENTRIES];
+z80_int baseconf_palette[BASECONF_PALETTE_ENTRIES]; //OK ZSF
 /* Paleta inicial tras un hard reset: copia las primeras 16 entradas de
    initial_prism_palette_zero (prism.c). Cada valor es RGB444 (0xRGB).
    Orden Spectrum en cada fila: negro, azul, rojo, magenta, verde, cian,
@@ -678,7 +678,7 @@ void baseconf_update_timing(int force)
 
 
 // Aplica la velocidad de CPU indicada por los puertos BaseConf; sin parámetros ni retorno.
-static void baseconf_set_cpu_speed(void)
+void baseconf_set_cpu_speed(void)
 {
     int nueva_velocidad;
 

@@ -3383,6 +3383,8 @@ void load_zsf_baseconf_conf(z80_byte *header)
 
     baseconf_set_memory_pages();
 
+    baseconf_set_cpu_speed();
+
 
 }
 
