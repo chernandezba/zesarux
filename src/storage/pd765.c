@@ -445,6 +445,9 @@ pd765_signal_counter signal_se={
 #define PD765_MAX_RESULT_BUFFER 9000
 //El buffer de resultado
 z80_byte pd765_result_buffer[PD765_MAX_RESULT_BUFFER];
+//Número de lecturas por pista y posición física del sector. Permite alternar
+//las copias o el byte simulado sin mezclar lecturas de sectores distintos.
+static z80_byte pd765_sector_read_count[256][256];
 //Y cuantos datos hay en el buffer para retornarlos
 int pd765_result_buffer_length=0;
 
@@ -492,6 +495,7 @@ void pd765_put_buffer(z80_byte value)
 
 void pd765_reset(void)
 {
+    memset(pd765_sector_read_count,0,sizeof(pd765_sector_read_count));
     pd765_main_status_register=PD765_MAIN_STATUS_REGISTER_ON_BOOT;
     pd765_phase=PD765_PHASE_ON_BOOT;
     pd765_input_parameters_index=0;
@@ -1268,7 +1272,35 @@ int pd765_read_command_must_stop_anormal_termination=0;
 //Lo mismo pero para write
 int pd765_write_command_must_stop_anormal_termination=0;
 
-void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector)
+//Un dato débil es una zona del disco físico que puede devolver bits distintos
+//en lecturas sucesivas. Un EDSK con una sola copia no indica qué bits eran
+//débiles en el disco real.
+//Para el patrón observado en Speedlock, exigimos 256 bytes iniciales iguales
+//y elegimos el primer byte posterior que difiere del siguiente. Ese byte se
+//variará entre lecturas; no afirmamos que fuera el bit débil original.
+//Solo se llama si ST1 y ST2 indican error de CRC en los datos.
+static int pd765_find_speedlock_byte_to_vary(int iniciosector,int sector_size)
+{
+    if (sector_size<512) return -1;
+
+    z80_byte filler=plus3dsk_get_byte_disk(iniciosector);
+    for (int i=1;i<256;i++) {
+        if (plus3dsk_get_byte_disk(iniciosector+i)!=filler) return -1;
+    }
+
+    for (int i=256;i<sector_size-1;i++) {
+        if (plus3dsk_get_byte_disk(iniciosector+i)!=plus3dsk_get_byte_disk(iniciosector+i+1)) return i;
+    }
+
+    return -1;
+}
+
+//Estos parámetros simulan los bits débiles de Speedlock cuando el EDSK solo
+//guarda una copia de un sector con error de CRC en los datos.
+//weak_byte indica qué byte variar; vale -1 en los demás sectores, por lo que
+//variation no tiene efecto en ellos. variation vale 0 para devolver el byte
+//original o 1 para invertir su bit 0.
+void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector,int weak_byte,int variation)
 {
     int indice;
 
@@ -1276,6 +1308,7 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
 
         z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
+        if (indice==weak_byte) return_value ^=variation;
         pd765_put_buffer(return_value);
 
     }
@@ -1816,27 +1849,47 @@ field are not checked when SK = 1.
 
     //anormal_termination=0;
 
+    //Contar cada lectura por pista y sector físico. Solo se usa el contador
+    //si hay varias copias guardadas o si reconocemos el patrón Speedlock.
+    unsigned int sector_read_number=pd765_sector_read_count[pd765_pcn][sector_fisico]++;
+    int weak_byte=-1;
+
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size before: %d",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
-        //sector_size es el tamaño que decia del sector en la info de pista
+        //N en el ID indica cuánto ocupa una lectura normal. El tamaño EDSK
+        //indica cuántos bytes se guardaron en total para este sector.
+        z80_byte sector_c,sector_h,sector_r,sector_n;
+        dsk_get_chrn(pd765_pcn,0,sector_fisico,&sector_c,&sector_h,&sector_r,&sector_n);
+        int nominal_sector_size=dsk_get_sector_size_from_n_value(sector_n);
+        if (nominal_sector_size>0) sector_size=nominal_sector_size;
 
-        //TODO: esto tambien pasa cuando es mayor?
-        //cuando es mayor lo que sucede es que es un sector escrito varias veces con diferentes datos,
-        //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
-        //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
-        if (real_sector_size<sector_size) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading less data than the track size says. Setting abnormal termination flag");
-            //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
+        //Si el tamaño guardado contiene varias lecturas completas, seleccionar
+        //una por lectura. Todas ocupan sector_size bytes y están consecutivas.
+        //Al avanzar el contador se recorre cada copia antes de repetir la primera.
+        if (sector_size>0 && real_sector_size>sector_size && real_sector_size%sector_size==0) {
+            iniciosector +=(sector_read_number % (real_sector_size/sector_size))*sector_size;
+        }
+        else {
+            sector_size=real_sector_size;
+
+            //Speedlock puede usar un sector con CRC de datos erróneo y bits
+            //débiles: sus lecturas sucesivas no son idénticas. Si solo tenemos
+            //una copia, ST1.DE y ST2.DD confirman el error de datos. La función
+            //siguiente exige además el relleno inicial del patrón observado
+            //antes de elegir un byte que variará entre lecturas.
+            z80_byte st1,st2;
+            dsk_get_st12(pd765_pcn,0,sector_fisico,&st1,&st2);
+            if ((st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) &&
+                (st2 & PD765_STATUS_REGISTER_TWO_DD_MASK)) {
+                weak_byte=pd765_find_speedlock_byte_to_vary(iniciosector,sector_size);
+            }
         }
 
-        sector_size=real_sector_size;
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size after: %d",sector_size);
-
-        //se van a leer menos datos
     }
 
 
@@ -1846,7 +1899,10 @@ field are not checked when SK = 1.
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: REAL sector size: %d",pd765_last_sector_size_read_data);
 
 
-    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
+    //En el caso de una sola copia, alternar 1 y 0: con 1 se invierte el bit 0
+    //del byte elegido; con 0 se entrega el original. Si weak_byte es -1 no
+    //cambia ningún byte. Los datos guardados en el DSK no se modifican.
+    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size,iniciosector,weak_byte,(sector_read_number+1)&1);
 
 
     //Evaluar condiciones que hacen abortar el comando

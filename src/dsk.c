@@ -908,7 +908,15 @@ int dsk_get_physical_sector(int pista,int sector)
             }
 
             //int iniciopista=traps_plus3dos_getoff_start_track(pista);
-            int offset_retorno=offset+sector_size*sector;
+            int offset_retorno=offset;
+            if (dsk_file_type_extended) {
+                //El tamaño EDSK incluye todos los datos guardados para cada sector,
+                //incluso varias copias. Sumarlos sitúa el inicio del sector buscado.
+                for (int anterior=0;anterior<sector;anterior++) {
+                    offset_retorno +=dsk_get_real_sector_size_extended(pista,0,anterior);
+                }
+            }
+            else offset_retorno +=sector_size*sector;
             //printf("Offset sector: %XH\n",offset_retorno);
 
             //*sector_fisico=sector;
@@ -1021,7 +1029,15 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
             }
 
             //int iniciopista=traps_plus3dos_getoff_start_track(pista);
-            int offset_retorno=offset+sector_size*sector;
+            int offset_retorno=offset;
+            if (dsk_file_type_extended) {
+                //El tamaño EDSK incluye todos los datos guardados para cada sector,
+                //incluso varias copias. Sumarlos sitúa el inicio del sector buscado.
+                for (int anterior=0;anterior<sector;anterior++) {
+                    offset_retorno +=dsk_get_real_sector_size_extended(pista,0,anterior);
+                }
+            }
+            else offset_retorno +=sector_size*sector;
             //printf("Offset sector: %XH\n",offset_retorno);
 
             *sector_fisico=sector;
@@ -1068,7 +1084,15 @@ int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
     }
 
     //int iniciopista=traps_plus3dos_getoff_start_track(pista);
-    int offset_retorno=offset+sector_size*sector_fisico;
+    int offset_retorno=offset;
+    if (dsk_file_type_extended) {
+        //El tamaño EDSK incluye todos los datos guardados para cada sector,
+        //incluso varias copias. Sumarlos sitúa el inicio del sector buscado.
+        for (int anterior=0;anterior<sector_fisico;anterior++) {
+            offset_retorno +=dsk_get_real_sector_size_extended(pista,cara,anterior);
+        }
+    }
+    else offset_retorno +=sector_size*sector_fisico;
     //printf("Offset sector: %XH\n",offset_retorno);
 
 
