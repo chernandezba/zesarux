@@ -3339,6 +3339,7 @@ void load_zsf_baseconf_conf(z80_byte *header)
     baseconf_last_port_77=header[20];
     baseconf_shadow_mode_port_77=header[21];
     baseconf_last_port_bf=header[22];
+    baseconf_last_port_eff7=header[23];
 
 
     baseconf_set_memory_pages();
@@ -6584,7 +6585,7 @@ Byte Fields:
 if (MACHINE_IS_BASECONF) {
   //Configuracion
 
-  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 23
+  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 24
   z80_byte baseconfconfblock[ZSF_BASECONF_CONF_BLOCK_LENGTH];
 
 
@@ -6606,6 +6607,7 @@ if (MACHINE_IS_BASECONF) {
     baseconfconfblock[20]=baseconf_last_port_77;
     baseconfconfblock[21]=baseconf_shadow_mode_port_77;
     baseconfconfblock[22]=baseconf_last_port_bf;
+    baseconfconfblock[23]=baseconf_last_port_eff7;
 
 
 

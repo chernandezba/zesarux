@@ -101,7 +101,7 @@ z80_byte baseconf_shadow_mode_port_77; //OK ZSF
 // Último valor escrito en el puerto BF de configuración.
 z80_byte baseconf_last_port_bf; //OK ZSF
 // Último valor escrito en EFF7 de vídeo, memoria y velocidad.
-z80_byte baseconf_last_port_eff7;
+z80_byte baseconf_last_port_eff7; //OK ZSF
 // Último valor escrito en el puerto BD de breakpoint NMI.
 z80_byte baseconf_last_port_bd;
 // Último valor escrito en el puerto BE de control NMI.
