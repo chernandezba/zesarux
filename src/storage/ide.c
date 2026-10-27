@@ -1114,6 +1114,8 @@ void eight_bit_simple_ide_disable(void)
  */
 /* Controla la presencia del SMUC, independientemente del disco IDE. */
 z80_bit ide_smuc_enabled={0};
+// Indica qué interfaz recibió el último comando ATA para la DMA de TSConf.
+int ide_smuc_dma_selected=0;
 
 
 
@@ -1417,7 +1419,10 @@ int ide_smuc_write(z80_int port,z80_byte value)
             ide_write_command_block_register(0,ide_smuc_data_high);
         }
         else {
-            if (reg==7) ide_smuc_identify_first_word=(value==0xec && ide_enabled.v);
+            if (reg==7) {
+                ide_smuc_identify_first_word=(value==0xec && ide_enabled.v);
+                if (MACHINE_IS_TSCONF) ide_smuc_dma_selected=1;
+            }
             ide_write_command_block_register(reg,value);
         }
         return 1;
@@ -1431,6 +1436,7 @@ int ide_smuc_write(z80_int port,z80_byte value)
 // Restablece los registros volátiles del SMUC y conserva su EEPROM.
 void ide_smuc_reset(void)
 {
+    ide_smuc_dma_selected=0;
     ide_smuc_control=1;
     ide_smuc_config=0;
     ide_smuc_data_high=0;

@@ -9196,7 +9196,7 @@ void menu_debug_dma_draw(zxvision_window *w)
     //Asumimos no existe
     menu_debug_dma_existe_dma=0;
 
-    char texto_dma[33];
+    char texto_dma[100];
 
     if (datagear_dma_emulation.v) {
         menu_debug_dma_existe_dma=1;
@@ -9275,41 +9275,55 @@ void menu_debug_dma_draw(zxvision_window *w)
     else {
 
         if (MACHINE_IS_TSCONF) {
+            tsconf_dma_debug_state_t dma_state;
+            tsconf_dma_get_debug_state(&dma_state);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Active: %s",dma_state.active ? "Yes" : "No");
+
             menu_debug_dma_existe_dma=1;
 
             //Construimos 16 valores posibles segun rw (bit bajo) y ddev (bits altos)
             int dma_type=debug_tsconf_dma_ddev*2+debug_tsconf_dma_rw;
-                            //18 maximo el tipo
-                            //  012345678901234567890123
-                            //24. mas dos de margen banda y banda: 26
-            sprintf (texto_dma,"Type: %s",tsconf_dma_types[dma_type]);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Type: %s",tsconf_dma_types[dma_type]);
 
-            sprintf (texto_dma,"Source:      %06XH",debug_tsconf_dma_source);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Source:         %06XH",debug_tsconf_dma_source);
 
-            sprintf (texto_dma,"Destination: %06XH",debug_tsconf_dma_destination);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Current source: %06XH",dma_state.source);
 
-            sprintf (texto_dma,"Burst length: %3d",debug_tsconf_dma_burst_length);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Destination:    %06XH",debug_tsconf_dma_destination);
 
-            sprintf (texto_dma,"Burst number: %3d",debug_tsconf_dma_burst_number);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Current dest:   %06XH",dma_state.destination);
 
-                            //Maximo 25
-            sprintf (texto_dma,"Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Burst length:   %3d",debug_tsconf_dma_burst_length);
 
-            sprintf (texto_dma,"Align size: %d",(debug_tsconf_dma_addr_align_size+1)*256);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Burst number:   %3d",debug_tsconf_dma_burst_number);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Words left:     %d",dma_state.words_left);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Bursts left:    %d",dma_state.bursts_left);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Align size:     %d",(debug_tsconf_dma_addr_align_size+1)*256);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
+
+
+
+            if (debug_tsconf_dma_ddev==3) {
+                zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                    "IDE: %s",dma_state.smuc_selected ? "SMUC" : "Nemo");
+            }
 
         }
 
@@ -9372,7 +9386,7 @@ void menu_debug_dma_draw(zxvision_window *w)
     }
 
     if (menu_debug_dma_existe_dma) {
-        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Type: %s",nombre_dma);
+        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Showing: %s",nombre_dma);
     }
 
 
@@ -9445,11 +9459,16 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugdma",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=27;
-            alto_ventana=14;
+            ancho_ventana=MACHINE_IS_TSCONF ? 32 : 27;
+            alto_ventana=MACHINE_IS_TSCONF ? 19 : 14;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
+        }
+
+        if (MACHINE_IS_TSCONF) {
+            if (ancho_ventana<32) ancho_ventana=32;
+            if (alto_ventana<19) alto_ventana=19;
         }
 
 
@@ -9511,6 +9530,7 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_TSCONF) {
+            lin=15;
         }
 
         if (menu_debug_dma_existe_dma) {

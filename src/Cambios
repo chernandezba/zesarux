@@ -86,6 +86,7 @@ Corregido ZX Evo TSConf:
 - Agregado emulación IDE Smuc
 - Actualizado a última ROM
 - Mejorada la temporización de la CPU en TSConf: añadidas las esperas de acceso a RAM y la emulación de la caché a 14 MHz, y corregido el momento de la interrupción raster en los modos turbo.
+- Corregida temporización de DMA
 - Corregido contador de scroll scroll counter, interrupción raster
 - Corregido alineación de DMA en modo burst, retorno en modo burst
 - Corregido transparencia del tile zero

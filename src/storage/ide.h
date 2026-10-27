@@ -70,6 +70,7 @@ extern z80_byte ide_register_drive_head;
 extern z80_byte ide_status_register;
 
 extern z80_bit ide_smuc_enabled;
+extern int ide_smuc_dma_selected;
 extern int ide_smuc_read(z80_int port,z80_byte *value);
 extern int ide_smuc_write(z80_int port,z80_byte value);
 extern void ide_smuc_reset(void);

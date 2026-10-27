@@ -719,6 +719,17 @@ typedef struct {
 static tsconf_dma_state_t tsconf_dma_state;
 void tsconf_dma_operation(int source,int destination,int burst_length,int burst_number,z80_byte s_align,z80_byte d_align,z80_byte addr_align_size,z80_byte dma_ddev,z80_byte dma_rw,z80_byte dma_opt);
 
+// Devuelve el progreso actual de la DMA para la ventana de depuración.
+void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state)
+{
+    state->active=tsconf_dma_state.active;
+    state->source=tsconf_dma_state.source;
+    state->destination=tsconf_dma_state.destination;
+    state->words_left=tsconf_dma_state.words_left;
+    state->bursts_left=tsconf_dma_state.bursts_left;
+    state->smuc_selected=ide_smuc_dma_selected && ide_smuc_enabled.v;
+}
+
 // Avanza la DMA con los ciclos de memoria transcurridos desde la última instrucción.
 // La transferencia se hace por palabras y sus registros cambian al terminar cada ráfaga.
 void tsconf_dma_advance(int cycles)
@@ -997,14 +1008,26 @@ void tsconf_dma_operation(int source,int destination,int burst_length,int burst_
                     incremento_destino=2;
             break;
 
+            // La DMA IDE con SMUC, en ambos sentidos, no se ha probado con demos ni juegos.
             case 6:
-                    destination_pointer[destination]=zxevo_nemo_ide_enabled.v ? zxevo_nemo_ide_read(0x10) : 0xff;
-                    destination_pointer[(destination+1)&destination_mask]=zxevo_nemo_ide_enabled.v ? zxevo_nemo_ide_read(0x10) : 0xff;
+                    if (ide_smuc_dma_selected && ide_smuc_enabled.v) {
+                        // SMUC y DMA comparten el registro de datos ATA de 16 bits.
+                        destination_pointer[destination]=ide_read_command_block_register(0);
+                        destination_pointer[(destination+1)&destination_mask]=ide_read_command_block_register(0);
+                    }
+                    else {
+                        destination_pointer[destination]=zxevo_nemo_ide_enabled.v ? zxevo_nemo_ide_read(0x10) : 0xff;
+                        destination_pointer[(destination+1)&destination_mask]=zxevo_nemo_ide_enabled.v ? zxevo_nemo_ide_read(0x10) : 0xff;
+                    }
                     incremento_destino=2;
             break;
 
             case 7:
-                    if (zxevo_nemo_ide_enabled.v) {
+                    if (ide_smuc_dma_selected && ide_smuc_enabled.v) {
+                        ide_write_command_block_register(0,source_pointer[source]);
+                        ide_write_command_block_register(0,source_pointer[(source+1)&source_mask]);
+                    }
+                    else if (zxevo_nemo_ide_enabled.v) {
                         zxevo_nemo_ide_write(0x11,source_pointer[(source+1)&source_mask]);
                         zxevo_nemo_ide_write(0x10,source_pointer[source]);
                     }
@@ -1238,6 +1261,8 @@ ZXPAL      dw  #0000,#0010,#4000,#4010,#0200,#0210,#4200,#4210
 
         // Un controlador DMA admite una sola transacción simultánea.
         int dma_mode=dma_ddev*2+dma_rw;
+        // TODO: implementar RAM a SPI (modo 5) cuando haya un programa conocido que lo use
+        // para poder comprobar el envío de bytes al Z-Controller.
         int supported=(dma_mode==2 || dma_mode==3 || dma_mode==4 ||
             dma_mode==6 || dma_mode==7 || dma_mode==8 || dma_mode==9 ||
             dma_mode==11 || dma_mode==12);

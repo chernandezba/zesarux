@@ -123,6 +123,17 @@ extern char *tsconf_dma_types[];
 extern z80_bit tsconf_dma_disabled;
 void tsconf_dma_advance(int cycles);
 
+typedef struct {
+    int active;
+    int source;
+    int destination;
+    int words_left;
+    int bursts_left;
+    int smuc_selected;
+} tsconf_dma_debug_state_t;
+
+void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state);
+
 
 extern int tsconf_if_ula_enabled(void);
 extern int tsconf_if_sprites_enabled(void);

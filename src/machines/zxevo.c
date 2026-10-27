@@ -235,7 +235,12 @@ void zxevo_nemo_ide_write(z80_byte puerto_l,z80_byte valor)
             return;
     }
     ide_write_command_block_register(registro,valor);
-    if (registro==7) zxevo_nemo_ide_begin_transfer(valor);
+    if (registro==7) {
+        // Nemo acaba de recibir un comando ATA. Si TSConf tiene también SMUC
+        // habilitado, la siguiente DMA IDE debe usar Nemo, no el último SMUC.
+        if (MACHINE_IS_TSCONF) ide_smuc_dma_selected=0;
+        zxevo_nemo_ide_begin_transfer(valor);
+    }
 }
 
 
