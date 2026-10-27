@@ -288,16 +288,8 @@ el bit 15 de cada color y sin perder los cambios de CRAM durante efectos de rast
 con el color más cercano de la tabla RGB555, o añadir una tabla exclusiva para reproducir sus intensidades exactas.
 Revisar también el valor VDVER del registro 00AF: actualmente anuncia VDAC2/FT812 por defecto.
 
--Puerto 57 tsconf es mmc?? usado en zifi demo
 
 
-http://speccy.info/Pentagon
-
-Misma wiki para info de cosas de TSConf, como el z controller ide
-
--sonic: fondo se ve negro, se deberia ver azul?
-
--Quiza algunas demos no se ven bien efectos de linea debidos al turbo? se ven mas arriba: ejemplos chess, 200,
 
 -Render modo spectrum compatible debería leer de buffer atributos y pixeles ; para que demos como overscan se vean bien
 
@@ -305,14 +297,11 @@ Misma wiki para info de cosas de TSConf, como el z controller ide
 
 -sin real video no borra border. al menos en demo carousel.spg
 
--mmc. Esto tambien para baseconf. Parece que envia un comando FF invalido y luego se queda en un bucle
 
 con gigascreen activo, al pulsar teclas en el menu (cursores?) las demos se alteran! :(
 gestion interrupciones (dma, linea, frame) a la vez. cosa poco probable?
 truco para que las demos vayan mas fluidas: poner turbo x1, en algunas no se ralentiza el cambio de turbo y van perfectas a 50 fps
 
--ideas por que tsconf va lento algunas demos: porque basicamente usan modo turbo X4
-hay rutinas, como gestion de sprites y tiles, que se podrian mejorar ligeramente, cacheando algunas cosas.... pero aun asi, aunque desactive los sprites o tiles del todo, el uso de cpu no baja significativamente, apenas 1 o 2 % en un uso total de 75%..... la solución seria que el core de Z80 usase menos cpu fisica, asi el modo turbo x4 funcionaria mas ligero
 
 -factor compresion tsconf a texto en drivers curses, stdout, simpletext que sea configurable
 
