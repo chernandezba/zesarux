@@ -14,11 +14,21 @@ Así además en todos esos se podrá usar el zoom 0.75, 0.5, 0.25
 http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Computer&lang=en
 
 
+QL-Emulación CST Thor, Q40, Q60, Q68
 
 -ql_return_full_path: gestionar retorno valor 1 en todos los casos?
 -gestionar if (hacer_trap) { aunque device no sea valido?
 -ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
 
+
+
+
+
+QL-poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
+-> tiene sentido?
+
+
+QL-si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
 QL -soporte joystick ql? joystick  1 es cursores+space, joystick 2 es

@@ -21097,6 +21097,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
             case ZSF_TSCONF_RAMBLOCK:
             case ZSF_CHROME_RAMBLOCK:
             case ZSF_DIDAKTIKGAMA_RAMBLOCK:
+            case ZSF_BASECONF_RAMBLOCK:
                 // Formato de bloque compatible para 128K, ZXUno, TSConf, Chrome y Didaktik.
                 /*
                 -Block ID 6: ZSF_SPEC128_RAMBLOCK

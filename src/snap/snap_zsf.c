@@ -925,6 +925,16 @@ Cinco bloques de RAM física de 16 KiB. Cabecera de 6 bytes y datos:
 5: bloques 0-4 en orden físico: RAM fija, dos mitades de cada bancada
 6...: datos
 
+-Block ID 79: ZSF_BASECONF_RAMBLOCK
+A ram binary block for a zx evo baseconf
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -1018,6 +1028,8 @@ char *zsf_block_id_names[]={
   "ZSF_QL_RTC",
   "ZSF_DIDAKTIKGAMA_CONF",
   "ZSF_DIDAKTIKGAMA_RAMBLOCK",
+  "ZSF_BASECONF_RAMBLOCK",
+  "ZSF_BASECONF_CONF",
 
   "Unknown"  //Este siempre al final
 };
@@ -2038,6 +2050,35 @@ void load_zsf_pcw_snapshot_block_data(z80_byte *block_data,int longitud_original
 
 
   load_zsf_snapshot_block_data_addr(&block_data[i],pcw_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+void load_zsf_baseconf_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],baseconf_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
 
 }
 
@@ -3276,6 +3317,30 @@ Byte fields:
 
 }
 
+
+void load_zsf_baseconf_conf(z80_byte *header)
+{
+
+    baseconf_last_port_ff7=header[0];
+    baseconf_last_port_7f7=header[1];
+    baseconf_last_port_bf7=header[2];
+
+
+    int i;
+    for (i=0;i<8;i++) {
+        baseconf_mmu_pages[i]=header[3+i];
+    }
+
+    for (i=0;i<8;i++) {
+        baseconf_mmu_flags[i]=header[11+i];
+    }
+
+
+    baseconf_set_memory_pages();
+
+
+}
+
 void load_zsf_tsconf_conf(z80_byte *header)
 {
 /*
@@ -3784,6 +3849,14 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_PCW_RAMBLOCK:
         load_zsf_pcw_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_BASECONF_RAMBLOCK:
+        load_zsf_baseconf_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_BASECONF_CONF:
+        load_zsf_baseconf_conf(block_data);
       break;
 
       case ZSF_COMMON_ROMBLOCK:
@@ -6502,6 +6575,89 @@ Byte Fields:
 
 }
 
+
+if (MACHINE_IS_BASECONF) {
+  //Configuracion
+
+  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 19
+  z80_byte baseconfconfblock[ZSF_BASECONF_CONF_BLOCK_LENGTH];
+
+
+  baseconfconfblock[0]=baseconf_last_port_ff7;
+  baseconfconfblock[1]=baseconf_last_port_7f7;
+  baseconfconfblock[2]=baseconf_last_port_bf7;
+
+    int i;
+    for (i=0;i<8;i++) {
+        baseconfconfblock[3+i]=baseconf_mmu_pages[i];
+    }
+
+    for (i=0;i<8;i++) {
+        baseconfconfblock[11+i]=baseconf_mmu_flags[i];
+    }
+
+
+    //baseconfconfblock[19]=pcw_port_f5_value;
+
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, baseconfconfblock,ZSF_BASECONF_CONF, ZSF_BASECONF_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+  /*
+
+-Block ID 79: ZSF_BASECONF_RAMBLOCK
+A ram binary block for a zxevo baseconf
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+  */
+
+  int paginas=BASECONF_RAM_PAGES;
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(baseconf_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_BASECONF_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_BASECONF_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
 
 
 if (MACHINE_IS_TSCONF) {

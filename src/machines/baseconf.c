@@ -51,7 +51,7 @@ int baseconf_sd_cs=0;
 z80_byte *baseconf_rom_mem_table[32];
 
 // Punteros a las 256 páginas de RAM de 16 KiB.
-z80_byte *baseconf_ram_mem_table[256];
+z80_byte *baseconf_ram_mem_table[BASECONF_RAM_PAGES];
 
 // Punteros a las cuatro páginas de 16 KiB visibles por la CPU.
 z80_byte *baseconf_memory_paged[4];
@@ -72,9 +72,9 @@ z80_byte baseconf_memory_segments_type[4];
  * #7FFD; el bit 6 selecciona RAM. Los números de página se guardan sin invertir.
  */
 // Números de página programados en los dos bancos de registros MMU.
-static z80_byte baseconf_mmu_pages[8];
+z80_byte baseconf_mmu_pages[8];
 // Banderas de tipo y sustitución de página de cada registro MMU.
-static z80_byte baseconf_mmu_flags[8];
+z80_byte baseconf_mmu_flags[8];
 // Fuente de 2 KiB escribible por la CPU para los modos de texto.
 static z80_byte baseconf_text_font[2048];
 // Señal que activa la ROM TR-DOS y sus puertos shadow.
