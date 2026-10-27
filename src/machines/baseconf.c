@@ -90,6 +90,45 @@ static int baseconf_trdos_emulation_active;
 // Últimos valores de los cuatro puertos de DOS extendido.
 static z80_byte baseconf_extended_dos_ports[4];
 // Entradas RGB de la paleta programable de dieciséis colores.
+
+
+// Último valor escrito en el puerto 77 de vídeo y turbo.
+z80_byte baseconf_last_port_77;
+// Último valor escrito en el puerto 77 de la interfaz SD.
+z80_byte baseconf_last_port_sd_77;
+// Bits de control shadow del puerto 77, separados de los de vídeo.
+z80_byte baseconf_shadow_mode_port_77;
+// Último valor escrito en el puerto BF de configuración.
+z80_byte baseconf_last_port_bf;
+// Último valor escrito en EFF7 de vídeo, memoria y velocidad.
+z80_byte baseconf_last_port_eff7;
+// Último valor escrito en el puerto BD de breakpoint NMI.
+z80_byte baseconf_last_port_bd;
+// Último valor escrito en el puerto BE de control NMI.
+z80_byte baseconf_last_port_be;
+// Último valor escrito en el puerto FF de vídeo.
+z80_byte baseconf_last_port_ff;
+// Último valor escrito en el puerto 57 de Beta Disk.
+z80_byte baseconf_last_port_57;
+// Índice CMOS seleccionado mediante DFF7.
+z80_byte baseconf_last_port_dff7;
+// Último dato de CMOS leído o escrito mediante BFF7.
+z80_byte baseconf_last_port_bff7;
+// Último valor escrito en el puerto 7FFD de paginación Spectrum.
+z80_byte baseconf_last_port_7ffd;
+
+
+// Últimos valores escritos en los cuatro puertos de DOS extendido.
+z80_byte baseconf_last_port_extended_dos[4];
+
+// Último valor escrito en el puerto FF7 del gestor de memoria.
+z80_byte baseconf_last_port_ff7;
+// Último valor escrito en el puerto 7F7 del gestor de memoria.
+z80_byte baseconf_last_port_7f7;
+// Último valor escrito en el puerto BF7 del gestor de memoria.
+z80_byte baseconf_last_port_bf7;
+
+
 static z80_int baseconf_palette[16];
 /* Paleta inicial tras un hard reset: copia las primeras 16 entradas de
    initial_prism_palette_zero (prism.c). Cada valor es RGB444 (0xRGB).
@@ -590,46 +629,7 @@ void baseconf_write_cmos(z80_byte valor)
     zxevo_nvram[indice]=valor;
 }
 
-// Último valor escrito en el puerto 77 de vídeo y turbo.
-z80_byte baseconf_last_port_77;
-// Último valor escrito en el puerto 77 de la interfaz SD.
-z80_byte baseconf_last_port_sd_77;
-// Bits de control shadow del puerto 77, separados de los de vídeo.
-z80_byte baseconf_shadow_mode_port_77;
-// Último valor escrito en el puerto BF de configuración.
-z80_byte baseconf_last_port_bf;
-// Último valor escrito en EFF7 de vídeo, memoria y velocidad.
-z80_byte baseconf_last_port_eff7;
-// Último valor escrito en el puerto BD de breakpoint NMI.
-z80_byte baseconf_last_port_bd;
-// Último valor escrito en el puerto BE de control NMI.
-z80_byte baseconf_last_port_be;
-// Último valor escrito en el puerto FF de vídeo.
-z80_byte baseconf_last_port_ff;
-// Último valor escrito en el puerto 57 de Beta Disk.
-z80_byte baseconf_last_port_57;
-// Índice CMOS seleccionado mediante DFF7.
-z80_byte baseconf_last_port_dff7;
-// Último dato de CMOS leído o escrito mediante BFF7.
-z80_byte baseconf_last_port_bff7;
-// Último valor escrito en el puerto 7FFD de paginación Spectrum.
-z80_byte baseconf_last_port_7ffd;
 
-/*
-baseconf_last_port_extended_dos[0] // xx2F
-baseconf_last_port_extended_dos[1] // xx4F
-baseconf_last_port_extended_dos[2] // xx6F
-baseconf_last_port_extended_dos[3] // xx8F
-*/
-// Últimos valores escritos en los cuatro puertos de DOS extendido.
-z80_byte baseconf_last_port_extended_dos[4];
-
-// Último valor escrito en el puerto FF7 del gestor de memoria.
-z80_byte baseconf_last_port_ff7;
-// Último valor escrito en el puerto 7F7 del gestor de memoria.
-z80_byte baseconf_last_port_7f7;
-// Último valor escrito en el puerto BF7 del gestor de memoria.
-z80_byte baseconf_last_port_bf7;
 
 // Velocidad de CPU aplicada por última vez, en décimas de MHz.
 static int baseconf_cpu_speed_selected=70;
