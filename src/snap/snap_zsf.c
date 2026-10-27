@@ -3335,6 +3335,8 @@ void load_zsf_baseconf_conf(z80_byte *header)
         baseconf_mmu_flags[i]=header[11+i];
     }
 
+    baseconf_dos_signal=header[19];
+
 
     baseconf_set_memory_pages();
 
@@ -6579,7 +6581,7 @@ Byte Fields:
 if (MACHINE_IS_BASECONF) {
   //Configuracion
 
-  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 19
+  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 20
   z80_byte baseconfconfblock[ZSF_BASECONF_CONF_BLOCK_LENGTH];
 
 
@@ -6597,7 +6599,7 @@ if (MACHINE_IS_BASECONF) {
     }
 
 
-    //baseconfconfblock[19]=pcw_port_f5_value;
+    baseconfconfblock[19]=baseconf_dos_signal;
 
 
 

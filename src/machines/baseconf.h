@@ -55,6 +55,8 @@ extern z80_byte baseconf_shadow_mode_port_77;
 extern z80_byte baseconf_mmu_pages[];
 extern z80_byte baseconf_mmu_flags[];
 
+extern int baseconf_dos_signal;
+
 //extern void baseconf_write_af_port(z80_byte puerto_h,z80_byte value);
 //extern z80_byte baseconf_get_af_port(z80_byte index);
 extern void baseconf_init_memory_tables(void);

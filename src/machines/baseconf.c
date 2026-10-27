@@ -72,13 +72,13 @@ z80_byte baseconf_memory_segments_type[4];
  * #7FFD; el bit 6 selecciona RAM. Los números de página se guardan sin invertir.
  */
 // Números de página programados en los dos bancos de registros MMU.
-z80_byte baseconf_mmu_pages[8];
+z80_byte baseconf_mmu_pages[8];   //OK ZSF
 // Banderas de tipo y sustitución de página de cada registro MMU.
-z80_byte baseconf_mmu_flags[8];
+z80_byte baseconf_mmu_flags[8];  //OK ZSF
 // Fuente de 2 KiB escribible por la CPU para los modos de texto.
 static z80_byte baseconf_text_font[2048];
 // Señal que activa la ROM TR-DOS y sus puertos shadow.
-static int baseconf_dos_signal;
+int baseconf_dos_signal;  //OK ZSF
 /* Estado del Beta Disk virtual de PentEvo. El firmware guarda el servicio
    de RAM-disk en la página RAM FE y lo selecciona en lugar del FDC físico. */
 // Máscara de unidades Beta Disk cuyo medio procede del RAM-disk.
@@ -122,11 +122,11 @@ z80_byte baseconf_last_port_7ffd;
 z80_byte baseconf_last_port_extended_dos[4];
 
 // Último valor escrito en el puerto FF7 del gestor de memoria.
-z80_byte baseconf_last_port_ff7;
+z80_byte baseconf_last_port_ff7; //OK ZSF
 // Último valor escrito en el puerto 7F7 del gestor de memoria.
-z80_byte baseconf_last_port_7f7;
+z80_byte baseconf_last_port_7f7; //OK ZSF
 // Último valor escrito en el puerto BF7 del gestor de memoria.
-z80_byte baseconf_last_port_bf7;
+z80_byte baseconf_last_port_bf7; //OK ZSF
 
 
 static z80_int baseconf_palette[16];
