@@ -3317,6 +3317,30 @@ Byte fields:
 
 }
 
+#define ZSF_BASECONF_CONF_BLOCK_LENGTH 24
+
+void store_zsf_baseconf_conf(z80_byte *baseconfconfblock)
+{
+
+    int i;
+    for (i=0;i<8;i++) {
+        baseconfconfblock[i]=baseconf_mmu_pages[i];
+    }
+
+    for (i=0;i<8;i++) {
+        baseconfconfblock[8+i]=baseconf_mmu_flags[i];
+    }
+
+    baseconfconfblock[16]=baseconf_last_port_ff7;
+    baseconfconfblock[17]=baseconf_last_port_7f7;
+    baseconfconfblock[18]=baseconf_last_port_bf7;
+    baseconfconfblock[19]=baseconf_dos_signal;
+    baseconfconfblock[20]=baseconf_last_port_77;
+    baseconfconfblock[21]=baseconf_shadow_mode_port_77;
+    baseconfconfblock[22]=baseconf_last_port_bf;
+    baseconfconfblock[23]=baseconf_last_port_eff7;
+
+}
 
 void load_zsf_baseconf_conf(z80_byte *header)
 {
@@ -6585,30 +6609,10 @@ Byte Fields:
 if (MACHINE_IS_BASECONF) {
   //Configuracion
 
-  #define ZSF_BASECONF_CONF_BLOCK_LENGTH 24
   z80_byte baseconfconfblock[ZSF_BASECONF_CONF_BLOCK_LENGTH];
 
 
-
-
-    int i;
-    for (i=0;i<8;i++) {
-        baseconfconfblock[i]=baseconf_mmu_pages[i];
-    }
-
-    for (i=0;i<8;i++) {
-        baseconfconfblock[8+i]=baseconf_mmu_flags[i];
-    }
-
-    baseconfconfblock[16]=baseconf_last_port_ff7;
-    baseconfconfblock[17]=baseconf_last_port_7f7;
-    baseconfconfblock[18]=baseconf_last_port_bf7;
-    baseconfconfblock[19]=baseconf_dos_signal;
-    baseconfconfblock[20]=baseconf_last_port_77;
-    baseconfconfblock[21]=baseconf_shadow_mode_port_77;
-    baseconfconfblock[22]=baseconf_last_port_bf;
-    baseconfconfblock[23]=baseconf_last_port_eff7;
-
+    store_zsf_baseconf_conf(baseconfconfblock);
 
 
   zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, baseconfconfblock,ZSF_BASECONF_CONF, ZSF_BASECONF_CONF_BLOCK_LENGTH);
