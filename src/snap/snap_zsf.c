@@ -94,6 +94,7 @@
 #include "zeng_online_client.h"
 #include "datagear.h"
 #include "qsound.h"
+#include "scorpion.h"
 
 
 #include "autoselectoptions.h"
@@ -935,6 +936,25 @@ Byte Fields:
 5: ram block id
 6 and next bytes: data bytes
 
+-Block ID 80: ZSF_BASECONF_CONF
+See functions store_zsf_baseconf_conf() y load_zsf_baseconf_conf to get info about this block
+
+
+
+-Block ID 81: ZSF_SCORPION_RAMBLOCK
+A ram binary block for a scorpion
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
+-Block ID 82: ZSF_SCORPION_CONF
+See functions store_zsf_scorpion_conf() y load_zsf_scorpion_conf to get info about this block
+
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -1029,7 +1049,9 @@ char *zsf_block_id_names[]={
   "ZSF_DIDAKTIKGAMA_CONF",
   "ZSF_DIDAKTIKGAMA_RAMBLOCK",
   "ZSF_BASECONF_RAMBLOCK",
-  "ZSF_BASECONF_CONF",
+  "ZSF_BASECONF_CONF",  //80
+  "ZSF_SCORPION_RAMBLOCK",
+  "ZSF_SCORPION_CONF",
 
   "Unknown"  //Este siempre al final
 };
@@ -2079,6 +2101,36 @@ void load_zsf_baseconf_snapshot_block_data(z80_byte *block_data,int longitud_ori
 
 
   load_zsf_snapshot_block_data_addr(&block_data[i],baseconf_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+
+void load_zsf_scorpion_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],scorpion_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
 
 }
 
@@ -3415,6 +3467,33 @@ void load_zsf_baseconf_conf(z80_byte *header)
 
 }
 
+
+
+#define ZSF_SCORPION_CONF_BLOCK_LENGTH 1
+
+void store_zsf_scorpion_conf(z80_byte *confblock)
+{
+
+
+    confblock[0]=scorpion_trdos_active.v;
+
+
+}
+
+void load_zsf_scorpion_conf(z80_byte *header)
+{
+
+
+    scorpion_trdos_active.v=header[0];
+
+    scorpion_mem_page_ram();
+    scorpion_mem_page_rom();
+
+    //scorpion_set_cpu_speed();
+
+
+}
+
 void load_zsf_tsconf_conf(z80_byte *header)
 {
 /*
@@ -3931,6 +4010,14 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_BASECONF_CONF:
         load_zsf_baseconf_conf(block_data);
+      break;
+
+      case ZSF_SCORPION_RAMBLOCK:
+        load_zsf_scorpion_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_SCORPION_CONF:
+        load_zsf_scorpion_conf(block_data);
       break;
 
       case ZSF_COMMON_ROMBLOCK:
@@ -4859,7 +4946,7 @@ Byte Fields:
 
 */
   if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO || MACHINE_IS_CHLOE || MACHINE_IS_PRISM ||
-  MACHINE_IS_TBBLUE || MACHINE_IS_PENTAGON || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
+  MACHINE_IS_TBBLUE || MACHINE_IS_PENTAGON || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO || MACHINE_IS_SCORPION) {
 /*
 -Block ID 5: ZSF_SPEC128_MEMCONF
 Byte Fields:
@@ -6707,6 +6794,63 @@ Byte Fields:
 
     //Store block to file
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_BASECONF_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
+
+
+if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+  //Configuracion
+
+  z80_byte scorpionconfblock[ZSF_SCORPION_CONF_BLOCK_LENGTH];
+
+
+   store_zsf_scorpion_conf(scorpionconfblock);
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, scorpionconfblock,ZSF_SCORPION_CONF, ZSF_SCORPION_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+
+
+  int paginas=SCORPION_TOTAL_RAM_PAGES;
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(scorpion_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_SCORPION_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SCORPION_RAMBLOCK, longitud_bloque+6);
 
   }
 

@@ -77,7 +77,7 @@ z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
 
-static z80_bit scorpion_trdos_active={0};
+z80_bit scorpion_trdos_active={0};
 
 // Indica que MAGIC ya ha esperado una lectura M1 de una instrucción desde RAM.
 static int scorpion_magic_ram_fetch_seen;

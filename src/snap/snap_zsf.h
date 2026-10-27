@@ -105,9 +105,11 @@
 #define ZSF_DIDAKTIKGAMA_RAMBLOCK 78
 #define ZSF_BASECONF_RAMBLOCK 79
 #define ZSF_BASECONF_CONF 80
+#define ZSF_SCORPION_RAMBLOCK 81
+#define ZSF_SCORPION_CONF 82
 
-//Id maximo de nombres
-#define MAX_ZSF_BLOCK_ID_NAMES 80
+//Ultimo id maximo usado
+#define MAX_ZSF_BLOCK_ID_NAMES 82
 
 //Importante NO alterar los ID existentes o se rompera compatibilidad hacia atras del formato ZSF
 //Siempre agregar, nunca modificar ni borrar
