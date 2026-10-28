@@ -99,6 +99,7 @@ Corregido ZX Evo TSConf:
 - Corregido al leer teclado en modo PS/2 (para Wild Commander por ejemplo)
 
 Corregida emulación del floppy disk 3" CF2 (usado en +3, CPC, PCW):
+- La mayoria de discos ya cargan, incluido discos protegidos
 - Corregido estado de fin-de-cilindro del PD765 despues de leer EOT (juegos protegidos con Alkatraz ahora cargan)
 - Corregido PD765 timeout de lectura
 - Corregido PD765 Speedlock lecturas de sectores débiles (CRC error) en imágenes EDSK de +3
