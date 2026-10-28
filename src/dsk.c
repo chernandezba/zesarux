@@ -528,7 +528,7 @@ int dsk_get_protection_scheme(char *buffer)
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
         return dsk_set_protection_scheme(buffer,"Ocean Paul Owens",
-            DSK_PROTECTION_SCHEME_OCEAN_PAUL_OWENS,1);
+            DSK_PROTECTION_SCHEME_OCEAN_PAUL_OWENS,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_alkatraz)) {
