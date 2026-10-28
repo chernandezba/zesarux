@@ -1706,6 +1706,8 @@ field are not checked when SK = 1.
 
     z80_byte sector_fisico;
     int sector_with_wrong_n=0;
+    int sector_with_wrong_c=0;
+    int sector_with_bad_c=0;
 
 
     //primero intentar obtener sector siguiente dentro de la pista
@@ -1742,7 +1744,7 @@ field are not checked when SK = 1.
     }
 
     if (iniciosector>=0 && pd765_command_received!=PD765_COMMAND_READ_TRACK) {
-        //En READ DATA y READ DELETED DATA el ID debe coincidir en R y N.
+        //En READ DATA y READ DELETED DATA el ID debe coincidir en C, R y N.
         //Mega Apocalypse y Nigel Mansell's Grand Prix, protegidos con Speedlock,
         //piden R=79H y N=2, pero el disco solo tiene R=79H con N=0. Si se
         //compara solo R, se entregan los 128 bytes del sector equivocado y
@@ -1754,9 +1756,14 @@ field are not checked when SK = 1.
         while (iniciosector>=0) {
             z80_byte c,h,r,n;
             dsk_get_chrn(pd765_pcn,0,sector_fisico,&c,&h,&r,&n);
-            if (n==pd765_input_parameter_n) break;
-
-            sector_with_wrong_n=1;
+            if (c!=pd765_input_parameter_c) {
+                //Un ID de otro cilindro no entrega datos. C=FFH indica
+                //cilindro defectuoso; Football Manager 2 usa este patrón.
+                sector_with_wrong_c=1;
+                if (c==0xFF) sector_with_bad_c=1;
+            }
+            else if (n==pd765_input_parameter_n) break;
+            else sector_with_wrong_n=1;
             z80_byte anterior=sector_fisico;
             iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,
                 &sector_fisico,anterior,search_deleted,pd765_input_parameter_sk,1);
@@ -1807,22 +1814,36 @@ field are not checked when SK = 1.
         pd765_put_buffer(return_value);
 
 
-        //Si existía R pero no con el N pedido, el FDC encontró una marca de ID:
-        //devolver ST1.ND sin ST1.MA ni ST2.MD. Esa respuesta permite a los
-        //cargadores Speedlock anteriores distinguirlo de un ID inexistente.
-        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|
-            (sector_with_wrong_n ? 0 : PD765_STATUS_REGISTER_ONE_MA_MASK);
+        //Con R existente pero N distinto, devolver ST1.ND sin ST1.MA ni
+        //ST2.MD. Si C es distinto, devolver ST2.WC (y BC para C=FFH),
+        //sin transferir el sector ni señalar fin de cilindro en ST1.
+        if (sector_with_wrong_c) {
+            return_value=0;
+        }
+        else {
+            return_value=PD765_STATUS_REGISTER_ONE_ND_MASK;
+            if (!sector_with_wrong_n) return_value |=PD765_STATUS_REGISTER_ONE_MA_MASK;
+        }
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
-        return_value=sector_with_wrong_n ? 0 : PD765_STATUS_REGISTER_TWO_MD_MASK;
+        if (sector_with_wrong_c) {
+            return_value=PD765_STATUS_REGISTER_TWO_WC_MASK;
+            if (sector_with_bad_c) return_value |=PD765_STATUS_REGISTER_TWO_BC_MASK;
+        }
+        else if (sector_with_wrong_n) {
+            return_value=0;
+        }
+        else {
+            return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;
+        }
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
-        if (sector_with_wrong_n) {
+        if (sector_with_wrong_n || sector_with_wrong_c) {
             //No se transfirieron datos: CHRN identifica el sector solicitado,
-            //no el sector con otro N que se encontró durante la búsqueda.
+            //no el ID con otro C o N que apareció durante la búsqueda.
             pd765_put_buffer(pd765_input_parameter_c);
             pd765_put_buffer(pd765_input_parameter_h);
             pd765_put_buffer(pd765_read_command_searching_parameter_r);
