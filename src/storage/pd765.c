@@ -1272,35 +1272,13 @@ int pd765_read_command_must_stop_anormal_termination=0;
 //Lo mismo pero para write
 int pd765_write_command_must_stop_anormal_termination=0;
 
-//Un dato débil es una zona del disco físico que puede devolver bits distintos
-//en lecturas sucesivas. Un EDSK con una sola copia no indica qué bits eran
-//débiles en el disco real.
-//Para el patrón observado en Speedlock, exigimos 256 bytes iniciales iguales
-//y elegimos el primer byte posterior que difiere del siguiente. Ese byte se
-//variará entre lecturas; no afirmamos que fuera el bit débil original.
-//Solo se llama si ST1 y ST2 indican error de CRC en los datos.
-static int pd765_find_speedlock_byte_to_vary(int iniciosector,int sector_size)
-{
-    if (sector_size<512) return -1;
-
-    z80_byte filler=plus3dsk_get_byte_disk(iniciosector);
-    for (int i=1;i<256;i++) {
-        if (plus3dsk_get_byte_disk(iniciosector+i)!=filler) return -1;
-    }
-
-    for (int i=256;i<sector_size-1;i++) {
-        if (plus3dsk_get_byte_disk(iniciosector+i)!=plus3dsk_get_byte_disk(iniciosector+i+1)) return i;
-    }
-
-    return -1;
-}
-
-//Estos parámetros simulan los bits débiles de Speedlock cuando el EDSK solo
-//guarda una copia de un sector con error de CRC en los datos.
-//weak_byte indica qué byte variar; vale -1 en los demás sectores, por lo que
-//variation no tiene efecto en ellos. variation vale 0 para devolver el byte
-//original o 1 para invertir su bit 0.
-void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector,int weak_byte,int variation)
+//Un dato débil puede devolver bits distintos en lecturas sucesivas del disco.
+//Si el EDSK solo guarda una copia, no sabemos qué bits eran débiles realmente.
+//speedlock_mode=1 altera los bytes 29 y 58; speedlock_mode=2 continúa cada
+//29 bytes hasta el final del sector. La primera lectura queda intacta y las
+//siguientes cambian para simular las lecturas de un sector débil.
+void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector,
+    int speedlock_mode,unsigned int sector_read_number)
 {
     int indice;
 
@@ -1308,7 +1286,10 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
 
         z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
-        if (indice==weak_byte) return_value ^=variation;
+        if (speedlock_mode && sector_read_number>0 && (indice+1)%29==0 &&
+            (speedlock_mode==2 || indice<64)) {
+            return_value ^=(indice+1);
+        }
         pd765_put_buffer(return_value);
 
     }
@@ -1724,6 +1705,7 @@ field are not checked when SK = 1.
     timer_storage_common_accelerate_loading();
 
     z80_byte sector_fisico;
+    int sector_with_wrong_n=0;
 
 
     //primero intentar obtener sector siguiente dentro de la pista
@@ -1757,6 +1739,33 @@ field are not checked when SK = 1.
             iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
+    }
+
+    if (iniciosector>=0 && pd765_command_received!=PD765_COMMAND_READ_TRACK) {
+        //En READ DATA y READ DELETED DATA el ID debe coincidir en R y N.
+        //Mega Apocalypse y Nigel Mansell's Grand Prix, protegidos con Speedlock,
+        //piden R=79H y N=2, pero el disco solo tiene R=79H con N=0. Si se
+        //compara solo R, se entregan los 128 bytes del sector equivocado y
+        //fallan sus cargadores; debe responderse que no existe el ID pedido.
+        //READ TRACK recorre los sectores físicos y no usa esta búsqueda por ID.
+        //Si hay varios sectores con el mismo R, probarlos hasta volver al
+        //primero antes de concluir que ninguno tiene el N solicitado.
+        z80_byte primer_sector_fisico=sector_fisico;
+        while (iniciosector>=0) {
+            z80_byte c,h,r,n;
+            dsk_get_chrn(pd765_pcn,0,sector_fisico,&c,&h,&r,&n);
+            if (n==pd765_input_parameter_n) break;
+
+            sector_with_wrong_n=1;
+            z80_byte anterior=sector_fisico;
+            iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,
+                &sector_fisico,anterior,search_deleted,pd765_input_parameter_sk,1);
+            if (iniciosector<0) {
+                iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,
+                    &sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
+            }
+            if (iniciosector>=0 && sector_fisico==primer_sector_fisico) iniciosector=-1;
+        }
     }
 
     //gestionar error si sector no encontrado
@@ -1798,16 +1807,28 @@ field are not checked when SK = 1.
         pd765_put_buffer(return_value);
 
 
-        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
+        //Si existía R pero no con el N pedido, el FDC encontró una marca de ID:
+        //devolver ST1.ND sin ST1.MA ni ST2.MD. Esa respuesta permite a los
+        //cargadores Speedlock anteriores distinguirlo de un ID inexistente.
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|
+            (sector_with_wrong_n ? 0 : PD765_STATUS_REGISTER_ONE_MA_MASK);
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
-        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;
+        return_value=sector_with_wrong_n ? 0 : PD765_STATUS_REGISTER_TWO_MD_MASK;
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
-        pd765_read_put_chrn_in_bus();
+        if (sector_with_wrong_n) {
+            //No se transfirieron datos: CHRN identifica el sector solicitado,
+            //no el sector con otro N que se encontró durante la búsqueda.
+            pd765_put_buffer(pd765_input_parameter_c);
+            pd765_put_buffer(pd765_input_parameter_h);
+            pd765_put_buffer(pd765_read_command_searching_parameter_r);
+            pd765_put_buffer(pd765_input_parameter_n);
+        }
+        else pd765_read_put_chrn_in_bus();
 
         /*
 
@@ -1853,7 +1874,7 @@ field are not checked when SK = 1.
     //Contar cada lectura por pista y sector físico. Solo se usa el contador
     //si hay varias copias guardadas o si reconocemos el patrón Speedlock.
     unsigned int sector_read_number=pd765_sector_read_count[pd765_pcn][sector_fisico]++;
-    int weak_byte=-1;
+    int speedlock_mode=0;
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
@@ -1877,16 +1898,38 @@ field are not checked when SK = 1.
         else {
             sector_size=real_sector_size;
 
-            //Speedlock puede usar un sector con CRC de datos erróneo y bits
-            //débiles: sus lecturas sucesivas no son idénticas. Si solo tenemos
-            //una copia, ST1.DE y ST2.DD confirman el error de datos. La función
-            //siguiente exige además el relleno inicial del patrón observado
-            //antes de elegir un byte que variará entre lecturas.
-            z80_byte st1,st2;
-            dsk_get_st12(pd765_pcn,0,sector_fisico,&st1,&st2);
-            if ((st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) &&
-                (st2 & PD765_STATUS_REGISTER_TWO_DD_MASK)) {
-                weak_byte=pd765_find_speedlock_byte_to_vary(iniciosector,sector_size);
+            //Solo el sector 2 de Speedlock usa esta simulación de datos débiles.
+            if (pd765_pcn==0 && sector_r==2 && sector_n==2 &&
+                sector_size==512 && pd765_input_parameter_eot==sector_r &&
+                (dsk_detected_protection_scheme_id==DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988 ||
+                 dsk_detected_protection_scheme_id==DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989 ||
+                 dsk_detected_protection_scheme_id==DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2)) {
+                z80_byte st1,st2;
+                dsk_get_st12(pd765_pcn,0,sector_fisico,&st1,&st2);
+                int error_crc=(st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) &&
+                    (st2 & PD765_STATUS_REGISTER_TWO_DD_MASK);
+                //Wanderer (MCM) guarda el sector entero relleno de E5H, sin
+                //error de CRC en el EDSK, pero repite su lectura para comprobar
+                //que los datos varían. Comprobar el relleno completo evita
+                //alterar otros sectores sin error.
+                int sector_relleno_e5=1;
+                if (!error_crc) {
+                    for (int i=0;i<sector_size && sector_relleno_e5;i++) {
+                        if (plus3dsk_get_byte_disk(iniciosector+i)!=0xE5) sector_relleno_e5=0;
+                    }
+                }
+                if (error_crc || sector_relleno_e5) {
+                    //Con 64 bytes iniciales E5H solo varían los bytes 29
+                    //y 58 (modo 1). Si aparece otro valor, la variación
+                    //continúa cada 29 bytes hasta el final (modo 2).
+                    speedlock_mode=1;
+                    for (int i=0;i<64;i++) {
+                        if (plus3dsk_get_byte_disk(iniciosector+i)!=0xE5) {
+                            speedlock_mode=2;
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -1900,10 +1943,10 @@ field are not checked when SK = 1.
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: REAL sector size: %d",pd765_last_sector_size_read_data);
 
 
-    //En el caso de una sola copia, alternar 1 y 0: con 1 se invierte el bit 0
-    //del byte elegido; con 0 se entrega el original. Si weak_byte es -1 no
-    //cambia ningún byte. Los datos guardados en el DSK no se modifican.
-    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size,iniciosector,weak_byte,(sector_read_number+1)&1);
+    //Si se reconoció Speedlock, la primera lectura devuelve la copia del EDSK
+    //y las siguientes varían según el modo. El DSK original no se modifica.
+    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size,iniciosector,
+        speedlock_mode,sector_read_number);
 
 
     //Evaluar condiciones que hacen abortar el comando

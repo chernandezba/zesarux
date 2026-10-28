@@ -57,6 +57,9 @@ z80_bit dskplusthree_persistent_writes={0};
 
 z80_byte p3dsk_buffer_disco[DSK_MAX_BUFFER_DISCO];
 int p3dsk_buffer_disco_size=DSK_MAX_BUFFER_DISCO; //Tamanyo del dsk leido. De momento establecemos en maximo
+//Protección detectada al insertar el DSK; se consulta durante las lecturas.
+char dsk_detected_protection_scheme[DSK_MAX_PROTECTION_SCHEME+1]="None";
+dsk_protection_scheme_id_t dsk_detected_protection_scheme_id=DSK_PROTECTION_SCHEME_NONE;
 
 void dsk_insert_disk(char *nombre)
 {
@@ -316,6 +319,8 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
 
 void dskplusthree_disable(void)
 {
+	strcpy(dsk_detected_protection_scheme,"None");
+	dsk_detected_protection_scheme_id=DSK_PROTECTION_SCHEME_NONE;
 
 	if (dskplusthree_emulation.v==0) return;
 
@@ -365,6 +370,8 @@ void dskplusthree_enable(void)
 {
 
 	if (dskplusthree_emulation.v) return;
+	strcpy(dsk_detected_protection_scheme,"None");
+	dsk_detected_protection_scheme_id=DSK_PROTECTION_SCHEME_NONE;
 
 	DBG_PRINT_DSK VERBOSE_INFO,"Enabling DSK emulation");
 	DBG_PRINT_DSK VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
@@ -408,6 +415,9 @@ void dskplusthree_enable(void)
         return;
     }
 
+    //La detección debe recorrer solo los bytes del disco recién cargado.
+    p3dsk_buffer_disco_size=tamanyo;
+
     //Mostrar firma ocultando caracteres no validos
     char buffer_signature[DSK_SIGNATURE_LENGTH+1];
     dsk_get_signature(buffer_signature);
@@ -419,15 +429,12 @@ void dskplusthree_enable(void)
 
     DBG_PRINT_DSK VERBOSE_INFO,"DSK total tracks: %d total sides: %d",dsk_get_total_tracks(),dsk_get_total_sides());
 
-    char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
-    int protegido_no_soportado=dsk_get_protection_scheme(buffer_esquema_proteccion);
+    int protegido_no_soportado=dsk_get_protection_scheme(dsk_detected_protection_scheme);
     if (protegido_no_soportado) {
-        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with method: %s. It's not fully supported and might be not readable",buffer_esquema_proteccion);
+        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with method: %s. It's not fully supported and might be not readable",dsk_detected_protection_scheme);
     }
 
-    DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",buffer_esquema_proteccion);
-
-	p3dsk_buffer_disco_size=tamanyo;
+    DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",dsk_detected_protection_scheme);
 
         dskplusthree_emulation.v=1;
 
@@ -496,52 +503,61 @@ char *dsk_protection_scheme_unknown1="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x
 //Los bytes corresponden a track-info de pista 3, sectores 8,9
 char *dsk_protection_scheme_unknown2="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
 
+//Actualizar juntos el nombre legible y el identificador de la protección.
+static int dsk_set_protection_scheme(char *buffer,const char *nombre,
+    dsk_protection_scheme_id_t id,int no_soportado)
+{
+    dsk_detected_protection_scheme_id=id;
+    strcpy(dsk_detected_protection_scheme,nombre);
+    if (buffer!=dsk_detected_protection_scheme) strcpy(buffer,nombre);
+    return no_soportado;
+}
+
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
 int dsk_get_protection_scheme(char *buffer)
 {
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
-        strcpy(buffer,"SPEEDLOCK +3 DISC 1988");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988",
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988,1);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_disc)) {
-        strcpy(buffer,"SPEEDLOCK DISC 1989");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"SPEEDLOCK DISC 1989",
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989,1);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
-        strcpy(buffer,"Ocean Paul Owens");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"Ocean Paul Owens",
+            DSK_PROTECTION_SCHEME_OCEAN_PAUL_OWENS,1);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_alkatraz)) {
-        strcpy(buffer,"ALKATRAZ 1987");
-        return 0;
+        return dsk_set_protection_scheme(buffer,"ALKATRAZ 1987",
+            DSK_PROTECTION_SCHEME_ALKATRAZ_1987,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_three_inch)) {
-        strcpy(buffer,"Three Inch");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"Three Inch",
+            DSK_PROTECTION_SCHEME_THREE_INCH,1);
     }
 
     //Este si que esta soportado
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_new_frontier)) {
-        strcpy(buffer,"New Frontier");
-        return 0;
+        return dsk_set_protection_scheme(buffer,"New Frontier",
+            DSK_PROTECTION_SCHEME_NEW_FRONTIER,0);
     }
 
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown1,16)) {
-        strcpy(buffer,"Unknown 1");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"Unknown 1",
+            DSK_PROTECTION_SCHEME_UNKNOWN_1,1);
     }
 
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
-        strcpy(buffer,"SPEEDLOCK +3 DISC 1988-2");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988-2",
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2,1);
     }
 
-    strcpy(buffer,"None");
-    return 0;
+    return dsk_set_protection_scheme(buffer,"None",DSK_PROTECTION_SCHEME_NONE,0);
 }
 
 z80_byte plus3dsk_get_byte_disk(int offset)

@@ -36,6 +36,21 @@
 
 #define DSK_MAX_PROTECTION_SCHEME 100
 
+typedef enum {
+    DSK_PROTECTION_SCHEME_NONE,
+    DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988,
+    DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989,
+    DSK_PROTECTION_SCHEME_OCEAN_PAUL_OWENS,
+    DSK_PROTECTION_SCHEME_ALKATRAZ_1987,
+    DSK_PROTECTION_SCHEME_THREE_INCH,
+    DSK_PROTECTION_SCHEME_NEW_FRONTIER,
+    DSK_PROTECTION_SCHEME_UNKNOWN_1,
+    DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2
+} dsk_protection_scheme_id_t;
+
+extern char dsk_detected_protection_scheme[DSK_MAX_PROTECTION_SCHEME+1];
+extern dsk_protection_scheme_id_t dsk_detected_protection_scheme_id;
+
 //Para poder hacer debug_printf con la clase DSK adecuada
 #define DBG_PRINT_DSK debug_printf(VERBOSE_CLASS_DSK|
 
