@@ -9469,12 +9469,6 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
             yventana=menu_center_y()-alto_ventana/2;
         }
 
-        if (MACHINE_IS_TSCONF) {
-            if (ancho_ventana<32) ancho_ventana=32;
-            if (alto_ventana<19) alto_ventana=19;
-        }
-
-
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Debug DMA",
             "debugdma",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
