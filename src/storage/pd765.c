@@ -449,8 +449,8 @@ pd765_signal_counter signal_se={
 
 //TODO: todos los comandos que devuelvan resultado deberian usar este buffer
 
-//Maximo sector es de 8kb, esto hay mas que suficiente
-#define PD765_MAX_RESULT_BUFFER 9000
+//El búfer guarda hasta un sector N=8 de 32 KiB y los siete bytes del resultado.
+#define PD765_MAX_RESULT_BUFFER (32768+7)
 //El buffer de resultado
 z80_byte pd765_result_buffer[PD765_MAX_RESULT_BUFFER];
 //Número de lecturas por pista y posición física del sector. Permite alternar
@@ -1638,6 +1638,29 @@ int pd765_write_command_state=PD765_WRITE_COMMAND_STATE_WRITING_DATA;
 
 
 
+//Caso 1: los EDSK de Mot y Guillermo Tell conservan el ID y el error de CRC
+//del sector 8 (N=8, pista 40), pero guardan cero bytes de sus datos. La
+//protección compara 255 bytes del sector 7 con los bytes situados desde el
+//desplazamiento 1298 del sector 8. Copiamos esos 255 bytes del propio DSK.
+//Para que el cargador pueda efectuar la lectura de 32 KiB, rellenamos con
+//4EH los demás bytes: son inventados, no una recuperación del disco original.
+//La reconstrucción solo se aplica cuando se reconoció la firma Opera Soft.
+static int pd765_reconstruct_operasoft_missing_sector(int sector_fisico,int iniciosector)
+{
+    if (dsk_detected_protection_scheme_id!=DSK_PROTECTION_SCHEME_OPERASOFT_32K ||
+        pd765_pcn!=40 || sector_fisico!=8 || iniciosector<256) return 0;
+
+    int inicio_sector_7=dsk_get_sector_fisico(40,0,sector_fisico-1);
+    if (inicio_sector_7<0 || inicio_sector_7+256!=iniciosector) return 0;
+
+    //Los primeros 1298 bytes y los posteriores a la comparación son relleno.
+    //Los 255 bytes intermedios proceden del sector 7 de esta misma imagen.
+    for (int i=0;i<1298;i++) pd765_put_buffer(0x4E);
+    for (int i=0;i<255;i++) pd765_put_buffer(plus3dsk_get_byte_disk(inicio_sector_7+i));
+    for (int i=1298+255;i<32768;i++) pd765_put_buffer(0x4E);
+    return 32768;
+}
+
 void pd765_handle_command_read_data(void)
 {
 /*
@@ -1952,6 +1975,13 @@ field are not checked when SK = 1.
         z80_byte sector_c,sector_h,sector_r,sector_n;
         dsk_get_chrn(pd765_pcn,0,sector_fisico,&sector_c,&sector_h,&sector_r,&sector_n);
         int nominal_sector_size=dsk_get_sector_size_from_n_value(sector_n);
+        //Caso 2: Mutan Zone sí conserva 8192 bytes del sector 8, incluida
+        //la zona de 255 bytes que comprueba la protección. Su ID lleva N=8:
+        //el tamaño nominal es 32 KiB y esos 8192 bytes son un único sector
+        //parcial con CRC erróneo. La función general reduce N=8 a N=0 y
+        //haría creer que hay 64 copias de 128 bytes; entonces el cargador
+        //nunca recibiría los datos situados desde el desplazamiento 1298.
+        if (sector_n==8) nominal_sector_size=32768;
         if (nominal_sector_size>0) sector_size=nominal_sector_size;
 
         //Si el tamaño guardado contiene varias lecturas completas, seleccionar
@@ -2006,6 +2036,40 @@ field are not checked when SK = 1.
     pd765_last_sector_size_read_data=sector_size;
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: REAL sector size: %d",pd765_last_sector_size_read_data);
+
+    if (sector_size==0) {
+        //Solo en el caso 1 se construyen datos para el sector ausente.
+        int reconstructed_size=pd765_reconstruct_operasoft_missing_sector(sector_fisico,iniciosector);
+        if (reconstructed_size) {
+            pd765_last_sector_size_read_data=reconstructed_size;
+            pd765_handle_command_read_data_read_chrn_etc(sector_fisico,0,0);
+            return;
+        }
+    }
+
+    //Si otro EDSK conserva el ID y el estado de error, pero ningún dato,
+    //no hay fase de transferencia. Devolver ST0, ST1, ST2 y CHRN evita
+    //intentar leer el búfer vacío.
+    if (sector_size==0) {
+        z80_byte c,h,r,n,st1,st2;
+        dsk_get_chrn(pd765_pcn,0,sector_fisico,&c,&h,&r,&n);
+        dsk_get_st12(pd765_pcn,0,sector_fisico,&st1,&st2);
+        //La respuesta identifica el ID encontrado. No se avanzó al sector
+        //siguiente porque no se transfirió ningún byte de este sector.
+        pd765_put_buffer(pd765_get_st0()|PD765_STATUS_REGISTER_ZERO_AT);
+        pd765_put_buffer(st1);
+        pd765_put_buffer(st2);
+        pd765_put_buffer(c);
+        pd765_put_buffer(h);
+        pd765_put_buffer(r);
+        pd765_put_buffer(n);
+        pd765_main_status_register &=~PD765_MAIN_STATUS_REGISTER_EXM_MASK;
+        pd765_set_interrupt_pending();
+        pd765_phase=PD765_PHASE_RESULT;
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
+        return;
+    }
 
 
     //Si se reconoció Speedlock, la primera lectura devuelve la copia del EDSK

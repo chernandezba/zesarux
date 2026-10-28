@@ -503,6 +503,11 @@ char *dsk_protection_scheme_timeout_read="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x
 //Los bytes corresponden a track-info de pista 3, sectores 8,9
 char *dsk_protection_scheme_speedlock_disc_plus3="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
 
+//Descriptores contiguos de los sectores 7 y 8 de la pista 40. No se incluye
+//la longitud EDSK del sector 8 porque puede ser 0, 8192 o 32768 bytes.
+//Mot, Guillermo Tell y Mutan Zone comparten esta firma.
+char *dsk_protection_scheme_operasoft_32k="\x28\x00\x07\x01\x00\x00\x00\x01\x28\x00\x08\x08\x20\x20";
+
 //Actualizar juntos el nombre legible y el identificador de la protección.
 static int dsk_set_protection_scheme(char *buffer,const char *nombre,
     dsk_protection_scheme_id_t id,int no_soportado)
@@ -557,6 +562,30 @@ int dsk_get_protection_scheme(char *buffer)
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_speedlock_disc_plus3,16)) {
         return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988-2",
             DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2,0);
+    }
+
+    //Comprobar la firma en la tabla de sectores de la pista 40, no en
+    //cualquier zona de datos donde pudiera aparecer por casualidad.
+    //Durante la inserción todavía no está activa la emulación, por lo que
+    //se lee directamente el búfer en vez de usar plus3dsk_get_byte_disk.
+    if (dsk_file_type_extended && dsk_get_total_tracks()>40) {
+        int caras=p3dsk_buffer_disco[0x31];
+        int indice_pista=40*caras;
+        if (caras>0 && caras<=2 && 0x34+indice_pista<0x100 &&
+            p3dsk_buffer_disco_size>=0x100) {
+            int inicio_pista=0x100;
+            for (int i=0;i<indice_pista;i++) {
+                inicio_pista +=p3dsk_buffer_disco[0x34+i]*256;
+            }
+            int offset_firma=inicio_pista+0x18+7*8;
+            if (inicio_pista+0x100<=p3dsk_buffer_disco_size &&
+                p3dsk_buffer_disco[inicio_pista+0x15]==9 &&
+                offset_firma+14<=p3dsk_buffer_disco_size &&
+                !memcmp(&p3dsk_buffer_disco[offset_firma],dsk_protection_scheme_operasoft_32k,14)) {
+                return dsk_set_protection_scheme(buffer,"Opera Soft 32K sector",
+                    DSK_PROTECTION_SCHEME_OPERASOFT_32K,0);
+            }
+        }
     }
 
     return dsk_set_protection_scheme(buffer,"None",DSK_PROTECTION_SCHEME_NONE,0);
