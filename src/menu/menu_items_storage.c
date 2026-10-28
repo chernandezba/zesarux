@@ -10546,7 +10546,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=52;
+            ancho_ventana=35;
             alto_ventana=20;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -10617,28 +10617,29 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
                 ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
             menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
-            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);
+            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,14,0);
         }
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_case,NULL
             ,"~~View: %s",menu_visualfloppy_case_mode==0 ? "Disk" :
-                (menu_visualfloppy_case_mode==1 ? "Clear case" : "Opaque case"));
+                (menu_visualfloppy_case_mode==1 ? "Clear" : "Opaque"));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'v');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Cycle between disk, transparent case and opaque case");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,34,0);
+        //menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,34,0);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
             ,"[%c] He~~ad",(menu_visualfloppy_header_visible ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,14,1);
 
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_effects,NULL
             ,"[%c] ~~Color effects",(menu_visualfloppy_coloured_effects ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,23,1);
 
 
 
