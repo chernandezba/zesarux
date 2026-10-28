@@ -1611,7 +1611,7 @@ static void pd765_handle_read_data_timeout(int t_estados_transcurridos)
     //que EXM se desactive antes de consultar el resultado.
     if (pd765_read_data_idle_tstates<screen_testados_total*20) return;
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Read data timeout with %d bytes pending",
+    DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Read data timeout with %d bytes pending",
         pd765_result_buffer_length-pd765_result_bufer_read_pointer);
     pd765_read_data_idle_tstates=0;
     pd765_reset_buffer();

@@ -495,13 +495,13 @@ char *dsk_protection_scheme_new_frontier="NEW DISK PROTECTION SYSTEM. (C) 1990 B
 //Este sistema de proteccion consiste en pista 1, sector size 8192 pero solo 1 sector con size 6144, CRHN=1 0 1 6
 //Bonanza Bros - Side B (Spectrum).dsk , X-Out.dsk
 //Los bytes corresponden al track-info de pista 1, sector 0,1
-char *dsk_protection_scheme_unknown1="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x01\x06\x20\x60\x00\x18";
+char *dsk_protection_scheme_timeout_read="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x01\x06\x20\x60\x00\x18";
 
 //Este carga un bloque corto, luego una secuencia de colores en el border
 //Esto es speedlock tambien
 //Tai-Pan.dsk, Action Force.dsk
 //Los bytes corresponden a track-info de pista 3, sectores 8,9
-char *dsk_protection_scheme_unknown2="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
+char *dsk_protection_scheme_speedlock_disc_plus3="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
 
 //Actualizar juntos el nombre legible y el identificador de la protección.
 static int dsk_set_protection_scheme(char *buffer,const char *nombre,
@@ -514,6 +514,7 @@ static int dsk_set_protection_scheme(char *buffer,const char *nombre,
 }
 
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
+//Ya están todos soportados
 int dsk_get_protection_scheme(char *buffer)
 {
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
@@ -538,7 +539,7 @@ int dsk_get_protection_scheme(char *buffer)
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_three_inch)) {
         return dsk_set_protection_scheme(buffer,"Three Inch",
-            DSK_PROTECTION_SCHEME_THREE_INCH,1);
+            DSK_PROTECTION_SCHEME_THREE_INCH,0);
     }
 
     //Este si que esta soportado
@@ -547,12 +548,13 @@ int dsk_get_protection_scheme(char *buffer)
             DSK_PROTECTION_SCHEME_NEW_FRONTIER,0);
     }
 
-    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown1,16)) {
-        return dsk_set_protection_scheme(buffer,"Unknown 1",
-            DSK_PROTECTION_SCHEME_UNKNOWN_1,1);
+    //Esto no se si l
+    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_timeout_read,16)) {
+        return dsk_set_protection_scheme(buffer,"Timeout read",
+            DSK_PROTECTION_SCHEME_TIMEOUT_READ,0);
     }
 
-    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
+    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_speedlock_disc_plus3,16)) {
         return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988-2",
             DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2,0);
     }
