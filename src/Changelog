@@ -98,12 +98,16 @@ Fixed ZX Evo TSConf:
 - Fixed selecting different boot roms on TS Bios
 - Fixed reading keyboard on PS/2 mode (for Wild Commander for example)
 
+Fixed floppy disk 3" CF2 emulation (used on +3, CPC, PCW):
+- Fixed PD765 end-of-cylinder status after EOT read (Alkatraz protected games now load)
+- Fixed PD765 read timeout
+- Fixed Speedlock weak sector reads (CRC error) in +3 EDSK images
+- Fixed Speedlock protected disk loading on Spectrum +3
+
 Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
 Fixed MEMPTR after Z80 return instructions
 Fixed Spectrum floating bus reads on 48K and 128K
 Fixed no-MREQ contention on Spectrum +2A and +3
-Fixed PD765 end-of-cylinder status after EOT read (Alkatraz protected games now load)
-Fixed Speedlock protected disk loading on Spectrum +3
 Fixed CPC rendering without border
 Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser

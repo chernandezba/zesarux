@@ -98,13 +98,16 @@ Corregido ZX Evo TSConf:
 - Corregido al acceder .trd, .scl y .tap seleccionados desde la máquina (por ejemplo con Wild commander)
 - Corregido al leer teclado en modo PS/2 (para Wild Commander por ejemplo)
 
+Corregida emulación del floppy disk 3" CF2 (usado en +3, CPC, PCW):
+- Corregido estado de fin-de-cilindro del PD765 despues de leer EOT (juegos protegidos con Alkatraz ahora cargan)
+- Corregido PD765 timeout de lectura
+- Corregido PD765 Speedlock lecturas de sectores débiles (CRC error) en imágenes EDSK de +3
+- Corregido carga de discos protegidos con Speedlock en Spectrum +3
+
 Corregidos timings para TK90X y TK95 modelos de 50 hz y 60 hz
 Corregido MEMPTR despues de instrucciones return de Z80
 Corregido lecturas de bus flotante en Spectrum 48K y 128K
 Corregido contención no-MREQ en Spectrum +2A and +3
-Corregido estado de fin-de-cilindro del PD765 despues de leer EOT (juegos protegidos con Alkatraz ahora cargan)
-Corregido PD765 Speedlock lecturas de sectores débiles (CRC error) en imágenes EDSK de +3
-Corregido carga de discos protegidos con Speedlock en Spectrum +3
 Corregido renderizado de CPC sin border
 Corregido Cocoa (macOS) cambio de máquina en pantalla completa
 Corregidas consultas usando el Speccy Online Browser
