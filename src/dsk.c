@@ -518,12 +518,12 @@ int dsk_get_protection_scheme(char *buffer)
 {
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
         return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988",
-            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988,1);
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_disc)) {
         return dsk_set_protection_scheme(buffer,"SPEEDLOCK DISC 1989",
-            DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989,1);
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
@@ -554,7 +554,7 @@ int dsk_get_protection_scheme(char *buffer)
 
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
         return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988-2",
-            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2,1);
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2,0);
     }
 
     return dsk_set_protection_scheme(buffer,"None",DSK_PROTECTION_SCHEME_NONE,0);

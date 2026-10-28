@@ -103,7 +103,7 @@ Fixed MEMPTR after Z80 return instructions
 Fixed Spectrum floating bus reads on 48K and 128K
 Fixed no-MREQ contention on Spectrum +2A and +3
 Fixed PD765 end-of-cylinder status after EOT read (Alkatraz protected games now load)
-Fixed PD765 Speedlock weak sector reads (CRC error) in +3 EDSK images
+Fixed Speedlock protected disk loading on Spectrum +3
 Fixed CPC rendering without border
 Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
