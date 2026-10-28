@@ -1576,6 +1576,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         //sleep(1);
     }
 
+    //Esto necesario para que funcionen algunos discos protegidos con Alkatraz, como Artura.dsk
     if (end_of_cylinder && leido_st0==0 && leido_id_st1==0) {
         leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT;
         leido_id_st1 |=PD765_STATUS_REGISTER_ONE_EN_MASK;
