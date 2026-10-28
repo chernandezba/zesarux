@@ -317,12 +317,20 @@ void pd765_sc_set(pd765_signal_counter *s)
     s->value=1;
 }
 
-//Incrementar si esta running y cambiar a 1 si llega al limite
+//Avanza una señal temporizada. En esta controladora se usa con signal_se para
+//simular la duración de SEEK y RECALIBRATE (signal_se.max vale 80 t-estados).
+//El core llama a esta función con los t-estados transcurridos desde la última
+//actualización, incluso si el contador de t-estados cambió de fotograma.
 void pd765_sc_handle_running(pd765_signal_counter *s,int incremento)
 {
+    //Si no hay movimiento en curso, conservar el contador y el valor de SE.
     if (s->running) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: handle signal running. Current counter: %d max: %d",s->current_counter,s->max);
         (s->current_counter)+=incremento;
+        //Al alcanzar el tiempo previsto, poner la señal a 1 y detener el
+        //contador. Como running pasa a 0, el callback solo se ejecuta una vez.
+        //Ese callback actualiza el cilindro, limpia el estado de búsqueda y
+        //deja una interrupción pendiente.
         if ((s->current_counter)>=(s->max)) {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trigger signal SE");
             pd765_sc_set(s);
@@ -547,6 +555,7 @@ void pd765_motor_off(void)
 }
 
 int pd765_ultimo_t_estados=-1;
+static void pd765_handle_read_data_timeout(int t_estados_transcurridos);
 
 void pd765_next_event_from_core(void)
 {
@@ -578,6 +587,7 @@ void pd765_next_event_from_core(void)
         if (signal_se.running) DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: STATES: diference: %d last: %d now: %d",diferencia,pd765_ultimo_t_estados,t_estados);
 
         pd765_sc_handle_running(&signal_se,diferencia);
+        pd765_handle_read_data_timeout(diferencia);
 
         pd765_ultimo_t_estados=t_estados;
     }
@@ -1586,6 +1596,39 @@ int pd765_last_sector_size_write_data=0;
 #define PD765_READ_COMMAND_STATE_ENDING_READING_DATA 2
 int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
 
+static int pd765_read_data_idle_tstates=0;
+
+static void pd765_handle_read_data_timeout(int t_estados_transcurridos)
+{
+    if (pd765_read_command_state!=PD765_READ_COMMAND_STATE_READING_DATA ||
+        !(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) ||
+        pd765_result_buffer_length==0) return;
+
+    pd765_read_data_idle_tstates+=t_estados_transcurridos;
+    //El FDC no puede mantener una lectura pendiente indefinidamente. Tras
+    //20 fotogramas sin que la CPU recoja otro byte (unas dos vueltas a 300 rpm),
+    //termina con ST1.OR. Italia 1990 deja ocho bytes pendientes y espera a
+    //que EXM se desactive antes de consultar el resultado.
+    if (pd765_read_data_idle_tstates<screen_testados_total*20) return;
+
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Read data timeout with %d bytes pending",
+        pd765_result_buffer_length-pd765_result_bufer_read_pointer);
+    pd765_read_data_idle_tstates=0;
+    pd765_reset_buffer();
+    pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
+    pd765_main_status_register &=~PD765_MAIN_STATUS_REGISTER_EXM_MASK;
+    pd765_phase=PD765_PHASE_RESULT;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+    pd765_set_interrupt_pending();
+    pd765_put_buffer(pd765_get_st0()|PD765_STATUS_REGISTER_ZERO_AT);
+    pd765_put_buffer(PD765_STATUS_REGISTER_ONE_OR_MASK);
+    pd765_put_buffer(0);
+    pd765_put_buffer(pd765_input_parameter_c);
+    pd765_put_buffer(pd765_input_parameter_h);
+    pd765_put_buffer(pd765_read_command_searching_parameter_r);
+    pd765_put_buffer(pd765_input_parameter_n);
+}
+
 //Los dos posibles estados al escribir datos
 //Leyendo valores sector
 #define PD765_WRITE_COMMAND_STATE_WRITING_DATA 1
@@ -1609,6 +1652,7 @@ field are not checked when SK = 1.
 */
 
     pd765_read_command_must_stop_anormal_termination=0;
+    pd765_read_data_idle_tstates=0;
 
     //Inicializar buffer retorno
     pd765_reset_buffer();
@@ -3574,6 +3618,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+        pd765_read_data_idle_tstates=0;
         //notificar buffer de visual floppy
         menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
 
