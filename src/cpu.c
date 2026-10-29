@@ -1100,6 +1100,7 @@ void reset_cpu(void)
 
     if (MACHINE_IS_SCORPION) {
         scorpion_set_normal_pages();
+        scorpion_reset();
         if (MACHINE_IS_SCORPION_GMX) scorpion_set_cpu_speed(1);
     }
 

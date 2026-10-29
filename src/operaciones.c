@@ -7043,8 +7043,8 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
-    //El VG93 integrado del Scorpion responde durante la ejecución de TR-DOS.
-    if (MACHINE_IS_SCORPION && !MACHINE_IS_SCORPION_GMX && trd_enabled.v &&
+    //El VG93 de Scorpion, incluido GMX, responde durante TR-DOS.
+    if (MACHINE_IS_SCORPION && trd_enabled.v &&
         scorpion_trdos_is_active() && reg_pc<0x4000 &&
         (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
          puerto_l==0x7f || puerto_l==0xff)) {
@@ -9136,8 +9136,8 @@ Port: 10-- ---- ---- --0-
 	}
 
 
-   //Los accesos directos al VG93 de Scorpion se atienden en su máquina.
-    if (MACHINE_IS_SCORPION && !MACHINE_IS_SCORPION_GMX && trd_enabled.v &&
+   //Los accesos directos al VG93 de Scorpion, incluido GMX, usan el controlador común.
+    if (MACHINE_IS_SCORPION && trd_enabled.v &&
         scorpion_trdos_is_active() && reg_pc<0x4000 &&
         (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
          puerto_l==0x7f || puerto_l==0xff)) {

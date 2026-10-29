@@ -258,11 +258,22 @@ void scorpion_init_memory_tables(void)
 
 }
 
+/* Reinicia los dispositivos del Scorpion al hacer RESET.
+   Entrada: ninguna. Salida: VG93 y, en GMX, SMUC reiniciados. */
+void scorpion_reset(void)
+{
+    vg93_reset();
+
+    if (MACHINE_IS_SCORPION_GMX) {
+        ide_smuc_reset();
+    }
+
+}
+
 void scorpion_set_normal_pages(void)
 {
     scorpion_trdos_active.v=0;
     scorpion_magic_ram_fetch_seen=0;
-    vg93_reset();
     scorpion_memory_paged[0]=scorpion_rom_mem_table[0];
     scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
@@ -274,7 +285,6 @@ void scorpion_set_normal_pages(void)
 
 
     if (MACHINE_IS_SCORPION_GMX) {
-        ide_smuc_reset();
         scorpion_gmx_port_7efd=0;
         scorpion_gmx_zcontroller_control=0;
         scorpion_gmx_port_dffd=0;
