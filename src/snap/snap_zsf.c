@@ -3469,13 +3469,14 @@ void load_zsf_baseconf_conf(z80_byte *header)
 
 
 
-#define ZSF_SCORPION_CONF_BLOCK_LENGTH 1
+#define ZSF_SCORPION_CONF_BLOCK_LENGTH 2
 
 void store_zsf_scorpion_conf(z80_byte *confblock)
 {
 
 
     confblock[0]=scorpion_trdos_active.v;
+    confblock[1]=cpu_turbo_speed;
 
 
 }
@@ -3485,11 +3486,12 @@ void load_zsf_scorpion_conf(z80_byte *header)
 
 
     scorpion_trdos_active.v=header[0];
+    int turbo=header[1];
 
     scorpion_mem_page_ram();
     scorpion_mem_page_rom();
 
-    //scorpion_set_cpu_speed();
+    scorpion_set_cpu_speed(turbo);
 
 
 }
