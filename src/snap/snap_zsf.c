@@ -955,6 +955,19 @@ Byte Fields:
 See functions store_zsf_scorpion_conf() y load_zsf_scorpion_conf to get info about this block
 
 
+-Block ID 83: ZSF_SCORPIONGMX_RAMBLOCK
+A ram binary block for a scorpion gmx
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
+-Block ID 84: ZSF_SCORPIONGMX_CONF
+See functions store_zsf_scorpiongmx_conf() y load_zsf_scorpiongmx_conf to get info about this block
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -1052,6 +1065,8 @@ char *zsf_block_id_names[]={
   "ZSF_BASECONF_CONF",  //80
   "ZSF_SCORPION_RAMBLOCK",
   "ZSF_SCORPION_CONF",
+  "ZSF_SCORPIONGMX_RAMBLOCK",
+  "ZSF_SCORPIONGMX_CONF",
 
   "Unknown"  //Este siempre al final
 };
@@ -2104,7 +2119,7 @@ void load_zsf_baseconf_snapshot_block_data(z80_byte *block_data,int longitud_ori
 
 }
 
-
+//comun para scorpion 256 y gmx
 void load_zsf_scorpion_snapshot_block_data(z80_byte *block_data,int longitud_original)
 {
 
@@ -3496,6 +3511,38 @@ void load_zsf_scorpion_conf(z80_byte *header)
 
 }
 
+
+
+#define ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH 2
+
+void store_zsf_scorpiongmx_conf(z80_byte *confblock)
+{
+
+
+    confblock[0]=scorpion_trdos_active.v;
+    confblock[1]=cpu_turbo_speed;
+
+
+}
+
+void load_zsf_scorpiongmx_conf(z80_byte *header)
+{
+
+
+    scorpion_trdos_active.v=header[0];
+    int turbo=header[1];
+
+    scorpion_mem_page_ram();
+    scorpion_mem_page_rom();
+
+    scorpion_set_cpu_speed(turbo);
+
+
+}
+
+
+
+
 void load_zsf_tsconf_conf(z80_byte *header)
 {
 /*
@@ -4020,6 +4067,14 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_SCORPION_CONF:
         load_zsf_scorpion_conf(block_data);
+      break;
+
+      case ZSF_SCORPIONGMX_RAMBLOCK:
+        load_zsf_scorpion_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_SCORPIONGMX_CONF:
+        load_zsf_scorpiongmx_conf(block_data);
       break;
 
       case ZSF_COMMON_ROMBLOCK:
@@ -6853,6 +6908,63 @@ if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
 
     //Store block to file
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SCORPION_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
+
+
+if (MACHINE_IS_SCORPION_GMX) {
+  //Configuracion
+
+  z80_byte scorpionconfblock[ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH];
+
+
+   store_zsf_scorpiongmx_conf(scorpionconfblock);
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, scorpionconfblock,ZSF_SCORPIONGMX_CONF, ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+
+
+  int paginas=SCORPIONGMX_TOTAL_RAM_PAGES;
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(scorpion_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_SCORPIONGMX_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SCORPIONGMX_RAMBLOCK, longitud_bloque+6);
 
   }
 
