@@ -66,4 +66,6 @@ extern z80_bit trd_persistent_writes;
 
 extern void trd_insert_disk(char *nombre);
 
+extern z80_byte betadisk_get_byte_disk(int pista, int sector, int byte_en_sector);
+
 #endif

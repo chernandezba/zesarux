@@ -580,10 +580,77 @@ void scorpion_gmx_set_turbo_speed(void)
     scorpion_set_cpu_speed(2);
 }
 
+/* Atiende la lectura física de un sector solicitada por la ROM TR-DOS del
+   Scorpion en 2F1Bh.
+   Entrada: D=pista lógica, E=sector de base cero, HL=destino en RAM.
+   Salida: copia 256 bytes, conserva HL y DE, pone A=0 y retorna al llamador. */
+static void scorpion_trdos_read_sector(void)
+{
+    int i;
+    z80_int destino=reg_hl;
+
+    for (i=0;i<256;i++) {
+        poke_byte_no_time(destino+i,betadisk_get_byte_disk(reg_d,reg_e,i));
+    }
+
+    reg_a=0;
+    Z80_FLAGS=FLAG_Z | FLAG_PV | FLAG_H;
+    reg_c=0x7f;
+    reg_pc=pop_valor();
+}
+
+/* Comprueba que 2F1Bh pertenece a la rutina de lectura conocida de TR-DOS.
+   Entrada: página actualmente mapeada en 0000h. Salida: 1 si es una ROM con
+   esa rutina; 0 si es RAM u otra ROM, incluso en otro banco de GMX. */
+static int scorpion_trdos_read_sector_rom_matches(void)
+{
+    static const z80_byte firma_trdos[]={
+        0x7b,0x3c,0xd3,0x5f,0xe5,0x16,0x14,0xd5,
+        0xf3,0x0e,0x7f,0x3e,0x80,0xd3,0x1f,0xcd,
+        0xe5,0x3f,0xd1,0xe1,0xdb,0x1f,0xe6,0x7f
+    };
+    static const z80_byte firma_gmx[]={
+        0x7b,0x3c,0xf7,0x16,0xe5,0x16,0x14,0xd5,
+        0xf3,0x0e,0x7f,0x3e,0x80,0xf7,0x10,0xcd,
+        0xe5,0x3f,0xd1,0xe1,0xf7,0x01,0xe6,0x7f
+    };
+    const z80_byte *firma;
+    int pagina;
+    int i;
+
+    if (!(debug_paginas_memoria_mapeadas[0] & DEBUG_PAGINA_MAP_ES_ROM)) return 0;
+
+    pagina=debug_paginas_memoria_mapeadas[0] & ~DEBUG_PAGINA_MAP_ES_ROM;
+    if (MACHINE_IS_SCORPION_GMX) {
+        /* En la ROM GMX actual, TR-DOS ocupa los bancos 7 y 15 con la
+           rutina clásica en 2F1Bh. El banco 19 contiene la misma rutina
+           adaptada a GMX: sustituye accesos directos a puertos por RST.
+           Solo se intercepta el banco de TR-DOS que esté paginado. */
+        if (pagina==19) firma=firma_gmx;
+        else if (pagina==7 || pagina==15) firma=firma_trdos;
+        else return 0;
+    }
+    else {
+        /* En ZS-256 y Turbo+ la ROM TR-DOS es el banco 3. */
+        if (pagina!=3) return 0;
+        firma=firma_trdos;
+    }
+
+    for (i=0;i<(int)sizeof(firma_trdos);i++) {
+        if (peek_byte_no_time(0x2f1b+i)!=firma[i]) return 0;
+    }
+    return 1;
+}
+
 z80_byte fetch_opcode_scorpion(void)
 {
 
     scorpion_trdos_update(reg_pc);
+    if (scorpion_trdos_is_active() && trd_enabled.v && reg_pc==0x2f1b) {
+        if (scorpion_trdos_read_sector_rom_matches()) {
+            scorpion_trdos_read_sector();
+        }
+    }
     if (scorpion_trdos_is_active()) betadisk_handle_trdos_traps();
 
     // MAGIC se enclava hasta el primer ciclo M1 que lee una instrucción de RAM.
