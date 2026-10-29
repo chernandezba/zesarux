@@ -33,6 +33,7 @@
 #include "operaciones.h"
 #include "start.h"
 #include "betadisk.h"
+#include "vg93.h"
 #include "ide.h"
 #include "mmc.h"
 
@@ -81,7 +82,6 @@ z80_bit scorpion_trdos_active={0};
 
 // Indica que MAGIC ya ha esperado una lectura M1 de una instrucción desde RAM.
 static int scorpion_magic_ram_fetch_seen;
-
 
 /* Habilita la interfaz Z-Controller; sin ella la tarjeta SD figura ausente. */
 z80_bit zcontroller_enabled={0};
@@ -262,6 +262,7 @@ void scorpion_set_normal_pages(void)
 {
     scorpion_trdos_active.v=0;
     scorpion_magic_ram_fetch_seen=0;
+    vg93_reset();
     scorpion_memory_paged[0]=scorpion_rom_mem_table[0];
     scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];

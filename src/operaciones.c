@@ -69,6 +69,7 @@
 #include "tsconf.h"
 #include "mk14.h"
 #include "betadisk.h"
+#include "vg93.h"
 #include "baseconf.h"
 #include "zxevo.h"
 #include "settings.h"
@@ -7042,6 +7043,14 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
+    //El VG93 integrado del Scorpion responde durante la ejecución de TR-DOS.
+    if (MACHINE_IS_SCORPION && !MACHINE_IS_SCORPION_GMX && trd_enabled.v &&
+        scorpion_trdos_is_active() && reg_pc<0x4000 &&
+        (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
+         puerto_l==0x7f || puerto_l==0xff)) {
+        return vg93_read_port(puerto);
+    }
+
     //Acceso betadisk
     if (betadisk_enabled.v || (MACHINE_IS_SCORPION && scorpion_trdos_is_active() && trd_enabled.v)) {
 
@@ -9126,6 +9135,15 @@ Port: 10-- ---- ---- --0-
 	  samram_write_port(value);
 	}
 
+
+   //Los accesos directos al VG93 de Scorpion se atienden en su máquina.
+    if (MACHINE_IS_SCORPION && !MACHINE_IS_SCORPION_GMX && trd_enabled.v &&
+        scorpion_trdos_is_active() && reg_pc<0x4000 &&
+        (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
+         puerto_l==0x7f || puerto_l==0xff)) {
+        vg93_write_port(puerto,value);
+        return;
+    }
 
    //Acceso betadisk
     if (betadisk_enabled.v || (MACHINE_IS_SCORPION && scorpion_trdos_is_active() && trd_enabled.v)) {
