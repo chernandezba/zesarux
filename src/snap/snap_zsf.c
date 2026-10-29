@@ -3513,7 +3513,8 @@ void load_zsf_scorpion_conf(z80_byte *header)
 
 
 
-#define ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH 2
+// TR-DOS, velocidad, xx00, esquema, 7EFD, DFFD, 78FD y scroll bajo/alto.
+#define ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH 9
 
 void store_zsf_scorpiongmx_conf(z80_byte *confblock)
 {
@@ -3521,6 +3522,14 @@ void store_zsf_scorpiongmx_conf(z80_byte *confblock)
 
     confblock[0]=scorpion_trdos_active.v;
     confblock[1]=cpu_turbo_speed;
+    confblock[2]=scorpion_gmx_port_00;
+    confblock[3]=scorpion_gmx_active_scheme;
+    confblock[4]=scorpion_gmx_port_7efd;
+    confblock[5]=scorpion_gmx_port_dffd;
+    confblock[6]=scorpion_gmx_port_78fd;
+    z80_int scroll=scorpion_gmx_get_scroll_register();
+    confblock[7]=value_16_to_8l(scroll);
+    confblock[8]=value_16_to_8h(scroll);
 
 
 }
@@ -3531,6 +3540,13 @@ void load_zsf_scorpiongmx_conf(z80_byte *header)
 
     scorpion_trdos_active.v=header[0];
     int turbo=header[1];
+
+    scorpion_gmx_port_00=header[2];
+    scorpion_gmx_active_scheme=header[3];
+    scorpion_gmx_port_7efd=header[4];
+    scorpion_gmx_port_dffd=header[5];
+    scorpion_gmx_port_78fd=header[6];
+    scorpion_gmx_set_scroll_register(value_8_to_16(header[8],header[7]));
 
     scorpion_mem_page_ram();
     scorpion_mem_page_rom();

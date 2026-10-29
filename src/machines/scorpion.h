@@ -104,6 +104,8 @@ extern void scorpiongmx_store_scanline_rainbow_border(void);
 
 extern int if_scorpiongmx_mode_640_200(void);
 extern int scorpion_gmx_get_scroll_lines(void);
+extern z80_int scorpion_gmx_get_scroll_register(void);
+extern void scorpion_gmx_set_scroll_register(z80_int value);
 
 extern void scorpion_reset(void);
 

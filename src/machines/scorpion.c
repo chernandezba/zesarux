@@ -121,6 +121,21 @@ static z80_byte scorpion_gmx_scroll_low;
 
 static z80_byte scorpion_gmx_scroll_high;
 
+/* Devuelve los registros de desplazamiento vertical GMX combinados.
+   Entrada: ninguna. Salida: valor de 14 bits escrito en 7AFD y 7CFD. */
+z80_int scorpion_gmx_get_scroll_register(void)
+{
+    return ((z80_int)scorpion_gmx_scroll_high << 8) | scorpion_gmx_scroll_low;
+}
+
+/* Restaura los registros de desplazamiento vertical GMX desde un snapshot.
+   Entrada: valor combinado de 7AFD y 7CFD. Salida: ninguna. */
+void scorpion_gmx_set_scroll_register(z80_int value)
+{
+    scorpion_gmx_scroll_low=value & 0xf0;
+    scorpion_gmx_scroll_high=(value >> 8) & 0x3f;
+}
+
 /* Último valor escrito en el puerto global xx00:
  * D0 CONF0, D1 CONF1, D2 CONF2: variante de configuración FLEX8000.
  * D3 RECONF: solicita cargar esa configuración y reiniciar GMX.
