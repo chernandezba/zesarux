@@ -610,6 +610,14 @@ void da_output_ay_3_canales(char *canal_A,char *canal_B, char *canal_C)
 
 void da_output_ay_izquierdo_derecho(char *iz, char *de)
 {
+
+    //Si cpu pausada, no retornar sonido del chip tampoco
+    if (paused_cpu_emulation.v) {
+        *iz=0;
+        *de=0;
+        return;
+    }
+
     char canal_A,canal_B,canal_C;
 
     da_output_ay_3_canales(&canal_A,&canal_B,&canal_C);
