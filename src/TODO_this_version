@@ -339,4 +339,5 @@ bank panic ok
 astro flash ok
 
 
--+3: seguir otros speedlock que no cargan. revisar los que cargan
+-pentagon: que tr-dos se comporte como scorpion, baseconf, etc. y no necesite setting de betadisk enabled
+ese setting solo quedaria para spectrum 128k
