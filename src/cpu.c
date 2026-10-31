@@ -1533,6 +1533,7 @@ void malloc_mem_machine(void) {
         else if (MACHINE_IS_SPECTRUM_128_P2) {
 
                 //32 kb rom, 128-1024 ram
+                //16kb mas en caso de pentagon para la rom de tr-dos
                 malloc_machine(((MACHINE_IS_PENTAGON ? 48 : 32)+1024)*1024);
                 random_ram(memoria_spectrum+32768,1024*1024);
 
@@ -3775,6 +3776,8 @@ void rom_load(char *romfilename)
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
 
+        //Rom de tr-dos para pentagon
+        //Lo metemos en la rom 2, que en 128k no se usa (se usa en +2a,+3)
         if (MACHINE_IS_PENTAGON) {
             FILE *trdos_rom;
             open_sharedfile(BETADISK_ROM_FILENAME,&trdos_rom);
