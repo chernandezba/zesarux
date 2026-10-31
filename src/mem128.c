@@ -57,6 +57,7 @@ z80_byte *ram_mem_table[64];
 //array para +2a usamos 4 elementos
 //para 128, +2 usamos 2 elementos
 z80_byte *rom_mem_table[4];
+z80_byte *pentagon_trdos_rom;
 
 //Direcciones actuales mapeadas
 z80_byte *memory_paged[4];
@@ -751,7 +752,8 @@ void mem_init_memory_tables_128k(void)
                         puntero +=16384;
                 }
 
-                if (MACHINE_IS_PENTAGON) rom_mem_table[2]=&memoria_spectrum[(32+1024)*1024];
+                //Para la rom de trdos, ponerla al final de rom+ram
+                if (MACHINE_IS_PENTAGON) pentagon_trdos_rom=&memoria_spectrum[(32+1024)*1024];
 
 				//1 MB
                 for (i=0;i<64;i++) {

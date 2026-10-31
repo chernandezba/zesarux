@@ -3777,11 +3777,10 @@ void rom_load(char *romfilename)
         }
 
         //Rom de tr-dos para pentagon
-        //Lo metemos en la rom 2, que en 128k no se usa (se usa en +2a,+3)
         if (MACHINE_IS_PENTAGON) {
             FILE *trdos_rom;
             open_sharedfile(BETADISK_ROM_FILENAME,&trdos_rom);
-            if (trdos_rom==NULL || fread(rom_mem_table[2],1,16384,trdos_rom)!=16384)
+            if (trdos_rom==NULL || fread(pentagon_trdos_rom,1,16384,trdos_rom)!=16384)
                 debug_printf(VERBOSE_ERR,"Error loading Pentagon TR-DOS ROM");
             if (trdos_rom!=NULL) fclose(trdos_rom);
         }

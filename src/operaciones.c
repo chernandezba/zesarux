@@ -1200,7 +1200,7 @@ z80_byte peek_byte_no_time_pentagon(z80_int dir)
 #ifdef EMULATE_VISUALMEM
         set_visualmemreadbuffer(dir);
 #endif
-        return rom_mem_table[2][dir];
+        return pentagon_trdos_rom[dir];
     }
     return peek_byte_no_time_spectrum_128k(dir);
 }
@@ -1212,7 +1212,7 @@ z80_byte peek_byte_pentagon(z80_int dir)
         set_visualmemreadbuffer(dir);
 #endif
         t_estados+=3;
-        return rom_mem_table[2][dir];
+        return pentagon_trdos_rom[dir];
     }
     return peek_byte_spectrum_128k(dir);
 }
