@@ -10856,8 +10856,8 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_betadisk);
 
-        //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadisk
-        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION) {
+        //Estas maquinas gestionan TR-DOS sin activar el modulo Betadisk externo.
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON) {
 
             menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
                 "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");

@@ -26,6 +26,7 @@
 #include "tape.h"
 #include "ay38912.h"
 #include "mem128.h"
+#include "betadisk.h"
 #include "zx8081.h"
 #include "zxvision.h"
 #include "screen.h"
@@ -1175,6 +1176,45 @@ z80_byte fetch_opcode_spectrum(void)
 	set_visualmemopcodebuffer(reg_pc);
 #endif
 	return peek_byte_no_time (reg_pc);
+}
+
+static int pentagon_trdos_active=0;
+
+void pentagon_trdos_reset(void)
+{
+    pentagon_trdos_active=0;
+}
+
+z80_byte fetch_opcode_pentagon(void)
+{
+    if (reg_pc>=0x4000) pentagon_trdos_active=0;
+    else if ((reg_pc&0xff00)==0x3d00 && (puerto_32765&16)) pentagon_trdos_active=1;
+
+    if (pentagon_trdos_active) betadisk_handle_trdos_traps();
+    return fetch_opcode_spectrum();
+}
+
+z80_byte peek_byte_no_time_pentagon(z80_int dir)
+{
+    if (pentagon_trdos_active && dir<0x4000) {
+#ifdef EMULATE_VISUALMEM
+        set_visualmemreadbuffer(dir);
+#endif
+        return rom_mem_table[2][dir];
+    }
+    return peek_byte_no_time_spectrum_128k(dir);
+}
+
+z80_byte peek_byte_pentagon(z80_int dir)
+{
+    if (pentagon_trdos_active && dir<0x4000) {
+#ifdef EMULATE_VISUALMEM
+        set_visualmemreadbuffer(dir);
+#endif
+        t_estados+=3;
+        return rom_mem_table[2][dir];
+    }
+    return peek_byte_spectrum_128k(dir);
 }
 
 z80_byte fetch_opcode_tsconf(void)

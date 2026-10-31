@@ -751,6 +751,8 @@ void mem_init_memory_tables_128k(void)
                         puntero +=16384;
                 }
 
+                if (MACHINE_IS_PENTAGON) rom_mem_table[2]=&memoria_spectrum[(32+1024)*1024];
+
 				//1 MB
                 for (i=0;i<64;i++) {
                         ram_mem_table[i]=&memoria_spectrum[puntero];

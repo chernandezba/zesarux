@@ -261,6 +261,10 @@ extern z80_byte (*peek_byte_no_time)(z80_int dir);
 extern z80_byte (*fetch_opcode)(void);
 
 extern z80_byte fetch_opcode_spectrum(void);
+extern z80_byte fetch_opcode_pentagon(void);
+extern z80_byte peek_byte_pentagon(z80_int dir);
+extern z80_byte peek_byte_no_time_pentagon(z80_int dir);
+extern void pentagon_trdos_reset(void);
 extern z80_byte fetch_opcode_tsconf(void);
 extern z80_byte fetch_opcode_baseconf(void);
 

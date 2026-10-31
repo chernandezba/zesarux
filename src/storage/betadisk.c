@@ -692,7 +692,7 @@ void betadisk_enable(void)
 
         //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadisk
 
-    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF || MACHINE_IS_SCORPION) return;
+    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF || MACHINE_IS_SCORPION || MACHINE_IS_PENTAGON) return;
 
     if (betadisk_enabled.v) return;
 
