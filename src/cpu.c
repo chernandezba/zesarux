@@ -2925,6 +2925,7 @@ void set_machine_params(void)
         case MACHINE_ID_ATM_TURBO2_PLUS:
         case MACHINE_ID_ATM_TURBO3:
 
+            if (MACHINE_IS_ATM_TURBO1) fetch_opcode=fetch_opcode_atmturbo;
             poke_byte=poke_byte_atmturbo;
             peek_byte=peek_byte_atmturbo;
             peek_byte_no_time=peek_byte_no_time_atmturbo;

@@ -59,6 +59,7 @@
 #include "sms.h"
 #include "svi.h"
 #include "zeng_online_client.h"
+#include "atmturbo.h"
 
 void scrstdout_establece_tablas_teclado(int c);
 void scrstdout_reset_teclas(void);

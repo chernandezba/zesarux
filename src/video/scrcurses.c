@@ -54,6 +54,7 @@
 #include "svi.h"
 #include "zeng.h"
 #include "zeng_online_client.h"
+#include "atmturbo.h"
 
 #ifdef COMPILE_CURSESW
     #include "cursesw_ext.h"

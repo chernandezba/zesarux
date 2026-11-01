@@ -77,6 +77,26 @@ z80_byte *atmturbo_memory_paged[4];
 z80_byte puerto_fdfd;
 
 int atmturbo_rombios=0;
+static int atmturbo_rom_enabled=1;
+static int atmturbo_trdos_active;
+static int atmturbo_video_mode=3;
+
+void atmturbo_mem_page_rom(void);
+
+z80_byte fetch_opcode_atmturbo(void)
+{
+    if (atmturbo_trdos_active && reg_pc>=0x4000) {
+        atmturbo_trdos_active=0;
+        atmturbo_mem_page_rom();
+    }
+    else if (!atmturbo_trdos_active && !atmturbo_rombios && atmturbo_rom_enabled &&
+             (puerto_32765 & 16) && (reg_pc & 0xff00)==0x3d00) {
+        atmturbo_trdos_active=1;
+        atmturbo_mem_page_rom();
+    }
+    if (atmturbo_trdos_active) betadisk_handle_trdos_traps();
+    return fetch_opcode_spectrum();
+}
 
 
 void atmturbo_init_memory_tables(void)
@@ -145,22 +165,19 @@ void atmturbo_mem_page_rom(void)
 
     z80_byte page_entra;
 
-    /*
+    /* La imagen ATM1 contiene BIOS, TR-DOS, BASIC 128 y BASIC 48. */
+    if (atmturbo_trdos_active) page_entra=1;
+    else if (atmturbo_rombios) page_entra=0;
+    else page_entra=(puerto_32765 & 16) ? 2 : 3;
 
-| Página | Desplazamiento en la ROM | Contenido | Selección |
-|---|---:|---|---|
-| 0 | `0000h` | BASIC 128 | `1FFDh.D1=0`, `7FFDh.D4=0` |
-| 1 | `4000h` | BASIC 48 | `1FFDh.D1=0`, `7FFDh.D4=1` |
-| 2 | `8000h` | Monitor de servicio | `1FFDh.D1=1` |
-| 3 | `C000h` | TR-DOS | Se activa mediante la lógica de TR-DOS, no mediante la selección BASIC de `7FFDh`. |
-    */
-
-    page_entra=(puerto_32765 & 16) >> 4;
-
-    if (atmturbo_rombios==0) page_entra |=2;
-
-    atmturbo_memory_paged[0]=atmturbo_rom_mem_table[page_entra];
-    debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM+page_entra;
+    if (atmturbo_rom_enabled) {
+        atmturbo_memory_paged[0]=atmturbo_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM+page_entra;
+    }
+    else {
+        atmturbo_memory_paged[0]=atmturbo_ram_mem_table[0];
+        debug_paginas_memoria_mapeadas[0]=0;
+    }
 
 }
 
@@ -182,10 +199,25 @@ void atmturbo_out_port_fdfd(z80_byte value)
 
 void atmturbo_reset(void)
 {
+    atmturbo_trdos_active=0;
     atmturbo_rombios=1;
+    atmturbo_rom_enabled=1;
+    atmturbo_video_mode=3;
+
+    atmturbo_memory_paged[1]=atmturbo_ram_mem_table[5];
+    debug_paginas_memoria_mapeadas[1]=5;
 
     atmturbo_mem_page_rom();
     atmturbo_mem_page_ram();
+}
+
+void atmturbo_out_port_fe(z80_int port)
+{
+    atmturbo_rom_enabled=(port & 0x80)!=0;
+    atmturbo_video_mode=(port >> 5) & 3;
+    atmturbo_memory_paged[1]=atmturbo_ram_mem_table[atmturbo_rom_enabled ? 5 : 4];
+    debug_paginas_memoria_mapeadas[1]=atmturbo_rom_enabled ? 5 : 4;
+    atmturbo_mem_page_rom();
 }
 
 
@@ -197,7 +229,7 @@ void poke_byte_no_time_atmturbo(z80_int dir,z80_byte valor)
 
     segmento=dir / 16384;
 
-    if (dir>16383) {
+    if (dir>16383 || !atmturbo_rom_enabled) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -229,7 +261,7 @@ void poke_byte_atmturbo(z80_int dir,z80_byte valor)
 
 
 
-    if (dir>16383) {
+    if (dir>16383 || !atmturbo_rom_enabled) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -292,6 +324,7 @@ z80_byte peek_byte_atmturbo(z80_int dir)
 
 z80_byte atmturbo_read_port_fb(void)
 {
+    atmturbo_trdos_active=0;
     atmturbo_rombios=1;
 
     atmturbo_mem_page_rom();
@@ -302,6 +335,7 @@ z80_byte atmturbo_read_port_fb(void)
 
 z80_byte atmturbo_read_port_7b(void)
 {
+    atmturbo_trdos_active=0;
     atmturbo_rombios=0;
 
     atmturbo_mem_page_rom();
@@ -310,3 +344,86 @@ z80_byte atmturbo_read_port_7b(void)
 
 }
 
+
+
+/* Obtiene un color del modo gráfico de ATM1 en sus coordenadas originales. */
+static int atmturbo_get_graphics_colour(int x,int y,int mode)
+{
+    int base=(puerto_32765 & 8) ? 7 : 5;
+    z80_byte *pixels=atmturbo_ram_mem_table[base];
+    z80_byte *attributes=atmturbo_ram_mem_table[base-4];
+    int offset=y*40+(mode==0 ? x/8 : x/16);
+    int colour;
+
+    if (mode==0) {
+        int part=(x & 7)/2;
+        z80_byte value=atmturbo_ram_mem_table[(part & 1) ? base : base-4]
+                                             [offset+((part & 2) ? 8192 : 0)];
+        colour=(x & 1) ? ((value & 0x80)>>4)|((value>>3)&7)
+                       : ((value & 0x40)>>3)|(value&7);
+    }
+    else {
+        int byte_offset=offset+((x & 8) ? 8192 : 0);
+        z80_byte value=pixels[byte_offset];
+        z80_byte attribute=attributes[byte_offset];
+        colour=(value & (0x80>>(x & 7)))
+               ? ((attribute & 0x40)>>3)|(attribute&7)
+               : ((attribute & 0x80)>>4)|((attribute>>3)&7);
+    }
+
+    return colour;
+}
+
+void atmturbo_refresca_pantalla(void)
+{
+
+    if (atmturbo_video_mode==3) {
+
+                        //modo clasico. sin rainbow
+                if (rainbow_enabled.v==0) {
+                        if (border_enabled.v) {
+                                //ver si hay que refrescar border
+                                if (modificado_border.v)
+                                {
+                                        scr_refresca_border();
+                                        modificado_border.v=0;
+                                }
+
+                        }
+
+                        scr_refresca_pantalla_comun();
+                }
+
+                else {
+                //modo rainbow - real video
+                        scr_refresca_pantalla_rainbow_comun_spectrum();
+                }
+
+
+    }
+
+    else {
+
+        int x,y;
+        int source_width=(atmturbo_video_mode==0) ? 320 : 640;
+
+        if (border_enabled.v && modificado_border.v) {
+            scr_refresca_border();
+            modificado_border.v=0;
+        }
+
+        for (y=0;y<192;y++) {
+            int source_y=y*200/192;
+            for (x=0;x<256;x++) {
+                int colour=0;
+                if (atmturbo_video_mode!=2) {
+                    int source_x=x*source_width/256;
+                    colour=atmturbo_get_graphics_colour(source_x,source_y,atmturbo_video_mode);
+                }
+                scr_putpixel_zoom(x,y,colour);
+            }
+        }
+
+    }
+
+}

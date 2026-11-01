@@ -175,6 +175,7 @@
 #include "qsound.h"
 #include "scorpion.h"
 #include "didaktikgama.h"
+#include "atmturbo.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
@@ -4236,6 +4237,10 @@ int get_ram_size(void)
 
     else if (MACHINE_IS_SCORPION) {
         total_ram=256*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        total_ram=ATMTURBO_RAM_SIZE*1024;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {

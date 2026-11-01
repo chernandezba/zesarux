@@ -39,6 +39,7 @@ extern void poke_byte_atmturbo(z80_int dir,z80_byte valor);
 extern void poke_byte_no_time_atmturbo(z80_int dir,z80_byte valor);
 extern z80_byte peek_byte_atmturbo(z80_int dir);
 extern z80_byte peek_byte_no_time_atmturbo(z80_int dir);
+extern z80_byte fetch_opcode_atmturbo(void);
 
 extern void atmturbo_reset(void);
 
@@ -49,5 +50,8 @@ extern z80_byte atmturbo_read_port_7b(void);
 
 extern void atmturbo_out_port_32765(z80_byte value);
 extern void atmturbo_out_port_fdfd(z80_byte value);
+extern void atmturbo_out_port_fe(z80_int port);
+
+extern void atmturbo_refresca_pantalla(void);
 
 #endif

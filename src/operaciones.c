@@ -9268,6 +9268,8 @@ Port: 10-- ---- ---- --0-
     if (MACHINE_IS_ATM_TURBO)
     {
 
+        if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6) atmturbo_out_port_fe(puerto);
+
         if (puerto==32765) {
 
 
