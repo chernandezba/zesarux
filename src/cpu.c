@@ -2277,6 +2277,15 @@ void set_machine_params(void)
 
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        /* ATM Turbo necesita funciones de contención antes del primer fetch. */
+        contend_read=contend_read_scorpion;
+        contend_read_no_mreq=contend_read_no_mreq_scorpion;
+        contend_write_no_mreq=contend_write_no_mreq_scorpion;
+        ula_contend_port_early=ula_contend_port_early_scorpion;
+        ula_contend_port_late=ula_contend_port_late_scorpion;
+    }
+
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
         contend_read=contend_read_128k;
         contend_read_no_mreq=contend_read_no_mreq_128k;
