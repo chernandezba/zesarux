@@ -183,6 +183,32 @@ void ula_contend_port_late_scorpion(z80_int port GCC_UNUSED)
     t_estados+=2;
 }
 
+/* Contención de ATM Turbo: contabiliza los ciclos sin esperas adicionales. */
+void contend_read_atmturbo(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+void contend_read_no_mreq_atmturbo(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+void contend_write_no_mreq_atmturbo(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+void ula_contend_port_early_atmturbo(z80_int port GCC_UNUSED)
+{
+    t_estados++;
+}
+
+void ula_contend_port_late_atmturbo(z80_int port GCC_UNUSED)
+{
+    t_estados+=2;
+}
+
 
 //Jupiter Ace - no contended
 void contend_read_ace(z80_int direccion GCC_UNUSED,int time)
