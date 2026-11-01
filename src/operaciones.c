@@ -99,6 +99,7 @@
 #include "zxmmcplus.h"
 #include "scorpion.h"
 #include "didaktikgama.h"
+#include "atmturbo.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -7708,6 +7709,11 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
         if (puerto_l==0xB3) return gs_read_port_b3_from_speccy();
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        if (puerto_l==0xfb) return atmturbo_read_port_fb();
+        if (puerto_l==0x7b) return atmturbo_read_port_7b();
+    }
+
 	if (MACHINE_IS_TSCONF) {
 
 		//Puertos nvram
@@ -9258,6 +9264,26 @@ Port: 10-- ---- ---- --0-
 
         }
 	}
+
+    if (MACHINE_IS_ATM_TURBO)
+    {
+
+        if (puerto==32765) {
+
+
+				atmturbo_out_port_32765(value);
+
+        }
+
+        if (puerto==0xfdfd) {
+
+
+				atmturbo_out_port_fdfd(value);
+
+        }
+
+
+    }
 
     if (MACHINE_IS_SCORPION)
     {

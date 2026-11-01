@@ -164,6 +164,22 @@ void atmturbo_mem_page_rom(void)
 
 }
 
+void atmturbo_out_port_32765(z80_byte value)
+{
+    puerto_32765=value;
+
+    atmturbo_mem_page_ram();
+    atmturbo_mem_page_rom();
+}
+
+void atmturbo_out_port_fdfd(z80_byte value)
+{
+    puerto_fdfd=value;
+
+    atmturbo_mem_page_ram();
+    atmturbo_mem_page_rom();
+}
+
 void atmturbo_reset(void)
 {
     atmturbo_rombios=1;
@@ -271,5 +287,26 @@ z80_byte peek_byte_atmturbo(z80_int dir)
 	puntero=atmturbo_memory_paged[segmento]+dir;
 
 	return *puntero;
+}
+
+
+z80_byte atmturbo_read_port_fb(void)
+{
+    atmturbo_rombios=1;
+
+    atmturbo_mem_page_rom();
+
+    return 255;
+
+}
+
+z80_byte atmturbo_read_port_7b(void)
+{
+    atmturbo_rombios=0;
+
+    atmturbo_mem_page_rom();
+
+    return 255;
+
 }
 

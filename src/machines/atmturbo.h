@@ -44,4 +44,10 @@ extern void atmturbo_reset(void);
 
 extern void atmturbo_malloc_mem_machine(void);
 
+extern z80_byte atmturbo_read_port_fb(void);
+extern z80_byte atmturbo_read_port_7b(void);
+
+extern void atmturbo_out_port_32765(z80_byte value);
+extern void atmturbo_out_port_fdfd(z80_byte value);
+
 #endif
