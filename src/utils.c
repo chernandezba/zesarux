@@ -675,6 +675,11 @@ char *string_machines_list_description=
     " Scorpiontp  Scorpion ZS-256 Turbo+\n"
     " Scorpiongmx Scorpion GMX\n"
 
+    " ATM1        ATM Turbo 1\n"
+    " ATM2        ATM Turbo 2\n"
+    " ATM2p       ATM Turbo 2+\n"
+    " ATM3        ATM Turbo 3\n"
+
     " Chloe140 Chloe 140 SE\n"
     " Chloe280 Chloe 280 SE\n"
 
@@ -777,6 +782,13 @@ struct s_machines_info machines_info[]={
     {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,                 MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion ZS-256 Turbo+",		    MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion GMX",		            MACHINE_ID_SCORPION_GMX,                    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+
+    {"ATM Turbo 1",		                MACHINE_ID_ATM_TURBO1,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
+    {"ATM Turbo 2",		                MACHINE_ID_ATM_TURBO2,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
+    {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
+    {"ATM Turbo 3",		                MACHINE_ID_ATM_TURBO3,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
+
+
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
     {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_TSLABS},
     {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
@@ -834,7 +846,7 @@ struct s_machines_info machines_info[]={
 
 };
 
-#define TOTAL_FABRICANTES_HOYKEY 25
+#define TOTAL_FABRICANTES_HOYKEY 26
 
 char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "~~Amstrad",
@@ -847,6 +859,7 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
+        "MicroART",
         "~~Microdigital Eletronica",
         "Miles Gordon Technolog~~y",
         "N~~edoPC",
@@ -865,7 +878,7 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
 };
 
 //Si letra es espacio->no hay letra. spectravideo o timex computer o scorpion no hay letras libres
-char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="aobcd kiurmyewxpn gs  tlz";
+char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="aobcd kiur myewxpn gs  tlz";
 
 
 //Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
@@ -4120,6 +4133,8 @@ int get_rom_size(int machine)
     else if (MACHINE_IS_SCORPION_GMX) rom_size=SCORPIONGMX_ROM_SIZE*1024;
 
     else if (MACHINE_IS_SCORPION) rom_size=65536;
+
+    else if (MACHINE_IS_ATM_TURBO) rom_size=65536;
 
     else if (MACHINE_IS_SPECTRUM_128_P2) rom_size=32768;
 
@@ -14300,6 +14315,12 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_my_machine_scorpion},
    {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_my_machine_scorpion},
    {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_my_machine_scorpion},
+
+   {"ATM1",MACHINE_ID_ATM_TURBO1,bitmap_button_ext_desktop_userdefined},
+   {"ATM2",MACHINE_ID_ATM_TURBO2,bitmap_button_ext_desktop_userdefined},
+   {"ATM2p",MACHINE_ID_ATM_TURBO2_PLUS,bitmap_button_ext_desktop_userdefined},
+   {"ATM3",MACHINE_ID_ATM_TURBO3,bitmap_button_ext_desktop_userdefined},
+
    {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_my_machine_didaktikgama},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},

@@ -46,6 +46,7 @@
 #include "if1.h"
 #include "scorpion.h"
 #include "didaktikgama.h"
+#include "atmturbo.h"
 
 //Direcciones donde estan cada pagina de ram
 //Antes habian 8 solo (8 paginas de 16kb cada una)
@@ -203,6 +204,14 @@ z80_byte *get_base_mem_pantalla_continue(void)
 			return scorpion_ram_mem_table[7];
 		}
 		else return scorpion_ram_mem_table[5];
+	}
+
+	if (MACHINE_IS_ATM_TURBO) {
+
+		if (puerto_32765 & 8) {
+			return atmturbo_ram_mem_table[7];
+		}
+		else return atmturbo_ram_mem_table[5];
 	}
 
 	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {

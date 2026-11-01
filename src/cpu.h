@@ -412,6 +412,10 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_DIDAKTIKGAMA             38
 #define MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR   39
 #define MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA	 40
+#define MACHINE_ID_ATM_TURBO1               41
+#define MACHINE_ID_ATM_TURBO2               42
+#define MACHINE_ID_ATM_TURBO2_PLUS          43
+#define MACHINE_ID_ATM_TURBO3               44
 
 #define MACHINE_ID_COLECO                   100
 
@@ -511,6 +515,13 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_SCORPION_GMX             (current_machine_type==MACHINE_ID_SCORPION_GMX)
 
 #define MACHINE_IS_DIDAKTIKGAMA             (current_machine_type==MACHINE_ID_DIDAKTIKGAMA)
+
+#define MACHINE_IS_ATM_TURBO1               (current_machine_type==MACHINE_ID_ATM_TURBO1)
+#define MACHINE_IS_ATM_TURBO2               (current_machine_type==MACHINE_ID_ATM_TURBO2)
+#define MACHINE_IS_ATM_TURBO2_PLUS          (current_machine_type==MACHINE_ID_ATM_TURBO2_PLUS)
+#define MACHINE_IS_ATM_TURBO3               (current_machine_type==MACHINE_ID_ATM_TURBO3)
+
+#define MACHINE_IS_ATM_TURBO                (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
 
 
 #define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256 || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS || current_machine_type==MACHINE_ID_SCORPION_GMX)

@@ -635,7 +635,7 @@ VTrucco/FB Labs
 ZXUno Team
 */
 
-#define TOTAL_FABRICANTES 25
+#define TOTAL_FABRICANTES 26
 
 //Deben estar en mismo orden alfabetico siempre, por ejemplo en array_fabricantes lo mismo que aqui
 #define FABRICANTE_AMSTRAD                      0
@@ -648,21 +648,22 @@ ZXUno Team
 #define FABRICANTE_INVESTRONICA                 7
 #define FABRICANTE_JUPITER_CANTAB               8
 #define FABRICANTE_MARIOPRATO                   9
-#define FABRICANTE_MICRODIGITAL_ELECTRONICA     10
-#define FABRICANTE_MILES_GORDON                 11
-#define FABRICANTE_NEDOPC                       12
-#define FABRICANTE_NEW_HORIZONS                 13
-#define FABRICANTE_NEXT_TEAM                    14
-#define FABRICANTE_PENTAGON                     15
-#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         16
-#define FABRICANTE_SCORPION                     17
-#define FABRICANTE_SEGA                         18
-#define FABRICANTE_SINCLAIR                     19
-#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   20
-#define FABRICANTE_TIMEX_COMPUTERS              21
-#define FABRICANTE_TIMEX_SINCLAIR               22
-#define FABRICANTE_TSLABS                       23
-#define FABRICANTE_ZXUNO_TEAM                   24
+#define FABRICANTE_MICROART                     10
+#define FABRICANTE_MICRODIGITAL_ELECTRONICA     11
+#define FABRICANTE_MILES_GORDON                 12
+#define FABRICANTE_NEDOPC                       13
+#define FABRICANTE_NEW_HORIZONS                 14
+#define FABRICANTE_NEXT_TEAM                    15
+#define FABRICANTE_PENTAGON                     16
+#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         17
+#define FABRICANTE_SCORPION                     18
+#define FABRICANTE_SEGA                         19
+#define FABRICANTE_SINCLAIR                     20
+#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   21
+#define FABRICANTE_TIMEX_COMPUTERS              22
+#define FABRICANTE_TIMEX_SINCLAIR               23
+#define FABRICANTE_TSLABS                       24
+#define FABRICANTE_ZXUNO_TEAM                   25
 
 
 

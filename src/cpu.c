@@ -155,6 +155,7 @@
 #include "core_ql.h"
 #include "scorpion.h"
 #include "didaktikgama.h"
+#include "atmturbo.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1254,6 +1255,10 @@ util_stats_init();
         baseconf_reset_cpu();
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        atmturbo_reset();
+    }
+
     if (MACHINE_IS_TBBLUE) {
         tbblue_reset();
         tbblue_set_memory_pages();
@@ -1528,6 +1533,10 @@ void malloc_mem_machine(void) {
 
         else if (MACHINE_IS_SCORPION) {
             scorpion_malloc_mem_machine();
+        }
+
+        else if (MACHINE_IS_ATM_TURBO) {
+            atmturbo_malloc_mem_machine();
         }
 
         else if (MACHINE_IS_SPECTRUM_128_P2) {
@@ -1894,7 +1903,11 @@ void set_machine_params(void)
 38=Didaktik Gama
 39=tk90x ula ferranti portuguese rom
 40=tk90xs ula ferranti spanish rom
-41-49=Reservadas otras Spectrum
+41=atm turbo 1
+42=atm turbo 2
+43=atm turbo 2+
+44=atm turbo 3
+45-49=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -2898,6 +2911,20 @@ void set_machine_params(void)
 
         break;
 
+        case MACHINE_ID_ATM_TURBO1:
+        case MACHINE_ID_ATM_TURBO2:
+        case MACHINE_ID_ATM_TURBO2_PLUS:
+        case MACHINE_ID_ATM_TURBO3:
+
+            poke_byte=poke_byte_atmturbo;
+            peek_byte=peek_byte_atmturbo;
+            peek_byte_no_time=peek_byte_no_time_atmturbo;
+            poke_byte_no_time=poke_byte_no_time_atmturbo;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+
+        break;
+
         case MACHINE_ID_DIDAKTIKGAMA:
 
             poke_byte=poke_byte_didaktikgama;
@@ -3567,6 +3594,10 @@ void rom_load(char *romfilename)
             romfilename="profgmx6xx043.9226se.rom";
             break;
 
+            case MACHINE_ID_ATM_TURBO1:
+            romfilename="atm103.rom";
+            break;
+
             case MACHINE_ID_DIDAKTIKGAMA:
             romfilename="didaktikgama.rom";
             break;
@@ -3755,6 +3786,13 @@ void rom_load(char *romfilename)
     }
 
     else if (MACHINE_IS_SCORPION) {
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
         leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
