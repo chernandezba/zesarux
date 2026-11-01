@@ -10857,7 +10857,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_betadisk);
 
         //Estas maquinas gestionan TR-DOS sin activar el modulo Betadisk externo.
-        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON) {
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON && !MACHINE_IS_ATM_TURBO) {
 
             menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
                 "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");

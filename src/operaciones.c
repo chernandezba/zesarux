@@ -7084,6 +7084,12 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
+    if (MACHINE_IS_ATM_TURBO1 && atmturbo_trdos_is_active() &&
+        (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
+         puerto_l==0x7f || puerto_l==0xff)) {
+        return atmturbo_fdc_read_port(puerto);
+    }
+
     //El VG93 de Scorpion, incluido GMX, responde durante TR-DOS.
     if (MACHINE_IS_SCORPION && trd_enabled.v &&
         scorpion_trdos_is_active() && reg_pc<0x4000 &&
@@ -9181,6 +9187,13 @@ Port: 10-- ---- ---- --0-
 	  samram_write_port(value);
 	}
 
+
+   if (MACHINE_IS_ATM_TURBO1 && atmturbo_trdos_is_active() &&
+       (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
+        puerto_l==0x7f || puerto_l==0xff)) {
+       atmturbo_fdc_write_port(puerto,value);
+       return;
+   }
 
    //Los accesos directos al VG93 de Scorpion, incluido GMX, usan el controlador común.
     if (MACHINE_IS_SCORPION && trd_enabled.v &&

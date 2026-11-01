@@ -33,6 +33,7 @@
 #include "operaciones.h"
 #include "start.h"
 #include "betadisk.h"
+#include "vg93.h"
 
 
 
@@ -76,12 +77,32 @@ z80_byte *atmturbo_memory_paged[4];
 
 z80_byte puerto_fdfd;
 
-int atmturbo_rombios=0;
+/* CPSYS cambia al leer #FB/#7B; no forma parte del registro #7FFD. */
+static int atmturbo_cpsys;
 static int atmturbo_rom_enabled=1;
 static int atmturbo_trdos_active;
 static int atmturbo_video_mode=3;
 
 void atmturbo_mem_page_rom(void);
+
+int atmturbo_trdos_is_active(void)
+{
+    return atmturbo_trdos_active && reg_pc<0x4000;
+}
+
+z80_byte atmturbo_fdc_read_port(z80_int port)
+{
+    if (trd_enabled.v) return vg93_read_port(port);
+
+    /* Sin disquete, el controlador informa fin de comando y unidad no preparada. */
+    if ((port & 0xff)==0x1f || (port & 0xff)==0xff) return 0x80;
+    return 0xff;
+}
+
+void atmturbo_fdc_write_port(z80_int port,z80_byte value)
+{
+    if (trd_enabled.v) vg93_write_port(port,value);
+}
 
 z80_byte fetch_opcode_atmturbo(void)
 {
@@ -89,7 +110,7 @@ z80_byte fetch_opcode_atmturbo(void)
         atmturbo_trdos_active=0;
         atmturbo_mem_page_rom();
     }
-    else if (!atmturbo_trdos_active && !atmturbo_rombios && atmturbo_rom_enabled &&
+    else if (!atmturbo_trdos_active && !atmturbo_cpsys && atmturbo_rom_enabled &&
              (puerto_32765 & 16) && (reg_pc & 0xff00)==0x3d00) {
         atmturbo_trdos_active=1;
         atmturbo_mem_page_rom();
@@ -167,8 +188,8 @@ void atmturbo_mem_page_rom(void)
 
     /* La imagen ATM1 contiene BIOS, TR-DOS, BASIC 128 y BASIC 48. */
     if (atmturbo_trdos_active) page_entra=1;
-    else if (atmturbo_rombios) page_entra=0;
-    else page_entra=(puerto_32765 & 16) ? 2 : 3;
+    else if (atmturbo_cpsys) page_entra=0;
+    else page_entra=(puerto_32765 & 16) ? 3 : 2;
 
     if (atmturbo_rom_enabled) {
         atmturbo_memory_paged[0]=atmturbo_rom_mem_table[page_entra];
@@ -183,7 +204,11 @@ void atmturbo_mem_page_rom(void)
 
 void atmturbo_out_port_32765(z80_byte value)
 {
+    if (puerto_32765 & 32) return;
+
     puerto_32765=value;
+
+    if (value & 32) atmturbo_cpsys=0;
 
     atmturbo_mem_page_ram();
     atmturbo_mem_page_rom();
@@ -200,9 +225,10 @@ void atmturbo_out_port_fdfd(z80_byte value)
 void atmturbo_reset(void)
 {
     atmturbo_trdos_active=0;
-    atmturbo_rombios=1;
+    atmturbo_cpsys=1;
     atmturbo_rom_enabled=1;
     atmturbo_video_mode=3;
+    vg93_reset();
 
     atmturbo_memory_paged[1]=atmturbo_ram_mem_table[5];
     debug_paginas_memoria_mapeadas[1]=5;
@@ -325,7 +351,7 @@ z80_byte peek_byte_atmturbo(z80_int dir)
 z80_byte atmturbo_read_port_fb(void)
 {
     atmturbo_trdos_active=0;
-    atmturbo_rombios=1;
+    atmturbo_cpsys=1;
 
     atmturbo_mem_page_rom();
 
@@ -336,7 +362,7 @@ z80_byte atmturbo_read_port_fb(void)
 z80_byte atmturbo_read_port_7b(void)
 {
     atmturbo_trdos_active=0;
-    atmturbo_rombios=0;
+    atmturbo_cpsys=0;
 
     atmturbo_mem_page_rom();
 
