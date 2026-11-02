@@ -446,90 +446,96 @@ static int atmturbo_get_graphics_colour(int x,int y,int mode)
     return atmturbo_palette[colour];
 }
 
-/* Promedia el área completa de origen cubierta por un píxel de salida. */
-static int atmturbo_get_scaled_colour(int x,int y,int mode)
+/* Dibuja un píxel lógico con escala entera dentro del área de 640x400. */
+static void atmturbo_putpixel_scaled(int x,int y,int colour,
+                                    int scale_x,int scale_y,int offset_x,int offset_y)
 {
-    int width=(mode==0) ? 320 : 640;
-    int left=x*width;
-    int right=(x+1)*width;
-    int top=y*200;
-    int bottom=(y+1)*200;
-    int red=0,green=0,blue=0;
-    int source_y,source_x;
-    int area=width*200;
+    int dx,dy;
+    int output_x=offset_x+x*scale_x;
+    int output_y=offset_y+y*scale_y;
 
-    for (source_y=top/192;source_y<=(bottom-1)/192;source_y++) {
-        int y0=source_y*192;
-        int y1=y0+192;
-        int overlap_y=(bottom<y1 ? bottom : y1)-(top>y0 ? top : y0);
+    for (dy=0;dy<scale_y;dy++)
+        for (dx=0;dx<scale_x;dx++)
+            scr_putpixel_zoom(output_x+dx,output_y+dy,colour);
+}
 
-        for (source_x=left/256;source_x<=(right-1)/256;source_x++) {
-            int x0=source_x*256;
-            int x1=x0+256;
-            int overlap_x=(right<x1 ? right : x1)-(left>x0 ? left : x0);
-            int weight=overlap_x*overlap_y;
-            int colour=atmturbo_get_graphics_colour(source_x,source_y,mode);
-            int rgb=spectrum_colortable_normal[colour];
-            red+=((rgb>>16)&255)*weight;
-            green+=((rgb>>8)&255)*weight;
-            blue+=(rgb&255)*weight;
+/* Dibuja el modo Spectrum en 512x384, centrado dentro de 640x400. */
+static void atmturbo_refresca_pantalla_standard(void)
+{
+    z80_byte *screen=get_base_mem_pantalla();
+    int x,y;
+
+    for (y=0;y<192;y++) {
+        for (x=0;x<256;x++) {
+            int column=x>>3;
+            int attribute=screen[6144+(y>>3)*32+column];
+            int pixels=screen[screen_addr_table[y<<5]+column];
+            int ink,paper;
+
+            if (scr_refresca_sin_colores.v) attribute=56;
+            else if (scr_refresca_show_attribute_grid.v)
+                attribute=56+((((y>>3)+column)&1) ? 64 : 0);
+
+            ink=(attribute&7)+((attribute&64) ? 8 : 0);
+            paper=((attribute>>3)&7)+((attribute&64) ? 8 : 0);
+            if ((attribute&128) && estado_parpadeo.v) {
+                int aux=ink;
+                ink=paper;
+                paper=aux;
+            }
+
+            atmturbo_putpixel_scaled(x,y,
+                atmturbo_palette[(pixels&(0x80>>(x&7))) ? ink : paper],
+                2,2,64,8);
         }
     }
+}
 
-    red=(red+area/2)/area;
-    green=(green+area/2)/area;
-    blue=(blue+area/2)/area;
-    return RGB9_INDEX_FIRST_COLOR+(((red*7+127)/255)<<6)+
-           (((green*7+127)/255)<<3)+((blue*7+127)/255);
+/* Rellena el borde exterior y el espacio libre del modo estándar. */
+static void atmturbo_refresca_border(void)
+{
+    int standard=(atmturbo_video_mode==3);
+    int outer_left=ATM_TURBO_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+    int outer_top=ATM_TURBO_TOP_BORDER_NO_ZOOM*border_enabled.v;
+    int total_width=ATM_TURBO_DISPLAY_WIDTH+
+        (ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    int total_height=ATM_TURBO_DISPLAY_HEIGHT+
+        (ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+    int left=outer_left+(standard ? 64 : 0);
+    int top=outer_top+(standard ? 8 : 0);
+    int right=left+(standard ? 512 : 640);
+    int bottom=top+(standard ? 384 : 400);
+    int colour=atmturbo_palette[scr_refresca_sin_colores.v ? 7 : (out_254&7)];
+    int x,y,dx,dy;
+
+    for (y=0;y<total_height;y++) {
+        for (x=0;x<total_width;x++) {
+            if (x>=left && x<right && y>=top && y<bottom) continue;
+            for (dy=0;dy<zoom_y;dy++)
+                for (dx=0;dx<zoom_x;dx++)
+                    scr_putpixel(x*zoom_x+dx,y*zoom_y+dy,colour);
+        }
+    }
 }
 
 void atmturbo_refresca_pantalla(void)
 {
-
     if (atmturbo_video_mode==3) {
-
-                        //modo clasico. sin rainbow
-                if (rainbow_enabled.v==0) {
-                        if (border_enabled.v) {
-                                //ver si hay que refrescar border
-                                if (modificado_border.v)
-                                {
-                                        scr_refresca_border();
-                                        modificado_border.v=0;
-                                }
-
-                        }
-
-                        scr_refresca_pantalla_comun();
-                }
-
-                else {
-                //modo rainbow - real video
-                        scr_refresca_pantalla_rainbow_comun_spectrum();
-                }
-
-
+        atmturbo_refresca_pantalla_standard();
     }
-
     else {
-
         int x,y;
+        int width=(atmturbo_video_mode==0) ? 320 : 640;
+        int scale_x=(width==320) ? 2 : 1;
 
-        if (border_enabled.v && modificado_border.v) {
-            scr_refresca_border();
-            modificado_border.v=0;
-        }
-
-        for (y=0;y<192;y++) {
-            for (x=0;x<256;x++) {
-                int colour=0;
-                if (atmturbo_video_mode!=2) {
-                    colour=atmturbo_get_scaled_colour(x,y,atmturbo_video_mode);
-                }
-                scr_putpixel_zoom(x,y,colour);
+        for (y=0;y<200;y++) {
+            for (x=0;x<width;x++) {
+                int colour=(atmturbo_video_mode==2) ? 0 :
+                    atmturbo_get_graphics_colour(x,y,atmturbo_video_mode);
+                atmturbo_putpixel_scaled(x,y,colour,scale_x,2,0,0);
             }
         }
-
     }
-
+    atmturbo_refresca_border();
+    modificado_border.v=0;
 }
