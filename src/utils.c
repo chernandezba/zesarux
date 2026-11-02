@@ -779,14 +779,14 @@ struct s_machines_info machines_info[]={
 
     {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM,FABRICANTE_MILES_GORDON},
 
-    {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
+    {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
     {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,                 MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion ZS-256 Turbo+",		    MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion GMX",		            MACHINE_ID_SCORPION_GMX,                    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
 
     {"ATM Turbo 1",		                MACHINE_ID_ATM_TURBO1,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
     {"ATM Turbo 2",		                MACHINE_ID_ATM_TURBO2,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
-    {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
+    {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
     {"ATM Turbo 3",		                MACHINE_ID_ATM_TURBO3,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
 
 
@@ -861,12 +861,12 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
+        "MicroART",
         "~~Microdigital Eletronica",
         "Miles Gordon Technolog~~y",
         "N~~edoPC",
         "Ne~~w Horizons",
         "Ne~~xt Team",
-        "~~Pentagon",
         "Scie~~nce of Cambridge",
         "Scorpion",
         "Se~~ga",
@@ -879,7 +879,7 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
 };
 
 //Si letra es espacio->no hay letra. spectravideo o timex computer o scorpion no hay letras libres
-char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="ao bcd kiurmyewxpn gs  tlz";
+char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="ao bcd kiur myewxn gs  tlz";
 
 
 //Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
