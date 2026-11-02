@@ -26,6 +26,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "betadisk.h"
+#include "timer.h"
 
 
 /*
@@ -115,6 +116,8 @@ z80_byte vg93_read_port(z80_int port)
                 int side=(vg93_system & 0x10) ? 0 : 1;
                 int pista=(vg93_track << 1) | side;
                 betadisk_show_activity();
+
+                timer_storage_common_accelerate_loading();
 
                 vg93_data=betadisk_get_byte_disk(pista,
                     vg93_sector-1,vg93_read_offset++);
