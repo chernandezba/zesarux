@@ -640,15 +640,15 @@ ZXUno Team
 //Deben estar en mismo orden alfabetico siempre, por ejemplo en array_fabricantes lo mismo que aqui
 #define FABRICANTE_AMSTRAD                      0
 #define FABRICANTE_ASCII_CORP                   1
-#define FABRICANTE_CAMBRIDGE_COMPUTERS          2
-#define FABRICANTE_CHLOE_CORPORATION            3
-#define FABRICANTE_COLECO_INDUSTRIES            4
-#define FABRICANTE_CZERWENY_ELECTRONICA         5
-#define FABRICANTE_DIDAKTIK                     6
-#define FABRICANTE_INVESTRONICA                 7
-#define FABRICANTE_JUPITER_CANTAB               8
-#define FABRICANTE_MARIOPRATO                   9
-#define FABRICANTE_MICROART                     10
+#define FABRICANTE_ATM_MICROART                 2
+#define FABRICANTE_CAMBRIDGE_COMPUTERS          3
+#define FABRICANTE_CHLOE_CORPORATION            4
+#define FABRICANTE_COLECO_INDUSTRIES            5
+#define FABRICANTE_CZERWENY_ELECTRONICA         6
+#define FABRICANTE_DIDAKTIK                     7
+#define FABRICANTE_INVESTRONICA                 8
+#define FABRICANTE_JUPITER_CANTAB               9
+#define FABRICANTE_MARIOPRATO                   10
 #define FABRICANTE_MICRODIGITAL_ELECTRONICA     11
 #define FABRICANTE_MILES_GORDON                 12
 #define FABRICANTE_NEDOPC                       13

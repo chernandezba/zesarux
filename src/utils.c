@@ -784,9 +784,9 @@ struct s_machines_info machines_info[]={
     {"Scorpion ZS-256 Turbo+",		    MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
     {"Scorpion GMX",		            MACHINE_ID_SCORPION_GMX,                    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
 
-    {"ATM Turbo 1",		                MACHINE_ID_ATM_TURBO1,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
-    {"ATM Turbo 2",		                MACHINE_ID_ATM_TURBO2,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
-    {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
+    {"ATM Turbo 1",		                MACHINE_ID_ATM_TURBO1,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
+    {"ATM Turbo 2",		                MACHINE_ID_ATM_TURBO2,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
+    {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
     {"ATM Turbo 3",		                MACHINE_ID_ATM_TURBO3,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
 
 
@@ -852,6 +852,7 @@ struct s_machines_info machines_info[]={
 char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "~~Amstrad",
         "Ascii C~~orp",
+        "ATM & MicroART",
         "Cam~~bridge Computers",
         "~~Chloe Corporation",
         "Coleco In~~dustries",
@@ -860,7 +861,6 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
-        "MicroART",
         "~~Microdigital Eletronica",
         "Miles Gordon Technolog~~y",
         "N~~edoPC",
@@ -879,7 +879,7 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
 };
 
 //Si letra es espacio->no hay letra. spectravideo o timex computer o scorpion no hay letras libres
-char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="aobcd kiur myewxpn gs  tlz";
+char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="ao bcd kiurmyewxpn gs  tlz";
 
 
 //Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
