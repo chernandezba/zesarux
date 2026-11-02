@@ -9284,11 +9284,11 @@ Port: 10-- ---- ---- --0-
     {
 
         if (MACHINE_IS_ATM_TURBO1 && (puerto & 0x8202)==0 && (puerto & 1)) {
-            atmturbo_out_port_7dfd(puerto,value);
+            atmturbo_out_port_7dfd(value);
             return;
         }
 
-        if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6) atmturbo_out_port_fe(puerto);
+        if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6) atmturbo_out_port_fe(puerto,value);
 
         if (puerto==32765) {
 

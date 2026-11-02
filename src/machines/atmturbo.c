@@ -82,6 +82,7 @@ static int atmturbo_cpsys;
 static int atmturbo_rom_enabled=1;
 static int atmturbo_trdos_active;
 static int atmturbo_video_mode=3;
+static int atmturbo_border_colour;
 static int atmturbo_palette[16];
 static int atmturbo_fdc_selected;
 
@@ -100,14 +101,14 @@ int atmturbo_fdc_is_active(z80_int port,int reading)
     return !reading || (port & 0xff)!=0xff || atmturbo_fdc_selected;
 }
 
-void atmturbo_out_port_7dfd(z80_int port,z80_byte value)
+void atmturbo_out_port_7dfd(z80_byte value)
 {
-    int index=(out_254 & 7) | ((port & 8) ? 0 : 8);
     int color=value ^ 0xff;
-    int red=((color & 2) ? 2 : 0) | ((color & 0x40) ? 1 : 0);
-    int green=((color & 0x10) ? 2 : 0) | ((color & 0x80) ? 1 : 0);
-    int blue=((color & 1) ? 2 : 0) | ((color & 0x20) ? 1 : 0);
-    atmturbo_palette[index]=SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
+    int red=((color & 2) ? 2 : 0) | ((color & 0x10) ? 1 : 0);
+    int green=((color & 4) ? 2 : 0) | ((color & 0x20) ? 1 : 0);
+    int blue=((color & 1) ? 2 : 0) | ((color & 8) ? 1 : 0);
+    atmturbo_palette[atmturbo_border_colour]=
+        SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
 }
 
 z80_byte atmturbo_fdc_read_port(z80_int port)
@@ -255,6 +256,7 @@ void atmturbo_reset(void)
     atmturbo_cpsys=1;
     atmturbo_rom_enabled=1;
     atmturbo_video_mode=3;
+    atmturbo_border_colour=0;
     vg93_reset();
 
     atmturbo_memory_paged[1]=atmturbo_ram_mem_table[5];
@@ -264,8 +266,10 @@ void atmturbo_reset(void)
     atmturbo_mem_page_ram();
 }
 
-void atmturbo_out_port_fe(z80_int port)
+void atmturbo_out_port_fe(z80_int port,z80_byte value)
 {
+    /* El índice de paleta lo seleccionan D0-D2 y A3 de #FE. */
+    atmturbo_border_colour=(value&7) | ((port&8) ? 0 : 8);
     atmturbo_rom_enabled=(port & 0x80)!=0;
     atmturbo_video_mode=(port >> 5) & 3;
     atmturbo_memory_paged[1]=atmturbo_ram_mem_table[atmturbo_rom_enabled ? 5 : 4];
@@ -505,7 +509,7 @@ static void atmturbo_refresca_border(void)
     int top=outer_top+(standard ? 8 : 0);
     int right=left+(standard ? 512 : 640);
     int bottom=top+(standard ? 384 : 400);
-    int colour=atmturbo_palette[scr_refresca_sin_colores.v ? 7 : (out_254&7)];
+    int colour=atmturbo_palette[scr_refresca_sin_colores.v ? 7 : atmturbo_border_colour];
     int x,y,dx,dy;
 
     for (y=0;y<total_height;y++) {
