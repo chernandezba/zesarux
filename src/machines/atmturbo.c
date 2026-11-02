@@ -67,10 +67,10 @@ activa la ROM BIOS de CP/M y una lectura de #7B vuelve a la ROM Spectrum.
 
 
 //Donde esta cada pagina de ram
-z80_byte *atmturbo_ram_mem_table[ATMTURBO_TOTAL_RAM_PAGES];
+z80_byte *atmturbo_ram_mem_table[ATM_TURBO_TOTAL_RAM_PAGES];
 
 //Donde esta cada pagina de rom
-z80_byte *atmturbo_rom_mem_table[ATMTURBO_TOTAL_ROM_PAGES];
+z80_byte *atmturbo_rom_mem_table[ATM_TURBO_TOTAL_ROM_PAGES];
 
 //Direcciones actuales mapeadas
 z80_byte *atmturbo_memory_paged[4];
@@ -148,12 +148,12 @@ void atmturbo_init_memory_tables(void)
     int i;
     z80_byte *puntero=memoria_spectrum;
 
-    for (i=0;i<ATMTURBO_TOTAL_ROM_PAGES;i++) {
+    for (i=0;i<ATM_TURBO_TOTAL_ROM_PAGES;i++) {
         atmturbo_rom_mem_table[i]=puntero;
         puntero +=16384;
     }
 
-    for (i=0;i<ATMTURBO_TOTAL_RAM_PAGES;i++) {
+    for (i=0;i<ATM_TURBO_TOTAL_RAM_PAGES;i++) {
         atmturbo_ram_mem_table[i]=puntero;
         puntero +=16384;
     }
@@ -180,7 +180,7 @@ void atmturbo_malloc_mem_machine(void)
 {
 
 
-    int total_ram=(ATMTURBO_ROM_SIZE+ATMTURBO_RAM_SIZE)*1024;
+    int total_ram=(ATM_TURBO_ROM_SIZE+ATM_TURBO_RAM_SIZE)*1024;
 
     malloc_machine(total_ram);
 

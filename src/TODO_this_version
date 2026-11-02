@@ -342,4 +342,13 @@ astro flash ok
 
 --- ATM Turbo
 
-- entradas en changelog
+- entradas en changelog, features y readme de las nuevas maquinas atm
+- tamaño pantalla real
+- render realvideo
+- covox activado?
+- timings correctos?
+- icono máquinas.
+- keyboard help
+- soporte snapshot zsf
+
+-software cpm http://atmturbo.nedopc.com/load_cpm.htm

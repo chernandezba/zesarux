@@ -4240,7 +4240,7 @@ int get_ram_size(void)
     }
 
     else if (MACHINE_IS_ATM_TURBO) {
-        total_ram=ATMTURBO_RAM_SIZE*1024;
+        total_ram=ATM_TURBO_RAM_SIZE*1024;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
@@ -7134,7 +7134,7 @@ int quickload_continue(char *nombre) {
         }
 
         //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadisk
-        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION) betadisk_enable();
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON && !MACHINE_IS_ATM_TURBO) betadisk_enable();
 
         //Si es scl, extraer el trd que se obtiene del scl e insertar el trd
         if (!util_compare_file_extension(nombre,"scl")) {

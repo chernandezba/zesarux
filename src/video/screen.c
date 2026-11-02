@@ -70,6 +70,7 @@
 #include "joystick.h"
 #include "atomic.h"
 #include "didaktikgama.h"
+#include "atmturbo.h"
 
 
 //Incluimos estos dos para la funcion de fade out
@@ -1158,6 +1159,11 @@ void recalcular_get_total_ancho_rainbow(void)
             (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        get_total_ancho_rainbow_cached=ATM_TURBO_DISPLAY_WIDTH+
+            (ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
         get_total_ancho_rainbow_cached=SCORPIONGMX_DISPLAY_WIDTH+
             (SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
@@ -1214,6 +1220,11 @@ void recalcular_get_total_alto_rainbow(void)
     else if (MACHINE_IS_BASECONF) {
         get_total_alto_rainbow_cached=BASECONF_DISPLAY_HEIGHT+
             (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        get_total_alto_rainbow_cached=ATM_TURBO_DISPLAY_HEIGHT+
+            (ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -2388,6 +2399,10 @@ int scr_get_index_cache_putpixel_no_rainbow(int x,int y)
         indice_cache=(get_total_ancho_rainbow()*(BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        indice_cache=(get_total_ancho_rainbow()*(ATM_TURBO_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + ATM_TURBO_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
         indice_cache=(get_total_ancho_rainbow()*(SCORPIONGMX_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SCORPIONGMX_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
     }
@@ -2443,6 +2458,11 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
     else if (MACHINE_IS_BASECONF) {
         offsetx=BASECONF_LEFT_BORDER*border_enabled.v;
         offsety=BASECONF_TOP_BORDER*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        offsetx=ATM_TURBO_LEFT_BORDER*border_enabled.v;
+        offsety=ATM_TURBO_TOP_BORDER*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -3381,6 +3401,11 @@ if (MACHINE_IS_Z88) {
     else if (MACHINE_IS_BASECONF) {
         *margenx_izq=BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v;
         *margeny_arr=BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        *margenx_izq=ATM_TURBO_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+        *margeny_arr=ATM_TURBO_TOP_BORDER_NO_ZOOM*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -12156,6 +12181,10 @@ int screen_get_emulated_display_width_no_zoom(void)
         return BASECONF_DISPLAY_WIDTH+BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        return ATM_TURBO_DISPLAY_WIDTH+ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
         return SCORPIONGMX_DISPLAY_WIDTH+SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM;
     }
@@ -12203,6 +12232,10 @@ int screen_get_emulated_display_height_no_zoom(void)
 
     else if (MACHINE_IS_BASECONF) {
         return BASECONF_DISPLAY_HEIGHT+BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        return ATM_TURBO_DISPLAY_HEIGHT+ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -12262,6 +12295,11 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
         (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        return ATM_TURBO_DISPLAY_WIDTH+
+            (ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
     return SCORPIONGMX_DISPLAY_WIDTH+
         (SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
@@ -12317,6 +12355,11 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+BASECONF_DISPLAY_HEIGHT+
             BASECONF_BOTTOM_BORDER_NO_ZOOM*border_enabled.v;
         }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        return alto_extdesktop+ATM_TURBO_DISPLAY_HEIGHT+
+            ATM_TURBO_BOTTOM_BORDER_NO_ZOOM*border_enabled.v;
+    }
 
   else if (MACHINE_IS_SCORPION_GMX) {
         return alto_extdesktop+SCORPIONGMX_DISPLAY_HEIGHT+
@@ -12375,6 +12418,11 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
     else if (MACHINE_IS_BASECONF) {
     return BASECONF_DISPLAY_HEIGHT+
         (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+    return ATM_TURBO_DISPLAY_HEIGHT+
+        (ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
