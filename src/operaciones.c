@@ -7639,7 +7639,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	//En un Inves, deberia ir al principio, pues el inves hace un AND con el valor de los perifericos que retornan valor en el puerto leido
         if ( (puerto_l & 1)==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS_TC_2068) && !(MACHINE_IS_PRISM) && !(MACHINE_IS_BASECONF) ) {
 
-		return lee_puerto_spectrum_ula(puerto_h);
+                z80_byte value=lee_puerto_spectrum_ula(puerto_h);
+                if (MACHINE_IS_ATM_TURBO1) value=atmturbo_read_port_fe(value);
+		return value;
 
         }
 
@@ -9280,6 +9282,11 @@ Port: 10-- ---- ---- --0-
 
     if (MACHINE_IS_ATM_TURBO)
     {
+
+        if (MACHINE_IS_ATM_TURBO1 && (puerto & 0x8202)==0 && (puerto & 1)) {
+            atmturbo_out_port_7dfd(puerto,value);
+            return;
+        }
 
         if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6) atmturbo_out_port_fe(puerto);
 

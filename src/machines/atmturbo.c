@@ -82,12 +82,23 @@ static int atmturbo_cpsys;
 static int atmturbo_rom_enabled=1;
 static int atmturbo_trdos_active;
 static int atmturbo_video_mode=3;
+static int atmturbo_palette[16];
 
 void atmturbo_mem_page_rom(void);
 
 int atmturbo_trdos_is_active(void)
 {
     return atmturbo_trdos_active && reg_pc<0x4000;
+}
+
+void atmturbo_out_port_7dfd(z80_int port,z80_byte value)
+{
+    int index=(out_254 & 7) | ((port & 8) ? 0 : 8);
+    int color=value ^ 0xff;
+    int red=((color & 2) ? 2 : 0) | ((color & 0x40) ? 1 : 0);
+    int green=((color & 0x10) ? 2 : 0) | ((color & 0x80) ? 1 : 0);
+    int blue=((color & 1) ? 2 : 0) | ((color & 0x20) ? 1 : 0);
+    atmturbo_palette[index]=SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
 }
 
 z80_byte atmturbo_fdc_read_port(z80_int port)
@@ -224,6 +235,8 @@ void atmturbo_out_port_fdfd(z80_byte value)
 
 void atmturbo_reset(void)
 {
+    int i;
+    for (i=0;i<16;i++) atmturbo_palette[i]=i;
     atmturbo_trdos_active=0;
     atmturbo_cpsys=1;
     atmturbo_rom_enabled=1;
@@ -244,6 +257,23 @@ void atmturbo_out_port_fe(z80_int port)
     atmturbo_memory_paged[1]=atmturbo_ram_mem_table[atmturbo_rom_enabled ? 5 : 4];
     debug_paginas_memoria_mapeadas[1]=atmturbo_rom_enabled ? 5 : 4;
     atmturbo_mem_page_rom();
+}
+
+z80_byte atmturbo_read_port_fe(z80_byte value)
+{
+    int t=t_estados;
+    int low;
+    if (screen_testados_total<80000) {
+        low=(t>=7200 && t<7240) ||
+            (t>=7284 && t<7324) ||
+            (t>=7326 && t<7366);
+    }
+    else {
+        low=(t>=21514 && t<21554) ||
+            (t>=21703 && t<21783) ||
+            (t>=21808 && t<21848);
+    }
+    return (value & 0x7f) | (low ? 0 : 0x80);
 }
 
 
@@ -397,7 +427,44 @@ static int atmturbo_get_graphics_colour(int x,int y,int mode)
                : ((attribute & 0x80)>>4)|((attribute>>3)&7);
     }
 
-    return colour;
+    return atmturbo_palette[colour];
+}
+
+/* Promedia el área completa de origen cubierta por un píxel de salida. */
+static int atmturbo_get_scaled_colour(int x,int y,int mode)
+{
+    int width=(mode==0) ? 320 : 640;
+    int left=x*width;
+    int right=(x+1)*width;
+    int top=y*200;
+    int bottom=(y+1)*200;
+    int red=0,green=0,blue=0;
+    int source_y,source_x;
+    int area=width*200;
+
+    for (source_y=top/192;source_y<=(bottom-1)/192;source_y++) {
+        int y0=source_y*192;
+        int y1=y0+192;
+        int overlap_y=(bottom<y1 ? bottom : y1)-(top>y0 ? top : y0);
+
+        for (source_x=left/256;source_x<=(right-1)/256;source_x++) {
+            int x0=source_x*256;
+            int x1=x0+256;
+            int overlap_x=(right<x1 ? right : x1)-(left>x0 ? left : x0);
+            int weight=overlap_x*overlap_y;
+            int colour=atmturbo_get_graphics_colour(source_x,source_y,mode);
+            int rgb=spectrum_colortable_normal[colour];
+            red+=((rgb>>16)&255)*weight;
+            green+=((rgb>>8)&255)*weight;
+            blue+=(rgb&255)*weight;
+        }
+    }
+
+    red=(red+area/2)/area;
+    green=(green+area/2)/area;
+    blue=(blue+area/2)/area;
+    return RGB9_INDEX_FIRST_COLOR+(((red*7+127)/255)<<6)+
+           (((green*7+127)/255)<<3)+((blue*7+127)/255);
 }
 
 void atmturbo_refresca_pantalla(void)
@@ -431,7 +498,6 @@ void atmturbo_refresca_pantalla(void)
     else {
 
         int x,y;
-        int source_width=(atmturbo_video_mode==0) ? 320 : 640;
 
         if (border_enabled.v && modificado_border.v) {
             scr_refresca_border();
@@ -439,12 +505,10 @@ void atmturbo_refresca_pantalla(void)
         }
 
         for (y=0;y<192;y++) {
-            int source_y=y*200/192;
             for (x=0;x<256;x++) {
                 int colour=0;
                 if (atmturbo_video_mode!=2) {
-                    int source_x=x*source_width/256;
-                    colour=atmturbo_get_graphics_colour(source_x,source_y,atmturbo_video_mode);
+                    colour=atmturbo_get_scaled_colour(x,y,atmturbo_video_mode);
                 }
                 scr_putpixel_zoom(x,y,colour);
             }
