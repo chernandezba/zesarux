@@ -7084,7 +7084,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
-    if (MACHINE_IS_ATM_TURBO1 && atmturbo_trdos_is_active() &&
+    if (MACHINE_IS_ATM_TURBO1 && atmturbo_fdc_is_active(puerto,1) &&
         (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
          puerto_l==0x7f || puerto_l==0xff)) {
         return atmturbo_fdc_read_port(puerto);
@@ -9190,7 +9190,7 @@ Port: 10-- ---- ---- --0-
 	}
 
 
-   if (MACHINE_IS_ATM_TURBO1 && atmturbo_trdos_is_active() &&
+   if (MACHINE_IS_ATM_TURBO1 && atmturbo_fdc_is_active(puerto,0) &&
        (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
         puerto_l==0x7f || puerto_l==0xff)) {
        atmturbo_fdc_write_port(puerto,value);

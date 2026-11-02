@@ -41,6 +41,9 @@ static z80_byte vg93_system;
 /* Cilindro seleccionado por el registro de pista del VG93. */
 static z80_byte vg93_track;
 
+/* Dirección del último movimiento de cabeza para el comando STEP. */
+static int vg93_step_direction;
+
 /* Número de sector del VG93, comenzando en uno. */
 static z80_byte vg93_sector;
 
@@ -71,6 +74,7 @@ void vg93_reset(void)
 {
     vg93_system=0x3c;
     vg93_track=0;
+    vg93_step_direction=1;
     vg93_sector=1;
     vg93_data=0;
     vg93_read_offset=0;
@@ -162,11 +166,22 @@ void vg93_write_port(z80_int port,z80_byte value)
                 }
             }
             else if ((value & 0xf0)==0x10) {
+                vg93_step_direction=(vg93_data>=vg93_track) ? 1 : -1;
                 vg93_track=vg93_data;
                 vg93_intrq=1;
             }
             else if ((value & 0xf0)==0x00) {
                 vg93_track=0;
+                vg93_intrq=1;
+            }
+            else if ((value & 0xe0)==0x20 || (value & 0xe0)==0x40 ||
+                     (value & 0xe0)==0x60) {
+                if ((value & 0xe0)==0x40) vg93_step_direction=1;
+                if ((value & 0xe0)==0x60) vg93_step_direction=-1;
+                if (value & 0x10) {
+                    if (vg93_step_direction>0 && vg93_track<79) vg93_track++;
+                    if (vg93_step_direction<0 && vg93_track>0) vg93_track--;
+                }
                 vg93_intrq=1;
             }
             else if ((value & 0xf0)==0xd0) {

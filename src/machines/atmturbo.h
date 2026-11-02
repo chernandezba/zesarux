@@ -54,6 +54,7 @@ extern void atmturbo_out_port_fe(z80_int port);
 extern z80_byte atmturbo_read_port_fe(z80_byte value);
 extern void atmturbo_out_port_7dfd(z80_int port,z80_byte value);
 extern int atmturbo_trdos_is_active(void);
+extern int atmturbo_fdc_is_active(z80_int port,int reading);
 extern z80_byte atmturbo_fdc_read_port(z80_int port);
 extern void atmturbo_fdc_write_port(z80_int port,z80_byte value);
 

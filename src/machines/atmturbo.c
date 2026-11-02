@@ -83,12 +83,21 @@ static int atmturbo_rom_enabled=1;
 static int atmturbo_trdos_active;
 static int atmturbo_video_mode=3;
 static int atmturbo_palette[16];
+static int atmturbo_fdc_selected;
 
 void atmturbo_mem_page_rom(void);
 
 int atmturbo_trdos_is_active(void)
 {
     return atmturbo_trdos_active && reg_pc<0x4000;
+}
+
+int atmturbo_fdc_is_active(z80_int port,int reading)
+{
+    if (atmturbo_trdos_is_active()) return 1;
+    if (!atmturbo_cpsys) return 0;
+    /* La BIOS sondea #FF antes de seleccionar el disquete. */
+    return !reading || (port & 0xff)!=0xff || atmturbo_fdc_selected;
 }
 
 void atmturbo_out_port_7dfd(z80_int port,z80_byte value)
@@ -112,6 +121,7 @@ z80_byte atmturbo_fdc_read_port(z80_int port)
 
 void atmturbo_fdc_write_port(z80_int port,z80_byte value)
 {
+    atmturbo_fdc_selected=1;
     if (trd_enabled.v) vg93_write_port(port,value);
 }
 
@@ -219,7 +229,10 @@ void atmturbo_out_port_32765(z80_byte value)
 
     puerto_32765=value;
 
-    if (value & 32) atmturbo_cpsys=0;
+    if (value & 32) {
+        atmturbo_cpsys=0;
+        atmturbo_fdc_selected=0;
+    }
 
     atmturbo_mem_page_ram();
     atmturbo_mem_page_rom();
@@ -238,6 +251,7 @@ void atmturbo_reset(void)
     int i;
     for (i=0;i<16;i++) atmturbo_palette[i]=i;
     atmturbo_trdos_active=0;
+    atmturbo_fdc_selected=0;
     atmturbo_cpsys=1;
     atmturbo_rom_enabled=1;
     atmturbo_video_mode=3;
@@ -380,6 +394,7 @@ z80_byte peek_byte_atmturbo(z80_int dir)
 
 z80_byte atmturbo_read_port_fb(void)
 {
+    if (!atmturbo_cpsys) atmturbo_fdc_selected=0;
     atmturbo_trdos_active=0;
     atmturbo_cpsys=1;
 
@@ -393,6 +408,7 @@ z80_byte atmturbo_read_port_7b(void)
 {
     atmturbo_trdos_active=0;
     atmturbo_cpsys=0;
+    atmturbo_fdc_selected=0;
 
     atmturbo_mem_page_rom();
 
