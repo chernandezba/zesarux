@@ -2284,6 +2284,9 @@ void set_machine_params(void)
         contend_write_no_mreq=contend_write_no_mreq_atmturbo;
         ula_contend_port_early=ula_contend_port_early_atmturbo;
         ula_contend_port_late=ula_contend_port_late_atmturbo;
+
+        audiodac_selected_type=1; //Covox pentagon
+        audiodac_enabled.v=1;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
