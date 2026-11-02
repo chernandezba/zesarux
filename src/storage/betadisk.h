@@ -33,6 +33,8 @@ extern z80_bit betadisk_active;
 
 extern z80_bit betadisk_allow_boot_48k;
 
+extern void betadisk_show_activity(void);
+
 extern void betadisk_enable(void);
 extern void betadisk_disable(void);
 

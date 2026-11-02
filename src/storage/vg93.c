@@ -114,6 +114,8 @@ z80_byte vg93_read_port(z80_int port)
             if (vg93_read_active) {
                 int side=(vg93_system & 0x10) ? 0 : 1;
                 int pista=(vg93_track << 1) | side;
+                betadisk_show_activity();
+
                 vg93_data=betadisk_get_byte_disk(pista,
                     vg93_sector-1,vg93_read_offset++);
                 if (vg93_read_offset==256) {

@@ -69,7 +69,7 @@ char *betadisk_rom_file_name="trdos.rom";
 z80_bit trd_enabled={0};
 
 void betadisk_trdoshandler_read_write_sectors(void);
-void betadisk_show_activity(void);
+
 
 int trd_must_flush_to_disk=0;
 
