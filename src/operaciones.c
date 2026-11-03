@@ -8867,6 +8867,7 @@ z80_byte get_border_colour_from_out(void)
 z80_byte color_border;
 
 if (MACHINE_IS_BASECONF) return baseconf_get_border_colour();
+if (MACHINE_IS_ATM_TURBO1) return atmturbo_get_border_colour();
 
 if (MACHINE_IS_ZXUNO && zxuno_is_prism_mode_enabled() ) {
 //IxxxxGRB puerto FE
@@ -8948,6 +8949,8 @@ void out_port_spectrum_fe_issue(z80_byte value)
 
 void out_port_spectrum_border(z80_int puerto,z80_byte value)
 {
+    if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6)
+        atmturbo_out_port_fe(puerto,value);
 
     //Actualizar bit 6 de puerto feh segun si teclado issue 2 o 3
     out_port_spectrum_fe_issue(value);
@@ -9287,8 +9290,6 @@ Port: 10-- ---- ---- --0-
             atmturbo_out_port_7dfd(value);
             return;
         }
-
-        if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6) atmturbo_out_port_fe(puerto,value);
 
         if (puerto==32765) {
 

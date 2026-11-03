@@ -8552,6 +8552,11 @@ void screen_store_scanline_rainbow_solo_display(void)
         return;
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        atmturbo_store_scanline_rainbow_display();
+        return;
+    }
+
     //Si maquina tsconf. Dado que tiene border tamaño variable, hacerlo desde aqui tal cual
     if (MACHINE_IS_TSCONF) {
         screen_store_scanline_rainbow_solo_display_tsconf();
@@ -9098,6 +9103,11 @@ void screen_store_scanline_rainbow_solo_border(void)
 
     if (MACHINE_IS_BASECONF) {
         baseconf_store_scanline_rainbow_border();
+        return;
+    }
+
+    if (MACHINE_IS_ATM_TURBO) {
+        atmturbo_store_scanline_rainbow_border();
         return;
     }
 

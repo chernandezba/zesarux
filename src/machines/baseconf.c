@@ -329,6 +329,7 @@ void baseconf_post_opcode_fetch(z80_byte *opcode)
                        paleta y termina seleccionando el color cero. */
                     baseconf_border_colour=baseconf_nmi_saved_border_colour;
                     out_254=(out_254&~7) | (baseconf_border_colour&7);
+                    modificado_border.v=1;
                     /* El modo rainbow dibuja el borde desde los cambios
                        registrados por T-estado, no desde el color actual. */
                     if (rainbow_enabled.v) {
@@ -761,6 +762,7 @@ z80_byte baseconf_get_video_mode(void)
 static void baseconf_show_video_mode_change(z80_byte anterior)
 {
     if (anterior!=baseconf_get_video_mode()) {
+        modificado_border.v=1;
         char mensaje[256];
         snprintf(mensaje,sizeof(mensaje),"Setting video mode %s",baseconf_get_video_mode_string());
         screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
@@ -1489,6 +1491,7 @@ void baseconf_hard_reset(void)
     baseconf_border_colour=0;
     baseconf_nmi_saved_border_colour=0;
     baseconf_border_left_next_valid=0;
+    modificado_border.v=1;
     baseconf_nmi_breakpoint=0;
     baseconf_nmi_active=0;
     baseconf_nmi_entry_pending=0;
@@ -1658,7 +1661,9 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                               ((inverted_value&0x20)>>3) |
                               ((inverted_port&0x0100)>>7) |
                               ((inverted_port&0x2000)>>13);
-                        baseconf_palette[baseconf_border_colour]=(r<<8)+(g<<4)+b;
+                        z80_int palette_colour=(r<<8)+(g<<4)+b;
+                        baseconf_palette[baseconf_border_colour]=palette_colour;
+                        modificado_border.v=1;
 
                         //Los mismos colores que máquina Prism
                 }
@@ -2053,7 +2058,9 @@ void baseconf_refresca_pantalla(void)
     }
     else {
         baseconf_refresca_pantalla_no_rainbow();
-        screen_baseconf_refresca_border();
-        modificado_border.v=0;
+        if (modificado_border.v) {
+            screen_baseconf_refresca_border();
+            modificado_border.v=0;
+        }
     }
 }
