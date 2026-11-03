@@ -196,12 +196,22 @@ void atmturbo2_update_timing(void)
     screen_set_video_params_indices();
 }
 
-/* Guarda los controles de #77 y aplica el nuevo vídeo y mapa de memoria. */
+/* Aplica el bit de turbo de #77 mediante el cambio de velocidad común de CPU. */
+static void atmturbo2_set_cpu_speed(z80_byte value)
+{
+    int speed=(value&8) ? 2 : 1;
+    if (cpu_turbo_speed==speed) return;
+    cpu_turbo_speed=speed;
+    cpu_set_turbo_speed();
+}
+
+/* Guarda los controles de #77 y aplica el vídeo, el turbo y el mapa de memoria. */
 void atmturbo2_out_port_77(z80_int port,z80_byte value)
 {
     atmturbo2_port_77=port;
     atmturbo_video_mode=value&7;
     atmturbo2_update_timing();
+    atmturbo2_set_cpu_speed(value);
     atmturbo2_refresh_memory();
     modificado_border.v=1;
 }
@@ -512,6 +522,7 @@ void atmturbo_reset(void)
         atmturbo2_port_77=0;
         for (i=0;i<8;i++) atmturbo2_mmu[i]=0;
         atmturbo2_update_timing();
+        atmturbo2_set_cpu_speed(0);
     }
     modificado_border.v=1;
     vg93_reset();
@@ -542,10 +553,10 @@ z80_byte atmturbo_get_border_colour(void)
 }
 
 /* Indica si la señal de protección Z está a nivel bajo en este T-estado. */
-static int atmturbo_z_signal_low(int t)
+static int atmturbo_z_signal_low(int t,int frame_states)
 {
     int low;
-    if (screen_testados_total<80000) {
+    if (frame_states<80000) {
         low=(t>=7200 && t<7240) ||
             (t>=7284 && t<7324) ||
             (t>=7326 && t<7366);
@@ -561,16 +572,18 @@ static int atmturbo_z_signal_low(int t)
 /* Inserta la señal Z de ATM1 en D7 de la lectura de teclado #FE. */
 z80_byte atmturbo_read_port_fe(z80_byte value)
 {
-    return (value & 0x7f) | (atmturbo_z_signal_low(t_estados) ? 0 : 0x80);
+    return (value & 0x7f) |
+           (atmturbo_z_signal_low(t_estados,screen_testados_total) ? 0 : 0x80);
 }
 
 /* Inserta la señal Z de ATM2 en D5 de la lectura de teclado #FE. */
 z80_byte atmturbo2_read_port_fe(z80_byte value)
 {
     /* La INT de ATM2 cae 3565 T después del origen del barrido.
-       Reutilizamos la señal Z de ATM1, desplazada a ese origen. */
-    int t=t_estados+3565;
-    int low=atmturbo_z_signal_low(t);
+       Reutilizamos la señal Z de ATM1, desplazada a ese origen y expresada
+       en ciclos de 3,5 MHz para que el turbo no desplace los pulsos. */
+    int t=t_estados/cpu_turbo_speed+3565;
+    int low=atmturbo_z_signal_low(t,screen_testados_total/cpu_turbo_speed);
 
     /* La aproximación de pulsos anterior solo cubre la protección Spectrum.
        Con RG0=0, Z2 también cambia durante las líneas 48-51. Estos pulsos
