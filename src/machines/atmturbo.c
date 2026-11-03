@@ -656,26 +656,30 @@ void atmturbo_refresca_pantalla(void)
 {
     if (rainbow_enabled.v) {
         scr_refresca_pantalla_rainbow_comun();
-        return;
     }
-    if (atmturbo_video_mode==3) {
-        atmturbo_refresca_pantalla_standard();
-    }
-    else {
-        int x,y;
-        int width=(atmturbo_video_mode==0) ? 320 : 640;
-        int scale_x=(width==320) ? 2 : 1;
 
-        for (y=0;y<200;y++) {
-            for (x=0;x<width;x++) {
-                int colour=(atmturbo_video_mode==2) ? 0 :
-                    atmturbo_get_graphics_colour(x,y,atmturbo_video_mode);
-                atmturbo_putpixel_scaled(x,y,colour,scale_x,2,0,0);
+    else {
+
+        if (atmturbo_video_mode==3) {
+            atmturbo_refresca_pantalla_standard();
+        }
+        else {
+            int x,y;
+            int width=(atmturbo_video_mode==0) ? 320 : 640;
+            int scale_x=(width==320) ? 2 : 1;
+
+            for (y=0;y<200;y++) {
+                for (x=0;x<width;x++) {
+                    int colour=(atmturbo_video_mode==2) ? 0 :
+                        atmturbo_get_graphics_colour(x,y,atmturbo_video_mode);
+                    atmturbo_putpixel_scaled(x,y,colour,scale_x,2,0,0);
+                }
             }
         }
-    }
-    if (modificado_border.v) {
-        atmturbo_refresca_border();
-        modificado_border.v=0;
+
+        if (modificado_border.v) {
+            atmturbo_refresca_border();
+            modificado_border.v=0;
+        }
     }
 }
