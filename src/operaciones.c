@@ -7084,6 +7084,12 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
+    /* Estado del receptor XT en D7 de #7FFD y códigos serie en #7DFD. */
+    if (MACHINE_IS_ATM_TURBO2 && (puerto & 0x8202)==0x0200)
+        return atmturbo2_read_keyboard_status();
+    if (MACHINE_IS_ATM_TURBO2 && (puerto & 0x8203)==0x0001)
+        return atmturbo2_read_keyboard_data();
+
     if ((MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) &&
         atmturbo_fdc_is_active(puerto,1) &&
         (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
@@ -9310,7 +9316,9 @@ Port: 10-- ---- ---- --0-
             return;
         }
 
-        if (puerto==32765) {
+        /* ATM2 decodifica parcialmente #7FFD; CP/M también escribe #52FD. */
+        if (puerto==32765 ||
+            (MACHINE_IS_ATM_TURBO2 && (puerto & 0x8202)==0x0200)) {
 
 
 				atmturbo_out_port_32765(value);

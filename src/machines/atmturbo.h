@@ -69,6 +69,8 @@ extern void atmturbo_out_port_fe(z80_int port,z80_byte value);
 extern z80_byte atmturbo_get_border_colour(void);
 extern z80_byte atmturbo_read_port_fe(z80_byte value);
 extern z80_byte atmturbo2_read_port_fe(z80_byte value);
+extern z80_byte atmturbo2_read_keyboard_status(void);
+extern z80_byte atmturbo2_read_keyboard_data(void);
 extern void atmturbo2_update_timing(void);
 extern void atmturbo_out_port_7dfd(z80_byte value);
 extern int atmturbo2_shadow_ports_enabled(void);

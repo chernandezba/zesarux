@@ -105,8 +105,78 @@ static z80_int atmturbo2_port_77;
 static int atmturbo2_segment_ram[4];
 /* Glifos de 8 bytes cargados de sgen.rom para el modo de texto de ATM2. */
 static z80_byte atmturbo2_text_font[2048];
+/* Último estado entregado de cada fila para detectar pulsaciones y liberaciones XT. */
+static z80_byte atmturbo2_xt_rows[8];
+/* Código de pulsación de cada tecla, conservado para generar su liberación. */
+static z80_byte atmturbo2_xt_codes[8][5];
+/* Código XT pendiente, con sus bits invertidos de orden como en el receptor serie. */
+static z80_byte atmturbo2_xt_data;
+/* Lecturas pendientes del código: la BIOS lee el receptor dos veces por evento. */
+static int atmturbo2_xt_reads;
 
 static void atmturbo2_refresh_memory(void);
+
+/* Consulta la matriz y retiene un cambio hasta que CP/M recoge su código XT. */
+z80_byte atmturbo2_read_keyboard_status(void)
+{
+    /* Códigos de exploración XT, ordenados por fila y bit de la matriz Spectrum.
+       Caps Shift representa Shift izquierdo y Symbol Shift representa Control. */
+    static const z80_byte codes[8][5]={
+        {0x2a,0x2c,0x2d,0x2e,0x2f},
+        {0x1e,0x1f,0x20,0x21,0x22},
+        {0x10,0x11,0x12,0x13,0x14},
+        {0x02,0x03,0x04,0x05,0x06},
+        {0x0b,0x0a,0x09,0x08,0x07},
+        {0x19,0x18,0x17,0x16,0x15},
+        {0x1c,0x26,0x25,0x24,0x23},
+        {0x39,0x1d,0x32,0x31,0x30}
+    };
+    z80_byte rows[8]={puerto_65278,puerto_65022,puerto_64510,puerto_63486,
+                      puerto_61438,puerto_57342,puerto_49150,puerto_32766};
+    int colon=!(rows[7]&2) && !(rows[0]&2);
+    int row,bit,phase;
+    if (atmturbo2_xt_reads) return 0xff;
+    /* Symbol Shift+Z produce dos puntos: Shift y punto y coma del teclado XT.
+       En esta combinación Symbol Shift no debe generar Control. */
+    if (colon) {
+        rows[0]&=~1;
+        rows[7]|=2;
+    }
+    /* Entrega los modificadores antes que las letras de una misma consulta. */
+    for (phase=0;phase<2;phase++) {
+        for (row=0;row<8;row++) {
+            for (bit=0;bit<5;bit++) {
+                int modifier=(row==0 && bit==0) || (row==7 && bit==1);
+                if (modifier!=(phase==0)) continue;
+                int mask=1<<bit;
+                if ((rows[row]^atmturbo2_xt_rows[row])&mask) {
+                    z80_byte code;
+                    if (rows[row]&mask) code=atmturbo2_xt_codes[row][bit]|0x80;
+                    else {
+                        code=(colon && row==0 && bit==1) ? 0x27 : codes[row][bit];
+                        atmturbo2_xt_codes[row][bit]=code;
+                    }
+                    atmturbo2_xt_rows[row]^=mask;
+                    atmturbo2_xt_data=0;
+                    for (int i=0;i<8;i++) {
+                        atmturbo2_xt_data=(atmturbo2_xt_data<<1)|(code&1);
+                        code>>=1;
+                    }
+                    atmturbo2_xt_reads=2;
+                    return 0xff;
+                }
+            }
+        }
+    }
+    return 0x7f;
+}
+
+/* Mantiene el código serie estable durante las dos lecturas de la BIOS. */
+z80_byte atmturbo2_read_keyboard_data(void)
+{
+    if (atmturbo2_xt_reads) atmturbo2_xt_reads--;
+    return atmturbo2_xt_data;
+}
 
 /* Permite acceder a los puertos ATM2 cuando está activo DOS o CP/M. */
 int atmturbo2_shadow_ports_enabled(void)
@@ -435,6 +505,9 @@ void atmturbo_reset(void)
     atmturbo_border_colour=0;
     atmturbo_border_left_next_valid=0;
     if (MACHINE_IS_ATM_TURBO2) {
+        for (i=0;i<8;i++) atmturbo2_xt_rows[i]=0xff;
+        atmturbo2_xt_data=0xff;
+        atmturbo2_xt_reads=0;
         puerto_32765=0;
         atmturbo2_port_77=0;
         for (i=0;i<8;i++) atmturbo2_mmu[i]=0;
@@ -496,7 +569,20 @@ z80_byte atmturbo2_read_port_fe(z80_byte value)
 {
     /* La INT de ATM2 cae 3565 T después del origen del barrido.
        Reutilizamos la señal Z de ATM1, desplazada a ese origen. */
-    int low=atmturbo_z_signal_low(t_estados+3565);
+    int t=t_estados+3565;
+    int low=atmturbo_z_signal_low(t);
+
+    /* La aproximación de pulsos anterior solo cubre la protección Spectrum.
+       Con RG0=0, Z2 también cambia durante las líneas 48-51. Estos pulsos
+       permiten que la ROM 1.06 descifre el CCP/BDOS de CP/M: con Z siempre
+       alta obtiene FFFF y ejecuta datos sin descifrar al terminar el arranque.
+       Sigue siendo una aproximación temporal, no la lógica completa de CP6N. */
+    if (!(atmturbo_video_mode&1)) {
+        low |= (t>=10816 && t<10912) ||
+               (t>=11232 && t<11264) ||
+               (t>=11392 && t<11424) ||
+               (t>=11552 && t<11584);
+    }
     return (value & 0xdf) | (low ? 0 : 0x20);
 }
 
