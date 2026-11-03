@@ -457,7 +457,7 @@ void core_spectrum_fin_frame_pantalla(void)
         }
 
         /* ATM2+ permite bloquear la INT de cuadro mediante D5 de #77. */
-        if (MACHINE_IS_ATM_TURBO2_PLUS && !atmturbo2plus_interrupts_enabled())
+        if (MACHINE_IS_ATM_TURBO2PLUS_TURBO3 && !atmturbo2plus_interrupts_enabled())
             interrupcion_maskable_generada.v=0;
 
         //TSConf lo gestiona mediante interrupciones de frame

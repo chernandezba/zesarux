@@ -519,9 +519,11 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_ATM_TURBO1               (current_machine_type==MACHINE_ID_ATM_TURBO1)
 #define MACHINE_IS_ATM_TURBO2               (current_machine_type==MACHINE_ID_ATM_TURBO2)
 #define MACHINE_IS_ATM_TURBO2_PLUS          (current_machine_type==MACHINE_ID_ATM_TURBO2_PLUS)
-/* Arquitectura compartida de puertos y MMU de ATM2 y ATM2+. */
-#define MACHINE_IS_ATM_TURBO2_FAMILY        (MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS)
+/* Arquitectura compartida de puertos y MMU desde ATM2 hasta ATM3. */
+#define MACHINE_IS_ATM_TURBO2_FAMILY        (MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
 #define MACHINE_IS_ATM_TURBO3               (current_machine_type==MACHINE_ID_ATM_TURBO3)
+/* ATM3 conserva el controlador 8031 y los controles de sistema de ATM2+. */
+#define MACHINE_IS_ATM_TURBO2PLUS_TURBO3   (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
 
 #define MACHINE_IS_ATM_TURBO                (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
 

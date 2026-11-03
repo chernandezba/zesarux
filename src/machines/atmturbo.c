@@ -103,6 +103,8 @@ static int atmturbo_fdc_selected;
 static unsigned int atmturbo2_mmu[8];
 /* Dirección del último OUT a #77; sus bits altos controlan PEN, CP/M y PEN2. */
 static z80_int atmturbo2_port_77;
+/* ATM3 #BF: D0 fuerza puertos de sombra, D1 amplía #E7 y D5 activa RGB444. */
+static z80_byte atmturbo3_port_bf;
 /* Indica para cada segmento de 16 KB si la página visible es RAM. */
 static int atmturbo2_segment_ram[4];
 /* Glifos de 8 bytes cargados de sgen.rom para el modo de texto de ATM2. */
@@ -337,7 +339,20 @@ z80_byte atmturbo2plus_read_port_fe(z80_int port,z80_byte value)
 int atmturbo2_shadow_ports_enabled(void)
 {
     return MACHINE_IS_ATM_TURBO2_FAMILY &&
-        (atmturbo_trdos_active || !(atmturbo2_port_77 & 0x200));
+        (atmturbo_trdos_active || !(atmturbo2_port_77 & 0x200) ||
+         (MACHINE_IS_ATM_TURBO3 && (atmturbo3_port_bf&1)));
+}
+
+/* Solo D0, D1 y D5 están conectados en la placa ATM3 v8.0 documentada. */
+z80_byte atmturbo3_read_port_bf(void)
+{
+    return atmturbo3_port_bf;
+}
+
+/* #BF es accesible sin sombra; D0 expone puertos sin paginar la ROM TR-DOS. */
+void atmturbo3_out_port_bf(z80_byte value)
+{
+    atmturbo3_port_bf=value&0x23;
 }
 
 /* Lee IDE en los puertos de sombra: A5-A7 eligen registro y A8 el byte alto. */
@@ -394,7 +409,7 @@ int atmturbo2plus_interrupts_enabled(void)
 void atmturbo2_out_port_77(z80_int port,z80_byte value)
 {
     atmturbo2_port_77=port;
-    if (MACHINE_IS_ATM_TURBO2_PLUS) {
+    if (MACHINE_IS_ATM_TURBO2PLUS_TURBO3) {
         atmturbo2plus_keyboard_disabled=(value&0x40)!=0;
         atmturbo2plus_int_enabled=(value&0x20)!=0;
         if (!atmturbo2plus_int_enabled) interrupcion_maskable_generada.v=0;
@@ -413,14 +428,27 @@ void atmturbo2_out_port_fe(z80_int port,z80_byte value)
 }
 
 /* Cambia el color del índice seleccionado con los bits RGB de #FF. */
-void atmturbo2_out_port_ff(z80_byte value)
+void atmturbo2_out_port_ff(z80_int port,z80_byte value)
 {
     int colour=value^0xff;
     int red=((colour&2) ? 2 : 0)|((colour&0x40) ? 1 : 0);
     int green=((colour&0x10) ? 2 : 0)|((colour&0x80) ? 1 : 0);
     int blue=((colour&1) ? 2 : 0)|((colour&0x20) ? 1 : 0);
-    atmturbo_palette[atmturbo_border_colour]=
-        SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
+    if (MACHINE_IS_ATM_TURBO3 && (atmturbo3_port_bf&0x20)) {
+        /* DDp: D0-D7 aportan los dos bits altos de cada componente;
+           A8-A15 aportan los dos bajos. Todas las señales son inversas.
+           Se usa la tabla RGB444 común, sin activar la máquina Prism. */
+        unsigned int address=port^0xff00;
+        red=(red<<2)|((address>>8)&2)|((address>>14)&1);
+        green=(green<<2)|((address>>11)&2)|((address>>15)&1);
+        blue=(blue<<2)|((address>>7)&2)|((address>>13)&1);
+        atmturbo_palette[atmturbo_border_colour]=
+            PRISM_INDEX_FIRST_COLOR+(red<<8)+(green<<4)+blue;
+    }
+    else {
+        atmturbo_palette[atmturbo_border_colour]=
+            SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
+    }
     modificado_border.v=1;
 }
 
@@ -438,15 +466,32 @@ void atmturbo2_out_port_f7(z80_int port,z80_byte value)
     atmturbo2_refresh_memory();
 }
 
+/* Accesos ATM3 a la MMU: preserva la decodificación corta de las ROM antiguas. */
+void atmturbo3_out_port_mmu(z80_int port,z80_byte value)
+{
+    int extended=(port&0xff)==0xe7 ? (atmturbo3_port_bf&2) :
+                 ((atmturbo3_port_bf&1) && !(port&0x0800));
+    if (!extended) {
+        atmturbo2_out_port_f7(port,value);
+        return;
+    }
+    /* Los ocho bits inversos seleccionan RAM 0-255. Se conserva el control
+       de mezcla con #7FFD de la entrada, igual que en el gestor ampliado. */
+    int index=((puerto_32765&16) ? 4 : 0)|((port>>14)&3);
+    atmturbo2_mmu[index]=(atmturbo2_mmu[index]&0x200)|(value^0xff);
+    atmturbo2_refresh_memory();
+}
+
 /* Resuelve las cuatro entradas activas de la MMU en páginas de ROM o RAM. */
 static void atmturbo2_refresh_memory(void)
 {
-    int ram_pages=MACHINE_IS_ATM_TURBO2_PLUS ? ATM_TURBO2_PLUS_TOTAL_RAM_PAGES : ATM_TURBO2_TOTAL_RAM_PAGES;
-    int rom_pages=MACHINE_IS_ATM_TURBO2_PLUS ? ATM_TURBO2_PLUS_TOTAL_ROM_PAGES : ATM_TURBO2_TOTAL_ROM_PAGES;
+    int ram_pages=MACHINE_IS_ATM_TURBO3 ? ATM_TURBO3_TOTAL_RAM_PAGES :
+                  (MACHINE_IS_ATM_TURBO2_PLUS ? ATM_TURBO2_PLUS_TOTAL_RAM_PAGES : ATM_TURBO2_TOTAL_RAM_PAGES);
+    int rom_pages=MACHINE_IS_ATM_TURBO2PLUS_TURBO3 ? ATM_TURBO2_PLUS_TOTAL_ROM_PAGES : ATM_TURBO2_TOTAL_ROM_PAGES;
     int segment;
     for (segment=0;segment<4;segment++) {
         unsigned int entry=atmturbo2_mmu[((puerto_32765&16) ? 4 : 0)+segment];
-        unsigned int page=entry&0x3f;
+        unsigned int page=entry&(MACHINE_IS_ATM_TURBO3 ? 0xff : 0x3f);
         int ram=1;
 
         if (!(atmturbo2_port_77&0x100)) {
@@ -707,6 +752,7 @@ void atmturbo_reset(void)
     atmturbo_video_mode=3;
     atmturbo_border_colour=0;
     atmturbo_border_left_next_valid=0;
+    atmturbo3_port_bf=0;
     if (MACHINE_IS_ATM_TURBO2_FAMILY) {
         atmturbo2plus_keyboard_mode=atmturbo2plus_keyboard_phase=0;
         atmturbo2plus_keyboard_code=atmturbo2plus_keyboard_last=0;

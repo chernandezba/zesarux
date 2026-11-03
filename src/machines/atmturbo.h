@@ -35,10 +35,13 @@
 #define ATM_TURBO2_PLUS_ROM_SIZE 128
 #define ATM_TURBO2_PLUS_RAM_SIZE 1024
 
+#define ATM_TURBO3_ROM_SIZE 128
+#define ATM_TURBO3_RAM_SIZE 4096
+
 
 //valores para la maquina atm con mas rom y ram
 #define ATM_TURBO_MAX_ROM_SIZE ATM_TURBO2_PLUS_ROM_SIZE
-#define ATM_TURBO_MAX_RAM_SIZE ATM_TURBO2_PLUS_RAM_SIZE
+#define ATM_TURBO_MAX_RAM_SIZE ATM_TURBO3_RAM_SIZE
 
 #define ATM_TURBO_TOTAL_RAM_PAGES (ATM_TURBO_MAX_RAM_SIZE/16)
 #define ATM_TURBO_TOTAL_ROM_PAGES (ATM_TURBO_MAX_ROM_SIZE/16)
@@ -50,6 +53,7 @@
 #define ATM_TURBO2_TOTAL_ROM_PAGES (ATM_TURBO2_ROM_SIZE/16)
 #define ATM_TURBO2_PLUS_TOTAL_RAM_PAGES (ATM_TURBO2_PLUS_RAM_SIZE/16)
 #define ATM_TURBO2_PLUS_TOTAL_ROM_PAGES (ATM_TURBO2_PLUS_ROM_SIZE/16)
+#define ATM_TURBO3_TOTAL_RAM_PAGES (ATM_TURBO3_RAM_SIZE/16)
 
 
 #define ATM_TURBO_DISPLAY_WIDTH 640
@@ -103,7 +107,10 @@ extern int atmturbo2_shadow_ports_enabled(void);
 extern void atmturbo2_out_port_77(z80_int port,z80_byte value);
 extern void atmturbo2_out_port_f7(z80_int port,z80_byte value);
 extern void atmturbo2_out_port_fe(z80_int port,z80_byte value);
-extern void atmturbo2_out_port_ff(z80_byte value);
+extern void atmturbo2_out_port_ff(z80_int port,z80_byte value);
+extern z80_byte atmturbo3_read_port_bf(void);
+extern void atmturbo3_out_port_bf(z80_byte value);
+extern void atmturbo3_out_port_mmu(z80_int port,z80_byte value);
 extern int atmturbo2_palette_port_enabled(void);
 extern int atmturbo_trdos_is_active(void);
 extern int atmturbo_fdc_is_active(z80_int port,int reading);
