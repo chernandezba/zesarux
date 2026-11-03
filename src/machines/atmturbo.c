@@ -1009,6 +1009,44 @@ z80_byte atmturbo_read_port_7b(void)
 
 
 
+/* Devuelve el código de vídeo actual: dos bits en ATM1 y tres desde ATM2. */
+z80_byte atmturbo_get_video_mode(void)
+{
+    return atmturbo_video_mode;
+}
+
+
+char *atmturbo_videomode_string_320_200="ATM EGA 320x200";
+char *atmturbo_videomode_string_640_200="ATM hardware multicolor 640x200";
+char *atmturbo_videomode_string_256_192="Standard ZX 256x192";
+char *atmturbo_videomode_string_640_200_text="ATM text 640x200";
+char atmturbo_videomode_string_unk[200]="";
+
+/* Describe el modo seleccionado, teniendo en cuenta la codificación de ATM1. */
+char *atmturbo_get_video_mode_string(void)
+{
+    z80_byte mode=atmturbo_get_video_mode();
+
+    switch (mode) {
+        case 0:
+            return atmturbo_videomode_string_320_200;
+        case 1:
+            if (MACHINE_IS_ATM_TURBO1) return atmturbo_videomode_string_640_200;
+            break;
+        case 2:
+            if (MACHINE_IS_ATM_TURBO2_FAMILY) return atmturbo_videomode_string_640_200;
+            break;
+        case 3:
+            return atmturbo_videomode_string_256_192;
+        case 6:
+            if (MACHINE_IS_ATM_TURBO2_FAMILY) return atmturbo_videomode_string_640_200_text;
+            break;
+    }
+
+    sprintf(atmturbo_videomode_string_unk,"ATM video mode %02XH: unknown",mode);
+    return atmturbo_videomode_string_unk;
+}
+
 /* Lee un píxel de los modos gráficos 320x200 o 640x200 de ATM1 y ATM2. */
 static int atmturbo_get_graphics_colour(int x,int y,int mode)
 {

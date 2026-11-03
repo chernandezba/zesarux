@@ -117,6 +117,8 @@ extern int atmturbo_fdc_is_active(z80_int port,int reading);
 extern z80_byte atmturbo_fdc_read_port(z80_int port);
 extern void atmturbo_fdc_write_port(z80_int port,z80_byte value);
 
+extern z80_byte atmturbo_get_video_mode(void);
+extern char *atmturbo_get_video_mode_string(void);
 extern void atmturbo_refresca_pantalla(void);
 extern void atmturbo_store_scanline_rainbow_border(void);
 extern void atmturbo_store_scanline_rainbow_display(void);
