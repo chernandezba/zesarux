@@ -159,6 +159,7 @@
 #include "scorpion.h"
 #include "baseconf.h"
 #include "zxevo.h"
+#include "atmturbo.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -12779,6 +12780,11 @@ void menu_storage_zxevo_nemo_ide(MENU_ITEM_PARAMETERS)
         zxevo_nemo_ide_enabled.v ^=1;
 }
 
+void menu_storage_ide_atm(MENU_ITEM_PARAMETERS)
+{
+    ide_atm_enabled.v ^=1;
+}
+
 
 int menu_storage_ide_emulation_cond(void)
 {
@@ -13116,6 +13122,16 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(zxevo_nemo_ide_enabled.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf. IDE Emulation above controls whether a hard disk is connected to it");
+            }
+
+            if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+                menu_add_item_menu_separator(array_menu_ide_divide);
+
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_atm,NULL,
+                    "ATM IDE Enabled","ATM IDE Activado","ATM IDE Activat");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_atm_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the IDE interface in ATM");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the IDE interface in ATM. IDE Emulation above controls whether a hard disk is connected to it");
             }
 
 

@@ -33,7 +33,7 @@
 #define ATM_TURBO2_RAM_SIZE 512
 
 #define ATM_TURBO2_PLUS_ROM_SIZE 128
-#define ATM_TURBO2_PLUS_RAM_SIZE 512
+#define ATM_TURBO2_PLUS_RAM_SIZE 1024
 
 
 //valores para la maquina atm con mas rom y ram
@@ -48,6 +48,8 @@
 
 #define ATM_TURBO2_TOTAL_RAM_PAGES (ATM_TURBO2_RAM_SIZE/16)
 #define ATM_TURBO2_TOTAL_ROM_PAGES (ATM_TURBO2_ROM_SIZE/16)
+#define ATM_TURBO2_PLUS_TOTAL_RAM_PAGES (ATM_TURBO2_PLUS_RAM_SIZE/16)
+#define ATM_TURBO2_PLUS_TOTAL_ROM_PAGES (ATM_TURBO2_PLUS_ROM_SIZE/16)
 
 
 #define ATM_TURBO_DISPLAY_WIDTH 640
@@ -89,6 +91,10 @@ extern void atmturbo_out_port_fe(z80_int port,z80_byte value);
 extern z80_byte atmturbo_get_border_colour(void);
 extern z80_byte atmturbo_read_port_fe(z80_byte value);
 extern z80_byte atmturbo2_read_port_fe(z80_byte value);
+extern z80_byte atmturbo2plus_read_port_fe(z80_int port,z80_byte value);
+extern z80_byte atmturbo2_ide_read_port(z80_int port);
+extern void atmturbo2_ide_write_port(z80_int port,z80_byte value);
+extern int atmturbo2plus_interrupts_enabled(void);
 extern z80_byte atmturbo2_read_keyboard_status(void);
 extern z80_byte atmturbo2_read_keyboard_data(void);
 extern void atmturbo2_update_timing(void);
@@ -107,5 +113,7 @@ extern void atmturbo_fdc_write_port(z80_int port,z80_byte value);
 extern void atmturbo_refresca_pantalla(void);
 extern void atmturbo_store_scanline_rainbow_border(void);
 extern void atmturbo_store_scanline_rainbow_display(void);
+
+extern z80_bit ide_atm_enabled;
 
 #endif

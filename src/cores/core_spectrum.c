@@ -77,6 +77,7 @@
 #include "zeng_online_client.h"
 #include "if1.h"
 #include "video_chips_common.h"
+#include "atmturbo.h"
 
 z80_byte byte_leido_core_spectrum;
 
@@ -454,6 +455,10 @@ void core_spectrum_fin_frame_pantalla(void)
                 }
             }
         }
+
+        /* ATM2+ permite bloquear la INT de cuadro mediante D5 de #77. */
+        if (MACHINE_IS_ATM_TURBO2_PLUS && !atmturbo2plus_interrupts_enabled())
+            interrupcion_maskable_generada.v=0;
 
         //TSConf lo gestiona mediante interrupciones de frame
         if (MACHINE_IS_TSCONF) interrupcion_maskable_generada.v=0;
