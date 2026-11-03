@@ -11636,6 +11636,11 @@ int menu_debug_sprites_total_colors_mapped_palette(int paleta)
             return 16;
         break;
 
+        //ATM
+        case 22:
+            return 16;
+        break;
+
     }
 
     return 16;
@@ -11730,6 +11735,10 @@ int menu_debug_sprites_max_value_mapped_palette(int paleta)
             return PRISM_TOTAL_PALETTE_COLOURS;
         break;
 
+        case 22:
+            //ATM
+            return PRISM_TOTAL_PALETTE_COLOURS;
+        break;
 
     }
 
@@ -11742,6 +11751,7 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
 {
 
     z80_byte r,g,b;
+    int indice;
 
     switch (paleta) {
         case 0:
@@ -11861,6 +11871,21 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
             return baseconf_get_palette_entry(color);
         break;
 
+        case 22:
+            //ATM
+            indice=atm_get_palette_entry(color);
+            //printf("c %d i %d\n",color,indice);
+
+
+           //if (MACHINE_IS_ATM_TURBO3) indice -=PRISM_INDEX_FIRST_COLOR;
+           //else indice -=SPECTRA_INDEX_FIRST_COLOR;
+
+           return indice;
+
+
+
+        break;
+
 
     }
 
@@ -11946,6 +11971,11 @@ int menu_debug_sprites_return_color_palette(int paleta, z80_byte color)
         case 21:
             //BaseConf devuelve un índice RGB444 relativo dentro de la paleta Prism.
             return PRISM_INDEX_FIRST_COLOR+index;
+        break;
+
+        case 22:
+            //El color de la paleta ya va directo sin offset
+            return index;
         break;
 
     }
@@ -12054,6 +12084,10 @@ void menu_debug_sprites_get_palette_name(int paleta, char *s)
 
         case 21:
             strcpy(s,"BaseConf");
+        break;
+
+        case 22:
+            strcpy(s,"ATM Turbo");
         break;
 
         default:

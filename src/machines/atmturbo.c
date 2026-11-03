@@ -96,7 +96,7 @@ static z80_byte atmturbo_border_left_next[ATM_TURBO_DISPLAY_WIDTH+2*ATM_TURBO_LE
 /* Indica si el búfer del borde izquierdo ya contiene una línea válida. */
 static int atmturbo_border_left_next_valid;
 /* Traduce los 16 índices de color de ATM a colores del emulador. */
-static int atmturbo_palette[16];
+int atmturbo_palette[16];
 /* Recuerda si ATM1 ya ha seleccionado el controlador de disquete. */
 static int atmturbo_fdc_selected;
 /* Ocho entradas de paginado de ATM2: cuatro por cada valor de #7FFD.D4. */
@@ -139,6 +139,12 @@ static z80_byte atmturbo2_ide_read_high,atmturbo2_ide_write_high;
 static void atmturbo2_refresh_memory(void);
 
 z80_bit ide_atm_enabled={0};
+
+// Lee indice de la paleta ATM; devuelve su valor RGB.
+z80_int atm_get_palette_entry(z80_byte indice)
+{
+    return atmturbo_palette[indice&15];
+}
 
 /* Consulta la matriz y retiene un cambio hasta que CP/M recoge su código XT. */
 z80_byte atmturbo2_read_keyboard_status(void)

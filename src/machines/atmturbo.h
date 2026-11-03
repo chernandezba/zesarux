@@ -125,4 +125,7 @@ extern void atmturbo_store_scanline_rainbow_display(void);
 
 extern z80_bit ide_atm_enabled;
 
+extern int atmturbo_palette[];
+extern z80_int atm_get_palette_entry(z80_byte indice);
+
 #endif
