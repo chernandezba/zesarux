@@ -76,31 +76,46 @@ z80_byte *atmturbo_rom_mem_table[ATM_TURBO_TOTAL_ROM_PAGES];
 //Direcciones actuales mapeadas
 z80_byte *atmturbo_memory_paged[4];
 
+/* Último valor escrito en #FDFD para seleccionar el banco de RAM de ATM1. */
 z80_byte puerto_fdfd;
 
-/* CPSYS cambia al leer #FB/#7B; no forma parte del registro #7FFD. */
+/* Activa la ROM de CP/M de ATM1 tras leer #FB y la desactiva al leer #7B. */
 static int atmturbo_cpsys;
+/* ATM1 muestra ROM en #0000; al desactivarse se muestra RAM en ese segmento. */
 static int atmturbo_rom_enabled=1;
+/* Indica que la ROM de TR-DOS está paginada temporalmente. */
 static int atmturbo_trdos_active;
+/* Código del modo de vídeo seleccionado: 3 es el modo Spectrum. */
 static int atmturbo_video_mode=3;
+/* Índice de la paleta usado para el color del borde. */
 static int atmturbo_border_colour;
+/* Colores al final de la línea anterior que llegan al borde izquierdo. */
 static z80_byte atmturbo_border_left_next[ATM_TURBO_DISPLAY_WIDTH+2*ATM_TURBO_LEFT_BORDER_NO_ZOOM];
+/* Indica si el búfer del borde izquierdo ya contiene una línea válida. */
 static int atmturbo_border_left_next_valid;
+/* Traduce los 16 índices de color de ATM a colores del emulador. */
 static int atmturbo_palette[16];
+/* Recuerda si ATM1 ya ha seleccionado el controlador de disquete. */
 static int atmturbo_fdc_selected;
+/* Ocho entradas de paginado de ATM2: cuatro por cada valor de #7FFD.D4. */
 static unsigned int atmturbo2_mmu[8];
+/* Dirección del último OUT a #77; sus bits altos controlan PEN, CP/M y PEN2. */
 static z80_int atmturbo2_port_77;
+/* Indica para cada segmento de 16 KB si la página visible es RAM. */
 static int atmturbo2_segment_ram[4];
+/* Glifos de 8 bytes cargados de sgen.rom para el modo de texto de ATM2. */
 static z80_byte atmturbo2_text_font[2048];
 
 static void atmturbo2_refresh_memory(void);
 
+/* Permite acceder a los puertos ATM2 cuando está activo DOS o CP/M. */
 int atmturbo2_shadow_ports_enabled(void)
 {
     return MACHINE_IS_ATM_TURBO2 &&
         (atmturbo_trdos_active || !(atmturbo2_port_77 & 0x200));
 }
 
+/* Ajusta la duración del cuadro de ATM2 según el bit RG0 del modo de vídeo. */
 void atmturbo2_update_timing(void)
 {
     /* La PLM CP6N.SRC genera VS en V=312 con RG0=1 y en V=316
@@ -111,6 +126,7 @@ void atmturbo2_update_timing(void)
     screen_set_video_params_indices();
 }
 
+/* Guarda los controles de #77 y aplica el nuevo vídeo y mapa de memoria. */
 void atmturbo2_out_port_77(z80_int port,z80_byte value)
 {
     atmturbo2_port_77=port;
@@ -120,11 +136,13 @@ void atmturbo2_out_port_77(z80_int port,z80_byte value)
     modificado_border.v=1;
 }
 
+/* Selecciona el índice de paleta del borde mediante los datos y A3 de #FE. */
 void atmturbo2_out_port_fe(z80_int port,z80_byte value)
 {
     atmturbo_border_colour=(value&7)|((port&8) ? 0 : 8);
 }
 
+/* Cambia el color del índice seleccionado con los bits RGB de #FF. */
 void atmturbo2_out_port_ff(z80_byte value)
 {
     int colour=value^0xff;
@@ -136,11 +154,13 @@ void atmturbo2_out_port_ff(z80_byte value)
     modificado_border.v=1;
 }
 
+/* Decide si #FF escribe la paleta en vez de acceder al controlador de disco. */
 int atmturbo2_palette_port_enabled(void)
 {
     return atmturbo2_shadow_ports_enabled() && !(atmturbo2_port_77&0x4000);
 }
 
+/* Programa una entrada de la MMU ATM2 elegida por A14-A15 y #7FFD.D4. */
 void atmturbo2_out_port_f7(z80_int port,z80_byte value)
 {
     int index=((puerto_32765 & 16) ? 4 : 0) | ((port>>14)&3);
@@ -148,6 +168,7 @@ void atmturbo2_out_port_f7(z80_int port,z80_byte value)
     atmturbo2_refresh_memory();
 }
 
+/* Resuelve las cuatro entradas activas de la MMU en páginas de ROM o RAM. */
 static void atmturbo2_refresh_memory(void)
 {
     int segment;
@@ -162,16 +183,20 @@ static void atmturbo2_refresh_memory(void)
         }
         else switch (entry&0x300) {
         case 0x000:
+            /* Página RAM cuyo trío inferior viene de #7FFD. */
             page=(page&~7)|(puerto_32765&7);
             break;
         case 0x100:
+            /* Página ROM cuyo bit inferior sigue a DOS o CP/M. */
             page=(page&~1)|((atmturbo_trdos_active ||
                              !(atmturbo2_port_77&0x200)) ? 1 : 0);
             ram=0;
             break;
         case 0x200:
+            /* Página RAM fija indicada por la entrada de la MMU. */
             break;
         case 0x300:
+            /* Página ROM fija indicada por la entrada de la MMU. */
             ram=0;
             break;
         }
@@ -192,11 +217,13 @@ static void atmturbo2_refresh_memory(void)
 
 void atmturbo_mem_page_rom(void);
 
+/* Comprueba si la CPU está ejecutando la ROM de TR-DOS en #0000-#3FFF. */
 int atmturbo_trdos_is_active(void)
 {
     return atmturbo_trdos_active && reg_pc<0x4000;
 }
 
+/* Determina si un acceso a los puertos de Beta Disk llega al VG93. */
 int atmturbo_fdc_is_active(z80_int port,int reading)
 {
     if (MACHINE_IS_ATM_TURBO2)
@@ -207,6 +234,7 @@ int atmturbo_fdc_is_active(z80_int port,int reading)
     return !reading || (port & 0xff)!=0xff || atmturbo_fdc_selected;
 }
 
+/* Actualiza un color de la paleta de ATM1 a partir del valor de #7DFD. */
 void atmturbo_out_port_7dfd(z80_byte value)
 {
     int color=value ^ 0xff;
@@ -218,24 +246,28 @@ void atmturbo_out_port_7dfd(z80_byte value)
     modificado_border.v=1;
 }
 
+/* Lee el VG93 si está habilitado o devuelve un estado de unidad no preparada. */
 z80_byte atmturbo_fdc_read_port(z80_int port)
 {
     if (trd_enabled.v) return vg93_read_port(port);
 
-    /* Sin disquete, el controlador informa fin de comando y unidad no preparada. */
+    /* Sin controlador habilitado, informa fin de comando y unidad no preparada. */
     if ((port & 0xff)==0x1f || (port & 0xff)==0xff) return 0x80;
     return 0xff;
 }
 
+/* Marca el acceso al VG93 y le envía la escritura si está habilitado. */
 void atmturbo_fdc_write_port(z80_int port,z80_byte value)
 {
     atmturbo_fdc_selected=1;
     if (trd_enabled.v) vg93_write_port(port,value);
 }
 
+/* Detecta la entrada y salida automáticas de TR-DOS durante el fetch. */
 z80_byte fetch_opcode_atmturbo(void)
 {
     if (MACHINE_IS_ATM_TURBO2) {
+        /* El fetch en #3Dxx activa TR-DOS y salir de la ROM lo desactiva. */
         if (atmturbo_trdos_active && reg_pc>=0x4000) {
             atmturbo_trdos_active=0;
             atmturbo2_refresh_memory();
@@ -263,6 +295,7 @@ z80_byte fetch_opcode_atmturbo(void)
 }
 
 
+/* Divide la memoria de la máquina en páginas físicas de ROM y RAM de 16 KB. */
 void atmturbo_init_memory_tables(void)
 {
     //Primero rom y luego ram
@@ -283,6 +316,7 @@ void atmturbo_init_memory_tables(void)
 
 }
 
+/* Instala el mapa inicial de segmentos antes de aplicar los puertos ATM. */
 void atmturbo_set_normal_pages(void)
 {
 
@@ -298,6 +332,7 @@ void atmturbo_set_normal_pages(void)
 }
 
 
+/* Reserva las páginas ATM y carga la ROM de caracteres usada por ATM2. */
 void atmturbo_malloc_mem_machine(void)
 {
 
@@ -318,6 +353,7 @@ void atmturbo_malloc_mem_machine(void)
     }
 }
 
+/* Actualiza la RAM visible: #C000 en ATM1 o los cuatro segmentos en ATM2. */
 void atmturbo_mem_page_ram(void)
 {
     if (MACHINE_IS_ATM_TURBO2) {
@@ -335,6 +371,7 @@ void atmturbo_mem_page_ram(void)
     debug_paginas_memoria_mapeadas[3]=page_entra;
 }
 
+/* Selecciona BIOS, TR-DOS o BASIC de ATM1; ATM2 usa su MMU completa. */
 void atmturbo_mem_page_rom(void)
 {
     if (MACHINE_IS_ATM_TURBO2) {
@@ -360,6 +397,7 @@ void atmturbo_mem_page_rom(void)
 
 }
 
+/* Aplica #7FFD y respeta el bloqueo de paginado de su bit 5. */
 void atmturbo_out_port_32765(z80_byte value)
 {
     if (puerto_32765 & 32) return;
@@ -375,6 +413,7 @@ void atmturbo_out_port_32765(z80_byte value)
     atmturbo_mem_page_rom();
 }
 
+/* Selecciona el banco de RAM adicional de ATM1 mediante #FDFD. */
 void atmturbo_out_port_fdfd(z80_byte value)
 {
     puerto_fdfd=value;
@@ -383,6 +422,7 @@ void atmturbo_out_port_fdfd(z80_byte value)
     atmturbo_mem_page_rom();
 }
 
+/* Restablece la paleta, los modos, los puertos y el mapa de arranque ATM. */
 void atmturbo_reset(void)
 {
     int i;
@@ -410,6 +450,7 @@ void atmturbo_reset(void)
     atmturbo_mem_page_ram();
 }
 
+/* ATM1 selecciona borde, modo gráfico y presencia de ROM con #FE. */
 void atmturbo_out_port_fe(z80_int port,z80_byte value)
 {
     /* El índice de paleta lo seleccionan D0-D2 y A3 de #FE. */
@@ -421,11 +462,13 @@ void atmturbo_out_port_fe(z80_int port,z80_byte value)
     atmturbo_mem_page_rom();
 }
 
+/* Devuelve el índice de paleta que usa actualmente el borde. */
 z80_byte atmturbo_get_border_colour(void)
 {
     return atmturbo_border_colour;
 }
 
+/* Indica si la señal de protección Z está a nivel bajo en este T-estado. */
 static int atmturbo_z_signal_low(int t)
 {
     int low;
@@ -442,11 +485,13 @@ static int atmturbo_z_signal_low(int t)
     return low;
 }
 
+/* Inserta la señal Z de ATM1 en D7 de la lectura de teclado #FE. */
 z80_byte atmturbo_read_port_fe(z80_byte value)
 {
     return (value & 0x7f) | (atmturbo_z_signal_low(t_estados) ? 0 : 0x80);
 }
 
+/* Inserta la señal Z de ATM2 en D5 de la lectura de teclado #FE. */
 z80_byte atmturbo2_read_port_fe(z80_byte value)
 {
     /* La INT de ATM2 cae 3565 T después del origen del barrido.
@@ -457,6 +502,7 @@ z80_byte atmturbo2_read_port_fe(z80_byte value)
 
 
 
+/* Escribe en la página RAM visible sin añadir los T-estados del acceso. */
 void poke_byte_no_time_atmturbo(z80_int dir,z80_byte valor)
 {
     int segmento;
@@ -480,6 +526,7 @@ void poke_byte_no_time_atmturbo(z80_int dir,z80_byte valor)
 }
 
 
+/* Escribe en la página RAM visible contando el acceso de la CPU. */
 void poke_byte_atmturbo(z80_int dir,z80_byte valor)
 {
     int segmento;
@@ -518,6 +565,7 @@ void poke_byte_atmturbo(z80_int dir,z80_byte valor)
 
 
 
+/* Lee la página activa sin consumir T-estados de la CPU. */
 z80_byte peek_byte_no_time_atmturbo(z80_int dir)
 {
 	#ifdef EMULATE_VISUALMEM
@@ -535,6 +583,7 @@ z80_byte peek_byte_no_time_atmturbo(z80_int dir)
 }
 
 
+/* Lee la página activa y añade los T-estados de memoria. */
 z80_byte peek_byte_atmturbo(z80_int dir)
 {
 	#ifdef EMULATE_VISUALMEM
@@ -561,6 +610,7 @@ z80_byte peek_byte_atmturbo(z80_int dir)
 }
 
 
+/* La lectura de #FB activa la BIOS CP/M de ATM1 y abandona TR-DOS. */
 z80_byte atmturbo_read_port_fb(void)
 {
     if (!atmturbo_cpsys) atmturbo_fdc_selected=0;
@@ -573,6 +623,7 @@ z80_byte atmturbo_read_port_fb(void)
 
 }
 
+/* La lectura de #7B vuelve de CP/M a las ROM Spectrum de ATM1. */
 z80_byte atmturbo_read_port_7b(void)
 {
     atmturbo_trdos_active=0;
@@ -587,7 +638,7 @@ z80_byte atmturbo_read_port_7b(void)
 
 
 
-/* Obtiene un color del modo gráfico de ATM1 en sus coordenadas originales. */
+/* Lee un píxel de los modos gráficos 320x200 o 640x200 de ATM1 y ATM2. */
 static int atmturbo_get_graphics_colour(int x,int y,int mode)
 {
     int base=(puerto_32765 & 8) ? 7 : 5;
@@ -597,6 +648,7 @@ static int atmturbo_get_graphics_colour(int x,int y,int mode)
     int colour;
 
     if (mode==0) {
+        /* 320x200 reparte parejas de píxeles entre dos páginas y mitades. */
         int part=(x & 7)/2;
         z80_byte value=atmturbo_ram_mem_table[(part & 1) ? base : base-4]
                                              [offset+((part & 2) ? 8192 : 0)];
@@ -604,6 +656,7 @@ static int atmturbo_get_graphics_colour(int x,int y,int mode)
                        : ((value & 0x40)>>3)|(value&7);
     }
     else {
+        /* 640x200 usa bytes de píxeles y atributos en páginas separadas. */
         int byte_offset=offset+((x & 8) ? 8192 : 0);
         z80_byte value=pixels[byte_offset];
         z80_byte attribute=attributes[byte_offset];
@@ -624,6 +677,7 @@ static int atmturbo2_get_text_colour(int x,int y)
     z80_byte character,attribute;
     int ink,paper;
 
+    /* Las columnas pares e impares intercambian página y mitad de 8 KB. */
     if (column&1) {
         character=atmturbo_ram_mem_table[page][address+0x2000];
         attribute=atmturbo_ram_mem_table[page-4][address+1];
@@ -661,6 +715,7 @@ static int atmturbo_get_standard_colour(int x,int y)
     return atmturbo_palette[(pixels&(0x80>>(x&7))) ? ink : paper];
 }
 
+/* Dibuja el borde de una línea en vídeo real y conserva su color final. */
 void atmturbo_store_scanline_rainbow_border(void)
 {
     z80_byte state_colour[MAX_STATES_LINE];
@@ -691,6 +746,7 @@ void atmturbo_store_scanline_rainbow_border(void)
     }
     screen_border_last_color=colour;
 
+    /* El borde visible usa el color retenido de la línea anterior a la izquierda. */
     if (visible_y>=0 && visible_y<288) {
         int output_y=visible_y*2;
         int central_line=(active_y>=0 && active_y<source_height);
@@ -715,6 +771,7 @@ void atmturbo_store_scanline_rainbow_border(void)
         }
     }
 
+    /* Conserva los colores del final del barrido para la línea siguiente. */
     for (x=0;x<total_width;x++) {
         state=post_retrace_start+(x*(line_states-post_retrace_start))/total_width;
         if (state>=line_states) state=line_states-1;
@@ -723,6 +780,7 @@ void atmturbo_store_scanline_rainbow_border(void)
     atmturbo_border_left_next_valid=1;
 }
 
+/* Dibuja una línea activa en vídeo real según el modo gráfico o de texto. */
 void atmturbo_store_scanline_rainbow_display(void)
 {
     int standard=(atmturbo_video_mode==3);
@@ -832,6 +890,7 @@ static void atmturbo_refresca_border(void)
     }
 }
 
+/* Refresca la pantalla ATM y redibuja el borde normal cuando ha cambiado. */
 void atmturbo_refresca_pantalla(void)
 {
     if (rainbow_enabled.v) {
