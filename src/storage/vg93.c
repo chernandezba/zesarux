@@ -27,6 +27,8 @@
 #include "debug.h"
 #include "betadisk.h"
 #include "timer.h"
+#include "menu_items.h"
+#include "menu_items_storage.h"
 
 
 /*
@@ -115,6 +117,12 @@ z80_byte vg93_read_port(z80_int port)
             if (vg93_read_active) {
                 int side=(vg93_system & 0x10) ? 0 : 1;
                 int pista=(vg93_track << 1) | side;
+                /* Visual Floppy representa sectores de 512 bytes; adapta los
+                   sectores TRD de 256 bytes igual que la lectura de Betadisk. */
+                int visualfloppy_sector=(vg93_sector-1)/2;
+                int visualfloppy_byte_en_sector=vg93_read_offset*2;
+                menu_visual_floppy_buffer_add(pista,visualfloppy_sector,visualfloppy_byte_en_sector);
+                menu_visual_floppy_buffer_add(pista,visualfloppy_sector,visualfloppy_byte_en_sector+1);
                 betadisk_show_activity();
 
                 timer_storage_common_accelerate_loading();

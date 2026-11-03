@@ -1776,7 +1776,7 @@ ide.o: storage/ide.c storage/ide.h cpu.h debug.h utils.h zxvision/zxvision.h vid
 pd765.o: storage/pd765.c storage/pd765.h cpu.h debug.h utils.h dsk.h menu/menu_items.h menu/menu_items_storage.h video/screen.h settings.h machines/pcw.h timer.h
 	\$(CC) \$(CFLAGS) -c storage/pd765.c
 
-vg93.o: storage/vg93.c storage/vg93.h storage/betadisk.h cpu.h debug.h timer.h
+vg93.o: storage/vg93.c storage/vg93.h storage/betadisk.h cpu.h debug.h timer.h menu/menu_items.h menu/menu_items_storage.h
 	\$(CC) \$(CFLAGS) -c storage/vg93.c
 
 dsk.o: dsk.c dsk.h cpu.h debug.h utils.h storage/tape.h menu/menu_items.h video/screen.h storage/pd765.h settings.h timer.h
