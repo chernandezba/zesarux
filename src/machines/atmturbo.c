@@ -34,6 +34,7 @@
 #include "start.h"
 #include "betadisk.h"
 #include "vg93.h"
+#include "utils.h"
 
 
 
@@ -87,6 +88,107 @@ static z80_byte atmturbo_border_left_next[ATM_TURBO_DISPLAY_WIDTH+2*ATM_TURBO_LE
 static int atmturbo_border_left_next_valid;
 static int atmturbo_palette[16];
 static int atmturbo_fdc_selected;
+static unsigned int atmturbo2_mmu[8];
+static z80_int atmturbo2_port_77;
+static int atmturbo2_segment_ram[4];
+static z80_byte atmturbo2_text_font[2048];
+
+static void atmturbo2_refresh_memory(void);
+
+int atmturbo2_shadow_ports_enabled(void)
+{
+    return MACHINE_IS_ATM_TURBO2 &&
+        (atmturbo_trdos_active || !(atmturbo2_port_77 & 0x200));
+}
+
+void atmturbo2_update_timing(void)
+{
+    /* La PLM CP6N.SRC genera VS en V=312 con RG0=1 y en V=316
+       con RG0=0. Añadimos el tiempo al final para conservar la
+       posición de inicio del área activa en ambos modos. */
+    screen_invisible_borde_superior=8;
+    screen_total_borde_inferior=(atmturbo_video_mode&1) ? 56 : 60;
+    screen_set_video_params_indices();
+}
+
+void atmturbo2_out_port_77(z80_int port,z80_byte value)
+{
+    atmturbo2_port_77=port;
+    atmturbo_video_mode=value&7;
+    atmturbo2_update_timing();
+    atmturbo2_refresh_memory();
+    modificado_border.v=1;
+}
+
+void atmturbo2_out_port_fe(z80_int port,z80_byte value)
+{
+    atmturbo_border_colour=(value&7)|((port&8) ? 0 : 8);
+}
+
+void atmturbo2_out_port_ff(z80_byte value)
+{
+    int colour=value^0xff;
+    int red=((colour&2) ? 2 : 0)|((colour&0x40) ? 1 : 0);
+    int green=((colour&0x10) ? 2 : 0)|((colour&0x80) ? 1 : 0);
+    int blue=((colour&1) ? 2 : 0)|((colour&0x20) ? 1 : 0);
+    atmturbo_palette[atmturbo_border_colour]=
+        SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
+    modificado_border.v=1;
+}
+
+int atmturbo2_palette_port_enabled(void)
+{
+    return atmturbo2_shadow_ports_enabled() && !(atmturbo2_port_77&0x4000);
+}
+
+void atmturbo2_out_port_f7(z80_int port,z80_byte value)
+{
+    int index=((puerto_32765 & 16) ? 4 : 0) | ((port>>14)&3);
+    atmturbo2_mmu[index]=((((value&0xc0)<<2)|(value&0x3f))^0x33f);
+    atmturbo2_refresh_memory();
+}
+
+static void atmturbo2_refresh_memory(void)
+{
+    int segment;
+    for (segment=0;segment<4;segment++) {
+        unsigned int entry=atmturbo2_mmu[((puerto_32765&16) ? 4 : 0)+segment];
+        unsigned int page=entry&0x3f;
+        int ram=1;
+
+        if (!(atmturbo2_port_77&0x100)) {
+            page=3;
+            ram=0;
+        }
+        else switch (entry&0x300) {
+        case 0x000:
+            page=(page&~7)|(puerto_32765&7);
+            break;
+        case 0x100:
+            page=(page&~1)|((atmturbo_trdos_active ||
+                             !(atmturbo2_port_77&0x200)) ? 1 : 0);
+            ram=0;
+            break;
+        case 0x200:
+            break;
+        case 0x300:
+            ram=0;
+            break;
+        }
+
+        if (ram) {
+            page%=ATM_TURBO_TOTAL_RAM_PAGES;
+            atmturbo_memory_paged[segment]=atmturbo_ram_mem_table[page];
+            debug_paginas_memoria_mapeadas[segment]=page;
+        }
+        else {
+            page%=ATM_TURBO_TOTAL_ROM_PAGES;
+            atmturbo_memory_paged[segment]=atmturbo_rom_mem_table[page];
+            debug_paginas_memoria_mapeadas[segment]=DEBUG_PAGINA_MAP_ES_ROM+page;
+        }
+        atmturbo2_segment_ram[segment]=ram;
+    }
+}
 
 void atmturbo_mem_page_rom(void);
 
@@ -97,6 +199,8 @@ int atmturbo_trdos_is_active(void)
 
 int atmturbo_fdc_is_active(z80_int port,int reading)
 {
+    if (MACHINE_IS_ATM_TURBO2)
+        return atmturbo2_shadow_ports_enabled();
     if (atmturbo_trdos_is_active()) return 1;
     if (!atmturbo_cpsys) return 0;
     /* La BIOS sondea #FF antes de seleccionar el disquete. */
@@ -131,6 +235,20 @@ void atmturbo_fdc_write_port(z80_int port,z80_byte value)
 
 z80_byte fetch_opcode_atmturbo(void)
 {
+    if (MACHINE_IS_ATM_TURBO2) {
+        if (atmturbo_trdos_active && reg_pc>=0x4000) {
+            atmturbo_trdos_active=0;
+            atmturbo2_refresh_memory();
+        }
+        else if (!atmturbo_trdos_active && (puerto_32765&16) &&
+                 !atmturbo2_segment_ram[0] &&
+                 (reg_pc&0xff00)==0x3d00) {
+            atmturbo_trdos_active=1;
+            atmturbo2_refresh_memory();
+        }
+        if (atmturbo_trdos_active) betadisk_handle_trdos_traps();
+        return fetch_opcode_spectrum();
+    }
     if (atmturbo_trdos_active && reg_pc>=0x4000) {
         atmturbo_trdos_active=0;
         atmturbo_mem_page_rom();
@@ -191,10 +309,21 @@ void atmturbo_malloc_mem_machine(void)
 
     atmturbo_init_memory_tables();
     atmturbo_set_normal_pages();
+    if (MACHINE_IS_ATM_TURBO2) {
+        FILE *font_file;
+        open_sharedfile("sgen.rom",&font_file);
+        if (!font_file || fread(atmturbo2_text_font,1,sizeof(atmturbo2_text_font),font_file)!=sizeof(atmturbo2_text_font))
+            cpu_panic("Cannot load ATM Turbo 2 character ROM");
+        fclose(font_file);
+    }
 }
 
 void atmturbo_mem_page_ram(void)
 {
+    if (MACHINE_IS_ATM_TURBO2) {
+        atmturbo2_refresh_memory();
+        return;
+    }
 
     z80_byte page_entra=puerto_32765 & 7;
     z80_byte page_fdfd=puerto_fdfd &3;
@@ -208,6 +337,10 @@ void atmturbo_mem_page_ram(void)
 
 void atmturbo_mem_page_rom(void)
 {
+    if (MACHINE_IS_ATM_TURBO2) {
+        atmturbo2_refresh_memory();
+        return;
+    }
 
     z80_byte page_entra;
 
@@ -233,7 +366,7 @@ void atmturbo_out_port_32765(z80_byte value)
 
     puerto_32765=value;
 
-    if (value & 32) {
+    if (MACHINE_IS_ATM_TURBO1 && (value & 32)) {
         atmturbo_cpsys=0;
         atmturbo_fdc_selected=0;
     }
@@ -261,6 +394,12 @@ void atmturbo_reset(void)
     atmturbo_video_mode=3;
     atmturbo_border_colour=0;
     atmturbo_border_left_next_valid=0;
+    if (MACHINE_IS_ATM_TURBO2) {
+        puerto_32765=0;
+        atmturbo2_port_77=0;
+        for (i=0;i<8;i++) atmturbo2_mmu[i]=0;
+        atmturbo2_update_timing();
+    }
     modificado_border.v=1;
     vg93_reset();
 
@@ -287,9 +426,8 @@ z80_byte atmturbo_get_border_colour(void)
     return atmturbo_border_colour;
 }
 
-z80_byte atmturbo_read_port_fe(z80_byte value)
+static int atmturbo_z_signal_low(int t)
 {
-    int t=t_estados;
     int low;
     if (screen_testados_total<80000) {
         low=(t>=7200 && t<7240) ||
@@ -301,7 +439,20 @@ z80_byte atmturbo_read_port_fe(z80_byte value)
             (t>=21703 && t<21783) ||
             (t>=21808 && t<21848);
     }
-    return (value & 0x7f) | (low ? 0 : 0x80);
+    return low;
+}
+
+z80_byte atmturbo_read_port_fe(z80_byte value)
+{
+    return (value & 0x7f) | (atmturbo_z_signal_low(t_estados) ? 0 : 0x80);
+}
+
+z80_byte atmturbo2_read_port_fe(z80_byte value)
+{
+    /* La INT de ATM2 cae 3565 T después del origen del barrido.
+       Reutilizamos la señal Z de ATM1, desplazada a ese origen. */
+    int low=atmturbo_z_signal_low(t_estados+3565);
+    return (value & 0xdf) | (low ? 0 : 0x20);
 }
 
 
@@ -313,7 +464,8 @@ void poke_byte_no_time_atmturbo(z80_int dir,z80_byte valor)
 
     segmento=dir / 16384;
 
-    if (dir>16383 || !atmturbo_rom_enabled) {
+    if (MACHINE_IS_ATM_TURBO2 ? atmturbo2_segment_ram[segmento] :
+        (dir>16383 || !atmturbo_rom_enabled)) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -333,6 +485,8 @@ void poke_byte_atmturbo(z80_int dir,z80_byte valor)
     int segmento;
     z80_byte *puntero;
 
+
+
     segmento=dir / 16384;
 
 #ifdef EMULATE_CONTEND
@@ -345,7 +499,8 @@ void poke_byte_atmturbo(z80_int dir,z80_byte valor)
 
 
 
-    if (dir>16383 || !atmturbo_rom_enabled) {
+    if (MACHINE_IS_ATM_TURBO2 ? atmturbo2_segment_ram[segmento] :
+        (dir>16383 || !atmturbo_rom_enabled)) {
 		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
@@ -460,6 +615,29 @@ static int atmturbo_get_graphics_colour(int x,int y,int mode)
     return atmturbo_palette[colour];
 }
 
+/* Lee un píxel del modo de texto de 80 columnas de ATM2. */
+static int atmturbo2_get_text_colour(int x,int y)
+{
+    int page=(puerto_32765&8) ? 7 : 5;
+    int column=x>>3;
+    int address=0x1c0+(y>>3)*64+(column>>1);
+    z80_byte character,attribute;
+    int ink,paper;
+
+    if (column&1) {
+        character=atmturbo_ram_mem_table[page][address+0x2000];
+        attribute=atmturbo_ram_mem_table[page-4][address+1];
+    }
+    else {
+        character=atmturbo_ram_mem_table[page][address];
+        attribute=atmturbo_ram_mem_table[page-4][address+0x2000];
+    }
+    ink=(attribute&7)|((attribute&0x40)>>3);
+    paper=((attribute>>3)&7)|((attribute&0x80)>>4);
+    return atmturbo_palette[(atmturbo2_text_font[character*8+(y&7)] &
+                            (0x80>>(x&7))) ? ink : paper];
+}
+
 /* Obtiene el píxel del modo Spectrum para la línea de vídeo actual. */
 static int atmturbo_get_standard_colour(int x,int y)
 {
@@ -569,8 +747,10 @@ void atmturbo_store_scanline_rainbow_display(void)
 
     for (x=0;x<width;x++) {
         int colour=standard ? atmturbo_get_standard_colour(x,active_y) :
-            (atmturbo_video_mode==2 ? 0 :
-             atmturbo_get_graphics_colour(x,active_y,atmturbo_video_mode));
+            (MACHINE_IS_ATM_TURBO2 && atmturbo_video_mode==6 ?
+             atmturbo2_get_text_colour(x,active_y) :
+             (MACHINE_IS_ATM_TURBO1 && atmturbo_video_mode==2 ? 0 :
+              atmturbo_get_graphics_colour(x,active_y,atmturbo_video_mode)));
         int output_x=offset_x+x*scale_x;
         for (duplicate=0;duplicate<2;duplicate++) {
             z80_int *pixel=&rainbow_buffer[(output_y+duplicate)*total_width+output_x];
@@ -670,8 +850,10 @@ void atmturbo_refresca_pantalla(void)
 
             for (y=0;y<200;y++) {
                 for (x=0;x<width;x++) {
-                    int colour=(atmturbo_video_mode==2) ? 0 :
-                        atmturbo_get_graphics_colour(x,y,atmturbo_video_mode);
+                int colour=(MACHINE_IS_ATM_TURBO2 && atmturbo_video_mode==6) ?
+                    atmturbo2_get_text_colour(x,y) :
+                    (MACHINE_IS_ATM_TURBO1 && atmturbo_video_mode==2 ? 0 :
+                     atmturbo_get_graphics_colour(x,y,atmturbo_video_mode));
                     atmturbo_putpixel_scaled(x,y,colour,scale_x,2,0,0);
                 }
             }

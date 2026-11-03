@@ -7084,7 +7084,8 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
-    if (MACHINE_IS_ATM_TURBO1 && atmturbo_fdc_is_active(puerto,1) &&
+    if ((MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) &&
+        atmturbo_fdc_is_active(puerto,1) &&
         (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
          puerto_l==0x7f || puerto_l==0xff)) {
         return atmturbo_fdc_read_port(puerto);
@@ -7641,6 +7642,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
                 z80_byte value=lee_puerto_spectrum_ula(puerto_h);
                 if (MACHINE_IS_ATM_TURBO1) value=atmturbo_read_port_fe(value);
+                if (MACHINE_IS_ATM_TURBO2) value=atmturbo2_read_port_fe(value);
 		return value;
 
         }
@@ -7717,7 +7719,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
         if (puerto_l==0xB3) return gs_read_port_b3_from_speccy();
     }
 
-    if (MACHINE_IS_ATM_TURBO) {
+    if (MACHINE_IS_ATM_TURBO1) {
         if (puerto_l==0xfb) return atmturbo_read_port_fb();
         if (puerto_l==0x7b) return atmturbo_read_port_7b();
     }
@@ -8867,7 +8869,7 @@ z80_byte get_border_colour_from_out(void)
 z80_byte color_border;
 
 if (MACHINE_IS_BASECONF) return baseconf_get_border_colour();
-if (MACHINE_IS_ATM_TURBO1) return atmturbo_get_border_colour();
+if (MACHINE_IS_ATM_TURBO) return atmturbo_get_border_colour();
 
 if (MACHINE_IS_ZXUNO && zxuno_is_prism_mode_enabled() ) {
 //IxxxxGRB puerto FE
@@ -8951,6 +8953,8 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
 {
     if (MACHINE_IS_ATM_TURBO1 && (puerto & 7)==6)
         atmturbo_out_port_fe(puerto,value);
+    if (MACHINE_IS_ATM_TURBO2)
+        atmturbo2_out_port_fe(puerto,value);
 
     //Actualizar bit 6 de puerto feh segun si teclado issue 2 o 3
     out_port_spectrum_fe_issue(value);
@@ -9193,7 +9197,12 @@ Port: 10-- ---- ---- --0-
 	}
 
 
-   if (MACHINE_IS_ATM_TURBO1 && atmturbo_fdc_is_active(puerto,0) &&
+   if (MACHINE_IS_ATM_TURBO2 && puerto_l==0xff &&
+       atmturbo2_palette_port_enabled())
+       atmturbo2_out_port_ff(value);
+
+   if ((MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) &&
+       atmturbo_fdc_is_active(puerto,0) &&
        (puerto_l==0x1f || puerto_l==0x3f || puerto_l==0x5f ||
         puerto_l==0x7f || puerto_l==0xff)) {
        atmturbo_fdc_write_port(puerto,value);
@@ -9285,6 +9294,16 @@ Port: 10-- ---- ---- --0-
 
     if (MACHINE_IS_ATM_TURBO)
     {
+        if (MACHINE_IS_ATM_TURBO2 && atmturbo2_shadow_ports_enabled()) {
+            if (puerto_l==0x77) {
+                atmturbo2_out_port_77(puerto,value);
+                return;
+            }
+            if (puerto_l==0xf7) {
+                atmturbo2_out_port_f7(puerto,value);
+                return;
+            }
+        }
 
         if (MACHINE_IS_ATM_TURBO1 && (puerto & 0x8202)==0 && (puerto & 1)) {
             atmturbo_out_port_7dfd(value);
