@@ -4135,6 +4135,8 @@ int get_rom_size(int machine)
 
     else if (MACHINE_IS_SCORPION) rom_size=65536;
 
+    else if (MACHINE_IS_ATM_TURBO2_PLUS) rom_size=131072;
+
     else if (MACHINE_IS_ATM_TURBO) rom_size=65536;
 
     else if (MACHINE_IS_SPECTRUM_128_P2) rom_size=32768;
@@ -4239,8 +4241,16 @@ int get_ram_size(void)
         total_ram=256*1024;
     }
 
-    else if (MACHINE_IS_ATM_TURBO) {
-        total_ram=ATM_TURBO_RAM_SIZE*1024;
+    else if (MACHINE_IS_ATM_TURBO1) {
+        total_ram=ATM_TURBO1_RAM_SIZE*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO2) {
+        total_ram=ATM_TURBO2_RAM_SIZE*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO2_PLUS) {
+        total_ram=ATM_TURBO2_PLUS_RAM_SIZE*1024;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {

@@ -3616,6 +3616,10 @@ void rom_load(char *romfilename)
             romfilename="atm106.rom";
             break;
 
+            case MACHINE_ID_ATM_TURBO2_PLUS:
+            romfilename="xbios135.rom";
+            break;
+
             case MACHINE_ID_DIDAKTIKGAMA:
             romfilename="didaktikgama.rom";
             break;

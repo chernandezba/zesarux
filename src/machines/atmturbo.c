@@ -282,12 +282,12 @@ static void atmturbo2_refresh_memory(void)
         }
 
         if (ram) {
-            page%=ATM_TURBO_TOTAL_RAM_PAGES;
+            page%=ATM_TURBO2_TOTAL_RAM_PAGES;
             atmturbo_memory_paged[segment]=atmturbo_ram_mem_table[page];
             debug_paginas_memoria_mapeadas[segment]=page;
         }
         else {
-            page%=ATM_TURBO_TOTAL_ROM_PAGES;
+            page%=ATM_TURBO2_TOTAL_ROM_PAGES;
             atmturbo_memory_paged[segment]=atmturbo_rom_mem_table[page];
             debug_paginas_memoria_mapeadas[segment]=DEBUG_PAGINA_MAP_ES_ROM+page;
         }
@@ -417,7 +417,7 @@ void atmturbo_malloc_mem_machine(void)
 {
 
 
-    int total_ram=(ATM_TURBO_ROM_SIZE+ATM_TURBO_RAM_SIZE)*1024;
+    int total_ram=(ATM_TURBO_MAX_ROM_SIZE+ATM_TURBO_MAX_RAM_SIZE)*1024;
 
     malloc_machine(total_ram);
 
