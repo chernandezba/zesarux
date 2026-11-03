@@ -552,7 +552,34 @@ z80_byte atmturbo_get_border_colour(void)
     return atmturbo_border_colour;
 }
 
-/* Indica si la señal de protección Z está a nivel bajo en este T-estado. */
+/*
+   Señal Z del hardware ATM (distinta del flag Z del registro F del Z80).
+
+   La lógica programable de vídeo combina bits de los contadores horizontal
+   y vertical, el modo de pantalla y otras señales del circuito para generar
+   un nivel eléctrico que cambia en determinados momentos del barrido.
+   CP45.SRC contiene las ecuaciones de Z; CP6N.SRC define las señales internas
+   Z1 y Z2. Estos fuentes de la PLM están en codex_additional/atm-plms/PRO.
+
+   La CPU consulta este nivel al leer #FE: D7 en ATM1 y D5 en ATM2. Cada IN
+   obtiene el nivel de ese instante; varias lecturas separadas por instrucciones
+   forman una secuencia que depende del barrido y de la velocidad de ejecución.
+
+   La ROM 1.06 de ATM2 utiliza esa secuencia para descifrar el código de CP/M
+   almacenado en la propia ROM antes de ejecutarlo desde RAM:
+   - Se sincroniza con la interrupción de vídeo.
+   - Espera mediante bucles de instrucciones y muestrea Z repetidamente.
+   - Acumula los bits en HL y usa ese valor como clave del descifrado.
+   En el arranque comprobado, la clave correcta es #3F6D. Cuando Z permanecía
+   siempre alta, obtenía #FFFF y dejaba código incorrecto en RAM, provocando
+   un cuelgue o un retorno al menú. Esto actúa como una protección ligada al
+   hardware y sus tiempos: emular solo las instrucciones Z80 no es suficiente.
+
+   Aquí aproximamos Z mediante intervalos de T-estados ajustados a las rutinas
+   comprobadas de las ROM; no reproducimos íntegramente las ecuaciones de la
+   PLM. Las ventanas adicionales de ATM2 están en atmturbo2_read_port_fe().
+   Esta función indica si el nivel es bajo para el instante y cuadro recibidos.
+*/
 static int atmturbo_z_signal_low(int t,int frame_states)
 {
     int low;
