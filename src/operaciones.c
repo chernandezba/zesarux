@@ -7096,7 +7096,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
     /* Estado del receptor XT en D7 de #7FFD y códigos serie en #7DFD. */
     if (MACHINE_IS_ATM_TURBO2_FAMILY && (puerto & 0x8202)==0x0200)
-        return MACHINE_IS_ATM_TURBO2PLUS_TURBO3 ? 0x7f : atmturbo2_read_keyboard_status();
+        return MACHINE_IS_ATM_TURBO2PLUS_TURBO3 ? atmturbo2plus_read_device_status() : atmturbo2_read_keyboard_status();
     if (MACHINE_IS_ATM_TURBO2_FAMILY && (puerto & 0x8203)==0x0001)
         return MACHINE_IS_ATM_TURBO2PLUS_TURBO3 ? 0xff : atmturbo2_read_keyboard_data();
 

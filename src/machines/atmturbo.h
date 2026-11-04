@@ -129,4 +129,6 @@ extern z80_bit ide_atm_enabled;
 extern int atmturbo_palette[];
 extern z80_int atm_get_palette_entry(z80_byte indice);
 
+extern z80_byte atmturbo2plus_read_device_status(void);
+
 #endif

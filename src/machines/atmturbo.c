@@ -137,10 +137,19 @@ static int atmturbo2plus_keyboard_disabled;
 static int atmturbo2plus_int_enabled;
 /* Diferencia respecto al reloj del anfitrión, modificable por comandos del 8031. */
 static time_t atmturbo2plus_clock_offset;
+/* Origen del contador de días del 8031, sin batería de respaldo. */
+static time_t atmturbo2plus_clock_start;
+/* Estado independiente de Shift derecho en el registro adicional del 8031. */
+static z80_byte atmturbo2plus_right_shift;
+/* Shift izquierdo se conserva aparte para permitir ambos Shift simultáneos. */
+static z80_byte atmturbo2plus_left_shift;
+/* Interrupción IDE retenida hasta la lectura del registro de estado ATA. */
+static int atmturbo2_ide_irq;
 /* Byte alto retenido por el interfaz IDE de 16 bits de ATM2/2+. */
 static z80_byte atmturbo2_ide_read_high,atmturbo2_ide_write_high;
 
 static void atmturbo2_refresh_memory(void);
+static int atmturbo_palette_index_at_beam(void);
 
 z80_bit ide_atm_enabled={0};
 
@@ -269,7 +278,14 @@ static void atmturbo2plus_poll_keyboard(void)
         }
         int released=scan&0x80;
         int key=scan&0x7f;
-        int flag=(key==0x2a || key==0x36) ? 1 : (key==0x1d ? 2 : 0);
+        int flag=key==0x1d ? 2 : (key==0x38 ? 4 : 0);
+        if (key==0x2a) atmturbo2plus_left_shift=!released;
+        if (key==0x36) atmturbo2plus_right_shift=!released;
+        if (key==0x2a || key==0x36)
+            atmturbo2plus_keyboard_flags=(atmturbo2plus_keyboard_flags&~1)|
+                (atmturbo2plus_left_shift || atmturbo2plus_right_shift);
+        if (!released && (key==0x3a || key==0x45 || key==0x46))
+            atmturbo2plus_keyboard_flags^=key==0x3a ? 0x10 : (key==0x45 ? 0x20 : 0x40);
         if (flag) {
             if (released) atmturbo2plus_keyboard_flags&=~flag;
             else atmturbo2plus_keyboard_flags|=flag;
@@ -280,13 +296,16 @@ static void atmturbo2plus_poll_keyboard(void)
             atmturbo2plus_keyboard_code=key==0x48 ? 0x70 :
                 (key==0x50 ? 0x71 : (key==0x4b ? 0x72 : 0x73));
         }
-        else if (!released && key<(int)sizeof(characters))
+        else if (!released && key<(int)sizeof(characters)) {
+            /* CP/M recibe el código base y los modificadores aparte;
+               su BIOS aplica Shift (por ejemplo, punto y coma -> dos puntos). */
             atmturbo2plus_keyboard_code=characters[key];
+        }
         if (atmturbo2plus_keyboard_code) return;
     }
 }
 
-/* Extrae un código del 8031 y conserva el último para el comando #49. */
+/* Extrae un código del 8031 y conserva el último para el comando #09. */
 static z80_byte atmturbo2plus_get_keyboard_code(void)
 {
     z80_byte code=atmturbo2plus_keyboard_code;
@@ -301,16 +320,33 @@ static z80_byte atmturbo2plus_clock(int command,int selector,int value,int writi
     time_t now=time(NULL);
     time_t current=now+atmturbo2plus_clock_offset;
     struct tm *local=localtime(&current);
-    if (!local || selector>2) return 0xff;
+    if (!local) return 0xff;
     struct tm date=*local;
-    int *field;
-    if (command==0x10 || command==0x11)
-        field=selector==0 ? &date.tm_sec : (selector==1 ? &date.tm_min : &date.tm_hour);
-    else field=selector==0 ? &date.tm_mday : (selector==1 ? &date.tm_mon : &date.tm_year);
-    /* tm_mon comienza en cero; el protocolo devuelve meses de 1 a 12. */
-    int month=command>=0x12 && selector==1;
-    if (!writing) return *field+month;
-    *field=value-month;
+    int year=date.tm_year+1900;
+    int time_command=command==0x10 || command==0x11;
+    if (time_command && selector==3) {
+        /* El cuarto campo de hora cuenta días desde el encendido, no el día del mes. */
+        int days=(now-atmturbo2plus_clock_start)/86400;
+        if (writing) atmturbo2plus_clock_start+=(time_t)((days&255)-value)*86400;
+        return writing ? 0xff : (days&255);
+    }
+    if (!writing) {
+        if (time_command) return selector==0 ? date.tm_sec :
+            (selector==1 ? date.tm_min : date.tm_hour);
+        return selector==0 ? date.tm_mday : (selector==1 ? date.tm_mon+1 :
+               (selector==2 ? year%100 : year/100));
+    }
+    if (time_command) {
+        if (selector==0) date.tm_sec=value;
+        else if (selector==1) date.tm_min=value;
+        else date.tm_hour=value;
+    }
+    else {
+        if (selector==0) date.tm_mday=value;
+        else if (selector==1) date.tm_mon=value-1;
+        else if (selector==2) date.tm_year=(year/100)*100+value-1900;
+        else date.tm_year=value*100+year%100-1900;
+    }
     date.tm_isdst=-1;
     time_t adjusted=mktime(&date);
     if (adjusted!=(time_t)-1) atmturbo2plus_clock_offset=adjusted-now;
@@ -346,14 +382,16 @@ z80_byte atmturbo2plus_read_port_fe(z80_int port,z80_byte value)
             case 7:
                 atmturbo2plus_keyboard_code=atmturbo2plus_keyboard_last=0;
                 atmturbo2plus_keyboard_flags=0;
+                atmturbo2plus_right_shift=atmturbo2plus_left_shift=0;
                 return 0xff;
             case 8: case 0x11: case 0x13: case 0x14: case 0x15:
                 atmturbo2plus_keyboard_phase=2;
                 return 0xff;
             case 9:
-                if (selector==0) return atmturbo2plus_get_keyboard_code();
-                if (selector==1) return atmturbo2plus_keyboard_last;
-                return selector==2 ? atmturbo2plus_keyboard_flags : 0;
+                if (selector<2 && zxvision_key_not_sent_emulated_mach()) return 0;
+                if (selector==0) return atmturbo2plus_keyboard_last;
+                if (selector==1) return atmturbo2plus_get_keyboard_code();
+                return selector==2 ? atmturbo2plus_keyboard_flags : atmturbo2plus_right_shift;
             case 0x0a: atmturbo2plus_keyboard_flags|=0x80; return 0xff;
             case 0x0b: atmturbo2plus_keyboard_flags&=0x7f; return 0xff;
             case 0x0d: reset_cpu(); return 0xff;
@@ -369,7 +407,8 @@ z80_byte atmturbo2plus_read_port_fe(z80_int port,z80_byte value)
     }
     if (!atmturbo2plus_keyboard_mode) return value;
     if (atmturbo2plus_keyboard_mode==2 && selector)
-        return selector==1 ? atmturbo2plus_keyboard_flags : 0;
+        return selector==1 ? atmturbo2plus_keyboard_flags :
+               (selector==2 ? atmturbo2plus_right_shift : 0);
     return atmturbo2plus_get_keyboard_code();
 }
 
@@ -401,6 +440,7 @@ z80_byte atmturbo2_ide_read_port(z80_int port)
     int reg=(port>>5)&7;
     z80_byte value=ide_read_command_block_register(reg);
     if (!reg) atmturbo2_ide_read_high=ide_read_command_block_register(0);
+    if (reg==7) atmturbo2_ide_irq=0;
     return value;
 }
 
@@ -413,8 +453,22 @@ void atmturbo2_ide_write_port(z80_int port,z80_byte value)
         return;
     }
     int reg=(port>>5)&7;
+    z80_byte previous_status=ide_status_register;
     ide_write_command_block_register(reg,value);
     if (!reg) ide_write_command_block_register(0,atmturbo2_ide_write_high);
+    /* Los comandos de lectura señalan datos disponibles; las escrituras,
+       final de sector. BUSY=7, DRQ=3 según el registro de estado ATA. */
+    if (reg==7) atmturbo2_ide_irq=0;
+    if (!(ide_status_register&0x80) &&
+        ((reg==7 && value!=0x30 && value!=0x31) ||
+         (reg==0 && (previous_status&8) && !(ide_status_register&8))))
+        atmturbo2_ide_irq=1;
+}
+
+/* #7FFD es abierto: D6=WIRQ IDE y D7=ADCS; el ADC sin conversión está listo. */
+z80_byte atmturbo2plus_read_device_status(void)
+{
+    return 0x3f|((ide_enabled.v && ide_atm_enabled.v && atmturbo2_ide_irq) ? 0x40 : 0);
 }
 
 /* Ajusta la duración del cuadro de ATM2 según el bit RG0 del modo de vídeo. */
@@ -468,6 +522,7 @@ void atmturbo2_out_port_fe(z80_int port,z80_byte value)
 /* Cambia el color del índice seleccionado con los bits RGB de #FF. */
 void atmturbo2_out_port_ff(z80_int port,z80_byte value)
 {
+    int index=atmturbo_palette_index_at_beam();
     int colour=value^0xff;
     int red=((colour&2) ? 2 : 0)|((colour&0x40) ? 1 : 0);
     int green=((colour&0x10) ? 2 : 0)|((colour&0x80) ? 1 : 0);
@@ -480,11 +535,11 @@ void atmturbo2_out_port_ff(z80_int port,z80_byte value)
         red=(red<<2)|((address>>8)&2)|((address>>14)&1);
         green=(green<<2)|((address>>11)&2)|((address>>15)&1);
         blue=(blue<<2)|((address>>7)&2)|((address>>13)&1);
-        atmturbo_palette[atmturbo_border_colour]=
+        atmturbo_palette[index]=
             PRISM_INDEX_FIRST_COLOR+(red<<8)+(green<<4)+blue;
     }
     else {
-        atmturbo_palette[atmturbo_border_colour]=
+        atmturbo_palette[index]=
             SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
     }
     modificado_border.v=1;
@@ -598,7 +653,7 @@ void atmturbo_out_port_7dfd(z80_byte value)
     int green=((color & 4) ? 2 : 0) | ((color & 0x20) ? 1 : 0);
     int blue=((color & 1) ? 2 : 0) | ((color & 8) ? 1 : 0);
     int palette_colour=SPECTRA_INDEX_FIRST_COLOR+green*16+red*4+blue;
-    atmturbo_palette[atmturbo_border_colour]=palette_colour;
+    atmturbo_palette[atmturbo_palette_index_at_beam()]=palette_colour;
     modificado_border.v=1;
 }
 
@@ -623,14 +678,15 @@ void atmturbo_fdc_write_port(z80_int port,z80_byte value)
 z80_byte fetch_opcode_atmturbo(void)
 {
     if (MACHINE_IS_ATM_TURBO2_FAMILY) {
-        /* El fetch en #3Dxx activa TR-DOS y salir de la ROM lo desactiva. */
-        if (atmturbo_trdos_active && reg_pc>=0x4000) {
+        /* Con ROM2=1, los alias #3Dxx/#7Dxx/#BDxx/#FDxx activan DOS
+           si esa ventana contiene ROM. Un fetch en cualquier RAM lo cierra. */
+        if (atmturbo_trdos_active && atmturbo2_segment_ram[reg_pc>>14]) {
             atmturbo_trdos_active=0;
             atmturbo2_refresh_memory();
         }
         else if (!atmturbo_trdos_active && (puerto_32765&16) &&
-                 !atmturbo2_segment_ram[0] &&
-                 (reg_pc&0xff00)==0x3d00) {
+                 !atmturbo2_segment_ram[reg_pc>>14] &&
+                 (reg_pc&0x3f00)==0x3d00) {
             atmturbo_trdos_active=1;
             atmturbo2_refresh_memory();
         }
@@ -691,6 +747,8 @@ void atmturbo_set_normal_pages(void)
 /* Reserva las páginas ATM y carga la ROM de caracteres usada por ATM2. */
 void atmturbo_malloc_mem_machine(void)
 {
+    atmturbo2plus_clock_start=time(NULL);
+    atmturbo2plus_clock_offset=0;
 
 
     int total_ram=(ATM_TURBO_MAX_ROM_SIZE+ATM_TURBO_MAX_RAM_SIZE)*1024;
@@ -798,6 +856,8 @@ void atmturbo_reset(void)
         atmturbo2plus_keyboard_disabled=0;
         atmturbo2plus_int_enabled=0;
         atmturbo2_ide_read_high=atmturbo2_ide_write_high=0xff;
+        atmturbo2_ide_irq=0;
+        atmturbo2plus_right_shift=atmturbo2plus_left_shift=0;
         for (i=0;i<8;i++) atmturbo2_xt_rows[i]=0xff;
         atmturbo2_xt_data=0xff;
         atmturbo2_xt_reads=0;
@@ -1087,7 +1147,7 @@ char *atmturbo_get_video_mode_string(void)
 }
 
 /* Lee un píxel de los modos gráficos 320x200 o 640x200 de ATM1 y ATM2. */
-static int atmturbo_get_graphics_colour(int x,int y,int mode)
+static int atmturbo_get_graphics_colour(int x,int y,int mode,int raw)
 {
     int base=(puerto_32765 & 8) ? 7 : 5;
     z80_byte *pixels=atmturbo_ram_mem_table[base];
@@ -1113,11 +1173,11 @@ static int atmturbo_get_graphics_colour(int x,int y,int mode)
                : ((attribute & 0x80)>>4)|((attribute>>3)&7);
     }
 
-    return atmturbo_palette[colour];
+    return raw ? colour : atmturbo_palette[colour];
 }
 
 /* Lee un píxel del modo de texto de 80 columnas de ATM2. */
-static int atmturbo2_get_text_colour(int x,int y)
+static int atmturbo2_get_text_colour(int x,int y,int raw)
 {
     int page=(puerto_32765&8) ? 7 : 5;
     int column=x>>3;
@@ -1136,12 +1196,12 @@ static int atmturbo2_get_text_colour(int x,int y)
     }
     ink=(attribute&7)|((attribute&0x40)>>3);
     paper=((attribute>>3)&7)|((attribute&0x80)>>4);
-    return atmturbo_palette[(atmturbo2_text_font[character*8+(y&7)] &
-                            (0x80>>(x&7))) ? ink : paper];
+    int colour=(atmturbo2_text_font[character*8+(y&7)] & (0x80>>(x&7))) ? ink : paper;
+    return raw ? colour : atmturbo_palette[colour];
 }
 
 /* Obtiene el píxel del modo Spectrum para la línea de vídeo actual. */
-static int atmturbo_get_standard_colour(int x,int y)
+static int atmturbo_get_standard_colour(int x,int y,int raw)
 {
     z80_byte *screen=get_base_mem_pantalla();
     int column=x>>3;
@@ -1149,8 +1209,8 @@ static int atmturbo_get_standard_colour(int x,int y)
     int pixels=screen[screen_addr_table[y<<5]+column];
     int ink,paper;
 
-    if (scr_refresca_sin_colores.v) attribute=56;
-    else if (scr_refresca_show_attribute_grid.v)
+    if (!raw && scr_refresca_sin_colores.v) attribute=56;
+    else if (!raw && scr_refresca_show_attribute_grid.v)
         attribute=56+((((y>>3)+column)&1) ? 64 : 0);
 
     ink=(attribute&7)+((attribute&64) ? 8 : 0);
@@ -1160,7 +1220,36 @@ static int atmturbo_get_standard_colour(int x,int y)
         ink=paper;
         paper=aux;
     }
-    return atmturbo_palette[(pixels&(0x80>>(x&7))) ? ink : paper];
+    int colour=(pixels&(0x80>>(x&7))) ? ink : paper;
+    return raw ? colour : atmturbo_palette[colour];
+}
+
+/* Selecciona la entrada que el vídeo presenta al DAC en el instante del OUT.
+   La posición se calcula aunque el usuario tenga desactivado realvideo. */
+static int atmturbo_palette_index_at_beam(void)
+{
+    int standard=atmturbo_video_mode==3;
+    int height=standard ? 192 : 200;
+    int frame=t_estados%screen_testados_total;
+    int y=frame/screen_testados_linea-screen_indice_inicio_pant;
+    int t=(frame%screen_testados_linea)/cpu_turbo_speed;
+    /* El contador horizontal del core empieza en el display, no en el
+       borde izquierdo. El modo ampliado empieza 16 T antes: su extremo
+       izquierdo pertenece al final de la línea temporal anterior. */
+    int start=standard ? 0 : -16;
+    int duration=standard ? 128 : 160;
+    if (!standard && t>=screen_testados_linea/cpu_turbo_speed-16) {
+        t-=screen_testados_linea/cpu_turbo_speed;
+        y++;
+    }
+    if (y<0 || y>=height || t<start || t>=start+duration)
+        return atmturbo_border_colour;
+    int x=(t-start)*(standard || atmturbo_video_mode==0 ? 2 : 4);
+    if (standard) return atmturbo_get_standard_colour(x,y,1);
+    if (MACHINE_IS_ATM_TURBO2_FAMILY && atmturbo_video_mode==6)
+        return atmturbo2_get_text_colour(x,y,1);
+    if (MACHINE_IS_ATM_TURBO1 && atmturbo_video_mode==2) return atmturbo_border_colour;
+    return atmturbo_get_graphics_colour(x,y,atmturbo_video_mode,1);
 }
 
 /* Dibuja el borde de una línea en vídeo real y conserva su color final. */
@@ -1252,11 +1341,11 @@ void atmturbo_store_scanline_rainbow_display(void)
     }
 
     for (x=0;x<width;x++) {
-        int colour=standard ? atmturbo_get_standard_colour(x,active_y) :
+        int colour=standard ? atmturbo_get_standard_colour(x,active_y,0) :
             (MACHINE_IS_ATM_TURBO2_FAMILY && atmturbo_video_mode==6 ?
-             atmturbo2_get_text_colour(x,active_y) :
+             atmturbo2_get_text_colour(x,active_y,0) :
              (MACHINE_IS_ATM_TURBO1 && atmturbo_video_mode==2 ? 0 :
-              atmturbo_get_graphics_colour(x,active_y,atmturbo_video_mode)));
+              atmturbo_get_graphics_colour(x,active_y,atmturbo_video_mode,0)));
         int output_x=offset_x+x*scale_x;
         for (duplicate=0;duplicate<2;duplicate++) {
             z80_int *pixel=&rainbow_buffer[(output_y+duplicate)*total_width+output_x];
@@ -1358,9 +1447,9 @@ void atmturbo_refresca_pantalla(void)
             for (y=0;y<200;y++) {
                 for (x=0;x<width;x++) {
                 int colour=(MACHINE_IS_ATM_TURBO2_FAMILY && atmturbo_video_mode==6) ?
-                    atmturbo2_get_text_colour(x,y) :
+                    atmturbo2_get_text_colour(x,y,0) :
                     (MACHINE_IS_ATM_TURBO1 && atmturbo_video_mode==2 ? 0 :
-                     atmturbo_get_graphics_colour(x,y,atmturbo_video_mode));
+                     atmturbo_get_graphics_colour(x,y,atmturbo_video_mode,0));
                     atmturbo_putpixel_scaled(x,y,colour,scale_x,2,0,0);
                 }
             }
