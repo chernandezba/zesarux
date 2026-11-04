@@ -42,6 +42,7 @@
 #include "menu_items_storage.h"
 #include "settings.h"
 #include "timer.h"
+#include "menu_filesel.h"
 
 
 z80_bit betadisk_enabled={0};
@@ -430,15 +431,44 @@ z80_byte *trd_memory_pointer;
 int betadisk_bytes_por_sector=256;
 int betadisk_sectores_por_pista=16;
 
+static int opening_trd_from_scl=0;
 
 void trd_insert(void)
 {
 
+    opening_trd_from_scl=0;
+
+    char *disk_file=trd_file_name;
+
     //Si existe
-    if (!si_existe_archivo(trd_file_name)) {
-            debug_printf (VERBOSE_ERR,"File %s does not exist",trd_file_name);
+    if (!si_existe_archivo(disk_file)) {
+            debug_printf (VERBOSE_ERR,"File %s does not exist",disk_file);
             trd_disable();
             return;
+    }
+
+    //Para conversion de scl a trd
+    char tmpdir[PATH_MAX];
+    char nombre_sin_dir[PATH_MAX];
+    char nombre_trd[PATH_MAX];
+
+
+    //Si es scl, extraer el trd que se obtiene del scl e insertar el trd
+    if (!util_compare_file_extension(disk_file,"scl")) {
+
+        opening_trd_from_scl=1;
+
+        util_get_file_no_directory(disk_file,nombre_sin_dir);
+
+
+        sprintf(tmpdir,"%s/%s",get_tmpdir_base(),nombre_sin_dir);
+        menu_filesel_mkdir(tmpdir);
+
+        util_extract_scl(disk_file,tmpdir,nombre_trd);
+
+        //Y se usara el trd extraido
+        disk_file=nombre_trd;
+
     }
 
 
@@ -450,8 +480,8 @@ void trd_insert(void)
     }
 
     FILE *ptr_trdfile;
-	debug_printf (VERBOSE_INFO,"Opening TRD File %s",trd_file_name);
-	ptr_trdfile=fopen(trd_file_name,"rb");
+	debug_printf (VERBOSE_INFO,"Opening TRD File %s",disk_file);
+	ptr_trdfile=fopen(disk_file,"rb");
 
     if (!ptr_trdfile) {
             debug_printf (VERBOSE_ERR,"Unable to open trd file");
@@ -777,6 +807,11 @@ void trd_flush_contents_to_disk(void)
 
 
         debug_printf (VERBOSE_INFO,"Flushing TRD to disk");
+
+        if (opening_trd_from_scl) {
+            debug_printf (VERBOSE_DEBUG,"Saving to SCL file is not allowed");
+            return;
+        }
 
 
         FILE *ptr_trdfile;

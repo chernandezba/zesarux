@@ -10721,10 +10721,11 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
     trd_disable();
 
-        char *filtros[2];
+        char *filtros[3];
 
         filtros[0]="trd";
-        filtros[1]=0;
+        filtros[1]="scl";
+        filtros[2]=0;
 
         //guardamos directorio actual
         char directorio_actual[PATH_MAX];
@@ -10819,12 +10820,12 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,
-            "~~TRD File","Archivo ~~TRD","Arxiu ~~TRD");
+            "~~TRD/SCL File","Archivo ~~TRD/SCL","Arxiu ~~TRD/SCL");
         menu_add_item_menu_sufijo_format(array_menu_betadisk," [%s]",string_trd_file_shown);
         menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_shortcut(array_menu_betadisk,'t');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
+        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD/SCL Emulation file");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD/SCL Emulation file");
         menu_add_item_menu_add_flags(array_menu_betadisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
@@ -10850,7 +10851,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_betadisk,"Tells if TRD writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Tells if TRD writes are saved to disk. "
         "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
-        "tells if these changes are written to disk or not."
+        "tells if these changes are written to disk or not. Saving to SCL is not supported yet"
         );
 
 
