@@ -6548,18 +6548,6 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
             }
 
-            //Se llega a siguiente linea
-            if (indice_border==inicio_retrace_horiz) {
-                //y++;
-                //En caso de tbblue hay que saltar una linea mas en buffer rainbow, ya que hacemos doble de alto
-
-                //Creo que esto sobra directamente
-                if (MACHINE_IS_TBBLUE) {
-                    //printf("salto\n");
-                    //puntero_buf_rainbow +=ancho_rainbow;
-                }
-            }
-
 
         }
 
