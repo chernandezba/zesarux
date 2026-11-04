@@ -10748,7 +10748,7 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
         }
 
 
-        int ret=menu_filesel("Select TRD File",filtros,trd_file_name);
+        int ret=menu_filesel("Select TRD/SCL File",filtros,trd_file_name);
         //volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 

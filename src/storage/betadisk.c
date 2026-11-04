@@ -809,7 +809,7 @@ void trd_flush_contents_to_disk(void)
         debug_printf (VERBOSE_INFO,"Flushing TRD to disk");
 
         if (opening_trd_from_scl) {
-            debug_printf (VERBOSE_DEBUG,"Saving to SCL file is not allowed");
+            debug_printf (VERBOSE_DEBUG,"Saving to SCL file is NOT allowed");
             return;
         }
 

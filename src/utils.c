@@ -7151,6 +7151,8 @@ int quickload_continue(char *nombre) {
         if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON && !MACHINE_IS_ATM_TURBO) betadisk_enable();
 
         //Si es scl, extraer el trd que se obtiene del scl e insertar el trd
+        //Esto ya no hace falta pues ya permite insertar scl
+        /*
         if (!util_compare_file_extension(nombre,"scl")) {
             char nombre_sin_dir[PATH_MAX];
             util_get_file_no_directory(nombre,nombre_sin_dir);
@@ -7170,6 +7172,10 @@ int quickload_continue(char *nombre) {
         else {
             trd_insert_disk(nombre);
         }
+
+        */
+
+        trd_insert_disk(nombre);
 
 
         return 0;
