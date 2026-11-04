@@ -607,35 +607,9 @@ extern void send_text_as_keystrokes_get_key_turbo_rst_repeat(void);
 extern void set_poke_byte_function_writerom(void);
 extern void reset_poke_byte_function_writerom(void);
 
-/*
-Lista fabricantes
-Amstrad
-Ascii Corp
-Cambridge Computers
-Chloe Corporation
-Coleco Industries
-Czerweny Electronica
-Investronica
-Jupiter Cantab
-Mario Prato
-Microdigital Eletronica
-Miles Gordon Technology
-NedoPC
-New Horizons
-Pentagon
-Science of Cambridge
-Scorpion
-Sega
-Sinclair Research
-Spectravideo Intl
-Timex Computers
-Timex Sinclair
-TS Labs
-VTrucco/FB Labs
-ZXUno Team
-*/
 
-#define TOTAL_FABRICANTES 26
+
+#define TOTAL_FABRICANTES 27
 
 //Deben estar en mismo orden alfabetico siempre, por ejemplo en array_fabricantes lo mismo que aqui
 #define FABRICANTE_AMSTRAD                      0
@@ -663,7 +637,8 @@ ZXUno Team
 #define FABRICANTE_TIMEX_COMPUTERS              22
 #define FABRICANTE_TIMEX_SINCLAIR               23
 #define FABRICANTE_TSLABS                       24
-#define FABRICANTE_ZXUNO_TEAM                   25
+#define FABRICANTE_ZOREL                        25
+#define FABRICANTE_ZXUNO_TEAM                   26
 
 
 

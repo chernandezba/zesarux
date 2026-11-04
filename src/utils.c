@@ -787,7 +787,7 @@ struct s_machines_info machines_info[]={
     {"ATM Turbo 1",		                MACHINE_ID_ATM_TURBO1,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
     {"ATM Turbo 2",		                MACHINE_ID_ATM_TURBO2,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
     {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
-    {"ATM Turbo 3",		                MACHINE_ID_ATM_TURBO3,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
+    {"ATM Turbo 3",		                MACHINE_ID_ATM_TURBO3,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ZOREL},
 
 
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
@@ -847,9 +847,9 @@ struct s_machines_info machines_info[]={
 
 };
 
-#define TOTAL_FABRICANTES_HOYKEY 26
 
-char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
+
+char *array_fabricantes_hotkey[TOTAL_FABRICANTES]={
         "~~Amstrad",
         "Ascii C~~orp",
         "ATM & MicroART",
@@ -875,11 +875,12 @@ char *array_fabricantes_hotkey[TOTAL_FABRICANTES_HOYKEY]={
         "Timex Computer",
         "~~Timex Sinclair",
         "TS ~~Labs",
+        "Zorel",
         "~~ZXUno Team"
 };
 
 //Si letra es espacio->no hay letra. spectravideo o timex computer o scorpion no hay letras libres
-char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES_HOYKEY+1]="ao bcd kiur myewxn gs  tlz";
+char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES+1]="ao bcd kiur myewxn gs  tl z";
 
 
 //Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
