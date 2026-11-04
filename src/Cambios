@@ -128,6 +128,7 @@ Corregido al dibujar última linea de forma de onda en ventana View Waveform
 Corregido al pulsar un botón superior redefinido con parámetros adicionales
 Corregida decodificación de paleta de ULA+ en TBBlue. Gracias Ignacio Monge
 Corregido copia-pega y comandos ZRCP send-ascii* en Amstrad CPC
+Corregido posible segfault en máquinas Spectrum al definir mas de 128KB de RAM
 
 ----
 
