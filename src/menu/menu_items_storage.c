@@ -10721,38 +10721,38 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
     trd_disable();
 
-        char *filtros[3];
+    char *filtros[3];
 
-        filtros[0]="trd";
-        filtros[1]="scl";
-        filtros[2]=0;
+    filtros[0]="trd";
+    filtros[1]="scl";
+    filtros[2]=0;
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-              //Obtenemos directorio de trd
-        //si no hay directorio, vamos a rutas predefinidas
-        if (trd_file_name[0]==0) menu_chdir_sharedfiles();
+    //Obtenemos directorio de trd
+    //si no hay directorio, vamos a rutas predefinidas
+    if (trd_file_name[0]==0) menu_chdir_sharedfiles();
 
-        else {
-                char directorio[PATH_MAX];
-                util_get_dir(trd_file_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(trd_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
         }
+    }
 
 
-        int ret=menu_filesel("Select TRD/SCL File",filtros,trd_file_name);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    int ret=menu_filesel("Select TRD/SCL File",filtros,trd_file_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-        if (ret==1) {
+    if (ret==1) {
         if (!si_existe_archivo(trd_file_name)) {
 
             if (!util_compare_file_extension(trd_file_name,"scl")) {
@@ -10762,26 +10762,26 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
             }
 
             if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-                                trd_file_name[0]=0;
-                                return;
-                        }
+                trd_file_name[0]=0;
+                return;
+            }
 
 
             //Crear archivo vacio
-                FILE *ptr_trdfile;
+            FILE *ptr_trdfile;
             ptr_trdfile=fopen(trd_file_name,"wb");
 
-                long long int totalsize=640*1024;
+            long long int totalsize=640*1024;
 
             z80_byte valor_grabar=0;
 
-                if (ptr_trdfile!=NULL) {
+            if (ptr_trdfile!=NULL) {
                 while (totalsize) {
                     fwrite(&valor_grabar,1,1,ptr_trdfile);
                     totalsize--;
                 }
-                        fclose(ptr_trdfile);
-                }
+                fclose(ptr_trdfile);
+            }
 
         }
 
@@ -10789,14 +10789,15 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
 
 
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                trd_file_name[0]=0;
+    }
+
+    //Sale con ESC
+    else {
+            //Quitar nombre
+            trd_file_name[0]=0;
 
 
-        }
+    }
 }
 
 
