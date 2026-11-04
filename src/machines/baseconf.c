@@ -1014,14 +1014,17 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
     int vpage=(puerto_32765&8) ? 7 : 5;
     z80_byte *screen=baseconf_ram_mem_table[vpage];
 
-    /* En modo hardware multicolor cada byte del bitmap también
-        proporciona el atributo para ese mismo grupo de 8 píxeles. */
+    /* El atributo de cada grupo 8x1 está 8 KB después del bitmap,
+       con la misma disposición no lineal. BRIGHT (bit 6) es común
+       a INK y PAPER, como en los atributos Spectrum. */
     for (y=0;y<192;y++) {
         int adr_line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
         for (x=0;x<256;x++) {
-            z80_byte value=screen[adr_line+(x>>3)];
-            z80_byte ink=(value&7) | ((value&0x40)>>3);
-            z80_byte paper=(value&0x78)>>3;
+            int adr=adr_line+(x>>3);
+            z80_byte value=screen[adr];
+            z80_byte attr=screen[adr+0x2000];
+            z80_byte ink=(attr&7) | ((attr&0x40)>>3);
+            z80_byte paper=(attr&0x78)>>3;
             //printf("%d %d\n",ink,paper);
             baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
                     (value&(0x80>>(x&7))) ? ink : paper),2,2,64,8);
@@ -1108,8 +1111,9 @@ static z80_int baseconf_get_scanline_pixel(z80_byte mode,int x,int y)
     case 0x23: {
         int adr=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2) | (x>>3);
         value=baseconf_ram_mem_table[vpage][adr];
-        ink=(value&7) | ((value&0x40)>>3);
-        paper=(value&0x78)>>3;
+        attr=baseconf_ram_mem_table[vpage][adr+0x2000];
+        ink=(attr&7) | ((attr&0x40)>>3);
+        paper=(attr&0x78)>>3;
         return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
     }
 
