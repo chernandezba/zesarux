@@ -646,7 +646,16 @@ void mem_page_ram_128k(void)
         //asignar ram
 	memory_paged[3]=ram_mem_table[ramentra];
 
-	contend_pages_actual[3]=contend_pages_128k_p2a[ramentra];
+    if (ramentra>7) {
+        //Sin contienda con paginas mas alla de la 7
+        contend_pages_actual[3]=0;
+    }
+
+    else {
+	    contend_pages_actual[3]=contend_pages_128k_p2a[ramentra];
+    }
+
+
 	debug_paginas_memoria_mapeadas[3]=ramentra;
 
 
