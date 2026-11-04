@@ -10754,6 +10754,13 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
         if (ret==1) {
         if (!si_existe_archivo(trd_file_name)) {
+
+            if (!util_compare_file_extension(trd_file_name,"scl")) {
+                menu_error_message("Can not create new SCL file");
+                trd_file_name[0]=0;
+                return;
+            }
+
             if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
                                 trd_file_name[0]=0;
                                 return;
