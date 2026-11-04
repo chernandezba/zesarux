@@ -100,6 +100,7 @@ extern z80_byte atmturbo2_ide_read_port(z80_int port);
 extern void atmturbo2_ide_write_port(z80_int port,z80_byte value);
 extern int atmturbo2plus_interrupts_enabled(void);
 extern z80_byte atmturbo2_read_keyboard_status(void);
+extern void atmturbo2_cursor_event(int direction,int pressed);
 extern z80_byte atmturbo2_read_keyboard_data(void);
 extern void atmturbo2_update_timing(void);
 extern void atmturbo_out_port_7dfd(z80_byte value);

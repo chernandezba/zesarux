@@ -9524,6 +9524,14 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
             baseconf_ps2_function_event(tecla-UTIL_KEY_F1+1,pressrelease);
     }
 
+    /* ATM recibe las flechas como teclas XT independientes de la matriz ZX. */
+    if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+        if (tecla==UTIL_KEY_LEFT) atmturbo2_cursor_event(0,pressrelease);
+        if (tecla==UTIL_KEY_RIGHT) atmturbo2_cursor_event(1,pressrelease);
+        if (tecla==UTIL_KEY_DOWN) atmturbo2_cursor_event(2,pressrelease);
+        if (tecla==UTIL_KEY_UP) atmturbo2_cursor_event(3,pressrelease);
+    }
+
     switch (tecla) {
         case UTIL_KEY_SPACE:
         case 32:

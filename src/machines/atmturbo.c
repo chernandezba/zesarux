@@ -117,6 +117,10 @@ static z80_byte atmturbo2_xt_codes[8][5];
 static z80_byte atmturbo2_xt_data;
 /* Lecturas pendientes del código: la BIOS lee el receptor dos veces por evento. */
 static int atmturbo2_xt_reads;
+/* Cola de pulsaciones y liberaciones de los cuatro cursores del anfitrión. */
+static z80_byte atmturbo2_cursor_fifo[32];
+/* Posición de lectura y número de eventos de cursor pendientes. */
+static int atmturbo2_cursor_read,atmturbo2_cursor_count;
 /* Modo del controlador 8031: matriz, código CP/M, CP/M con flags o XT directo. */
 static z80_byte atmturbo2plus_keyboard_mode;
 /* Fase de recepción por #FE: 0 normal, 1 comando, 2 argumento. */
@@ -146,6 +150,17 @@ z80_int atm_get_palette_entry(z80_byte indice)
     return atmturbo_palette[indice&15];
 }
 
+/* Encola un cursor XT: 0 izquierda, 1 derecha, 2 abajo y 3 arriba. */
+void atmturbo2_cursor_event(int direction,int pressed)
+{
+    static const z80_byte codes[4]={0x4b,0x4d,0x50,0x48};
+    if (direction<0 || direction>3 || zxvision_key_not_sent_emulated_mach()) return;
+    if (atmturbo2_cursor_count==(int)sizeof(atmturbo2_cursor_fifo)) return;
+    int index=(atmturbo2_cursor_read+atmturbo2_cursor_count)%sizeof(atmturbo2_cursor_fifo);
+    atmturbo2_cursor_fifo[index]=codes[direction]|(pressed ? 0 : 0x80);
+    atmturbo2_cursor_count++;
+}
+
 /* Consulta la matriz y retiene un cambio hasta que CP/M recoge su código XT. */
 z80_byte atmturbo2_read_keyboard_status(void)
 {
@@ -169,6 +184,18 @@ z80_byte atmturbo2_read_keyboard_status(void)
     int colon=!(rows[7]&2) && !(rows[0]&2);
     int row,bit,phase;
     if (atmturbo2_xt_reads) return 0xff;
+    if (atmturbo2_cursor_count) {
+        z80_byte code=atmturbo2_cursor_fifo[atmturbo2_cursor_read];
+        atmturbo2_cursor_read=(atmturbo2_cursor_read+1)%sizeof(atmturbo2_cursor_fifo);
+        atmturbo2_cursor_count--;
+        atmturbo2_xt_data=0;
+        for (int i=0;i<8;i++) {
+            atmturbo2_xt_data=(atmturbo2_xt_data<<1)|(code&1);
+            code>>=1;
+        }
+        atmturbo2_xt_reads=2;
+        return 0xff;
+    }
     /* Symbol Shift+Z produce dos puntos: Shift y punto y coma del teclado XT.
        En esta combinación Symbol Shift no debe generar Control. */
     if (colon) {
@@ -248,6 +275,11 @@ static void atmturbo2plus_poll_keyboard(void)
             else atmturbo2plus_keyboard_flags|=flag;
         }
         if (atmturbo2plus_keyboard_mode==3) atmturbo2plus_keyboard_code=scan;
+        else if (!released && (key==0x48 || key==0x4b || key==0x4d || key==0x50)) {
+            /* Códigos de cursor del protocolo CP/M del 8031, con Num Lock desactivado. */
+            atmturbo2plus_keyboard_code=key==0x48 ? 0x70 :
+                (key==0x50 ? 0x71 : (key==0x4b ? 0x72 : 0x73));
+        }
         else if (!released && key<(int)sizeof(characters))
             atmturbo2plus_keyboard_code=characters[key];
         if (atmturbo2plus_keyboard_code) return;
@@ -769,6 +801,7 @@ void atmturbo_reset(void)
         for (i=0;i<8;i++) atmturbo2_xt_rows[i]=0xff;
         atmturbo2_xt_data=0xff;
         atmturbo2_xt_reads=0;
+        atmturbo2_cursor_read=atmturbo2_cursor_count=0;
         puerto_32765=0;
         atmturbo2_port_77=0;
         for (i=0;i<8;i++) atmturbo2_mmu[i]=0;
