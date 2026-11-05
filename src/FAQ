@@ -863,6 +863,18 @@ A: Choose the method that matches where your files are stored:
 Q: What is FAT Boot on the EVO Reset Service?
 A: It's used to load Hobeta files, you can find an example on the mmc card called "TEST.$C"
 
+Q: What is HDD Boot on the EVO Reset Service?
+A: It's used to load IDE disk images, like iS-DOS/TASiS 
+
+----------------------------------------------------------------------------
+
+
+ATM Turbo
+---------
+
+Q: On ATM2/3, what does the option "IDE Hard drive master" on Bios or the "HDD Boot" on Spectrum menu do?
+A: You can boot operating systems from IDE, for example Tasis/iS-DOS for ATM
+
 ----------------------------------------------------------------------------
 
 

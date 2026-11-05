@@ -13004,6 +13004,22 @@ void menu_storage_ide_browser(MENU_ITEM_PARAMETERS)
     menu_storage_mmc_ide_browser(ide_file_name);
 }
 
+void menu_storage_ide_set_sectors_per_track(MENU_ITEM_PARAMETERS)
+{
+
+    int valor_actual=ide_get_sectors_per_track();
+
+    menu_ventana_scanf_numero_enhanced_default("Sectors per track",&valor_actual,4,+1,0,255,0,0);
+
+    //0 le quita el override de sectores
+    ide_set_sectors_per_track(valor_actual);
+
+    /*ide_set_sectors_per_track(63);  // Fijar 63 sectores/pista
+    ide_get_sectors_per_track();   // Consultar valor efectivo
+    ide_set_sectors_per_track(0);  // Restaurar automático*/
+
+}
+
 //menu IDE/Divide
 void menu_ide_divide(MENU_ITEM_PARAMETERS)
 {
@@ -13063,7 +13079,13 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                                     "outside the emulator, and reload its contents without having to disable and enable IDE");
         }
 
-
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_set_sectors_per_track,NULL,
+            "Sectors per track","Sectores por pista","Sectors per pista");
+        menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%d]",ide_get_sectors_per_track());
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"Sets sectors per track");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"Sets sectors per track");
+        menu_add_item_menu_es_avanzado(array_menu_ide_divide);
 
 
         if (MACHINE_IS_SPECTRUM) {
