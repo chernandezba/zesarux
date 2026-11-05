@@ -7259,7 +7259,7 @@ char *bitmap_button_ext_desktop_my_machine_atmturbo1[EXT_DESKTOP_BUTTONS_ANCHO]=
     //01234567890123456789012345
     "                          ",     //0
     "                          ",
-    "  wwwwwwwwwwwwwwwwwwwww   ",
+    "  wwww      wwwwwwwwwww   ",
     " wwwwwwwwwwwwwwwwwwwwwww  ",
     " wwxwxwxwxwxwxwxwxwxwxww  ",
     " wwxwxwxwxwxwxwxwxwxwxww  ",
