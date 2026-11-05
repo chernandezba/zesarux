@@ -62,6 +62,11 @@ z80_byte ide_register_cylinder_high;
 z80_byte ide_register_drive_head;
 z80_byte ide_register_command;
 
+/* Número de sectores que quedan por transferir en una lectura múltiple ATM. */
+static int ide_atm_read_sectors_remaining=0;
+/* Desplazamiento en bytes del siguiente sector que se cargará en el búfer. */
+static unsigned int ide_atm_read_next_address=0;
+
 #define IDE_SECTOR_SIZE 512
 
 
@@ -87,6 +92,8 @@ Ver apartado 2.6 Capacity Specifications
 z80_long_int ide_disk_sectors_card=62720;
 int ide_disk_heads=4;
 int ide_disk_sectors_track=32;
+/* Cero conserva la geometría automática; otro valor fija los sectores por pista. */
+static int ide_disk_sectors_track_override=0;
 int ide_disk_cylinders=490;
 
 z80_byte *ide_memory_pointer;
@@ -311,6 +318,7 @@ void ide_reset(void)
     ide_write_sector_operation=0;
     ide_index_return_buffer=0;
     ide_index_write_buffer=0;
+    ide_atm_read_sectors_remaining=0;
 
 	//TODO resetear otros contadores a 0
 	ide_register_sector_number=1;
@@ -484,12 +492,35 @@ int ide_set_image_parameters(void)
                 break;
         }
 
+    if (ide_disk_sectors_track_override) {
+        ide_disk_sectors_track=ide_disk_sectors_track_override;
+        /* La capacidad real puede ser menor que la reserva normalizada de RAM. */
+        ide_disk_sectors_card=expected_read_ide_size/IDE_SECTOR_SIZE;
+        ide_disk_cylinders=ide_disk_sectors_card/(ide_disk_heads*ide_disk_sectors_track);
+    }
+
 	debug_printf (VERBOSE_INFO,"Card size: %ld MB Sectors in card: %d Heads: %d Sectors/track: %d Cylinders: %d",
 		ide_size/1024/1024,
 		ide_disk_sectors_card,ide_disk_heads,ide_disk_sectors_track,ide_disk_cylinders);
 
 
 	return 0;
+}
+
+/* Fija los sectores por pista para cualquier interfaz IDE y recalcula la
+   geometría. Cero restaura el cálculo automático. Devuelve 1 si no es válido.
+   La elección se conserva al insertar otra imagen y no escribe en el disco. */
+int ide_set_sectors_per_track(int sectors)
+{
+    if (sectors<0 || sectors>255) return 1;
+    ide_disk_sectors_track_override=sectors;
+    return ide_set_image_parameters();
+}
+
+/* Devuelve los sectores por pista efectivos, incluidos los del modo automático. */
+int ide_get_sectors_per_track(void)
+{
+    return ide_disk_sectors_track;
 }
 
 
@@ -802,6 +833,11 @@ void ide_write_command_register(z80_byte value)
 					ide_return_buffer[i]=ide_read_byte_memory(address++);
 				}
 
+                if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+                    ide_atm_read_sectors_remaining=ide_register_sector_count ? ide_register_sector_count : 256;
+                    ide_atm_read_next_address=address;
+                }
+
 
 		break;
 
@@ -943,6 +979,7 @@ void ide_write_command_block_register(z80_byte ide_register,z80_byte value)
 
 		case 7:
 			ide_register_command=value;
+            ide_atm_read_sectors_remaining=0;
 			ide_status_register=(IDE_STATUS_RDY|IDE_STATUS_DSC|IDE_STATUS_DRQ);
 			ide_index_return_buffer=0;
 			ide_write_command_register(value);
@@ -998,7 +1035,23 @@ z80_byte ide_read_command_block_register(z80_byte ide_register)
 			//Este registro realmente es de 16 bits pero en divide y 8-bit simple ide, lee 8 bits solamente
 
 			//Si ha leido ya IDE_SECTOR_SIZE, decir status normal
-			if (ide_index_return_buffer==IDE_SECTOR_SIZE) ide_status_register=(IDE_STATUS_RDY|IDE_STATUS_DSC);
+            if (ide_index_return_buffer==IDE_SECTOR_SIZE) {
+                ide_status_register=(IDE_STATUS_RDY|IDE_STATUS_DSC);
+                /* TASiS solicita varios sectores con un solo READ SECTORS y
+                   espera DRQ antes de cada bloque. Conservar el comportamiento
+                   previo en las interfaces de las demás máquinas. */
+                if (MACHINE_IS_ATM_TURBO2_FAMILY && ide_atm_read_sectors_remaining) {
+                    ide_atm_read_sectors_remaining--;
+                    ide_register_sector_count=ide_atm_read_sectors_remaining;
+                    if (ide_atm_read_sectors_remaining) {
+                        int i;
+                        for (i=0;i<IDE_SECTOR_SIZE;i++)
+                            ide_return_buffer[i]=ide_read_byte_memory(ide_atm_read_next_address++);
+                        ide_index_return_buffer=0;
+                        ide_status_register|=IDE_STATUS_DRQ;
+                    }
+                }
+            }
 
 		break;
 

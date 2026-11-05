@@ -44,6 +44,11 @@ extern z80_byte ide_read_command_block_register(z80_byte ide_register);
 
 extern void ide_reset(void);
 
+/* Sectores por pista: 1..255, o 0 para automático. Setter: 0=éxito, 1=error.
+   Getter: valor efectivo. La selección se mantiene al insertar otro disco. */
+extern int ide_set_sectors_per_track(int sectors);
+extern int ide_get_sectors_per_track(void);
+
 extern z80_bit eight_bit_simple_ide_enabled;
 
 extern z80_byte eight_bit_simple_ide_read(z80_byte port);
