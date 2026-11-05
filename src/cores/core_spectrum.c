@@ -783,7 +783,7 @@ void core_spectrum_handle_interrupts(void)
         iff1.v=0;
         //printf ("Calling NMI with pc=0x%x\n",reg_pc);
 
-        //Otros 6 estados
+        //Otros 6 estados. Ajuste de T-estados. TODO: no sé si es correcto
         t_estados += 6;
 
         //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
@@ -791,8 +791,8 @@ void core_spectrum_handle_interrupts(void)
 
         //printf ("generada nmi pc=%04XH\n",reg_pc);
 
-        //temp
 
+        //Ajuste de T-estados. TODO: no sé si es correcto
         t_estados -=15;
 
         if (superupgrade_enabled.v) {
@@ -802,6 +802,11 @@ void core_spectrum_handle_interrupts(void)
             puerto_8189=0;
             superupgrade_set_memory_pages();
         }
+
+        /*
+
+        Esto no tiene sentido, es codigo historico incorrecto
+
 
 
         //Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
@@ -831,7 +836,7 @@ void core_spectrum_handle_interrupts(void)
             }
         }
 
-
+        */
 
 
 

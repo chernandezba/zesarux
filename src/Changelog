@@ -129,6 +129,7 @@ Fixed pressing redefined top button with extra parameters
 Fixed ULA+ palette decoding on TBBlue. Thanks Ignacio Monge
 Fixed copy-paste and ZRCP commands send-ascii* for Amstrad CPC
 Fixed possible segfault on Spectrum machines when setting more than 128KB of RAM
+Fixed behaviour on nested NMI on Spectrum + DivMMC/DivIDE
 
 ----
 
