@@ -809,15 +809,15 @@ void core_spectrum_handle_interrupts(void)
             //Chapuza para el atic atac versión con sonido. Si ha saltado por nmi generada por registro 2, no cambiar mapeo actual
             //Esto sucede porque asumimos que todos los divmmc mapean en post, pero divmmc nmi desde tbblue puede mapear en pre
             //Si el bit 1 del registro BB esta activo
-            /*
-                0x02 (02) => Reset
-                bit 2 = Generate divmmc nmi (write zero to clear) **
 
-                0xBB (187) => Divmmc Entry Points 1
-                (R/W) (soft reset = 0xCD)
+            //    0x02 (02) => Reset
+            //    bit 2 = Generate divmmc nmi (write zero to clear) **
 
-                bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
-            */
+            //    0xBB (187) => Divmmc Entry Points 1
+            //    (R/W) (soft reset = 0xCD)
+
+            //   bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+
             if (MACHINE_IS_TBBLUE && (tbblue_registers[2]&4)) {
             //if (MACHINE_IS_TBBLUE && (tbblue_registers[0xBB]&2)) {
             }
@@ -830,6 +830,10 @@ void core_spectrum_handle_interrupts(void)
 
             }
         }
+
+
+
+
 
         generate_nmi_prepare_fetch();
 
