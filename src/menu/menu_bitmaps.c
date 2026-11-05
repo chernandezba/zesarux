@@ -7255,6 +7255,36 @@ char *bitmap_button_ext_desktop_my_machine_timex_tc2048[EXT_DESKTOP_BUTTONS_ANCH
     "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
 
+char *bitmap_button_ext_desktop_my_machine_atmturbo1[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "  wwwwwwwwwwwwwwwwwwwww   ",
+    " wwwwwwwwwwwwwwwwwwwwwww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwwwwwwwwwwwwwwwwwwwwww  ", //10
+    " wwwwwwwwwwwwwwwwwwwwwww  ",
+    " wwxxxrrrggwwwwwwwwwwwww  ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwWWwWWwWWwWWwWWwwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwwWWwWWwWWwWWwWWwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwWWwWWwWWwWWwWWwwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ", //20
+    "wwwWWwWWwWWwWWwrrwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwwwwWWWwwWWWwwwwwwwwwwww ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    " wwwwwwwwwwwwwwwwwwwwwww  ", //25
+};
+
 
 //Icono "My machine" para Z88
 char *bitmap_button_ext_desktop_my_machine_z88[EXT_DESKTOP_BUTTONS_ANCHO]={

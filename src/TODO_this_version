@@ -361,9 +361,3 @@ ok? -poder ver paletas de colores atm, zxevo, etc
 
 
 - demos para spectrums extendidos: https://www.pouet.net/prodlist.php?platform%5B%5D=ZX+Enhanced&page=1
-
-
-
-ide_set_sectors_per_track(63);  // Fijar 63 sectores/pista
-ide_get_sectors_per_track();   // Consultar valor efectivo
-ide_set_sectors_per_track(0);  // Restaurar automático
