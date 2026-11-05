@@ -191,6 +191,9 @@ z80_byte atmturbo2_read_keyboard_status(void)
     z80_byte rows[8]={puerto_65278,puerto_65022,puerto_64510,puerto_63486,
                       puerto_61438,puerto_57342,puerto_49150,puerto_32766};
     int colon=!(rows[7]&2) && !(rows[0]&2);
+    int period=!(rows[7]&2) && !(rows[7]&4);
+    int asterisk=!(rows[7]&2) && !(rows[7]&16);
+    int delete_key=!(rows[0]&1) && !(rows[4]&1);
     int row,bit,phase;
     if (atmturbo2_xt_reads) return 0xff;
     if (atmturbo2_cursor_count) {
@@ -211,6 +214,13 @@ z80_byte atmturbo2_read_keyboard_status(void)
         rows[0]&=~1;
         rows[7]|=2;
     }
+    /* Symbol Shift+M produce el punto XT, sin generar Control+M (Enter). */
+    if (period) rows[7]|=2;
+    /* Symbol Shift+B produce el asterisco XT, sin generar Control+B. */
+    if (asterisk) rows[7]|=2;
+    /* Caps Shift+0 es DELETE en Spectrum: envía Backspace XT para borrar
+       el carácter anterior en CP/M, sin entregar Shift+0. */
+    if (delete_key) rows[0]|=1;
     /* Entrega los modificadores antes que las letras de una misma consulta. */
     for (phase=0;phase<2;phase++) {
         for (row=0;row<8;row++) {
@@ -223,6 +233,9 @@ z80_byte atmturbo2_read_keyboard_status(void)
                     if (rows[row]&mask) code=atmturbo2_xt_codes[row][bit]|0x80;
                     else {
                         code=(colon && row==0 && bit==1) ? 0x27 : codes[row][bit];
+                        if (period && row==7 && bit==2) code=0x34;
+                        if (asterisk && row==7 && bit==4) code=0x37;
+                        if (delete_key && row==4 && bit==0) code=0x0e;
                         atmturbo2_xt_codes[row][bit]=code;
                     }
                     atmturbo2_xt_rows[row]^=mask;
