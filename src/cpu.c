@@ -2937,6 +2937,10 @@ void set_machine_params(void)
             lee_puerto=lee_puerto_spectrum;
             ay_chip_present.v=1;
 
+            //ABC Stereo
+            //2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
+            ay3_stereo_mode=2;
+
             if (MACHINE_IS_ATM_TURBO2_FAMILY) {
                 if (last_machine_type!=current_machine_type) {
                     ide_atm_enabled.v=1;
