@@ -20126,10 +20126,16 @@ zxvision_window zxvision_window_video_output;
 
 
 int ventana_video_output_activa=0;
+int ventana_video_output_abierta=0;
 
 int ventana_video_output_esta_activa(void)
 {
     return ventana_video_output_activa;
+}
+
+int ventana_video_output_esta_abierta(void)
+{
+    return ventana_video_output_abierta;
 }
 
 void menu_video_output(MENU_ITEM_PARAMETERS)
@@ -20188,6 +20194,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_video_output_overlay);
 
+    ventana_video_output_abierta=1;
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20235,6 +20243,7 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     ventana_video_output_activa=0;
 
 
+
     util_add_window_geometry_compact(ventana);
 
     if (tecla==3) {
@@ -20244,6 +20253,7 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     else {
 
         zxvision_destroy_window(ventana);
+        ventana_video_output_abierta=0;
     }
 
 
