@@ -149,7 +149,84 @@ QL-Qsound AY
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?
 
+----
+
+-master system:
+outrun: corregido dibujado pista y tablero y nubes
+chasehq: tambien bien
+bank panic ok
+astro flash ok
+
+
+----
+
+-pcw16
+
+https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
+
+https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
+
+
+
 ------
+
+***Spectrum Next*****
+
+-tbblue funciona:
+
+NextZXOS: 2.06H
+./zesarux --noconfigfile --mmc-file codex_additional/tbblue-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
+
+-tbblue no funciona (ya si! :) :
+
+NextZXOS: 2.09
+./zesarux --noconfigfile --mmc-file codex_additional/tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
+equivalente:
+./zesarux --configfile codex_additional/configfile_tbblue_pruebas
+Y con snapshot de pogie (asi no parece que funcione!):
+./zesarux --configfile codex_additional/configfile_tbblue_pruebas codex_additional/testpogie.zsf
+
+-El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
+>revisar que al cargar .snx desde quickload tambien soporte lo del file handle
+
+
+---
+
+-Exploding fist:
+
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit.sfx] String at BD21H return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit2.sfx] String at BD30H return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/sweep.sfx] String at BD40H return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/grunt.sfx] String at BD4EH return to 748EH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Sprites/coreimage.spr] String at B9C5H return to 7ADBH
+ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Palettes/coreimage.npl] String at BC9DH return to 86A7H
+
+PC=95a1h cargar pantalla error
+necesita core 3.2.0 o inferior!
+
+--------
+
+-zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
+
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 6 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 7 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 8 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 9 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 10 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 11 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 12 Source IP=127.0.0.1
+
+Deberia detectar la salida correcta
+
+
+------
+
 
 ***Baseconf*****
 
@@ -195,64 +272,6 @@ ok en faq * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 
 ------
 
-***Spectrum Next*****
-
--tbblue funciona:
-
-NextZXOS: 2.06H
-./zesarux --noconfigfile --mmc-file codex_additional/tbblue-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
-
--tbblue no funciona (ya si! :) :
-
-NextZXOS: 2.09
-./zesarux --noconfigfile --mmc-file codex_additional/tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
-equivalente:
-./zesarux --configfile codex_additional/configfile_tbblue_pruebas
-Y con snapshot de pogie (asi no parece que funcione!):
-./zesarux --configfile codex_additional/configfile_tbblue_pruebas codex_additional/testpogie.zsf
-
--El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
->revisar que al cargar .snx desde quickload tambien soporte lo del file handle
-
-
----
-
--Exploding fist:
-
-ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit.sfx] String at BD21H return to 748EH
-ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit2.sfx] String at BD30H return to 748EH
-ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/sweep.sfx] String at BD40H return to 748EH
-ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/grunt.sfx] String at BD4EH return to 748EH
-ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Sprites/coreimage.spr] String at B9C5H return to 7ADBH
-ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Palettes/coreimage.npl] String at BC9DH return to 86A7H
-
-PC=95a1h cargar pantalla error
-necesita core 3.2.0 o inferior!
-
----
-
-
-
--zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
-
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 6 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 7 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 8 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 9 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 10 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 11 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 12 Source IP=127.0.0.1
-
-Deberia detectar la salida correcta
-
-
-------
 
 tsconf
 
@@ -289,13 +308,7 @@ ok -visual floppy: opción para ver el floppy entero, con la carcasa, etc
 
 
 ------
--pcw16
 
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
-
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
-
-------
 -Scorpion
 
 
@@ -323,23 +336,6 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 -----
 
--en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
-
-
----
-
-
--en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
-
-
--master system:
-outrun: corregido dibujado pista y tablero y nubes
-chasehq: tambien bien
-bank panic ok
-astro flash ok
-
-
-
 --- ATM Turbo
 
 - entradas en changelog, features y readme de las nuevas maquinas atm
@@ -353,6 +349,21 @@ ok - covox activado?
 
 -software cpm http://atmturbo.nedopc.com/load_cpm.htm
 -software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm
+
+------
+
+-en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
+
+
+---
+
+
+-en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
+
+
+
+
+
 
 ----
 -habilitar covox pentagon en zx evo baseconf

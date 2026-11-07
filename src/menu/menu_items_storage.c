@@ -13014,9 +13014,6 @@ void menu_storage_ide_set_sectors_per_track(MENU_ITEM_PARAMETERS)
     //0 le quita el override de sectores
     ide_set_sectors_per_track(valor_actual);
 
-    /*ide_set_sectors_per_track(63);  // Fijar 63 sectores/pista
-    ide_get_sectors_per_track();   // Consultar valor efectivo
-    ide_set_sectors_per_track(0);  // Restaurar automático*/
 
 }
 
