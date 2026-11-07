@@ -20125,6 +20125,13 @@ void menu_video_output_overlay(void)
 zxvision_window zxvision_window_video_output;
 
 
+int ventana_video_output_activa=0;
+
+int ventana_video_output_esta_activa(void)
+{
+    return ventana_video_output_activa;
+}
+
 void menu_video_output(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -20189,6 +20196,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             return;
     }
 
+    ventana_video_output_activa=1;
+
     if (rainbow_enabled.v==0) {
         zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
         zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
@@ -20222,6 +20231,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
 
 
     } while (salir==0);
+
+    ventana_video_output_activa=0;
 
 
     util_add_window_geometry_compact(ventana);

@@ -355,6 +355,24 @@ ok - covox activado?
 -en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
 
+-----
+---- ventana video output como sustituto del render normal de maquina:
+
+Idea para que la ventana de vídeo output lea pulsaciones de teclado de la máquina emulada:
+
+ok - Que la función de zxvision_send_keys diga que se envían también cuando el foco está en esa ventana
+
+Luego opción para decir que render solo irá a esa ventana: los render de buffer rainbow a pantalla no se harán. Y para modos no real video, deberían escribir (los que no tengan) modo no-rainbow  en buffer rainbow
+
+Luego también hacer que dicha ventana se redimensione cuando haya cambios de máquinas
+
+Luego si se cierra ventana, que vuelva al render normal
+
+Función que dibuja el fondo de ZX desktop no omita la parte de la pantalla emulada cuando se ha conmutado a ventana. Lo mismo para el dibujado de iconos y arrastre de iconos
+
+Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
+No hay ZX desktop
+
 ---
 
 

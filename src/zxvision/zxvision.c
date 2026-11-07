@@ -20096,6 +20096,8 @@ z80_byte zxvision_common_getkey_refresh_noesperatecla(void)
 //En cambio retorna 0 (la tecla se va a enviar a la maquina emulada), cuando el menu esta cerrado o la ventana no tiene el foco
 int zxvision_key_not_sent_emulated_mach(void)
 {
+    if (ventana_video_output_esta_activa()) return 0;
+
     if (menu_abierto==1 && zxvision_keys_event_not_send_to_machine) return 1;
     else return 0;
 }
