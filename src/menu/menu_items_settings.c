@@ -4370,7 +4370,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "Pressing F5 one opens the Top Menu, pressing F5 twice opens the Main Menu"
             );
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_menu_enabled.v ? 'X' : ' ') );
-        menu_add_item_menu_es_avanzado(array_menu_common);
+        //menu_add_item_menu_es_avanzado(array_menu_common);
 
         if (zxvision_topbar_menu_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_items_visibility,NULL,
