@@ -7335,7 +7335,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
         //Si estamos en la zona de arriba (aun no llega a zxdesktop vertical) saltar posicion x para no dibujar encima de la pantalla emulada
         int xinicio;
-        if (y<alto_no_zxdesktop) {
+        if (y<alto_no_zxdesktop && !ventana_video_output_esta_abierta() ) {
             xinicio=xstart_zxdesktop;
         }
         else {
@@ -7478,7 +7478,9 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
     menu_ext_desktop_fill_rainbow_counter++;
 
-    menu_draw_ext_desktop_border_emulated_machine(ancho_no_zxdesktop,alto_zxdesktop,alto_no_zxdesktop);
+    if (!ventana_video_output_esta_abierta()) {
+        menu_draw_ext_desktop_border_emulated_machine(ancho_no_zxdesktop,alto_zxdesktop,alto_no_zxdesktop);
+    }
 
 
 }

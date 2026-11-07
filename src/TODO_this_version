@@ -368,7 +368,8 @@ Luego también hacer que dicha ventana se redimensione cuando haya cambios de m�
 
 Luego si se cierra ventana, que vuelva al render normal
 
-Función que dibuja el fondo de ZX desktop no omita la parte de la pantalla emulada cuando se ha conmutado a ventana. Lo mismo para el dibujado de iconos y arrastre de iconos
+ok Función que dibuja el fondo de ZX desktop no omita la parte de la pantalla emulada cuando se ha conmutado a ventana.
+Lo mismo para el dibujado de iconos y arrastre de iconos
 
 Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
 No hay ZX desktop
