@@ -20318,12 +20318,6 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        //Todavia no tengo claro del todo para que servira esto, pero de momento renderiza la pantalla
-        //cuando real video esta activado
-        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
-            "Emulated Display","Pantalla emulada","Pantalla emulada");
-        menu_add_item_menu_genera_ventana(array_menu_display_settings);
-        menu_add_item_menu_se_cerrara(array_menu_display_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_total_palette,NULL,
