@@ -20202,10 +20202,9 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
 
     //Si se acaba de hacer activa, refrescar el zx desktop para que se vea que ya no está la pantalla emulada en modo Docked
     if (!ventana_video_output_abierta) {
+        ventana_video_output_abierta=1;
+        menu_draw_ext_desktop();
     }
-
-
-    ventana_video_output_abierta=1;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
