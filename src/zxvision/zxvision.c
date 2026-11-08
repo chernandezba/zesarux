@@ -7079,7 +7079,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
         //Si estamos en zona por arriba de donde empieza el zxdesktop vertical, "saltar" toda esa zona, para que
         //el contador parezca que ha recorrido esa zona. Esto da continuidad en las franjas en cuanto vamos a la zona de zxdesktop vertical
 
-        if (y<alto_no_zxdesktop) {
+        if (y<alto_no_zxdesktop && !ventana_video_output_esta_abierta() ) {
             contador_color_rainbow +=ancho_no_zxdesktop;
 
             //Y el modo random igual, esa zona de la izquierda generamos color random tantas veces como ancho tenga
