@@ -3052,22 +3052,40 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_window_settings);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
-            "Colour settings","Opciones de colores","Opcions de colors");
-        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Emulated Display ---","--- Pantalla Emulada ---","--- Pantalla Emulada ---");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
+
+
+        //Todavia no tengo claro del todo para que servira esto, pero de momento renderiza la pantalla
+        //cuando real video esta activado
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
+            "Emulated Display","Pantalla emulada","Pantalla emulada");
+        menu_add_item_menu_genera_ventana(array_menu_window_settings);
+        menu_add_item_menu_se_cerrara(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+
+
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,
-            "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
+            "FX","FX","FX");
         menu_add_item_menu_shortcut(array_menu_window_settings,'x');
         //menu_add_item_menu_tiene_submenu(array_menu_window_settings);
         menu_add_item_menu_genera_ventana(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-
         menu_add_item_menu_separator(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
+            "Colour settings","Opciones de colores","Opcions de colors");
+        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        menu_add_item_menu_separator(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
         menu_add_ESC_item(array_menu_window_settings);

@@ -20164,7 +20164,7 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     if (!zxvision_if_window_already_exists(ventana)) {
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("videooutput",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("emulateddisplay",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=30;
             alto_ventana=20;
 
@@ -20173,8 +20173,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Output",
-            "videooutput",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Emulated Display",
+            "emulateddisplay",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
 
@@ -20321,7 +20321,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         //Todavia no tengo claro del todo para que servira esto, pero de momento renderiza la pantalla
         //cuando real video esta activado
         menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
-            "Video Output","Salida de Video","Sortida de Video");
+            "Emulated Display","Pantalla emulada","Pantalla emulada");
         menu_add_item_menu_genera_ventana(array_menu_display_settings);
         menu_add_item_menu_se_cerrara(array_menu_display_settings);
 
