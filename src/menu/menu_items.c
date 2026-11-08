@@ -166,6 +166,7 @@
 #include "zxevo.h"
 #include "scorpion.h"
 #include "atmturbo.h"
+#include "screen_fx.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -20097,14 +20098,18 @@ void menu_video_output_overlay(void)
 
         int offset_x=menu_char_width;
 
-        int x,y,xmax,ymax;
-        xmax=get_total_ancho_rainbow();
-        ymax=get_total_alto_rainbow();
+        int x,y,ancho,alto;
+        ancho=get_total_ancho_rainbow();
+        alto=get_total_alto_rainbow();
         z80_int *puntero;
         puntero=rainbow_buffer;
 
-        for (y=0;y<ymax;y++) {
-            for (x=0;x<xmax;x++) {
+
+        //Efectos especiales (FX)
+        puntero=screen_rainbow_effects(puntero,ancho,alto);
+
+        for (y=0;y<alto;y++) {
+            for (x=0;x<ancho;x++) {
                 zxvision_putpixel(menu_video_output_window,x+offset_x,y,*puntero);
                 puntero++;
             }
