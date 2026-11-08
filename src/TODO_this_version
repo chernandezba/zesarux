@@ -383,6 +383,12 @@ No hay ZX desktop
 
 -forzar real video al abrir ventana de video output
 
+-si se cierra ventana de emulated display desde zxvision_window_delete_this_window (process switcher o process management)
+no se finaliza normalmente y por tanto no se pone ventana_video_output_abierta a cero
+Lo mismo pasa con cerrar todas las ventanas
+Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
+
+
 ---
 
 

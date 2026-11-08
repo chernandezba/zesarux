@@ -20199,6 +20199,12 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_video_output_overlay);
 
+
+    //Si se acaba de hacer activa, refrescar el zx desktop para que se vea que ya no está la pantalla emulada en modo Docked
+    if (!ventana_video_output_abierta) {
+    }
+
+
     ventana_video_output_abierta=1;
 
 

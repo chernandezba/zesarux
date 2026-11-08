@@ -2793,7 +2793,23 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_main_window_setting_emulated_display(MENU_ITEM_PARAMETERS)
+{
+    if (ventana_video_output_esta_abierta()) {
+        zxvision_window *ventana_buscada=zxvision_find_window_in_background("emulateddisplay");
 
+        if (ventana_buscada!=NULL) {
+            zxvision_window_delete_this_window(ventana_buscada);
+
+            //Esto hacerlo al finalizar porque zxvision_window_delete_this_window no lo hace
+            ventana_video_output_abierta=0;
+            ventana_video_output_activa=0;
+        }
+    }
+    else {
+        menu_video_output(0);
+    }
+}
 
 void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 {
@@ -3058,17 +3074,25 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_setting_emulated_display,NULL,
             "Emulated Display","Pantalla emulada","Pantalla emulada");
+
+        //menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
+        //    "Emulated Display","Pantalla emulada","Pantalla emulada");
+
+
         menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
         if (ventana_video_output_esta_abierta()) {
             menu_add_item_menu_sufijo_format(array_menu_window_settings," [Windowed]");
+            menu_add_item_menu_genera_ventana(array_menu_window_settings);
+            menu_add_item_menu_se_cerrara(array_menu_window_settings);
         }
         else {
             menu_add_item_menu_sufijo_format(array_menu_window_settings," [Docked]");
+            menu_add_item_menu_genera_ventana(array_menu_window_settings);
+            menu_add_item_menu_se_cerrara(array_menu_window_settings);
         }
-        menu_add_item_menu_genera_ventana(array_menu_window_settings);
-        menu_add_item_menu_se_cerrara(array_menu_window_settings);
+
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
