@@ -18132,7 +18132,7 @@ int zxvision_if_mouse_in_background(void)
     int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
 
-    if (mouse_pixel_x<ancho_maquina && mouse_pixel_y<alto_maquina) {
+    if (mouse_pixel_x<ancho_maquina && mouse_pixel_y<alto_maquina && !ventana_video_output_esta_abierta()) {
         return 0;
     }
 
