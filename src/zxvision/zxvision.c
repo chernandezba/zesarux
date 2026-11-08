@@ -500,7 +500,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     int ancho_maquina=screen_get_emulated_display_width_no_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_no_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina) {
+    if (x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) {
         //printf("Check icon position: %d,%d on emulated machine display\n",x,y);
         return 0;
     }
@@ -5027,7 +5027,7 @@ void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int
     int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina) {
+    if (x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) {
         //printf("Retorno %d %d\n",x,y);
         return;
     }
@@ -5048,7 +5048,7 @@ void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED
     int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina) {
+    if (x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) {
         //printf("Retorno %d %d\n",x,y);
         return;
     }
@@ -6175,7 +6175,7 @@ void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yini
 
     for (y=yinicio;y<yinicio+alto_boton+2;y++) {
         for (x=xinicio;x<xinicio+ancho_boton+2;x++) {
-            if (x>=0 && x<total_width && y>=0 && y<total_height && !(x<ancho_maquina && y<alto_maquina) ) {
+            if (x>=0 && x<total_width && y>=0 && y<total_height && !(x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) ) {
                 scr_putpixel(x,y,color_relleno);
             }
         }
