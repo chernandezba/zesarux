@@ -20086,7 +20086,12 @@ zxvision_window *menu_video_output_window;
 
 
 //sin putpixel cache: render normal: 40% cpu. render ventana: 56% cpu
-//con putpixel cache: render normal: 26% cpu. render ventana: 56% cpu
+
+//con putpixel cache: render normal: 27% cpu. render ventana: 56% cpu
+//con putpixel cache y menu_video_output_overlay_putpixel_cache: render normal: 27% cpu (con menu cerrado), 32% con menu abierto.
+//   render ventana: 35% cpu con menu cerrado (con cpu info, video info y process switcher abiertos), 39% con menu abierto
+// -> o sea hay un 7% cpu mas aprox en render con ventana
+// con todas ventanas abiertas posibles: 84% uso cpu
 
 
 z80_int *menu_video_output_overlay_putpixel_cache=NULL;
@@ -20171,7 +20176,7 @@ void menu_video_output_overlay(void)
         menu_video_output_alloc_putpixel_cache();
 
         if (menu_video_output_window->dirty_user_must_draw_contents) {
-            printf("limpiando putpixel cache de ventana\n");
+            printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
             menu_video_output_clear_putpixel_cache();
             menu_video_output_window->dirty_user_must_draw_contents=0;
         }

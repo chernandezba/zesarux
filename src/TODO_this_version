@@ -394,7 +394,10 @@ Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
 
 -si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
 
--diferencia de uso de cpu entre docked y windowed? parece que usa mucha cpu mas
+-diferencia de uso de cpu entre docked y windowed? parece que usa mucha cpu mas.
+ok --implementado una putpixel cache para esa ventana y baja mucho el uso de cpu
+-- propuesta para incremento de cpu cuando hay muchas ventanas abiertas: que en memoria_overlay (cada caracter) diga si esta visible o no, cacheado,
+eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dirty_user_must_draw_contents
 
 
 ---
