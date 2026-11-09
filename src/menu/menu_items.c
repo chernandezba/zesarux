@@ -20170,6 +20170,12 @@ void menu_video_output_overlay(void)
 
         menu_video_output_alloc_putpixel_cache();
 
+        if (menu_video_output_window->dirty_user_must_draw_contents) {
+            printf("limpiando putpixel cache de ventana\n");
+            menu_video_output_clear_putpixel_cache();
+            menu_video_output_window->dirty_user_must_draw_contents=0;
+        }
+
         z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
 
         for (y=0;y<alto;y++) {
