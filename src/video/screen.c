@@ -1828,6 +1828,8 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
 {
 //      printf ("Refresco border\n");
 
+    if (ventana_video_output_esta_abierta()) return;
+
     int x,y;
 
     //simular modo fast

@@ -20138,8 +20138,10 @@ int ventana_video_output_esta_activa(void)
     return ventana_video_output_activa;
 }
 
+//Dice si la ventana esta abierta y funcional
 int ventana_video_output_esta_abierta(void)
 {
+    if (rainbow_enabled.v==0) return 0;
     return ventana_video_output_abierta;
 }
 
@@ -20217,8 +20219,9 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     ventana_video_output_activa=1;
 
     if (rainbow_enabled.v==0) {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
-        zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
+        enable_rainbow();
+        //zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
+        //zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
     }
     else {
         zxvision_cls(ventana);

@@ -2795,16 +2795,15 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 void menu_main_window_setting_emulated_display(MENU_ITEM_PARAMETERS)
 {
-    if (ventana_video_output_esta_abierta()) {
-        zxvision_window *ventana_buscada=zxvision_find_window_in_background("emulateddisplay");
+    zxvision_window *ventana_buscada=zxvision_find_window_in_background("emulateddisplay");
 
-        if (ventana_buscada!=NULL) {
-            zxvision_window_delete_this_window(ventana_buscada);
+    if (ventana_buscada!=NULL) {
+        zxvision_window_delete_this_window(ventana_buscada);
 
-            //Esto hacerlo al finalizar porque zxvision_window_delete_this_window no lo hace
-            ventana_video_output_abierta=0;
-            ventana_video_output_activa=0;
-        }
+        //Esto hacerlo al finalizar porque zxvision_window_delete_this_window no lo hace
+        ventana_video_output_abierta=0;
+        ventana_video_output_activa=0;
+
     }
     else {
         menu_video_output(0);
@@ -3082,7 +3081,17 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
-        if (ventana_video_output_esta_abierta()) {
+
+        //Buscamos la ventana asi en vez de usar ventana_video_output_esta_abierta() porque si se ha cerrado la ventana
+        //desde process switch por ejemplo, la variable de cierre ventana_video_output_abierta no se ha actualizado
+        int ventana_abierta=0;
+
+        zxvision_window *ventana_buscada=zxvision_find_window_in_background("emulateddisplay");
+
+        if (ventana_buscada!=NULL) ventana_abierta=1;
+
+
+        if (ventana_abierta) {
             menu_add_item_menu_sufijo_format(array_menu_window_settings," [Windowed]");
             menu_add_item_menu_genera_ventana(array_menu_window_settings);
             menu_add_item_menu_se_cerrara(array_menu_window_settings);
@@ -3092,7 +3101,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_window_settings);
             menu_add_item_menu_se_cerrara(array_menu_window_settings);
         }
-
+        menu_add_item_menu_tooltip(array_menu_window_settings,"If the emulated display is docked to top-left corner or is rendered on a window");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"If the emulated display is docked to top-left corner or is rendered on a window");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 

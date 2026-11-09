@@ -388,6 +388,8 @@ no se finaliza normalmente y por tanto no se pone ventana_video_output_abierta a
 Lo mismo pasa con cerrar todas las ventanas
 Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
 
+-sin zxdesktop y con ventana emulated display activa, que ponemos en el fondo ? o no permitimos emulated display window si el zx desktop no esta activado?
+
 
 ---
 
