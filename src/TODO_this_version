@@ -392,6 +392,10 @@ Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
 
 -al iniciar ZEsarUX, que de por validos iconos en zona de pantalla emulada si ventana emulated display esta abierta
 
+-si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
+
+-diferencia de uso de cpu entre docked y windowed?
+
 
 ---
 
