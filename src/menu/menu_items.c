@@ -20084,49 +20084,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_video_output_window;
 
-//Simple render obteniendo imagen del rainbow buffer, usado por varias maquinas
-void menu_video_output_render_alternativo(void)
-{
 
-
-    int ancho,alto;
-
-    ancho=get_total_ancho_rainbow();
-    alto=get_total_alto_rainbow();
-
-    int x,y;
-
-    z80_int color_pixel;
-    z80_int *puntero;
-
-    puntero=rainbow_buffer;
-
-    //Reduccion de pantalla y otros efectos
-    puntero=screen_rainbow_effects(puntero,ancho,alto);
-
-    int offset_x=menu_char_width*menu_video_output_window->x;
-    int offset_y=menu_char_height*menu_video_output_window->y;
-
-
-    for (y=0;y<alto;y++) {
-        for (x=0;x<ancho;x++) {
-            color_pixel=*puntero++;
-            scr_putpixel_zoom_rainbow(x+offset_x,y+offset_y,color_pixel);
-        }
-    }
-
-    //Rellenar la parte de pantalla no usada por debajo en modos 60 HZ
-    if (machine_60hz.v) {
-        for (;y<rainbow_buffer_current_height;y++) {
-
-            for (x=0;x<ancho;x++) {
-                scr_putpixel_zoom_rainbow(x+offset_x,y+offset_y,0);
-            }
-
-
-        }
-    }
-}
 
 
 void menu_video_output_overlay(void)
@@ -20139,9 +20097,6 @@ void menu_video_output_overlay(void)
 
 
     if (rainbow_enabled.v) {
-
-        //menu_video_output_render_alternativo();
-
 
 
         int offset_x=menu_char_width;
