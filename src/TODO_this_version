@@ -400,6 +400,7 @@ ok --implementado una putpixel cache para esa ventana y baja mucho el uso de cpu
 -- propuesta para incremento de cpu cuando hay muchas ventanas abiertas: que en memoria_overlay (cada caracter) diga si esta visible o no, cacheado,
 eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dirty_user_must_draw_contents
 
+-poder hacer escalado con zoom decimal
 
 ---
 

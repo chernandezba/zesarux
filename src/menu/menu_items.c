@@ -20149,6 +20149,8 @@ void menu_video_output_alloc_putpixel_cache(void)
     }
 }
 
+int menu_video_output_zoom_fit=0;
+
 void menu_video_output_overlay(void)
 {
 
@@ -20185,12 +20187,13 @@ void menu_video_output_overlay(void)
 
         for (y=0;y<alto;y++) {
             for (x=0;x<ancho;x++) {
-                z80_int color=*puntero;
+                int offset_origen=y*ancho+x;
+                z80_int color=puntero[offset_origen];
                 if (color!=*p_putpixel_cache) {
                     zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
                     *p_putpixel_cache=color;
                 }
-                puntero++;
+                //puntero++;
                 p_putpixel_cache++;
             }
         }
