@@ -15055,7 +15055,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
     //Si esta ventana tiene flag always_visible, siempre escribe
     if (w->always_visible) return 0;
 
-    //if (!menu_allow_background_windows) return 0;
+
 
     zxvision_window *orig_w;
 
@@ -15063,7 +15063,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
     if (w==NULL) return 0;
 
-    //if (zxvision_current_window==w) return 0;
+
 
     do {
         zxvision_window *superior_window;
@@ -15081,7 +15081,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
     } while (w!=zxvision_current_window && w!=NULL);
 
-    //return 0;
+
 
     //O si hay alguna ventana por debajo que tenga el flag de siempre por encima
     w=orig_w;
@@ -15366,8 +15366,6 @@ void zxvision_draw_window_contents(zxvision_window *w)
             //Ver si caracter final tiene ventana por encima
             int ventana_encima=zxvision_coords_in_superior_windows(w,xdestination,ydestination);
 
-            //if (ventana_encima) printf("ventana encima x %d y %d\n",xdestination,ydestination);
-
 
             //obtener caracter
             int out_of_bonds=0;
@@ -15430,7 +15428,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
                 //Chapucilla para evitar que las ventanas en background sobreescriban a cualquiera que haya encima
                 if (!ventana_encima) {
-                //if (!zxvision_coords_in_superior_windows(w,xdestination,ydestination)) {
+
 
                 //printf ("antes de putchar\n");
                 putchar_menu_overlay_parpadeo_cache_or_not(xdestination,ydestination,
@@ -15578,7 +15576,7 @@ void zxvision_get_character_at_mouse(zxvision_window *w,int x,int y,overlay_scre
 
                 //Chapucilla para evitar que las ventanas en background sobreescriban a cualquiera que haya encima
                 if (!ventana_encima) {
-                //if (!zxvision_coords_in_superior_windows(w,xdestination,ydestination)) {
+
 
                 //printf ("antes de putchar\n");
 

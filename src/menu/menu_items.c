@@ -20175,9 +20175,6 @@ void menu_video_output_overlay(void)
         puntero=screen_rainbow_effects(puntero,ancho,alto);
 
 
-
-
-
         if (menu_video_output_zoom_fit.v) {
             int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
             int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
