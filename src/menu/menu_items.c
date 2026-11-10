@@ -20148,6 +20148,7 @@ void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
 
 //Si se permite render que encaje la pantalla dentro de la ventana, por tanto escalado zoom total
 z80_bit menu_video_output_zoom_fit={0};
+z80_bit menu_video_output_zoom_fit_keep_proportion={1};
 
 void menu_video_output_overlay(void)
 {
@@ -20180,6 +20181,26 @@ void menu_video_output_overlay(void)
         if (menu_video_output_zoom_fit.v) {
             int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
             int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
+
+            if (menu_video_output_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
+                int ancho_disponible=ancho_ventana;
+                int alto_disponible=alto_ventana;
+
+                //Ejemplo: una imagen de 400x200 pasa a 300 de alto. Para conservar su forma,
+                //el ancho también crece en la misma medida: 400*300/200=600.
+                //El if comprueba si ese ancho de 600 cabe en la ventana. Multiplicamos ambos
+                //lados por alto para hacer la comparación sin división.
+                if (ancho_disponible*alto>alto_disponible*ancho) {
+                    ancho_ventana=alto_disponible*ancho/alto;
+                }
+                else {
+                    alto_ventana=ancho_disponible*alto/ancho;
+                }
+
+                if (ancho_ventana<1) ancho_ventana=1;
+                if (alto_ventana<1) alto_ventana=1;
+
+            }
 
 
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
