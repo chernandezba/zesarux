@@ -15050,7 +15050,7 @@ int zxvision_coords_in_window(zxvision_window *w,int x,int y)
 }
 
 //Dice si las coordenadas de ventana indicada coinciden con cualquiera de las ventanas que tenga encima
-int zxvision_coords_in_superior_windows_aux(zxvision_window *w,int x,int y)
+int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 {
     //Si esta ventana tiene flag always_visible, siempre escribe
     if (w->always_visible) return 0;
@@ -15104,15 +15104,6 @@ int zxvision_coords_in_superior_windows_aux(zxvision_window *w,int x,int y)
     } while (w!=zxvision_current_window && w!=NULL);
 
     return 0;
-
-}
-
-
-//Dice si las coordenadas de ventana indicada coinciden con cualquiera de las ventanas que tenga encima
-int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
-{
-    int tiene=zxvision_coords_in_superior_windows_aux(w,x,y);
-    return tiene;
 
 }
 
