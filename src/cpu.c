@@ -3396,7 +3396,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
             zxvision_rearrange_background_windows(0,1);
         }
 
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
 
     }
 

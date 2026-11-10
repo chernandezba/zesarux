@@ -358,6 +358,9 @@ z80_bit command_line_snapshots_in_ram={0};
 
 z80_bit command_line_keystrokes_turbo={0};
 
+
+int se_abre_emulated_display=0;
+
 //z80_bit parameter_disable_allbetawarningsleep={0};
 
 //Fin command_line flags
@@ -8230,6 +8233,9 @@ int parse_cmdline_options(int desde_commandline)
                 //strcpy(restore_window_array[total_restore_window_array_elements++],argv[puntero_parametro]);
                 add_window_to_restore(argv[puntero_parametro]);
 
+                //Si se ha restaurado "emulateddisplay", decimos que los iconos pueden ubicarse donde esta normalmente la pantalla emulada
+                if (!strcmp(argv[puntero_parametro],"emulateddisplay")) se_abre_emulated_display=1;
+
             }
 
             else if (!strcmp(argv[puntero_parametro],"--restore-all-known-windows")) {
@@ -9215,7 +9221,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     create_default_zxdesktop_configurable_icons();
 
     //despues de leer los iconos de la config, e inicializar pantalla, ver si algun icono esta en alguna posicion que no debe y reasignar
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(se_abre_emulated_display);
 
     set_last_dimensiones_ventana();
 

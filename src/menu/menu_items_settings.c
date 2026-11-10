@@ -647,7 +647,7 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
     debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing border settings");
     zxvision_rearrange_background_windows(0,1);
 
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(0);
 
 }
 
@@ -691,7 +691,7 @@ void menu_interface_ql_display_proportion(MENU_ITEM_PARAMETERS)
     debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing ql display proportion settings");
     zxvision_rearrange_background_windows(0,1);
 
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(0);
 
 }
 
@@ -3935,7 +3935,7 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
 
     //Comprobar posiciones iconos y reajustar
     //Debido a que con topbar dejamos que los iconos empiecen mas arriba que cuando hay botones superiores
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(0);
 
     zxvision_reorder_configurable_icons_if_auto();
 }
@@ -15170,7 +15170,7 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
         //zxvision_reorder_configurable_icons();
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
 
         //Crear iconos por defecto si hace falta
         create_default_zxdesktop_configurable_icons();
@@ -15215,7 +15215,7 @@ void menu_ext_desk_settings_custom_width_height(int reorganize_windows)
         zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
     }
 
     zxvision_reorder_configurable_icons_if_auto();

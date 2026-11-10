@@ -446,7 +446,9 @@ int zxdesktop_configurable_icons_current_executing=-1;
 //Dice si una posicion para un icono es valida, evitando salirse de ventana, en zonas de botones, o en zona de pantalla emulada
 //x,y en coordenadas de iconos (o sea sin zoom)
 //Retorna no 0 si es valido
-int zxvision_if_configurable_icon_on_valid_position(int x,int y)
+//forzar_emulated_display_abierta se pone a 1 para decirle que ventana de emulated display esta abierta, aunque no este fisicamente la ventana,
+//eso se usa al inicio de ZEsarUX
+int zxvision_if_configurable_icon_on_valid_position(int x,int y,int forzar_emulated_display_abierta)
 {
     //Ver si posicion no se sale del rango de ventana total (sin footer)
     int total_width=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
@@ -500,7 +502,11 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     int ancho_maquina=screen_get_emulated_display_width_no_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_no_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) {
+    int abierta_ventana_emulated_display=ventana_video_output_esta_abierta();
+
+    if (forzar_emulated_display_abierta) abierta_ventana_emulated_display=1;
+
+    if (x<ancho_maquina && y<alto_maquina && !abierta_ventana_emulated_display ) {
         //printf("Check icon position: %d,%d on emulated machine display\n",x,y);
         return 0;
     }
@@ -513,7 +519,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 void zxvision_set_configurable_icon_position(int icon,int x,int y)
 {
 
-    if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+    if (!zxvision_if_configurable_icon_on_valid_position(x,y,0)) {
         //printf("Trying to set icon %d to invalid position %d,%d\n",icon,x,y);
         return;
     }
@@ -524,13 +530,13 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
 }
 
 //Si un icono no está en papelera y no tiene posición valida, le asigna la primera disponible
-void zxvision_if_configurable_icon_not_on_valid_position_set(int icon)
+void zxvision_if_configurable_icon_not_on_valid_position_set(int icon,int forzar_emulated_display_abierta)
 {
 
     if (zxdesktop_configurable_icons_list[icon].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
         int x=zxdesktop_configurable_icons_list[icon].pos_x;
         int y=zxdesktop_configurable_icons_list[icon].pos_y;
-        if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+        if (!zxvision_if_configurable_icon_on_valid_position(x,y,forzar_emulated_display_abierta)) {
             debug_printf(VERBOSE_DEBUG,"Relocate icon %d (%s) because it is on an invalid position %d,%d",icon,zxdesktop_configurable_icons_list[icon].text_icon,x,y);
             zxvision_get_next_free_icon_position(&x,&y);
             debug_printf(VERBOSE_DEBUG,"Relocate icon %d to %d,%d",icon,x,y);
@@ -629,7 +635,7 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
                 //printf("%d %d iconos cerca %d\n",x,y,total_iconos_cerca);
 
                 //Si hay menos iconos cerca de los que esperamos y si esa posicion es valida
-                if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y) ) {
+                if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y,0) ) {
                     *p_x=x;
                     *p_y=y;
                     return;
@@ -741,7 +747,7 @@ void zxvision_reorder_configurable_icons_if_auto(void)
 
 //Comprobar y reajustar posiciones (si conviene) en caso de por ejemplo cambios de maquina (de spectrum a tbblue por ejemplo)
 //donde iconos pueden ir a parar a debajo de pantalla emulada
-void zxvision_check_all_configurable_icons_positions(void)
+void zxvision_check_all_configurable_icons_positions(int forzar_emulated_display_abierta)
 {
 
     //Si desactivado
@@ -752,7 +758,7 @@ void zxvision_check_all_configurable_icons_positions(void)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        zxvision_if_configurable_icon_not_on_valid_position_set(i);
+        zxvision_if_configurable_icon_not_on_valid_position_set(i,forzar_emulated_display_abierta);
     }
 
     zxvision_reorder_configurable_icons_if_auto();
@@ -1050,7 +1056,7 @@ void zxvision_recover_configurable_icon_from_trash(int indice_icono)
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
 
     //comprobar que posicion sea valida. Igualmente si es válida vuelve a asignar misma posición (es redundante) pero lo que interesa es que le ponga posición válida si no la tiene
-    zxvision_if_configurable_icon_not_on_valid_position_set(indice_icono);
+    zxvision_if_configurable_icon_not_on_valid_position_set(indice_icono,0);
 
 }
 
@@ -31514,7 +31520,7 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
         zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
     }
 
     zxvision_reorder_configurable_icons_if_auto();
@@ -31610,7 +31616,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
         zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
 
     }
 

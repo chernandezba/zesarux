@@ -1656,7 +1656,7 @@ extern void create_default_zxdesktop_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons_if_auto(void);
 extern void zxvision_set_configurable_icon_position(int icon,int x,int y);
-extern void zxvision_if_configurable_icon_not_on_valid_position_set(int icon);
+extern void zxvision_if_configurable_icon_not_on_valid_position_set(int icon,int forzar_emulated_display_abierta);
 extern void zxdesktop_configurable_icons_clear_cache_bitmap(int indice);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
@@ -1667,7 +1667,7 @@ extern void zxvision_add_configurable_icon_by_id_action_and_auto_extra(enum defi
 extern void zxvision_add_extra_parameters_element_action(enum defined_f_function_ids accion, char *parametros, char *nombre_icono);
 extern void menu_inicio_handle_configurable_icon_presses(void);
 extern void menu_inicio_handle_right_button_background(void);
-extern void zxvision_check_all_configurable_icons_positions(void);
+extern void zxvision_check_all_configurable_icons_positions(int forzar_emulated_display_abierta);
 extern int zxvision_add_configurable_icon_no_add_position(int indice_funcion);
 extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
 extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);
