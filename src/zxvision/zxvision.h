@@ -237,6 +237,9 @@ struct s_zxvision_window {
     //Puntero a funcion de overlay
     void (*overlay_function) (void);
 
+    //Puntero a funcion de cierre de ventana
+    void (*close_window_function) (void);
+
     //Puntero para envio de mensajes a esa ventana
     int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
 

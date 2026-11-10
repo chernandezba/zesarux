@@ -20296,6 +20296,11 @@ int ventana_video_output_esta_abierta(void)
     return ventana_video_output_abierta;
 }
 
+void menu_video_output_close_window_function(void)
+{
+    ventana_video_output_abierta=0;
+}
+
 void menu_video_output(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -20330,6 +20335,9 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             "emulateddisplay",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+
+        //Definir funcion de cierre de ventana
+        ventana->close_window_function=menu_video_output_close_window_function;
 
     }
 
@@ -20396,17 +20404,14 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
                 salir=1;
             break;
 
-            default:
-                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
-            break;
+            //Y no atendemos a cursores, pgup, dn, shift+opqa etc porque se usan dentro de maquina emulada
+            //y no queremos que actue en la ventana
         }
 
 
     } while (salir==0);
 
     ventana_video_output_activa=0;
-
-
 
     util_add_window_geometry_compact(ventana);
 
@@ -20415,9 +20420,11 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     }
 
     else {
+        if (ventana->close_window_function!=NULL) {
+            ventana->close_window_function();
+        }
 
         zxvision_destroy_window(ventana);
-        ventana_video_output_abierta=0;
     }
 
 
@@ -51735,6 +51742,9 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+        //Si se quiere definir funcion de cierre de ventana
+        //ventana->close_window_function=menu_template_window_can_be_backgrounded_close_window_function;
+
     }
 
     //Si ya existe, activar esta ventana
@@ -51810,6 +51820,9 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
     }
 
     else {
+        if (ventana->close_window_function!=NULL) {
+            ventana->close_window_function();
+        }
         zxvision_destroy_window(ventana);
     }
 

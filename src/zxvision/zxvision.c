@@ -11828,6 +11828,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     //Funcion de overlay inicializada a NULL
     w->overlay_function=NULL;
 
+    w->close_window_function=NULL;
+
     w->send_message_function=NULL;
     w->help_send_message=NULL;
 
@@ -11885,6 +11887,11 @@ void zxvision_window_delete_this_window_no_free_mem(zxvision_window *ventana)
 //Elimina la ventana de la lista y libera su memoria usada
 void zxvision_window_delete_this_window(zxvision_window *ventana)
 {
+
+    if (ventana->close_window_function!=NULL) {
+        ventana->close_window_function();
+    }
+
 
     zxvision_window_delete_this_window_no_free_mem(ventana);
 

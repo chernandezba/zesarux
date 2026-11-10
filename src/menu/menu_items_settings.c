@@ -2801,8 +2801,8 @@ void menu_main_window_setting_emulated_display(MENU_ITEM_PARAMETERS)
         zxvision_window_delete_this_window(ventana_buscada);
 
         //Esto hacerlo al finalizar porque zxvision_window_delete_this_window no lo hace
-        ventana_video_output_abierta=0;
-        ventana_video_output_activa=0;
+        //ventana_video_output_abierta=0;
+        //ventana_video_output_activa=0;
 
     }
     else {
