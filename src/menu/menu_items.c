@@ -20379,12 +20379,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
 
     if (rainbow_enabled.v==0) {
         enable_rainbow();
-        //zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
-        //zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
     }
-    else {
-        zxvision_cls(ventana);
-    }
+
 
     do {
 

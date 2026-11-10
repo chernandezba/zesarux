@@ -379,11 +379,11 @@ ok Lo mismo para el dibujado de iconos y arrastre de iconos
 Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
 No hay ZX desktop
 
--renombrado de nombre de ventana "video output" por otro
+ok -renombrado de nombre de ventana "video output" por otro
 
--forzar real video al abrir ventana de video output
+ok-forzar real video al abrir ventana de video output
 
--si se cierra ventana de emulated display desde zxvision_window_delete_this_window (process switcher o process management)
+ok -si se cierra ventana de emulated display desde zxvision_window_delete_this_window (process switcher o process management)
 no se finaliza normalmente y por tanto no se pone ventana_video_output_abierta a cero
 Lo mismo pasa con cerrar todas las ventanas
 Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
@@ -400,7 +400,7 @@ ok --implementado una putpixel cache para esa ventana y baja mucho el uso de cpu
 -- propuesta para incremento de cpu cuando hay muchas ventanas abiertas: que en memoria_overlay (cada caracter) diga si esta visible o no, cacheado,
 eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dirty_user_must_draw_contents
 
--poder hacer escalado con zoom decimal
+ok -poder hacer escalado con zoom decimal
 
 ---
 
