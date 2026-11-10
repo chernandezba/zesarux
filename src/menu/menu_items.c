@@ -20111,11 +20111,8 @@ void menu_video_output_clear_putpixel_cache(void)
 }
 
 
-void menu_video_output_alloc_putpixel_cache(void)
+void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
 {
-
-    int ancho=screen_get_window_size_width_no_zoom();
-    int alto=screen_get_window_size_height_no_zoom();
 
     //asignar si ha cambiado tamaño o si no esta asignado
     if (ancho!=menu_video_output_overlay_putpixel_cache_ancho ||
@@ -20149,6 +20146,7 @@ void menu_video_output_alloc_putpixel_cache(void)
     }
 }
 
+//Si se permite render que encaje la pantalla dentro de la ventana, por tanto escalado zoom total
 int menu_video_output_zoom_fit=0;
 
 void menu_video_output_overlay(void)
@@ -20175,19 +20173,24 @@ void menu_video_output_overlay(void)
         //Efectos especiales (FX)
         puntero=screen_rainbow_effects(puntero,ancho,alto);
 
-        menu_video_output_alloc_putpixel_cache();
 
-        if (menu_video_output_window->dirty_user_must_draw_contents) {
-            printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
-            menu_video_output_clear_putpixel_cache();
-            menu_video_output_window->dirty_user_must_draw_contents=0;
-        }
 
-        z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
+
 
         if (menu_video_output_zoom_fit) {
             int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
             int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
+
+
+            menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
+
+            if (menu_video_output_window->dirty_user_must_draw_contents) {
+                printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                menu_video_output_clear_putpixel_cache();
+                menu_video_output_window->dirty_user_must_draw_contents=0;
+            }
+
+            z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
 
             for (y=0;y<alto_ventana;y++) {
                 int y_origen=(y*alto)/alto_ventana;
@@ -20199,9 +20202,12 @@ void menu_video_output_overlay(void)
 
                         int offset_origen=y_origen*ancho+x_origen;
                         z80_int color=puntero[offset_origen];
-                        if (color!=p_putpixel_cache[offset_origen]) {
+
+                        int offset_putpixel_cache=y*ancho_ventana+x;
+
+                        if (color!=p_putpixel_cache[offset_putpixel_cache]) {
                             zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
-                            p_putpixel_cache[offset_origen]=color;
+                            p_putpixel_cache[offset_putpixel_cache]=color;
                         }
 
                         //p_putpixel_cache++;
@@ -20212,6 +20218,16 @@ void menu_video_output_overlay(void)
         }
 
         else {
+
+            menu_video_output_alloc_putpixel_cache(ancho,alto);
+
+            if (menu_video_output_window->dirty_user_must_draw_contents) {
+                printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                menu_video_output_clear_putpixel_cache();
+                menu_video_output_window->dirty_user_must_draw_contents=0;
+            }
+
+            z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
 
             for (y=0;y<alto;y++) {
                 for (x=0;x<ancho;x++) {
