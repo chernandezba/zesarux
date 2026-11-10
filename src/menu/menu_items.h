@@ -68,6 +68,8 @@ extern int ventana_video_output_esta_abierta(void);
 extern int ventana_video_output_abierta;
 extern int ventana_video_output_activa;
 
+extern z80_bit menu_video_output_zoom_fit;
+
 extern void menu_zxdesktop_trash_empty(MENU_ITEM_PARAMETERS);
 
 extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);

@@ -3097,6 +3097,14 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_window_settings,"If the emulated display is docked to top-left corner or is rendered on a window");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
+        if (ventana_abierta) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Allow scale zoom","Permitir zoom escalado","Permetre zoom escalat");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(menu_video_output_zoom_fit.v ? 'X' : ' '));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&menu_video_output_zoom_fit);
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+        }
+
 
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,

@@ -20147,7 +20147,7 @@ void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
 }
 
 //Si se permite render que encaje la pantalla dentro de la ventana, por tanto escalado zoom total
-int menu_video_output_zoom_fit=0;
+z80_bit menu_video_output_zoom_fit={0};
 
 void menu_video_output_overlay(void)
 {
@@ -20177,7 +20177,7 @@ void menu_video_output_overlay(void)
 
 
 
-        if (menu_video_output_zoom_fit) {
+        if (menu_video_output_zoom_fit.v) {
             int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
             int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
 
