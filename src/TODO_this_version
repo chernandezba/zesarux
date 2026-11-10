@@ -390,7 +390,8 @@ Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
 
 -sin zxdesktop y con ventana emulated display activa, que ponemos en el fondo ? o no permitimos emulated display window si el zx desktop no esta activado?
 
--al iniciar ZEsarUX, que de por validos iconos en zona de pantalla emulada si ventana emulated display esta abierta
+ok-al iniciar ZEsarUX, que de por validos iconos en zona de pantalla emulada si ventana emulated display esta abierta
+-al iniciar ZEsarUX, autoordenar iconos, que empiece por esquina sup-izq si ventana emulated display se ha restaurado al inicio
 
 -si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
 
@@ -406,7 +407,7 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 -en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
 
 
-
+-snapshot zsf que guarde rainbow buffer?quiza es demasiado espacio
 
 
 

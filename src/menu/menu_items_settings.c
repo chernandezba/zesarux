@@ -3072,16 +3072,6 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
-
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_setting_emulated_display,NULL,
-            "Emulated Display","Pantalla emulada","Pantalla emulada");
-
-        //menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
-        //    "Emulated Display","Pantalla emulada","Pantalla emulada");
-
-
-        menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
-
         //Buscamos la ventana asi en vez de usar ventana_video_output_esta_abierta() porque si se ha cerrado la ventana
         //desde process switch por ejemplo, la variable de cierre ventana_video_output_abierta no se ha actualizado
         int ventana_abierta=0;
@@ -3090,7 +3080,9 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
         if (ventana_buscada!=NULL) ventana_abierta=1;
 
-
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_setting_emulated_display,NULL,
+            "Position","Posición","Posició");
+        menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
         if (ventana_abierta) {
             menu_add_item_menu_sufijo_format(array_menu_window_settings," [Windowed]");
             menu_add_item_menu_genera_ventana(array_menu_window_settings);
@@ -4133,6 +4125,10 @@ void menu_settings_windows_features(MENU_ITEM_PARAMETERS)
                 "Reopen windows on start","Reabrir ventanas al inicio","Reobrir finestres al inici");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_reopen_background_windows_on_start.v ? 'X' : ' ') );
         }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_windows_geometry,NULL,
             "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
@@ -15471,7 +15467,7 @@ void menu_zxdesktop_scrfile_mix_background(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_scrfile_scalefactor(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced_dynamic("Scale factor",&zxdesktop_draw_scrfile_scale_factor,2,+1,1,5,0);
+    menu_ventana_scanf_numero_enhanced_dynamic("Scale factor",&zxdesktop_draw_scrfile_scale_factor,3,+1,1,10,0);
 }
 
 

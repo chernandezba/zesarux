@@ -3835,7 +3835,7 @@ int parse_cmdline_options(int desde_commandline)
 
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
-                if (valor<1 || valor>5) {
+                if (valor<1 || valor>10) {
                     debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop SCR scale factor\n");
 
                 }

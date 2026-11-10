@@ -7125,8 +7125,16 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
         for (x=xinicio;x<xfinal;x++) {
 
+            int restar_inicio_x_scr=xstart_zxdesktop;
+            int ancho_disponible_scr=ancho_zxdesktop;
+
+            if (ventana_video_output_esta_abierta()) {
+                restar_inicio_x_scr=0;
+                ancho_disponible_scr=ancho_no_zxdesktop+ancho_zxdesktop;
+            }
+
             //Si mostrar en esa posicion un scrfile
-            int xrelative=x-xstart_zxdesktop;
+            int xrelative=x-restar_inicio_x_scr;
             int yrelative=y-yinicio;
 
             int mostrar_scrfile=0;
@@ -7134,7 +7142,8 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
             int color_scrfile;
 
             if (xrelative>=0) {
-                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto,filesel_ejecutandose_preview_en_zxdesktop);
+
+                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_disponible_scr,alto,filesel_ejecutandose_preview_en_zxdesktop);
 
 
                 //temporal game of life
@@ -12916,7 +12925,8 @@ int menu_center_x(void)
 
 
     //if (screen_ext_desktop_place_menu && screen_ext_desktop_enabled*scr_driver_can_ext_desktop()) {
-    if (menu_ext_desktop_enabled_place_menu()) {
+    //zx desktop y su opcion pero sin ventana emulated display abierta
+    if (menu_ext_desktop_enabled_place_menu() && !ventana_video_output_esta_abierta()) {
         //Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
         return menu_get_origin_x_zxdesktop_aux(2);
     }
