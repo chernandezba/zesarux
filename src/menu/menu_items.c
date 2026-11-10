@@ -20185,16 +20185,45 @@ void menu_video_output_overlay(void)
 
         z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
 
-        for (y=0;y<alto;y++) {
-            for (x=0;x<ancho;x++) {
-                int offset_origen=y*ancho+x;
-                z80_int color=puntero[offset_origen];
-                if (color!=*p_putpixel_cache) {
-                    zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
-                    *p_putpixel_cache=color;
+        if (menu_video_output_zoom_fit) {
+            int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
+            int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
+
+            for (y=0;y<alto_ventana;y++) {
+                int y_origen=(y*alto)/alto_ventana;
+
+                for (x=0;x<ancho_ventana;x++) {
+                    int x_origen=(x*ancho)/ancho_ventana;
+
+                    if (x_origen<ancho && y_origen<alto) {
+
+                        int offset_origen=y_origen*ancho+x_origen;
+                        z80_int color=puntero[offset_origen];
+                        if (color!=p_putpixel_cache[offset_origen]) {
+                            zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
+                            p_putpixel_cache[offset_origen]=color;
+                        }
+
+                        //p_putpixel_cache++;
+
+                    }
                 }
-                //puntero++;
-                p_putpixel_cache++;
+            }
+        }
+
+        else {
+
+            for (y=0;y<alto;y++) {
+                for (x=0;x<ancho;x++) {
+                    int offset_origen=y*ancho+x;
+                    z80_int color=puntero[offset_origen];
+                    if (color!=*p_putpixel_cache) {
+                        zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
+                        *p_putpixel_cache=color;
+                    }
+
+                    p_putpixel_cache++;
+                }
             }
         }
 
