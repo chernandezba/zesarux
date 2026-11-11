@@ -20135,9 +20135,7 @@ void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
     }
 }
 
-//Si se permite render que encaje la pantalla dentro de la ventana, por tanto escalado zoom total
-z80_bit menu_video_output_zoom_fit={0};
-z80_bit menu_video_output_zoom_fit_keep_proportion={1};
+
 
 void menu_video_output_overlay(void)
 {
