@@ -5655,48 +5655,41 @@ void scr_refresca_pantalla_y_border_zx8081(void)
 {
 
 
-    //modo caracteres alta resolucion- rainbow - metodo nuevo
-    if (rainbow_enabled.v==1) {
+    if (rainbow_enabled.v) {
         scr_refresca_pantalla_rainbow_comun();
         return;
     }
 
-
+    else {
 
 
         //simulacion pantalla negra fast
         if (video_fast_mode_emulation.v) {
 
-                if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
-                    video_fast_mode_next_frame_black++;
-                }
+            if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
+                video_fast_mode_next_frame_black++;
+            }
 
-                if (video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
-                                debug_printf(VERBOSE_DEBUG,"Detected fast mode");
-                    //forzar refresco de border
-                                modificado_border.v=1;
-
-                        }
+            if (video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
+                debug_printf(VERBOSE_DEBUG,"Detected fast mode");
+                modificado_border.v=1;
+            }
 
         }
 
 
+        if (border_enabled.v) {
+            //ver si hay que refrescar border
+            if (modificado_border.v)
+            {
+                scr_refresca_border_zx8081();
+                modificado_border.v=0;
+            }
+        }
 
+        scr_refresca_pantalla_zx8081();
 
-                if (border_enabled.v) {
-                        //ver si hay que refrescar border
-                        if (modificado_border.v)
-                        {
-                //printf ("refrescamos border\n");
-                                scr_refresca_border_zx8081();
-                                modificado_border.v=0;
-                //sleep (1);
-                        }
-
-                }
-
-    //modo caracteres normal
-        if (rainbow_enabled.v==0) scr_refresca_pantalla_zx8081();
+    }
 
 
 }

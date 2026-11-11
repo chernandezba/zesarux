@@ -3116,8 +3116,6 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_es_avanzado(array_menu_window_settings);
             }
 
-
-
         }
 
 
