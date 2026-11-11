@@ -1828,7 +1828,7 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
 {
 //      printf ("Refresco border\n");
 
-    if (ventana_video_output_esta_abierta()) return;
+    //if (ventana_video_output_esta_abierta()) return;
 
     int x,y;
 
@@ -11759,7 +11759,6 @@ void screen_repinta_pantalla_z88(struct s_z88_return_character_atributes *z88_ca
 //Redibujado de pantalla para jupiter ace en entorno grafico (y para curses)
 void scr_refresca_pantalla_ace(void)
 {
-    if (ventana_video_output_esta_abierta()) return;
 
     //La pantalla del jupiter ACE esta en la direccion 2400H, ocupa 32*24=768 bytes
     //La tabla de caracteres esta en la direccion 2C00H, los primeros 32 bytes son UDG y graficos predefinidos
