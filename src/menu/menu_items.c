@@ -20136,6 +20136,9 @@ void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
 }
 
 
+//Ultima maquina para ajustar tamaño si conviene
+int menu_video_output_last_machine=-1;
+
 
 void menu_video_output_overlay(void)
 {
@@ -20148,8 +20151,9 @@ void menu_video_output_overlay(void)
 
     if (rainbow_enabled.v) {
 
+        int forzar_redibujado=0;
 
-        int offset_x=menu_char_width;
+        int offset_x=1*menu_char_width;
 
         int x,y,ancho,alto;
         ancho=get_total_ancho_rainbow();
@@ -20157,6 +20161,32 @@ void menu_video_output_overlay(void)
         z80_int *puntero;
         puntero=rainbow_buffer;
 
+        if (menu_video_output_last_machine!=-1) {
+
+            if (menu_video_output_last_machine!=current_machine_type) {
+                //redimensionar ventana al cambiar
+                //TODO: que esto se pueda desactivar con un setting
+                int ancho_necesario=ancho/menu_char_width;
+                int alto_necesario=alto/menu_char_height;
+
+                //en maquinas con doble resolucion, reducir pantalla a la mitad
+                if (menu_gui_zoom>1) {
+                    ancho_necesario /=2;
+                    alto_necesario /=2;
+                    setting_emulated_display_win_zoom_fit.v=1;
+                }
+
+
+                zxvision_set_total_width(menu_video_output_window,ancho_necesario);
+                zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
+                zxvision_set_total_height(menu_video_output_window,alto_necesario);
+                zxvision_set_visible_height(menu_video_output_window,alto_necesario+2);
+                forzar_redibujado=1;
+            }
+
+        }
+
+        menu_video_output_last_machine=current_machine_type;
 
         //Efectos especiales (FX)
         puntero=screen_rainbow_effects(puntero,ancho,alto);
@@ -20191,7 +20221,7 @@ void menu_video_output_overlay(void)
 
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
 
-            if (menu_video_output_window->dirty_user_must_draw_contents) {
+            if (menu_video_output_window->dirty_user_must_draw_contents || forzar_redibujado) {
                 printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
@@ -20228,7 +20258,7 @@ void menu_video_output_overlay(void)
 
             menu_video_output_alloc_putpixel_cache(ancho,alto);
 
-            if (menu_video_output_window->dirty_user_must_draw_contents) {
+            if (menu_video_output_window->dirty_user_must_draw_contents || forzar_redibujado) {
                 printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
