@@ -3043,7 +3043,7 @@ void scrcocoa_refresca_pantalla(void)
     }
 
     else if (MACHINE_IS_Z88) {
-            screen_z88_refresca_pantalla();
+        screen_z88_refresca_pantalla();
     }
 
     else if (MACHINE_IS_ACE) {

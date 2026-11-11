@@ -406,6 +406,9 @@ ok -poder hacer escalado con zoom decimal
 
 -gestion pulsaciones con el raton en la zona donde se ubica Docked display
 
+-maquinas no soportadas:
+*jupiter ace: no tiene render real video
+
 ---
 
 -en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
