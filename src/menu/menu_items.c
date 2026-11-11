@@ -20174,8 +20174,6 @@ void menu_video_output_overlay(void)
                     int ancho_necesario=(ancho+ancho_caracter-1)/ancho_caracter;
                     int alto_necesario=(alto+alto_caracter-1)/alto_caracter;
 
-                    if (menu_gui_zoom>1) setting_emulated_display_win_zoom_fit.v=1;
-
 
                     zxvision_set_total_width(menu_video_output_window,ancho_necesario);
                     zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
