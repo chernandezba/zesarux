@@ -20172,8 +20172,10 @@ void menu_video_output_overlay(void)
 
                 //Ejemplo: una imagen de 400x200 pasa a 300 de alto. Para conservar su forma,
                 //el ancho también crece en la misma medida: 400*300/200=600.
-                //El if comprueba si ese ancho de 600 cabe en la ventana. Multiplicamos ambos
-                //lados por alto para hacer la comparación sin división.
+                //El if comprueba si ese ancho de 600 cabe en la ventana. Con división sería:
+                //ancho_disponible > alto_disponible*ancho/alto.
+                //La división entre enteros pierde los decimales; por eso multiplicamos ambos
+                //lados por alto y comparamos ancho_disponible*alto > alto_disponible*ancho.
                 if (ancho_disponible*alto>alto_disponible*ancho) {
                     ancho_ventana=alto_disponible*ancho/alto;
                 }
