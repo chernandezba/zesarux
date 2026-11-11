@@ -20139,6 +20139,7 @@ void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
 //Ultima maquina para ajustar tamaño si conviene
 int menu_video_output_last_machine=-1;
 
+int menu_video_output_forzar_redibujado_frames=0;
 
 void menu_video_output_overlay(void)
 {
@@ -20151,7 +20152,7 @@ void menu_video_output_overlay(void)
 
     if (rainbow_enabled.v) {
 
-        int forzar_redibujado=0;
+
 
         int offset_x=1*menu_char_width;
 
@@ -20181,7 +20182,10 @@ void menu_video_output_overlay(void)
                 zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
                 zxvision_set_total_height(menu_video_output_window,alto_necesario);
                 zxvision_set_visible_height(menu_video_output_window,alto_necesario+2);
-                forzar_redibujado=1;
+                //al cambiar tamaño tenemos que forzar redibujado en el siguiente frame tambien
+                //pues tiene que salir de aqui y hacer overlay de video, donde se renderizara el fondo en el color por defecto de la ventana
+                //por tanto decimos que 2
+                menu_video_output_forzar_redibujado_frames=2;
             }
 
         }
@@ -20221,7 +20225,7 @@ void menu_video_output_overlay(void)
 
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
 
-            if (menu_video_output_window->dirty_user_must_draw_contents || forzar_redibujado) {
+            if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
                 printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
@@ -20258,7 +20262,7 @@ void menu_video_output_overlay(void)
 
             menu_video_output_alloc_putpixel_cache(ancho,alto);
 
-            if (menu_video_output_window->dirty_user_must_draw_contents || forzar_redibujado) {
+            if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
                 printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
@@ -20287,6 +20291,8 @@ void menu_video_output_overlay(void)
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_video_output_window);
+
+    if (menu_video_output_forzar_redibujado_frames>0) menu_video_output_forzar_redibujado_frames--;
 
 }
 
