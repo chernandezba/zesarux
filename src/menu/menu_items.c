@@ -20346,12 +20346,13 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_video_output_overlay);
 
-
-    //Si se acaba de hacer activa, refrescar el zx desktop para que se vea que ya no está la pantalla emulada en modo Docked
-    if (!ventana_video_output_abierta) {
-        ventana_video_output_abierta=1;
-        menu_draw_ext_desktop();
+    if (rainbow_enabled.v==0) {
+        enable_rainbow();
     }
+
+    int antes_ventana_video_output_abierta=ventana_video_output_abierta;
+
+    ventana_video_output_abierta=1;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -20361,11 +20362,18 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             return;
     }
 
+    //Si se acaba de hacer activa, refrescar el zx desktop para que se vea que ya no está la pantalla emulada en modo Docked
+    if (!antes_ventana_video_output_abierta) {
+        menu_draw_ext_desktop();
+    }
+
     ventana_video_output_activa=1;
 
+    /*
     if (rainbow_enabled.v==0) {
         enable_rainbow();
     }
+    */
 
 
     do {

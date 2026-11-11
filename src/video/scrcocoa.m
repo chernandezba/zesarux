@@ -3051,7 +3051,7 @@ void scrcocoa_refresca_pantalla(void)
     }
 
     else if (MACHINE_IS_CPC) {
-            scr_refresca_pantalla_y_border_cpc();
+        scr_refresca_pantalla_y_border_cpc();
     }
 
     else if (MACHINE_IS_PCW) {
@@ -3065,7 +3065,6 @@ void scrcocoa_refresca_pantalla(void)
     else if (MACHINE_IS_QL) {
         scr_refresca_pantalla_y_border_ql();
     }
-
 
     else if (MACHINE_IS_MK14) {
         scr_refresca_pantalla_y_border_mk14();
