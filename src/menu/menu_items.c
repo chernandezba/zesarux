@@ -20166,7 +20166,7 @@ void menu_video_output_overlay(void)
             int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
             int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
 
-            if (menu_video_output_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
+            if (setting_emulated_display_win_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
                 int ancho_disponible=ancho_ventana;
                 int alto_disponible=alto_ventana;
 

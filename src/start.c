@@ -6594,7 +6594,7 @@ int parse_cmdline_options(int desde_commandline)
             }
 
             else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-no-proportion")) {
-                menu_video_output_zoom_fit_keep_proportion.v=0;
+                setting_emulated_display_win_zoom_fit_keep_proportion.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-one-row")) {

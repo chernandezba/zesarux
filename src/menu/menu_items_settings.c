@@ -3109,8 +3109,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             if (menu_video_output_zoom_fit.v) {
                 menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
                     "Keep proportions","Mantener proporciones","Mantenir proporcions");
-                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(menu_video_output_zoom_fit_keep_proportion.v ? 'X' : ' '));
-                menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&menu_video_output_zoom_fit_keep_proportion);
+                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(setting_emulated_display_win_zoom_fit_keep_proportion.v ? 'X' : ' '));
+                menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&setting_emulated_display_win_zoom_fit_keep_proportion);
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Keep proportions on the emulated display when fit image to window");
                 menu_add_item_menu_ayuda(array_menu_window_settings,"Keep proportions on the emulated display when fit image to window");
                 menu_add_item_menu_es_avanzado(array_menu_window_settings);
