@@ -20154,7 +20154,7 @@ void menu_video_output_overlay(void)
 
 
 
-        int offset_x=1*menu_char_width;
+        int offset_x=menu_char_width*menu_gui_zoom;
 
         int x,y,ancho,alto;
         ancho=get_total_ancho_rainbow();
@@ -20169,15 +20169,12 @@ void menu_video_output_overlay(void)
                 if (menu_video_output_last_machine!=current_machine_type) {
                     //redimensionar ventana al cambiar
                     //TODO: que esto se pueda desactivar con un setting
-                    int ancho_necesario=ancho/menu_char_width;
-                    int alto_necesario=alto/menu_char_height;
+                    int ancho_caracter=menu_char_width*menu_gui_zoom;
+                    int alto_caracter=menu_char_height*menu_gui_zoom;
+                    int ancho_necesario=(ancho+ancho_caracter-1)/ancho_caracter;
+                    int alto_necesario=(alto+alto_caracter-1)/alto_caracter;
 
-                    //en maquinas con doble resolucion, reducir pantalla a la mitad, aunque esto pierde detalle en la imagen
-                    if (menu_gui_zoom>1) {
-                        ancho_necesario /=2;
-                        alto_necesario /=2;
-                        setting_emulated_display_win_zoom_fit.v=1;
-                    }
+                    if (menu_gui_zoom>1) setting_emulated_display_win_zoom_fit.v=1;
 
 
                     zxvision_set_total_width(menu_video_output_window,ancho_necesario);
@@ -20200,8 +20197,8 @@ void menu_video_output_overlay(void)
 
 
         if (setting_emulated_display_win_zoom_fit.v) {
-            int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width-offset_x;
-            int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height;
+            int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width*menu_gui_zoom-offset_x;
+            int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height*menu_gui_zoom;
 
             if (setting_emulated_display_win_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
                 int ancho_disponible=ancho_ventana;
@@ -20250,7 +20247,7 @@ void menu_video_output_overlay(void)
                         int offset_putpixel_cache=y*ancho_ventana+x;
 
                         if (color!=p_putpixel_cache[offset_putpixel_cache]) {
-                            zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
+                            zxvision_putpixel_no_menu_gui_zoom(menu_video_output_window,x+offset_x,y,color);
                             p_putpixel_cache[offset_putpixel_cache]=color;
                         }
 
@@ -20278,7 +20275,7 @@ void menu_video_output_overlay(void)
                     int offset_origen=y*ancho+x;
                     z80_int color=puntero[offset_origen];
                     if (color!=*p_putpixel_cache) {
-                        zxvision_putpixel(menu_video_output_window,x+offset_x,y,color);
+                        zxvision_putpixel_no_menu_gui_zoom(menu_video_output_window,x+offset_x,y,color);
                         *p_putpixel_cache=color;
                     }
 

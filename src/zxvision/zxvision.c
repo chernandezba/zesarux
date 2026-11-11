@@ -16046,6 +16046,45 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
     }
 }
 
+//Dibuja un pixel en la capa de menu sin ampliar el pixel por menu_gui_zoom.
+//w es la ventana; x e y son pixeles relativos a su contenido, ya expresados
+//en la escala de menu_gui_zoom; color es el indice de la paleta. El zoom
+//general zoom_x/zoom_y se aplica al escribir en la capa de menu.
+void zxvision_putpixel_no_menu_gui_zoom(zxvision_window *w,int x,int y,int color)
+{
+    //Tamanyo fisico de cada celda de texto de la interfaz, antes de zoom_x/zoom_y.
+    int ancho_caracter=menu_char_width*menu_gui_zoom;
+    int alto_caracter=menu_char_height*menu_gui_zoom;
+
+    //Esquina superior izquierda del contenido; la fila del titulo queda arriba.
+    int inicio_x=w->x*ancho_caracter;
+    int inicio_y=(w->y+1)*alto_caracter;
+
+    //Limites exclusivos del contenido visible: se excluyen la barra de scroll
+    //derecha, cuando existe, y las filas del titulo y del margen inferior.
+    int final_x=inicio_x+(w->visible_width-zxvision_get_minus_width_byscrollvbar(w))*ancho_caracter;
+    int final_y=inicio_y+(w->visible_height-2)*alto_caracter;
+
+    //Posicion relativa tras descontar el desplazamiento de scroll de la ventana.
+    int x_con_offset=x-w->offset_x*ancho_caracter;
+    int y_con_offset=y-w->offset_y*alto_caracter;
+
+    //Coordenadas absolutas del pixel en la capa de menu, antes de zoom_x/zoom_y.
+    int xfinal=inicio_x+x_con_offset;
+    int yfinal=inicio_y+y_con_offset;
+
+    if (xfinal>=inicio_x && xfinal<final_x && yfinal>=inicio_y && yfinal<final_y) {
+        //La comprobacion de ventanas superiores usa celdas de texto, no pixeles.
+        if (!zxvision_coords_in_superior_windows(w,xfinal/ancho_caracter,yfinal/alto_caracter)) {
+            //El factor 1 evita ampliar otra vez por menu_gui_zoom.
+            scr_putpixel_gui_zoom(xfinal,yfinal,color,1);
+        }
+    }
+    else {
+        zxvision_check_print_beyond_limits(w,x_con_offset/ancho_caracter,y_con_offset/alto_caracter);
+    }
+}
+
 
 //Hacer putpixel sin tener en cuenta zoom_x ni y. Usado en help keyboard
 void zxvision_putpixel_no_zoom(zxvision_window *w,int x,int y,int color)
