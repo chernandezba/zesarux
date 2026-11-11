@@ -12914,6 +12914,10 @@ int menu_origin_x(void)
 
     if (screen_ext_desktop_place_menu && screen_ext_desktop_enabled*scr_driver_can_ext_desktop()) {
         //Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
+
+        //Si esta ventana de emulated display, este origen es x=0 o sea toda la ventana de ZEsarUX disponible
+        if (ventana_video_output_esta_abierta()) return 0;
+
         return menu_get_origin_x_zxdesktop_aux(1);
     }
 
@@ -12935,6 +12939,10 @@ int menu_center_x(void)
     //zx desktop y su opcion pero sin ventana emulated display abierta
     if (menu_ext_desktop_enabled_place_menu() && !ventana_video_output_esta_abierta()) {
         //Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
+
+        //Si esta ventana de emulated display, tenemos en cuenta toda la ventana de ZEsarUX disponible
+        if (ventana_video_output_esta_abierta()) return scr_get_menu_width()/2;
+
         return menu_get_origin_x_zxdesktop_aux(2);
     }
 
@@ -17413,7 +17421,10 @@ void zxvision_handle_maximize_maximize(zxvision_window *w)
         xinicial=menu_origin_x();
         yinicial=0;
 
-        max_width=menu_get_width_characters_ext_desktop();
+        if (ventana_video_output_esta_abierta()) max_width=scr_get_menu_width();
+
+        else max_width=menu_get_width_characters_ext_desktop();
+
         max_height=scr_get_menu_height();
 
 
@@ -19951,7 +19962,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
     int ancho;
 
     //Si ZX Desktop habilitado y si los menús se abren en el ZX Desktop
-    if (menu_ext_desktop_enabled_place_menu() ) {
+    if (menu_ext_desktop_enabled_place_menu() && !ventana_video_output_esta_abierta()) {
 
         ancho=menu_get_width_characters_ext_desktop();
 
@@ -19960,7 +19971,9 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
         ancho--;
     }
 
-    else ancho=scr_get_menu_width();
+    else {
+        ancho=scr_get_menu_width();
+    }
 
     //printf ("ancho: %d\n",ancho);
 

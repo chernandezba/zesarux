@@ -1081,8 +1081,6 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=32;
             alto=18;
 
@@ -4436,8 +4434,6 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 
 
-//#define SOUND_WAVE_X (menu_origin_x()+1)
-//#define SOUND_WAVE_Y 3
 #define SOUND_WAVE_ANCHO 30
 #define SOUND_WAVE_ALTO 15
 
@@ -7306,8 +7302,6 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 
 
-//#define DEBUG_HEXDUMP_WINDOW_X (menu_origin_x() )
-//#define DEBUG_HEXDUMP_WINDOW_Y 1
 #define DEBUG_HEXDUMP_WINDOW_ANCHO 32
 #define DEBUG_HEXDUMP_WINDOW_ALTO 23
 
@@ -10308,11 +10302,9 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
 
 
 
-//#define TOTAL_PALETTE_WINDOW_X (menu_origin_x() )
-//#define TOTAL_PALETTE_WINDOW_Y 0
 #define TOTAL_PALETTE_WINDOW_ANCHO 32
 #define TOTAL_PALETTE_WINDOW_ALTO 24
-//#define TOTAL_PALETTE_COLORS_PER_WINDOW 16
+
 
 
 
@@ -11488,8 +11480,6 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
 
 
 
-//#define SPRITES_X ( menu_origin_x() )
-//#define SPRITES_Y 0
 #define SPRITES_ANCHO 32
 #define SPRITES_ALTO 14
 //#define SPRITES_ALTO_VENTANA (SPRITES_ALTO+10)
@@ -19758,7 +19748,6 @@ void menu_textadv_loc_image(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("textadvlocimage",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
 
 
             //540x201 es lo que ocupa el bmp de spectrum 48k
@@ -24376,7 +24365,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
 
 
             //540x201 es lo que ocupa el bmp de spectrum 48k
@@ -24771,8 +24759,6 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=0;
             ancho=DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH; //32;
             alto=18;
 
@@ -25171,8 +25157,6 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=33;
             alto=22;
 
@@ -25378,8 +25362,6 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=33;
             alto=22;
 
@@ -29445,17 +29427,6 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-
-
-
-
-
-
-//#define VISUALREALTAPE_X (menu_origin_x())
-//#define VISUALREALTAPE_Y 4
 #define VISUALREALTAPE_ANCHO 32
 #define VISUALREALTAPE_ALTO 20
 
