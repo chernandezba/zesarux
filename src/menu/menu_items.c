@@ -20164,28 +20164,31 @@ void menu_video_output_overlay(void)
 
         if (menu_video_output_last_machine!=-1) {
 
-            if (menu_video_output_last_machine!=current_machine_type) {
-                //redimensionar ventana al cambiar
-                //TODO: que esto se pueda desactivar con un setting
-                int ancho_necesario=ancho/menu_char_width;
-                int alto_necesario=alto/menu_char_height;
+            if (setting_emulated_display_win_autoresize.v) {
 
-                //en maquinas con doble resolucion, reducir pantalla a la mitad
-                if (menu_gui_zoom>1) {
-                    ancho_necesario /=2;
-                    alto_necesario /=2;
-                    setting_emulated_display_win_zoom_fit.v=1;
+                if (menu_video_output_last_machine!=current_machine_type) {
+                    //redimensionar ventana al cambiar
+                    //TODO: que esto se pueda desactivar con un setting
+                    int ancho_necesario=ancho/menu_char_width;
+                    int alto_necesario=alto/menu_char_height;
+
+                    //en maquinas con doble resolucion, reducir pantalla a la mitad, aunque esto pierde detalle en la imagen
+                    if (menu_gui_zoom>1) {
+                        ancho_necesario /=2;
+                        alto_necesario /=2;
+                        setting_emulated_display_win_zoom_fit.v=1;
+                    }
+
+
+                    zxvision_set_total_width(menu_video_output_window,ancho_necesario);
+                    zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
+                    zxvision_set_total_height(menu_video_output_window,alto_necesario);
+                    zxvision_set_visible_height(menu_video_output_window,alto_necesario+2);
+                    //al cambiar tamaño tenemos que forzar redibujado en el siguiente frame tambien
+                    //pues tiene que salir de aqui y hacer overlay de video, donde se renderizara el fondo en el color por defecto de la ventana
+                    //por tanto decimos que 2
+                    menu_video_output_forzar_redibujado_frames=2;
                 }
-
-
-                zxvision_set_total_width(menu_video_output_window,ancho_necesario);
-                zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
-                zxvision_set_total_height(menu_video_output_window,alto_necesario);
-                zxvision_set_visible_height(menu_video_output_window,alto_necesario+2);
-                //al cambiar tamaño tenemos que forzar redibujado en el siguiente frame tambien
-                //pues tiene que salir de aqui y hacer overlay de video, donde se renderizara el fondo en el color por defecto de la ventana
-                //por tanto decimos que 2
-                menu_video_output_forzar_redibujado_frames=2;
             }
 
         }

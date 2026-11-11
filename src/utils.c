@@ -5484,6 +5484,8 @@ int util_write_configfile(void)
 
     if (setting_emulated_display_win_zoom_fit_keep_proportion.v==0)    ADD_STRING_CONFIG,"--emulated-display-win-no-proportion");
 
+    if (setting_emulated_display_win_autoresize.v)      ADD_STRING_CONFIG,"--emulated-display-win-autoresize");
+
 
     if (menu_allow_background_windows)              ADD_STRING_CONFIG,"--allow-background-windows");
 

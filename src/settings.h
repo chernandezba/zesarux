@@ -105,6 +105,7 @@ extern z80_bit msx_loading_noise_reduction;
 
 extern z80_bit setting_emulated_display_win_zoom_fit;
 extern z80_bit setting_emulated_display_win_zoom_fit_keep_proportion;
+extern z80_bit setting_emulated_display_win_autoresize;
 
 #define MACHINE_SELECTION_TYPE_BY_MANUFACTURER 0
 #define MACHINE_SELECTION_TYPE_BY_NAME 1

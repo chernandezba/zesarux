@@ -2032,6 +2032,7 @@ printf("\n"
         "--process-switcher-no-one-row            Do not limit process switcher to only one row of icons\n"
         "--emulated-display-win-fit-image         Scale the emulated display (when windowed mode) to fill its window\n"
         "--emulated-display-win-no-proportion     Do not keep proportions on the emulated display (when windowed mode) when fit image to window\n"
+        "--emulated-display-win-autoresize        Autoresize the emulated display when changing machine\n"
         "--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
         );
@@ -6595,6 +6596,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-no-proportion")) {
                 setting_emulated_display_win_zoom_fit_keep_proportion.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-autoresize")) {
+                setting_emulated_display_win_autoresize.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-one-row")) {

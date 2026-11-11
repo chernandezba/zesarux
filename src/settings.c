@@ -389,6 +389,9 @@ z80_bit setting_emulated_display_win_zoom_fit={0};
 //Y si se mantienen las proporciones ancho/alto
 z80_bit setting_emulated_display_win_zoom_fit_keep_proportion={1};
 
+//autoredimensionar esa ventana al cambiar de maquina
+z80_bit setting_emulated_display_win_autoresize={0};
+
 
 //Logo de decimo aniversario.
 //En version X (10.10) estaba habilitado por defecto

@@ -3116,6 +3116,14 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_es_avanzado(array_menu_window_settings);
             }
 
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Autoresize","Autoredimensionar","Autoredimensionar");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(setting_emulated_display_win_autoresize.v ? 'X' : ' '));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&setting_emulated_display_win_autoresize);
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autoresize the emulated display when changing machine");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autoresize the emulated display when changing machine");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
         }
 
 
