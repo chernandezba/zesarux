@@ -103,7 +103,7 @@ extern z80_bit msx_loading_stripes;
 
 extern z80_bit msx_loading_noise_reduction;
 
-extern z80_bit menu_video_output_zoom_fit;
+extern z80_bit setting_emulated_display_win_zoom_fit;
 extern z80_bit setting_emulated_display_win_zoom_fit_keep_proportion;
 
 #define MACHINE_SELECTION_TYPE_BY_MANUFACTURER 0

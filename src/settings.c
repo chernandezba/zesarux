@@ -384,7 +384,7 @@ z80_bit setting_process_switcher_force_left_bottom={1};
 z80_bit setting_process_switcher_only_one_row={1};
 
 //Si se permite render que encaje la pantalla dentro de la ventana, por tanto escalado zoom total
-z80_bit menu_video_output_zoom_fit={0};
+z80_bit setting_emulated_display_win_zoom_fit={0};
 
 //Y si se mantienen las proporciones ancho/alto
 z80_bit setting_emulated_display_win_zoom_fit_keep_proportion={1};

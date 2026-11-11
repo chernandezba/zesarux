@@ -6590,7 +6590,7 @@ int parse_cmdline_options(int desde_commandline)
             }
 
             else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-fit-image")) {
-                menu_video_output_zoom_fit.v=1;
+                setting_emulated_display_win_zoom_fit.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-no-proportion")) {

@@ -5480,7 +5480,7 @@ int util_write_configfile(void)
 
     if (setting_process_switcher_only_one_row.v==0)       ADD_STRING_CONFIG,"--process-switcher-no-one-row");
 
-    if (menu_video_output_zoom_fit.v)               ADD_STRING_CONFIG,"--emulated-display-win-fit-image");
+    if (setting_emulated_display_win_zoom_fit.v)               ADD_STRING_CONFIG,"--emulated-display-win-fit-image");
 
     if (setting_emulated_display_win_zoom_fit_keep_proportion.v==0)    ADD_STRING_CONFIG,"--emulated-display-win-no-proportion");
 
