@@ -2030,6 +2030,8 @@ printf("\n"
         "--process-switcher-always-visible        Process switcher is always visible (on top of all windows)\n"
         "--process-switcher-no-left-bottom        Do not force process switcher to be located at left-bottom part of the display\n"
         "--process-switcher-no-one-row            Do not limit process switcher to only one row of icons\n"
+        "--emulated-display-win-fit-image         Scale the emulated display (when windowed mode) to fill its window\n"
+        "--emulated-display-win-no-proportion     Do not keep proportions on the emulated display (when windowed mode) when fit image to window\n"
         "--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
         );
@@ -6585,6 +6587,14 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-left-bottom")) {
                 setting_process_switcher_force_left_bottom.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-fit-image")) {
+                menu_video_output_zoom_fit.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-no-proportion")) {
+                menu_video_output_zoom_fit_keep_proportion.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-one-row")) {
