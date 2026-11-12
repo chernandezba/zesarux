@@ -9859,11 +9859,11 @@ Bit 4 BLU1 most  significant bit of blue.
 Bit 5 RED1 most  significant bit of red.
 Bit 6 GRN1 most  significant bit of green.
                 */
-        int brillo=127*  ((i&8)>>3);
-
-        b=42*(  (i     &1) | ((i>>3)&2))   +brillo;
-        r=42*(  ((i>>1)&1) | ((i>>4)&2))   +brillo;
-        g=42*(  ((i>>2)&1) | ((i>>5)&2))   +brillo;
+        // Cada componente tiene siete niveles: bit alto=4, bajo=2 y BRIGHT=1.
+        int brillo=(i>>3)&1;
+        b=((((i>>4)&1)*4+(i&1)*2+brillo)*255+3)/7;
+        r=((((i>>5)&1)*4+((i>>1)&1)*2+brillo)*255+3)/7;
+        g=((((i>>6)&1)*4+((i>>2)&1)*2+brillo)*255+3)/7;
 
 
 

@@ -112,6 +112,7 @@ Fixed floppy disk 3" CF2 emulation (used on +3, CPC, PCW):
 Fixed Sam Coupe video hardware emulation:
 - Added line interrupts and corrected line and frame interrupt status pulses
 - Added HPEN vertical scanline reads
+- Corrected the 128-colour palette intensity levels
 
 Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
 Fixed MEMPTR after Z80 return instructions

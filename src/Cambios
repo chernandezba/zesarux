@@ -112,6 +112,7 @@ Corregida emulación del floppy disk 3" CF2 (usado en +3, CPC, PCW):
 Corregida la emulación del hardware de vídeo de Sam Coupe:
 - Agregadas las interrupciones de línea y corregidos los pulsos de estado de las interrupciones de línea y fotograma
 - Agregada la lectura de la línea vertical mediante HPEN
+- Corregidos los niveles de intensidad de la paleta de 128 colores
 
 Corregidos timings para TK90X y TK95 modelos de 50 hz y 60 hz
 Corregido MEMPTR despues de instrucciones return de Z80
