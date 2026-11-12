@@ -3741,11 +3741,25 @@ z80_byte pd765_read_result_command_read_data(void)
                 //pd765_input_parameter_r++;
                 //pd765_read_command_searching_parameter_r++;
 
-                //Marcar fin de cilindro solo si se llegó al sector EOT de una lectura
-                //de una cara. Con MT activo puede continuar en la otra cara; READ TRACK
-                //usa EOT como cantidad de sectores, no como último identificador.
+                // Completar EOT no implica por sí solo fin de cilindro.
+                // Algunos discos protegidos usan un C distinto del cilindro físico
+                // y comprueban EN cuando no existe el ID lógico siguiente.
                 int end_of_cylinder=condition_end_sector && !pd765_input_parameter_mt &&
-                    pd765_command_received!=PD765_COMMAND_READ_TRACK;
+                    pd765_command_received!=PD765_COMMAND_READ_TRACK &&
+                    pd765_input_parameter_c!=pd765_pcn;
+                if (end_of_cylinder) {
+                    int total=dsk_get_total_sectors_track(pd765_pcn,0);
+                    for (int sector=0;sector<total;sector++) {
+                        z80_byte c,h,r,n;
+                        dsk_get_chrn(pd765_pcn,0,sector,&c,&h,&r,&n);
+                        if (pd765_input_parameter_eot!=255 &&
+                            c==pd765_input_parameter_c && h==pd765_input_parameter_h &&
+                            r==pd765_input_parameter_eot+1) {
+                            end_of_cylinder=0;
+                            break;
+                        }
+                    }
+                }
                 pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,end_of_cylinder);
 
 
