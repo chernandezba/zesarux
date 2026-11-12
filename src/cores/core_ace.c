@@ -355,6 +355,8 @@ void cpu_core_loop_ace(void)
     //normalmente
     if ( (t_estados/screen_testados_linea)>t_scanline  ) {
 
+        if (rainbow_enabled.v) screen_store_scanline_rainbow_ace();
+
         t_scanline++;
 
 

@@ -11781,9 +11781,50 @@ void scr_refresca_pantalla_ace(void)
 }
 
 
+//Guarda la línea actual del Jupiter Ace en el búfer rainbow.
+void screen_store_scanline_rainbow_ace(void)
+{
+    // El contador del core incluye las líneas invisibles anteriores al borde.
+    int visible_y=t_scanline-screen_invisible_borde_superior;
+    int display_y=visible_y-screen_borde_superior;
+    int output_y=border_enabled.v ? visible_y : display_y;
+    int width=get_total_ancho_rainbow();
+    int height=get_total_alto_rainbow();
+    int left=border_enabled.v ? screen_total_borde_izquierdo : 0;
+    int x,bit;
+    z80_int *row;
+
+    if (output_y<0 || output_y>=height) return;
+
+    // El borde del Ace es siempre negro.
+    row=&rainbow_buffer[output_y*width];
+    for (x=0;x<width;x++) row[x]=0;
+
+    if (display_y<0 || display_y>=192) return;
+
+    // Cada scanline selecciona una fila del glifo y 32 códigos de carácter.
+    int character_row=display_y/8;
+    int glyph_row=display_y&7;
+    for (x=0;x<32;x++) {
+        z80_byte character=peek_byte_no_time(0x2400+character_row*32+x);
+        z80_byte pixels=memoria_spectrum[0x2c00+(character&127)*8+glyph_row];
+
+        // En Ace los caracteres normales se muestran invertidos.
+        if (!(character&128)) pixels^=255;
+        for (bit=0;bit<8;bit++) {
+            row[left+x*8+bit]=(pixels&128) ? 0 : 15;
+            pixels<<=1;
+        }
+    }
+}
+
 //Redibujado de border para jupiter ace en entorno grafico
 void scr_refresca_pantalla_y_border_ace(void)
 {
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_rainbow_comun();
+        return;
+    }
 
 
 

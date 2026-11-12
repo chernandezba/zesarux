@@ -483,6 +483,7 @@ extern void screen_z88_refresca_pantalla_comun(void);
 extern void screen_z88_draw_lower_screen(void);
 
 extern void scr_refresca_pantalla_y_border_ace(void);
+extern void screen_store_scanline_rainbow_ace(void);
 
 extern void screen_text_repinta_pantalla_ace(void);
 
