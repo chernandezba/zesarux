@@ -109,7 +109,7 @@ Fixed floppy disk 3" CF2 emulation (used on +3, CPC, PCW):
 - Fixed Speedlock weak sector reads (CRC error) in +3 EDSK images
 - Fixed Speedlock protected disk loading on Spectrum +3
 
-Fixed Sam Coupe video hardware emulation:
+Fixed Sam Coupe emulation:
 - Added line interrupts and corrected line and frame interrupt status pulses
 - Added HPEN vertical scanline reads
 - Corrected the 128-colour palette intensity levels
