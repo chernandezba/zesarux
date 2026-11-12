@@ -109,6 +109,10 @@ Corregida emulación del floppy disk 3" CF2 (usado en +3, CPC, PCW):
 - Corregido PD765 Speedlock lecturas de sectores débiles (CRC error) en imágenes EDSK de +3
 - Corregido carga de discos protegidos con Speedlock en Spectrum +3
 
+Corregida la emulación del hardware de vídeo de Sam Coupe:
+- Agregadas las interrupciones de línea y corregidos los pulsos de estado de las interrupciones de línea y fotograma
+- Agregada la lectura de la línea vertical mediante HPEN
+
 Corregidos timings para TK90X y TK95 modelos de 50 hz y 60 hz
 Corregido MEMPTR despues de instrucciones return de Z80
 Corregido lecturas de bus flotante en Spectrum 48K y 128K
