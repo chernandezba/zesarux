@@ -287,6 +287,7 @@ extern char *bitmap_button_ext_desktop_my_machine_svi328[];
 extern char *bitmap_button_ext_desktop_my_machine_timex_ts2068[];
 extern char *bitmap_button_ext_desktop_my_machine_timex_tc2048[];
 extern char *bitmap_button_ext_desktop_my_machine_atmturbo1[];
+extern char *bitmap_button_ext_desktop_my_machine_atmturbo2p[];
 extern char *bitmap_button_ext_desktop_my_machine_z88[];
 extern char *bitmap_button_ext_desktop_my_machine_zxuno[];
 extern char *bitmap_button_ext_desktop_my_machine_tsconf[];

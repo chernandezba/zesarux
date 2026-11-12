@@ -7285,6 +7285,36 @@ char *bitmap_button_ext_desktop_my_machine_atmturbo1[EXT_DESKTOP_BUTTONS_ANCHO]=
     " wwwwwwwwwwwwwwwwwwwwwww  ", //25
 };
 
+char *bitmap_button_ext_desktop_my_machine_atmturbo2p[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xwxwxwxwxxwwwwxwwwwxwwwwxx",
+    "xwxwxwxwxxxxxxxxxxxxxxxxxx",
+    "xwxwxwxwxxwwwwxwwwwxwwwwxx",	//10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwwwwxwwwwxwwwwxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxrxxxxrx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwwxWWxWWxWWxrrrx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwxwwxWWxWWxWWxwx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxwx",    //20
+    "xxxxxxxxxxwwxWWxWWxWWxwwwx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwxWWxWWWWxWWxwwx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
 
 //Icono "My machine" para Z88
 char *bitmap_button_ext_desktop_my_machine_z88[EXT_DESKTOP_BUTTONS_ANCHO]={

@@ -14358,8 +14358,8 @@ struct s_machines_short_names_id machines_short_names_id[]={
 
    {"ATM1",MACHINE_ID_ATM_TURBO1,bitmap_button_ext_desktop_my_machine_atmturbo1},
    {"ATM2",MACHINE_ID_ATM_TURBO2,bitmap_button_ext_desktop_my_machine_atmturbo1},
-   {"ATM2p",MACHINE_ID_ATM_TURBO2_PLUS,bitmap_button_ext_desktop_userdefined},
-   {"ATM3",MACHINE_ID_ATM_TURBO3,bitmap_button_ext_desktop_userdefined},
+   {"ATM2p",MACHINE_ID_ATM_TURBO2_PLUS,bitmap_button_ext_desktop_my_machine_atmturbo2p},
+   {"ATM3",MACHINE_ID_ATM_TURBO3,bitmap_button_ext_desktop_my_machine_atmturbo2p},
 
    {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_my_machine_didaktikgama},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
