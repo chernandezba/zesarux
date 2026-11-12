@@ -429,4 +429,7 @@ ok? -poder ver paletas de colores atm, zxevo, etc
 
 - demos para spectrums extendidos: https://www.pouet.net/prodlist.php?platform%5B%5D=ZX+Enhanced&page=1
 
--usar zxvision_putpixel_no_menu_gui_zoom para keyboard help y que maquinas con gui zoom 2 no salga teclado enorme. tener en cuenta calculo correcto del raton
+-usar nueva funcion parecida a zxvision_putpixel_no_menu_gui_zoom para keyboard help pero que no haga tampoco zoom_x ni zoom_y, no zoom de ninguna clase,
+asi teclados serian todos parecidos independientemente de si la maquina tiene gui zoom 2 o 1
+Pero luego el problema será que si queremos tener el teclado mas grande, no se podra
+Quiza habria que hacer una ventana de render de teclado que el usuario pueda redimensionar como quiera, que se amplie de manera parecida a ventana de emulated display
