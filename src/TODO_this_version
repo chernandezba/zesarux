@@ -407,10 +407,9 @@ ok -poder hacer escalado con zoom decimal
 -gestion pulsaciones con el raton en la zona donde se ubica Docked display
 
 -maquinas no soportadas:
-*jupiter ace: no tiene render real video
+
 *mk14: no tiene render real video
-*pcw: no tiene render real video
-*sam coupe: no tiene render real video
+
 
 ---
 

@@ -7312,7 +7312,7 @@ char *bitmap_button_ext_desktop_my_machine_atmturbo2p[EXT_DESKTOP_BUTTONS_ANCHO]
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxwxWWxWWWWxWWxwwx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+    "wwwwwwwwxxxxxxxxxxxxxxxxxx" 	 //25
 };
 
 

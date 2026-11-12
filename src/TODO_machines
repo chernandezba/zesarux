@@ -869,7 +869,6 @@ https://www.zxuno.com/forum/viewtopic.php?t=4091
 
 --- SAM coupe ---
 
--real video
 -Alt derecha en PC es altgr?
 -refresco en curses:
 *al pulsar esc en curses en sam se queda pulsado??
@@ -893,13 +892,12 @@ http://velesoft.speccy.cz/sam_zx128.htm
 -Emulacion de floppy
 -Beeper con real beeper no suena bien. Sin real beeper si
 -beeper con chip sonido suena mal a veces. sin beeper suena bien
--Parece que si ponemos 256 KB de memoria no lo detecta el basic
+
 -memoria contended. toda esta contenida?
 -velocidad es correcta? t-estados por linea, mhz...
 
 -rutina ascii_to_keyboard_port. la que permite enviar texto por spool o leer texto de drivers curses, stdout. Agregar simbolos?
 -emulacion real del chip de sonido (no simulacion contra el AY como hay ahora)
-
 
 
 -------------
