@@ -195,12 +195,9 @@ void core_pcw_end_scanline_stuff(void)
     //final de linea
     //copiamos contenido linea y border a buffer rainbow
 
-    /*
     if (rainbow_enabled.v==1) {
-        //printf ("render core scanline draw: %d\n",t_scanline_draw);
         screen_store_scanline_rainbow_pcw_border_and_display();
     }
-    */
 
     t_scanline_next_line();
 

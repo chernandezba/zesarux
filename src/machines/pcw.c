@@ -25,10 +25,12 @@
 #include "pcw.h"
 #include "cpu.h"
 #include "screen.h"
+#include "screen_fx.h"
 #include "debug.h"
 #include "contend.h"
 #include "joystick.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "operaciones.h"
 #include "utils.h"
 #include "audio.h"
@@ -1369,13 +1371,98 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
 
 
 
+// Guarda una línea visible de PCW, con sus dos filas de píxeles, en rainbow.
+void screen_store_scanline_rainbow_pcw_border_and_display(void)
+{
+    // La línea física incluye el borde; las primeras líneas invisibles se omiten.
+    int visible_y=t_scanline_draw-screen_invisible_borde_superior;
+    // El borde está expresado en píxeles de salida; cada scanline ocupa dos filas.
+    int source_y=visible_y-PCW_TOP_BORDER_NO_ZOOM/2;
+    int width=get_total_ancho_rainbow();
+    int height=get_total_alto_rainbow();
+    int output_y=border_enabled.v ? visible_y*2 : source_y*2;
+    int left=border_enabled.v ? PCW_LEFT_BORDER_NO_ZOOM : 0;
+    int x,bit,repeat;
+    z80_int *row;
+    z80_int *next_row;
+
+    if (output_y<0 || output_y+1>=height) return;
+
+    // El vídeo inverso afecta también al borde, como en el render normal.
+    int border_index=((pcw_port_f7_value & 0x80) && !pcw_do_not_inverse_display.v) ? 1 : 0;
+    int border_color;
+    if (pcw_video_mode==0) border_color=pcw_get_rgb_color_mode0(border_index);
+    else if (pcw_video_mode==1) border_color=pcw_get_rgb_color_mode1(border_index*3);
+    else border_color=pcw_get_rgb_color_mode2_3(border_index*15);
+
+    row=&rainbow_buffer[output_y*width];
+    next_row=row+width;
+    // El borde se escribe a la vez en las dos filas de salida.
+    for (x=0;x<width;x++) row[x]=next_row[x]=border_color;
+
+    if (source_y>=0 && source_y<256) {
+        // El roller RAM selecciona el banco y la dirección de cada línea.
+        z80_byte roller_bank=(pcw_port_f5_value>>5)&7;
+        z80_int roller_offset=(pcw_port_f5_value&31)*512;
+        z80_byte scroll=pcw_do_not_scroll.v ? 0 : pcw_port_f6_value;
+        z80_byte address_block;
+        z80_int address;
+        scr_refresca_pant_pcw_return_line_pointer(roller_bank,
+            roller_offset+((source_y+scroll)&255)*2,&address_block,&address);
+
+        for (x=0;x<720;x+=8) {
+            z80_byte value=pcw_ram_mem_table[address_block][address+x];
+            if ((pcw_port_f7_value & 0x80) && !pcw_do_not_inverse_display.v) value^=255;
+            if (!(pcw_port_f7_value & 0x40) && !pcw_always_on_display.v) value=0;
+
+            if (pcw_video_mode==3) {
+                // El primer byte contiene papel y tinta; el segundo, los ocho bits.
+                if (x&8) continue;
+                int paper=(value>>4)&15;
+                int ink=value&15;
+                z80_byte pixels=pcw_ram_mem_table[address_block][address+x+8];
+                for (bit=0;bit<8;bit++) {
+                    int color=pcw_get_rgb_color_mode2_3((pixels&128) ? ink : paper);
+                    row[left+x+bit*2]=next_row[left+x+bit*2]=color;
+                    row[left+x+bit*2+1]=next_row[left+x+bit*2+1]=color;
+                    pixels<<=1;
+                }
+            }
+            else {
+                // Los modos 1 y 2 repiten cada color dos o cuatro píxeles.
+                int bits_per_pixel=pcw_video_mode==0 ? 1 : (pcw_video_mode==1 ? 2 : 4);
+                int mask=(1<<bits_per_pixel)-1;
+                for (bit=0;bit<8;bit+=bits_per_pixel) {
+                    int index=(value>>(8-bit-bits_per_pixel))&mask;
+                    int color=pcw_video_mode==0 ? pcw_get_rgb_color_mode0(index) :
+                        (pcw_video_mode==1 ? pcw_get_rgb_color_mode1(index) : pcw_get_rgb_color_mode2_3(index));
+                    for (repeat=0;repeat<bits_per_pixel;repeat++)
+                        row[left+x+bit+repeat]=next_row[left+x+bit+repeat]=color;
+                }
+            }
+        }
+    }
+}
+
+void scr_refresca_pantalla_y_border_pcw_rainbow(void)
+{
+    if (ventana_video_output_esta_abierta()) return;
+
+    int width=get_total_ancho_rainbow();
+    int height=get_total_alto_rainbow();
+    z80_int *pixels=screen_rainbow_effects(rainbow_buffer,width,height);
+    int x,y;
+    for (y=0;y<height;y++) {
+        for (x=0;x<width;x++) scr_putpixel_zoom_rainbow(x,y,*pixels++);
+    }
+}
+
 void scr_refresca_pantalla_y_border_pcw(void)
 {
 
 
     if (rainbow_enabled.v) {
-        //TODO
-        //scr_refresca_pantalla_y_border_pcw_rainbow();
+        scr_refresca_pantalla_y_border_pcw_rainbow();
     }
     else {
         scr_refresca_pantalla_y_border_pcw_no_rainbow();

@@ -96,6 +96,7 @@ extern void pcw_interrupt_from_pd765(void);
 extern void pcw_init_colour_palette_mode(int mode);
 
 extern void scr_refresca_pantalla_y_border_pcw(void);
+extern void screen_store_scanline_rainbow_pcw_border_and_display(void);
 
 extern z80_byte pcw_bank_registers[];
 extern z80_byte pcw_port_f4_value;
