@@ -3055,7 +3055,7 @@ void scrcocoa_refresca_pantalla(void)
     }
 
     else if (MACHINE_IS_PCW) {
-            scr_refresca_pantalla_y_border_pcw();
+        scr_refresca_pantalla_y_border_pcw();
     }
 
     else if (MACHINE_IS_SAM) {

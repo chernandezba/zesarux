@@ -1613,7 +1613,7 @@ jupiterace.o: machines/jupiterace.c machines/jupiterace.h cpu.h video/screen.h d
 z88.o: machines/z88.c machines/z88.h cpu.h video/screen.h debug.h cores/core_z88.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h timer.h compileoptions.h zesarux.h
 	\$(CC) \$(CFLAGS) -c machines/z88.c
 
-cpc.o: machines/cpc.c machines/cpc.h cpu.h video/screen.h debug.h cores/core_cpc.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h soundchips/ay38912.h storage/tape.h dsk.h storage/pd765.h audio/audio_ayplayer.h video/screen_fx.h
+cpc.o: machines/cpc.c machines/cpc.h cpu.h video/screen.h debug.h cores/core_cpc.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h soundchips/ay38912.h storage/tape.h dsk.h storage/pd765.h audio/audio_ayplayer.h video/screen_fx.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c machines/cpc.c
 
 pcw.o: machines/pcw.c machines/pcw.h cpu.h video/screen.h debug.h cores/core_pcw.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h audio/audio.h dsk.h storage/pd765.h ula.h soundchips/ay38912.h settings.h

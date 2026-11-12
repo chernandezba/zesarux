@@ -1372,17 +1372,15 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
 void scr_refresca_pantalla_y_border_pcw(void)
 {
 
-    //TODO : de momento sin rainbow
-    scr_refresca_pantalla_y_border_pcw_no_rainbow();
 
-    /*
     if (rainbow_enabled.v) {
-        scr_refresca_pantalla_y_border_pcw_rainbow();
+        //TODO
+        //scr_refresca_pantalla_y_border_pcw_rainbow();
     }
     else {
         scr_refresca_pantalla_y_border_pcw_no_rainbow();
     }
-    */
+
 }
 
 int pcw_was_booting_disk_enabled=0;

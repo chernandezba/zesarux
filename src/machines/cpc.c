@@ -38,6 +38,7 @@
 #include "contend.h"
 #include "joystick.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "operaciones.h"
 #include "utils.h"
 #include "audio.h"
@@ -2027,7 +2028,8 @@ void scr_refresca_pantalla_y_border_cpc_no_rainbow(void)
 void scr_refresca_pantalla_y_border_cpc_rainbow(void)
 {
 
-
+    //Si ventana video output abierta, no renderizamos desde aqui
+    if (ventana_video_output_esta_abierta()) return;
 
 	int ancho,alto;
 
