@@ -61,10 +61,18 @@ z80_byte *sam_memory_paged[4];
 //Las 32 paginas de ram
 z80_byte *sam_ram_memory[SAM_COUPE_RAM_PAGES];
 
+z80_byte sam_read_ram_page(z80_byte page,z80_int offset)
+{
+	page &=31;
+	// La ampliación ausente no responde a las lecturas del bus.
+	if (page>sam_memoria_total_mascara) return 255;
+	return sam_ram_memory[page][offset];
+}
+
 //Las 2 paginas de rom
 z80_byte *sam_rom_memory[2];
 
-//Tipo de paginas mapeadas. 0 si ram, 1 si rom
+// Tipo de página mapeada en cada bloque de CPU: RAM, ROM o ausente.
 z80_byte sam_memory_paged_type[4];
 
 
@@ -170,8 +178,8 @@ If we write 00H to the LMPR then page 0 of the memory is allocated to section A 
 If we write 02H to the HMPR then page 2 of the memory is allocated to section C of the CPU address range. Section D is always automatically allocated one page above section C, in this case to page 3.
 */
 
-	z80_byte pagina_lmpr=sam_lmpr & sam_memoria_total_mascara;
-	z80_byte pagina_hmpr=sam_hmpr & sam_memoria_total_mascara;
+	z80_byte pagina_lmpr=sam_lmpr &31;
+	z80_byte pagina_hmpr=sam_hmpr &31;
 
 	//printf ("Sam coupe paginas: lmpr: %d hmpr: %d\n",pagina_lmpr,pagina_hmpr);
 
@@ -185,7 +193,7 @@ If we write 02H to the HMPR then page 2 of the memory is allocated to section C 
 	sam_memory_paged[0]=	sam_ram_memory[pagina0];
 	debug_sam_paginas_memoria_mapeadas[0]= pagina0;
 
-	int pagina1=(pagina_lmpr+1)&sam_memoria_total_mascara;
+	int pagina1=(pagina_lmpr+1)&31;
 	sam_memory_paged[1]=	sam_ram_memory[pagina1];
 	debug_sam_paginas_memoria_mapeadas[1]= pagina1;
 
@@ -193,26 +201,30 @@ If we write 02H to the HMPR then page 2 of the memory is allocated to section C 
 	sam_memory_paged[2]=	sam_ram_memory[pagina2];
 	debug_sam_paginas_memoria_mapeadas[2]= pagina2;
 
-	int pagina3=(pagina_hmpr+1)&sam_memoria_total_mascara;
+	int pagina3=(pagina_hmpr+1)&31;
 	sam_memory_paged[3]=	sam_ram_memory[pagina3];
 	debug_sam_paginas_memoria_mapeadas[3]= pagina3;
 
 
-	//Tipo de paginas mapeadas. 0 si ram, 1 si rom
-	sam_memory_paged_type[0]=sam_memory_paged_type[1]=sam_memory_paged_type[2]=sam_memory_paged_type[3]=0;
+	// Las páginas superiores no están instaladas cuando SAM tiene 256K.
+	sam_memory_paged_type[0]=sam_memory_paged_type[1]=sam_memory_paged_type[2]=sam_memory_paged_type[3]=SAM_MEMORY_PAGE_RAM;
+	if (pagina0>sam_memoria_total_mascara) sam_memory_paged_type[0]=SAM_MEMORY_PAGE_UNMAPPED;
+	if (pagina1>sam_memoria_total_mascara) sam_memory_paged_type[1]=SAM_MEMORY_PAGE_UNMAPPED;
+	if (pagina2>sam_memoria_total_mascara) sam_memory_paged_type[2]=SAM_MEMORY_PAGE_UNMAPPED;
+	if (pagina3>sam_memoria_total_mascara) sam_memory_paged_type[3]=SAM_MEMORY_PAGE_UNMAPPED;
 
 
 	//Ahora ver si rom esta en pagina 0 y/o 3
 	if ( (sam_lmpr&32)==0) {
 		sam_memory_paged[0]=sam_rom_memory[0];
-		sam_memory_paged_type[0]=1;
+		sam_memory_paged_type[0]=SAM_MEMORY_PAGE_ROM;
 		debug_sam_paginas_memoria_mapeadas[0]=0;
 		//printf ("Rom is in page 0\n");
 	}
 
 	if (sam_lmpr&64) {
 		sam_memory_paged[3]=sam_rom_memory[1];
-		sam_memory_paged_type[3]=1;
+		sam_memory_paged_type[3]=SAM_MEMORY_PAGE_ROM;
 		debug_sam_paginas_memoria_mapeadas[3]=1;
 		//printf ("Rom is in page 3\n");
 	}

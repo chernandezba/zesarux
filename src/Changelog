@@ -113,6 +113,7 @@ Fixed Sam Coupe emulation:
 - Added line interrupts and corrected line and frame interrupt status pulses
 - Added HPEN vertical scanline reads
 - Corrected the 128-colour palette intensity levels
+- Fixed 256K RAM configuration: absent pages 16-31 no longer mirror pages 0-15
 
 Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
 Fixed MEMPTR after Z80 return instructions

@@ -8121,14 +8121,19 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         segmentos_totales=4;
         int pagina;
         for (pagina=0;pagina<4;pagina++) {
-            if (sam_memory_paged_type[pagina]==0) {
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_RAM) {
                 sprintf (segmentos[pagina].shortname,"RAM%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
                 sprintf (segmentos[pagina].longname,"RAM %02d",debug_sam_paginas_memoria_mapeadas[pagina]);
             }
 
-            if (sam_memory_paged_type[pagina]) {
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_ROM) {
                 sprintf (segmentos[pagina].shortname,"ROM%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
                 sprintf (segmentos[pagina].longname,"ROM %02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            }
+
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_UNMAPPED) {
+                sprintf (segmentos[pagina].shortname,"N/A");
+                sprintf (segmentos[pagina].longname,"Unmapped RAM");
             }
 
             segmentos[pagina].length=16384;

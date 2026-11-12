@@ -11878,9 +11878,7 @@ z80_byte sam_retorna_byte_pantalla(z80_byte *s,z80_int *o)
     z80_int offset;
     offset=*o;
 
-    z80_byte *puntero;
-    puntero=sam_ram_memory[segmento]+offset;
-    z80_byte valor=*puntero;
+    z80_byte valor=sam_read_ram_page(segmento,offset);
 
     offset++;
     if (offset>16383) {
@@ -11907,12 +11905,9 @@ z80_byte sam_retorna_byte_pantalla_mode1(z80_byte *s,z80_int *o,z80_byte *at)
         z80_int offset;
         offset=*o;
 
-        z80_byte *puntero;
-        puntero=sam_ram_memory[segmento]+offset;
-        z80_byte valor=*puntero;
+        z80_byte valor=sam_read_ram_page(segmento,offset);
 
-    puntero=sam_ram_memory[segmento]+offset+8192;
-    *at=*puntero;
+    *at=sam_read_ram_page(segmento,offset+8192);
 
         offset++;
         if (offset>16383) {
@@ -11933,17 +11928,13 @@ z80_byte sam_retorna_byte_pantalla_spectrum(z80_byte segmento,int x,int y,z80_by
 {
     int col=x/16;
     z80_int direccion=screen_addr_table[(y<<5)]+col;
-    z80_byte *puntero;
-    puntero=sam_ram_memory[segmento]+direccion;
-
-    z80_byte valor=*puntero;
+    z80_byte valor=sam_read_ram_page(segmento,direccion);
 
 
     int fila;
         fila=y/8;
         z80_int dir_atributo=6144+(fila*32)+col;
-    puntero=sam_ram_memory[segmento]+dir_atributo;
-    *at=*puntero;
+    *at=sam_read_ram_page(segmento,dir_atributo);
 
     return valor;
 }
@@ -11994,9 +11985,8 @@ void scr_refresca_border_sam(unsigned int color)
 void scr_refresca_pantalla_sam(void)
 {
     //Obtener direccion
-    //int direccion=((sam_vmpr&sam_memoria_total_mascara)+1)*16384;
     //printf ("direccion pantalla: %d\n",direccion);
-    z80_byte segmento_pantalla=sam_vmpr&sam_memoria_total_mascara;
+    z80_byte segmento_pantalla=sam_vmpr&31;
     //printf ("segmento pantalla: %d\n",segmento_pantalla);
     z80_int offset=0;
 
@@ -12161,7 +12151,7 @@ void screen_store_scanline_rainbow_sam(void)
     if (source_y<0 || source_y>=192) return;
 
     // VMPR selecciona la primera página de vídeo y uno de sus cuatro modos.
-    z80_byte segment=sam_vmpr&sam_memoria_total_mascara;
+    z80_byte segment=sam_vmpr&31;
     z80_byte mode=(sam_vmpr>>5)&3;
     z80_int offset=0;
     if (mode==1) offset=source_y*32;
@@ -14322,7 +14312,7 @@ void scr_refresca_pantalla_sam_modo_013(int modo,void (*fun_color) (z80_byte col
 
                                 z80_byte buffer_letra[8];
 
-        z80_byte segmento_pantalla=sam_vmpr&sam_memoria_total_mascara;
+        z80_byte segmento_pantalla=sam_vmpr&31;
         //scrcurses_screen=sam_ram_memory[segmento_pantalla];
 
                                 z80_byte atributo_spectrum;
@@ -14344,6 +14334,7 @@ int artistic_incremento_origen;
                         //Organizacion como spectrum
                         if (modo==0) {
                 z80_byte *puntero;
+                if (segmento_pantalla>sam_memoria_total_mascara) return;
                 puntero=sam_ram_memory[segmento_pantalla];
 
 
@@ -14366,6 +14357,7 @@ int artistic_incremento_origen;
                                 //int off=y*256+x;
 
                                 z80_byte *puntero;
+                                if (segmento_pantalla>sam_memoria_total_mascara) return;
                                 puntero=sam_ram_memory[segmento_pantalla]+offset;
 
                                 caracter=compare_char_tabla_step(puntero , &inv,char_set_sam,32);
@@ -14381,6 +14373,7 @@ int artistic_incremento_origen;
                         //cada linea ocupa 128 bytes
                         if (modo==3) {
                                 z80_byte *puntero;
+                                if (segmento_pantalla>sam_memoria_total_mascara) return;
                                 puntero=sam_ram_memory[segmento_pantalla]+offset;
 
                                 //Convertir letra en colores a blanco y negro
@@ -14471,7 +14464,7 @@ void scr_refresca_pantalla_sam_modo_2(void (*fun_color) (z80_byte color,int *bri
 
                                 z80_byte buffer_letra[8];
 
-        z80_byte segmento_pantalla=sam_vmpr&sam_memoria_total_mascara;
+        z80_byte segmento_pantalla=sam_vmpr&31;
         //scrcurses_screen=sam_ram_memory[segmento_pantalla];
 
                                 z80_byte atributo_spectrum;
@@ -14494,6 +14487,7 @@ z80_byte bit;
 
  //cada caracter ocupa 6 pixeles de ancho
                                 z80_byte *puntero;
+                                if (segmento_pantalla>sam_memoria_total_mascara) return;
                                 puntero=sam_ram_memory[segmento_pantalla]+offset;
 
                                 //Convertir letra en colores a blanco y negro

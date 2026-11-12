@@ -15333,6 +15333,7 @@ void poke_byte_writerom_exec(z80_int dir,z80_byte value)
         }
 
     else if (MACHINE_IS_SAM) {
+		if (sam_memory_paged_type[dir/16384]==SAM_MEMORY_PAGE_UNMAPPED) return;
 
                 z80_byte *puntero;
                 puntero=sam_return_segment_memory(dir);

@@ -7320,6 +7320,7 @@ void menu_hardware_sam_ram(MENU_ITEM_PARAMETERS)
 {
     if (sam_memoria_total_mascara==15) sam_memoria_total_mascara=31;
     else sam_memoria_total_mascara=15;
+    sam_set_memory_pages();
 }
 
 

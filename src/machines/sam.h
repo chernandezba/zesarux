@@ -40,9 +40,15 @@ extern z80_byte *sam_memory_paged[];
 
 extern z80_byte sam_memory_paged_type[];
 
+// Tipo de memoria visible en cada bloque de 16K de la CPU.
+#define SAM_MEMORY_PAGE_RAM 0
+#define SAM_MEMORY_PAGE_ROM 1
+#define SAM_MEMORY_PAGE_UNMAPPED 2
+
 extern z80_byte *sam_rom_memory[];
 
 extern z80_byte *sam_ram_memory[];
+extern z80_byte sam_read_ram_page(z80_byte page,z80_int offset);
 
 //Hacer que estos valores de border sean multiples de 8
 #define SAM_LEFT_BORDER_NO_ZOOM 48

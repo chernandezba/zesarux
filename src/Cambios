@@ -113,6 +113,7 @@ Corregida emulación del Sam Coupe:
 - Agregadas las interrupciones de línea y corregidos los pulsos de estado de las interrupciones de línea y fotograma
 - Agregada la lectura de la línea vertical mediante HPEN
 - Corregidos los niveles de intensidad de la paleta de 128 colores
+- Corregida la configuración de 256K de RAM: las páginas ausentes 16-31 ya no reflejan las páginas 0-15
 
 Corregidos timings para TK90X y TK95 modelos de 50 hz y 60 hz
 Corregido MEMPTR despues de instrucciones return de Z80

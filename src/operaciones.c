@@ -3606,7 +3606,7 @@ set_visualmembuffer(dir);
 		//Ver si es segmento de rom o ram
 int segmento;
 		segmento=dir/16384;
-		if (sam_memory_paged_type[segmento]) return;
+		if (sam_memory_paged_type[segmento]!=SAM_MEMORY_PAGE_RAM) return;
 
 
                 z80_byte *puntero;
@@ -3641,6 +3641,8 @@ z80_byte peek_byte_no_time_sam(z80_int dir)
 	#ifdef EMULATE_VISUALMEM
 		set_visualmemreadbuffer(dir);
 	#endif
+
+		if (sam_memory_paged_type[dir/16384]==SAM_MEMORY_PAGE_UNMAPPED) return 255;
 
                 z80_byte *puntero;
                 puntero=sam_return_segment_memory(dir);
