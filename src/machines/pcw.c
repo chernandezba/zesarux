@@ -1380,6 +1380,7 @@ void screen_store_scanline_rainbow_pcw_border_and_display(void)
     int source_y=visible_y-PCW_TOP_BORDER_NO_ZOOM/2;
     int width=get_total_ancho_rainbow();
     int height=get_total_alto_rainbow();
+
     int output_y=border_enabled.v ? visible_y*2 : source_y*2;
     int left=border_enabled.v ? PCW_LEFT_BORDER_NO_ZOOM : 0;
     int x,bit,repeat;
@@ -1389,7 +1390,8 @@ void screen_store_scanline_rainbow_pcw_border_and_display(void)
     if (output_y<0 || output_y+1>=height) return;
 
     // El vídeo inverso afecta también al borde, como en el render normal.
-    int border_index=((pcw_port_f7_value & 0x80) && !pcw_do_not_inverse_display.v) ? 1 : 0;
+    int border_index=0;
+    if ((pcw_port_f7_value & 0x80) && !pcw_do_not_inverse_display.v) border_index=1;
     int border_color;
     if (pcw_video_mode==0) border_color=pcw_get_rgb_color_mode0(border_index);
     else if (pcw_video_mode==1) border_color=pcw_get_rgb_color_mode1(border_index*3);
@@ -1434,8 +1436,12 @@ void screen_store_scanline_rainbow_pcw_border_and_display(void)
                 int mask=(1<<bits_per_pixel)-1;
                 for (bit=0;bit<8;bit+=bits_per_pixel) {
                     int index=(value>>(8-bit-bits_per_pixel))&mask;
-                    int color=pcw_video_mode==0 ? pcw_get_rgb_color_mode0(index) :
-                        (pcw_video_mode==1 ? pcw_get_rgb_color_mode1(index) : pcw_get_rgb_color_mode2_3(index));
+
+                    int color;
+                    if (pcw_video_mode==0) color=pcw_get_rgb_color_mode0(index);
+                    else if (pcw_video_mode==1) color=pcw_get_rgb_color_mode1(index);
+                    else color=pcw_get_rgb_color_mode2_3(index);
+
                     for (repeat=0;repeat<bits_per_pixel;repeat++)
                         row[left+x+bit+repeat]=next_row[left+x+bit+repeat]=color;
                 }
