@@ -12136,8 +12136,97 @@ void scr_refresca_pantalla_sam(void)
 
 }
 
+// Guarda una línea de Sam Coupé en rainbow, incluidos sus dos píxeles verticales.
+void screen_store_scanline_rainbow_sam(void)
+{
+    // La pantalla tiene 192 scanlines; el búfer de salida duplica su altura.
+    int source_y=t_scanline_draw-screen_indice_inicio_pant;
+    int output_y=source_y*2+SAM_TOP_BORDER_NO_ZOOM*border_enabled.v;
+    int width=get_total_ancho_rainbow();
+    int height=get_total_alto_rainbow();
+    int left=SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+    int x,bit;
+    z80_int *row,*next_row;
+    z80_int colors[16];
+
+    if (output_y<0 || output_y+1>=height) return;
+
+    // La paleta puede cambiar entre scanlines; se toma su valor actual.
+    for (x=0;x<16;x++) colors[x]=SAM_INDEX_FIRST_COLOR+(sam_palette[x]&127);
+    z80_int border_color=colors[sam_border&7];
+    row=&rainbow_buffer[output_y*width];
+    next_row=row+width;
+    for (x=0;x<width;x++) row[x]=next_row[x]=border_color;
+
+    if (source_y<0 || source_y>=192) return;
+
+    // VMPR selecciona la primera página de vídeo y uno de sus cuatro modos.
+    z80_byte segment=sam_vmpr&sam_memoria_total_mascara;
+    z80_byte mode=(sam_vmpr>>5)&3;
+    z80_int offset=0;
+    if (mode==1) offset=source_y*32;
+    if (mode>=2) {
+        int address=source_y*128;
+        segment=(segment+address/16384)&31;
+        offset=address&16383;
+    }
+
+    if (mode<=1) {
+        // Modos 0 y 1: ocho bits de píxeles y un atributo por grupo.
+        for (x=0;x<32;x++) {
+            z80_byte attribute;
+            z80_byte pixels=mode==0 ?
+                sam_retorna_byte_pantalla_spectrum(segment,x*16,source_y,&attribute) :
+                sam_retorna_byte_pantalla_mode1(&segment,&offset,&attribute);
+            int ink=attribute&7;
+            int paper=(attribute>>3)&7;
+            if ((attribute&128) && estado_parpadeo.v) {
+                int swap=ink;
+                ink=paper;
+                paper=swap;
+            }
+            if (attribute&64) {
+                ink+=8;
+                paper+=8;
+            }
+            for (bit=0;bit<8;bit++) {
+                z80_int color=colors[(pixels&128) ? ink : paper];
+                int output_x=left+x*16+bit*2;
+                row[output_x]=next_row[output_x]=color;
+                row[output_x+1]=next_row[output_x+1]=color;
+                pixels<<=1;
+            }
+        }
+    }
+    else {
+        // Modos 2 y 3: cuatro píxeles o dos pares de píxeles por byte.
+        for (x=0;x<128;x++) {
+            z80_byte pixels=sam_retorna_byte_pantalla(&segment,&offset);
+            if (mode==2) {
+                for (bit=0;bit<4;bit++) {
+                    z80_int color=colors[(pixels>>(6-bit*2))&3];
+                    row[left+x*4+bit]=next_row[left+x*4+bit]=color;
+                }
+            }
+            else {
+                z80_int color_left=colors[pixels>>4];
+                z80_int color_right=colors[pixels&15];
+                int output_x=left+x*4;
+                row[output_x]=next_row[output_x]=color_left;
+                row[output_x+1]=next_row[output_x+1]=color_left;
+                row[output_x+2]=next_row[output_x+2]=color_right;
+                row[output_x+3]=next_row[output_x+3]=color_right;
+            }
+        }
+    }
+}
+
 void scr_refresca_pantalla_y_border_sam(void)
 {
+        if (rainbow_enabled.v) {
+                scr_refresca_pantalla_rainbow_comun();
+                return;
+        }
 
         //Refrescar border si conviene
         if (border_enabled.v) {

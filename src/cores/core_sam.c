@@ -321,8 +321,7 @@ void core_sam_fin_scanline(void)
 
     //copiamos contenido linea y border a buffer rainbow
     if (rainbow_enabled.v==1) {
-        screen_store_scanline_rainbow_solo_border();
-        screen_store_scanline_rainbow_solo_display();
+        screen_store_scanline_rainbow_sam();
 
         //t_scanline_next_border();
 
