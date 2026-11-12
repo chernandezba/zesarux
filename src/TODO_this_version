@@ -409,6 +409,8 @@ ok -poder hacer escalado con zoom decimal
 -maquinas no soportadas:
 *jupiter ace: no tiene render real video
 *mk14: no tiene render real video
+*pcw: no tiene render real video
+*sam coupe: no tiene render real video
 
 ---
 
@@ -427,3 +429,5 @@ ok? -poder ver paletas de colores atm, zxevo, etc
 
 
 - demos para spectrums extendidos: https://www.pouet.net/prodlist.php?platform%5B%5D=ZX+Enhanced&page=1
+
+-usar zxvision_putpixel_no_menu_gui_zoom para keyboard help y que maquinas con gui zoom 2 no salga teclado enorme. tener en cuenta calculo correcto del raton
