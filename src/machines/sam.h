@@ -29,6 +29,10 @@ extern z80_byte sam_vmpr;
 extern z80_byte sam_hmpr;
 extern z80_byte sam_lmpr;
 extern z80_byte sam_border;
+// Línea de vídeo que solicita la interrupción y fin de su pulso en t-estados.
+extern z80_byte sam_line_interrupt_register;
+extern int sam_line_interrupt_active_until;
+extern int sam_frame_interrupt_active_until;
 
 extern void sam_set_memory_pages(void);
 

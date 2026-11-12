@@ -42,6 +42,11 @@ z80_byte sam_lmpr;
 
 z80_byte sam_border;
 
+// El valor 255 desactiva la interrupción de línea hasta que se programe F9h.
+z80_byte sam_line_interrupt_register=255;
+int sam_line_interrupt_active_until=0;
+int sam_frame_interrupt_active_until=0;
+
 //vale 31 si sam de 512k
 //vale 15 si sam de 256k
 z80_byte sam_memoria_total_mascara=31;

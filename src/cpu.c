@@ -1277,6 +1277,9 @@ util_stats_init();
 
     if (MACHINE_IS_SAM) {
         sam_vmpr=sam_hmpr=sam_lmpr=0;
+        sam_line_interrupt_register=255;
+        sam_line_interrupt_active_until=0;
+        sam_frame_interrupt_active_until=0;
 
         sam_set_memory_pages();
     }

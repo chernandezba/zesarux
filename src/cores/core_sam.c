@@ -46,6 +46,7 @@
 
 #include "scrstdout.h"
 #include "settings.h"
+#include "sam.h"
 
 #include "snap_zsf.h"
 #include "zeng.h"
@@ -187,6 +188,10 @@ void core_sam_fin_frame_pantalla(void)
 
 
     t_estados -=screen_testados_total;
+    // El pulso de línea del fotograma anterior ya ha terminado.
+    sam_line_interrupt_active_until=0;
+    // STATUS mantiene FRAME activo brevemente al comenzar el fotograma.
+    sam_frame_interrupt_active_until=t_estados+120;
 
     //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
     //t_estados=0;
@@ -325,6 +330,14 @@ void core_sam_fin_scanline(void)
 
         //t_scanline_next_border();
 
+    }
+
+    // F9h señala el comienzo de la siguiente línea visible, antes de dibujarla.
+    int next_display_line=t_scanline_draw-screen_indice_inicio_pant+1;
+    if (next_display_line>=0 && next_display_line<192 &&
+        next_display_line==sam_line_interrupt_register) {
+        sam_line_interrupt_active_until=t_estados+120;
+        if (iff1.v) interrupcion_maskable_generada.v=1;
     }
 
     t_scanline_next_line();

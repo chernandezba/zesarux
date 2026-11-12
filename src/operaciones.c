@@ -3674,6 +3674,11 @@ z80_byte lee_puerto_sam_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	debug_fired_in=1;
 	//printf ("Leer puerto sam H: %d L: %d\n",puerto_h,puerto_l);
 
+	if (puerto_l==248 && puerto_h==1) {
+		// HPEN refleja la línea del barrido cuando no hay lápiz óptico.
+		return (t_scanline_draw-screen_indice_inicio_pant)&255;
+	}
+
         //Decodificacion completa del puerto o no?
         if (puerto_l==252) {
                 return sam_vmpr;
@@ -3752,8 +3757,11 @@ z80_byte lee_puerto_sam_no_time(z80_byte puerto_h,z80_byte puerto_l)
 		//Puerto STATUS.
 		z80_byte valor;
 
-		valor=255 & (255-8);
-		//De momento devolver con bit FRAME a 0. Cuando devuelve 1???
+		valor=255;
+		// El bit 0 baja durante el pulso de interrupción de línea.
+		if (t_estados<sam_line_interrupt_active_until) valor &=~1;
+		// El bit 3 baja únicamente durante la petición de fotograma.
+		if (t_estados<sam_frame_interrupt_active_until) valor &=~8;
 
 
 		if (initial_tap_load.v==1 && initial_tap_sequence) {
@@ -3882,6 +3890,11 @@ void out_port_sam_no_time(z80_int puerto,z80_byte value)
 		//printf ("cambio paleta. Color %d valor %d\n",puerto_h,value);
 		sam_palette[puerto_h&15]=value;
 		modificado_border.v=1;
+	}
+
+	if (puerto_l==249) {
+		// La ROM programa aquí la siguiente interrupción de línea.
+		sam_line_interrupt_register=value;
 	}
 
        // Floppy drive 2 *OR* the ATOM hard disk
