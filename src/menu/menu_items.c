@@ -20224,7 +20224,7 @@ void menu_video_output_overlay(void)
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
 
             if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
-                printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
             }
@@ -20261,7 +20261,7 @@ void menu_video_output_overlay(void)
             menu_video_output_alloc_putpixel_cache(ancho,alto);
 
             if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
-                printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
             }
