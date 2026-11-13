@@ -7611,8 +7611,9 @@ bits 7-0 = Y Offset (0-191)(Reset to 0 after a reset)
         total_x +=TBBLUE_LAYER2_12_BORDER*2;
 
         //Se multiplica por 2 siempre en estas resoluciones de 320x256 y 640x256
+        //El limite derecho de la ventana es inclusivo y se mide en pasos de 2 pixeles: x2*2+1
         clip_min *=2;
-        clip_max *=2;
+        clip_max=clip_max*2+1;
 
     }
 
