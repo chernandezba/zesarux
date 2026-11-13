@@ -70,7 +70,9 @@ int fifo_alsa_read_position=0;
 void audioalsa_empty_buffer(void)
 {
   debug_printf(VERBOSE_DEBUG,"Emptying audio buffer");
-  fifo_alsa_write_position=0;
+  //Vaciar de verdad: la escritura se pone donde esta la lectura. Antes solo se ponia la escritura a 0,
+  //con lo que la fifo parecia llena de audio antiguo, y se volvia a reproducir (eco con retardo)
+  fifo_alsa_write_position=fifo_alsa_read_position;
 }
 
 //nuestra FIFO_ALSA

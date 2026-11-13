@@ -170,7 +170,9 @@ int audiosdl_fifo_sdl_read_position=0;
 void audiosdl_empty_buffer(void)
 {
   debug_printf(VERBOSE_DEBUG,"Emptying audio buffer");
-  audiosdl_fifo_sdl_write_position=0;
+  //Vaciar de verdad: la escritura se pone donde esta la lectura. Antes solo se ponia la escritura a 0,
+  //con lo que la fifo parecia llena de audio antiguo, y se volvia a reproducir (eco con retardo)
+  audiosdl_fifo_sdl_write_position=audiosdl_fifo_sdl_read_position;
 }
 
 //nuestra FIFO
@@ -284,81 +286,52 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 //Aqui se probó la variante de callback de windows,
 //pero ejecutandose en Linux, y sucedia que se quedaba dentro del bucle while
 //Testear ese nuevo callback tanto para Linux como Windows y ver que funciona
+
+//Ultimos valores enviados a la tarjeta de sonido (canal izquierdo y derecho)
+static char audiosdl_ultimo_valor_izquierdo=0;
+static char audiosdl_ultimo_valor_derecho=0;
+
+//Rellena el buffer de salida con el audio que haya en la fifo y, si no llega, completa con el
+//ultimo valor enviado. Antes, cuando faltaba audio, se volvia a enviar el buffer anterior entero
+//(o lo que hubiera en el buffer de SDL), y eso hacia que se oyeran de nuevo, con retardo,
+//los sonidos que contenia (por ejemplo el click de cada tecla). Mantener el ultimo valor
+//tampoco produce saltos de nivel (clicks), que es lo que pasaria rellenando con ceros
+static void audiosdl_llenar_buffer_salida(char *destino,int len)
+{
+    int disponible=0;
+
+    if (audio_playing.v) {
+        disponible=audiosdl_fifo_sdl_return_size();
+        if (disponible>len) disponible=len;
+
+        //Siempre pares de muestras izquierda-derecha
+        disponible &= ~1;
+
+        if (disponible) {
+            audiosdl_fifo_sdl_read(destino,disponible);
+            audiosdl_ultimo_valor_izquierdo=destino[disponible-2];
+            audiosdl_ultimo_valor_derecho=destino[disponible-1];
+        }
+    }
+
+    int i;
+    for (i=disponible;i+1<len;i+=2) {
+        destino[i]=audiosdl_ultimo_valor_izquierdo;
+        destino[i+1]=audiosdl_ultimo_valor_derecho;
+    }
+
+    if (i<len) destino[i]=audiosdl_ultimo_valor_izquierdo;
+}
+
 void audiosdl_callback(void *udata, Uint8 *stream, int len)
 {
-
-	//printf ("audiosdl_callback\n");
 
 	//para que no se queje el compilador de no usado
 	udata++;
 
-	//si esta el sonido desactivado, enviamos silencio
-	if (audio_playing.v==0) {
-		unsigned char *puntero_salida;
-		puntero_salida = (unsigned char *) temporary_audiosdl_fifo_sdl_buffer;
-		int longitud=len;
-		while (longitud>0) {
-			*puntero_salida=128;
-			puntero_salida++;
-			longitud--;
-		}
-		//printf ("audio_playing.v=0 en audiosdl\n");
-	}
-
-	else {
-
-        //Nuevo Callback. Ver las notas sobre el nuevo callback justo despues de esta funcion en audiosdl.c
-        if (audiosdl_use_new_callback.v) {
-
-            int indice=0;
-
-
-            int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
-
-            int leer=len;
-
-            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-            if (leer>tamanyo_fifo) {
-                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",leer,tamanyo_fifo );
-
-                //Si se pide mas audio del que tenemos, dejamos nuestro buffer anterior (llegará a SDL_MixAudio) y no metemos audio nuevo, esto hace que se note menos el corte
-                //Esto podria parecer algo sin sentido pero no es asi, cuando sucede esto, es mejor retornar el mismo buffer que teniamos,
-                //en vez de hacer un llenado parcial, porque en este caso se notarian los clicks, tanto en Windows como en Linux
-            }
-
-
-            else {
-
-                //printf ("audiosdl_callback. enviando sonido\n");
-                if (leer) {
-                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
-                }
-
-            }
-        }
-
-        //Viejo Callback
-        else {
-            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-            if (len>audiosdl_fifo_sdl_return_size()) {
-                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
-                //esto puede pasar con el detector de silencio
-
-                //retornar solo lo que tenemos
-                //audiosdl_fifo_sdl_read(out,audiosdl_fifo_sdl_return_size() );
-                return;
-            }
-
-
-		else {
-			//printf ("audiosdl_callback. enviando sonido\n");
-			audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,len);
-		}
-
-        }
-
-	}
-
+	//El callback viejo y el nuevo se comportaban distinto cuando faltaba audio (y ambos repetian
+	//audio anterior). Ahora los dos rellenan igual: ver audiosdl_llenar_buffer_salida
+	audiosdl_llenar_buffer_salida(temporary_audiosdl_fifo_sdl_buffer,len);
 
 	SDL_memset(stream, 0, len); //necesario??? parece que en mac os x si que hace falta
 	SDL_MixAudioFormat(stream, (Uint8 *)temporary_audiosdl_fifo_sdl_buffer, AUDIOSDL_AUDIO_FORMAT, len, SDL_MIX_MAXVOLUME);

@@ -36,25 +36,48 @@
 z80_bit audiosdl_inicializado={0};
 z80_bit scrsdl_inicializado={0};
 
+//Momento ideal del proximo tick, en unidades de SDL_GetPerformanceCounter. 0: aun no se ha iniciado
+static Uint64 commonsdl_timer_proximo=0;
+
 Uint32 commonsdl_timer_callback( Uint32 interval, void* param )
 {
 
     timer_trigger_interrupt();
 
-    //Retornar mismo intervalo para decir que queremos generar la interrupcion de nuevo
+    //SDL programa la siguiente llamada contando desde el momento en que se ha ejecutado esta, que
+    //siempre es algo mas tarde de lo previsto. Si se retorna siempre el mismo intervalo, ese retraso
+    //se acumula: en Windows la emulacion iba un 2-3% lenta, el audio se generaba mas despacio de lo
+    //que se reproducia y cada medio segundo aprox faltaba un trozo (cortes en un BEEP largo).
+    //Por eso se calcula el intervalo hasta el momento ideal del siguiente tick, que avanza
+    //exactamente timer_sleep_machine cada vez
 
-    //return interval;
-    int return_intervalo=timer_sleep_machine/1000;
+    Uint64 frecuencia=SDL_GetPerformanceFrequency();
+    Uint64 ahora=SDL_GetPerformanceCounter();
+    Uint64 periodo=( (Uint64)timer_sleep_machine*frecuencia)/1000000;
+
+    if (commonsdl_timer_proximo==0) commonsdl_timer_proximo=ahora;
+
+    commonsdl_timer_proximo +=periodo;
+
+    Sint64 falta=(Sint64)(commonsdl_timer_proximo-ahora);
+
+    //Si vamos muy retrasados (por ejemplo el ordenador ha estado muy ocupado o suspendido),
+    //no intentar recuperar todo de golpe: se empieza a contar de nuevo desde ahora
+    if (falta < -(Sint64)(periodo*5)) {
+        commonsdl_timer_proximo=ahora+periodo;
+        falta=(Sint64)periodo;
+    }
 
     //en condiciones normales, la mayoria tiene interrupción cada 20ms (20000 microsec) y Z88 cada 5 ms
     //Si en cambio alteramos cpu speed, este valor se altera y podria llegar a ser 0
     //Retornar 0 desde este callback significaria no volver a llamar al callback, y para evitar eso, retornamos 1
-    if (return_intervalo==0) return_intervalo=1;
+    Sint64 return_intervalo=(falta*1000+(Sint64)frecuencia/2)/(Sint64)frecuencia;
+    if (return_intervalo<1) return_intervalo=1;
 
-    //printf("Called Timer callback. interval called=%d return interval=%d\n",interval,return_intervalo);
+    //printf("Called Timer callback. interval called=%d return interval=%d\n",interval,(int)return_intervalo);
 
 
-    return return_intervalo;
+    return (Uint32)return_intervalo;
 }
 
 SDL_TimerID timerID;
@@ -63,6 +86,9 @@ SDL_TimerID timerID;
 int commonsdl_init_timer_continue(void)
 {
     int interval_ms=timer_sleep_machine/1000;
+
+    //Empezar a contar de nuevo los momentos ideales de cada tick
+    commonsdl_timer_proximo=0;
 
     timerID = SDL_AddTimer( interval_ms, commonsdl_timer_callback, NULL );
     if (timerID==NULL) {
