@@ -642,7 +642,9 @@ int tap_open(void)
             reset_cpu();
 
             //Activamos top speed si conviene
-            if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_SVI && !MACHINE_IS_ACE && !MACHINE_IS_TBBLUE) {
+            if (fast_autoload.v && !MACHINE_IS_MSX && !MACHINE_IS_SVI && !MACHINE_IS_ACE &&
+                !MACHINE_IS_TBBLUE && !MACHINE_IS_SCORPION && !MACHINE_IS_BASECONF &&
+                !MACHINE_IS_TSCONF && !MACHINE_IS_ATM_TURBO) {
                 debug_printf (VERBOSE_INFO,"Set top speed from TAP open");
                 top_speed_timer.v=1;
             }
@@ -1354,6 +1356,10 @@ int tap_load_detect(void)
             if (reg_pc!=1378) return 0;
         }
 
+        else if (MACHINE_IS_ATM_TURBO) {
+            if (reg_pc!=1378) return 0;
+        }
+
         else if (MACHINE_IS_TSCONF) {
             if (reg_pc!=1378) return 0;
         }
@@ -1452,6 +1458,14 @@ int tap_load_detect(void)
            hardware en #0556. Si no ha interceptado la carga y se alcanza el
            IN A,(#FE) normal de la ROM, se permite usar el TAP de ZEsarUX. */
         if (MACHINE_IS_BASECONF) {
+                if (peek_byte_no_time(reg_pc)!=0xDB) return 0;
+                if (peek_byte_no_time(reg_pc+1)!=0xFE) return 0;
+
+                return 1;
+        }
+
+        //No mirar que rom está mapeada
+        if (MACHINE_IS_ATM_TURBO) {
                 if (peek_byte_no_time(reg_pc)!=0xDB) return 0;
                 if (peek_byte_no_time(reg_pc+1)!=0xFE) return 0;
 
@@ -1710,6 +1724,16 @@ int tap_save_detect(void)
                     return 1;
     }
 
+    /* ATM Turbo, igual que Prism: detectar la entrada de la rutina estándar
+       de grabación mediante LD HL,#1F80, sin depender de una ROM concreta. */
+    if (MACHINE_IS_ATM_TURBO) {
+                    if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                    if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                    if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+
+                    return 1;
+    }
+
     /* Scorpion, igual que Prism: detectar la entrada de la rutina estándar
        de grabación mediante LD HL,#1F80, sin depender de una ROM concreta. */
     if (MACHINE_IS_SCORPION) {
@@ -1890,6 +1914,7 @@ void gestionar_autoload_spectrum(void)
             case MACHINE_ID_CZ_2000:
             case MACHINE_ID_CZ_SPECTRUM:
             case MACHINE_ID_CZ_SPECTRUM_PLUS:
+            case MACHINE_ID_DIDAKTIKGAMA:
                 //Ver para maquinas 48k
                 gestionar_autoload_spectrum_48kmode();
                 break;

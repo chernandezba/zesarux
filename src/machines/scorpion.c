@@ -21,7 +21,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "cpu.h"
 #include "scorpion.h"
@@ -34,6 +33,7 @@
 #include "operaciones.h"
 #include "start.h"
 #include "betadisk.h"
+#include "vg93.h"
 #include "ide.h"
 #include "mmc.h"
 
@@ -78,33 +78,13 @@ z80_byte *scorpion_rom_mem_table[SCORPIONGMX_TOTAL_ROM_PAGES];
 //Direcciones actuales mapeadas
 z80_byte *scorpion_memory_paged[4];
 
-static z80_bit scorpion_trdos_active={0};
+z80_bit scorpion_trdos_active={0};
 
 // Indica que MAGIC ya ha esperado una lectura M1 de una instrucción desde RAM.
 static int scorpion_magic_ram_fetch_seen;
 
-
 /* Habilita la interfaz Z-Controller; sin ella la tarjeta SD figura ausente. */
 z80_bit zcontroller_enabled={0};
-
-/* SMUC (Scorpion & MOA Universal Controller) es la tarjeta de expansión
- * que proporciona la interfaz ATA/IDE para discos y el acceso a otros
- * periféricos. Las variables siguientes emulan sus registros y señales.
- *
- * La EEPROM 24LC16 es una memoria no volátil de 2 KiB del SMUC. El firmware
- * puede guardar y recuperar datos en ella mediante el bus serie SDA/SCL;
- * no forma parte de la RAM ni de la ROM paginada del Scorpion.
- *
- * La CMOS es el conjunto de registros del reloj de tiempo real: incluye
- * hora, fecha, estado y una pequeña zona de configuración. En la tarjeta
- * física el reloj y sus registros pueden mantenerse con una pila cuando
- * se apaga el ordenador. Aquí se representan con 128 bytes y el estado
- * necesario para actualizar el reloj.
- */
-/* Controla la presencia del SMUC, independientemente del disco IDE. */
-z80_bit smuc_enabled={0};
-
-
 
 /* Último valor escrito en 7EFD (la lectura de este puerto devuelve otro estado):
  * D0 EWR: permite escribir en la memoria Flash.
@@ -141,6 +121,21 @@ static z80_byte scorpion_gmx_scroll_low;
 
 static z80_byte scorpion_gmx_scroll_high;
 
+/* Devuelve los registros de desplazamiento vertical GMX combinados.
+   Entrada: ninguna. Salida: valor de 14 bits escrito en 7AFD y 7CFD. */
+z80_int scorpion_gmx_get_scroll_register(void)
+{
+    return ((z80_int)scorpion_gmx_scroll_high << 8) | scorpion_gmx_scroll_low;
+}
+
+/* Restaura los registros de desplazamiento vertical GMX desde un snapshot.
+   Entrada: valor combinado de 7AFD y 7CFD. Salida: ninguna. */
+void scorpion_gmx_set_scroll_register(z80_int value)
+{
+    scorpion_gmx_scroll_low=value & 0xf0;
+    scorpion_gmx_scroll_high=(value >> 8) & 0x3f;
+}
+
 /* Último valor escrito en el puerto global xx00:
  * D0 CONF0, D1 CONF1, D2 CONF2: variante de configuración FLEX8000.
  * D3 RECONF: solicita cargar esa configuración y reiniciar GMX.
@@ -174,61 +169,6 @@ z80_byte scorpion_gmx_zcontroller_control;
 
 
 
-/* FFBAh: D0 reinicia ATA, D4 es SDA, D6 es SCL y D7 selecciona
- * los registros alternativos ATA y la escritura en RTC. */
-z80_byte scorpion_gmx_smuc_control=1;
-
-/* 7FBAh: registro de configuración del SMUC; los bits 0-2 y 4-5
- * se leen siempre como unos en esta revisión del controlador. */
-z80_byte scorpion_gmx_smuc_config;
-
-/* D8BEh conserva el byte alto del último dato ATA de 16 bits. */
-z80_byte scorpion_gmx_smuc_data_high;
-
-/* DFBAh: dirección seleccionada y contenido de los registros CMOS. */
-static z80_byte scorpion_gmx_smuc_cmos_address;
-
-static z80_byte scorpion_gmx_smuc_cmos[128];
-
-/* Estado de la interrupción de actualización del reloj, registro C. */
-static time_t scorpion_gmx_smuc_cmos_last_second;
-
-static int scorpion_gmx_smuc_cmos_update_flag;
-
-/* Sustituye únicamente la palabra 0 de IDENTIFY por un disco ATA fijo. */
-int scorpion_gmx_smuc_identify_first_word;
-
-/* EEPROM 24LC16 y estado de la transferencia serie por SDA/SCL. */
-static z80_byte scorpion_gmx_smuc_eeprom[2048];
-
-/* Indica si el contenido de la EEPROM ya se inicializó al encender GMX. */
-int scorpion_gmx_smuc_eeprom_initialized;
-
-/* Fase actual de la transferencia serie: comando, dirección, datos o ACK. */
-int scorpion_gmx_smuc_eeprom_state;
-
-/* Dirección de 11 bits del siguiente byte que se leerá o escribirá. */
-int scorpion_gmx_smuc_eeprom_address;
-
-/* Acumula los bits recibidos por SDA hasta formar un byte. */
-int scorpion_gmx_smuc_eeprom_input;
-
-/* Cuenta los bits recibidos del byte en curso. */
-int scorpion_gmx_smuc_eeprom_input_bits;
-
-/* Byte de la EEPROM que se desplaza para enviarlo por SDA. */
-int scorpion_gmx_smuc_eeprom_output;
-
-/* Cuenta los bits enviados del byte en curso. */
-int scorpion_gmx_smuc_eeprom_output_bits;
-
-/* Indica si la EEPROM ha soltado SDA para que lo controle el maestro. */
-int scorpion_gmx_smuc_eeprom_release;
-
-/* Valor visible al leer el bus serie: D6 representa la línea SDA. */
-z80_byte scorpion_gmx_smuc_eeprom_bus=0xff;
-
-
 /* Inicializa el esquema y el registro serie al encender GMX de nuevo.
  * Entrada: ninguna. Salida: ninguna; no se usa para el botón RESET.
  */
@@ -257,14 +197,6 @@ int scorpion_gmx_uses_pentagon_timing(void)
     return scorpion_gmx_is_pentagon_scheme() || (scorpion_gmx_port_00 & 0x80)!=0;
 }
 
-enum {
-    SCORPION_SMUC_EEPROM_IDLE,
-    SCORPION_SMUC_EEPROM_COMMAND,
-    SCORPION_SMUC_EEPROM_ADDRESS,
-    SCORPION_SMUC_EEPROM_DATA,
-    SCORPION_SMUC_EEPROM_SEND,
-    SCORPION_SMUC_EEPROM_ACK
-};
 z80_byte scorpion_read_ay_port_a(z80_byte ay_value)
 {
     // En Turbo+ las entradas 0-3 y 5 leen D0-D4 de 7FFD; la entrada 4 lee D4 de 1FFD.
@@ -321,245 +253,6 @@ int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value)
     return 0;
 }
 
-/* Procesa el bus serie de la EEPROM 24LC16 del SMUC.
- * Entrada: valor escrito en FFBAh. Salida: ninguna; actualiza SDA leído.
- */
-static void scorpion_gmx_smuc_eeprom_write(z80_byte value)
-{
-    int old_clock=scorpion_gmx_smuc_control & 0x40;
-    int new_clock=value & 0x40;
-    int old_data=scorpion_gmx_smuc_control & 0x10;
-    int new_data=value & 0x10;
-
-    if (old_clock!=new_clock) {
-        if (new_clock) {
-            if (scorpion_gmx_smuc_eeprom_state==SCORPION_SMUC_EEPROM_ACK) {
-                if (new_data) scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_IDLE;
-                else {
-                    scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_SEND;
-                    scorpion_gmx_smuc_eeprom_output=
-                        scorpion_gmx_smuc_eeprom[scorpion_gmx_smuc_eeprom_address];
-                    scorpion_gmx_smuc_eeprom_address=(scorpion_gmx_smuc_eeprom_address+1)&0x7ff;
-                    scorpion_gmx_smuc_eeprom_output_bits=0;
-                }
-            }
-            else if (scorpion_gmx_smuc_eeprom_release &&
-                     scorpion_gmx_smuc_eeprom_state>=SCORPION_SMUC_EEPROM_COMMAND &&
-                     scorpion_gmx_smuc_eeprom_state<=SCORPION_SMUC_EEPROM_DATA) {
-                scorpion_gmx_smuc_eeprom_input=(scorpion_gmx_smuc_eeprom_input<<1)|!!new_data;
-                scorpion_gmx_smuc_eeprom_input_bits++;
-            }
-        }
-        else {
-            if (scorpion_gmx_smuc_eeprom_input_bits==8) {
-                int data=scorpion_gmx_smuc_eeprom_input & 0xff;
-                scorpion_gmx_smuc_eeprom_input=0;
-                scorpion_gmx_smuc_eeprom_input_bits=0;
-                if (scorpion_gmx_smuc_eeprom_state==SCORPION_SMUC_EEPROM_COMMAND) {
-                    if ((data & 0xf0)!=0xa0) {
-                        scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_IDLE;
-                    }
-                    else {
-                        scorpion_gmx_smuc_eeprom_address=
-                            (scorpion_gmx_smuc_eeprom_address & 0xff)|((data & 0x0e)<<7);
-                        if (data & 1) {
-                            scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_SEND;
-                            scorpion_gmx_smuc_eeprom_output=
-                                scorpion_gmx_smuc_eeprom[scorpion_gmx_smuc_eeprom_address];
-                            scorpion_gmx_smuc_eeprom_address=(scorpion_gmx_smuc_eeprom_address+1)&0x7ff;
-                            scorpion_gmx_smuc_eeprom_output_bits=0;
-                        }
-                        else scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_ADDRESS;
-                    }
-                }
-                else if (scorpion_gmx_smuc_eeprom_state==SCORPION_SMUC_EEPROM_ADDRESS) {
-                    scorpion_gmx_smuc_eeprom_address=
-                        (scorpion_gmx_smuc_eeprom_address & 0x700)|data;
-                    scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_DATA;
-                }
-                else if (scorpion_gmx_smuc_eeprom_state==SCORPION_SMUC_EEPROM_DATA) {
-                    if (!(value & 0x20))
-                        scorpion_gmx_smuc_eeprom[scorpion_gmx_smuc_eeprom_address]=data;
-                    scorpion_gmx_smuc_eeprom_address=
-                        (scorpion_gmx_smuc_eeprom_address & 0x7f0)|
-                        ((scorpion_gmx_smuc_eeprom_address+1)&0x0f);
-                }
-                scorpion_gmx_smuc_eeprom_release=0;
-                scorpion_gmx_smuc_eeprom_bus=0xbf;
-                return;
-            }
-            if (scorpion_gmx_smuc_eeprom_state==SCORPION_SMUC_EEPROM_SEND) {
-                if (scorpion_gmx_smuc_eeprom_output_bits==8) {
-                    scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_ACK;
-                    scorpion_gmx_smuc_eeprom_release=1;
-                }
-                else {
-                    scorpion_gmx_smuc_eeprom_bus=
-                        (scorpion_gmx_smuc_eeprom_output & 0x80) ? 0xff : 0xbf;
-                    scorpion_gmx_smuc_eeprom_output<<=1;
-                    scorpion_gmx_smuc_eeprom_output_bits++;
-                    scorpion_gmx_smuc_eeprom_release=0;
-                    return;
-                }
-            }
-            else scorpion_gmx_smuc_eeprom_release=1;
-        }
-    }
-    else if (new_clock && old_data!=new_data) {
-        scorpion_gmx_smuc_eeprom_state=new_data ?
-            SCORPION_SMUC_EEPROM_IDLE : SCORPION_SMUC_EEPROM_COMMAND;
-        scorpion_gmx_smuc_eeprom_input=0;
-        scorpion_gmx_smuc_eeprom_input_bits=0;
-        scorpion_gmx_smuc_eeprom_release=1;
-    }
-    if (scorpion_gmx_smuc_eeprom_release)
-        scorpion_gmx_smuc_eeprom_bus=new_data ? 0xff : 0xbf;
-}
-
-/* Convierte un valor del reloj a BCD si el registro B lo solicita.
- * Entrada: valor binario y registro B del RTC. Salida: valor para el Z80.
- */
-static z80_byte scorpion_gmx_smuc_cmos_number(int number,z80_byte rtc_reg_b)
-{
-    if (rtc_reg_b & 4) return number;
-    return (number / 10) * 16 + number % 10;
-}
-
-/* Lee el reloj del SMUC y sus registros de estado.
- * Entrada: ninguna. Salida: valor del registro RTC seleccionado.
- */
-static z80_byte scorpion_gmx_smuc_cmos_read(void)
-{
-    time_t now=time(NULL);
-    struct tm *clock=localtime(&now);
-    z80_byte reg=scorpion_gmx_smuc_cmos_address & 0x7f;
-    z80_byte rtc_reg_b=scorpion_gmx_smuc_cmos[11];
-
-    if (scorpion_gmx_smuc_cmos_last_second &&
-        now!=scorpion_gmx_smuc_cmos_last_second)
-        scorpion_gmx_smuc_cmos_update_flag=1;
-    scorpion_gmx_smuc_cmos_last_second=now;
-
-    if (clock) {
-        switch (reg) {
-            case 0: return scorpion_gmx_smuc_cmos_number(clock->tm_sec,rtc_reg_b);
-            case 2: return scorpion_gmx_smuc_cmos_number(clock->tm_min,rtc_reg_b);
-            case 4: return scorpion_gmx_smuc_cmos_number(clock->tm_hour,rtc_reg_b);
-            case 6: return clock->tm_wday+1;
-            case 7: return scorpion_gmx_smuc_cmos_number(clock->tm_mday,rtc_reg_b);
-            case 8: return scorpion_gmx_smuc_cmos_number(clock->tm_mon+1,rtc_reg_b);
-            case 9: return scorpion_gmx_smuc_cmos_number(clock->tm_year%100,rtc_reg_b);
-        }
-    }
-    if (reg==10) return 0x20 | (scorpion_gmx_smuc_cmos[10] & 0x0f);
-    if (reg==11) return (rtc_reg_b & 4) | 2;
-    if (reg==12) {
-        z80_byte result=scorpion_gmx_smuc_cmos_update_flag ? 0x10 : 0;
-        scorpion_gmx_smuc_cmos_update_flag=0;
-        return result;
-    }
-    if (reg==13) return 0x80;
-    return scorpion_gmx_smuc_cmos[reg];
-}
-
-/* Lee un puerto SMUC conectado al IDE de ZEsarUX.
- * Entrada: puerto Z80 y puntero al resultado. Salida: 1 si el puerto
- * pertenece al SMUC activo; 0 si debe seguir la lectura normal.
- */
-int scorpion_gmx_smuc_read(z80_int port,z80_byte *value)
-{
-    if (!MACHINE_IS_SCORPION_GMX || scorpion_gmx_is_pentagon_scheme() || !smuc_enabled.v) return 0;
-
-    if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
-    if ((port & 0xa044)==(0x5fba & 0xa044)) {
-        *value=(port & 4) ? 0x57 : 0x3f;
-        return 1;
-    }
-    if ((port & 0xa044)==(0x7fba & 0xa044)) {
-        *value=(port & 4) ? 0x57 : (scorpion_gmx_smuc_config | 0x37);
-        return 1;
-    }
-    if ((port & 0xa044)==(0xdfba & 0xa044)) {
-        *value=scorpion_gmx_smuc_cmos_read();
-        return 1;
-    }
-    if ((port & 0xa044)==(0xffba & 0xa044)) {
-        *value=scorpion_gmx_smuc_eeprom_bus;
-        return 1;
-    }
-    if ((port & 0x8044)==(0xffbe & 0x8044)) {
-        if (scorpion_gmx_smuc_control & 0x80) {
-            *value=(port & 0x100) ? 0xff : ide_read_command_block_register(7);
-            return 1;
-        }
-        if (!(port & 0x2000)) {
-            *value=scorpion_gmx_smuc_data_high;
-            return 1;
-        }
-        int reg=(port>>8)&7;
-        if (reg==0) {
-            *value=ide_read_command_block_register(0);
-            scorpion_gmx_smuc_data_high=ide_read_command_block_register(0);
-            if (scorpion_gmx_smuc_identify_first_word && ide_enabled.v) {
-                // GMX espera un disco ATA fijo; el IDE genérico anuncia CF.
-                *value=0x40;
-                scorpion_gmx_smuc_data_high=0;
-                scorpion_gmx_smuc_identify_first_word=0;
-            }
-        }
-        else *value=ide_read_command_block_register(reg);
-        return 1;
-    }
-    return 0;
-}
-
-/* Escribe un puerto SMUC conectado al IDE de ZEsarUX.
- * Entrada: puerto Z80 y valor escrito. Salida: 1 si el SMUC atendió
- * el puerto; 0 si la escritura debe continuar hacia otros dispositivos.
- */
-int scorpion_gmx_smuc_write(z80_int port,z80_byte value)
-{
-    if (!MACHINE_IS_SCORPION_GMX || scorpion_gmx_is_pentagon_scheme() || !smuc_enabled.v) return 0;
-
-    if ((port & 0x18a3)!=(0xfffe & 0x18a3)) return 0;
-    if ((port & 0xa044)==(0xffba & 0xa044)) {
-        if (value & 1) ide_reset();
-        scorpion_gmx_smuc_eeprom_write(value);
-        scorpion_gmx_smuc_control=value;
-        return 1;
-    }
-    if ((port & 0xa044)==(0xdfba & 0xa044)) {
-        if (scorpion_gmx_smuc_control & 0x80)
-            scorpion_gmx_smuc_cmos[scorpion_gmx_smuc_cmos_address & 0x7f]=value;
-        else scorpion_gmx_smuc_cmos_address=value;
-        return 1;
-    }
-    if ((port & 0xa044)==(0x7fba & 0xa044)) {
-        scorpion_gmx_smuc_config=value;
-        return 1;
-    }
-    if ((port & 0x8044)==(0xffbe & 0x8044)) {
-        if (scorpion_gmx_smuc_control & 0x80) return 1;
-        if (!(port & 0x2000)) {
-            scorpion_gmx_smuc_data_high=value;
-            return 1;
-        }
-        int reg=(port>>8)&7;
-        if (reg==0) {
-            ide_write_command_block_register(0,value);
-            ide_write_command_block_register(0,scorpion_gmx_smuc_data_high);
-        }
-        else {
-            if (reg==7) scorpion_gmx_smuc_identify_first_word=(value==0xec && ide_enabled.v);
-            ide_write_command_block_register(reg,value);
-        }
-        return 1;
-    }
-    return 0;
-}
-
-
-
 void scorpion_init_memory_tables(void)
 {
     //Primero rom y luego ram
@@ -580,6 +273,18 @@ void scorpion_init_memory_tables(void)
 
 }
 
+/* Reinicia los dispositivos del Scorpion al hacer RESET.
+   Entrada: ninguna. Salida: VG93 y, en GMX, SMUC reiniciados. */
+void scorpion_reset(void)
+{
+    vg93_reset();
+
+    if (MACHINE_IS_SCORPION_GMX) {
+        ide_smuc_reset();
+    }
+
+}
+
 void scorpion_set_normal_pages(void)
 {
     scorpion_trdos_active.v=0;
@@ -588,29 +293,13 @@ void scorpion_set_normal_pages(void)
     scorpion_memory_paged[1]=scorpion_ram_mem_table[5];
     scorpion_memory_paged[2]=scorpion_ram_mem_table[2];
     scorpion_memory_paged[3]=scorpion_ram_mem_table[0];
+    debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM;
+    debug_paginas_memoria_mapeadas[1]=5;
+    debug_paginas_memoria_mapeadas[2]=2;
+    debug_paginas_memoria_mapeadas[3]=0;
 
 
     if (MACHINE_IS_SCORPION_GMX) {
-        scorpion_gmx_smuc_control=1;
-        scorpion_gmx_smuc_config=0;
-        scorpion_gmx_smuc_data_high=0;
-        scorpion_gmx_smuc_cmos_address=0;
-        scorpion_gmx_smuc_cmos_last_second=0;
-        scorpion_gmx_smuc_cmos_update_flag=0;
-        scorpion_gmx_smuc_identify_first_word=0;
-        scorpion_gmx_smuc_eeprom_state=SCORPION_SMUC_EEPROM_IDLE;
-        scorpion_gmx_smuc_eeprom_address=0;
-        scorpion_gmx_smuc_eeprom_input=0;
-        scorpion_gmx_smuc_eeprom_input_bits=0;
-        scorpion_gmx_smuc_eeprom_output=0;
-        scorpion_gmx_smuc_eeprom_output_bits=0;
-        scorpion_gmx_smuc_eeprom_release=1;
-        scorpion_gmx_smuc_eeprom_bus=0xff;
-        if (!scorpion_gmx_smuc_eeprom_initialized) {
-            int i;
-            for (i=0;i<2048;i++) scorpion_gmx_smuc_eeprom[i]=0xff;
-            scorpion_gmx_smuc_eeprom_initialized=1;
-        }
         scorpion_gmx_port_7efd=0;
         scorpion_gmx_zcontroller_control=0;
         scorpion_gmx_port_dffd=0;
@@ -645,6 +334,7 @@ void scorpion_mem_page_ram(void)
 {
 
     z80_byte page_entra=puerto_32765 & 7;
+    z80_byte page_8000;
 
 //| `7FFDh` | D0–D2 | Seleccionan una página de 0 a 7. |
 //| `1FFDh` | D4 | Añade 8 al número de página cuando vale 1. |
@@ -654,10 +344,13 @@ void scorpion_mem_page_ram(void)
     if (MACHINE_IS_SCORPION_GMX && !scorpion_gmx_is_pentagon_scheme()) {
         page_entra |= (scorpion_gmx_port_dffd & 7) << 4;
         // 78FD selecciona de forma independiente la página de 8000h-BFFFh.
-        scorpion_memory_paged[2]=scorpion_ram_mem_table[(scorpion_gmx_port_78fd ^ 2) & 0x7f];
+        page_8000=(scorpion_gmx_port_78fd ^ 2) & 0x7f;
+        scorpion_memory_paged[2]=scorpion_ram_mem_table[page_8000];
+        debug_paginas_memoria_mapeadas[2]=page_8000;
     }
 
     scorpion_memory_paged[3]=scorpion_ram_mem_table[page_entra];
+    debug_paginas_memoria_mapeadas[3]=page_entra;
 }
 
 void scorpion_mem_page_rom(void)
@@ -690,11 +383,19 @@ void scorpion_mem_page_rom(void)
     }
 
     if (scorpion_trdos_active.v || (MACHINE_IS_SCORPION_GMX &&
-        !scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 4)))
-        scorpion_memory_paged[0]=scorpion_rom_mem_table[(page_entra & ~3) | 3];
-    else if (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1))
+        !scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 4))) {
+        page_entra=(page_entra & ~3) | 3;
+        scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM+page_entra;
+    }
+    else if (!scorpion_gmx_is_pentagon_scheme() && (puerto_8189 & 1)) {
         scorpion_memory_paged[0]=scorpion_ram_mem_table[0];
-    else scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=0;
+    }
+    else {
+        scorpion_memory_paged[0]=scorpion_rom_mem_table[page_entra];
+        debug_paginas_memoria_mapeadas[0]=DEBUG_PAGINA_MAP_ES_ROM+page_entra;
+    }
 }
 
 void scorpion_trdos_update(z80_int dir)
@@ -816,10 +517,17 @@ void scorpion_gmx_write_port(z80_int port,z80_byte value)
             scorpion_gmx_port_7efd=(scorpion_gmx_port_00 & 0x10) ?
                 ((value & 0x8f) | (scorpion_gmx_port_7efd & 0x70)) : value;
             if (video_anterior != (scorpion_gmx_port_7efd & 8)) {
+
+                /*
                 printf("Scorpion GMX: video %s (7EFDh=%02Xh, PC=%04Xh)\n",
                        (scorpion_gmx_port_7efd & 8) ? "640x200" : "256x192",
-                       scorpion_gmx_port_7efd,reg_pc);
-                fflush(stdout);
+
+                */
+
+            char buffer_mensaje[256];
+            sprintf(buffer_mensaje,"Setting video mode %s",(scorpion_gmx_port_7efd & 8) ? "640x200" : "256x192");
+            screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
+
             }
             scorpion_mem_page_rom();
             scorpion_set_cpu_speed((value & 0x80) ? 2 : 1);
@@ -898,10 +606,77 @@ void scorpion_gmx_set_turbo_speed(void)
     scorpion_set_cpu_speed(2);
 }
 
+/* Atiende la lectura física de un sector solicitada por la ROM TR-DOS del
+   Scorpion en 2F1Bh.
+   Entrada: D=pista lógica, E=sector de base cero, HL=destino en RAM.
+   Salida: copia 256 bytes, conserva HL y DE, pone A=0 y retorna al llamador. */
+static void scorpion_trdos_read_sector(void)
+{
+    int i;
+    z80_int destino=reg_hl;
+
+    for (i=0;i<256;i++) {
+        poke_byte_no_time(destino+i,betadisk_get_byte_disk(reg_d,reg_e,i));
+    }
+
+    reg_a=0;
+    Z80_FLAGS=FLAG_Z | FLAG_PV | FLAG_H;
+    reg_c=0x7f;
+    reg_pc=pop_valor();
+}
+
+/* Comprueba que 2F1Bh pertenece a la rutina de lectura conocida de TR-DOS.
+   Entrada: página actualmente mapeada en 0000h. Salida: 1 si es una ROM con
+   esa rutina; 0 si es RAM u otra ROM, incluso en otro banco de GMX. */
+static int scorpion_trdos_read_sector_rom_matches(void)
+{
+    static const z80_byte firma_trdos[]={
+        0x7b,0x3c,0xd3,0x5f,0xe5,0x16,0x14,0xd5,
+        0xf3,0x0e,0x7f,0x3e,0x80,0xd3,0x1f,0xcd,
+        0xe5,0x3f,0xd1,0xe1,0xdb,0x1f,0xe6,0x7f
+    };
+    static const z80_byte firma_gmx[]={
+        0x7b,0x3c,0xf7,0x16,0xe5,0x16,0x14,0xd5,
+        0xf3,0x0e,0x7f,0x3e,0x80,0xf7,0x10,0xcd,
+        0xe5,0x3f,0xd1,0xe1,0xf7,0x01,0xe6,0x7f
+    };
+    const z80_byte *firma;
+    int pagina;
+    int i;
+
+    if (!(debug_paginas_memoria_mapeadas[0] & DEBUG_PAGINA_MAP_ES_ROM)) return 0;
+
+    pagina=debug_paginas_memoria_mapeadas[0] & ~DEBUG_PAGINA_MAP_ES_ROM;
+    if (MACHINE_IS_SCORPION_GMX) {
+        /* En la ROM GMX actual, TR-DOS ocupa los bancos 7 y 15 con la
+           rutina clásica en 2F1Bh. El banco 19 contiene la misma rutina
+           adaptada a GMX: sustituye accesos directos a puertos por RST.
+           Solo se intercepta el banco de TR-DOS que esté paginado. */
+        if (pagina==19) firma=firma_gmx;
+        else if (pagina==7 || pagina==15) firma=firma_trdos;
+        else return 0;
+    }
+    else {
+        /* En ZS-256 y Turbo+ la ROM TR-DOS es el banco 3. */
+        if (pagina!=3) return 0;
+        firma=firma_trdos;
+    }
+
+    for (i=0;i<(int)sizeof(firma_trdos);i++) {
+        if (peek_byte_no_time(0x2f1b+i)!=firma[i]) return 0;
+    }
+    return 1;
+}
+
 z80_byte fetch_opcode_scorpion(void)
 {
 
     scorpion_trdos_update(reg_pc);
+    if (scorpion_trdos_is_active() && trd_enabled.v && reg_pc==0x2f1b) {
+        if (scorpion_trdos_read_sector_rom_matches()) {
+            scorpion_trdos_read_sector();
+        }
+    }
     if (scorpion_trdos_is_active()) betadisk_handle_trdos_traps();
 
     // MAGIC se enclava hasta el primer ciclo M1 que lee una instrucción de RAM.

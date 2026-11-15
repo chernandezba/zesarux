@@ -35,12 +35,24 @@ extern void didaktikgama_malloc_mem_machine(void);
 
 
 extern void didaktikgama_mem_page_ram(void);
+extern z80_byte didaktikgama_get_current_ram_page(void);
 
 
 extern z80_byte *didaktikgama_ram_mem_table[];
 extern z80_byte *didaktikgama_memory_paged[];
 extern void didaktikgama_set_normal_pages(void);
 extern void didaktikgama_reset(void);
+
+// Estado interno del 8255 que también necesita persistir el formato ZSF.
+extern z80_byte didaktikgama_8255_port_a, didaktikgama_8255_port_b;
+extern z80_byte didaktikgama_8255_port_c, didaktikgama_8255_port_d;
+extern z80_byte didaktikgama_8255_mode;
+extern z80_byte didaktikgama_8255_input_a, didaktikgama_8255_input_b, didaktikgama_8255_input_c;
+extern z80_byte didaktikgama_8255_latch_a, didaktikgama_8255_latch_b;
+extern z80_bit didaktikgama_8255_ibf_a, didaktikgama_8255_ibf_b;
+extern z80_bit didaktikgama_8255_obf_a, didaktikgama_8255_obf_b;
+extern z80_bit didaktikgama_8255_ack_a, didaktikgama_8255_ack_b;
+extern z80_bit didaktikgama_8255_inte_a_in, didaktikgama_8255_inte_a_out, didaktikgama_8255_inte_b;
 
 extern void poke_byte_no_time_didaktikgama(z80_int dir,z80_byte valor);
 extern void poke_byte_didaktikgama(z80_int dir,z80_byte valor);

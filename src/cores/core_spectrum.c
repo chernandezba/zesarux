@@ -78,6 +78,7 @@
 #include "zeng_online_client.h"
 #include "if1.h"
 #include "video_chips_common.h"
+#include "atmturbo.h"
 
 z80_byte byte_leido_core_spectrum;
 
@@ -144,29 +145,7 @@ void t_scanline_next_border(void)
 }
 */
 
-void t_scanline_next_fullborder(void)
-{
-    //resetear buffer border
 
-    int i;
-
-    //No si esta desactivado en tbblue
-    if (MACHINE_IS_TBBLUE && tbblue_store_scanlines_border.v==0) return;
-
-    //a 255
-    //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
-    //mas rapido con memset
-    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
-
-	//Resetear buffer border para prism
-	if (MACHINE_IS_PRISM) {
-		for (i=0;i<CURRENT_PRISM_BORDER_BUFFER;i++) prism_ula2_border_colour_buffer[i]=65535;
-	}
-
-	//printf ("max buffer border : %d\n",i);
-
-
-}
 
 
 void interrupcion_si_despues_lda_ir(void)
@@ -255,8 +234,10 @@ void core_spectrum_store_rainbow_current_atributes(void)
         if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
             //Sumamos el offset de prefetch de la ULA: latch de cada celda unos T-estados antes de mostrarse
             int tiempo_ula=t_estados;
-            if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL)
+            if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
+                // La pantalla Microdigital empieza 95 T despues del inicio de la linea 64 (50 Hz) o 38 (60 Hz).
                 tiempo_ula-=95*cpu_turbo_speed;
+            }
             int atributo_pos=((tiempo_ula % screen_testados_linea)+ULA_PREFETCH_OFFSET_TSTATES)/4;
             //Proteccion contra desbordamiento del buffer cerca del final de linea (zona border)
             if (atributo_pos>=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2) atributo_pos=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2-1;
@@ -440,6 +421,7 @@ void core_spectrum_fin_frame_pantalla(void)
     audio_ay_hq_end_frame();
     t_estados -=screen_testados_total;
 
+    if (MACHINE_IS_BASECONF) baseconf_update_timing(0);
     if (MACHINE_IS_BASECONF) baseconf_check_pending_nmi();
     if (MACHINE_IS_TSCONF) baseconf_ps2_scan_keyboard();
 
@@ -475,6 +457,10 @@ void core_spectrum_fin_frame_pantalla(void)
                 }
             }
         }
+
+        /* ATM2+ permite bloquear la INT de cuadro mediante D5 de #77. */
+        if (MACHINE_IS_ATM_TURBO2PLUS_TURBO3 && !atmturbo2plus_interrupts_enabled())
+            interrupcion_maskable_generada.v=0;
 
         //TSConf lo gestiona mediante interrupciones de frame
         if (MACHINE_IS_TSCONF) interrupcion_maskable_generada.v=0;
@@ -811,7 +797,7 @@ void core_spectrum_handle_interrupts(void)
         iff1.v=0;
         //printf ("Calling NMI with pc=0x%x\n",reg_pc);
 
-        //Otros 6 estados
+        //Otros 6 estados. Ajuste de T-estados. TODO: no sé si es correcto
         t_estados += 6;
 
         //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
@@ -819,8 +805,8 @@ void core_spectrum_handle_interrupts(void)
 
         //printf ("generada nmi pc=%04XH\n",reg_pc);
 
-        //temp
 
+        //Ajuste de T-estados. TODO: no sé si es correcto
         t_estados -=15;
 
         if (superupgrade_enabled.v) {
@@ -831,21 +817,26 @@ void core_spectrum_handle_interrupts(void)
             superupgrade_set_memory_pages();
         }
 
+        /*
+
+        Esto no tiene sentido, es codigo historico incorrecto
+
+
 
         //Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
         if (diviface_enabled.v) {
             //Chapuza para el atic atac versión con sonido. Si ha saltado por nmi generada por registro 2, no cambiar mapeo actual
             //Esto sucede porque asumimos que todos los divmmc mapean en post, pero divmmc nmi desde tbblue puede mapear en pre
             //Si el bit 1 del registro BB esta activo
-            /*
-                0x02 (02) => Reset
-                bit 2 = Generate divmmc nmi (write zero to clear) **
 
-                0xBB (187) => Divmmc Entry Points 1
-                (R/W) (soft reset = 0xCD)
+            //    0x02 (02) => Reset
+            //    bit 2 = Generate divmmc nmi (write zero to clear) **
 
-                bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
-            */
+            //    0xBB (187) => Divmmc Entry Points 1
+            //    (R/W) (soft reset = 0xCD)
+
+            //   bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+
             if (MACHINE_IS_TBBLUE && (tbblue_registers[2]&4)) {
             //if (MACHINE_IS_TBBLUE && (tbblue_registers[0xBB]&2)) {
             }
@@ -858,6 +849,10 @@ void core_spectrum_handle_interrupts(void)
 
             }
         }
+
+        */
+
+
 
         generate_nmi_prepare_fetch();
 
@@ -892,7 +887,8 @@ void core_spectrum_handle_interrupts(void)
     //justo despues de EI no debe generar interrupcion (incluso aunque antes del EI ya estuvieran habilitadas las interrupciones)
     //tampoco se puede generar en medio de un refetch de prefijo DD o FD
     //e interrupcion nmi tiene prioridad
-    if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch) {
+    if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch &&
+        !(MACHINE_IS_TSCONF && tsconf_vdos_interrupt_blocked())) {
 
         //printf ("Lanzada interrupcion spectrum normal\n");
 
@@ -1108,6 +1104,7 @@ void core_spectrum_ciclo_fetch(void)
 #endif
 
     int delta_t_estados=t_estados-t_estados_antes_opcode;
+    if (MACHINE_IS_TSCONF) tsconf_dma_advance(delta_t_estados*4/cpu_turbo_speed);
 
     //if (!core_refetch) duracion_ultimo_opcode=delta_t_estados;
     //else duracion_ultimo_opcode +=delta_t_estados;
@@ -1210,6 +1207,7 @@ void cpu_core_loop_spectrum(void)
     else {
         if (esperando_tiempo_final_t_estados.v==0) {
             TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_ciclo_fetch);
+            if (MACHINE_IS_TSCONF) tsconf_update_dos_signal(reg_pc);
             //printf("antes ciclo fetch PC=%XH\n",reg_pc);
             core_spectrum_ciclo_fetch();
             //printf("despues ciclo fetch PC=%XH\n",reg_pc);
@@ -1256,8 +1254,11 @@ void cpu_core_loop_spectrum(void)
 
     //A final de cada scanline
     int tiempo_ula=t_estados;
-    if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL)
+    if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
+        // La pantalla Microdigital empieza 95 T despues del inicio de la linea 64 (50 Hz) o 38 (60 Hz).
         tiempo_ula-=95*cpu_turbo_speed;
+    }
+
     if ( (tiempo_ula/screen_testados_linea)>t_scanline || t_estados>=screen_testados_total ) {
         TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_fin_scanline);
         core_spectrum_fin_scanline();

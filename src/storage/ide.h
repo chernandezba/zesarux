@@ -44,6 +44,11 @@ extern z80_byte ide_read_command_block_register(z80_byte ide_register);
 
 extern void ide_reset(void);
 
+/* Sectores por pista: 1..255, o 0 para automático. Setter: 0=éxito, 1=error.
+   Getter: valor efectivo. La selección se mantiene al insertar otro disco. */
+extern int ide_set_sectors_per_track(int sectors);
+extern int ide_get_sectors_per_track(void);
+
 extern z80_bit eight_bit_simple_ide_enabled;
 
 extern z80_byte eight_bit_simple_ide_read(z80_byte port);
@@ -68,5 +73,25 @@ extern z80_byte ide_register_cylinder_low;
 extern z80_byte ide_register_cylinder_high;
 extern z80_byte ide_register_drive_head;
 extern z80_byte ide_status_register;
+
+extern z80_bit ide_smuc_enabled;
+extern int ide_smuc_dma_selected;
+extern int ide_smuc_read(z80_int port,z80_byte *value);
+extern int ide_smuc_write(z80_int port,z80_byte value);
+extern void ide_smuc_reset(void);
+
+extern z80_byte ide_smuc_control;
+extern z80_byte ide_smuc_config;
+extern z80_byte ide_smuc_data_high;
+extern int ide_smuc_identify_first_word;
+extern int ide_smuc_eeprom_initialized;
+extern int ide_smuc_eeprom_state;
+extern int ide_smuc_eeprom_address;
+extern int ide_smuc_eeprom_input;
+extern int ide_smuc_eeprom_input_bits;
+extern int ide_smuc_eeprom_output;
+extern int ide_smuc_eeprom_output_bits;
+extern int ide_smuc_eeprom_release;
+extern z80_byte ide_smuc_eeprom_bus;
 
 #endif

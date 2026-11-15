@@ -607,62 +607,38 @@ extern void send_text_as_keystrokes_get_key_turbo_rst_repeat(void);
 extern void set_poke_byte_function_writerom(void);
 extern void reset_poke_byte_function_writerom(void);
 
-/*
-Lista fabricantes
-Amstrad
-Ascii Corp
-Cambridge Computers
-Chloe Corporation
-Coleco Industries
-Czerweny Electronica
-Investronica
-Jupiter Cantab
-Mario Prato
-Microdigital Eletronica
-Miles Gordon Technology
-NedoPC
-New Horizons
-Pentagon
-Science of Cambridge
-Scorpion
-Sega
-Sinclair Research
-Spectravideo Intl
-Timex Computers
-Timex Sinclair
-TS Labs
-VTrucco/FB Labs
-ZXUno Team
-*/
 
-#define TOTAL_FABRICANTES 25
+
+#define TOTAL_FABRICANTES 27
 
 //Deben estar en mismo orden alfabetico siempre, por ejemplo en array_fabricantes lo mismo que aqui
 #define FABRICANTE_AMSTRAD                      0
 #define FABRICANTE_ASCII_CORP                   1
-#define FABRICANTE_CAMBRIDGE_COMPUTERS          2
-#define FABRICANTE_CHLOE_CORPORATION            3
-#define FABRICANTE_COLECO_INDUSTRIES            4
-#define FABRICANTE_CZERWENY_ELECTRONICA         5
-#define FABRICANTE_DIDAKTIK                     6
-#define FABRICANTE_INVESTRONICA                 7
-#define FABRICANTE_JUPITER_CANTAB               8
-#define FABRICANTE_MARIOPRATO                   9
-#define FABRICANTE_MICRODIGITAL_ELECTRONICA     10
-#define FABRICANTE_MILES_GORDON                 11
-#define FABRICANTE_NEDOPC                       12
-#define FABRICANTE_NEW_HORIZONS                 13
-#define FABRICANTE_NEXT_TEAM                    14
-#define FABRICANTE_PENTAGON                     15
-#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         16
-#define FABRICANTE_SCORPION                     17
-#define FABRICANTE_SEGA                         18
-#define FABRICANTE_SINCLAIR                     19
-#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   20
-#define FABRICANTE_TIMEX_COMPUTERS              21
-#define FABRICANTE_TIMEX_SINCLAIR               22
-#define FABRICANTE_TSLABS                       23
-#define FABRICANTE_ZXUNO_TEAM                   24
+#define FABRICANTE_ATM_MICROART                 2
+#define FABRICANTE_CAMBRIDGE_COMPUTERS          3
+#define FABRICANTE_CHLOE_CORPORATION            4
+#define FABRICANTE_COLECO_INDUSTRIES            5
+#define FABRICANTE_CZERWENY_ELECTRONICA         6
+#define FABRICANTE_DIDAKTIK                     7
+#define FABRICANTE_INVESTRONICA                 8
+#define FABRICANTE_JUPITER_CANTAB               9
+#define FABRICANTE_MARIOPRATO                   10
+#define FABRICANTE_MICROART                     11
+#define FABRICANTE_MICRODIGITAL_ELECTRONICA     12
+#define FABRICANTE_MILES_GORDON                 13
+#define FABRICANTE_NEDOPC                       14
+#define FABRICANTE_NEW_HORIZONS                 15
+#define FABRICANTE_NEXT_TEAM                    16
+#define FABRICANTE_SCIENCE_OF_CAMBRIDGE         17
+#define FABRICANTE_SCORPION                     18
+#define FABRICANTE_SEGA                         19
+#define FABRICANTE_SINCLAIR                     20
+#define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   21
+#define FABRICANTE_TIMEX_COMPUTERS              22
+#define FABRICANTE_TIMEX_SINCLAIR               23
+#define FABRICANTE_TSLABS                       24
+#define FABRICANTE_ZOREL                        25
+#define FABRICANTE_ZXUNO_TEAM                   26
 
 
 

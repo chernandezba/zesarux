@@ -24,17 +24,12 @@ que cambie algo mas de filesel, como:
 el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 
 
--teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
-
 
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
 
 
--cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
-
--full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
 
 
 
@@ -48,7 +43,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
--Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
 
 ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
 Esto es porque primero se llama a tape_init() que inserta la cinta y posteriormente a autoload_snapshot();
@@ -102,8 +96,6 @@ Pero entonces posiciona submenus tambien cuando no tenemos topbar y no hay zx de
 Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados, o pegados arriba, o pegados a la derecha
 
 
--fullscreen en cpc, sin border, en mac , no se ve bien
-
 
 
 -Mover algunos items del archivo "TODO" a los otros TODO* correspondientes
@@ -134,7 +126,6 @@ ok - probar joystick "nes" en Windows, joystick logic3
 ->lo contrario: multitask sin background windows, pues el menu funciona a la vez que la emulacion, pero solo se tiene una ventana activaa
 
 
--con el raton no puedo pasar a zona central de fileselector si cursor esta en campo File (ejemplo con output file de capture audio to file)
 
 
 -driver audio que sea archivo raw. esto complementaria el output a audio del menu
@@ -148,14 +139,7 @@ Pendientes ahora
 ***QL*****
 
 
-QL-Emulación CST Thor, Q40, Q60, Q68
 
-
-QL-poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
--> tiene sentido?
-
-
-QL-si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
 QL-Qsound AY
@@ -165,51 +149,26 @@ QL-Qsound AY
 *Qsound opciones para habilitar en archivos .config
 *Incluir alguna demo de QL en extras?
 
+----
+
+-master system:
+outrun: corregido dibujado pista y tablero y nubes
+chasehq: tambien bien
+bank panic ok
+astro flash ok
 
 
-***Baseconf*****
+----
+
+-pcw16
+
+https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
+
+https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
 
 
--modo video que aparezca en debug->baseconf->video info
-->mas info adicional?
-->mas ventanas en debug->baseconf?
 
--probado con mmc pruebabaseconf.mmc
--probado con ide con baseconf-fat32.ide
-
-juegos y demos:
-
-http://atmturbo.nedopc.com/load_trdos.htm
-
-https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
-
-
--baseconf: insertar trd habilita el modo max turbo speed si accelerate load
-->corregido?
-
-
--baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF
--> parece que baseconf no. quiza eso es de atm
-
--guardar estado baseconf en snapshot zsf
-
--indicar como:
-* cargar un trd desde la SD: R Service, Image to ramdisk. ...
-* cargar un trd sin SD, mediante betadisk emulation de ZEsarUX
-* cargar un tap desde la SD. L emu tape load on. T Tape load. Seleccionar tape
-* cargar un tap sin SD, mediante tape emulation de ZEsarUX
-
-* fat boot: lee del disco ide o del mmc archivos hobbeta (extensiones $C etc). si hay mas de uno, aparece un selector de archivos para cargar
-* tr dos boot: inicia el disco virtual mapeado (trd o scl) desde r.service->image to ramdisk o bien leyendo del betadisk emulation de ZEsarUX
-* tape load: si emu tape load on, abre selector de archivos desde ide o mmc para seleccionar un tap. si emu tape load off, lee de cinta
-   puerto feh o emulada por ZEsarUX
-* hdd boot: para iniciar sistemas como iS-DOS/TASiS
-* cd boot: que hace??
-
-- captura pantalla de baseconf en la home de proyecto en github
-
--habilitar covox pentagon?
-
+------
 
 ***Spectrum Next*****
 
@@ -245,20 +204,13 @@ ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [Palettes/coreimage.npl] Str
 PC=95a1h cargar pantalla error
 necesita core 3.2.0 o inferior!
 
----
-
-
-
--pausa cpu
-en zx81 no siempre va bien
-
+--------
 
 -zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
 
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
-Debug:    ZENG Online: Set alive time for user 1588586687.178043
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
 Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
@@ -273,15 +225,61 @@ Debug:    ZENG Online: Error returning data from command streaming-get-audio-con
 Deberia detectar la salida correcta
 
 
----
+------
+
+
+***Baseconf*****
+
+
+-modo video que aparezca en debug->baseconf->video info
+->mas info adicional?
+->mas ventanas en debug->baseconf?
+
+-probado con mmc pruebabaseconf.mmc
+-probado con ide con baseconf-fat32.ide
+
+juegos y demos:
+
+http://atmturbo.nedopc.com/load_trdos.htm
+
+https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
+
+
+-baseconf: insertar trd habilita el modo max turbo speed si accelerate load
+->corregido?
+
+
+-baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF
+-> parece que baseconf no. quiza eso es de atm
+
+
+-indicar como:
+* cargar un trd desde la SD: R Service, Image to ramdisk. ...
+* cargar un trd sin SD, mediante betadisk emulation de ZEsarUX
+* cargar un tap desde la SD. L emu tape load on. T Tape load. Seleccionar tape
+* cargar un tap sin SD, mediante tape emulation de ZEsarUX
+
+* fat boot: lee del disco ide o del mmc archivos hobbeta (extensiones $C etc). si hay mas de uno, aparece un selector de archivos para cargar
+* tr dos boot: inicia el disco virtual mapeado (trd o scl) desde r.service->image to ramdisk o bien leyendo del betadisk emulation de ZEsarUX
+* tape load: si emu tape load on, abre selector de archivos desde ide o mmc para seleccionar un tap. si emu tape load off, lee de cinta
+   puerto feh o emulada por ZEsarUX
+ok en faq * hdd boot: para iniciar sistemas como iS-DOS/TASiS
+* cd boot: que hace??
+
+- captura pantalla de baseconf en la home de proyecto en github
+
+-habilitar covox pentagon?
+
+------
+
 
 tsconf
 
 Parece que para iniciar de la mmc:
 *tiene que ser fat32
 *arranca el archivo boot.$c
-./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmco-persistent-writes --zoom 1
-
+./zesarux --noconfigfile --machine tsconf --mmc-file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebatsconffat32.mmc --enable-mmc --mmc-persistent-writes --zoom 1
+imagen ide pruebatsconffat32_ide.ide
 
 Error que sale probando desde WC:
 
@@ -289,20 +287,13 @@ machines/tsconf.c:1251:28: runtime error: index 135 out of bounds for type 'z80_
 SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:28
 
 
+-NeoGS emular?
 
-*desde WC:
--carga de spg va
--carga de scl, trd o tap no va
--musicas pt3 van
----
+------
 
 
 -implementar máquinas de 60 Hz (timex, master system etc)
-* pendientes 60 hz: next modo 60hz,
-
-
-Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he puesto en scr_refresca_pantalla_rainbow_comun
--> en teoria ya bien. acabarlo de revisar
+* pendientes 60 hz: next modo 60hz
 
 
 
@@ -311,29 +302,17 @@ Hacerlo para el resto de maquinas que tienen 60 hz -> quiza ya esta porque lo he
 creo que por la condicion especial en: scr_get_offset_putpixel_no_rainbow
 ->de momento haremos que al conmutar a 60hz, active real video
 
--visual floppy: opción para ver el floppy entero, con la carcasa, etc
-
--simon
-*ok todo?
+ok -visual floppy: opción para ver el floppy entero, con la carcasa, etc
+*pestaña de proteccion de escritura no sale en sitio correcto
 
 
--pcw16
 
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
-
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
-
+------
 
 -Scorpion
-**kempston deberia retornar 0 si no está emulado, para que el menu nmi no se vuelva loco. es una maquina con kempston
-por tanto nunca devolveria 255
 
-*activar covox scorpion?
-*rom de gmx y paginado. de momento usa rom de turbo
-*mover funciones peek y poke de scorpion a scorpion.h
-ok *memoria contended
-*timings?
-*snapshots zsf
+
+*snapshots zsf. falta restaurar modo turbo en scorpion turbo
 
 *de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
 
@@ -341,6 +320,7 @@ ok *memoria contended
 acabar de probarlo **modos de video ampliado
 *gigascreen. visor de imagenes gmxpv. imagen 0139.mcx
 *probar la rom traducida profgmx6xx043.9226se.en.rom y publicarla en extras? comprimida para ocupar menos por ejemplo
+
 *en ansi06.scl habla de un modo turbo2+ 80x25. que es? y 384x304
 *gmx no tiene paleta de colores diferente?
 
@@ -348,16 +328,108 @@ acabar de probarlo **modos de video ampliado
 *usamos pruebascorpiongmx.mmc
 
 
-*realvideo scorpion y gmx ok
-
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
-*probar gmx en otros drivers de video
-
--Para baseconf, tsconf y scorpion: no deberia salir la opcion de betadisk en menu zesarux de trd porque eso ya se gestiona internamente
+*probar gmx en otros drivers de video (sdl, x11, etc)
 
 
--didaktik Gama
-*de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
-*timings?
-*snapshots zsf
+
+-----
+
+--- ATM Turbo
+
+- entradas en changelog, features y readme de las nuevas maquinas atm
+ok - tamaño pantalla real
+ok - render realvideo
+ok - covox activado?
+- timings correctos?
+ok - icono máquinas.
+- keyboard help
+- soporte snapshot zsf
+
+-software cpm http://atmturbo.nedopc.com/load_cpm.htm
+-software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm
+
+------
+
+-en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
+
+
+-----
+---- ventana video output como sustituto del render normal de maquina:
+
+Idea para que la ventana de vídeo output lea pulsaciones de teclado de la máquina emulada:
+
+ok - Que la función de zxvision_send_keys diga que se envían también cuando el foco está en esa ventana
+
+Luego opción para decir que render solo irá a esa ventana: los render de buffer rainbow a pantalla no se harán. Y para modos no real video, deberían escribir
+(los que no tengan) modo no-rainbow  en buffer rainbow
+
+Luego también hacer que dicha ventana se redimensione cuando haya cambios de máquinas
+
+ok Luego si se cierra ventana, que vuelva al render normal
+
+ok Función que dibuja el fondo de ZX desktop no omita la parte de la pantalla emulada cuando se ha conmutado a ventana.
+ok Lo mismo para el dibujado de iconos y arrastre de iconos
+
+-problema con render de maquinas que tienen gui zoom=2, como baseconf, etc
+
+-que las pulsaciones sobre zx desktop en zona de maquina emulada, con ventana video output, se consideren zx desktop
+
+Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
+No hay ZX desktop
+
+ok -renombrado de nombre de ventana "video output" por otro
+
+ok-forzar real video al abrir ventana de video output
+
+ok -si se cierra ventana de emulated display desde zxvision_window_delete_this_window (process switcher o process management)
+no se finaliza normalmente y por tanto no se pone ventana_video_output_abierta a cero
+Lo mismo pasa con cerrar todas las ventanas
+Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
+
+-sin zxdesktop y con ventana emulated display activa, que ponemos en el fondo ? o no permitimos emulated display window si el zx desktop no esta activado?
+
+ok-al iniciar ZEsarUX, que de por validos iconos en zona de pantalla emulada si ventana emulated display esta abierta
+-al iniciar ZEsarUX, autoordenar iconos, que empiece por esquina sup-izq si ventana emulated display se ha restaurado al inicio
+
+-si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
+
+-diferencia de uso de cpu entre docked y windowed? parece que usa mucha cpu mas.
+ok --implementado una putpixel cache para esa ventana y baja mucho el uso de cpu
+
+-- propuesta para incremento de cpu cuando hay muchas ventanas abiertas: que en memoria_overlay (cada caracter) diga si esta visible o no, cacheado,
+eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dirty_user_must_draw_contents
+->creo que eso no reduce mucho el uso de cpu
+
+ok -poder hacer escalado con zoom decimal
+
+-gestion pulsaciones con el raton en la zona donde se ubica Docked display
+
+-maquinas no soportadas:
+
+*mk14: no tiene render real video
+
+
+---
+
+-en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
+
+-snapshot zsf que guarde rainbow buffer? quiza es demasiado espacio
+
+-Mensajes directos en ZRCP con una ventana de chat, como mensajería
+
+-Sonido de floppy 3”, simulado, de los bytes leidos
+
+----
+-habilitar covox pentagon en zx evo baseconf
+
+ok? -poder ver paletas de colores atm, zxevo, etc
+
+
+- demos para spectrums extendidos: https://www.pouet.net/prodlist.php?platform%5B%5D=ZX+Enhanced&page=1
+
+-usar nueva funcion parecida a zxvision_putpixel_no_menu_gui_zoom para keyboard help pero que no haga tampoco zoom_x ni zoom_y, no zoom de ninguna clase,
+asi teclados serian todos parecidos independientemente de si la maquina tiene gui zoom 2 o 1
+Pero luego el problema será que si queremos tener el teclado mas grande, no se podra
+Quiza habria que hacer una ventana de render de teclado que el usuario pueda redimensionar como quiera, que se amplie de manera parecida a ventana de emulated display

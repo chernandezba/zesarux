@@ -29,6 +29,10 @@ extern z80_byte sam_vmpr;
 extern z80_byte sam_hmpr;
 extern z80_byte sam_lmpr;
 extern z80_byte sam_border;
+// Línea de vídeo que solicita la interrupción y fin de su pulso en t-estados.
+extern z80_byte sam_line_interrupt_register;
+extern int sam_line_interrupt_active_until;
+extern int sam_frame_interrupt_active_until;
 
 extern void sam_set_memory_pages(void);
 
@@ -36,9 +40,15 @@ extern z80_byte *sam_memory_paged[];
 
 extern z80_byte sam_memory_paged_type[];
 
+// Tipo de memoria visible en cada bloque de 16K de la CPU.
+#define SAM_MEMORY_PAGE_RAM 0
+#define SAM_MEMORY_PAGE_ROM 1
+#define SAM_MEMORY_PAGE_UNMAPPED 2
+
 extern z80_byte *sam_rom_memory[];
 
 extern z80_byte *sam_ram_memory[];
+extern z80_byte sam_read_ram_page(z80_byte page,z80_int offset);
 
 //Hacer que estos valores de border sean multiples de 8
 #define SAM_LEFT_BORDER_NO_ZOOM 48

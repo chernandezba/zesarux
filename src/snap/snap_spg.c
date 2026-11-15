@@ -110,6 +110,8 @@ void load_spg_snapshot(char *filename)
         //reset_cpu();
       //tsconf_hard_reset();
 	cold_start_cpu_registers(); //cold start ya hace hard reset e inicializa paleta de colores basicos
+	// El SPG no guarda CRAM; los colores ajenos a la paleta básica no deben heredarse.
+	memset(tsconf_fmaps, 0, 240*2);
 
 
 

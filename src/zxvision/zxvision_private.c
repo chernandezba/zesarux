@@ -201,6 +201,8 @@ void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int 
     //Empezar a ubicarlos con algo de margen
     int xinicial=inicio_x_zxdesktop+24;
 
+    if (ventana_video_output_esta_abierta()) xinicial=0;
+
     int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
 
     int yinicial=zxvision_get_minimum_y_icon_position();

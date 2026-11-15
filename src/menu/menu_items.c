@@ -165,6 +165,8 @@
 #include "qsound.h"
 #include "zxevo.h"
 #include "scorpion.h"
+#include "atmturbo.h"
+#include "screen_fx.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -1079,8 +1081,6 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=32;
             alto=18;
 
@@ -2759,6 +2759,15 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
 
         }
 
+        if (MACHINE_IS_ATM_TURBO) {
+
+            z80_byte atm_mode=atmturbo_get_video_mode();
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: %02X. %s",atm_mode,atmturbo_get_video_mode_string());
+
+        }
+
+
         if (MACHINE_IS_SCORPION_GMX) {
 
             if (if_scorpiongmx_mode_640_200() ) {
@@ -4425,8 +4434,6 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 
 
-//#define SOUND_WAVE_X (menu_origin_x()+1)
-//#define SOUND_WAVE_Y 3
 #define SOUND_WAVE_ANCHO 30
 #define SOUND_WAVE_ALTO 15
 
@@ -7295,8 +7302,6 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 
 
-//#define DEBUG_HEXDUMP_WINDOW_X (menu_origin_x() )
-//#define DEBUG_HEXDUMP_WINDOW_Y 1
 #define DEBUG_HEXDUMP_WINDOW_ANCHO 32
 #define DEBUG_HEXDUMP_WINDOW_ALTO 23
 
@@ -9196,7 +9201,7 @@ void menu_debug_dma_draw(zxvision_window *w)
     //Asumimos no existe
     menu_debug_dma_existe_dma=0;
 
-    char texto_dma[33];
+    char texto_dma[100];
 
     if (datagear_dma_emulation.v) {
         menu_debug_dma_existe_dma=1;
@@ -9275,41 +9280,58 @@ void menu_debug_dma_draw(zxvision_window *w)
     else {
 
         if (MACHINE_IS_TSCONF) {
+            tsconf_dma_debug_state_t dma_state;
+            tsconf_dma_get_debug_state(&dma_state);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Active: %s",dma_state.active ? "Yes" : "No");
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Used in last 5 seconds: %s",dma_state.active || dma_state.used_recently ? "Yes" : "No");
+
             menu_debug_dma_existe_dma=1;
 
             //Construimos 16 valores posibles segun rw (bit bajo) y ddev (bits altos)
             int dma_type=debug_tsconf_dma_ddev*2+debug_tsconf_dma_rw;
-                            //18 maximo el tipo
-                            //  012345678901234567890123
-                            //24. mas dos de margen banda y banda: 26
-            sprintf (texto_dma,"Type: %s",tsconf_dma_types[dma_type]);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Type: %s",tsconf_dma_types[dma_type]);
 
-            sprintf (texto_dma,"Source:      %06XH",debug_tsconf_dma_source);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Source:         %06XH",debug_tsconf_dma_source);
 
-            sprintf (texto_dma,"Destination: %06XH",debug_tsconf_dma_destination);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Current source: %06XH",dma_state.source);
 
-            sprintf (texto_dma,"Burst length: %3d",debug_tsconf_dma_burst_length);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Destination:    %06XH",debug_tsconf_dma_destination);
 
-            sprintf (texto_dma,"Burst number: %3d",debug_tsconf_dma_burst_number);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Current dest:   %06XH",dma_state.destination);
 
-                            //Maximo 25
-            sprintf (texto_dma,"Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Burst length:   %3d",debug_tsconf_dma_burst_length);
 
-            sprintf (texto_dma,"Align size: %d",(debug_tsconf_dma_addr_align_size+1)*256);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Burst number:   %3d",debug_tsconf_dma_burst_number);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Words left:     %d",dma_state.words_left);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Bursts left:    %d",dma_state.bursts_left);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Align size:     %d",(debug_tsconf_dma_addr_align_size+1)*256);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
+
+
+
+            if (debug_tsconf_dma_ddev==3) {
+                zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                    "IDE: %s",dma_state.smuc_selected ? "SMUC" : "Nemo");
+            }
 
         }
 
@@ -9372,7 +9394,7 @@ void menu_debug_dma_draw(zxvision_window *w)
     }
 
     if (menu_debug_dma_existe_dma) {
-        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Type: %s",nombre_dma);
+        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Showing: %s",nombre_dma);
     }
 
 
@@ -9445,13 +9467,12 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugdma",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=27;
-            alto_ventana=14;
+            ancho_ventana=MACHINE_IS_TSCONF ? 32 : 27;
+            alto_ventana=MACHINE_IS_TSCONF ? 19 : 14;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
         }
-
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Debug DMA",
             "debugdma",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -9511,6 +9532,7 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_TSCONF) {
+            lin=15;
         }
 
         if (menu_debug_dma_existe_dma) {
@@ -10280,11 +10302,9 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
 
 
 
-//#define TOTAL_PALETTE_WINDOW_X (menu_origin_x() )
-//#define TOTAL_PALETTE_WINDOW_Y 0
 #define TOTAL_PALETTE_WINDOW_ANCHO 32
 #define TOTAL_PALETTE_WINDOW_ALTO 24
-//#define TOTAL_PALETTE_COLORS_PER_WINDOW 16
+
 
 
 
@@ -11460,8 +11480,6 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
 
 
 
-//#define SPRITES_X ( menu_origin_x() )
-//#define SPRITES_Y 0
 #define SPRITES_ANCHO 32
 #define SPRITES_ALTO 14
 //#define SPRITES_ALTO_VENTANA (SPRITES_ALTO+10)
@@ -11609,6 +11627,11 @@ int menu_debug_sprites_total_colors_mapped_palette(int paleta)
             return 16;
         break;
 
+        //ATM
+        case 22:
+            return 16;
+        break;
+
     }
 
     return 16;
@@ -11703,6 +11726,10 @@ int menu_debug_sprites_max_value_mapped_palette(int paleta)
             return PRISM_TOTAL_PALETTE_COLOURS;
         break;
 
+        case 22:
+            //ATM
+            return PRISM_TOTAL_PALETTE_COLOURS;
+        break;
 
     }
 
@@ -11715,6 +11742,7 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
 {
 
     z80_byte r,g,b;
+    int indice;
 
     switch (paleta) {
         case 0:
@@ -11834,6 +11862,21 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
             return baseconf_get_palette_entry(color);
         break;
 
+        case 22:
+            //ATM
+            indice=atm_get_palette_entry(color);
+            //printf("c %d i %d\n",color,indice);
+
+
+           //if (MACHINE_IS_ATM_TURBO3) indice -=PRISM_INDEX_FIRST_COLOR;
+           //else indice -=SPECTRA_INDEX_FIRST_COLOR;
+
+           return indice;
+
+
+
+        break;
+
 
     }
 
@@ -11919,6 +11962,11 @@ int menu_debug_sprites_return_color_palette(int paleta, z80_byte color)
         case 21:
             //BaseConf devuelve un índice RGB444 relativo dentro de la paleta Prism.
             return PRISM_INDEX_FIRST_COLOR+index;
+        break;
+
+        case 22:
+            //El color de la paleta ya va directo sin offset
+            return index;
         break;
 
     }
@@ -12027,6 +12075,10 @@ void menu_debug_sprites_get_palette_name(int paleta, char *s)
 
         case 21:
             strcpy(s,"BaseConf");
+        break;
+
+        case 22:
+            strcpy(s,"ATM Turbo");
         break;
 
         default:
@@ -19696,7 +19748,6 @@ void menu_textadv_loc_image(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("textadvlocimage",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
 
 
             //540x201 es lo que ocupa el bmp de spectrum 48k
@@ -20023,6 +20074,73 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 zxvision_window *menu_video_output_window;
 
 
+//sin putpixel cache: render normal: 40% cpu. render ventana: 56% cpu
+
+//con putpixel cache: render normal: 27% cpu. render ventana: 56% cpu
+//con putpixel cache y menu_video_output_overlay_putpixel_cache: render normal: 27% cpu (con menu cerrado), 32% con menu abierto.
+//   render ventana: 35% cpu con menu cerrado (con cpu info, video info y process switcher abiertos), 39% con menu abierto
+// -> o sea hay un 7% cpu mas aprox en render con ventana
+// con todas ventanas abiertas posibles: 84% uso cpu
+
+
+z80_int *menu_video_output_overlay_putpixel_cache=NULL;
+
+int menu_video_output_overlay_putpixel_cache_ancho=-1;
+int menu_video_output_overlay_putpixel_cache_alto=-1;
+
+void menu_video_output_clear_putpixel_cache(void)
+{
+
+    int tamanyo=menu_video_output_overlay_putpixel_cache_ancho*menu_video_output_overlay_putpixel_cache_alto;
+    //para poder hacer putpixel cache con zoom y*2 y interlaced, doble de tamanyo
+    tamanyo *=2; //*2 porque es z80_int
+
+    //llenar todo con 65535
+    memset(menu_video_output_overlay_putpixel_cache,255,tamanyo);
+}
+
+
+void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
+{
+
+    //asignar si ha cambiado tamaño o si no esta asignado
+    if (ancho!=menu_video_output_overlay_putpixel_cache_ancho ||
+        alto!=menu_video_output_overlay_putpixel_cache_alto ||
+        menu_video_output_overlay_putpixel_cache==NULL) {
+
+        //liberar si existe previo
+        if (menu_video_output_overlay_putpixel_cache!=NULL) free (menu_video_output_overlay_putpixel_cache);
+
+        menu_video_output_overlay_putpixel_cache_ancho=ancho;
+        menu_video_output_overlay_putpixel_cache_alto=alto;
+
+
+
+        //El tamanyo depende del footer. Pero no del border (siempre se incluye con border)
+
+
+        int tamanyo=ancho*alto;
+
+        int putpixel_cache_size=tamanyo*2; //*2 porque es z80_int
+
+        //TODO: parece que la memoria que asignamos es mayor de la que luego usamos en clear_putpixel_cache
+        //normal? o es un error?
+        //De todas maneras, asignar mas memoria de la que usamos no provoca fallos, es un desperdicio, si,
+        //pero no generará ningun segfault ni nada parecido
+
+
+        menu_video_output_overlay_putpixel_cache=util_malloc(putpixel_cache_size,"Can not allocate memory for putpixel cache on window emulated display");
+
+        menu_video_output_clear_putpixel_cache();
+    }
+}
+
+
+//Ultima maquina para ajustar tamaño si conviene
+int menu_video_output_last_machine=-1;
+
+int menu_video_output_forzar_redibujado_frames=0;
+
 void menu_video_output_overlay(void)
 {
 
@@ -20034,26 +20152,145 @@ void menu_video_output_overlay(void)
 
     if (rainbow_enabled.v) {
 
-        int offset_x=menu_char_width;
 
-        int x,y,xmax,ymax;
-        xmax=get_total_ancho_rainbow();
-        ymax=get_total_alto_rainbow();
+
+        int offset_x=menu_char_width*menu_gui_zoom;
+
+        int x,y,ancho,alto;
+        ancho=get_total_ancho_rainbow();
+        alto=get_total_alto_rainbow();
         z80_int *puntero;
         puntero=rainbow_buffer;
 
-        for (y=0;y<ymax;y++) {
-            for (x=0;x<xmax;x++) {
-                zxvision_putpixel(menu_video_output_window,x+offset_x,y,*puntero);
-                puntero++;
+        if (menu_video_output_last_machine!=-1) {
+
+            if (setting_emulated_display_win_autoresize.v) {
+
+                if (menu_video_output_last_machine!=current_machine_type) {
+                    //redimensionar ventana al cambiar
+                    //TODO: que esto se pueda desactivar con un setting
+                    int ancho_caracter=menu_char_width*menu_gui_zoom;
+                    int alto_caracter=menu_char_height*menu_gui_zoom;
+                    int ancho_necesario=(ancho+ancho_caracter-1)/ancho_caracter;
+                    int alto_necesario=(alto+alto_caracter-1)/alto_caracter;
+
+
+                    zxvision_set_total_width(menu_video_output_window,ancho_necesario);
+                    zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
+                    zxvision_set_total_height(menu_video_output_window,alto_necesario);
+                    zxvision_set_visible_height(menu_video_output_window,alto_necesario+2);
+                    //al cambiar tamaño tenemos que forzar redibujado en el siguiente frame tambien
+                    //pues tiene que salir de aqui y hacer overlay de video, donde se renderizara el fondo en el color por defecto de la ventana
+                    //por tanto decimos que 2
+                    menu_video_output_forzar_redibujado_frames=2;
+                }
+            }
+
+        }
+
+        menu_video_output_last_machine=current_machine_type;
+
+        //Efectos especiales (FX)
+        puntero=screen_rainbow_effects(puntero,ancho,alto);
+
+
+        if (setting_emulated_display_win_zoom_fit.v) {
+            int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width*menu_gui_zoom-offset_x;
+            int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height*menu_gui_zoom;
+
+            if (setting_emulated_display_win_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
+                int ancho_disponible=ancho_ventana;
+                int alto_disponible=alto_ventana;
+
+                //Ejemplo: una imagen de 400x200 pasa a 300 de alto. Para conservar su forma,
+                //el ancho también crece en la misma medida: 400*300/200=600.
+                //El if comprueba si ese ancho de 600 cabe en la ventana. Con división sería:
+                //ancho_disponible > alto_disponible*ancho/alto.
+                //La división entre enteros pierde los decimales; por eso multiplicamos ambos
+                //lados por alto y comparamos ancho_disponible*alto > alto_disponible*ancho.
+                if (ancho_disponible*alto>alto_disponible*ancho) {
+                    ancho_ventana=alto_disponible*ancho/alto;
+                }
+                else {
+                    alto_ventana=ancho_disponible*alto/ancho;
+                }
+
+                if (ancho_ventana<1) ancho_ventana=1;
+                if (alto_ventana<1) alto_ventana=1;
+
+            }
+
+
+            menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
+
+            if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                menu_video_output_clear_putpixel_cache();
+                menu_video_output_window->dirty_user_must_draw_contents=0;
+            }
+
+            z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
+
+            for (y=0;y<alto_ventana;y++) {
+                int y_origen=(y*alto)/alto_ventana;
+
+                for (x=0;x<ancho_ventana;x++) {
+                    int x_origen=(x*ancho)/ancho_ventana;
+
+                    if (x_origen<ancho && y_origen<alto) {
+
+                        int offset_origen=y_origen*ancho+x_origen;
+                        z80_int color=puntero[offset_origen];
+
+                        int offset_putpixel_cache=y*ancho_ventana+x;
+
+                        if (color!=p_putpixel_cache[offset_putpixel_cache]) {
+                            zxvision_putpixel_no_menu_gui_zoom(menu_video_output_window,x+offset_x,y,color);
+                            p_putpixel_cache[offset_putpixel_cache]=color;
+                        }
+
+                        //p_putpixel_cache++;
+
+                    }
+                }
             }
         }
+
+        else {
+
+            menu_video_output_alloc_putpixel_cache(ancho,alto);
+
+            if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                menu_video_output_clear_putpixel_cache();
+                menu_video_output_window->dirty_user_must_draw_contents=0;
+            }
+
+            z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
+
+            for (y=0;y<alto;y++) {
+                for (x=0;x<ancho;x++) {
+                    int offset_origen=y*ancho+x;
+                    z80_int color=puntero[offset_origen];
+                    if (color!=*p_putpixel_cache) {
+                        zxvision_putpixel_no_menu_gui_zoom(menu_video_output_window,x+offset_x,y,color);
+                        *p_putpixel_cache=color;
+                    }
+
+                    p_putpixel_cache++;
+                }
+            }
+        }
+
+
 
     }
 
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_video_output_window);
+
+    if (menu_video_output_forzar_redibujado_frames>0) menu_video_output_forzar_redibujado_frames--;
 
 }
 
@@ -20063,6 +20300,26 @@ void menu_video_output_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_video_output;
 
+
+int ventana_video_output_activa=0;
+int ventana_video_output_abierta=0;
+
+int ventana_video_output_esta_activa(void)
+{
+    return ventana_video_output_activa;
+}
+
+//Dice si la ventana esta abierta y funcional
+int ventana_video_output_esta_abierta(void)
+{
+    if (rainbow_enabled.v==0) return 0;
+    return ventana_video_output_abierta;
+}
+
+void menu_video_output_close_window_function(void)
+{
+    ventana_video_output_abierta=0;
+}
 
 void menu_video_output(MENU_ITEM_PARAMETERS)
 {
@@ -20085,7 +20342,7 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     if (!zxvision_if_window_already_exists(ventana)) {
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("videooutput",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("emulateddisplay",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=30;
             alto_ventana=20;
 
@@ -20094,10 +20351,13 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Output",
-            "videooutput",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Emulated Display",
+            "emulateddisplay",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+
+        //Definir funcion de cierre de ventana
+        ventana->close_window_function=menu_video_output_close_window_function;
 
     }
 
@@ -20120,6 +20380,14 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_video_output_overlay);
 
+    if (rainbow_enabled.v==0) {
+        enable_rainbow();
+    }
+
+    int antes_ventana_video_output_abierta=ventana_video_output_abierta;
+
+    ventana_video_output_abierta=1;
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20128,13 +20396,19 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             return;
     }
 
+    //Si se acaba de hacer activa, refrescar el zx desktop para que se vea que ya no está la pantalla emulada en modo Docked
+    if (!antes_ventana_video_output_abierta) {
+        menu_draw_ext_desktop();
+    }
+
+    ventana_video_output_activa=1;
+
+    /*
     if (rainbow_enabled.v==0) {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
-        zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
+        enable_rainbow();
     }
-    else {
-        zxvision_cls(ventana);
-    }
+    */
+
 
     do {
 
@@ -20154,14 +20428,14 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
                 salir=1;
             break;
 
-            default:
-                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
-            break;
+            //Y no atendemos a cursores, pgup, dn, shift+opqa etc porque se usan dentro de maquina emulada
+            //y no queremos que actue en la ventana
         }
 
 
     } while (salir==0);
 
+    ventana_video_output_activa=0;
 
     util_add_window_geometry_compact(ventana);
 
@@ -20170,6 +20444,9 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     }
 
     else {
+        if (ventana->close_window_function!=NULL) {
+            ventana->close_window_function();
+        }
 
         zxvision_destroy_window(ventana);
     }
@@ -20231,12 +20508,6 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        //Todavia no tengo claro del todo para que servira esto, pero de momento renderiza la pantalla
-        //cuando real video esta activado
-        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
-            "Video Output","Salida de Video","Sortida de Video");
-        menu_add_item_menu_genera_ventana(array_menu_display_settings);
-        menu_add_item_menu_se_cerrara(array_menu_display_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_total_palette,NULL,
@@ -21877,14 +22148,14 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 
 
 
-        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX) {
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX && !MACHINE_IS_ATM_TURBO) {
             //menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_video_layers,NULL,"Video ~~Layers");
             menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
             menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
-        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX) {
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX && !MACHINE_IS_ATM_TURBO) {
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
             menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
             menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
@@ -22017,6 +22288,8 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_MICRODIGITAL_TK85) strcpy(nombrebmp,"keyboard_tk85.bmp");
     else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
+    else if (MACHINE_IS_DIDAKTIKGAMA) strcpy(nombrebmp,"keyboard_didaktikgama.bmp");
+    else if (MACHINE_IS_SCORPION) strcpy(nombrebmp,"keyboard_scorpion.bmp");
     else strcpy(nombrebmp,"keyboard_48.bmp");
 
     //localizarlo
@@ -22150,6 +22423,27 @@ int keyboard_map_table_coords_p2[40*4]={
 200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
 };
 
+int keyboard_map_table_coords_didaktikgama[40*4]={
+63,268,132,308,     142,268,185,308,    195,268,238,308,    248,268,291,308,    302,268,345,308,
+116,219,159,260,    169,219,212,260,    222,219,264,260,    276,219,319,260,    328,219,373,260,
+90,171,132,212,     143,171,183,212,    195,171,237,212,    249,171,292,212,    303,171,346,212,
+62,125,105,165,     116,125,158,165,    170,125,210,165,    220,125,264,165,    273,125,318,165,
+539,125,585,165,    490,125,531,165,    434,125,478,165,    379,125,424,165,    328,125,370,165,
+568,171,609,212,    517,171,558,212,    463,171,506,212,    408,171,452,212,    356,171,398,212,
+599,219,639,260,    543,219,589,260,    490,219,534,260,    436,219,479,260,    382,219,426,260,
+576,268,639,308,    518,268,564,308,    463,268,508,308,    409,268,453,308,    356,268,400,308,
+};
+
+int keyboard_map_table_coords_scorpion[40*4]={
+68,221,153,254,     206,221,239,254,    247,221,282,254,    289,221,324,254,    332,221,366,254,
+183,178,217,213,    225,178,260,213,    268,178,302,213,    310,178,344,213,    353,178,387,213,
+173,135,208,170,    216,135,250,170,    258,135,292,170,    300,135,334,170,    342,135,376,170,
+153,93,187,126,     195,93,229,126,     237,93,272,126,     280,93,314,126,     323,93,357,126,
+535,93,569,126,     492,93,526,126,     450,93,484,126,     408,93,441,126,     365,93,399,126,
+555,135,588,170,    513,135,547,170,    470,135,504,170,    428,135,462,170,    385,135,419,170,
+598,136,630,171,    521,178,565,213,    479,178,512,213,    438,178,471,213,    395,178,428,213,
+280,263,458,296,    68,263,102,296,     460,221,493,254,    417,221,451,254,    375,221,409,254,
+};
 
 
 int keyboard_map_table_coords_zxuno[40*4]={
@@ -22628,6 +22922,31 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+//Teclas adicionales scorpion
+keyboard_help_double_key keyboard_map_additional_scorpion[]={
+    { 593,263,628,296,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, // Symbol Shift derecho
+    { 544,221,629,254,     KEY_PORT_VALUE_SHIFT,   NULL, 0}, // Caps Shift derecho
+    { 574,179,630,212,     &puerto_49150,1,        NULL, 0}, // parte inferior de Enter
+    { 68,178,122,213,      KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, // modo extendido
+    { 68,135,122,170,      &puerto_65278,1,        &puerto_61438,1 }, // Delete
+    { 68,93,102,126,       &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, // True Video
+    { 111,93,144,126,      &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, // Inverse Video
+    { 132,135,165,170,     &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, // Graph
+    { 132,178,165,213,     &puerto_63486,1,        KEY_PORT_VALUE_SHIFT }, // Edit
+    { 164,221,197,254,     &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 110,263,144,296,     &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 152,263,186,296,     &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 195,263,228,296,     &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izquierda
+    { 238,263,271,296,     &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha derecha
+    { 466,263,501,296,     &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arriba
+    { 509,263,543,296,     &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abajo
+    { 552,263,585,296,     &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // coma
+    { 500,221,535,254,     &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // punto
+    { 577,93,628,126,      &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // Break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Teclas adicionales zxuno
 keyboard_help_double_key keyboard_map_additional_zxuno[]={
     { 528,4,594,32,   &puerto_65278,1,        &puerto_61438,1 },  //delete
@@ -22981,6 +23300,14 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_p2;
     }
 
+    else if (MACHINE_IS_SCORPION) {
+        return keyboard_map_table_coords_scorpion;
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        return keyboard_map_table_coords_didaktikgama;
+    }
+
     else if (MACHINE_IS_TBBLUE) {
         return keyboard_map_table_coords_next;
     }
@@ -23109,6 +23436,10 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
 
     else if (MACHINE_IS_MICRODIGITAL_TK95) {
         return keyboard_map_additional_tk95;
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        return keyboard_map_additional_scorpion;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -24076,7 +24407,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
 
 
             //540x201 es lo que ocupa el bmp de spectrum 48k
@@ -24471,8 +24801,6 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=0;
             ancho=DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH; //32;
             alto=18;
 
@@ -24871,8 +25199,6 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=33;
             alto=22;
 
@@ -25078,8 +25404,6 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=33;
             alto=22;
 
@@ -29145,17 +29469,6 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-
-
-
-
-
-
-//#define VISUALREALTAPE_X (menu_origin_x())
-//#define VISUALREALTAPE_Y 4
 #define VISUALREALTAPE_ANCHO 32
 #define VISUALREALTAPE_ALTO 20
 
@@ -36821,7 +37134,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
 
-        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
+        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX || MACHINE_IS_TBBLUE || MACHINE_IS_CPC || MACHINE_IS_ATM_TURBO) {
             if (MACHINE_IS_TSCONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"~~TSConf");
                 menu_add_item_menu_shortcut(array_menu_debug,'t');
@@ -36833,6 +37146,10 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             }
             if (MACHINE_IS_SCORPION_GMX) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"Scorpion GMX");
+                menu_add_item_menu_tiene_submenu(array_menu_debug);
+            }
+            if (MACHINE_IS_ATM_TURBO) {
+                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"ATM Turbo");
                 menu_add_item_menu_tiene_submenu(array_menu_debug);
             }
             if (MACHINE_IS_TBBLUE) {
@@ -43207,7 +43524,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
+        if (MACHINE_HAS_CF2_FLOPPY) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" CF2 F~~loppy");
             menu_add_item_menu_shortcut(array_menu_storage,'l');
             menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_COMPACT_FLOPPY));
@@ -51431,6 +51748,9 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+        //Si se quiere definir funcion de cierre de ventana
+        //ventana->close_window_function=menu_template_window_can_be_backgrounded_close_window_function;
+
     }
 
     //Si ya existe, activar esta ventana
@@ -51506,6 +51826,9 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
     }
 
     else {
+        if (ventana->close_window_function!=NULL) {
+            ventana->close_window_function();
+        }
         zxvision_destroy_window(ventana);
     }
 

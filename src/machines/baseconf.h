@@ -52,6 +52,24 @@ extern z80_byte baseconf_shadow_mode_port_77;
 //extern z80_byte baseconf_last_port_dff7;
 //extern z80_byte baseconf_nvram[];
 
+extern z80_byte baseconf_mmu_pages[];
+extern z80_byte baseconf_mmu_flags[];
+
+extern int baseconf_dos_signal;
+
+#define BASECONF_PALETTE_ENTRIES 16
+extern z80_int baseconf_palette[];
+
+extern void baseconf_set_cpu_speed(void);
+
+extern z80_byte baseconf_extended_dos_ports[];
+
+extern z80_byte baseconf_beta_drive_virtual;
+extern z80_byte baseconf_beta_drive_selected;
+extern int baseconf_trdos_emulation_active;
+
+extern z80_byte baseconf_border_colour;
+
 //extern void baseconf_write_af_port(z80_byte puerto_h,z80_byte value);
 //extern z80_byte baseconf_get_af_port(z80_byte index);
 extern void baseconf_init_memory_tables(void);
@@ -80,10 +98,6 @@ extern int baseconf_beta_fdc_access(z80_int puerto);
 extern z80_byte baseconf_read_extended_dos_port(z80_byte puerto_l);
 extern z80_byte baseconf_read_cmos(void);
 extern void baseconf_write_cmos(z80_byte valor);
-extern int baseconf_ide_port(z80_byte puerto_l);
-extern z80_bit baseconf_nemo_ide_enabled;
-extern z80_byte baseconf_ide_read(z80_byte puerto_l);
-extern void baseconf_ide_write(z80_byte puerto_l,z80_byte valor);
 
 extern char *baseconf_get_video_mode_string(void);
 
@@ -108,6 +122,7 @@ extern z80_byte baseconf_last_port_ff7;
 extern z80_byte baseconf_last_port_7f7;
 extern z80_byte baseconf_last_port_bf7;
 extern z80_byte baseconf_avr_modes_register;
+extern void baseconf_update_timing(int force);
 
 extern int baseconf_shadow_ports_available(void);
 extern void baseconf_write_memory_aux(z80_int direccion,z80_byte valor);

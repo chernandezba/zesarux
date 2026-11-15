@@ -354,6 +354,9 @@ void core_sms_fin_scanline(void)
 
     }
 
+    // El registro de scroll horizontal escrito en esta línea se aplica a la siguiente.
+    sms_scroll_horizontal_latched=vdp_9918a_registers[8];
+
     //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_sms_t_scanline_next_line);
     t_scanline_next_line();
     //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_sms_t_scanline_next_line);

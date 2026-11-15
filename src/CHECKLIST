@@ -28,6 +28,8 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar cambio idioma menu y ver diferentes menus
 
+-probar diferentes dsk con script python3 tests/dsk_load_check.py pepe.dsk --min-seconds 3 --timeout 10
+
 -probar Search menu
 
 -probar 4 combinaciones de logo:

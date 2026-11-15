@@ -127,22 +127,22 @@ z80_byte didaktikgama_8255_port_a=0;
 z80_byte didaktikgama_8255_port_b=0;
 z80_byte didaktikgama_8255_port_c=0;
 z80_byte didaktikgama_8255_port_d=0;
-static z80_byte didaktikgama_8255_mode=0x9b;
+z80_byte didaktikgama_8255_mode=0x9b;
 // Niveles de entrada sin periféricos conectados al MHB8255 NMOS.
-static z80_byte didaktikgama_8255_input_a=0;
-static z80_byte didaktikgama_8255_input_b=0;
-static z80_byte didaktikgama_8255_input_c=0;
-static z80_byte didaktikgama_8255_latch_a=0;
-static z80_byte didaktikgama_8255_latch_b=0;
-static z80_bit didaktikgama_8255_ibf_a={0};
-static z80_bit didaktikgama_8255_ibf_b={0};
-static z80_bit didaktikgama_8255_obf_a={0};
-static z80_bit didaktikgama_8255_obf_b={0};
-static z80_bit didaktikgama_8255_ack_a={0};
-static z80_bit didaktikgama_8255_ack_b={0};
-static z80_bit didaktikgama_8255_inte_a_in={0};
-static z80_bit didaktikgama_8255_inte_a_out={0};
-static z80_bit didaktikgama_8255_inte_b={0};
+z80_byte didaktikgama_8255_input_a=0;
+z80_byte didaktikgama_8255_input_b=0;
+z80_byte didaktikgama_8255_input_c=0;
+z80_byte didaktikgama_8255_latch_a=0;
+z80_byte didaktikgama_8255_latch_b=0;
+z80_bit didaktikgama_8255_ibf_a={0};
+z80_bit didaktikgama_8255_ibf_b={0};
+z80_bit didaktikgama_8255_obf_a={0};
+z80_bit didaktikgama_8255_obf_b={0};
+z80_bit didaktikgama_8255_ack_a={0};
+z80_bit didaktikgama_8255_ack_b={0};
+z80_bit didaktikgama_8255_inte_a_in={0};
+z80_bit didaktikgama_8255_inte_a_out={0};
+z80_bit didaktikgama_8255_inte_b={0};
 
 static int didaktikgama_8255_mode_a(void)
 {
@@ -229,7 +229,8 @@ void didaktikgama_set_normal_pages(void)
     didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[0];
     didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[0]+16384;
 
-    // Solo la RAM fija de pantalla en 4000h-7FFFh tiene contienda con la ULA.
+    // La ULA comparte exclusivamente la RAM fija de 4000h-7FFFh.
+    // Las dos bancadas conmutables de 8000h-FFFFh son RAM no contendida.
     contend_pages_actual[0]=0;
     contend_pages_actual[1]=1;
     contend_pages_actual[2]=0;
@@ -248,17 +249,28 @@ void didaktikgama_malloc_mem_machine(void)
     didaktikgama_set_normal_pages();
 }
 
+z80_byte didaktikgama_get_current_ram_page(void)
+{
+    // PC0 tiene una resistencia a tierra cuando se configura como entrada.
+    if (didaktikgama_8255_mode & 4) {
+        return didaktikgama_8255_intr_b();
+    }
+    else if (didaktikgama_8255_mode & 1) {
+        return 0;
+    }
+    else {
+        return didaktikgama_8255_port_c & 1;
+    }
+}
+
 void didaktikgama_mem_page_ram(void)
 {
-
-    // PC0 tiene una resistencia a tierra cuando se configura como entrada.
-    z80_byte page_entra=(didaktikgama_8255_mode & 4) ? didaktikgama_8255_intr_b() :
-                          ((didaktikgama_8255_mode & 1) ? 0 : (didaktikgama_8255_port_c & 1));
+    z80_byte page_entra=didaktikgama_get_current_ram_page();
 
     didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[page_entra];
     didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[page_entra]+16384;
 
-    printf("Paging ram %d on 8000h-ffffh\n",page_entra);
+    //printf("Paging ram %d on 8000h-ffffh\n",page_entra);
 
 }
 
@@ -278,10 +290,6 @@ void didaktikgama_reset(void)
     didaktikgama_set_normal_pages();
 
 }
-
-
-
-
 
 void poke_byte_no_time_didaktikgama(z80_int dir,z80_byte valor)
 {

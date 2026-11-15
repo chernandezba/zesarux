@@ -6371,8 +6371,18 @@ int menu_filesel_all_parameters(char *titulo,char *filtros[],char *archivo,int s
                 else {
 
 
-                tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0,0,forzar_cursor);
+                tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,1,0,forzar_cursor);
                 //); //6 ocupa el texto "File: "
+
+                if (tecla==13 && mouse_left) {
+                    //El clic fuera del campo cambia de zona sin confirmar el nombre del archivo.
+                    if (menu_filesel_change_zone_if_clicked(ventana,&filesel_zona_pantalla,&tecla) &&
+                        filesel_zona_pantalla==1) {
+                        menu_filesel_set_cursor_at_mouse(ventana);
+                    }
+                    tecla=0;
+                    menu_espera_no_tecla_con_repeticion();
+                }
 
                 if (tecla==15) {
                     //printf ("TAB. siguiente seccion\n");

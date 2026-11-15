@@ -34,8 +34,8 @@
 #include "operaciones.h"
 #include "zxevo.h"
 #include "mmc.h"
-#include "ide.h"
 #include "betadisk.h"
+#include "timer.h"
 
 
 // Estado de alimentación SD escrito por el firmware en el puerto 77h.
@@ -44,9 +44,6 @@ int baseconf_sd_enabled=1;
 /* Presencia de la interfaz SD de BaseConf, controlada por el emulador. */
 z80_bit baseconf_sd_interface_enabled={0};
 
-/* Presencia de la interfaz Nemo IDE integrada en BaseConf. */
-z80_bit baseconf_nemo_ide_enabled={0};
-
 // Estado de selección de chip de la tarjeta SD.
 int baseconf_sd_cs=0;
 
@@ -54,16 +51,16 @@ int baseconf_sd_cs=0;
 z80_byte *baseconf_rom_mem_table[32];
 
 // Punteros a las 256 páginas de RAM de 16 KiB.
-z80_byte *baseconf_ram_mem_table[256];
+z80_byte *baseconf_ram_mem_table[BASECONF_RAM_PAGES];
 
 // Punteros a las cuatro páginas de 16 KiB visibles por la CPU.
 z80_byte *baseconf_memory_paged[4];
 
 // Números de página resueltos para las cuatro ventanas de la CPU.
-z80_byte baseconf_memory_segments[4];
+z80_byte baseconf_memory_segments[4]; //OK NO ZSF
 
 // Tipo de cada ventana: cero para ROM y valor distinto de cero para RAM.
-z80_byte baseconf_memory_segments_type[4];
+z80_byte baseconf_memory_segments_type[4]; //OK NO ZSF
 
 /*
  * BaseConf tiene dos conjuntos de cuatro registros de gestión de memoria.
@@ -75,25 +72,64 @@ z80_byte baseconf_memory_segments_type[4];
  * #7FFD; el bit 6 selecciona RAM. Los números de página se guardan sin invertir.
  */
 // Números de página programados en los dos bancos de registros MMU.
-static z80_byte baseconf_mmu_pages[8];
+z80_byte baseconf_mmu_pages[8];   //OK ZSF
 // Banderas de tipo y sustitución de página de cada registro MMU.
-static z80_byte baseconf_mmu_flags[8];
+z80_byte baseconf_mmu_flags[8];  //OK ZSF
 // Fuente de 2 KiB escribible por la CPU para los modos de texto.
 static z80_byte baseconf_text_font[2048];
 // Señal que activa la ROM TR-DOS y sus puertos shadow.
-static int baseconf_dos_signal;
+int baseconf_dos_signal;  //OK ZSF
 /* Estado del Beta Disk virtual de PentEvo. El firmware guarda el servicio
    de RAM-disk en la página RAM FE y lo selecciona en lugar del FDC físico. */
 // Máscara de unidades Beta Disk cuyo medio procede del RAM-disk.
-static z80_byte baseconf_beta_drive_virtual;
+z80_byte baseconf_beta_drive_virtual; //OK ZSF
 // Número de unidad Beta Disk seleccionado actualmente.
-static z80_byte baseconf_beta_drive_selected;
+z80_byte baseconf_beta_drive_selected; //OK ZSF
 // Indica que la ventana ROM está sustituida por el servicio TR-DOS en RAM.
-static int baseconf_trdos_emulation_active;
+int baseconf_trdos_emulation_active; //OK ZSF
 // Últimos valores de los cuatro puertos de DOS extendido.
-static z80_byte baseconf_extended_dos_ports[4];
+z80_byte baseconf_extended_dos_ports[4]; //OK ZSF
 // Entradas RGB de la paleta programable de dieciséis colores.
-static z80_int baseconf_palette[16];
+
+
+// Último valor escrito en el puerto 77 de vídeo y turbo.
+z80_byte baseconf_last_port_77; //OK ZSF
+// Último valor escrito en el puerto 77 de la interfaz SD.
+z80_byte baseconf_last_port_sd_77;
+// Bits de control shadow del puerto 77, separados de los de vídeo.
+z80_byte baseconf_shadow_mode_port_77; //OK ZSF
+// Último valor escrito en el puerto BF de configuración.
+z80_byte baseconf_last_port_bf; //OK ZSF
+// Último valor escrito en EFF7 de vídeo, memoria y velocidad.
+z80_byte baseconf_last_port_eff7; //OK ZSF
+// Último valor escrito en el puerto BD de breakpoint NMI.
+z80_byte baseconf_last_port_bd;
+// Último valor escrito en el puerto BE de control NMI.
+z80_byte baseconf_last_port_be;
+// Último valor escrito en el puerto FF de vídeo.
+z80_byte baseconf_last_port_ff;
+// Último valor escrito en el puerto 57 de Beta Disk.
+z80_byte baseconf_last_port_57;
+// Índice CMOS seleccionado mediante DFF7.
+z80_byte baseconf_last_port_dff7;
+// Último dato de CMOS leído o escrito mediante BFF7.
+z80_byte baseconf_last_port_bff7;
+// Último valor escrito en el puerto 7FFD de paginación Spectrum.
+z80_byte baseconf_last_port_7ffd;
+
+
+// Últimos valores escritos en los cuatro puertos de DOS extendido.
+z80_byte baseconf_last_port_extended_dos[4];
+
+// Último valor escrito en el puerto FF7 del gestor de memoria.
+z80_byte baseconf_last_port_ff7; //OK ZSF
+// Último valor escrito en el puerto 7F7 del gestor de memoria.
+z80_byte baseconf_last_port_7f7; //OK ZSF
+// Último valor escrito en el puerto BF7 del gestor de memoria.
+z80_byte baseconf_last_port_bf7; //OK ZSF
+
+
+z80_int baseconf_palette[BASECONF_PALETTE_ENTRIES]; //OK ZSF
 /* Paleta inicial tras un hard reset: copia las primeras 16 entradas de
    initial_prism_palette_zero (prism.c). Cada valor es RGB444 (0xRGB).
    Orden Spectrum en cada fila: negro, azul, rojo, magenta, verde, cian,
@@ -104,7 +140,7 @@ static const z80_int baseconf_palette_default[16]={
         0,15,3840,3855,240,255,4080,4095
 };
 // Índice de color actual del borde de cuatro bits.
-static z80_byte baseconf_border_colour;
+z80_byte baseconf_border_colour;
 // Color del borde guardado antes de entrar en el servicio NMI.
 static z80_byte baseconf_nmi_saved_border_colour;
 // Dirección M1 donde se intercepta la entrada del servicio NMI.
@@ -119,24 +155,6 @@ static int baseconf_nmi_exit_countdown;
 static int baseconf_nmi_from_bf_pending;
 // Evita repetir la entrega de la NMI solicitada desde BF.
 static int baseconf_nmi_from_bf_delivery;
-// Byte alto retenido durante accesos de dieciséis bits al IDE.
-static z80_byte baseconf_ide_high_latch;
-// Byte bajo retenido durante escrituras de dieciséis bits al IDE.
-static z80_byte baseconf_ide_low_latch;
-// Indica que falta leer el byte alto de una palabra IDE.
-static int baseconf_ide_read_high_pending;
-// Indica que falta completar una palabra de escritura IDE.
-static int baseconf_ide_write_low_pending;
-// Indica que el byte alto IDE llegó por el puerto 11.
-static int baseconf_ide_write_high_from_port_11;
-// Último valor escrito en el registro de control IDE.
-static z80_byte baseconf_ide_control;
-// Comando IDE cuya transferencia de sectores se está contabilizando.
-static z80_byte baseconf_ide_transfer_command;
-// Bytes transferidos del sector IDE actual.
-static int baseconf_ide_transfer_bytes;
-// Sectores pendientes del comando IDE actual.
-static int baseconf_ide_sectors_remaining;
 // Tipo de extensión AVR seleccionado en las celdas CMOS F0-FF.
 static z80_byte baseconf_cmos_extension_type;
 // Bytes pendientes del teclado PS/2 expuesto por la extensión AVR 2.
@@ -207,173 +225,6 @@ void baseconf_ps2_clear_fifo(void)
     baseconf_ps2_fifo_write=0;
     baseconf_ps2_fifo_count=0;
     for (i=0;i<8;i++) baseconf_ps2_previous_rows[i]=rows[i];
-}
-
-// Traduce puerto_l IDE al índice del registro ATA; devuelve -1 si no corresponde.
-static int baseconf_ide_register(z80_byte puerto_l)
-{
-    switch (puerto_l) {
-        case 0x30: return 1;
-        case 0x50: return 2;
-        case 0x70: return 3;
-        case 0x90: return 4;
-        case 0xb0: return 5;
-        case 0xd0: return 6;
-        case 0xf0: return 7;
-        default: return -1;
-    }
-}
-
-// Comprueba si la interfaz Nemo IDE atiende puerto_l; devuelve 1 si corresponde.
-int baseconf_ide_port(z80_byte puerto_l)
-{
-    if (!baseconf_nemo_ide_enabled.v) return 0;
-    return puerto_l==0x10 || puerto_l==0x11 || puerto_l==0xc8 ||
-           baseconf_ide_register(puerto_l)>=0;
-}
-
-// Descarta las mitades pendientes de una transferencia IDE; sin parámetros ni retorno.
-static void baseconf_ide_sync_data(void)
-{
-    baseconf_ide_read_high_pending=0;
-    baseconf_ide_write_low_pending=0;
-    baseconf_ide_write_high_from_port_11=0;
-}
-
-// Avanza el LBA de los registros IDE al siguiente sector; sin parámetros ni retorno.
-static void baseconf_ide_increment_lba(void)
-{
-    unsigned int lba;
-
-    /* Los accesos observados del firmware BaseConf usan direccionamiento LBA. */
-    if (!(ide_register_drive_head&0x40)) return;
-
-    lba=((unsigned int)(ide_register_drive_head&0x0f)<<24) |
-        ((unsigned int)ide_register_cylinder_high<<16) |
-        ((unsigned int)ide_register_cylinder_low<<8) |
-        ide_register_sector_number;
-    lba++;
-
-    ide_register_sector_number=lba&0xff;
-    ide_register_cylinder_low=(lba>>8)&0xff;
-    ide_register_cylinder_high=(lba>>16)&0xff;
-    ide_register_drive_head=(ide_register_drive_head&0xf0) | ((lba>>24)&0x0f);
-}
-
-// Inicia el seguimiento de sectores para comando IDE; entrada: comando; sin retorno.
-static void baseconf_ide_begin_transfer(z80_byte comando)
-{
-    baseconf_ide_transfer_command=0;
-    baseconf_ide_transfer_bytes=0;
-    baseconf_ide_sectors_remaining=0;
-
-    if (comando==0x20 || comando==0x21 || comando==0x30) {
-            baseconf_ide_transfer_command=comando;
-            /* En ATA el valor cero representa una transferencia de 256 sectores. */
-            baseconf_ide_sectors_remaining=ide_register_sector_count ?
-                    ide_register_sector_count : 256;
-    }
-}
-
-// Cuenta bytes transferidos y actualiza sectores y LBA; entrada: bytes; sin retorno.
-static void baseconf_ide_data_transferred(int bytes)
-{
-    if (!baseconf_ide_transfer_command) return;
-
-    baseconf_ide_transfer_bytes+=bytes;
-    if (baseconf_ide_transfer_bytes<512) return;
-
-    baseconf_ide_transfer_bytes=0;
-    baseconf_ide_sectors_remaining--;
-    ide_register_sector_count=(z80_byte)baseconf_ide_sectors_remaining;
-
-    if (baseconf_ide_sectors_remaining>0) {
-            /* ide.c procesa un sector por orden. BaseConf mantiene DRQ y avanza
-               al siguiente sector repitiendo internamente la misma orden. */
-            baseconf_ide_increment_lba();
-            ide_write_command_block_register(7,baseconf_ide_transfer_command);
-    }
-    else baseconf_ide_transfer_command=0;
-}
-
-// Lee el registro IDE de puerto_l y devuelve su byte, incluida la división de palabras.
-z80_byte baseconf_ide_read(z80_byte puerto_l)
-{
-    int registro=baseconf_ide_register(puerto_l);
-
-    if (puerto_l==0x10) {
-            /* En modo extendido dos lecturas consecutivas de #10 entregan
-               primero el byte bajo y después el alto. En modo NemoIDE el
-               segundo byte se recoge mediante #11. */
-            if (baseconf_ide_read_high_pending) {
-                    baseconf_ide_read_high_pending=0;
-                    return baseconf_ide_high_latch;
-            }
-
-            z80_byte bajo=ide_read_command_block_register(0);
-            baseconf_ide_high_latch=ide_read_command_block_register(0);
-            baseconf_ide_data_transferred(2);
-            baseconf_ide_read_high_pending=1;
-            return bajo;
-    }
-
-    if (puerto_l==0x11) {
-            baseconf_ide_read_high_pending=0;
-            return baseconf_ide_high_latch;
-    }
-
-    baseconf_ide_sync_data();
-    if (puerto_l==0xc8) return ide_read_command_block_register(7);
-    return ide_read_command_block_register(registro);
-}
-
-// Escribe valor en el registro IDE de puerto_l; sin retorno.
-void baseconf_ide_write(z80_byte puerto_l,z80_byte valor)
-{
-    int registro=baseconf_ide_register(puerto_l);
-
-    if (puerto_l==0x11) {
-            /* NemoIDE escribe primero el byte alto en #11 y después el
-               byte bajo en #10, que completa la palabra ATA. */
-            baseconf_ide_high_latch=valor;
-            baseconf_ide_write_high_from_port_11=1;
-            baseconf_ide_write_low_pending=0;
-            return;
-    }
-
-    if (puerto_l==0x10) {
-            if (baseconf_ide_write_high_from_port_11) {
-                    ide_write_command_block_register(0,valor);
-                    ide_write_command_block_register(0,baseconf_ide_high_latch);
-                    baseconf_ide_data_transferred(2);
-                    baseconf_ide_write_high_from_port_11=0;
-                    return;
-            }
-
-            /* El modo extendido recibe por #10 los bytes bajo y alto de
-               cada palabra, en ese orden. */
-            if (!baseconf_ide_write_low_pending) {
-                    baseconf_ide_low_latch=valor;
-                    baseconf_ide_write_low_pending=1;
-            }
-            else {
-                    ide_write_command_block_register(0,baseconf_ide_low_latch);
-                    ide_write_command_block_register(0,valor);
-                    baseconf_ide_data_transferred(2);
-                    baseconf_ide_write_low_pending=0;
-            }
-            return;
-    }
-
-    baseconf_ide_sync_data();
-    if (puerto_l==0xc8) {
-            /* Bit SRST del registro Device Control. */
-            if ((valor&4) && !(baseconf_ide_control&4)) ide_reset();
-            baseconf_ide_control=valor;
-            return;
-    }
-    ide_write_command_block_register(registro,valor);
-    if (registro==7) baseconf_ide_begin_transfer(valor);
 }
 
 // Comprueba si la unidad Beta seleccionada usa RAM-disk; devuelve 1 si está activa.
@@ -478,6 +329,7 @@ void baseconf_post_opcode_fetch(z80_byte *opcode)
                        paleta y termina seleccionando el color cero. */
                     baseconf_border_colour=baseconf_nmi_saved_border_colour;
                     out_254=(out_254&~7) | (baseconf_border_colour&7);
+                    modificado_border.v=1;
                     /* El modo rainbow dibuja el borde desde los cambios
                        registrados por T-estado, no desde el color actual. */
                     if (rainbow_enabled.v) {
@@ -778,53 +630,56 @@ void baseconf_write_cmos(z80_byte valor)
     zxevo_nvram[indice]=valor;
 }
 
-// Último valor escrito en el puerto 77 de vídeo y turbo.
-z80_byte baseconf_last_port_77;
-// Último valor escrito en el puerto 77 de la interfaz SD.
-z80_byte baseconf_last_port_sd_77;
-// Bits de control shadow del puerto 77, separados de los de vídeo.
-z80_byte baseconf_shadow_mode_port_77;
-// Último valor escrito en el puerto BF de configuración.
-z80_byte baseconf_last_port_bf;
-// Último valor escrito en EFF7 de vídeo, memoria y velocidad.
-z80_byte baseconf_last_port_eff7;
-// Último valor escrito en el puerto BD de breakpoint NMI.
-z80_byte baseconf_last_port_bd;
-// Último valor escrito en el puerto BE de control NMI.
-z80_byte baseconf_last_port_be;
-// Último valor escrito en el puerto FF de vídeo.
-z80_byte baseconf_last_port_ff;
-// Último valor escrito en el puerto 57 de Beta Disk.
-z80_byte baseconf_last_port_57;
-// Índice CMOS seleccionado mediante DFF7.
-z80_byte baseconf_last_port_dff7;
-// Último dato de CMOS leído o escrito mediante BFF7.
-z80_byte baseconf_last_port_bff7;
-// Último valor escrito en el puerto 7FFD de paginación Spectrum.
-z80_byte baseconf_last_port_7ffd;
 
-/*
-baseconf_last_port_extended_dos[0] // xx2F
-baseconf_last_port_extended_dos[1] // xx4F
-baseconf_last_port_extended_dos[2] // xx6F
-baseconf_last_port_extended_dos[3] // xx8F
-*/
-// Últimos valores escritos en los cuatro puertos de DOS extendido.
-z80_byte baseconf_last_port_extended_dos[4];
-
-// Último valor escrito en el puerto FF7 del gestor de memoria.
-z80_byte baseconf_last_port_ff7;
-// Último valor escrito en el puerto 7F7 del gestor de memoria.
-z80_byte baseconf_last_port_7f7;
-// Último valor escrito en el puerto BF7 del gestor de memoria.
-z80_byte baseconf_last_port_bf7;
 
 // Velocidad de CPU aplicada por última vez, en décimas de MHz.
 static int baseconf_cpu_speed_selected=70;
+// Raster AVR aplicado a los tiempos del emulador.
+static int baseconf_timing_raster_applied=-1;
+// Multiplicador de CPU aplicado a los tiempos del emulador.
+static int baseconf_timing_speed_applied=-1;
+
+// Aplica la geometría temporal del raster AVR; force obliga a recalcularla.
+void baseconf_update_timing(int force)
+{
+    int raster=(baseconf_avr_modes_register>>4)&3;
+    int testados_linea;
+
+    if (!force && raster==baseconf_timing_raster_applied &&
+        cpu_turbo_speed==baseconf_timing_speed_applied) return;
+
+    baseconf_timing_raster_applied=raster;
+    baseconf_timing_speed_applied=cpu_turbo_speed;
+    pentagon_timing.v=(raster==0);
+
+    screen_invisible_borde_superior=8;
+    screen_borde_superior=56;
+    screen_total_borde_inferior=56;
+    screen_invisible_borde_derecho=96;
+    testados_linea=224;
+
+    if (raster==0) {
+        screen_invisible_borde_superior=16;
+        screen_borde_superior=64;
+        screen_total_borde_inferior=48;
+    }
+    else if (raster==1 || raster==3) {
+        // El modo AVR de 60 Hz aún no se emula: se usan los tiempos de 128K.
+        screen_invisible_borde_superior=7;
+        screen_invisible_borde_derecho=104;
+        testados_linea=228;
+    }
+
+    screen_testados_linea=testados_linea*cpu_turbo_speed;
+    screen_set_video_params_indices();
+    inicializa_tabla_contend();
+    original_timer_sleep_machine=20000;
+    set_emulator_speed();
+}
 
 
 // Aplica la velocidad de CPU indicada por los puertos BaseConf; sin parámetros ni retorno.
-static void baseconf_set_cpu_speed(void)
+void baseconf_set_cpu_speed(void)
 {
     int nueva_velocidad;
 
@@ -901,6 +756,17 @@ z80_byte baseconf_get_video_mode(void)
     return (baseconf_last_port_eff7&0x20) |
         ((baseconf_last_port_eff7&1)<<1) |
         (baseconf_last_port_77&7);
+}
+
+// Muestra el modo de vídeo nuevo si difiere de anterior; sin retorno.
+static void baseconf_show_video_mode_change(z80_byte anterior)
+{
+    if (anterior!=baseconf_get_video_mode()) {
+        modificado_border.v=1;
+        char mensaje[256];
+        snprintf(mensaje,sizeof(mensaje),"Setting video mode %s",baseconf_get_video_mode_string());
+        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,mensaje);
+    }
 }
 
 // Comprueba el modo de vídeo actual; devuelve 1 si es un modo de texto.
@@ -1148,14 +1014,17 @@ void screen_baseconf_refresca_hw_multicolor_mode(void)
     int vpage=(puerto_32765&8) ? 7 : 5;
     z80_byte *screen=baseconf_ram_mem_table[vpage];
 
-    /* En modo hardware multicolor cada byte del bitmap también
-        proporciona el atributo para ese mismo grupo de 8 píxeles. */
+    /* El atributo de cada grupo 8x1 está 8 KB después del bitmap,
+       con la misma disposición no lineal. BRIGHT (bit 6) es común
+       a INK y PAPER, como en los atributos Spectrum. */
     for (y=0;y<192;y++) {
         int adr_line=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2);
         for (x=0;x<256;x++) {
-            z80_byte value=screen[adr_line+(x>>3)];
-            z80_byte ink=(value&7) | ((value&0x40)>>3);
-            z80_byte paper=(value&0x78)>>3;
+            int adr=adr_line+(x>>3);
+            z80_byte value=screen[adr];
+            z80_byte attr=screen[adr+0x2000];
+            z80_byte ink=(attr&7) | ((attr&0x40)>>3);
+            z80_byte paper=(attr&0x78)>>3;
             //printf("%d %d\n",ink,paper);
             baseconf_putpixel_scaled(x,y,baseconf_get_palette_colour(
                     (value&(0x80>>(x&7))) ? ink : paper),2,2,64,8);
@@ -1242,8 +1111,9 @@ static z80_int baseconf_get_scanline_pixel(z80_byte mode,int x,int y)
     case 0x23: {
         int adr=((y&0xc0)<<5) | ((y&7)<<8) | ((y&0x38)<<2) | (x>>3);
         value=baseconf_ram_mem_table[vpage][adr];
-        ink=(value&7) | ((value&0x40)>>3);
-        paper=(value&0x78)>>3;
+        attr=baseconf_ram_mem_table[vpage][adr+0x2000];
+        ink=(attr&7) | ((attr&0x40)>>3);
+        paper=(attr&0x78)>>3;
         return baseconf_get_palette_colour((value&(0x80>>(x&7))) ? ink : paper);
     }
 
@@ -1393,6 +1263,7 @@ void baseconf_store_scanline_rainbow_border(void)
         state_colour[state]=colour;
     }
     screen_border_last_color=colour;
+    //printf("color %d\n",colour);
 
     //BaseConf genera 288 scanlines visibles, que se duplican verticalmente hasta 576.
     if (visible_y>=0 && visible_y<288) {
@@ -1624,21 +1495,14 @@ void baseconf_hard_reset(void)
     baseconf_border_colour=0;
     baseconf_nmi_saved_border_colour=0;
     baseconf_border_left_next_valid=0;
+    modificado_border.v=1;
     baseconf_nmi_breakpoint=0;
     baseconf_nmi_active=0;
     baseconf_nmi_entry_pending=0;
     baseconf_nmi_exit_countdown=0;
     baseconf_nmi_from_bf_pending=0;
     baseconf_nmi_from_bf_delivery=0;
-    baseconf_ide_high_latch=0xff;
-    baseconf_ide_low_latch=0;
-    baseconf_ide_read_high_pending=0;
-    baseconf_ide_write_low_pending=0;
-    baseconf_ide_write_high_from_port_11=0;
-    baseconf_ide_control=0;
-    baseconf_ide_transfer_command=0;
-    baseconf_ide_transfer_bytes=0;
-    baseconf_ide_sectors_remaining=0;
+    zxevo_nemo_ide_reset();
     baseconf_ps2_reset();
     baseconf_rtc_ultimo_segundo_actualizado=(time_t)-1;
 
@@ -1682,6 +1546,8 @@ void baseconf_hard_reset(void)
     baseconf_sd_cs=1;
 
     baseconf_set_memory_pages();
+
+    baseconf_update_timing(0);
 
 }
 
@@ -1799,7 +1665,9 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
                               ((inverted_value&0x20)>>3) |
                               ((inverted_port&0x0100)>>7) |
                               ((inverted_port&0x2000)>>13);
-                        baseconf_palette[baseconf_border_colour]=(r<<8)+(g<<4)+b;
+                        z80_int palette_colour=(r<<8)+(g<<4)+b;
+                        baseconf_palette[baseconf_border_colour]=palette_colour;
+                        modificado_border.v=1;
 
                         //Los mismos colores que máquina Prism
                 }
@@ -1827,18 +1695,22 @@ void baseconf_out_port(z80_int puerto,z80_byte valor)
 
         //xx77H
         else if ( (puerto&0x00FF)==0x77 && baseconf_shadow_ports_available() ) {
+               z80_byte video_anterior=baseconf_get_video_mode();
                 baseconf_shadow_mode_port_77=puerto_h;
                baseconf_last_port_77=valor;
                baseconf_set_cpu_speed();
 
                baseconf_set_memory_pages();
+               baseconf_show_video_mode_change(video_anterior);
         }
 
         else if (puerto==0xEFF7) {
+                z80_byte video_anterior=baseconf_get_video_mode();
                 //printf ("setting port EFF7 value\n");
                 baseconf_last_port_eff7=valor;
                 baseconf_set_cpu_speed();
                 baseconf_set_memory_pages();
+                baseconf_show_video_mode_change(video_anterior);
         }
 
 
@@ -1903,9 +1775,10 @@ segmento 0 pagina 0
                 if (valor&1) baseconf_mmu_flags[segmento] |=32;
         }
 
-        /* #7FFD sólo decodifica A15 y A1, como en el Spectrum 128K.
-           OUT (#FD),A también selecciona este registro si A15 de A es cero. */
-        else if ((puerto&0x8002)==0) {
+        /* La FPGA decodifica el byte bajo #FC/#FD y exige A15=0.
+           Usar sólo A15/A1 también paginaba RAM al escribir en Nemo IDE.
+           OUT (#FD),A sigue siendo válido cuando A15 de A es cero. */
+        else if ((puerto&0x80fe)==0x00fc) {
                 /* En modo de paginación 128K el bit 5 bloquea las escrituras
                    posteriores a #7FFD hasta reset. Las escrituras MMU mediante
                    #xFF7/#x7F7 continúan disponibles. */
@@ -2190,7 +2063,9 @@ void baseconf_refresca_pantalla(void)
     }
     else {
         baseconf_refresca_pantalla_no_rainbow();
-        screen_baseconf_refresca_border();
-        modificado_border.v=0;
+        if (modificado_border.v) {
+            screen_baseconf_refresca_border();
+            modificado_border.v=0;
+        }
     }
 }

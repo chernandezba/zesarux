@@ -617,6 +617,7 @@ void instruccion_ed_69 ()
 	else {
         reg_pc=pop_valor();
     }
+	set_memptr(reg_pc);
 
 	//Si se vuelve de una nmi especial
 	if (MACHINE_IS_ZXUNO && reg_pc==0x72) {
@@ -752,6 +753,7 @@ void instruccion_ed_77 ()
 //RETI
 	//iff1.v=iff2.v; Reti no hace esto
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 }
 
 void instruccion_ed_78 ()
@@ -865,6 +867,7 @@ void instruccion_ed_85 ()
 //RETN*
 	iff1.v=iff2.v;
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 
 }
 
@@ -978,6 +981,7 @@ void instruccion_ed_93 ()
 //RETN*
 	iff1.v=iff2.v;
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 
 }
 
@@ -1088,6 +1092,7 @@ void instruccion_ed_101 ()
 //RETN*
 	iff1.v=iff2.v;
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 
 }
 
@@ -1223,6 +1228,7 @@ void instruccion_ed_109 ()
 //RETN*
 	iff1.v=iff2.v;
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 
 }
 
@@ -1375,6 +1381,7 @@ void instruccion_ed_117 ()
 //RETN
 	iff1.v=iff2.v;
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 
 }
 
@@ -1476,6 +1483,7 @@ void instruccion_ed_125 ()
 //RETN*
 	iff1.v=iff2.v;
 	reg_pc=pop_valor();
+	set_memptr(reg_pc);
 
 }
 

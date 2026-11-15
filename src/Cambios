@@ -4,11 +4,14 @@ ZEsarUX 13.1 - Zorro edition. 06 Octubre 2026
 
 Agregada máquina ZX Evo Baseconf (corregida en realidad)
 Agregadas máquinas Scorpion ZS-256, Scorpion ZS-256 Turbo+, Scorpion GMX
+Agregadas máquinas ATM Turbo 1, ATM Turbo 2, ATM Turbo 2+, ATM Turbo 3
 Agregada máquina Didaktik Gama
 Agregadas máquinas Microdigital TK90X ULA Ferranti (Español y Portugués)
+Permitir renderizar pantalla emulada en una ventana aparte
 Agregada opción en archivo de configuración para activar el uso de teclas numéricas en teclado Azerty sin tener que pulsar tecla Shift
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
 Agregado soporte de 60 hz para las máquinas: Master System, SG1000, MSX, Colecovision, Spectravideo, Timex Sinclair 2068
+Agregado renderizado en real video para PCW, Jupiter Ace y Sam Coupe
 Permitir enviar mensages privados a usuarios en ZENG Online
 Permitir smartload de archivo SCL
 Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
@@ -52,6 +55,7 @@ Mejorado ZX Vision:
 - Agregada ventana de Calculadora
 - Mejorada la organización, redacción y coherencia de los menús de la interfaz de usuario
 - Mejorado movimiento de ventana al mover con ratón
+- Procesar teclas de función cuando el top menú está abierto
 - Process switcher ahora muestra una fila de procesos por defecto
 - Dibujar marco ventana de ventanas en segundo plano
 - Menús principales cuando el menú superior está activado, no tienen título de ventana
@@ -66,6 +70,7 @@ Mejorado ZX Desktop:
 - Permitir cerrar una ventana abierta pulsando botón derecho en su icono del ZX Desktop
 - Comprobar si un item está en una posición inválida al recuperarlo de la Papelera
 
+Mejorado integración de TR-DOS en Pentagon
 Agregada vistas a Visual Floppy (disco, transparente, opaco)
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
@@ -77,13 +82,47 @@ Audio Chip Registers: cuando un canal ha activado envolventes, mostrar volumen a
 Corregido ZX Vision:
 - Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 - Corregido al pulsar en un menú previo y el menú se cerraba aleatoriamente
+- Corregido al pulsar con ratón en selector de archivos cuando el cursor está en el campo del Nombre
 
 Corregido ZX Evo TSConf:
-- Corregido al acceder a tarjeta SD/MMC (SD Z-Controller)
+- Agregado emulación tarjeta SD/MMC (SD Z-Controller)
+- Agregado emulación IDE Nemo
+- Agregado emulación IDE Smuc
+- Actualizado a última ROM
+- Mejorada la temporización de la CPU en TSConf: añadidas las esperas de acceso a RAM y la emulación de la caché a 14 MHz, y corregido el momento de la interrupción raster en los modos turbo.
+- Corregida temporización de DMA
+- Corregido contador de scroll scroll counter, interrupción raster
+- Corregido alineación de DMA en modo burst, retorno en modo burst
+- Corregido transparencia del tile zero
+- Corregido color de borde detrás de capas transparentes
+- Corregido color negro brillante en paleta
+- Corregido resetear paleta de colores CRAM al cargar snapshots SPG
+- Corregido al acceder a TR-DOS y archivos .trd
+- Corregido al seleccionar diferentes roms de arranque en TS Bios
+- Corregido al acceder .trd, .scl y .tap seleccionados desde la máquina (por ejemplo con Wild commander)
 - Corregido al leer teclado en modo PS/2 (para Wild Commander por ejemplo)
 
+Corregida emulación del floppy disk 3" CF2 (usado en +3, CPC, PCW):
+- La mayoria de discos ya cargan, incluido discos protegidos
+- Corregido estado de fin-de-cilindro del PD765 despues de leer EOT (juegos protegidos con Alkatraz ahora cargan)
+- Corregido PD765 timeout de lectura
+- Corregido PD765 Speedlock lecturas de sectores débiles (CRC error) en imágenes EDSK de +3
+- Corregido carga de discos protegidos con Speedlock en Spectrum +3
+
+Corregida emulación del Sam Coupe:
+- Agregadas las interrupciones de línea y corregidos los pulsos de estado de las interrupciones de línea y fotograma
+- Agregada la lectura de la línea vertical mediante HPEN
+- Corregidos los niveles de intensidad de la paleta de 128 colores
+- Corregida la configuración de 256K de RAM: las páginas ausentes 16-31 ya no reflejan las páginas 0-15
+
 Corregidos timings para TK90X y TK95 modelos de 50 hz y 60 hz
+Corregido MEMPTR despues de instrucciones return de Z80
+Corregido lecturas de bus flotante en Spectrum 48K y 128K
+Corregido contención no-MREQ en Spectrum +2A and +3
+Corregido renderizado de CPC sin border
+Corregido Cocoa (macOS) cambio de máquina en pantalla completa
 Corregidas consultas usando el Speccy Online Browser
+Corregido en Master System scrolling y temporización raster
 Corregido arranque de Spectrum Next con NextZXOS 2.09
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo
 Corregido el desactivado del menú de Búsqueda
@@ -97,6 +136,8 @@ Corregido al dibujar última linea de forma de onda en ventana View Waveform
 Corregido al pulsar un botón superior redefinido con parámetros adicionales
 Corregida decodificación de paleta de ULA+ en TBBlue. Gracias Ignacio Monge
 Corregido copia-pega y comandos ZRCP send-ascii* en Amstrad CPC
+Corregido posible segfault en máquinas Spectrum al definir mas de 128KB de RAM
+Corregido comportamiento de NMI anidada en Spectrum + DivMMC/DivIDE
 
 ----
 

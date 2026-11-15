@@ -158,6 +158,8 @@
 #include "enhanced_zx81_read.h"
 #include "scorpion.h"
 #include "baseconf.h"
+#include "zxevo.h"
+#include "atmturbo.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -9740,10 +9742,16 @@ void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
             }
         }
 
-        if (dskplusthree_file_name[0]) {
+        //Mostrar el nombre del DSK insertado o TRD
+        //Si es maquina con floppy +3: Mostrar DSK
+        char *nombre_etiqueta;
+        if (MACHINE_HAS_CF2_FLOPPY) nombre_etiqueta=dskplusthree_file_name;
+        else nombre_etiqueta=trd_file_name;
+
+        if (nombre_etiqueta[0]) {
             char file_no_dir[PATH_MAX];
             char title[PATH_MAX];
-            util_get_file_no_directory(dskplusthree_file_name,file_no_dir);
+            util_get_file_no_directory(nombre_etiqueta,file_no_dir);
             util_get_file_without_extension(file_no_dir,title);
             size_t title_length=strlen(title);
 
@@ -10539,7 +10547,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=52;
+            ancho_ventana=35;
             alto_ventana=20;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -10610,28 +10618,29 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
                 ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
             menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
-            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);
+            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,14,0);
         }
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_case,NULL
             ,"~~View: %s",menu_visualfloppy_case_mode==0 ? "Disk" :
-                (menu_visualfloppy_case_mode==1 ? "Clear case" : "Opaque case"));
+                (menu_visualfloppy_case_mode==1 ? "Clear" : "Opaque"));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'v');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Cycle between disk, transparent case and opaque case");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,34,0);
+        //menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,34,0);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
             ,"[%c] He~~ad",(menu_visualfloppy_header_visible ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,14,1);
 
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_effects,NULL
             ,"[%c] ~~Color effects",(menu_visualfloppy_coloured_effects ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,23,1);
 
 
 
@@ -10712,59 +10721,69 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
     trd_disable();
 
-        char *filtros[2];
+    char *filtros[3];
 
-        filtros[0]="trd";
-        filtros[1]=0;
+    filtros[0]="trd";
+    filtros[1]="scl";
+    filtros[2]=0;
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-              //Obtenemos directorio de trd
-        //si no hay directorio, vamos a rutas predefinidas
-        if (trd_file_name[0]==0) menu_chdir_sharedfiles();
+    //Obtenemos directorio de trd
+    //si no hay directorio, vamos a rutas predefinidas
+    if (trd_file_name[0]==0) menu_chdir_sharedfiles();
 
-        else {
-                char directorio[PATH_MAX];
-                util_get_dir(trd_file_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(trd_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
         }
+    }
 
 
-        int ret=menu_filesel("Select TRD File",filtros,trd_file_name);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    int ret=menu_filesel("Select TRD/SCL File",filtros,trd_file_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-        if (ret==1) {
+    if (ret==1) {
         if (!si_existe_archivo(trd_file_name)) {
+
             if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-                                trd_file_name[0]=0;
-                                return;
-                        }
+                trd_file_name[0]=0;
+                return;
+            }
+
+            if (!util_compare_file_extension(trd_file_name,"scl")) {
+                menu_error_message("Can not create new SCL file");
+                trd_file_name[0]=0;
+                return;
+            }
 
 
             //Crear archivo vacio
-                FILE *ptr_trdfile;
+            FILE *ptr_trdfile;
             ptr_trdfile=fopen(trd_file_name,"wb");
 
-                long long int totalsize=640*1024;
+            long long int totalsize=640*1024;
 
             z80_byte valor_grabar=0;
 
-                if (ptr_trdfile!=NULL) {
+            if (ptr_trdfile!=NULL) {
                 while (totalsize) {
                     fwrite(&valor_grabar,1,1,ptr_trdfile);
                     totalsize--;
                 }
-                        fclose(ptr_trdfile);
-                }
+                fclose(ptr_trdfile);
+            }
+
+            menu_generic_message_splash("Create new TRD","TRD file created");
 
         }
 
@@ -10772,14 +10791,15 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
 
 
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                trd_file_name[0]=0;
+    }
+
+    //Sale con ESC
+    else {
+            //Quitar nombre
+            trd_file_name[0]=0;
 
 
-        }
+    }
 }
 
 
@@ -10810,12 +10830,12 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,
-            "~~TRD File","Archivo ~~TRD","Arxiu ~~TRD");
+            "~~TRD/SCL File","Archivo ~~TRD/SCL","Arxiu ~~TRD/SCL");
         menu_add_item_menu_sufijo_format(array_menu_betadisk," [%s]",string_trd_file_shown);
         menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_shortcut(array_menu_betadisk,'t');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
+        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD/SCL Emulation file");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD/SCL Emulation file");
         menu_add_item_menu_add_flags(array_menu_betadisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
@@ -10841,30 +10861,35 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_betadisk,"Tells if TRD writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Tells if TRD writes are saved to disk. "
         "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
-        "tells if these changes are written to disk or not."
+        "tells if these changes are written to disk or not. Saving to SCL is not supported yet"
         );
 
 
 
         menu_add_item_menu_separator(array_menu_betadisk);
 
+        //Estas maquinas gestionan TR-DOS sin activar el modulo Betadisk externo.
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON && !MACHINE_IS_ATM_TURBO) {
 
-        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
-            "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
-        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'k');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
+            menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
+                "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
+            menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_betadisk,'k');
+            menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
+            menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
 
 
-        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
-            "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
-        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'b');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
+            menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
+                "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
+            menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_betadisk,'b');
+            menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
+            menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
 
-        menu_add_item_menu_separator(array_menu_betadisk);
+            menu_add_item_menu_separator(array_menu_betadisk);
+        }
+
+
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
             "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
@@ -12490,6 +12515,7 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 void menu_storage_zcontroller_emulation(MENU_ITEM_PARAMETERS)
 {
     zcontroller_enabled.v ^=1;
+    if (MACHINE_IS_TSCONF) tsconf_zcontroller_enabled_changed();
 }
 
 void menu_storage_baseconf_sd_interface(MENU_ITEM_PARAMETERS)
@@ -12693,14 +12719,14 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
 
-            if (MACHINE_IS_SCORPION_GMX) {
+            if (MACHINE_IS_SCORPION_GMX || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_mmc_divmmc);
 
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zcontroller_emulation,NULL,
                     "Z-Controller Enabled","Z-Controller Activado","Z-Controller Activat");
                 menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zcontroller_enabled.v ? 'X' : ' ') );
-                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
-                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX");
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX and TSConf");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX and TSConf. MMC Emulation controls whether a card is inserted");
             }
             if (MACHINE_IS_BASECONF) {
                 menu_add_item_menu_separator(array_menu_mmc_divmmc);
@@ -12757,12 +12783,17 @@ void menu_storage_ide_emulation(MENU_ITEM_PARAMETERS)
 
 void menu_storage_smuc_emulation(MENU_ITEM_PARAMETERS)
 {
-        smuc_enabled.v ^=1;
+        ide_smuc_enabled.v ^=1;
 }
 
-void menu_storage_baseconf_nemo_ide(MENU_ITEM_PARAMETERS)
+void menu_storage_zxevo_nemo_ide(MENU_ITEM_PARAMETERS)
 {
-        baseconf_nemo_ide_enabled.v ^=1;
+        zxevo_nemo_ide_enabled.v ^=1;
+}
+
+void menu_storage_ide_atm(MENU_ITEM_PARAMETERS)
+{
+    ide_atm_enabled.v ^=1;
 }
 
 
@@ -12973,6 +13004,19 @@ void menu_storage_ide_browser(MENU_ITEM_PARAMETERS)
     menu_storage_mmc_ide_browser(ide_file_name);
 }
 
+void menu_storage_ide_set_sectors_per_track(MENU_ITEM_PARAMETERS)
+{
+
+    int valor_actual=ide_get_sectors_per_track();
+
+    menu_ventana_scanf_numero_enhanced_default("Sectors per track",&valor_actual,4,+1,0,255,0,0);
+
+    //0 le quita el override de sectores
+    ide_set_sectors_per_track(valor_actual);
+
+
+}
+
 //menu IDE/Divide
 void menu_ide_divide(MENU_ITEM_PARAMETERS)
 {
@@ -13032,7 +13076,13 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                                     "outside the emulator, and reload its contents without having to disable and enable IDE");
         }
 
-
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_set_sectors_per_track,NULL,
+            "Sectors per track","Sectores por pista","Sectors per pista");
+        menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%d]",ide_get_sectors_per_track());
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"Sets sectors per track");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"Sets sectors per track");
+        menu_add_item_menu_es_avanzado(array_menu_ide_divide);
 
 
         if (MACHINE_IS_SPECTRUM) {
@@ -13085,23 +13135,33 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE access ports");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
 
-            if (MACHINE_IS_SCORPION_GMX) {
+            if (MACHINE_IS_SCORPION_GMX || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_ide_divide);
 
                 menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_smuc_emulation,NULL,
                     "SMUC Enabled","SMUC Activado","SMUC Activat");
-                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(smuc_enabled.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX");
-                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX. IDE Emulation above controls whether a hard disk is connected to it");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_smuc_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX or TSConf");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX or TSConf. IDE Emulation above controls whether a hard disk is connected to it");
             }
-            if (MACHINE_IS_BASECONF) {
+            if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
                 menu_add_item_menu_separator(array_menu_ide_divide);
 
-                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_baseconf_nemo_ide,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_zxevo_nemo_ide,NULL,
                     "Nemo IDE Enabled","Nemo IDE Activado","Nemo IDE Activat");
-                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(baseconf_nemo_ide_enabled.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf");
-                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf. IDE Emulation above controls whether a hard disk is connected to it");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(zxevo_nemo_ide_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf. IDE Emulation above controls whether a hard disk is connected to it");
+            }
+
+            if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+                menu_add_item_menu_separator(array_menu_ide_divide);
+
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_atm,NULL,
+                    "ATM IDE Enabled","ATM IDE Activado","ATM IDE Activat");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_atm_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the IDE interface in ATM");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the IDE interface in ATM. IDE Emulation above controls whether a hard disk is connected to it");
             }
 
 

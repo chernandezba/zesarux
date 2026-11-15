@@ -5868,7 +5868,7 @@ void debug_get_ioports(char *stats_buffer)
 
 
           //margen suficiente para que quepan lineas largas
-          char buf_linea[100];
+          char buf_linea[200];
 
           index_buffer=0;
 
@@ -6145,41 +6145,46 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
                 sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
             }
 
-            if (smuc_enabled.v) {
-                sprintf (buf_linea," SMUC control: %02X\n",scorpion_gmx_smuc_control);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                sprintf (buf_linea," SMUC config: %02X\n",scorpion_gmx_smuc_config);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC ATA data high: %02X\n",scorpion_gmx_smuc_data_high);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC IDENTIFY first word pending: %d\n",scorpion_gmx_smuc_identify_first_word);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM initialized: %d\n",scorpion_gmx_smuc_eeprom_initialized);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM state: %d\n",scorpion_gmx_smuc_eeprom_state);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM address: %03X\n",scorpion_gmx_smuc_eeprom_address);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM input: %02X (%d bits)\n",scorpion_gmx_smuc_eeprom_input,scorpion_gmx_smuc_eeprom_input_bits);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM output: %02X (%d bits)\n",scorpion_gmx_smuc_eeprom_output,scorpion_gmx_smuc_eeprom_output_bits);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM SDA released: %d\n",scorpion_gmx_smuc_eeprom_release);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-                sprintf (buf_linea," SMUC EEPROM bus: %02X\n",scorpion_gmx_smuc_eeprom_bus);
-                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-            }
       }
+
+        if ((MACHINE_IS_TSCONF || MACHINE_IS_SCORPION_GMX) && ide_smuc_enabled.v) {
+            sprintf (buf_linea,"IDE SMUC Registers\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC control: %02X\n",ide_smuc_control);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC config: %02X\n",ide_smuc_config);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC ATA data high: %02X\n",ide_smuc_data_high);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC IDENTIFY first word pending: %d\n",ide_smuc_identify_first_word);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM initialized: %d\n",ide_smuc_eeprom_initialized);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM state: %d\n",ide_smuc_eeprom_state);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM address: %03X\n",ide_smuc_eeprom_address);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM input: %02X (%d bits)\n",ide_smuc_eeprom_input,ide_smuc_eeprom_input_bits);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM output: %02X (%d bits)\n",ide_smuc_eeprom_output,ide_smuc_eeprom_output_bits);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM SDA released: %d\n",ide_smuc_eeprom_release);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM bus: %02X\n",ide_smuc_eeprom_bus);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
 
     if (MACHINE_IS_PCW) {
         int i;
@@ -6446,16 +6451,52 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
       }
 
     if (MACHINE_IS_TSCONF) {
+        sprintf (buf_linea,"TSConf CPU Cache:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                                  sprintf (buf_linea,"TSConf Registers:\n");
-                                  sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        const char *cache_cpu_mhz=(cpu_turbo_speed==4) ? "14" :
+                                  (cpu_turbo_speed==2) ? "7" : "3.5";
+        sprintf (buf_linea," CPU: %s MHz, CacheConfig: %02XH\n",
+                  cache_cpu_mhz,tsconf_af_ports[0x2b]&15);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                                  int index_ioport;
-                                  for (index_ioport=0;index_ioport<256;index_ioport++) {
-                                      sprintf (buf_linea,"%02X : %02X \n",index_ioport,tsconf_af_ports[index_ioport] );
-                                      sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
-                                      index_buffer +=strlen(buf_linea);
-                                  }
+        int cache_window;
+        for (cache_window=0;cache_window<4;cache_window++) {
+            struct tsconf_cache_debug_info info;
+            tsconf_get_cache_debug_info(cache_window,&info);
+            unsigned long long total=info.hits+info.misses;
+            int hit_percent=total ? (int)((info.hits*100)/total) : 0;
+            int miss_percent=total ? (int)((info.misses*100)/total) : 0;
+
+            sprintf (buf_linea," %04X-%04X: %s #%02X cache %s\n",
+                      cache_window<<14,(cache_window<<14)+0x3fff,
+                      info.is_ram ? "RAM" : "ROM",info.page,info.enabled ? "ON" : "OFF");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea,"  Hits: %llu (%d%%), misses: %llu (%d%%)\n",
+                      info.hits,hit_percent,info.misses,miss_percent);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+        unsigned long long total_hits;
+        unsigned long long total_misses;
+        tsconf_get_cache_debug_totals(&total_hits,&total_misses);
+        unsigned long long total_accesos=total_hits+total_misses;
+        int total_hit_percent=total_accesos ? (int)((total_hits*100)/total_accesos) : 0;
+        int total_miss_percent=total_accesos ? (int)((total_misses*100)/total_accesos) : 0;
+        sprintf (buf_linea," Total hits: %llu (%d%%), misses: %llu (%d%%)\n",
+                  total_hits,total_hit_percent,total_misses,total_miss_percent);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," Window counters: since page change; total: since reset/cache/speed change\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"\nTSConf Registers:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        int index_ioport;
+        for (index_ioport=0;index_ioport<256;index_ioport++) {
+            sprintf (buf_linea,"%02X : %02X \n",index_ioport,tsconf_af_ports[index_ioport] );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
+            index_buffer +=strlen(buf_linea);
+        }
       }
 
       //Registros ULA2 de Prism, paginacion, etc
@@ -7801,7 +7842,49 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         strcpy (segmentos[1].longname,"RAM (1 KB)");
     }
 
-            //TODO SMS
+    //TODO SMS
+
+    if (MACHINE_IS_SCORPION) {
+        int pagina;
+        segmentos_totales=4;
+
+        for (pagina=0;pagina<segmentos_totales;pagina++) {
+            int mapped_page=debug_paginas_memoria_mapeadas[pagina];
+            int page=mapped_page & DEBUG_PAGINA_MAP_MASK;
+
+            segmentos[pagina].start=pagina*16384;
+            segmentos[pagina].length=16384;
+
+            if (mapped_page & DEBUG_PAGINA_MAP_ES_ROM) {
+                sprintf(segmentos[pagina].shortname,"O%02d",page);
+                sprintf(segmentos[pagina].longname,"ROM %d",page);
+            }
+            else {
+                sprintf(segmentos[pagina].shortname,"A%02d",page);
+                sprintf(segmentos[pagina].longname,"RAM %d",page);
+            }
+        }
+    }
+
+    if (MACHINE_IS_DIDAKTIKGAMA) {
+
+        segmentos_totales=3;
+
+        segmentos[0].length=16384;
+        segmentos[0].start=0;
+        strcpy (segmentos[0].shortname,"ROM");
+        strcpy (segmentos[0].longname,"ROM");
+
+        segmentos[1].length=16384;
+        segmentos[1].start=16384;
+        strcpy (segmentos[1].shortname,"VRAM");
+        strcpy (segmentos[1].longname,"VRAM");
+
+        segmentos[2].length=32768;
+        segmentos[2].start=32768;
+        sprintf (segmentos[2].shortname,"BANK%c",'A'+didaktikgama_get_current_ram_page() );
+        sprintf (segmentos[2].longname,"BANK%c",'A'+didaktikgama_get_current_ram_page() );
+    }
 
 
     //Paginas RAM en CHLOE
@@ -8038,14 +8121,19 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         segmentos_totales=4;
         int pagina;
         for (pagina=0;pagina<4;pagina++) {
-            if (sam_memory_paged_type[pagina]==0) {
-                sprintf (segmentos[pagina].shortname,"RAM%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_RAM) {
+                sprintf (segmentos[pagina].shortname,"RA%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
                 sprintf (segmentos[pagina].longname,"RAM %02d",debug_sam_paginas_memoria_mapeadas[pagina]);
             }
 
-            if (sam_memory_paged_type[pagina]) {
-                sprintf (segmentos[pagina].shortname,"ROM%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_ROM) {
+                sprintf (segmentos[pagina].shortname,"RO%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
                 sprintf (segmentos[pagina].longname,"ROM %02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            }
+
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_UNMAPPED) {
+                sprintf (segmentos[pagina].shortname,"N/A");
+                sprintf (segmentos[pagina].longname,"Unmapped RAM");
             }
 
             segmentos[pagina].length=16384;

@@ -30,6 +30,7 @@
 #include "contend.h"
 #include "utils.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "divmmc.h"
 #include "diviface.h"
 #include "screen.h"
@@ -8705,6 +8706,9 @@ void screen_tbblue_refresca_no_rainbow_border(void)
 //Refresco pantalla con rainbow. Nota. esto deberia ser una funcion comun y no tener diferentes para comun, prism, tbblue, etc
 void screen_tbblue_refresca_rainbow(void)
 {
+
+    //Si ventana video output abierta, no renderizamos desde aqui
+    if (ventana_video_output_esta_abierta()) return;
 
     int ancho,alto;
 

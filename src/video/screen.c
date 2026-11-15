@@ -70,6 +70,7 @@
 #include "joystick.h"
 #include "atomic.h"
 #include "didaktikgama.h"
+#include "atmturbo.h"
 
 
 //Incluimos estos dos para la funcion de fade out
@@ -1158,6 +1159,11 @@ void recalcular_get_total_ancho_rainbow(void)
             (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        get_total_ancho_rainbow_cached=ATM_TURBO_DISPLAY_WIDTH+
+            (ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
         get_total_ancho_rainbow_cached=SCORPIONGMX_DISPLAY_WIDTH+
             (SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
@@ -1214,6 +1220,11 @@ void recalcular_get_total_alto_rainbow(void)
     else if (MACHINE_IS_BASECONF) {
         get_total_alto_rainbow_cached=BASECONF_DISPLAY_HEIGHT+
             (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        get_total_alto_rainbow_cached=ATM_TURBO_DISPLAY_HEIGHT+
+            (ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -1817,6 +1828,8 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
 {
 //      printf ("Refresco border\n");
 
+    //if (ventana_video_output_esta_abierta()) return;
+
     int x,y;
 
     //simular modo fast
@@ -2388,6 +2401,10 @@ int scr_get_index_cache_putpixel_no_rainbow(int x,int y)
         indice_cache=(get_total_ancho_rainbow()*(BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        indice_cache=(get_total_ancho_rainbow()*(ATM_TURBO_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + ATM_TURBO_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
         indice_cache=(get_total_ancho_rainbow()*(SCORPIONGMX_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SCORPIONGMX_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
     }
@@ -2443,6 +2460,11 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
     else if (MACHINE_IS_BASECONF) {
         offsetx=BASECONF_LEFT_BORDER*border_enabled.v;
         offsety=BASECONF_TOP_BORDER*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        offsetx=ATM_TURBO_LEFT_BORDER*border_enabled.v;
+        offsety=ATM_TURBO_TOP_BORDER*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -3381,6 +3403,11 @@ if (MACHINE_IS_Z88) {
     else if (MACHINE_IS_BASECONF) {
         *margenx_izq=BASECONF_LEFT_BORDER_NO_ZOOM*border_enabled.v;
         *margeny_arr=BASECONF_TOP_BORDER_NO_ZOOM*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        *margenx_izq=ATM_TURBO_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+        *margeny_arr=ATM_TURBO_TOP_BORDER_NO_ZOOM*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -4983,6 +5010,9 @@ void screen_add_watermark_no_rainbow(void)
 void scr_refresca_pantalla_rainbow_comun(void)
 {
 
+    //Si ventana video output abierta, no renderizamos desde aqui
+    if (ventana_video_output_esta_abierta()) return;
+
     int ancho,alto;
 
     ancho=get_total_ancho_rainbow();
@@ -5229,6 +5259,8 @@ BITS INK PAPER BORDER
 //Refresco pantalla con rainbow
 void scr_refresca_pantalla_rainbow_comun_spectrum(void)
 {
+
+    if (ventana_video_output_esta_abierta()) return;
 
     if (gigascreen_enabled.v) {
         if (screen_special_effects_enabled.v) {
@@ -5623,48 +5655,41 @@ void scr_refresca_pantalla_y_border_zx8081(void)
 {
 
 
-    //modo caracteres alta resolucion- rainbow - metodo nuevo
-    if (rainbow_enabled.v==1) {
+    if (rainbow_enabled.v) {
         scr_refresca_pantalla_rainbow_comun();
         return;
     }
 
-
+    else {
 
 
         //simulacion pantalla negra fast
         if (video_fast_mode_emulation.v) {
 
-                if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
-                    video_fast_mode_next_frame_black++;
-                }
+            if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
+                video_fast_mode_next_frame_black++;
+            }
 
-                if (video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
-                                debug_printf(VERBOSE_DEBUG,"Detected fast mode");
-                    //forzar refresco de border
-                                modificado_border.v=1;
-
-                        }
+            if (video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
+                debug_printf(VERBOSE_DEBUG,"Detected fast mode");
+                modificado_border.v=1;
+            }
 
         }
 
 
+        if (border_enabled.v) {
+            //ver si hay que refrescar border
+            if (modificado_border.v)
+            {
+                scr_refresca_border_zx8081();
+                modificado_border.v=0;
+            }
+        }
 
+        scr_refresca_pantalla_zx8081();
 
-                if (border_enabled.v) {
-                        //ver si hay que refrescar border
-                        if (modificado_border.v)
-                        {
-                //printf ("refrescamos border\n");
-                                scr_refresca_border_zx8081();
-                                modificado_border.v=0;
-                //sleep (1);
-                        }
-
-                }
-
-    //modo caracteres normal
-        if (rainbow_enabled.v==0) scr_refresca_pantalla_zx8081();
+    }
 
 
 }
@@ -6521,18 +6546,6 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
                     offset_t_estados_pixeles_efectivos++;
 
-            }
-
-            //Se llega a siguiente linea
-            if (indice_border==inicio_retrace_horiz) {
-                //y++;
-                //En caso de tbblue hay que saltar una linea mas en buffer rainbow, ya que hacemos doble de alto
-
-                //Creo que esto sobra directamente
-                if (MACHINE_IS_TBBLUE) {
-                    //printf("salto\n");
-                    //puntero_buf_rainbow +=ancho_rainbow;
-                }
             }
 
 
@@ -8527,6 +8540,11 @@ void screen_store_scanline_rainbow_solo_display(void)
         return;
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        atmturbo_store_scanline_rainbow_display();
+        return;
+    }
+
     //Si maquina tsconf. Dado que tiene border tamaño variable, hacerlo desde aqui tal cual
     if (MACHINE_IS_TSCONF) {
         screen_store_scanline_rainbow_solo_display_tsconf();
@@ -9073,6 +9091,11 @@ void screen_store_scanline_rainbow_solo_border(void)
 
     if (MACHINE_IS_BASECONF) {
         baseconf_store_scanline_rainbow_border();
+        return;
+    }
+
+    if (MACHINE_IS_ATM_TURBO) {
+        atmturbo_store_scanline_rainbow_border();
         return;
     }
 
@@ -9836,11 +9859,11 @@ Bit 4 BLU1 most  significant bit of blue.
 Bit 5 RED1 most  significant bit of red.
 Bit 6 GRN1 most  significant bit of green.
                 */
-        int brillo=127*  ((i&8)>>3);
-
-        b=42*(  (i     &1) | ((i>>3)&2))   +brillo;
-        r=42*(  ((i>>1)&1) | ((i>>4)&2))   +brillo;
-        g=42*(  ((i>>2)&1) | ((i>>5)&2))   +brillo;
+        // Cada componente tiene siete niveles: bit alto=4, bajo=2 y BRIGHT=1.
+        int brillo=(i>>3)&1;
+        b=((((i>>4)&1)*4+(i&1)*2+brillo)*255+3)/7;
+        r=((((i>>5)&1)*4+((i>>1)&1)*2+brillo)*255+3)/7;
+        g=((((i>>6)&1)*4+((i>>2)&1)*2+brillo)*255+3)/7;
 
 
 
@@ -10674,6 +10697,31 @@ void t_scanline_next_line(void)
 
 
         t_scanline++;
+
+
+}
+
+//Usado en core spectrum normal y reduced
+void t_scanline_next_fullborder(void)
+{
+    //resetear buffer border
+
+    int i;
+
+    //No si esta desactivado en tbblue
+    if (MACHINE_IS_TBBLUE && tbblue_store_scanlines_border.v==0) return;
+
+    //a 255
+    //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
+    //mas rapido con memset
+    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
+
+	//Resetear buffer border para prism
+	if (MACHINE_IS_PRISM) {
+		for (i=0;i<CURRENT_PRISM_BORDER_BUFFER;i++) prism_ula2_border_colour_buffer[i]=65535;
+	}
+
+	//printf ("max buffer border : %d\n",i);
 
 
 }
@@ -11712,7 +11760,6 @@ void screen_repinta_pantalla_z88(struct s_z88_return_character_atributes *z88_ca
 void scr_refresca_pantalla_ace(void)
 {
 
-
     //La pantalla del jupiter ACE esta en la direccion 2400H, ocupa 32*24=768 bytes
     //La tabla de caracteres esta en la direccion 2C00H, los primeros 32 bytes son UDG y graficos predefinidos
     //Caracteres por defecto son en color inverso. Si bit 7 esta a 1, caracteres son en negro sobre blanco
@@ -11734,23 +11781,64 @@ void scr_refresca_pantalla_ace(void)
 }
 
 
+//Guarda la línea actual del Jupiter Ace en el búfer rainbow.
+void screen_store_scanline_rainbow_ace(void)
+{
+    // El contador del core incluye las líneas invisibles anteriores al borde.
+    int visible_y=t_scanline-screen_invisible_borde_superior;
+    int display_y=visible_y-screen_borde_superior;
+    int output_y=border_enabled.v ? visible_y : display_y;
+    int width=get_total_ancho_rainbow();
+    int height=get_total_alto_rainbow();
+    int left=border_enabled.v ? screen_total_borde_izquierdo : 0;
+    int x,bit;
+    z80_int *row;
+
+    if (output_y<0 || output_y>=height) return;
+
+    // El borde del Ace es siempre negro.
+    row=&rainbow_buffer[output_y*width];
+    for (x=0;x<width;x++) row[x]=0;
+
+    if (display_y<0 || display_y>=192) return;
+
+    // Cada scanline selecciona una fila del glifo y 32 códigos de carácter.
+    int character_row=display_y/8;
+    int glyph_row=display_y&7;
+    for (x=0;x<32;x++) {
+        z80_byte character=peek_byte_no_time(0x2400+character_row*32+x);
+        z80_byte pixels=memoria_spectrum[0x2c00+(character&127)*8+glyph_row];
+
+        // En Ace los caracteres normales se muestran invertidos.
+        if (!(character&128)) pixels^=255;
+        for (bit=0;bit<8;bit++) {
+            row[left+x*8+bit]=(pixels&128) ? 0 : 15;
+            pixels<<=1;
+        }
+    }
+}
+
 //Redibujado de border para jupiter ace en entorno grafico
 void scr_refresca_pantalla_y_border_ace(void)
 {
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_rainbow_comun();
+        return;
+    }
 
 
 
-            if (border_enabled.v) {
+    if (border_enabled.v) {
         //Border en Ace es 0 y no cambia nunca
         if (modificado_border.v) {
                 //Dibujar border. Color 0
                 scr_refresca_border_comun_spectrumzx8081(0);
                 modificado_border.v=0;
         }
-            }
+    }
 
 
-        scr_refresca_pantalla_ace();
+    scr_refresca_pantalla_ace();
 }
 
 
@@ -11790,9 +11878,7 @@ z80_byte sam_retorna_byte_pantalla(z80_byte *s,z80_int *o)
     z80_int offset;
     offset=*o;
 
-    z80_byte *puntero;
-    puntero=sam_ram_memory[segmento]+offset;
-    z80_byte valor=*puntero;
+    z80_byte valor=sam_read_ram_page(segmento,offset);
 
     offset++;
     if (offset>16383) {
@@ -11819,12 +11905,9 @@ z80_byte sam_retorna_byte_pantalla_mode1(z80_byte *s,z80_int *o,z80_byte *at)
         z80_int offset;
         offset=*o;
 
-        z80_byte *puntero;
-        puntero=sam_ram_memory[segmento]+offset;
-        z80_byte valor=*puntero;
+        z80_byte valor=sam_read_ram_page(segmento,offset);
 
-    puntero=sam_ram_memory[segmento]+offset+8192;
-    *at=*puntero;
+    *at=sam_read_ram_page(segmento,offset+8192);
 
         offset++;
         if (offset>16383) {
@@ -11845,17 +11928,13 @@ z80_byte sam_retorna_byte_pantalla_spectrum(z80_byte segmento,int x,int y,z80_by
 {
     int col=x/16;
     z80_int direccion=screen_addr_table[(y<<5)]+col;
-    z80_byte *puntero;
-    puntero=sam_ram_memory[segmento]+direccion;
-
-    z80_byte valor=*puntero;
+    z80_byte valor=sam_read_ram_page(segmento,direccion);
 
 
     int fila;
         fila=y/8;
         z80_int dir_atributo=6144+(fila*32)+col;
-    puntero=sam_ram_memory[segmento]+dir_atributo;
-    *at=*puntero;
+    *at=sam_read_ram_page(segmento,dir_atributo);
 
     return valor;
 }
@@ -11906,9 +11985,8 @@ void scr_refresca_border_sam(unsigned int color)
 void scr_refresca_pantalla_sam(void)
 {
     //Obtener direccion
-    //int direccion=((sam_vmpr&sam_memoria_total_mascara)+1)*16384;
     //printf ("direccion pantalla: %d\n",direccion);
-    z80_byte segmento_pantalla=sam_vmpr&sam_memoria_total_mascara;
+    z80_byte segmento_pantalla=sam_vmpr&31;
     //printf ("segmento pantalla: %d\n",segmento_pantalla);
     z80_int offset=0;
 
@@ -12048,8 +12126,97 @@ void scr_refresca_pantalla_sam(void)
 
 }
 
+// Guarda una línea de Sam Coupé en rainbow, incluidos sus dos píxeles verticales.
+void screen_store_scanline_rainbow_sam(void)
+{
+    // La pantalla tiene 192 scanlines; el búfer de salida duplica su altura.
+    int source_y=t_scanline_draw-screen_indice_inicio_pant;
+    int output_y=source_y*2+SAM_TOP_BORDER_NO_ZOOM*border_enabled.v;
+    int width=get_total_ancho_rainbow();
+    int height=get_total_alto_rainbow();
+    int left=SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+    int x,bit;
+    z80_int *row,*next_row;
+    z80_int colors[16];
+
+    if (output_y<0 || output_y+1>=height) return;
+
+    // La paleta puede cambiar entre scanlines; se toma su valor actual.
+    for (x=0;x<16;x++) colors[x]=SAM_INDEX_FIRST_COLOR+(sam_palette[x]&127);
+    z80_int border_color=colors[sam_border&7];
+    row=&rainbow_buffer[output_y*width];
+    next_row=row+width;
+    for (x=0;x<width;x++) row[x]=next_row[x]=border_color;
+
+    if (source_y<0 || source_y>=192) return;
+
+    // VMPR selecciona la primera página de vídeo y uno de sus cuatro modos.
+    z80_byte segment=sam_vmpr&31;
+    z80_byte mode=(sam_vmpr>>5)&3;
+    z80_int offset=0;
+    if (mode==1) offset=source_y*32;
+    if (mode>=2) {
+        int address=source_y*128;
+        segment=(segment+address/16384)&31;
+        offset=address&16383;
+    }
+
+    if (mode<=1) {
+        // Modos 0 y 1: ocho bits de píxeles y un atributo por grupo.
+        for (x=0;x<32;x++) {
+            z80_byte attribute;
+            z80_byte pixels=mode==0 ?
+                sam_retorna_byte_pantalla_spectrum(segment,x*16,source_y,&attribute) :
+                sam_retorna_byte_pantalla_mode1(&segment,&offset,&attribute);
+            int ink=attribute&7;
+            int paper=(attribute>>3)&7;
+            if ((attribute&128) && estado_parpadeo.v) {
+                int swap=ink;
+                ink=paper;
+                paper=swap;
+            }
+            if (attribute&64) {
+                ink+=8;
+                paper+=8;
+            }
+            for (bit=0;bit<8;bit++) {
+                z80_int color=colors[(pixels&128) ? ink : paper];
+                int output_x=left+x*16+bit*2;
+                row[output_x]=next_row[output_x]=color;
+                row[output_x+1]=next_row[output_x+1]=color;
+                pixels<<=1;
+            }
+        }
+    }
+    else {
+        // Modos 2 y 3: cuatro píxeles o dos pares de píxeles por byte.
+        for (x=0;x<128;x++) {
+            z80_byte pixels=sam_retorna_byte_pantalla(&segment,&offset);
+            if (mode==2) {
+                for (bit=0;bit<4;bit++) {
+                    z80_int color=colors[(pixels>>(6-bit*2))&3];
+                    row[left+x*4+bit]=next_row[left+x*4+bit]=color;
+                }
+            }
+            else {
+                z80_int color_left=colors[pixels>>4];
+                z80_int color_right=colors[pixels&15];
+                int output_x=left+x*4;
+                row[output_x]=next_row[output_x]=color_left;
+                row[output_x+1]=next_row[output_x+1]=color_left;
+                row[output_x+2]=next_row[output_x+2]=color_right;
+                row[output_x+3]=next_row[output_x+3]=color_right;
+            }
+        }
+    }
+}
+
 void scr_refresca_pantalla_y_border_sam(void)
 {
+        if (rainbow_enabled.v) {
+                scr_refresca_pantalla_rainbow_comun();
+                return;
+        }
 
         //Refrescar border si conviene
         if (border_enabled.v) {
@@ -12131,6 +12298,10 @@ int screen_get_emulated_display_width_no_zoom(void)
         return BASECONF_DISPLAY_WIDTH+BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        return ATM_TURBO_DISPLAY_WIDTH+ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
         return SCORPIONGMX_DISPLAY_WIDTH+SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM;
     }
@@ -12178,6 +12349,10 @@ int screen_get_emulated_display_height_no_zoom(void)
 
     else if (MACHINE_IS_BASECONF) {
         return BASECONF_DISPLAY_HEIGHT+BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        return ATM_TURBO_DISPLAY_HEIGHT+ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -12237,6 +12412,11 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
         (BASECONF_LEFT_BORDER_NO_ZOOM+BASECONF_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        return ATM_TURBO_DISPLAY_WIDTH+
+            (ATM_TURBO_LEFT_BORDER_NO_ZOOM+ATM_TURBO_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
     else if (MACHINE_IS_SCORPION_GMX) {
     return SCORPIONGMX_DISPLAY_WIDTH+
         (SCORPIONGMX_LEFT_BORDER_NO_ZOOM+SCORPIONGMX_RIGHT_BORDER_NO_ZOOM)*border_enabled.v;
@@ -12292,6 +12472,11 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+BASECONF_DISPLAY_HEIGHT+
             BASECONF_BOTTOM_BORDER_NO_ZOOM*border_enabled.v;
         }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        return alto_extdesktop+ATM_TURBO_DISPLAY_HEIGHT+
+            ATM_TURBO_BOTTOM_BORDER_NO_ZOOM*border_enabled.v;
+    }
 
   else if (MACHINE_IS_SCORPION_GMX) {
         return alto_extdesktop+SCORPIONGMX_DISPLAY_HEIGHT+
@@ -12350,6 +12535,11 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
     else if (MACHINE_IS_BASECONF) {
     return BASECONF_DISPLAY_HEIGHT+
         (BASECONF_TOP_BORDER_NO_ZOOM+BASECONF_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+    return ATM_TURBO_DISPLAY_HEIGHT+
+        (ATM_TURBO_TOP_BORDER_NO_ZOOM+ATM_TURBO_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
     }
 
     else if (MACHINE_IS_SCORPION_GMX) {
@@ -13623,7 +13813,7 @@ void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_cara
 {
 
     //Maquina 16/48/128/p2/p2a/p3
-    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3 || MACHINE_IS_DIDAKTIKGAMA) {
         if (reg_pc!=screen_text_printchar_return_trap_rom() ) puntero_printchar_caracter(caracter);
 
         else {
@@ -13925,7 +14115,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
         //Spectrum
         if (MACHINE_IS_SPECTRUM) {
             //Las normales 16_48_128_p2_p2a. Esto excluye zxuno, chloe, timex, prism, tbblue, pentagon, chrome, tsconf, baseconf
-            if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+            if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3 || MACHINE_IS_DIDAKTIKGAMA) {
                 //Si esta la rom del basic paginada
 
                 //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas
@@ -14122,7 +14312,7 @@ void scr_refresca_pantalla_sam_modo_013(int modo,void (*fun_color) (z80_byte col
 
                                 z80_byte buffer_letra[8];
 
-        z80_byte segmento_pantalla=sam_vmpr&sam_memoria_total_mascara;
+        z80_byte segmento_pantalla=sam_vmpr&31;
         //scrcurses_screen=sam_ram_memory[segmento_pantalla];
 
                                 z80_byte atributo_spectrum;
@@ -14144,6 +14334,7 @@ int artistic_incremento_origen;
                         //Organizacion como spectrum
                         if (modo==0) {
                 z80_byte *puntero;
+                if (segmento_pantalla>sam_memoria_total_mascara) return;
                 puntero=sam_ram_memory[segmento_pantalla];
 
 
@@ -14166,6 +14357,7 @@ int artistic_incremento_origen;
                                 //int off=y*256+x;
 
                                 z80_byte *puntero;
+                                if (segmento_pantalla>sam_memoria_total_mascara) return;
                                 puntero=sam_ram_memory[segmento_pantalla]+offset;
 
                                 caracter=compare_char_tabla_step(puntero , &inv,char_set_sam,32);
@@ -14181,6 +14373,7 @@ int artistic_incremento_origen;
                         //cada linea ocupa 128 bytes
                         if (modo==3) {
                                 z80_byte *puntero;
+                                if (segmento_pantalla>sam_memoria_total_mascara) return;
                                 puntero=sam_ram_memory[segmento_pantalla]+offset;
 
                                 //Convertir letra en colores a blanco y negro
@@ -14271,7 +14464,7 @@ void scr_refresca_pantalla_sam_modo_2(void (*fun_color) (z80_byte color,int *bri
 
                                 z80_byte buffer_letra[8];
 
-        z80_byte segmento_pantalla=sam_vmpr&sam_memoria_total_mascara;
+        z80_byte segmento_pantalla=sam_vmpr&31;
         //scrcurses_screen=sam_ram_memory[segmento_pantalla];
 
                                 z80_byte atributo_spectrum;
@@ -14294,6 +14487,7 @@ z80_byte bit;
 
  //cada caracter ocupa 6 pixeles de ancho
                                 z80_byte *puntero;
+                                if (segmento_pantalla>sam_memoria_total_mascara) return;
                                 puntero=sam_ram_memory[segmento_pantalla]+offset;
 
                                 //Convertir letra en colores a blanco y negro

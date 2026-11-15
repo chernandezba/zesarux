@@ -679,6 +679,13 @@ void menu_topbarmenu(void)
 
             tecla_leida=menu_topbarmenu_get_key();
 
+            //Una tecla de funcion F ha solicitado cerrar el top menu; conservar la señal para procesarla al reabrir.
+            if (menu_pressed_open_menu_while_in_menu.v &&
+                (menu_button_f_function.v || menu_pressed_f9_with_menu_open.v)) {
+                menu_topbarmenu_preexit();
+                return;
+            }
+
             //printf("tecla leida: %d\n",tecla_leida);
 
             //z80_byte puerto_especial2=255; //   F5 F4 F3 F2 F1

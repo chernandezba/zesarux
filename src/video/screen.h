@@ -474,6 +474,7 @@ extern int rainbow_buffer_current_height;
 
 extern void set_t_scanline_draw_zero(void);
 extern void t_scanline_next_line(void);
+extern void t_scanline_next_fullborder(void);
 
 extern void screen_z88_refresca_pantalla(void);
 
@@ -482,6 +483,7 @@ extern void screen_z88_refresca_pantalla_comun(void);
 extern void screen_z88_draw_lower_screen(void);
 
 extern void scr_refresca_pantalla_y_border_ace(void);
+extern void screen_store_scanline_rainbow_ace(void);
 
 extern void screen_text_repinta_pantalla_ace(void);
 
@@ -910,6 +912,7 @@ extern void enable_timex_video(void);
 extern void scr_refresca_pantalla_cpc(void);
 
 extern void scr_refresca_pantalla_y_border_sam(void);
+extern void screen_store_scanline_rainbow_sam(void);
 
 extern z80_byte sam_retorna_byte_pantalla_mode1(z80_byte *s,z80_int *o,z80_byte *at);
 

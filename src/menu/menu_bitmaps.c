@@ -6593,6 +6593,37 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[EXT_DESKTOP_BUTTONS_A
 };
 
 
+//Icono "My machine" para un Didaktik Gama
+char *bitmap_button_ext_desktop_my_machine_didaktikgama[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwxwwxwwxwwxwwxwwxwwxGxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxwwxwwxwwxwwxwwxwwxwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+    "xxxxwwxwwxwwxwwxwwxwwxwwxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwwxwwxwwxwwxwwxwwxwwwxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
 //Icono "My machine" para un Inves
 char *bitmap_button_ext_desktop_my_machine_inves[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
@@ -6656,6 +6687,36 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[EXT_DESKTOP_BUTTONS_
 };
 
 
+//Icono "My machine" para un Scorpion
+char *bitmap_button_ext_desktop_my_machine_scorpion[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",	//10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwxWWxWWxWWxWWxWWxrrrxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwxWWxWWxWWxWWxWWxWWxwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxwxxx",    //20
+    "xxwwxWWxWWxWWxWWxWWxwwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwwwxWWxWWxWWxWWxwwwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwxWWxwwwwwwwwwxWWxwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
 
 //Icono "My machine" para un Spectrum +2
 char *bitmap_button_ext_desktop_my_machine_spectrum_p2[EXT_DESKTOP_BUTTONS_ANCHO]={
@@ -7192,6 +7253,66 @@ char *bitmap_button_ext_desktop_my_machine_timex_tc2048[EXT_DESKTOP_BUTTONS_ANCH
     "xrgbxxWWWWWWWWWWWWWWWxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_atmturbo1[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "  wwww      wwwwwwwwwww   ",
+    " wwwwwwwwwwwwwwwwwwwwwww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwxwxwxwxwxwxwxwxwxwxww  ",
+    " wwwwwwwwwwwwwwwwwwwwwww  ", //10
+    " wwwwwwwwwwwwwwwwwwwwwww  ",
+    " wwxxxrrrggwwwwwwwwwwwww  ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwWWwWWwWWwWWwWWwwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwwWWwWWwWWwWWwWWwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwWWwWWwWWwWWwWWwwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ", //20
+    "wwwWWwWWwWWwWWwrrwwWwWwWw ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    "wwwwwWWWwwWWWwwwwwwwwwwww ",
+    "wwwwwwwwwwwwwwwwwwwwwwwww ",
+    " wwwwwwwwwwwwwwwwwwwwwww  ", //25
+};
+
+char *bitmap_button_ext_desktop_my_machine_atmturbo2p[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xwxwxwxwxxwwwwxwwwwxwwwwxx",
+    "xwxwxwxwxxxxxxxxxxxxxxxxxx",
+    "xwxwxwxwxxwwwwxwwwwxwwwwxx",	//10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwwwwxwwwwxwwwwxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxrxxxxrx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwwxWWxWWxWWxrrrx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwxwwxWWxWWxWWxwx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxwx",    //20
+    "xxxxxxxxxxwwxWWxWWxWWxwwwx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxwxWWxWWWWxWWxwwx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "wwwwwwwwxxxxxxxxxxxxxxxxxx" 	 //25
 };
 
 

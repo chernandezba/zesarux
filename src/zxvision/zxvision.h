@@ -237,6 +237,9 @@ struct s_zxvision_window {
     //Puntero a funcion de overlay
     void (*overlay_function) (void);
 
+    //Puntero a funcion de cierre de ventana
+    void (*close_window_function) (void);
+
     //Puntero para envio de mensajes a esa ventana
     int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
 
@@ -270,7 +273,7 @@ extern long normal_overlay_time_total_drawing_overlay;
 
 //Total de paletas mapeadas
 //Usado en ver sprites y ver colores mapeados
-#define MENU_TOTAL_MAPPED_PALETTES 22
+#define MENU_TOTAL_MAPPED_PALETTES 23
 
 #define MENU_LAST_DIR_FILE_NAME "zesarux_last_dir.txt"
 #define MENU_SCR_INFO_FILE_NAME "zesarux_scr_info.txt"
@@ -619,6 +622,7 @@ extern int zxvision_mouse_in_zesarux_window(void);
 extern int zxvision_mouse_in_emulated_machine(void);
 
 extern void zxvision_putpixel(zxvision_window *w,int x,int y,int color);
+extern void zxvision_putpixel_no_menu_gui_zoom(zxvision_window *w,int x,int y,int color);
 extern void zxvision_putpixel_no_zoom(zxvision_window *w,int x,int y,int color);
 extern void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) );
 extern void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int limite_grados);
@@ -1656,7 +1660,7 @@ extern void create_default_zxdesktop_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons(void);
 extern void zxvision_reorder_configurable_icons_if_auto(void);
 extern void zxvision_set_configurable_icon_position(int icon,int x,int y);
-extern void zxvision_if_configurable_icon_not_on_valid_position_set(int icon);
+extern void zxvision_if_configurable_icon_not_on_valid_position_set(int icon,int forzar_emulated_display_abierta);
 extern void zxdesktop_configurable_icons_clear_cache_bitmap(int indice);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
@@ -1667,7 +1671,7 @@ extern void zxvision_add_configurable_icon_by_id_action_and_auto_extra(enum defi
 extern void zxvision_add_extra_parameters_element_action(enum defined_f_function_ids accion, char *parametros, char *nombre_icono);
 extern void menu_inicio_handle_configurable_icon_presses(void);
 extern void menu_inicio_handle_right_button_background(void);
-extern void zxvision_check_all_configurable_icons_positions(void);
+extern void zxvision_check_all_configurable_icons_positions(int forzar_emulated_display_abierta);
 extern int zxvision_add_configurable_icon_no_add_position(int indice_funcion);
 extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
 extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);

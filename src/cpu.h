@@ -412,6 +412,10 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_DIDAKTIKGAMA             38
 #define MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR   39
 #define MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA	 40
+#define MACHINE_ID_ATM_TURBO1               41
+#define MACHINE_ID_ATM_TURBO2               42
+#define MACHINE_ID_ATM_TURBO2_PLUS          43
+#define MACHINE_ID_ATM_TURBO3               44
 
 #define MACHINE_ID_COLECO                   100
 
@@ -511,6 +515,17 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_SCORPION_GMX             (current_machine_type==MACHINE_ID_SCORPION_GMX)
 
 #define MACHINE_IS_DIDAKTIKGAMA             (current_machine_type==MACHINE_ID_DIDAKTIKGAMA)
+
+#define MACHINE_IS_ATM_TURBO1               (current_machine_type==MACHINE_ID_ATM_TURBO1)
+#define MACHINE_IS_ATM_TURBO2               (current_machine_type==MACHINE_ID_ATM_TURBO2)
+#define MACHINE_IS_ATM_TURBO2_PLUS          (current_machine_type==MACHINE_ID_ATM_TURBO2_PLUS)
+/* Arquitectura compartida de puertos y MMU desde ATM2 hasta ATM3. */
+#define MACHINE_IS_ATM_TURBO2_FAMILY        (MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
+#define MACHINE_IS_ATM_TURBO3               (current_machine_type==MACHINE_ID_ATM_TURBO3)
+/* ATM3 conserva el controlador 8031 y los controles de sistema de ATM2+. */
+#define MACHINE_IS_ATM_TURBO2PLUS_TURBO3   (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
+
+#define MACHINE_IS_ATM_TURBO                (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
 
 
 #define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256 || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS || current_machine_type==MACHINE_ID_SCORPION_GMX)
@@ -634,7 +649,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Maquinas que tienen el chip de memoria vdp 9918a
 #define MACHINE_HAS_VDP_9918A (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS)
 
-
+//Maquinas con floppy de 3"
+#define MACHINE_HAS_CF2_FLOPPY (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW)
 
 
 

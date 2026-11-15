@@ -57,9 +57,6 @@ extern void scorpion_mem_page_rom(void);
 extern void scorpion_trdos_update(z80_int dir);
 extern int scorpion_trdos_is_active(void);
 extern int scorpion_gmx_kempston_port_enabled(z80_int port);
-extern int scorpion_gmx_smuc_read(z80_int port,z80_byte *value);
-extern int scorpion_gmx_smuc_write(z80_int port,z80_byte value);
-extern z80_bit smuc_enabled;
 extern int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value);
 extern int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value);
 extern z80_bit zcontroller_enabled;
@@ -76,6 +73,8 @@ extern int scorpion_gmx_magic_enabled(void);
 extern int scorpion_gmx_7ffd_paging_enabled(void);
 extern z80_byte scorpion_read_ay_port_a(z80_byte ay_value);
 
+extern z80_bit scorpion_trdos_active;
+
 extern z80_byte *scorpion_ram_mem_table[];
 extern z80_byte *scorpion_rom_mem_table[];
 extern z80_byte *scorpion_memory_paged[];
@@ -88,19 +87,6 @@ extern z80_byte scorpion_gmx_port_78fd;
 extern z80_byte scorpion_gmx_zcontroller_control;
 extern void scorpion_set_normal_pages(void);
 
-extern z80_byte scorpion_gmx_smuc_config;
-extern z80_byte scorpion_gmx_smuc_control;
-extern z80_byte scorpion_gmx_smuc_data_high;
-extern int scorpion_gmx_smuc_identify_first_word;
-extern int scorpion_gmx_smuc_eeprom_initialized;
-extern int scorpion_gmx_smuc_eeprom_state;
-extern int scorpion_gmx_smuc_eeprom_address;
-extern int scorpion_gmx_smuc_eeprom_input;
-extern int scorpion_gmx_smuc_eeprom_input_bits;
-extern int scorpion_gmx_smuc_eeprom_output;
-extern int scorpion_gmx_smuc_eeprom_output_bits;
-extern int scorpion_gmx_smuc_eeprom_release;
-extern z80_byte scorpion_gmx_smuc_eeprom_bus;
 
 extern void scorpion_set_cpu_speed(int turbo);
 extern void scorpion_gmx_set_normal_speed(void);
@@ -118,5 +104,9 @@ extern void scorpiongmx_store_scanline_rainbow_border(void);
 
 extern int if_scorpiongmx_mode_640_200(void);
 extern int scorpion_gmx_get_scroll_lines(void);
+extern z80_int scorpion_gmx_get_scroll_register(void);
+extern void scorpion_gmx_set_scroll_register(z80_int value);
+
+extern void scorpion_reset(void);
 
 #endif
