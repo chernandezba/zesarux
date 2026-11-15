@@ -360,33 +360,12 @@ ok - icono máquinas.
 
 Idea para que la ventana de vídeo output lea pulsaciones de teclado de la máquina emulada:
 
-ok - Que la función de zxvision_send_keys diga que se envían también cuando el foco está en esa ventana
-
-Luego opción para decir que render solo irá a esa ventana: los render de buffer rainbow a pantalla no se harán. Y para modos no real video, deberían escribir
-(los que no tengan) modo no-rainbow  en buffer rainbow
-
-Luego también hacer que dicha ventana se redimensione cuando haya cambios de máquinas
-
-ok Luego si se cierra ventana, que vuelva al render normal
-
-ok Función que dibuja el fondo de ZX desktop no omita la parte de la pantalla emulada cuando se ha conmutado a ventana.
-ok Lo mismo para el dibujado de iconos y arrastre de iconos
-
--problema con render de maquinas que tienen gui zoom=2, como baseconf, etc
 
 -que las pulsaciones sobre zx desktop en zona de maquina emulada, con ventana video output, se consideren zx desktop
 
 Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
 No hay ZX desktop
 
-ok -renombrado de nombre de ventana "video output" por otro
-
-ok-forzar real video al abrir ventana de video output
-
-ok -si se cierra ventana de emulated display desde zxvision_window_delete_this_window (process switcher o process management)
-no se finaliza normalmente y por tanto no se pone ventana_video_output_abierta a cero
-Lo mismo pasa con cerrar todas las ventanas
-Quiza hace falta una funcion en zxvision_window que se llame al cerrar ventanas
 
 -sin zxdesktop y con ventana emulated display activa, que ponemos en el fondo ? o no permitimos emulated display window si el zx desktop no esta activado?
 
@@ -395,14 +374,10 @@ ok-al iniciar ZEsarUX, que de por validos iconos en zona de pantalla emulada si 
 
 -si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
 
--diferencia de uso de cpu entre docked y windowed? parece que usa mucha cpu mas.
-ok --implementado una putpixel cache para esa ventana y baja mucho el uso de cpu
 
 -- propuesta para incremento de cpu cuando hay muchas ventanas abiertas: que en memoria_overlay (cada caracter) diga si esta visible o no, cacheado,
 eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dirty_user_must_draw_contents
 ->creo que eso no reduce mucho el uso de cpu
-
-ok -poder hacer escalado con zoom decimal
 
 -gestion pulsaciones con el raton en la zona donde se ubica Docked display
 
