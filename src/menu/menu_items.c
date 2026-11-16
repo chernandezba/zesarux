@@ -24463,6 +24463,8 @@ int menu_help_keyboard_bmp_last_alto=0;
 
         printf("final zoom: %d\n",possible_zoom);
 
+        if (possible_zoom==0) possible_zoom=1;
+
         if (possible_zoom>0) menu_help_keyboard_zoom_factor=possible_zoom;
     }
 
