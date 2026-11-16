@@ -22298,6 +22298,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
     else if (MACHINE_IS_DIDAKTIKGAMA) strcpy(nombrebmp,"keyboard_didaktikgama.bmp");
     else if (MACHINE_IS_SCORPION) strcpy(nombrebmp,"keyboard_scorpion.bmp");
+    else if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO1) strcpy(nombrebmp,"keyboard_atm1.bmp");
     else strcpy(nombrebmp,"keyboard_48.bmp");
 
     //localizarlo
