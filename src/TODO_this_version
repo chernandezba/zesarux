@@ -411,12 +411,3 @@ Quiza habria que hacer una ventana de render de teclado que el usuario pueda red
 -boton reducir alto zx desktop sale incluso con alto=0
 
 ---
-
-keyboard help
-
--menu_help_keyboard_overlay_render_512k_pcw que tenga en cuenta zoom factor
-
-ok -quiza keyboard help que se dibuje sin tener en cuenta zoom_x/y ni menu_gui_zoom
-y que permita escalar de  manera entera (o decimal?) según tamaño de ventana
--que reescale ventana al cambiar de maquina
--funciones asociadas a render keyboard de 1x (sin tener en cuenta el factor de zoom de ventana) que ya no se usen

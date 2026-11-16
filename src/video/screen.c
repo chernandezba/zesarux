@@ -16261,25 +16261,6 @@ void screen_render_bmpfile(z80_byte *mem,int indice_paleta_color,zxvision_window
 
 }
 
-void screen_render_bmpfile_putpixel_no_zooms(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
-{
-    //follow_zoom no se usa, pero la funcion tiene que admitirlo como parametro por que es requisito de screen_render_bmpfile
-    zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x,y,color_final);
-
-}
-
-
-//Renderizar bmp pero sin ningun zoom de ningun tipo (ni menu_gui_zoom ni zoom_x/zoom_y)
-void screen_render_bmpfile_no_zooms(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,
-    int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
-{
-
-
-    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,0,
-        ancho_mostrar,indice_color_transparente,color_final_transparente,
-        screen_render_bmpfile_putpixel_no_zooms);
-
-}
 
 /*
 Funcion llamada desde los drivers de video generalmente despues de redimensionar la ventana de ZEsarUX,

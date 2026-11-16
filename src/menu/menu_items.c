@@ -23932,19 +23932,9 @@ void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_
 void menu_help_keyboard_render_bmpfile_putpixel_no_zooms(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
 {
     //follow_zoom no se usa, pero la funcion tiene que admitirlo como parametro por que es requisito de screen_render_bmpfile
-    //zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x,y,color_final);
 
     menu_help_keyboard_putpixel_internal_zoom(ventana,x,y,color_final);
-    /*
-    int zx,zy;
 
-    for (zx=0;zx<menu_help_keyboard_zoom_factor;zx++) {
-        for (zy=0;zy<menu_help_keyboard_zoom_factor;zy++) {
-            zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x*menu_help_keyboard_zoom_factor+zx,y*menu_help_keyboard_zoom_factor+zy,color_final);
-        }
-    }
-
-    */
 }
 
 
@@ -24001,20 +23991,6 @@ void menu_help_keyboard_overlay(void)
 
 
 
-            //screen_render_bmpfile_no_zooms(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,-1,0);
-
-/*
-void screen_render_bmpfile_no_zooms(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,
-    int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
-{
-
-
-    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,0,
-        ancho_mostrar,indice_color_transparente,color_final_transparente,
-        screen_render_bmpfile_putpixel_no_zooms);
-
-}
-*/
 
 
                 screen_render_bmpfile_function(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,
