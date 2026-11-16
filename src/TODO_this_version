@@ -358,8 +358,6 @@ ok - icono máquinas.
 -----
 ---- ventana video output como sustituto del render normal de maquina:
 
-Idea para que la ventana de vídeo output lea pulsaciones de teclado de la máquina emulada:
-
 
 -que las pulsaciones sobre zx desktop en zona de maquina emulada, con ventana video output, se consideren zx desktop
 
@@ -408,3 +406,8 @@ ok? -poder ver paletas de colores atm, zxevo, etc
 asi teclados serian todos parecidos independientemente de si la maquina tiene gui zoom 2 o 1
 Pero luego el problema será que si queremos tener el teclado mas grande, no se podra
 Quiza habria que hacer una ventana de render de teclado que el usuario pueda redimensionar como quiera, que se amplie de manera parecida a ventana de emulated display
+
+
+-quiza keyboard help que se dibuje sin tener en cuenta zoom_x/y ni menu_gui_zoom
+y que permita escalar de  manera entera (o decimal?) según tamaño de ventana
+-que reescale ventana al cambiar de maquina
