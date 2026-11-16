@@ -71,6 +71,7 @@ Mejorado ZX Desktop:
 - Comprobar si un item está en una posición inválida al recuperarlo de la Papelera
 
 Mejorado integración de TR-DOS en Pentagon
+Mejorado Teclado Virtual: permitir escalar el teclado
 Agregada vistas a Visual Floppy (disco, transparente, opaco)
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
