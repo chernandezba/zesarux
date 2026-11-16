@@ -22446,14 +22446,14 @@ int keyboard_map_table_coords_didaktikgama[40*4]={
 
 // Coordenadas de las 40 teclas Spectrum en el BMP compartido por ATM1 y ATM2.
 int keyboard_map_table_coords_atm[40*4]={
-    15,117,45,147,    91,117,121,147,    127,117,157,147,    163,117,193,147,    199,117,229,147,
-    75,79,105,109,    111,79,141,109,    147,79,177,109,    183,79,213,109,    219,79,249,109,
-    60,42,90,72,    96,42,126,72,    132,42,162,72,    168,42,198,72,    204,42,234,72,
-    85,5,115,35,    121,5,151,35,    156,5,186,35,    192,5,222,35,    228,5,258,35,
-    406,5,436,35,    371,5,401,35,    335,5,365,35,    299,5,329,35,    264,5,294,35,
-    379,42,409,72,    343,42,373,72,    308,42,338,72,    273,42,303,72,    237,42,267,72,
-    476,79,506,109,    359,79,389,109,    323,79,353,109,    288,79,318,109,    252,79,282,109,
-    144,156,210,186,    458,117,488,147,    305,117,335,147,    269,117,299,147,    234,117,264,147,
+    23,149,58,184,    105,149,138,184,    143,149,175,184,    184,149,219,184,    224,149,258,184,
+    90,109,122,144,    128,109,160,144,    169,109,202,144,    208,109,242,144,    247,109,281,144,
+    72,68,105,102,    110,68,144,102,    148,68,181,102,    186,68,218,102,    223,68,255,102,
+    93,29,126,60,    130,29,164,60,    168,29,201,60,    205,29,239,60,    243,29,276,60,
+    430,29,466,60,    393,29,426,60,    355,29,389,60,    318,29,351,60,    280,29,314,60,
+    419,68,452,102,    381,68,414,102,    341,68,376,102,    302,68,336,102,    263,68,297,102,
+    519,109,558,144,    405,109,439,144,    366,109,400,144,    326,109,361,144,    286,109,321,144,
+    134,192,220,226,    495,149,529,184,    344,149,378,184,    304,149,338,184,    263,149,298,184,
 };
 
 // Matriz Spectrum sobre el BMP compartido por ATM2+ y ATM3.
@@ -22959,29 +22959,29 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
 // Atajos y teclas duplicadas del teclado mecánico de ATM1/ATM2.
 // TAB, ALT, la tecla anterior al 1, las dos R y la flecha roja superior quedan sin asignar hasta confirmar su cableado.
 keyboard_help_double_key keyboard_map_additional_atm[]={
-    { 15,5,45,35, &puerto_63486,1, KEY_PORT_VALUE_SHIFT }, // EDIT
-    { 474,5,504,35, &puerto_61438,1, KEY_PORT_VALUE_SHIFT }, // DEL
-    { 5,79,35,109, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, // Caps Lock
-    { 50,117,80,147, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, // EXT
-    { 295,156,361,186, &puerto_32766,1, NULL,0 }, // segundo espacio
-    { 438,5,465,35, &puerto_49150,2, KEY_PORT_VALUE_SYMBOL }, // igual
-    { 416,42,446,72, &puerto_61438,4, KEY_PORT_VALUE_SYMBOL }, // paréntesis izquierdo
-    { 452,42,482,72, &puerto_61438,2, KEY_PORT_VALUE_SYMBOL }, // paréntesis derecho
-    { 489,42,519,72, &puerto_49150,8, KEY_PORT_VALUE_SYMBOL }, // menos
-    { 396,79,426,109, &puerto_65278,2, KEY_PORT_VALUE_SYMBOL }, // dos puntos
-    { 436,79,466,109, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // comillas
-    { 344,117,374,147, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // coma
-    { 384,117,414,147, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // punto
-    { 422,117,452,147, &puerto_65278,8, KEY_PORT_VALUE_SYMBOL }, // interrogación
-    { 589,42,619,72, &puerto_49150,8, KEY_PORT_VALUE_SYMBOL }, // menos del bloque derecho
-    { 624,42,654,72, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // punto y coma
-    { 660,42,690,72, &puerto_65278,16, KEY_PORT_VALUE_SYMBOL }, // división
-    { 589,79,619,109, &puerto_49150,4, KEY_PORT_VALUE_SYMBOL }, // suma
-    { 660,79,690,109, &puerto_32766,16, KEY_PORT_VALUE_SYMBOL }, // asterisco
-    { 624,79,654,109, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // cursor arriba
-    { 589,117,619,147, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // cursor izquierda
-    { 624,117,654,147, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // cursor abajo
-    { 660,117,690,147, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // cursor derecha
+    { 18,29,52,60, &puerto_63486,1, KEY_PORT_VALUE_SHIFT }, // EDIT
+    { 508,29,540,60, &puerto_61438,1, KEY_PORT_VALUE_SHIFT }, // DEL
+    { 11,109,44,144, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 62,149,99,184, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, // EXT
+    { 305,192,391,226, &puerto_32766,1, NULL,0 }, // segundo espacio
+    { 470,29,504,60, &puerto_49150,2, KEY_PORT_VALUE_SYMBOL }, // igual
+    { 457,68,489,102, &puerto_61438,4, KEY_PORT_VALUE_SYMBOL }, // paréntesis izquierdo
+    { 494,68,525,102, &puerto_61438,2, KEY_PORT_VALUE_SYMBOL }, // paréntesis derecho
+    { 530,68,558,102, &puerto_61438,1, KEY_PORT_VALUE_SYMBOL }, // guion bajo
+    { 445,109,476,144, &puerto_65278,2, KEY_PORT_VALUE_SYMBOL }, // dos puntos
+    { 482,109,513,144, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 384,149,416,184, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // coma
+    { 421,149,452,184, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // punto
+    { 457,149,489,184, &puerto_65278,8, KEY_PORT_VALUE_SYMBOL }, // interrogación
+    { 620,68,654,102, &puerto_49150,8, KEY_PORT_VALUE_SYMBOL }, // menos del bloque derecho
+    { 660,68,692,102, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 698,68,731,102, &puerto_65278,16, KEY_PORT_VALUE_SYMBOL }, // división
+    { 620,109,654,143, &puerto_49150,4, KEY_PORT_VALUE_SYMBOL }, // suma
+    { 698,109,731,143, &puerto_32766,16, KEY_PORT_VALUE_SYMBOL }, // asterisco
+    { 660,109,692,143, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // cursor arriba
+    { 620,149,654,184, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // cursor izquierda
+    { 660,149,692,184, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // cursor abajo
+    { 698,149,731,184, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // cursor derecha
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
