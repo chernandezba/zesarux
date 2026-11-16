@@ -22443,6 +22443,18 @@ int keyboard_map_table_coords_didaktikgama[40*4]={
 576,268,639,308,    518,268,564,308,    463,268,508,308,    409,268,453,308,    356,268,400,308,
 };
 
+// Coordenadas de las 40 teclas Spectrum en el BMP compartido por ATM1 y ATM2.
+int keyboard_map_table_coords_atm[40*4]={
+    15,117,45,147,    91,117,121,147,    127,117,157,147,    163,117,193,147,    199,117,229,147,
+    75,79,105,109,    111,79,141,109,    147,79,177,109,    183,79,213,109,    219,79,249,109,
+    60,42,90,72,    96,42,126,72,    132,42,162,72,    168,42,198,72,    204,42,234,72,
+    85,5,115,35,    121,5,151,35,    156,5,186,35,    192,5,222,35,    228,5,258,35,
+    406,5,436,35,    371,5,401,35,    335,5,365,35,    299,5,329,35,    264,5,294,35,
+    379,42,409,72,    343,42,373,72,    308,42,338,72,    273,42,303,72,    237,42,267,72,
+    476,79,506,109,    359,79,389,109,    323,79,353,109,    288,79,318,109,    252,79,282,109,
+    144,156,210,186,    458,117,488,147,    305,117,335,147,    269,117,299,147,    234,117,264,147,
+};
+
 int keyboard_map_table_coords_scorpion[40*4]={
 68,221,153,254,     206,221,239,254,    247,221,282,254,    289,221,324,254,    332,221,366,254,
 183,178,217,213,    225,178,260,213,    268,178,302,213,    310,178,344,213,    353,178,387,213,
@@ -22931,6 +22943,35 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+// Atajos y teclas duplicadas del teclado mecánico de ATM1/ATM2.
+// TAB, ALT, la tecla anterior al 1, las dos R y la flecha roja superior quedan sin asignar hasta confirmar su cableado.
+keyboard_help_double_key keyboard_map_additional_atm[]={
+    { 15,5,45,35, &puerto_63486,1, KEY_PORT_VALUE_SHIFT }, // EDIT
+    { 474,5,504,35, &puerto_61438,1, KEY_PORT_VALUE_SHIFT }, // DEL
+    { 5,79,35,109, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 50,117,80,147, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, // EXT
+    { 295,156,361,186, &puerto_32766,1, NULL,0 }, // segundo espacio
+    { 438,5,465,35, &puerto_49150,2, KEY_PORT_VALUE_SYMBOL }, // igual
+    { 416,42,446,72, &puerto_61438,4, KEY_PORT_VALUE_SYMBOL }, // paréntesis izquierdo
+    { 452,42,482,72, &puerto_61438,2, KEY_PORT_VALUE_SYMBOL }, // paréntesis derecho
+    { 489,42,519,72, &puerto_49150,8, KEY_PORT_VALUE_SYMBOL }, // menos
+    { 396,79,426,109, &puerto_65278,2, KEY_PORT_VALUE_SYMBOL }, // dos puntos
+    { 436,79,466,109, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 344,117,374,147, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // coma
+    { 384,117,414,147, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // punto
+    { 422,117,452,147, &puerto_65278,8, KEY_PORT_VALUE_SYMBOL }, // interrogación
+    { 589,42,619,72, &puerto_49150,8, KEY_PORT_VALUE_SYMBOL }, // menos del bloque derecho
+    { 624,42,654,72, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 660,42,690,72, &puerto_65278,16, KEY_PORT_VALUE_SYMBOL }, // división
+    { 589,79,619,109, &puerto_49150,4, KEY_PORT_VALUE_SYMBOL }, // suma
+    { 660,79,690,109, &puerto_32766,16, KEY_PORT_VALUE_SYMBOL }, // asterisco
+    { 624,79,654,109, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // cursor arriba
+    { 589,117,619,147, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // cursor izquierda
+    { 624,117,654,147, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // cursor abajo
+    { 660,117,690,147, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // cursor derecha
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Teclas adicionales scorpion
 keyboard_help_double_key keyboard_map_additional_scorpion[]={
     { 593,263,628,296,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, // Symbol Shift derecho
@@ -23300,6 +23341,8 @@ void keyboard_help_reset_teclas_pulsadas(void)
 //Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
+    if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) return keyboard_map_table_coords_atm;
+
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_CZ_SPECTRUM_PLUS) {
         return keyboard_map_table_coords_48p;
@@ -23435,6 +23478,8 @@ int *keyboard_help_return_map_table(void)
 
 keyboard_help_double_key *keyboard_help_return_double_keys(void)
 {
+    if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) return keyboard_map_additional_atm;
+
 
     keyboard_help_double_key *teclas_dobles=NULL;
 
