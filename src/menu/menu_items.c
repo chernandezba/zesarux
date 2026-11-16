@@ -22456,6 +22456,18 @@ int keyboard_map_table_coords_atm[40*4]={
     144,156,210,186,    458,117,488,147,    305,117,335,147,    269,117,299,147,    234,117,264,147,
 };
 
+// Matriz Spectrum sobre el BMP compartido por ATM2+ y ATM3.
+int keyboard_map_table_coords_atm2p[40*4]={
+    18,141,126,177,    184,141,231,177,    234,141,280,177,    283,141,330,177,    333,141,380,177,
+    158,100,204,136,    207,100,254,136,    257,100,303,136,    306,100,353,136,    356,100,403,136,
+    148,59,193,96,    195,59,239,96,    243,59,287,96,    291,59,335,96,    339,59,385,96,
+    138,16,183,53,    187,16,233,53,    237,16,283,53,    287,16,333,53,    337,16,384,53,
+    585,16,627,53,    537,16,582,53,    488,16,532,53,    438,16,484,53,    388,16,433,53,
+    583,59,626,96,    535,59,578,96,    487,59,530,96,    438,59,482,96,    389,59,434,96,
+    611,100,680,136,    556,100,607,136,    506,100,552,136,    456,100,502,136,    406,100,452,136,
+    263,183,485,217,    18,183,69,217,    484,141,530,177,    434,141,480,177,    384,141,430,177,
+};
+
 int keyboard_map_table_coords_scorpion[40*4]={
 68,221,153,254,     206,221,239,254,    247,221,282,254,    289,221,324,254,    332,221,366,254,
 183,178,217,213,    225,178,260,213,    268,178,302,213,    310,178,344,213,    353,178,387,213,
@@ -22973,6 +22985,30 @@ keyboard_help_double_key keyboard_map_additional_atm[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+// Combinaciones y teclas duplicadas de ATM2+/ATM3; Enter ocupa dos rectángulos.
+keyboard_help_double_key keyboard_map_additional_atm2p[]={
+    { 18,16,73,53, &puerto_63486,4, KEY_PORT_VALUE_SHIFT }, // True Video
+    { 77,16,133,53, &puerto_63486,8, KEY_PORT_VALUE_SHIFT }, // Inverse Video
+    { 18,59,86,96, &puerto_61438,1, KEY_PORT_VALUE_SHIFT }, // Delete
+    { 90,59,143,96, &puerto_61438,2, KEY_PORT_VALUE_SHIFT }, // Graph
+    { 18,100,90,136, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, // modo extendido
+    { 95,100,153,136, &puerto_63486,1, KEY_PORT_VALUE_SHIFT }, // Edit
+    { 130,141,180,177, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 633,16,680,53, &puerto_32766,1, KEY_PORT_VALUE_SHIFT }, // Break
+    { 632,59,680,96, &puerto_49150,1, NULL,0 }, // parte superior de Enter
+    { 585,141,680,177, KEY_PORT_VALUE_SHIFT, NULL,0 }, // Caps Shift derecho
+    { 631,183,680,217, KEY_PORT_VALUE_SYMBOL, NULL,0 }, // Symbol Shift derecho
+    { 74,183,116,217, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 121,183,162,217, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 167,183,210,217, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // cursor izquierda
+    { 215,183,258,217, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // cursor derecha
+    { 490,183,532,217, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // cursor arriba
+    { 537,183,579,217, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // cursor abajo
+    { 584,183,626,217, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // coma
+    { 535,141,580,177, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // punto
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Teclas adicionales scorpion
 keyboard_help_double_key keyboard_map_additional_scorpion[]={
     { 593,263,628,296,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, // Symbol Shift derecho
@@ -23343,6 +23379,7 @@ void keyboard_help_reset_teclas_pulsadas(void)
 int *keyboard_help_return_map_table(void)
 {
     if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) return keyboard_map_table_coords_atm;
+    if (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3) return keyboard_map_table_coords_atm2p;
 
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_CZ_SPECTRUM_PLUS) {
@@ -23480,6 +23517,7 @@ int *keyboard_help_return_map_table(void)
 keyboard_help_double_key *keyboard_help_return_double_keys(void)
 {
     if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) return keyboard_map_additional_atm;
+    if (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3) return keyboard_map_additional_atm2p;
 
 
     keyboard_help_double_key *teclas_dobles=NULL;
