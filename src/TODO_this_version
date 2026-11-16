@@ -414,7 +414,7 @@ Quiza habria que hacer una ventana de render de teclado que el usuario pueda red
 
 keyboard help
 
-ok -menu_help_keyboard_overlay_render_512k_pcw que no siga zooms
+-menu_help_keyboard_overlay_render_512k_pcw que tenga en cuenta zoom factor
 
 -quiza keyboard help que se dibuje sin tener en cuenta zoom_x/y ni menu_gui_zoom
 y que permita escalar de  manera entera (o decimal?) según tamaño de ventana

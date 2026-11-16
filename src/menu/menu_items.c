@@ -22230,6 +22230,14 @@ int help_keyboard_last_current_machine=-1;
 
 z80_byte *help_keyboard_text_512_pcw=NULL;
 
+//Factor de zoom exclusivo para esta ventana
+int menu_help_keyboard_zoom_factor=1;
+
+//Ultimo ancho y alto leido del bmp
+
+int menu_help_keyboard_bmp_last_ancho=0;
+int menu_help_keyboard_bmp_last_alto=0;
+
 void menu_help_keyboard_load_bmp(void)
 {
 
@@ -23585,14 +23593,27 @@ void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_
 }
 */
 
+void menu_help_keyboard_putpixel_internal_zoom(zxvision_window *ventana,int x,int y,int color_final)
+{
+
+    int zx,zy;
+
+    for (zx=0;zx<menu_help_keyboard_zoom_factor;zx++) {
+        for (zy=0;zy<menu_help_keyboard_zoom_factor;zy++) {
+            zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x*menu_help_keyboard_zoom_factor+zx,y*menu_help_keyboard_zoom_factor+zy,color_final);
+        }
+    }
+
+}
+
 void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color)
 {
     //Recuadro del tamanyo y algo mas grande
-    zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,zxvision_putpixel_no_menu_gui_zoom_no_zoom);
-    zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,zxvision_putpixel_no_menu_gui_zoom_no_zoom);
-    zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,zxvision_putpixel_no_menu_gui_zoom_no_zoom);
+    zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,menu_help_keyboard_putpixel_internal_zoom);
+    zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,menu_help_keyboard_putpixel_internal_zoom);
+    zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,menu_help_keyboard_putpixel_internal_zoom);
     //Y algo mas pequenyo
-    zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_menu_gui_zoom_no_zoom);
+    zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,menu_help_keyboard_putpixel_internal_zoom);
 }
 
 //Dice si bit tecla pulsada, dependiendo si es valor 0 en la mayoria de maquinas, o si no es 0 (como puertos de joystick en master system)
@@ -23892,7 +23913,7 @@ void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventan
         //printf("no follow zoom. %d,%d\n",zoom_x,zoom_y);
 
         //El offset x=61, y=10 donde tiene que ir a parar el texto "512k"
-        zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x+61,y+10,color_final);
+        menu_help_keyboard_putpixel_internal_zoom(ventana,x+61,y+10,color_final);
 
 
 }
@@ -23907,6 +23928,26 @@ void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_
         menu_help_keyboard_overlay_render_512k_pcw_putpixel);
 
 }
+
+void menu_help_keyboard_render_bmpfile_putpixel_no_zooms(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+{
+    //follow_zoom no se usa, pero la funcion tiene que admitirlo como parametro por que es requisito de screen_render_bmpfile
+    //zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x,y,color_final);
+
+    menu_help_keyboard_putpixel_internal_zoom(ventana,x,y,color_final);
+    /*
+    int zx,zy;
+
+    for (zx=0;zx<menu_help_keyboard_zoom_factor;zx++) {
+        for (zy=0;zy<menu_help_keyboard_zoom_factor;zy++) {
+            zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x*menu_help_keyboard_zoom_factor+zx,y*menu_help_keyboard_zoom_factor+zy,color_final);
+        }
+    }
+
+    */
+}
+
+
 
 
 void menu_help_keyboard_overlay(void)
@@ -23957,9 +23998,33 @@ void menu_help_keyboard_overlay(void)
 
 
             //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
-            //El teclado no sigue el zoom de ventana, pero sí que sigue el zoom de gui
-            //screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
-            screen_render_bmpfile_no_zooms(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,-1,0);
+
+
+
+            //screen_render_bmpfile_no_zooms(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,-1,0);
+
+/*
+void screen_render_bmpfile_no_zooms(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,
+    int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
+{
+
+
+    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,0,
+        ancho_mostrar,indice_color_transparente,color_final_transparente,
+        screen_render_bmpfile_putpixel_no_zooms);
+
+}
+*/
+
+
+                screen_render_bmpfile_function(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,
+                    0,-1,0,
+                    menu_help_keyboard_render_bmpfile_putpixel_no_zooms);
+
+                menu_help_keyboard_bmp_last_ancho=last_screen_render_bmpfile_function_ancho;
+                menu_help_keyboard_bmp_last_alto=last_screen_render_bmpfile_function_alto;
+
+
 
             //Sobreescribimos el texto "512k" encima
             if (MACHINE_IS_PCW_8512) {
@@ -24345,8 +24410,8 @@ void help_keyboard_start_generate_key_mouse_click(zxvision_window *ventana)
     int pulsado_x,pulsado_y;
     zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
 
-    //pulsado_x *=zoom_x;
-    //pulsado_y *=zoom_y;
+    pulsado_x /=menu_help_keyboard_zoom_factor;
+    pulsado_y /=menu_help_keyboard_zoom_factor;
 
     if (menu_help_show_keyboard_debug_ultimo_click_x!=pulsado_x && menu_help_show_keyboard_debug_ultimo_click_y!=pulsado_y) {
         //Debug para mostrar coordenada pulsada
@@ -24364,6 +24429,49 @@ void help_keyboard_start_generate_key_mouse_click(zxvision_window *ventana)
     //printf ("despues pulsar raton: %d\n",contador_segundo_infinito);
 
 }
+
+int menu_help_keyboard_last_visible_width=0;
+int menu_help_keyboard_last_visible_height=0;
+
+void menu_help_keyboard_recalculate_zoom_factor(zxvision_window *w)
+{
+
+//Factor de zoom exclusivo para esta ventana
+/*
+int menu_help_keyboard_zoom_factor=1;
+
+//Ultimo ancho y alto leido del bmp
+
+int menu_help_keyboard_bmp_last_ancho=0;
+int menu_help_keyboard_bmp_last_alto=0;
+*/
+    if (menu_help_keyboard_last_visible_width && menu_help_keyboard_last_visible_height && menu_help_keyboard_bmp_last_ancho && menu_help_keyboard_bmp_last_alto) {
+        //tamanyo ventana en pixeles
+        int ancho=w->visible_width * menu_char_width * zoom_x * menu_gui_zoom;
+        int alto=w->visible_height * menu_char_height * zoom_y * menu_gui_zoom;
+
+        int possible_zoom_x,possible_zoom_y,possible_zoom;
+
+        possible_zoom_x=ancho/menu_help_keyboard_bmp_last_ancho;
+        possible_zoom_y=alto/menu_help_keyboard_bmp_last_alto;
+
+
+        //elegimos el menor
+        printf("possible zoom_x: %d possible zoom_y: %d\n",possible_zoom_x,possible_zoom_y);
+        if (possible_zoom_x<possible_zoom_y) possible_zoom=possible_zoom_x;
+        else possible_zoom=possible_zoom_y;
+
+        printf("final zoom: %d\n",possible_zoom);
+
+        if (possible_zoom>0) menu_help_keyboard_zoom_factor=possible_zoom;
+    }
+
+
+    menu_help_keyboard_last_visible_width=w->visible_width;
+    menu_help_keyboard_last_visible_height=w->visible_height;
+
+}
+
 
 void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 {
@@ -24489,6 +24597,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         //No se puede empezar pulsando tecla en el teclado y luego con raton, que querriamos que usase este "if" de abajo,
         //porque cuando se deja de pulsar el tecla se liberan todos los puertos y entonces se pararia de enviar pulsaciones de raton
 
+
+        menu_help_keyboard_recalculate_zoom_factor(ventana);
+
         if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
             //printf("generar tecla en condicion de tecla pulsada. tecla=%d mouse_left: %d mouse_right: %d todos_puertos_teclado_acumulado=%d\n",
             //    tecla,mouse_left,mouse_right,todos_puertos_teclado_acumulado);
@@ -24544,8 +24655,8 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             int pulsado_x,pulsado_y;
             zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
 
-            //pulsado_x *=zoom_x;
-            //pulsado_y *=zoom_y;
+            pulsado_x /=menu_help_keyboard_zoom_factor;
+            pulsado_y /=menu_help_keyboard_zoom_factor;
 
             menu_help_keyboard_overlay_force_draw=1;
 
@@ -24573,8 +24684,8 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
             printf("x %d y %d\n",pulsado_x,pulsado_y);
 
-            //pulsado_x *=zoom_x;
-            //pulsado_y *=zoom_y;
+            pulsado_x /=menu_help_keyboard_zoom_factor;
+            pulsado_y /=menu_help_keyboard_zoom_factor;
             menu_help_keyboard_highlight_key_mouse(pulsado_x,pulsado_y);
         }
 
@@ -24610,7 +24721,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     else {
         zxvision_destroy_window(ventana);
         free(help_keyboard_bmp_file_mem);
-     }
+    }
 
 
 }

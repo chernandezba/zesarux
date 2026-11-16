@@ -16113,6 +16113,10 @@ void screen_render_bmpfile_putpixel(zxvision_window *ventana,int x,int y,int col
     }
 }
 
+int last_screen_render_bmpfile_function_ancho=0;
+int last_screen_render_bmpfile_function_alto=0;
+
+
 /*
 //Se puede especificar un x_offset que desplaza la imagen x pixeles a la derecha,
 Se puede especificar un x_ignore que hace que X lineas desde la izquierda no se dibujen,
@@ -16161,6 +16165,9 @@ Height	4 bytes	0016h	Vertical height of bitmap in pixels
     //ancho y alto de la cabecera. maximo 16 bit
     int ancho=mem[18] + 256 * mem[19];
     int alto=mem[22] + 256 * mem[23];
+
+    last_screen_render_bmpfile_function_ancho=ancho;
+    last_screen_render_bmpfile_function_alto=alto;
 
 //printf ("ancho: %d alto: %d\n",ancho,alto);
 
