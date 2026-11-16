@@ -24479,11 +24479,11 @@ int menu_help_keyboard_bmp_last_alto=0;
 
 
         //elegimos el menor
-        printf("possible zoom_x: %d possible zoom_y: %d\n",possible_zoom_x,possible_zoom_y);
+        //printf("possible zoom_x: %d possible zoom_y: %d\n",possible_zoom_x,possible_zoom_y);
         if (possible_zoom_x<possible_zoom_y) possible_zoom=possible_zoom_x;
         else possible_zoom=possible_zoom_y;
 
-        printf("final zoom: %d\n",possible_zoom);
+        //printf("final zoom: %d\n",possible_zoom);
 
         if (possible_zoom==0) possible_zoom=1;
 
