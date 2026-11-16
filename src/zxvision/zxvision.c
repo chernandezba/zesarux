@@ -16046,6 +16046,34 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
     }
 }
 
+//Dibuja un único píxel en la capa de menú sin ampliar por menu_gui_zoom, zoom_x ni zoom_y.
+//Las coordenadas relativas al contenido son píxeles físicos consecutivos.
+void zxvision_putpixel_no_menu_gui_zoom_no_zoom(zxvision_window *w,int x,int y,int color)
+{
+    int ancho_caracter=menu_char_width*menu_gui_zoom*zoom_x;
+    int alto_caracter=menu_char_height*menu_gui_zoom*zoom_y;
+
+    int inicio_x=w->x*ancho_caracter;
+    int inicio_y=(w->y+1)*alto_caracter;
+    int final_x=inicio_x+(w->visible_width-zxvision_get_minus_width_byscrollvbar(w))*ancho_caracter;
+    int final_y=inicio_y+(w->visible_height-2)*alto_caracter;
+
+    int x_con_offset=x-w->offset_x*ancho_caracter;
+    int y_con_offset=y-w->offset_y*alto_caracter;
+    int xfinal=inicio_x+x_con_offset;
+    int yfinal=inicio_y+y_con_offset;
+
+    if (xfinal>=inicio_x && xfinal<final_x && yfinal>=inicio_y && yfinal<final_y) {
+        if (!zxvision_coords_in_superior_windows(w,xfinal/ancho_caracter,yfinal/alto_caracter)) {
+            // La posición relativa x,y ya está en píxeles físicos: no ampliarla.
+            scr_putpixel_gui_no_zoom(xfinal,yfinal,color,1);
+        }
+    }
+    else {
+        zxvision_check_print_beyond_limits(w,x_con_offset/ancho_caracter,y_con_offset/alto_caracter);
+    }
+}
+
 //Dibuja un pixel en la capa de menu sin ampliar el pixel por menu_gui_zoom.
 //w es la ventana; x e y son pixeles relativos a su contenido, ya expresados
 //en la escala de menu_gui_zoom; color es el indice de la paleta. El zoom
@@ -20593,6 +20621,43 @@ void zxvision_get_mouse_in_window(zxvision_window *ventana,int *posx,int *posy)
     //else {
     //    return -1;
     //}
+}
+
+
+//Obtiene la posición física sin la división y multiplicación de la ruta habitual.
+//Conserva la actualización del movimiento del ratón que hace esa ruta.
+static void menu_calculate_mouse_xy_absolute_interface_no_zooms(int *resultado_x,int *resultado_y)
+{
+    int ancho=screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
+    int alto=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
+    int mouse_en_emulador=mouse_x>=0 && mouse_y>=0 && mouse_x<=ancho && mouse_y<=alto;
+
+    mouse_movido=(mouse_x!=last_mouse_x || mouse_y!=last_mouse_y) && mouse_en_emulador;
+    last_mouse_x=mouse_x;
+    last_mouse_y=mouse_y;
+
+    *resultado_x=mouse_x;
+    *resultado_y=mouse_y;
+}
+
+//Devuelve la distancia al contenido en píxeles físicos, como los del BMP sin zoom.
+//zxvision_get_mouse_in_window divide esa distancia por zoom_x/y y menu_gui_zoom
+//para devolver coordenadas lógicas. El origen de la ventana sí usa esos factores
+//porque debe expresarse en los mismos píxeles físicos que el ratón.
+void zxvision_get_mouse_in_window_no_zooms(zxvision_window *ventana,int *posx,int *posy)
+{
+    int cursor_mouse_x;
+    int cursor_mouse_y;
+    menu_calculate_mouse_xy_absolute_interface_no_zooms(&cursor_mouse_x,&cursor_mouse_y);
+
+    int this_win_x=zxvision_window_get_pixel_x_position(ventana);
+    int this_win_y=zxvision_window_get_pixel_y_position(ventana);
+
+    //Saltar la línea del título en píxeles físicos.
+    this_win_y +=menu_char_height*zoom_y*menu_gui_zoom;
+
+    *posx=cursor_mouse_x-this_win_x;
+    *posy=cursor_mouse_y-this_win_y;
 }
 
 //Si el ratón está en la ventana indicada

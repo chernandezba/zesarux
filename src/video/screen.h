@@ -1134,6 +1134,9 @@ extern void screen_render_bmpfile_function(z80_byte *mem,int indice_paleta_color
     int ancho_mostrar,int indice_color_transparente,int color_final_transparente,
     void (*funcion_putpixel)(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom) );
 
+extern void screen_render_bmpfile_no_zooms(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,
+    int ancho_mostrar,int indice_color_transparente,int color_final_transparente);
+
 extern void screen_render_menu_overlay_if_active(void);
 
 #define SCREEN_LAYER_TRANSPARENT_MENU 65535
