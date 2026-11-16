@@ -16188,9 +16188,8 @@ DataOffset	4 bytes	000Ah	Offset from beginning of file to the beginning of the b
     int offset_bmp=mem[10] + 256 * mem[11];
     //printf ("offset pixeles: %d\n",offset_bmp);
 
-    int ancho_calculo=ancho;
-    //Nota: parece que el ancho tiene que ser par, para poder calcular el offset
-    if ( (ancho_calculo % 2 ) !=0) ancho_calculo++;
+    // En BMP de 8 bits cada fila se rellena hasta un múltiplo de cuatro bytes.
+    int ancho_calculo=(ancho+3)&~3;
 
     int ancho_mostrar_final=ancho;
 
