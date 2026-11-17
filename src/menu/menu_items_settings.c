@@ -3947,7 +3947,7 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
     zxvision_topbar_menu_enabled.v ^=1;
 
     if (zxvision_topbar_menu_enabled.v) {
-        //Cambiar nombres cortos/largos de menus en topbar segun si zx desktop activado o no
+        //Cambiar nombres cortos/largos de menus en topbar segun si DAVID desktop activado o no
         topbar_guess_show_short_menu_names_variable();
 
         //hacerla visible momentaneamente para que el usuario la vea
@@ -14939,7 +14939,7 @@ void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids a
 }
 
 
-//Definir boton de zx desktop a accion
+//Definir boton de DAVID desktop a accion
 void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_zxdesktop_set_userdef_buttons_functions;
@@ -15188,7 +15188,7 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
     screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
 
 
-    //Cerrar ventamas y olvidar geometria ventanas, cuando quitamos zx desktop
+    //Cerrar ventamas y olvidar geometria ventanas, cuando quitamos DAVID desktop
     if (!screen_ext_desktop_enabled) {
         zxvision_window_delete_all_windows_and_clear_geometry();
     }
@@ -15206,7 +15206,7 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
 
     zxvision_reorder_configurable_icons_if_auto();
 
-    //Cambiar nombres cortos/largos de menus en topbar segun si zx desktop activado o no
+    //Cambiar nombres cortos/largos de menus en topbar segun si DAVID desktop activado o no
     topbar_guess_show_short_menu_names_variable();
 
     cls_menu_overlay();
@@ -16228,7 +16228,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
 }
 
-//Definir icono de zx desktop a accion
+//Definir icono de DAVID desktop a accion
 void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;

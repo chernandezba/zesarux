@@ -1690,7 +1690,7 @@ Calculando ese tiempo: 12% cpu
 
 
         int tiempo_iconos=sensor_get_value("avg_zxdesktop_draw_icons");
-        sprintf (texto_buffer,"ZX Desktop render icons: %6d us",tiempo_iconos);
+        sprintf (texto_buffer,"DAVID Desktop render icons: %6d us",tiempo_iconos);
         //printf("media %d %ld\n",tiempo_iconos,draw_zxdesktop_icons_media);
         zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
@@ -18640,7 +18640,7 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     int tipo=menu_simple_eleven_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
         (ventana->is_minimized ? "Unminimize" : "Minimize"),
         (ventana->is_maximized ? "Unmaximize" : "Maximize"),
-        "Switch always visible","Send message","Information","Close","Create link on ZX Desktop","Copy contents");
+        "Switch always visible","Send message","Information","Close","Create link on DAVID Desktop","Copy contents");
 
     if (tipo==0) return; //ESC
 
@@ -19434,15 +19434,15 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_cascade_all,NULL,
             "~~Cascade all windows","~~Cascada todas ventanas","~~Cascada totes les finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Cascade all windows on the ZX Desktop");
-        menu_add_item_menu_ayuda(array_menu_common,"Cascade all windows on the ZX Desktop");
+        menu_add_item_menu_tooltip(array_menu_common,"Cascade all windows on the DAVID Desktop");
+        menu_add_item_menu_ayuda(array_menu_common,"Cascade all windows on the DAVID Desktop");
         menu_add_item_menu_shortcut(array_menu_common,'c');
         menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_rearrange_all,NULL,
             "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
-        menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
+        menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the DAVID Desktop");
+        menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the DAVID Desktop");
         menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,
@@ -32780,10 +32780,10 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 
             "\n"
 
-            "On ZX Desktop:\n"
+            "On DAVID Desktop:\n"
             "- Left mouse button click on an icon to open it or trigger an action\n"
             "- Right mouse button click on an icon to get properties or actions of that icon; "
-            "right click on the ZX Desktop for icon actions or desktop properties\n"
+            "right click on the DAVID Desktop for icon actions or desktop properties\n"
 
             "\n"
 
@@ -32828,7 +32828,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
 
         zxvision_generic_message("Background Windows Help",
             "When you enable Background Windows (from Settings-> ZX Vision), "
-            "some features are added to the ZX Desktop and some behaviour is modified. \n"
+            "some features are added to the DAVID Desktop and some behaviour is modified. \n"
             "\n"
             "First, we will refer to 'menu' to all the menu windows and all the windows in background. "
             "When we say that the 'menu is open' or the 'menu is closed', we refer to all the menu windows and all the windows "
@@ -32847,7 +32847,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
             "If it's not allowed, the current window will be closed. \n"
             "Some background windows don't refresh their contents when they are in background, like Debug CPU. \n"
             "\n"
-            "Pressing F5 when on menu or pressing the ZEsarUX logo button (on the top left of ZX Desktop) will send you back to the main menu.\n"
+            "Pressing F5 when on menu or pressing the ZEsarUX logo button (on the top left of DAVID Desktop) will send you back to the main menu.\n"
             "Pressing Shift+Cursor Right will switch to another background window.\n"
             "\n"
 
@@ -33213,12 +33213,12 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     //Nota: estoy habilitando aqui algunas opciones que en ZEsarUX no vienen activadas por defecto (como visibilidad de tooltips por ejemplo)
 
     //Textos en los diferentes idiomas
-    char *mensaje_zxdesktop_english="ZX Desktop allows you to enlarge the main window by adding a Desktop area "
-        "so you can have icons and menus located there. Do you want to enable ZX Desktop?";
-    char *mensaje_zxdesktop_spanish="ZX Desktop permite agrandar la ventana principal añadiendo una zona de escritorio "
-        "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar ZX Desktop?";
-    char *mensaje_zxdesktop_catalan="ZX Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
-        "de tal manera que pots tenir icones i menús localizats allà. Vols activar ZX Desktop?";
+    char *mensaje_zxdesktop_english="DAVID Desktop allows you to enlarge the main window by adding a Desktop area "
+        "so you can have icons and menus located there. Do you want to enable DAVID Desktop?";
+    char *mensaje_zxdesktop_spanish="DAVID Desktop permite agrandar la ventana principal añadiendo una zona de escritorio "
+        "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar DAVID Desktop?";
+    char *mensaje_zxdesktop_catalan="DAVID Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
+        "de tal manera que pots tenir icones i menús localizats allà. Vols activar DAVID Desktop?";
 
     char *mensaje_autosnapshot_spanish="Quieres autograbar el estado de la máquina emulada (snapshot) al salir? "
         "Y se restaura automáticamente al inicio";
@@ -33253,19 +33253,19 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     char *mensaje_fin_spanish="Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
         "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
-        "superiores si has habilitado ZX Desktop.\n"
+        "superiores si has habilitado DAVID Desktop.\n"
         "Puedes ahora cerrar esta ventana pulsando ESC, ENTER o haciendo click izquierdo con el ratón "
         "en el botón superior izquierdo de la ventana. Que lo disfrutes!";
 
     char *mensaje_fin_catalan="Finalitzat l'assistent inicial, pots començar a utilitzar ZEsarUX.\n"
         "Per obrir el menú, pots fer servir F5, prémer el botó esquerre del ratolí sobre el fons, o prémer alguna de les icones de menú "
-        "superiors si has habilitat ZX Desktop.\n"
+        "superiors si has habilitat DAVID Desktop.\n"
         "Pots ara tancar aquesta finestra prement ESC, ENTER o fent clic esquerre amb el ratolí "
         "al botó superior esquerre de la finestra. Que ho gaudeixis!";
 
     char *mensaje_fin_english="After completing the initial wizard, you can start using ZEsarUX.\n"
         "To open the menu, you can use F5, left-click on the background, or click on one of the menu icons at the top "
-        "if you have enabled ZX Desktop.\n"
+        "if you have enabled DAVID Desktop.\n"
         "You can now close this window by pressing ESC, ENTER, or left-clicking the mouse "
         "on the top left button of the window. Enjoy!";
 
@@ -36251,7 +36251,7 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
                 }
                 else {
                     zxvision_create_configurable_icon(F_FUNCION_SEND_KEYS_MENU,"Send keys",&zxvision_helper_shorcuts_accumulated[5]);
-                    menu_generic_message_splash("Create link","Ok created link on ZX Desktop");
+                    menu_generic_message_splash("Create link","Ok created link on DAVID Desktop");
                 }
             break;
 
@@ -47741,7 +47741,7 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
             int respuesta=menu_simple_six_choices("Action","Do you want to",
                 (ventana_pulsada->is_minimized ? "Unminimize" : "Minimize"),
                 (ventana_pulsada->is_maximized ? "Unmaximize" : "Maximize"),
-                "Switch always visible","Information","Close","Create link on ZX Desktop");
+                "Switch always visible","Information","Close","Create link on DAVID Desktop");
 
             ventana->always_visible=antes_always_visible;
             zxvision_reset_set_next_menu_position();
