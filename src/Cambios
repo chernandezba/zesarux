@@ -64,10 +64,10 @@ Mejorado ZX Vision:
 - Agregar a lista de recientes files/folders al seleccionar una carpeta (por ejemplo en directorio esxdos handler o ql mdv)
 - Permitir pulsar en un submenu previou
 
-Mejorado ZX Desktop:
+Mejorado DAVID Desktop (anteriormente llamado ZX Desktop):
 - Permitir ordenar iconos alfabéticamente
 - Permitir cambiar el bitmap de un icono
-- Permitir cerrar una ventana abierta pulsando botón derecho en su icono del ZX Desktop
+- Permitir cerrar una ventana abierta pulsando botón derecho en su icono del DAVID Desktop
 - Comprobar si un item está en una posición inválida al recuperarlo de la Papelera
 
 Mejorado integración de TR-DOS en Pentagon

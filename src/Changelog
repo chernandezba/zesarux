@@ -64,10 +64,10 @@ Improved ZX Vision:
 - Add to recent files/folders list when selecting a folder (for example esxdos handler directory or ql mdv)
 - Allow to click on a previous submenu
 
-Improved ZX Desktop:
+Improved DAVID Desktop (formerly called ZX Desktop):
 - Allow to sort icons alphabetically
 - Allow to change bitmap of an icon
-- Allow to close a open window by right-click on its ZX Desktop icon
+- Allow to close a open window by right-click on its DAVID Desktop icon
 - Check if item is on an invalid position when recovering it from Trash
 
 Improved TR-DOS integration on Pentagon

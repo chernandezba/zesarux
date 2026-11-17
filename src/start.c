@@ -1912,8 +1912,8 @@ printf("\n"
 
         "\n"
         "\n"
-        "ZX Desktop Settings\n"
-        "-------------------\n"
+        "DAVID Desktop Settings (formerly ZX Desktop)\n"
+        "--------------------------------------------\n"
         "\n"
 
 
