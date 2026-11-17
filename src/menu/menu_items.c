@@ -20224,7 +20224,7 @@ void menu_video_output_overlay(void)
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
 
             if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
-                printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
             }
@@ -20261,7 +20261,7 @@ void menu_video_output_overlay(void)
             menu_video_output_alloc_putpixel_cache(ancho,alto);
 
             if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
-                printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
             }
@@ -23992,7 +23992,7 @@ int menu_help_keyboard_highlight_key_y2=0;
 int menu_help_keyboard_highlight_key_indice_anterior=-1;
 
 
-void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom GCC_UNUSED)
 {
 
         //printf("no follow zoom. %d,%d\n",zoom_x,zoom_y);
@@ -24004,7 +24004,7 @@ void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventan
 }
 
 //Variante para poder especificar un offset en la ventana
-void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
+void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom GCC_UNUSED,
     int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
 {
 
@@ -24014,7 +24014,7 @@ void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_
 
 }
 
-void menu_help_keyboard_render_bmpfile_putpixel_no_zooms(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+void menu_help_keyboard_render_bmpfile_putpixel_no_zooms(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom GCC_UNUSED)
 {
     //follow_zoom no se usa, pero la funcion tiene que admitirlo como parametro por que es requisito de screen_render_bmpfile
 
@@ -24745,7 +24745,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             //printf("ver si iluminar\n");
             int pulsado_x,pulsado_y;
             zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
-            printf("x %d y %d\n",pulsado_x,pulsado_y);
+            //printf("x %d y %d\n",pulsado_x,pulsado_y);
 
             pulsado_x /=menu_help_keyboard_zoom_factor;
             pulsado_y /=menu_help_keyboard_zoom_factor;
