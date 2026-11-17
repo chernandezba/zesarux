@@ -331,7 +331,7 @@ acabar de probarlo **modos de video ampliado
 soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 *probar gmx en otros drivers de video (sdl, x11, etc)
-
+ok? *memory zones
 
 
 -----
@@ -344,8 +344,9 @@ ok - render realvideo
 ok - covox activado?
 - timings correctos?
 ok - icono máquinas.
-- keyboard help
+ok - keyboard help
 - soporte snapshot zsf
+ok - memory zones
 
 -software cpm http://atmturbo.nedopc.com/load_cpm.htm
 -software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm

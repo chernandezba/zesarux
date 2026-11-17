@@ -15221,6 +15221,23 @@ int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
         }
     }
 
+    else if (MACHINE_IS_ATM_TURBO) {
+        //ram_mem_table
+        //Si banco >7, hacer poke normal
+        if (banco>7) {
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+            poke_byte_no_time(direccion,valor);
+        }
+        else {
+            //Poke con banco de memoria
+            direccion = direccion & 16383;
+            z80_byte *puntero;
+            puntero=atmturbo_ram_mem_table[banco]+direccion;
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
+            *puntero=valor;
+        }
+    }
+
     else if (MACHINE_IS_ZXUNO)  {
         if (ZXUNO_BOOTM_ENABLED) {
             debug_printf (VERBOSE_ERR,"Can not poke in ZX-Uno mode with BOOTM enabled");
@@ -16065,6 +16082,23 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
       }
 
+        if (MACHINE_IS_ATM_TURBO1) {
+            size=ATM_TURBO1_RAM_SIZE*1024;
+        }
+
+        if (MACHINE_IS_ATM_TURBO2) {
+            size=ATM_TURBO2_RAM_SIZE*1024;
+        }
+
+        if (MACHINE_IS_ATM_TURBO2_PLUS) {
+            size=ATM_TURBO2_PLUS_RAM_SIZE*1024;
+        }
+
+        if (MACHINE_IS_ATM_TURBO3) {
+            size=ATM_TURBO3_RAM_SIZE*1024;
+        }
+
+
       if (MACHINE_IS_DIDAKTIKGAMA) {
         size=80*1024;
       }
@@ -16153,6 +16187,23 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             size=65536;
         }
       }
+
+    if (MACHINE_IS_ATM_TURBO1) {
+        size=ATM_TURBO1_ROM_SIZE*1024;
+    }
+
+    if (MACHINE_IS_ATM_TURBO2) {
+        size=ATM_TURBO2_ROM_SIZE*1024;
+    }
+
+    if (MACHINE_IS_ATM_TURBO2_PLUS) {
+        size=ATM_TURBO2_PLUS_ROM_SIZE*1024;
+    }
+
+    if (MACHINE_IS_ATM_TURBO3) {
+        size=ATM_TURBO3_ROM_SIZE*1024;
+    }
+
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
         size=32768;
@@ -16696,7 +16747,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
 
 
       if (MACHINE_IS_SCORPION) {
-        //Saltar los 64kb de rom
+        //Saltar la rom
         if (MACHINE_IS_SCORPION_GMX) {
             p=scorpion_ram_mem_table[0];
             p +=address;
@@ -16706,6 +16757,13 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
             p=&memoria_spectrum[address+65536];
         }
       }
+
+    if (MACHINE_IS_ATM_TURBO) {
+        //Saltar la rom
+        p=atmturbo_ram_mem_table[0];
+        p +=address;
+    }
+
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
         //Saltar los 32kb de rom

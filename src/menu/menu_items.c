@@ -51841,7 +51841,7 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
 
 //
-// Fin funciones de dispositivos especificos en el ZX Desktop
+// Fin funciones de dispositivos especificos en el DAVID Desktop
 //
 
 
