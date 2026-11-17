@@ -25,8 +25,8 @@
 #include "compileoptions.h"
 
 
-#define EMULATOR_VERSION "13.1-SN"
-//#define EMULATOR_VERSION "13.1-B2"
+//#define EMULATOR_VERSION "13.1-SN"
+#define EMULATOR_VERSION "13.1-B1"
 //#define EMULATOR_VERSION "13.1-RC"
 //#define EMULATOR_VERSION "13.1"
 #define SNAPSHOT_VERSION
@@ -54,8 +54,8 @@ Examples
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
 #define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "06 October 2026"
-#define EMULATOR_SHORT_DATE "06/10/2026"
+#define EMULATOR_DATE "17 November 2026"
+#define EMULATOR_SHORT_DATE "17/11/2026"
 #define EMULATOR_GAME_EDITION "Zorro"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
