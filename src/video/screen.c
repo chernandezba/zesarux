@@ -3268,7 +3268,7 @@ int if_zxdesktop_enabled_and_driver_allows(void)
     else return 0;
 }
 
-//Gestion de extension de desktop a ventana. Antes se llamaba extended desktop. Ahora es ZX Desktop
+//Gestion de extension de desktop a ventana. Antes se llamaba extended desktop, luego se llamó ZX Desktop y desde Noviembre 2026 se llama DAVID Desktop
 int screen_ext_desktop_enabled=0;
 
 

@@ -839,7 +839,7 @@ void cpu_panic(char *mensaje)
             cpu_panic_xmax=screen_get_emulated_display_width_zoom_border_en();
             cpu_panic_ymax=screen_get_emulated_display_height_zoom_border_en();
 
-            //Extenderlo al zx desktop
+            //Extenderlo al DAVID desktop
             if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() ) {
                 cpu_panic_xmax +=screen_get_ext_desktop_width_zoom();
                 cpu_panic_ymax +=screen_get_ext_desktop_height_zoom();

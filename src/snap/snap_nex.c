@@ -570,7 +570,7 @@ If the value is between 0x4000 and ffff, I write the file handler number at the 
 
 Y esto hacerlo después de marear toda la ram y cargar los bloques de memoria, lógicamente
 
--Parámetro config de tipo background ZX desktop. Más tipos?
+-Parámetro config de tipo background DAVID desktop. Más tipos?
 y parámetro de color del tipo de fondo sólido
 	 */
 

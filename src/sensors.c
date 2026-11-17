@@ -699,7 +699,7 @@ pues de una octava a la otra es el doble de valor
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
-    "avg_zxdesktop_draw_icons","Average ZX Desktop render icons","AZXDIcnRnd",
+    "avg_zxdesktop_draw_icons","Average DAVID Desktop render icons","AZXDIcnRnd",
     0,20000,
     9999,-9999,
     10000,-9999,

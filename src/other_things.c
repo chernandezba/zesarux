@@ -39,18 +39,18 @@ So, the list:
 
 3. Using ZRCP, run the command "ATDT". There's a funny answer to that
 
-4. The about menu is different having enabled ZX Desktop than having it disabled. The answer for that change, in the FAQ
+4. The about menu is different having enabled DAVID Desktop than having it disabled. The answer for that change, in the FAQ
 
-5. This one can be fired having ZX Desktop enabled or not:
+5. This one can be fired having DAVID Desktop enabled or not:
 
-- ZX Desktop Enabled: Go to the about menu, double click on the image (you need multitasking
+- DAVID Desktop Enabled: Go to the about menu, double click on the image (you need multitasking
 for the double click to be detected)
 
-- ZX Desktop Disabled: Go to the about menu, press f key (used to find text).
+- DAVID Desktop Disabled: Go to the about menu, press f key (used to find text).
 Just press enter with no text to find. You'll see a cursor in the window,
 select the second line and press Enter...
 
-6. Similar to number 5: having ZX Desktop Enabled, go to the about menu, hold and click on the image during 1 second
+6. Similar to number 5: having DAVID Desktop Enabled, go to the about menu, hold and click on the image during 1 second
 
 7. Christmas mode. From December 20 until January 8, there are some changes in the logo and in the welcome message...
 

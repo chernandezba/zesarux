@@ -976,7 +976,7 @@ void create_default_zxdesktop_configurable_icons(void)
 {
 
     if (!zxdesktop_configurable_icons_enabled_and_visible()) {
-        debug_printf(VERBOSE_INFO,"Do not create default icons because icons on zx desktop are disabled or zx desktop disabled");
+        debug_printf(VERBOSE_INFO,"Do not create default icons because icons on DAVID desktop are disabled or DAVID desktop disabled");
         return;
     }
 
@@ -4260,7 +4260,7 @@ void menu_put_switch_zxdesktop_footer(void)
 
         //printf("xorigen: %d (*8=%d) yorigen: %d\n",xorigen,xorigen*8,yorigen);
 
-        debug_printf(VERBOSE_PARANOID,"Drawing ZX Desktop switch button");
+        debug_printf(VERBOSE_PARANOID,"Drawing DAVID Desktop switch button");
 
 
         if (caracter_ampliar_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_ancho,xorigen,yorigen,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
@@ -6740,7 +6740,7 @@ void zxdesktop_draw_scrfile_load(void)
 
     //printf("Loading ZX Desktop background SCR file %s\n",nombre_scr);
 
-    debug_printf(VERBOSE_DEBUG,"Loading ZX Desktop background SCR file %s",nombre_scr);
+    debug_printf(VERBOSE_DEBUG,"Loading DAVID Desktop background SCR file %s",nombre_scr);
 
     //Si se extrae de un tap, snapshot o similar, indicar aqui siempre que scr archivo es realmente
     char final_scrfile_name[PATH_MAX]="";
@@ -6804,7 +6804,7 @@ void zxdesktop_draw_scrfile_load(void)
     }
 
     if (!si_existe_archivo(final_scrfile_name)) {
-        debug_printf(VERBOSE_ERR,"Can not load ZX Desktop background SCR file %s",nombre_scr);
+        debug_printf(VERBOSE_ERR,"Can not load DAVID Desktop background SCR file %s",nombre_scr);
         //Aunque el archivo no exista, igualmente leer a cache (aun con datos random de zxdesktop_draw_scrfile_pointer),
         //asi la cache estará inicializada con datos de colores dentro de rango
         //Si no, correriamos el riesgo de tener en cache valores de colores fuera de rango y generar un segfault
@@ -24456,7 +24456,7 @@ struct s_strings_language_list strings_language_list[]={
     {"New icon","Nuevo icono","Nova icona"},
     {"New file link","Nuevo enlace a archivo","Nou enllaç a arxiu"},
     {"Customize icons","Personalizar iconos","Personalitzar icones"},
-    {"ZX Desktop settings","Opciones ZX Desktop","Opcions ZX Desktop"},
+    {"DAVID Desktop settings","Opciones DAVID Desktop","Opcions DAVID Desktop"},
     {"Change Bitmap","Cambiar Bitmap","Canviar Bitmap"}
 };
 
@@ -28533,8 +28533,8 @@ void menu_inicio_handle_right_button_background(void)
         zxvision_set_next_menu_position_from_current_mouse();
 
         //propiedades zx desktop
-        int opcion=menu_simple_seven_choices("ZX Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
-            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons alphabetically"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
+        int opcion=menu_simple_seven_choices("DAVID Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
+            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons alphabetically"),menu_get_string_language("DAVID Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
 
         zxvision_reset_set_next_menu_position();
 
@@ -31341,12 +31341,12 @@ char *first_aid_string_backgroundwindows="You can enable background windows and 
         "Go to Settings-> ZX Vision settings-> Background windows to enable it";
 
 int first_aid_no_zxdesktop=0;
-char *first_aid_string_zxdesktop="Have you enabled ZX Desktop? It allows you to have a space on the right and on the bottom to place "
-                "zxvision windows, menus or other widgets. Go to Settings-> ZX Desktop settings to enable it";
+char *first_aid_string_zxdesktop="Have you enabled DAVID Desktop? It allows you to have a space on the right and on the bottom to place "
+                "zxvision windows, menus or other widgets. Go to Settings-> DAVID Desktop settings to enable it";
 
 int first_aid_no_zxdesktop_custombuttons=0;
-char *first_aid_string_zxdesktop_custombuttons="You can customize upper ZX Desktop buttons to trigger different actions. "
-                "Go to Settings-> ZX Desktop-> Customize buttons";
+char *first_aid_string_zxdesktop_custombuttons="You can customize upper DAVID Desktop buttons to trigger different actions. "
+                "Go to Settings-> DAVID Desktop-> Customize buttons";
 
 int first_aid_no_snapshot_save_zsf=0;
 char *first_aid_string_snapshot_save_zsf="When saving snapshots, the recommended extension is ZSF, as this is the native "

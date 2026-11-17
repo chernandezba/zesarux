@@ -401,10 +401,10 @@ z80_bit xanniversary_logo={0};
 z80_bit do_no_show_david_in_memoriam={0};
 
 //
-// ZX Desktop Settings
+// DAVID Desktop Settings
 //
 
-//Desactivar zx desktop al pasar a full screen
+//Desactivar DAVID desktop al pasar a full screen
 int zxdesktop_disable_on_full_screen=0;
 
 //Desactivar border al pasar a full screen

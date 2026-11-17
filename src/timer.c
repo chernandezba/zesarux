@@ -1313,7 +1313,7 @@ void timer_check_interrupt(void)
             //}
         }
 
-        //Ocultación/activación de botón switch zx desktop
+        //Ocultación/activación de botón switch DAVID desktop
         zxdesktop_switchdesktop_timer_event();
 
         //Ocultación/activación topbar
