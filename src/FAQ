@@ -1074,7 +1074,7 @@ A: The gecko shown in the About window is a real one that I saw at my parents' h
 Q: Can this emulator run on MS-DOS?
 A: No, it can not, you can only run it on Windows, Mac, GNU/Linux, Raspberry pi and other Unix compatible systems. But you can try my old ZXSpectr emulator:
 https://github.com/chernandezba/zxspectr
-It does run on MS-DOS. It was created on June 1996, so it's more than 20 years old!
+It does run on MS-DOS. It was created on June 1996, so it's more than 30 years old!
 
 
 Q: Using the menu "video out to file" generates a raw video file. Seems I have to use the program "mpv" to run it, I tried but I didn't succeed. I'm using Mac
