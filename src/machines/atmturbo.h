@@ -47,8 +47,8 @@
 #define ATM_TURBO_TOTAL_ROM_PAGES (ATM_TURBO_MAX_ROM_SIZE/16)
 
 
-
-
+#define ATM_TURBO1_TOTAL_RAM_PAGES (ATM_TURBO1_RAM_SIZE/16)
+#define ATM_TURBO1_TOTAL_ROM_PAGES (ATM_TURBO1_ROM_SIZE/16)
 #define ATM_TURBO2_TOTAL_RAM_PAGES (ATM_TURBO2_RAM_SIZE/16)
 #define ATM_TURBO2_TOTAL_ROM_PAGES (ATM_TURBO2_ROM_SIZE/16)
 #define ATM_TURBO2_PLUS_TOTAL_RAM_PAGES (ATM_TURBO2_PLUS_RAM_SIZE/16)
@@ -117,6 +117,11 @@ extern int atmturbo_trdos_is_active(void);
 extern int atmturbo_fdc_is_active(z80_int port,int reading);
 extern z80_byte atmturbo_fdc_read_port(z80_int port);
 extern void atmturbo_fdc_write_port(z80_int port,z80_byte value);
+
+extern void atmturbo_mem_page_rom(void);
+extern void atmturbo_mem_page_ram(void);
+
+extern int atmturbo_trdos_active;
 
 extern z80_byte atmturbo_get_video_mode(void);
 extern char *atmturbo_get_video_mode_string(void);

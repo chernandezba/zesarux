@@ -86,7 +86,7 @@ static int atmturbo_cpsys;
 /* ATM1 muestra ROM en #0000; al desactivarse se muestra RAM en ese segmento. */
 static int atmturbo_rom_enabled=1;
 /* Indica que la ROM de TR-DOS está paginada temporalmente. */
-static int atmturbo_trdos_active;
+int atmturbo_trdos_active;
 /* Código del modo de vídeo seleccionado: 3 es el modo Spectrum. */
 static int atmturbo_video_mode=3;
 /* Índice de la paleta usado para el color del borde. */
@@ -639,7 +639,7 @@ static void atmturbo2_refresh_memory(void)
     }
 }
 
-void atmturbo_mem_page_rom(void);
+
 
 /* Comprueba si la CPU está ejecutando la ROM de TR-DOS en #0000-#3FFF. */
 int atmturbo_trdos_is_active(void)
