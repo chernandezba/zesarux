@@ -2289,7 +2289,7 @@ void set_machine_params(void)
         ula_contend_port_late=ula_contend_port_late_atmturbo;
         if (MACHINE_IS_ATM_TURBO2_FAMILY) atmturbo2_update_timing();
 
-        audiodac_selected_type=1; //Covox pentagon
+        audiodac_selected_type=AUDIODAC_TYPE_COVOX_PENTAGON;
         audiodac_enabled.v=1;
     }
 
@@ -2487,7 +2487,7 @@ void set_machine_params(void)
 
         baseconf_update_timing(1);
 
-        audiodac_selected_type=1; //Covox pentagon
+        audiodac_selected_type=AUDIODAC_TYPE_COVOX_PENTAGON;
         audiodac_enabled.v=1;
 
     }

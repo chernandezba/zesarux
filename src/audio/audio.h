@@ -270,7 +270,13 @@ extern char audio_valor_enviar_sonido_izquierdo;
 extern char audio_valor_enviar_sonido_derecho;
 
 
-
+enum audiodac_types_list {
+    AUDIODAC_TYPE_SPECDRUM=0,
+    AUDIODAC_TYPE_COVOX_PENTAGON,
+    AUDIODAC_TYPE_COVOX_SCORPION,
+    AUDIODAC_TYPE_GX_COVOX,
+    AUDIODAC_TYPE_CUSTOM
+};
 
 
 extern z80_byte audiodac_last_value_data;
