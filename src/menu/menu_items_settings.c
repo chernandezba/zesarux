@@ -16604,7 +16604,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_align_grid_icons,NULL,
-                    "Align to grid icons","Alinear iconos a rejilla","Alinear icones a reixeta");
+                    "Align icons to grid","Alinear iconos a rejilla","Alinear icones a reixeta");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(david_desktop_align_to_grid_icons.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
