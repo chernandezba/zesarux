@@ -1947,6 +1947,7 @@ printf("\n"
         "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
         "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"
         "--zxdesktop-auto-order-icons                   Automatic order icons on ZX Desktop\n"
+        "--david-desktop-align-grid-icons               Align icons to grid on DAVID Desktop\n"
         "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
         "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent or force background color\n"
@@ -3859,6 +3860,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-auto-order-icons")) {
                 zxdesktop_automatic_reorder_icons.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--david-desktop-align-grid-icons")) {
+                david_desktop_align_to_grid_icons.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-show-indicators-open-apps")) {

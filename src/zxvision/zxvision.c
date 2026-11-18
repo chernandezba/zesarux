@@ -735,6 +735,32 @@ void zxvision_reorder_configurable_icons(void)
 }
 
 
+void zxvision_align_to_grid_configurable_icons(void)
+{
+
+
+    int i;
+
+
+    int separacion_iconos=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+
+            //Redondeamos al multiplo mas cercano
+            int x=(zxdesktop_configurable_icons_list[i].pos_x + separacion_iconos/2) / separacion_iconos;
+            x *=separacion_iconos;
+
+            int y=(zxdesktop_configurable_icons_list[i].pos_y + separacion_iconos/2) / separacion_iconos;
+            y *=separacion_iconos;
+
+            zxvision_set_configurable_icon_position(i,x,y);
+
+        }
+    }
+}
+
+
 void zxvision_reorder_configurable_icons_if_auto(void)
 {
     //Si desactivado zx desktop
@@ -742,6 +768,10 @@ void zxvision_reorder_configurable_icons_if_auto(void)
 
     if (zxdesktop_automatic_reorder_icons.v) {
         zxvision_reorder_configurable_icons();
+    }
+
+    if (david_desktop_align_to_grid_icons.v) {
+        zxvision_align_to_grid_configurable_icons();
     }
 }
 

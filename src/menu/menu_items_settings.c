@@ -16333,6 +16333,14 @@ void menu_ext_desk_settings_automatic_reorder_icons(MENU_ITEM_PARAMETERS)
     zxvision_reorder_configurable_icons_if_auto();
 }
 
+void menu_ext_desk_settings_align_grid_icons(MENU_ITEM_PARAMETERS)
+{
+    david_desktop_align_to_grid_icons.v ^=1;
+
+    zxvision_reorder_configurable_icons_if_auto();
+}
+
+
 void menu_zxdesktop_set_stroke_color(MENU_ITEM_PARAMETERS)
 {
     menu_ext_desktop_color_contorno_iconos++;
@@ -16593,6 +16601,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_automatic_reorder_icons,NULL,
                     "Automatic order icons","Ordenar iconos automáticamente","Ordenar icones automàticament");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_automatic_reorder_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_align_grid_icons,NULL,
+                    "Align to grid icons","Alinear iconos a rejilla","Alinear icones a reixeta");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(david_desktop_align_to_grid_icons.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_show_app_open,NULL,

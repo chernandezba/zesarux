@@ -66,6 +66,7 @@ Mejorado ZX Vision:
 
 Mejorado DAVID Desktop (anteriormente llamado ZX Desktop):
 - Permitir ordenar iconos alfabéticamente
+- Permitir alinear iconos a rejilla
 - Permitir cambiar el bitmap de un icono
 - Permitir cerrar una ventana abierta pulsando botón derecho en su icono del DAVID Desktop
 - Comprobar si un item está en una posición inválida al recuperarlo de la Papelera

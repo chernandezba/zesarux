@@ -4819,6 +4819,9 @@ int util_write_configfile(void)
 
     if (zxdesktop_automatic_reorder_icons.v)        ADD_STRING_CONFIG,"--zxdesktop-auto-order-icons");
 
+    if (david_desktop_align_to_grid_icons.v)        ADD_STRING_CONFIG,"--david-desktop-align-grid-icons");
+
+
     if (zxdesktop_empty_trash_on_exit.v)            ADD_STRING_CONFIG,"--zxdesktop-empty-trash-on-exit");
 
     if (zxdesktop_icon_show_app_open.v==0)          ADD_STRING_CONFIG,"--zxdesktop-no-show-indicators-open-apps");
