@@ -348,6 +348,7 @@ ok - keyboard help
 ok - soporte snapshot zsf
 ok - memory zones
 - puertos en debug i/o ports ventana
+- paginas en segmentos de debug cpu
 
 -software cpm http://atmturbo.nedopc.com/load_cpm.htm
 -software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm
@@ -411,3 +412,6 @@ Quiza habria que hacer una ventana de render de teclado que el usuario pueda red
 
 
 -boton reducir alto zx desktop sale incluso con alto=0
+
+
+-rejillla alineado de iconos para DAVID Desktop, setting habilitar o no

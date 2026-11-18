@@ -122,6 +122,7 @@
 #include "menu_bitmaps.h"
 #include "baseconf.h"
 #include "scorpion.h"
+#include "atmturbo.h"
 #include "didaktikgama.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -6360,6 +6361,90 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
     if (superupgrade_enabled.v) {
       sprintf (buf_linea,"Superupgrade 43B port: %02X\n",superupgrade_puerto_43b);
       sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    }
+
+    if (MACHINE_IS_ATM_TURBO) {
+        sprintf (buf_linea,"\nATM Turbo ports:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," 7FFD: %02XH (RAM/ROM paging)\n",puerto_32765);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," XXFE: %02XH (ULA/border), address: %04XH\n",out_254_original_value,atmturbo_port_fe);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," Video mode: %d; border index: %02XH\n",
+            atmturbo_get_video_mode(),atmturbo_border_colour);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," TR-DOS: %s\n",atmturbo_trdos_active ? "active" : "inactive");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        {
+            int segmento;
+            for (segmento=0;segmento<4;segmento++) {
+                int pagina=debug_paginas_memoria_mapeadas[segmento];
+                sprintf (buf_linea," %04X: %s %d\n",segmento*0x4000,
+                    (pagina & DEBUG_PAGINA_MAP_ES_ROM) ? "ROM" : "RAM",
+                    pagina & DEBUG_PAGINA_MAP_MASK);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+        }
+
+        if (MACHINE_IS_ATM_TURBO1) {
+            sprintf (buf_linea," CP/M ROM: %s\n",atmturbo_cpsys ? "active" : "inactive");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," FDFD: %02XH (RAM bank)\n",puerto_fdfd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," 7DFD: palette write (no register)\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," FDC selected: %s\n",atmturbo_fdc_selected ? "yes" : "no");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+        else {
+            int i;
+            sprintf (buf_linea," XX77 address: %04XH (PEN/CP/M/shadow)\n",atmturbo2_port_77);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," PEN: %s; CP/M: %s\n",
+                (atmturbo2_port_77 & 0x100) ? "enabled" : "disabled",
+                (atmturbo2_port_77 & 0x200) ? "disabled" : "enabled");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," Shadow ports: %s; palette port: %s\n",
+                atmturbo2_shadow_ports_enabled() ? "enabled" : "disabled",
+                atmturbo2_palette_port_enabled() ? "enabled" : "disabled");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," XXF7: MMU entries (ROM/RAM and page)\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            for (i=0;i<8;i++) {
+                sprintf (buf_linea,"  MMU%d: %03XH\n",i,atmturbo2_mmu[i]);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+
+            sprintf (buf_linea," XXFF: palette write (no register)\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            if (MACHINE_IS_ATM_TURBO2PLUS_TURBO3) {
+                sprintf (buf_linea," XT keyboard: mode %d, %s; frame IRQ: %s\n",
+                    atmturbo2plus_keyboard_mode,
+                    atmturbo2plus_keyboard_disabled ? "disabled" : "enabled",
+                    atmturbo2plus_int_enabled ? "enabled" : "disabled");
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+
+            if (MACHINE_IS_ATM_TURBO3) {
+                sprintf (buf_linea," XXBF: %02XH (shadow ports/MMU/RGB444)\n",atmturbo3_port_bf);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+                sprintf (buf_linea," XXE7: extended MMU (no register)\n");
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+        }
     }
 
     if (MACHINE_IS_BASECONF) {
