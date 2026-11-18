@@ -81,30 +81,33 @@ z80_byte *atmturbo_memory_paged[4];
 /* Último valor escrito en #FDFD para seleccionar el banco de RAM de ATM1. */
 z80_byte puerto_fdfd;
 
+/* Dirección del último OUT #FE: en ATM1 controla también la ROM y el vídeo. */
+z80_int atmturbo_port_fe=0xfe;
+
 /* Activa la ROM de CP/M de ATM1 tras leer #FB y la desactiva al leer #7B. */
-static int atmturbo_cpsys;
+int atmturbo_cpsys;
 /* ATM1 muestra ROM en #0000; al desactivarse se muestra RAM en ese segmento. */
 static int atmturbo_rom_enabled=1;
 /* Indica que la ROM de TR-DOS está paginada temporalmente. */
 int atmturbo_trdos_active;
 /* Código del modo de vídeo seleccionado: 3 es el modo Spectrum. */
-static int atmturbo_video_mode=3;
+int atmturbo_video_mode=3;
 /* Índice de la paleta usado para el color del borde. */
-static int atmturbo_border_colour;
+int atmturbo_border_colour;
 /* Colores al final de la línea anterior que llegan al borde izquierdo. */
 static z80_byte atmturbo_border_left_next[ATM_TURBO_DISPLAY_WIDTH+2*ATM_TURBO_LEFT_BORDER_NO_ZOOM];
 /* Indica si el búfer del borde izquierdo ya contiene una línea válida. */
-static int atmturbo_border_left_next_valid;
+int atmturbo_border_left_next_valid;
 /* Traduce los 16 índices de color de ATM a colores del emulador. */
 int atmturbo_palette[16];
 /* Recuerda si ATM1 ya ha seleccionado el controlador de disquete. */
-static int atmturbo_fdc_selected;
+int atmturbo_fdc_selected;
 /* Ocho entradas de paginado de ATM2: cuatro por cada valor de #7FFD.D4. */
-static unsigned int atmturbo2_mmu[8];
+unsigned int atmturbo2_mmu[8];
 /* Dirección del último OUT a #77; sus bits altos controlan PEN, CP/M y PEN2. */
-static z80_int atmturbo2_port_77;
+z80_int atmturbo2_port_77;
 /* ATM3 #BF: D0 fuerza puertos de sombra, D1 amplía #E7 y D5 activa RGB444. */
-static z80_byte atmturbo3_port_bf;
+z80_byte atmturbo3_port_bf;
 /* Indica para cada segmento de 16 KB si la página visible es RAM. */
 static int atmturbo2_segment_ram[4];
 /* Glifos de 8 bytes cargados de sgen.rom para el modo de texto de ATM2. */
@@ -122,7 +125,7 @@ static z80_byte atmturbo2_cursor_fifo[32];
 /* Posición de lectura y número de eventos de cursor pendientes. */
 static int atmturbo2_cursor_read,atmturbo2_cursor_count;
 /* Modo del controlador 8031: matriz, código CP/M, CP/M con flags o XT directo. */
-static z80_byte atmturbo2plus_keyboard_mode;
+z80_byte atmturbo2plus_keyboard_mode;
 /* Fase de recepción por #FE: 0 normal, 1 comando, 2 argumento. */
 static int atmturbo2plus_keyboard_phase;
 /* Comando que espera un argumento después de la secuencia #55 por #FE. */
@@ -132,9 +135,9 @@ static z80_byte atmturbo2plus_keyboard_code,atmturbo2plus_keyboard_last;
 /* Flags del 8031: Shift, Control y selección del alfabeto ruso. */
 static z80_byte atmturbo2plus_keyboard_flags;
 /* Bit 6 de #77: permite seleccionar la matriz sin intervención del 8031. */
-static int atmturbo2plus_keyboard_disabled;
+int atmturbo2plus_keyboard_disabled;
 /* D5 de #77 permite o bloquea las interrupciones periódicas en ATM2+. */
-static int atmturbo2plus_int_enabled;
+int atmturbo2plus_int_enabled;
 /* Diferencia respecto al reloj del anfitrión, modificable por comandos del 8031. */
 static time_t atmturbo2plus_clock_offset;
 /* Origen del contador de días del 8031, sin batería de respaldo. */
@@ -529,6 +532,7 @@ void atmturbo2_out_port_77(z80_int port,z80_byte value)
 /* Selecciona el índice de paleta del borde mediante los datos y A3 de #FE. */
 void atmturbo2_out_port_fe(z80_int port,z80_byte value)
 {
+    atmturbo_port_fe=port;
     atmturbo_border_colour=(value&7)|((port&8) ? 0 : 8);
 }
 
@@ -858,6 +862,7 @@ void atmturbo_reset(void)
     atmturbo_fdc_selected=0;
     atmturbo_cpsys=1;
     atmturbo_rom_enabled=1;
+    atmturbo_port_fe=0xfe;
     atmturbo_video_mode=3;
     atmturbo_border_colour=0;
     atmturbo_border_left_next_valid=0;
@@ -894,6 +899,7 @@ void atmturbo_reset(void)
 /* ATM1 selecciona borde, modo gráfico y presencia de ROM con #FE. */
 void atmturbo_out_port_fe(z80_int port,z80_byte value)
 {
+    atmturbo_port_fe=port;
     /* El índice de paleta lo seleccionan D0-D2 y A3 de #FE. */
     atmturbo_border_colour=(value&7) | ((port&8) ? 0 : 8);
     atmturbo_rom_enabled=(port & 0x80)!=0;

@@ -3605,48 +3605,101 @@ void load_zsf_scorpiongmx_conf(z80_byte *header)
 }
 
 
-#define ZSF_ATM_TURBO_CONF_BLOCK_LENGTH 9
+#define ZSF_ATM_TURBO_CONF_BLOCK_LENGTH 63
 
-
+/* Configuración ATM común a los cuatro modelos:
+   0: TR-DOS activo; 1: turbo; 2: #FDFD; 3: CPSYS;
+   4-5: dirección del último OUT #FE;
+   6: modo de vídeo; 7: índice del borde; 8: selección del FDC;
+   9-10: dirección de #77; 11: #BF de ATM3;
+   12-27: ocho entradas MMU de 16 bits;
+   28-59: dieciséis colores de paleta de 16 bits;
+   60: modo del teclado 8031; 61: teclado deshabilitado; 62: interrupciones habilitadas.
+   Los valores de 16 bits se guardan en orden bajo, alto.
+   #7FFD ya se conserva en ZSF_SPEC128_MEMCONF. */
 void store_zsf_atm_turbo_conf(z80_byte *confblock)
 {
-
-
     confblock[0]=atmturbo_trdos_active;
     confblock[1]=cpu_turbo_speed;
-    /*confblock[2]=;
-    confblock[3]=;
-    confblock[4]=;
-    confblock[5]=;
-    confblock[6]=;
-    confblock[7]=;
-    confblock[8]=;*/
+    confblock[2]=puerto_fdfd;
+    confblock[3]=atmturbo_cpsys;
+    confblock[4]=value_16_to_8l(atmturbo_port_fe);
+    confblock[5]=value_16_to_8h(atmturbo_port_fe);
+    confblock[6]=atmturbo_video_mode;
+    confblock[7]=atmturbo_border_colour;
+    confblock[8]=atmturbo_fdc_selected;
+    confblock[9]=value_16_to_8l(atmturbo2_port_77);
+    confblock[10]=value_16_to_8h(atmturbo2_port_77);
+    confblock[11]=atmturbo3_port_bf;
 
+    for (int i=0;i<8;i++) {
+        // ATM1 no tiene esta MMU; conserva los campos del bloque a cero.
+        unsigned int entry=MACHINE_IS_ATM_TURBO2_FAMILY ? atmturbo2_mmu[i] : 0;
+        confblock[12+2*i]=value_16_to_8l(entry);
+        confblock[13+2*i]=value_16_to_8h(entry);
+    }
 
+    for (int i=0;i<16;i++) {
+        confblock[28+2*i]=value_16_to_8l(atmturbo_palette[i]);
+        confblock[29+2*i]=value_16_to_8h(atmturbo_palette[i]);
+    }
+
+    confblock[60]=atmturbo2plus_keyboard_mode;
+    confblock[61]=atmturbo2plus_keyboard_disabled;
+    confblock[62]=atmturbo2plus_int_enabled;
 }
 
-void load_zsf_atm_turbo_conf(z80_byte *header)
+/* Reconstruye el estado derivado tras cargar la configuración de un snapshot. */
+static void atmturbo_restore_snapshot_config(void)
 {
-
-
-    atmturbo_trdos_active=header[0];
-    int turbo=header[1];
-
-    /*=header[2];
-    =header[3];
-    =header[4];
-    =header[5];
-    =header[6];*/
+    // ATM2, ATM2+ y ATM3: #FE controla el borde; los timings dependen del modo de vídeo.
+    if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+        atmturbo2_out_port_fe(atmturbo_port_fe,atmturbo_border_colour&7);
+        atmturbo2_update_timing();
+    }
+    // ATM1: #FE controla el borde, el modo de vídeo y el paginado de ROM/RAM.
+    else atmturbo_out_port_fe(atmturbo_port_fe,atmturbo_border_colour&7);
 
     atmturbo_mem_page_ram();
     atmturbo_mem_page_rom();
 
-    cpu_turbo_speed=turbo;
-    cpu_set_turbo_speed();
-
+    // El vídeo real debe empezar con el borde restaurado, sin cambios del cuadro anterior.
+    screen_border_last_color=atmturbo_border_colour;
+    t_scanline_next_fullborder();
+    atmturbo_border_left_next_valid=0;
+    modificado_border.v=1;
 }
 
+void load_zsf_atm_turbo_conf(z80_byte *header)
+{
+    atmturbo_trdos_active=header[0];
+    int turbo=header[1];
+    puerto_fdfd=header[2];
+    atmturbo_cpsys=header[3];
+    atmturbo_port_fe=value_8_to_16(header[5],header[4]);
+    atmturbo_video_mode=header[6];
+    atmturbo_border_colour=header[7];
+    atmturbo_fdc_selected=header[8];
+    atmturbo2_port_77=value_8_to_16(header[10],header[9]);
+    atmturbo3_port_bf=header[11];
 
+    // Solo ATM2, ATM2+ y ATM3 utilizan las ocho entradas de la MMU.
+    if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+        for (int i=0;i<8;i++)
+            atmturbo2_mmu[i]=value_8_to_16(header[13+2*i],header[12+2*i]);
+    }
+
+    for (int i=0;i<16;i++)
+        atmturbo_palette[i]=value_8_to_16(header[29+2*i],header[28+2*i]);
+
+    atmturbo2plus_keyboard_mode=header[60];
+    atmturbo2plus_keyboard_disabled=header[61];
+    atmturbo2plus_int_enabled=header[62];
+
+    atmturbo_restore_snapshot_config();
+    cpu_turbo_speed=turbo;
+    cpu_set_turbo_speed();
+}
 
 
 void load_zsf_tsconf_conf(z80_byte *header)
@@ -7093,7 +7146,7 @@ if (MACHINE_IS_SCORPION_GMX) {
 if (MACHINE_IS_ATM_TURBO) {
   //Configuracion
 
-  z80_byte atmturboconfblock[ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH];
+  z80_byte atmturboconfblock[ZSF_ATM_TURBO_CONF_BLOCK_LENGTH];
 
 
    store_zsf_atm_turbo_conf(atmturboconfblock);

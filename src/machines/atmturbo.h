@@ -121,6 +121,17 @@ extern void atmturbo_fdc_write_port(z80_int port,z80_byte value);
 extern void atmturbo_mem_page_rom(void);
 extern void atmturbo_mem_page_ram(void);
 
+// Registros y controles de máquina conservados en ZSF_ATM_TURBO_CONF.
+extern z80_byte puerto_fdfd;
+extern int atmturbo_cpsys,atmturbo_video_mode;
+extern z80_int atmturbo_port_fe;
+extern int atmturbo_border_colour,atmturbo_fdc_selected;
+extern unsigned int atmturbo2_mmu[8];
+extern z80_int atmturbo2_port_77;
+extern z80_byte atmturbo3_port_bf,atmturbo2plus_keyboard_mode;
+extern int atmturbo2plus_keyboard_disabled,atmturbo2plus_int_enabled;
+extern int atmturbo_border_left_next_valid;
+
 extern int atmturbo_trdos_active;
 
 extern z80_byte atmturbo_get_video_mode(void);
