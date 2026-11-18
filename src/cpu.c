@@ -2487,6 +2487,9 @@ void set_machine_params(void)
 
         baseconf_update_timing(1);
 
+        audiodac_selected_type=1; //Covox pentagon
+        audiodac_enabled.v=1;
+
     }
 
     else if (MACHINE_IS_TIMEX_TS_TC_2068) {
