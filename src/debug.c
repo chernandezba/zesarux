@@ -7951,6 +7951,32 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         }
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        int pagina;
+        segmentos_totales=4;
+
+        for (pagina=0;pagina<segmentos_totales;pagina++) {
+            int mapped_page=debug_paginas_memoria_mapeadas[pagina];
+            int page=mapped_page & DEBUG_PAGINA_MAP_MASK;
+
+            //En ATM1 el registro de depuración solo guarda los tres bits bajos de la página C000.
+            if (MACHINE_IS_ATM_TURBO1 && pagina==3)
+                page=((puerto_fdfd&3)*8)+(puerto_32765&7);
+
+            segmentos[pagina].start=pagina*16384;
+            segmentos[pagina].length=16384;
+
+            if (mapped_page & DEBUG_PAGINA_MAP_ES_ROM) {
+                sprintf(segmentos[pagina].shortname,"O%02d",page);
+                sprintf(segmentos[pagina].longname,"ROM %d",page);
+            }
+            else {
+                sprintf(segmentos[pagina].shortname,"A%02d",page);
+                sprintf(segmentos[pagina].longname,"RAM %d",page);
+            }
+        }
+    }
+
     if (MACHINE_IS_DIDAKTIKGAMA) {
 
         segmentos_totales=3;
