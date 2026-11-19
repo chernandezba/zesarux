@@ -50,6 +50,7 @@
 #include "printers.h"
 #include "z88.h"
 #include "zxuno.h"
+#include "tsconf.h"
 #include "textspeech.h"
 #include "mmc.h"
 #include "ide.h"
@@ -1312,7 +1313,7 @@ void timer_check_interrupt(void)
             //}
         }
 
-        //Ocultación/activación de botón switch zx desktop
+        //Ocultación/activación de botón switch DAVID desktop
         zxdesktop_switchdesktop_timer_event();
 
         //Ocultación/activación topbar
@@ -1390,7 +1391,7 @@ void timer_check_interrupt(void)
                 }
             }
 
-
+            if (MACHINE_IS_TSCONF) tsconf_dma_decrease_info_timer();
 
             //Temporizador para decir si se ha detectado real joystick
             //dado que si no hay joystick, por defecto está habilitado el bit de joystick presente, pero luego

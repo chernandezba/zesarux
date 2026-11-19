@@ -25,8 +25,8 @@
 #include "compileoptions.h"
 
 
-#define EMULATOR_VERSION "13.1-SN"
-//#define EMULATOR_VERSION "13.1-B2"
+//#define EMULATOR_VERSION "13.1-SN"
+#define EMULATOR_VERSION "13.1-B1"
 //#define EMULATOR_VERSION "13.1-RC"
 //#define EMULATOR_VERSION "13.1"
 #define SNAPSHOT_VERSION
@@ -54,8 +54,8 @@ Examples
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
 #define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "06 October 2026"
-#define EMULATOR_SHORT_DATE "06/10/2026"
+#define EMULATOR_DATE "17 November 2026"
+#define EMULATOR_SHORT_DATE "17/11/2026"
 #define EMULATOR_GAME_EDITION "Zorro"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
@@ -374,9 +374,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_SPECTRUM_16			    0
 #define MACHINE_ID_SPECTRUM_48			    1
 #define MACHINE_ID_INVES			        2
-#define MACHINE_ID_MICRODIGITAL_TK90X		3
+#define MACHINE_ID_MICRODIGITAL_TK90X_POR   3
 #define MACHINE_ID_MICRODIGITAL_TK90X_SPA	4
-#define MACHINE_ID_MICRODIGITAL_TK95		5
+#define MACHINE_ID_MICRODIGITAL_TK95_POR    5
 #define MACHINE_ID_SPECTRUM_128		    	6
 #define MACHINE_ID_SPECTRUM_128_SPA		    7
 #define MACHINE_ID_SPECTRUM_P2		    	8
@@ -406,6 +406,16 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_CZ_2000                  32
 #define MACHINE_ID_CZ_SPECTRUM              33
 #define MACHINE_ID_CZ_SPECTRUM_PLUS         34
+#define MACHINE_ID_SCORPION_ZS_256          35
+#define MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS   36
+#define MACHINE_ID_SCORPION_GMX             37
+#define MACHINE_ID_DIDAKTIKGAMA             38
+#define MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR   39
+#define MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA	 40
+#define MACHINE_ID_ATM_TURBO1               41
+#define MACHINE_ID_ATM_TURBO2               42
+#define MACHINE_ID_ATM_TURBO2_PLUS          43
+#define MACHINE_ID_ATM_TURBO3               44
 
 #define MACHINE_ID_COLECO                   100
 
@@ -459,10 +469,23 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_SPECTRUM_16              (current_machine_type==MACHINE_ID_SPECTRUM_16)
 #define MACHINE_IS_SPECTRUM_48              (current_machine_type==MACHINE_ID_SPECTRUM_48)
 #define MACHINE_IS_INVES                    (current_machine_type==MACHINE_ID_INVES)
-#define MACHINE_IS_MICRODIGITAL_TK90X       (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X)
+
+
+#define MACHINE_IS_MICRODIGITAL_TK90X_POR   (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_POR)
 #define MACHINE_IS_MICRODIGITAL_TK90X_SPA   (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_SPA)
-#define MACHINE_IS_MICRODIGITAL_TK95        (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95)
+
+#define MACHINE_IS_MICRODIGITAL_TK90X_FERRANTI_POR  (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR)
+#define MACHINE_IS_MICRODIGITAL_TK90X_FERRANTI_SPA  (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA)
+
+
+#define MACHINE_IS_MICRODIGITAL_TK90X       (MACHINE_IS_MICRODIGITAL_TK90X_POR || MACHINE_IS_MICRODIGITAL_TK90X_SPA || MACHINE_IS_MICRODIGITAL_TK90X_FERRANTI_POR || MACHINE_IS_MICRODIGITAL_TK90X_FERRANTI_SPA)
+#define MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL       (MACHINE_IS_MICRODIGITAL_TK90X_POR || MACHINE_IS_MICRODIGITAL_TK90X_SPA)
+
+#define MACHINE_IS_MICRODIGITAL_TK95_POR    (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95_POR)
 #define MACHINE_IS_MICRODIGITAL_TK95_SPA    (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95_SPA)
+#define MACHINE_IS_MICRODIGITAL_TK95        (MACHINE_IS_MICRODIGITAL_TK95_POR || MACHINE_IS_MICRODIGITAL_TK95_SPA)
+#define MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL (MACHINE_IS_MICRODIGITAL_TK90X_ULA_MICRODIGITAL || MACHINE_IS_MICRODIGITAL_TK95)
+
 #define MACHINE_IS_SPECTRUM_128             (current_machine_type==MACHINE_ID_SPECTRUM_128)
 #define MACHINE_IS_SPECTRUM_128_SPA         (current_machine_type==MACHINE_ID_SPECTRUM_128_SPA)
 
@@ -485,6 +508,27 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CZ_2000                  (current_machine_type==MACHINE_ID_CZ_2000)
 #define MACHINE_IS_CZ_SPECTRUM              (current_machine_type==MACHINE_ID_CZ_SPECTRUM)
 #define MACHINE_IS_CZ_SPECTRUM_PLUS         (current_machine_type==MACHINE_ID_CZ_SPECTRUM_PLUS)
+
+
+#define MACHINE_IS_SCORPION_ZS_256          (current_machine_type==MACHINE_ID_SCORPION_ZS_256)
+#define MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS (current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS)
+#define MACHINE_IS_SCORPION_GMX             (current_machine_type==MACHINE_ID_SCORPION_GMX)
+
+#define MACHINE_IS_DIDAKTIKGAMA             (current_machine_type==MACHINE_ID_DIDAKTIKGAMA)
+
+#define MACHINE_IS_ATM_TURBO1               (current_machine_type==MACHINE_ID_ATM_TURBO1)
+#define MACHINE_IS_ATM_TURBO2               (current_machine_type==MACHINE_ID_ATM_TURBO2)
+#define MACHINE_IS_ATM_TURBO2_PLUS          (current_machine_type==MACHINE_ID_ATM_TURBO2_PLUS)
+/* Arquitectura compartida de puertos y MMU desde ATM2 hasta ATM3. */
+#define MACHINE_IS_ATM_TURBO2_FAMILY        (MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
+#define MACHINE_IS_ATM_TURBO3               (current_machine_type==MACHINE_ID_ATM_TURBO3)
+/* ATM3 conserva el controlador 8031 y los controles de sistema de ATM2+. */
+#define MACHINE_IS_ATM_TURBO2PLUS_TURBO3   (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
+
+#define MACHINE_IS_ATM_TURBO                (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2 || MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3)
+
+
+#define MACHINE_IS_SCORPION                 (current_machine_type==MACHINE_ID_SCORPION_ZS_256 || current_machine_type==MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS || current_machine_type==MACHINE_ID_SCORPION_GMX)
 
 #define MACHINE_IS_PRISM                    (current_machine_type==MACHINE_ID_PRISM)
 #define MACHINE_IS_TBBLUE                   (current_machine_type==MACHINE_ID_TBBLUE)
@@ -540,11 +584,11 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Condiciones de maquinas activas
 //De maquinas Combinadas
 //
-#define MACHINE_IS_SPECTRUM                     (current_machine_type<40)
+#define MACHINE_IS_SPECTRUM                     (current_machine_type<50)
 
 #define MACHINE_IS_SPECTRUM_48_PLUS_SPA         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
 #define MACHINE_IS_SPECTRUM_48_PLUS_ENG         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
-#define MACHINE_IS_SPECTRUM_16_48               ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA || MACHINE_IS_CZ_2000 || MACHINE_IS_CZ_SPECTRUM || MACHINE_IS_CZ_SPECTRUM_PLUS)
+#define MACHINE_IS_SPECTRUM_16_48               ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95_POR) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA || MACHINE_IS_CZ_2000 || MACHINE_IS_CZ_SPECTRUM || MACHINE_IS_CZ_SPECTRUM_PLUS || MACHINE_IS_MICRODIGITAL_TK90X_FERRANTI_POR || MACHINE_IS_MICRODIGITAL_TK90X_FERRANTI_SPA)
 
 #define MACHINE_IS_SPECTRUM_128_P2              ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
 #define MACHINE_IS_SPECTRUM_P2                  ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA))
@@ -605,7 +649,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Maquinas que tienen el chip de memoria vdp 9918a
 #define MACHINE_HAS_VDP_9918A (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS)
 
-
+//Maquinas con floppy de 3"
+#define MACHINE_HAS_CF2_FLOPPY (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW)
 
 
 
@@ -680,7 +725,7 @@ extern z80_bit windows_no_disable_console;
 
 
 
-
+extern void malloc_machine(int tamanyo);
 
 
 extern int exit_emulator_after_seconds;

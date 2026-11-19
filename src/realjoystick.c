@@ -125,7 +125,7 @@ z80_bit no_native_linux_realjoystick={0};
 //etc...
 realjoystick_events_keys_function realjoystick_events_array[MAX_EVENTS_JOYSTICK];
 
-//asignacion de botones de joystick a acciones, mismas acciones que se pueden lanzar con una tecla F o con un icono del ZX Desktop
+//asignacion de botones de joystick a acciones, mismas acciones que se pueden lanzar con una tecla F o con un icono del DAVID Desktop
 realjoystick_button_action realjoystick_actions_array[MAX_ACTIONS_JOYSTICK];
 
 //asignacion de botones de joystick a letras de teclado

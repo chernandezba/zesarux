@@ -78,6 +78,8 @@
 #include "realjoystick.h"
 #include "pcw.h"
 #include "baseconf.h"
+#include "scorpion.h"
+#include "atmturbo.h"
 
 
 int gArgc;
@@ -3007,6 +3009,14 @@ void scrcocoa_refresca_pantalla(void)
             baseconf_refresca_pantalla();
         }
 
+        else if (MACHINE_IS_SCORPION_GMX)	{
+            scorpiongmx_refresca_pantalla();
+        }
+
+        else if (MACHINE_IS_ATM_TURBO)	{
+            atmturbo_refresca_pantalla();
+        }
+
         else { //Spectrum no TSConf
 
                 //modo clasico. sin rainbow
@@ -3033,7 +3043,7 @@ void scrcocoa_refresca_pantalla(void)
     }
 
     else if (MACHINE_IS_Z88) {
-            screen_z88_refresca_pantalla();
+        screen_z88_refresca_pantalla();
     }
 
     else if (MACHINE_IS_ACE) {
@@ -3041,11 +3051,11 @@ void scrcocoa_refresca_pantalla(void)
     }
 
     else if (MACHINE_IS_CPC) {
-            scr_refresca_pantalla_y_border_cpc();
+        scr_refresca_pantalla_y_border_cpc();
     }
 
     else if (MACHINE_IS_PCW) {
-            scr_refresca_pantalla_y_border_pcw();
+        scr_refresca_pantalla_y_border_pcw();
     }
 
     else if (MACHINE_IS_SAM) {
@@ -3055,7 +3065,6 @@ void scrcocoa_refresca_pantalla(void)
     else if (MACHINE_IS_QL) {
         scr_refresca_pantalla_y_border_ql();
     }
-
 
     else if (MACHINE_IS_MK14) {
         scr_refresca_pantalla_y_border_mk14();
@@ -3311,7 +3320,7 @@ void scrcocoa_stop_timer(void)
     //[cocoaView stopTimer];
 }
 
-int realizado_primer_fullscreen_inicio=0;
+int scrcocoa_fullscreen_inicial_comprobado=0;
 
 int scrcocoa_init (void)
 {
@@ -3392,14 +3401,17 @@ int scrcocoa_init (void)
         });
 
 
-    //Este cambio a fullscreen solo queremos que se lance la primera vez al inicio, si se ha arrancado con --fullscreen
-    //El resto de cambios de fullscreen se deben gestionar desde scrcocoa_set_fullscreen y scrcocoa_reset_fullscreen
-    //Hay que tener en cuenta que aqui al init se llama siempre cuando se conmuta de pantalla completa
-    if (ventana_fullscreen && !realizado_primer_fullscreen_inicio) {
-        realizado_primer_fullscreen_inicio=1;
+    //Comprobar la opción inicial una sola vez: este driver se reinicializa al cambiar de máquina.
+    //Las transiciones posteriores se gestionan desde scrcocoa_set_fullscreen y scrcocoa_reset_fullscreen.
+    if (!scrcocoa_fullscreen_inicial_comprobado) {
+        scrcocoa_fullscreen_inicial_comprobado=1;
 
-        //printf("screen_ext_desktop_enabled: %d\n",screen_ext_desktop_enabled);
-        [cocoaView toggleFullScreenPrevio:nil];
+        if (ventana_fullscreen) {
+            //AppKit exige que la transición inicial a pantalla completa se haga en el hilo principal.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cocoaView toggleFullScreenPrevio:nil];
+            });
+        }
     }
 
     //Inicializar joystick y gamepads. Para el caso, las funciones se llamaran *joystick* aunque hagan referencia a los dos

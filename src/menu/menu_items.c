@@ -164,6 +164,9 @@
 #include "lec.h"
 #include "qsound.h"
 #include "zxevo.h"
+#include "scorpion.h"
+#include "atmturbo.h"
+#include "screen_fx.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -1078,8 +1081,6 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=32;
             alto=18;
 
@@ -1689,7 +1690,7 @@ Calculando ese tiempo: 12% cpu
 
 
         int tiempo_iconos=sensor_get_value("avg_zxdesktop_draw_icons");
-        sprintf (texto_buffer,"ZX Desktop render icons: %6d us",tiempo_iconos);
+        sprintf (texto_buffer,"DAVID Desktop render icons: %6d us",tiempo_iconos);
         //printf("media %d %ld\n",tiempo_iconos,draw_zxdesktop_icons_media);
         zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
@@ -2758,6 +2759,36 @@ void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
 
         }
 
+        if (MACHINE_IS_ATM_TURBO) {
+
+            z80_byte atm_mode=atmturbo_get_video_mode();
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: %02X. %s",atm_mode,atmturbo_get_video_mode_string());
+
+        }
+
+
+        if (MACHINE_IS_SCORPION_GMX) {
+
+            if (if_scorpiongmx_mode_640_200() ) {
+                zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: 640x200");
+            }
+
+            else {
+                zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Video mode: 256x192 standard");
+            }
+
+
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Vertical Scroll: %d",scorpion_gmx_get_scroll_lines());
+
+
+
+        }
+
+
+
+
         if (MACHINE_IS_TBBLUE) {
 
             //menu_escribe_linea_opcion(linea++,-1,1,"ULA Video mode:");
@@ -2910,10 +2941,10 @@ z80_byte tbblue_clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][4];
             zxvision_print_string_defaults(ventana,1,linea++,texto_buffer);
 
             if (vdp_9918a_si_sms_video_mode4()) {
-                sprintf (texto_buffer,"Scroll Horizontal:    %d",vdp_9918a_sms_get_scroll_horizontal());
+                sprintf (texto_buffer,"Horizontal Scroll:    %d",vdp_9918a_sms_get_scroll_horizontal());
                 zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
 
-                sprintf (texto_buffer,"Scroll Vertical:      %d",vdp_9918a_sms_get_scroll_vertical());
+                sprintf (texto_buffer,"Vertical Scroll:      %d",vdp_9918a_sms_get_scroll_vertical());
                 zxvision_print_string_defaults_fillspc(ventana,1,linea++,texto_buffer);
             }
 
@@ -4403,8 +4434,6 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 
 
-//#define SOUND_WAVE_X (menu_origin_x()+1)
-//#define SOUND_WAVE_Y 3
 #define SOUND_WAVE_ANCHO 30
 #define SOUND_WAVE_ALTO 15
 
@@ -7273,8 +7302,6 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 
 
-//#define DEBUG_HEXDUMP_WINDOW_X (menu_origin_x() )
-//#define DEBUG_HEXDUMP_WINDOW_Y 1
 #define DEBUG_HEXDUMP_WINDOW_ANCHO 32
 #define DEBUG_HEXDUMP_WINDOW_ALTO 23
 
@@ -9174,7 +9201,7 @@ void menu_debug_dma_draw(zxvision_window *w)
     //Asumimos no existe
     menu_debug_dma_existe_dma=0;
 
-    char texto_dma[33];
+    char texto_dma[100];
 
     if (datagear_dma_emulation.v) {
         menu_debug_dma_existe_dma=1;
@@ -9253,41 +9280,58 @@ void menu_debug_dma_draw(zxvision_window *w)
     else {
 
         if (MACHINE_IS_TSCONF) {
+            tsconf_dma_debug_state_t dma_state;
+            tsconf_dma_get_debug_state(&dma_state);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Active: %s",dma_state.active ? "Yes" : "No");
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Used in last 5 seconds: %s",dma_state.active || dma_state.used_recently ? "Yes" : "No");
+
             menu_debug_dma_existe_dma=1;
 
             //Construimos 16 valores posibles segun rw (bit bajo) y ddev (bits altos)
             int dma_type=debug_tsconf_dma_ddev*2+debug_tsconf_dma_rw;
-                            //18 maximo el tipo
-                            //  012345678901234567890123
-                            //24. mas dos de margen banda y banda: 26
-            sprintf (texto_dma,"Type: %s",tsconf_dma_types[dma_type]);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Type: %s",tsconf_dma_types[dma_type]);
 
-            sprintf (texto_dma,"Source:      %06XH",debug_tsconf_dma_source);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Source:         %06XH",debug_tsconf_dma_source);
 
-            sprintf (texto_dma,"Destination: %06XH",debug_tsconf_dma_destination);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Current source: %06XH",dma_state.source);
 
-            sprintf (texto_dma,"Burst length: %3d",debug_tsconf_dma_burst_length);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Destination:    %06XH",debug_tsconf_dma_destination);
 
-            sprintf (texto_dma,"Burst number: %3d",debug_tsconf_dma_burst_number);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Current dest:   %06XH",dma_state.destination);
 
-                            //Maximo 25
-            sprintf (texto_dma,"Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Burst length:   %3d",debug_tsconf_dma_burst_length);
 
-            sprintf (texto_dma,"Align size: %d",(debug_tsconf_dma_addr_align_size+1)*256);
-            //menu_escribe_linea_opcion(linea++,-1,1,texto_dma);
-            zxvision_print_string_defaults_fillspc(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,texto_dma);
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Burst number:   %3d",debug_tsconf_dma_burst_number);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Words left:     %d",dma_state.words_left);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Bursts left:    %d",dma_state.bursts_left);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Align size:     %d",(debug_tsconf_dma_addr_align_size+1)*256);
+
+            zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                "Align: %s %s",(debug_tsconf_dma_s_align ? "Source" : "      "),(debug_tsconf_dma_d_align ? "Destination" : "") );
+
+
+
+            if (debug_tsconf_dma_ddev==3) {
+                zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,linea++,
+                    "IDE: %s",dma_state.smuc_selected ? "SMUC" : "Nemo");
+            }
 
         }
 
@@ -9350,7 +9394,7 @@ void menu_debug_dma_draw(zxvision_window *w)
     }
 
     if (menu_debug_dma_existe_dma) {
-        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Type: %s",nombre_dma);
+        zxvision_print_string_defaults_fillspc_format(menu_debug_dma_tsconf_zxuno_overlay_window,1,0,"Showing: %s",nombre_dma);
     }
 
 
@@ -9423,13 +9467,12 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugdma",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=27;
-            alto_ventana=14;
+            ancho_ventana=MACHINE_IS_TSCONF ? 32 : 27;
+            alto_ventana=MACHINE_IS_TSCONF ? 19 : 14;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
         }
-
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Debug DMA",
             "debugdma",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -9489,6 +9532,7 @@ void menu_debug_dma(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_TSCONF) {
+            lin=15;
         }
 
         if (menu_debug_dma_existe_dma) {
@@ -10258,11 +10302,9 @@ void menu_video_layers(MENU_ITEM_PARAMETERS)
 
 
 
-//#define TOTAL_PALETTE_WINDOW_X (menu_origin_x() )
-//#define TOTAL_PALETTE_WINDOW_Y 0
 #define TOTAL_PALETTE_WINDOW_ANCHO 32
 #define TOTAL_PALETTE_WINDOW_ALTO 24
-//#define TOTAL_PALETTE_COLORS_PER_WINDOW 16
+
 
 
 
@@ -11438,8 +11480,6 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
 
 
 
-//#define SPRITES_X ( menu_origin_x() )
-//#define SPRITES_Y 0
 #define SPRITES_ANCHO 32
 #define SPRITES_ALTO 14
 //#define SPRITES_ALTO_VENTANA (SPRITES_ALTO+10)
@@ -11587,6 +11627,11 @@ int menu_debug_sprites_total_colors_mapped_palette(int paleta)
             return 16;
         break;
 
+        //ATM
+        case 22:
+            return 16;
+        break;
+
     }
 
     return 16;
@@ -11681,6 +11726,10 @@ int menu_debug_sprites_max_value_mapped_palette(int paleta)
             return PRISM_TOTAL_PALETTE_COLOURS;
         break;
 
+        case 22:
+            //ATM
+            return PRISM_TOTAL_PALETTE_COLOURS;
+        break;
 
     }
 
@@ -11693,6 +11742,7 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
 {
 
     z80_byte r,g,b;
+    int indice;
 
     switch (paleta) {
         case 0:
@@ -11812,6 +11862,21 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
             return baseconf_get_palette_entry(color);
         break;
 
+        case 22:
+            //ATM
+            indice=atm_get_palette_entry(color);
+            //printf("c %d i %d\n",color,indice);
+
+
+           //if (MACHINE_IS_ATM_TURBO3) indice -=PRISM_INDEX_FIRST_COLOR;
+           //else indice -=SPECTRA_INDEX_FIRST_COLOR;
+
+           return indice;
+
+
+
+        break;
+
 
     }
 
@@ -11897,6 +11962,11 @@ int menu_debug_sprites_return_color_palette(int paleta, z80_byte color)
         case 21:
             //BaseConf devuelve un índice RGB444 relativo dentro de la paleta Prism.
             return PRISM_INDEX_FIRST_COLOR+index;
+        break;
+
+        case 22:
+            //El color de la paleta ya va directo sin offset
+            return index;
         break;
 
     }
@@ -12005,6 +12075,10 @@ void menu_debug_sprites_get_palette_name(int paleta, char *s)
 
         case 21:
             strcpy(s,"BaseConf");
+        break;
+
+        case 22:
+            strcpy(s,"ATM Turbo");
         break;
 
         default:
@@ -18566,7 +18640,7 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     int tipo=menu_simple_eleven_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
         (ventana->is_minimized ? "Unminimize" : "Minimize"),
         (ventana->is_maximized ? "Unmaximize" : "Maximize"),
-        "Switch always visible","Send message","Information","Close","Create link on ZX Desktop","Copy contents");
+        "Switch always visible","Send message","Information","Close","Create link on DAVID Desktop","Copy contents");
 
     if (tipo==0) return; //ESC
 
@@ -19360,15 +19434,15 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_cascade_all,NULL,
             "~~Cascade all windows","~~Cascada todas ventanas","~~Cascada totes les finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Cascade all windows on the ZX Desktop");
-        menu_add_item_menu_ayuda(array_menu_common,"Cascade all windows on the ZX Desktop");
+        menu_add_item_menu_tooltip(array_menu_common,"Cascade all windows on the DAVID Desktop");
+        menu_add_item_menu_ayuda(array_menu_common,"Cascade all windows on the DAVID Desktop");
         menu_add_item_menu_shortcut(array_menu_common,'c');
         menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_rearrange_all,NULL,
             "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
-        menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
+        menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the DAVID Desktop");
+        menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the DAVID Desktop");
         menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,
@@ -19674,7 +19748,6 @@ void menu_textadv_loc_image(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("textadvlocimage",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
 
 
             //540x201 es lo que ocupa el bmp de spectrum 48k
@@ -20001,6 +20074,73 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 zxvision_window *menu_video_output_window;
 
 
+//sin putpixel cache: render normal: 40% cpu. render ventana: 56% cpu
+
+//con putpixel cache: render normal: 27% cpu. render ventana: 56% cpu
+//con putpixel cache y menu_video_output_overlay_putpixel_cache: render normal: 27% cpu (con menu cerrado), 32% con menu abierto.
+//   render ventana: 35% cpu con menu cerrado (con cpu info, video info y process switcher abiertos), 39% con menu abierto
+// -> o sea hay un 7% cpu mas aprox en render con ventana
+// con todas ventanas abiertas posibles: 84% uso cpu
+
+
+z80_int *menu_video_output_overlay_putpixel_cache=NULL;
+
+int menu_video_output_overlay_putpixel_cache_ancho=-1;
+int menu_video_output_overlay_putpixel_cache_alto=-1;
+
+void menu_video_output_clear_putpixel_cache(void)
+{
+
+    int tamanyo=menu_video_output_overlay_putpixel_cache_ancho*menu_video_output_overlay_putpixel_cache_alto;
+    //para poder hacer putpixel cache con zoom y*2 y interlaced, doble de tamanyo
+    tamanyo *=2; //*2 porque es z80_int
+
+    //llenar todo con 65535
+    memset(menu_video_output_overlay_putpixel_cache,255,tamanyo);
+}
+
+
+void menu_video_output_alloc_putpixel_cache(int ancho,int alto)
+{
+
+    //asignar si ha cambiado tamaño o si no esta asignado
+    if (ancho!=menu_video_output_overlay_putpixel_cache_ancho ||
+        alto!=menu_video_output_overlay_putpixel_cache_alto ||
+        menu_video_output_overlay_putpixel_cache==NULL) {
+
+        //liberar si existe previo
+        if (menu_video_output_overlay_putpixel_cache!=NULL) free (menu_video_output_overlay_putpixel_cache);
+
+        menu_video_output_overlay_putpixel_cache_ancho=ancho;
+        menu_video_output_overlay_putpixel_cache_alto=alto;
+
+
+
+        //El tamanyo depende del footer. Pero no del border (siempre se incluye con border)
+
+
+        int tamanyo=ancho*alto;
+
+        int putpixel_cache_size=tamanyo*2; //*2 porque es z80_int
+
+        //TODO: parece que la memoria que asignamos es mayor de la que luego usamos en clear_putpixel_cache
+        //normal? o es un error?
+        //De todas maneras, asignar mas memoria de la que usamos no provoca fallos, es un desperdicio, si,
+        //pero no generará ningun segfault ni nada parecido
+
+
+        menu_video_output_overlay_putpixel_cache=util_malloc(putpixel_cache_size,"Can not allocate memory for putpixel cache on window emulated display");
+
+        menu_video_output_clear_putpixel_cache();
+    }
+}
+
+
+//Ultima maquina para ajustar tamaño si conviene
+int menu_video_output_last_machine=-1;
+
+int menu_video_output_forzar_redibujado_frames=0;
+
 void menu_video_output_overlay(void)
 {
 
@@ -20012,26 +20152,145 @@ void menu_video_output_overlay(void)
 
     if (rainbow_enabled.v) {
 
-        int offset_x=menu_char_width;
 
-        int x,y,xmax,ymax;
-        xmax=get_total_ancho_rainbow();
-        ymax=get_total_alto_rainbow();
+
+        int offset_x=menu_char_width*menu_gui_zoom;
+
+        int x,y,ancho,alto;
+        ancho=get_total_ancho_rainbow();
+        alto=get_total_alto_rainbow();
         z80_int *puntero;
         puntero=rainbow_buffer;
 
-        for (y=0;y<ymax;y++) {
-            for (x=0;x<xmax;x++) {
-                zxvision_putpixel(menu_video_output_window,x+offset_x,y,*puntero);
-                puntero++;
+        if (menu_video_output_last_machine!=-1) {
+
+            if (setting_emulated_display_win_autoresize.v) {
+
+                if (menu_video_output_last_machine!=current_machine_type) {
+                    //redimensionar ventana al cambiar
+                    //TODO: que esto se pueda desactivar con un setting
+                    int ancho_caracter=menu_char_width*menu_gui_zoom;
+                    int alto_caracter=menu_char_height*menu_gui_zoom;
+                    int ancho_necesario=(ancho+ancho_caracter-1)/ancho_caracter;
+                    int alto_necesario=(alto+alto_caracter-1)/alto_caracter;
+
+
+                    zxvision_set_total_width(menu_video_output_window,ancho_necesario);
+                    zxvision_set_visible_width(menu_video_output_window,ancho_necesario+2);
+                    zxvision_set_total_height(menu_video_output_window,alto_necesario);
+                    zxvision_set_visible_height(menu_video_output_window,alto_necesario+2);
+                    //al cambiar tamaño tenemos que forzar redibujado en el siguiente frame tambien
+                    //pues tiene que salir de aqui y hacer overlay de video, donde se renderizara el fondo en el color por defecto de la ventana
+                    //por tanto decimos que 2
+                    menu_video_output_forzar_redibujado_frames=2;
+                }
+            }
+
+        }
+
+        menu_video_output_last_machine=current_machine_type;
+
+        //Efectos especiales (FX)
+        puntero=screen_rainbow_effects(puntero,ancho,alto);
+
+
+        if (setting_emulated_display_win_zoom_fit.v) {
+            int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width*menu_gui_zoom-offset_x;
+            int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height*menu_gui_zoom;
+
+            if (setting_emulated_display_win_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
+                int ancho_disponible=ancho_ventana;
+                int alto_disponible=alto_ventana;
+
+                //Ejemplo: una imagen de 400x200 pasa a 300 de alto. Para conservar su forma,
+                //el ancho también crece en la misma medida: 400*300/200=600.
+                //El if comprueba si ese ancho de 600 cabe en la ventana. Con división sería:
+                //ancho_disponible > alto_disponible*ancho/alto.
+                //La división entre enteros pierde los decimales; por eso multiplicamos ambos
+                //lados por alto y comparamos ancho_disponible*alto > alto_disponible*ancho.
+                if (ancho_disponible*alto>alto_disponible*ancho) {
+                    ancho_ventana=alto_disponible*ancho/alto;
+                }
+                else {
+                    alto_ventana=ancho_disponible*alto/ancho;
+                }
+
+                if (ancho_ventana<1) ancho_ventana=1;
+                if (alto_ventana<1) alto_ventana=1;
+
+            }
+
+
+            menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
+
+            if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                menu_video_output_clear_putpixel_cache();
+                menu_video_output_window->dirty_user_must_draw_contents=0;
+            }
+
+            z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
+
+            for (y=0;y<alto_ventana;y++) {
+                int y_origen=(y*alto)/alto_ventana;
+
+                for (x=0;x<ancho_ventana;x++) {
+                    int x_origen=(x*ancho)/ancho_ventana;
+
+                    if (x_origen<ancho && y_origen<alto) {
+
+                        int offset_origen=y_origen*ancho+x_origen;
+                        z80_int color=puntero[offset_origen];
+
+                        int offset_putpixel_cache=y*ancho_ventana+x;
+
+                        if (color!=p_putpixel_cache[offset_putpixel_cache]) {
+                            zxvision_putpixel_no_menu_gui_zoom(menu_video_output_window,x+offset_x,y,color);
+                            p_putpixel_cache[offset_putpixel_cache]=color;
+                        }
+
+                        //p_putpixel_cache++;
+
+                    }
+                }
             }
         }
+
+        else {
+
+            menu_video_output_alloc_putpixel_cache(ancho,alto);
+
+            if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
+                //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
+                menu_video_output_clear_putpixel_cache();
+                menu_video_output_window->dirty_user_must_draw_contents=0;
+            }
+
+            z80_int *p_putpixel_cache=menu_video_output_overlay_putpixel_cache;
+
+            for (y=0;y<alto;y++) {
+                for (x=0;x<ancho;x++) {
+                    int offset_origen=y*ancho+x;
+                    z80_int color=puntero[offset_origen];
+                    if (color!=*p_putpixel_cache) {
+                        zxvision_putpixel_no_menu_gui_zoom(menu_video_output_window,x+offset_x,y,color);
+                        *p_putpixel_cache=color;
+                    }
+
+                    p_putpixel_cache++;
+                }
+            }
+        }
+
+
 
     }
 
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_video_output_window);
+
+    if (menu_video_output_forzar_redibujado_frames>0) menu_video_output_forzar_redibujado_frames--;
 
 }
 
@@ -20041,6 +20300,26 @@ void menu_video_output_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_video_output;
 
+
+int ventana_video_output_activa=0;
+int ventana_video_output_abierta=0;
+
+int ventana_video_output_esta_activa(void)
+{
+    return ventana_video_output_activa;
+}
+
+//Dice si la ventana esta abierta y funcional
+int ventana_video_output_esta_abierta(void)
+{
+    if (rainbow_enabled.v==0) return 0;
+    return ventana_video_output_abierta;
+}
+
+void menu_video_output_close_window_function(void)
+{
+    ventana_video_output_abierta=0;
+}
 
 void menu_video_output(MENU_ITEM_PARAMETERS)
 {
@@ -20063,7 +20342,7 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     if (!zxvision_if_window_already_exists(ventana)) {
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("videooutput",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("emulateddisplay",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=30;
             alto_ventana=20;
 
@@ -20072,10 +20351,13 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Output",
-            "videooutput",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Emulated Display",
+            "emulateddisplay",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+
+        //Definir funcion de cierre de ventana
+        ventana->close_window_function=menu_video_output_close_window_function;
 
     }
 
@@ -20098,6 +20380,14 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_video_output_overlay);
 
+    if (rainbow_enabled.v==0) {
+        enable_rainbow();
+    }
+
+    int antes_ventana_video_output_abierta=ventana_video_output_abierta;
+
+    ventana_video_output_abierta=1;
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20106,13 +20396,19 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             return;
     }
 
+    //Si se acaba de hacer activa, refrescar el zx desktop para que se vea que ya no está la pantalla emulada en modo Docked
+    if (!antes_ventana_video_output_abierta) {
+        menu_draw_ext_desktop();
+    }
+
+    ventana_video_output_activa=1;
+
+    /*
     if (rainbow_enabled.v==0) {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"Real video not enabled");
-        zxvision_print_string_defaults_fillspc(ventana,1,1,"Enable it on Setttings->Display");
+        enable_rainbow();
     }
-    else {
-        zxvision_cls(ventana);
-    }
+    */
+
 
     do {
 
@@ -20132,14 +20428,14 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
                 salir=1;
             break;
 
-            default:
-                zxvision_handle_cursors_pgupdn_opqa_wskl(ventana,tecla);
-            break;
+            //Y no atendemos a cursores, pgup, dn, shift+opqa etc porque se usan dentro de maquina emulada
+            //y no queremos que actue en la ventana
         }
 
 
     } while (salir==0);
 
+    ventana_video_output_activa=0;
 
     util_add_window_geometry_compact(ventana);
 
@@ -20148,6 +20444,9 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
     }
 
     else {
+        if (ventana->close_window_function!=NULL) {
+            ventana->close_window_function();
+        }
 
         zxvision_destroy_window(ventana);
     }
@@ -20209,12 +20508,6 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        //Todavia no tengo claro del todo para que servira esto, pero de momento renderiza la pantalla
-        //cuando real video esta activado
-        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_video_output,NULL,
-            "Video Output","Salida de Video","Sortida de Video");
-        menu_add_item_menu_genera_ventana(array_menu_display_settings);
-        menu_add_item_menu_se_cerrara(array_menu_display_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_total_palette,NULL,
@@ -21855,14 +22148,14 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 
 
 
-        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX && !MACHINE_IS_ATM_TURBO) {
             //menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_tsconf_layer_settings,NULL,"Video ~~Layers");
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_video_layers,NULL,"Video ~~Layers");
             menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'l');
             menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         }
 
-        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF) {
+        if (!MACHINE_IS_CPC && !MACHINE_IS_BASECONF && !MACHINE_IS_SCORPION_GMX && !MACHINE_IS_ATM_TURBO) {
             menu_add_item_menu_format(array_menu_debug_tsconf_tbblue_msx,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx_spritenav,NULL,"~~Sprite navigator");
             menu_add_item_menu_shortcut(array_menu_debug_tsconf_tbblue_msx,'s');
             menu_add_item_menu_add_flags(array_menu_debug_tsconf_tbblue_msx,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
@@ -21937,6 +22230,14 @@ int help_keyboard_last_current_machine=-1;
 
 z80_byte *help_keyboard_text_512_pcw=NULL;
 
+//Factor de zoom exclusivo para esta ventana
+int menu_help_keyboard_zoom_factor=1;
+
+//Ultimo ancho y alto leido del bmp
+
+int menu_help_keyboard_bmp_last_ancho=0;
+int menu_help_keyboard_bmp_last_alto=0;
+
 void menu_help_keyboard_load_bmp(void)
 {
 
@@ -21957,8 +22258,8 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_PCW) strcpy(nombrebmp,"keyboard_pcw_8256.bmp");
     else if (MACHINE_IS_INVES) strcpy(nombrebmp,"keyboard_inves.bmp");
     else if (MACHINE_IS_ACE) strcpy(nombrebmp,"keyboard_ace.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) strcpy(nombrebmp,"keyboard_tk90x.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) strcpy(nombrebmp,"keyboard_tk95.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK90X) strcpy(nombrebmp,"keyboard_tk90x.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK95) strcpy(nombrebmp,"keyboard_tk95.bmp");
     else if (MACHINE_IS_MK14) strcpy(nombrebmp,"keyboard_mk14.bmp");
     else if (MACHINE_IS_MSX) strcpy(nombrebmp,"keyboard_msx.bmp");
     else if (MACHINE_IS_PENTAGON) strcpy(nombrebmp,"keyboard_pentagon.bmp");
@@ -21995,6 +22296,10 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_MICRODIGITAL_TK85) strcpy(nombrebmp,"keyboard_tk85.bmp");
     else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
+    else if (MACHINE_IS_DIDAKTIKGAMA) strcpy(nombrebmp,"keyboard_didaktikgama.bmp");
+    else if (MACHINE_IS_SCORPION) strcpy(nombrebmp,"keyboard_scorpion.bmp");
+    else if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) strcpy(nombrebmp,"keyboard_atm1.bmp");
+    else if (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3) strcpy(nombrebmp,"keyboard_atm2p.bmp");
     else strcpy(nombrebmp,"keyboard_48.bmp");
 
     //localizarlo
@@ -22128,6 +22433,51 @@ int keyboard_map_table_coords_p2[40*4]={
 200,164,378,198,4,164,38,198,372,124,408,158,332,124,368,158,292,124,330,160,
 };
 
+int keyboard_map_table_coords_didaktikgama[40*4]={
+63,268,132,308,     142,268,185,308,    195,268,238,308,    248,268,291,308,    302,268,345,308,
+116,219,159,260,    169,219,212,260,    222,219,264,260,    276,219,319,260,    328,219,373,260,
+90,171,132,212,     143,171,183,212,    195,171,237,212,    249,171,292,212,    303,171,346,212,
+62,125,105,165,     116,125,158,165,    170,125,210,165,    220,125,264,165,    273,125,318,165,
+539,125,585,165,    490,125,531,165,    434,125,478,165,    379,125,424,165,    328,125,370,165,
+568,171,609,212,    517,171,558,212,    463,171,506,212,    408,171,452,212,    356,171,398,212,
+599,219,639,260,    543,219,589,260,    490,219,534,260,    436,219,479,260,    382,219,426,260,
+576,268,639,308,    518,268,564,308,    463,268,508,308,    409,268,453,308,    356,268,400,308,
+};
+
+// Coordenadas de las 40 teclas Spectrum en el BMP compartido por ATM1 y ATM2.
+int keyboard_map_table_coords_atm[40*4]={
+    23,149,58,184,    105,149,138,184,    143,149,175,184,    184,149,219,184,    224,149,258,184,
+    90,109,122,144,    128,109,160,144,    169,109,202,144,    208,109,242,144,    247,109,281,144,
+    72,68,105,102,    110,68,144,102,    148,68,181,102,    186,68,218,102,    223,68,255,102,
+    93,29,126,60,    130,29,164,60,    168,29,201,60,    205,29,239,60,    243,29,276,60,
+    430,29,466,60,    393,29,426,60,    355,29,389,60,    318,29,351,60,    280,29,314,60,
+    419,68,452,102,    381,68,414,102,    341,68,376,102,    302,68,336,102,    263,68,297,102,
+    519,109,558,144,    405,109,439,144,    366,109,400,144,    326,109,361,144,    286,109,321,144,
+    134,192,220,226,    495,149,529,184,    344,149,378,184,    304,149,338,184,    263,149,298,184,
+};
+
+// Matriz Spectrum sobre el BMP compartido por ATM2+ y ATM3.
+int keyboard_map_table_coords_atm2p[40*4]={
+    18,141,126,177,    184,141,231,177,    234,141,280,177,    283,141,330,177,    333,141,380,177,
+    158,100,204,136,    207,100,254,136,    257,100,303,136,    306,100,353,136,    356,100,403,136,
+    148,59,193,96,    195,59,239,96,    243,59,287,96,    291,59,335,96,    339,59,385,96,
+    138,16,183,53,    187,16,233,53,    237,16,283,53,    287,16,333,53,    337,16,384,53,
+    585,16,627,53,    537,16,582,53,    488,16,532,53,    438,16,484,53,    388,16,433,53,
+    583,59,626,96,    535,59,578,96,    487,59,530,96,    438,59,482,96,    389,59,434,96,
+    611,100,680,136,    556,100,607,136,    506,100,552,136,    456,100,502,136,    406,100,452,136,
+    263,183,485,217,    18,183,69,217,    484,141,530,177,    434,141,480,177,    384,141,430,177,
+};
+
+int keyboard_map_table_coords_scorpion[40*4]={
+68,221,153,254,     206,221,239,254,    247,221,282,254,    289,221,324,254,    332,221,366,254,
+183,178,217,213,    225,178,260,213,    268,178,302,213,    310,178,344,213,    353,178,387,213,
+173,135,208,170,    216,135,250,170,    258,135,292,170,    300,135,334,170,    342,135,376,170,
+153,93,187,126,     195,93,229,126,     237,93,272,126,     280,93,314,126,     323,93,357,126,
+535,93,569,126,     492,93,526,126,     450,93,484,126,     408,93,441,126,     365,93,399,126,
+555,135,588,170,    513,135,547,170,    470,135,504,170,    428,135,462,170,    385,135,419,170,
+598,136,630,171,    521,178,565,213,    479,178,512,213,    438,178,471,213,    395,178,428,213,
+280,263,458,296,    68,263,102,296,     460,221,493,254,    417,221,451,254,    375,221,409,254,
+};
 
 
 int keyboard_map_table_coords_zxuno[40*4]={
@@ -22606,6 +22956,84 @@ keyboard_help_double_key keyboard_map_additional_p2[]={
     { 0,0,0,0,NULL,0,NULL,0 }
 };
 
+// Atajos y teclas duplicadas del teclado mecánico de ATM1/ATM2.
+// TAB, ALT, la tecla anterior al 1, las dos R y la flecha roja superior quedan sin asignar hasta confirmar su cableado.
+keyboard_help_double_key keyboard_map_additional_atm[]={
+    { 18,29,52,60, &puerto_63486,1, KEY_PORT_VALUE_SHIFT }, // EDIT
+    { 508,29,540,60, &puerto_61438,1, KEY_PORT_VALUE_SHIFT }, // DEL
+    { 11,109,44,144, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 62,149,99,184, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, // EXT
+    { 305,192,391,226, &puerto_32766,1, NULL,0 }, // segundo espacio
+    { 470,29,504,60, &puerto_49150,2, KEY_PORT_VALUE_SYMBOL }, // igual
+    { 457,68,489,102, &puerto_61438,4, KEY_PORT_VALUE_SYMBOL }, // paréntesis izquierdo
+    { 494,68,525,102, &puerto_61438,2, KEY_PORT_VALUE_SYMBOL }, // paréntesis derecho
+    { 530,68,558,102, &puerto_61438,1, KEY_PORT_VALUE_SYMBOL }, // guion bajo
+    { 445,109,476,144, &puerto_65278,2, KEY_PORT_VALUE_SYMBOL }, // dos puntos
+    { 482,109,513,144, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 384,149,416,184, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // coma
+    { 421,149,452,184, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // punto
+    { 457,149,489,184, &puerto_65278,8, KEY_PORT_VALUE_SYMBOL }, // interrogación
+    { 620,68,654,102, &puerto_49150,8, KEY_PORT_VALUE_SYMBOL }, // menos del bloque derecho
+    { 660,68,692,102, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 698,68,731,102, &puerto_65278,16, KEY_PORT_VALUE_SYMBOL }, // división
+    { 620,109,654,143, &puerto_49150,4, KEY_PORT_VALUE_SYMBOL }, // suma
+    { 698,109,731,143, &puerto_32766,16, KEY_PORT_VALUE_SYMBOL }, // asterisco
+    { 660,109,692,143, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // cursor arriba
+    { 620,149,654,184, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // cursor izquierda
+    { 660,149,692,184, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // cursor abajo
+    { 698,149,731,184, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // cursor derecha
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+// Combinaciones y teclas duplicadas de ATM2+/ATM3; Enter ocupa dos rectángulos.
+keyboard_help_double_key keyboard_map_additional_atm2p[]={
+    { 18,16,73,53, &puerto_63486,4, KEY_PORT_VALUE_SHIFT }, // True Video
+    { 77,16,133,53, &puerto_63486,8, KEY_PORT_VALUE_SHIFT }, // Inverse Video
+    { 18,59,86,96, &puerto_61438,1, KEY_PORT_VALUE_SHIFT }, // Delete
+    { 90,59,143,96, &puerto_61438,2, KEY_PORT_VALUE_SHIFT }, // Graph
+    { 18,100,90,136, KEY_PORT_VALUE_SHIFT, KEY_PORT_VALUE_SYMBOL }, // modo extendido
+    { 95,100,153,136, &puerto_63486,1, KEY_PORT_VALUE_SHIFT }, // Edit
+    { 130,141,180,177, &puerto_63486,2, KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 633,16,680,53, &puerto_32766,1, KEY_PORT_VALUE_SHIFT }, // Break
+    { 632,59,680,96, &puerto_49150,1, NULL,0 }, // parte superior de Enter
+    { 585,141,680,177, KEY_PORT_VALUE_SHIFT, NULL,0 }, // Caps Shift derecho
+    { 631,183,680,217, KEY_PORT_VALUE_SYMBOL, NULL,0 }, // Symbol Shift derecho
+    { 74,183,116,217, &puerto_57342,2, KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 121,183,162,217, &puerto_57342,1, KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 167,183,210,217, &puerto_63486,16, KEY_PORT_VALUE_SHIFT }, // cursor izquierda
+    { 215,183,258,217, &puerto_61438,4, KEY_PORT_VALUE_SHIFT }, // cursor derecha
+    { 490,183,532,217, &puerto_61438,8, KEY_PORT_VALUE_SHIFT }, // cursor arriba
+    { 537,183,579,217, &puerto_61438,16, KEY_PORT_VALUE_SHIFT }, // cursor abajo
+    { 584,183,626,217, &puerto_32766,8, KEY_PORT_VALUE_SYMBOL }, // coma
+    { 535,141,580,177, &puerto_32766,4, KEY_PORT_VALUE_SYMBOL }, // punto
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
+//Teclas adicionales scorpion
+keyboard_help_double_key keyboard_map_additional_scorpion[]={
+    { 593,263,628,296,     KEY_PORT_VALUE_SYMBOL,  NULL, 0}, // Symbol Shift derecho
+    { 544,221,629,254,     KEY_PORT_VALUE_SHIFT,   NULL, 0}, // Caps Shift derecho
+    { 574,179,630,212,     &puerto_49150,1,        NULL, 0}, // parte inferior de Enter
+    { 68,178,122,213,      KEY_PORT_VALUE_SHIFT,   KEY_PORT_VALUE_SYMBOL }, // modo extendido
+    { 68,135,122,170,      &puerto_65278,1,        &puerto_61438,1 }, // Delete
+    { 68,93,102,126,       &puerto_63486,4,        KEY_PORT_VALUE_SHIFT }, // True Video
+    { 111,93,144,126,      &puerto_63486,8,        KEY_PORT_VALUE_SHIFT }, // Inverse Video
+    { 132,135,165,170,     &puerto_61438,2,        KEY_PORT_VALUE_SHIFT }, // Graph
+    { 132,178,165,213,     &puerto_63486,1,        KEY_PORT_VALUE_SHIFT }, // Edit
+    { 164,221,197,254,     &puerto_63486,2,        KEY_PORT_VALUE_SHIFT }, // Caps Lock
+    { 110,263,144,296,     &puerto_57342,2,        KEY_PORT_VALUE_SYMBOL }, // punto y coma
+    { 152,263,186,296,     &puerto_57342,1,        KEY_PORT_VALUE_SYMBOL }, // comillas
+    { 195,263,228,296,     &puerto_63486,16,       KEY_PORT_VALUE_SHIFT }, // flecha izquierda
+    { 238,263,271,296,     &puerto_61438,4,        KEY_PORT_VALUE_SHIFT }, // flecha derecha
+    { 466,263,501,296,     &puerto_61438,8,        KEY_PORT_VALUE_SHIFT }, // flecha arriba
+    { 509,263,543,296,     &puerto_61438,16,       KEY_PORT_VALUE_SHIFT }, // flecha abajo
+    { 552,263,585,296,     &puerto_32766,8,        KEY_PORT_VALUE_SYMBOL }, // coma
+    { 500,221,535,254,     &puerto_32766,4,        KEY_PORT_VALUE_SYMBOL }, // punto
+    { 577,93,628,126,      &puerto_32766,1,        KEY_PORT_VALUE_SHIFT }, // Break
+
+    { 0,0,0,0,NULL,0,NULL,0 }
+};
+
 //Teclas adicionales zxuno
 keyboard_help_double_key keyboard_map_additional_zxuno[]={
     { 528,4,594,32,   &puerto_65278,1,        &puerto_61438,1 },  //delete
@@ -22950,6 +23378,9 @@ void keyboard_help_reset_teclas_pulsadas(void)
 //Retorna tabla de coordenadas de teclas
 int *keyboard_help_return_map_table(void)
 {
+    if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) return keyboard_map_table_coords_atm;
+    if (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3) return keyboard_map_table_coords_atm2p;
+
     if (MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG ||
         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_CZ_SPECTRUM_PLUS) {
         return keyboard_map_table_coords_48p;
@@ -22957,6 +23388,14 @@ int *keyboard_help_return_map_table(void)
 
     else if (MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A_P3) {
         return keyboard_map_table_coords_p2;
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        return keyboard_map_table_coords_scorpion;
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        return keyboard_map_table_coords_didaktikgama;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -23015,11 +23454,11 @@ int *keyboard_help_return_map_table(void)
         return keyboard_map_table_coords_z88;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+    else if (MACHINE_IS_MICRODIGITAL_TK90X) {
         return keyboard_map_table_coords_tk90x;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
+    else if (MACHINE_IS_MICRODIGITAL_TK95) {
         return keyboard_map_table_coords_tk95;
     }
 
@@ -23077,6 +23516,9 @@ int *keyboard_help_return_map_table(void)
 
 keyboard_help_double_key *keyboard_help_return_double_keys(void)
 {
+    if (MACHINE_IS_ATM_TURBO1 || MACHINE_IS_ATM_TURBO2) return keyboard_map_additional_atm;
+    if (MACHINE_IS_ATM_TURBO2_PLUS || MACHINE_IS_ATM_TURBO3) return keyboard_map_additional_atm2p;
+
 
     keyboard_help_double_key *teclas_dobles=NULL;
 
@@ -23085,8 +23527,12 @@ keyboard_help_double_key *keyboard_help_return_double_keys(void)
             teclas_dobles=keyboard_map_additional_48p;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
+    else if (MACHINE_IS_MICRODIGITAL_TK95) {
         return keyboard_map_additional_tk95;
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        return keyboard_map_additional_scorpion;
     }
 
     else if (MACHINE_IS_TBBLUE) {
@@ -23232,14 +23678,27 @@ void menu_help_keyboard_show_all_keys(zxvision_window *ventana,int keyboard_map_
 }
 */
 
+void menu_help_keyboard_putpixel_internal_zoom(zxvision_window *ventana,int x,int y,int color_final)
+{
+
+    int zx,zy;
+
+    for (zx=0;zx<menu_help_keyboard_zoom_factor;zx++) {
+        for (zy=0;zy<menu_help_keyboard_zoom_factor;zy++) {
+            zxvision_putpixel_no_menu_gui_zoom_no_zoom(ventana,x*menu_help_keyboard_zoom_factor+zx,y*menu_help_keyboard_zoom_factor+zy,color_final);
+        }
+    }
+
+}
+
 void menu_help_draw_rectangle_key(zxvision_window *ventana,int x1,int y1,int ancho,int alto,int color)
 {
     //Recuadro del tamanyo y algo mas grande
-    zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,zxvision_putpixel_no_zoom);
-    zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,zxvision_putpixel_no_zoom);
-    zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,zxvision_putpixel_no_zoom);
+    zxvision_draw_rectangle_function(ventana,x1,y1,ancho,alto,color,menu_help_keyboard_putpixel_internal_zoom);
+    zxvision_draw_rectangle_function(ventana,x1-1,y1-1,ancho+2,alto+2,color,menu_help_keyboard_putpixel_internal_zoom);
+    zxvision_draw_rectangle_function(ventana,x1-2,y1-2,ancho+4,alto+4,color,menu_help_keyboard_putpixel_internal_zoom);
     //Y algo mas pequenyo
-    zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,zxvision_putpixel_no_zoom);
+    zxvision_draw_rectangle_function(ventana,x1+1,y1+1,ancho-2,alto-2,color,menu_help_keyboard_putpixel_internal_zoom);
 }
 
 //Dice si bit tecla pulsada, dependiendo si es valor 0 en la mayoria de maquinas, o si no es 0 (como puertos de joystick en master system)
@@ -23533,38 +23992,37 @@ int menu_help_keyboard_highlight_key_y2=0;
 int menu_help_keyboard_highlight_key_indice_anterior=-1;
 
 
-void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+void menu_help_keyboard_overlay_render_512k_pcw_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom GCC_UNUSED)
 {
-    //printf("%d %d\n",x,y);
-    if (!follow_zoom) {
+
         //printf("no follow zoom. %d,%d\n",zoom_x,zoom_y);
 
-        //El offset x=61, y=10 donde tiene que ir a parar el texto "256k"
-        zxvision_putpixel_no_zoom(ventana,x+61,y+10,color_final);
-    }
-    else {
-        //Aunque no estoy usando este caso, lo dejo por si en el futuro...
-        //printf("follow zoom. %d,%d,%d\n",zoom_x,zoom_y,menu_gui_zoom);
-        int zx,zy;
-        for (zx=0;zx<zoom_x;zx++) {
-            for (zy=0;zy<zoom_y;zy++) {
-                zxvision_putpixel_no_zoom(ventana,(x+61)*zoom_x+zx,(y+10)*zoom_y+zy,color_final);
-            }
-        }
+        //El offset x=61, y=10 donde tiene que ir a parar el texto "512k"
+        menu_help_keyboard_putpixel_internal_zoom(ventana,x+61,y+10,color_final);
 
-    }
+
 }
 
 //Variante para poder especificar un offset en la ventana
-void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
+void menu_help_keyboard_overlay_render_512k_pcw(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom GCC_UNUSED,
     int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
 {
 
-    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,follow_zoom,
+    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,0,
         ancho_mostrar,indice_color_transparente,color_final_transparente,
         menu_help_keyboard_overlay_render_512k_pcw_putpixel);
 
 }
+
+void menu_help_keyboard_render_bmpfile_putpixel_no_zooms(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom GCC_UNUSED)
+{
+    //follow_zoom no se usa, pero la funcion tiene que admitirlo como parametro por que es requisito de screen_render_bmpfile
+
+    menu_help_keyboard_putpixel_internal_zoom(ventana,x,y,color_final);
+
+}
+
+
 
 
 void menu_help_keyboard_overlay(void)
@@ -23615,8 +24073,19 @@ void menu_help_keyboard_overlay(void)
 
 
             //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
-            //El teclado no sigue el zoom de ventana, pero sí que sigue el zoom de gui
-            screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+
+
+
+
+
+                screen_render_bmpfile_function(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,
+                    0,-1,0,
+                    menu_help_keyboard_render_bmpfile_putpixel_no_zooms);
+
+                menu_help_keyboard_bmp_last_ancho=last_screen_render_bmpfile_function_ancho;
+                menu_help_keyboard_bmp_last_alto=last_screen_render_bmpfile_function_alto;
+
+
 
             //Sobreescribimos el texto "512k" encima
             if (MACHINE_IS_PCW_8512) {
@@ -24000,10 +24469,10 @@ void help_keyboard_start_generate_key_mouse_click(zxvision_window *ventana)
     //printf ("inicio pulsar raton: %d\n",contador_segundo_infinito);
     menu_help_keyboard_overlay_force_draw=1;
     int pulsado_x,pulsado_y;
-    zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+    zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
 
-    pulsado_x *=zoom_x;
-    pulsado_y *=zoom_y;
+    pulsado_x /=menu_help_keyboard_zoom_factor;
+    pulsado_y /=menu_help_keyboard_zoom_factor;
 
     if (menu_help_show_keyboard_debug_ultimo_click_x!=pulsado_x && menu_help_show_keyboard_debug_ultimo_click_y!=pulsado_y) {
         //Debug para mostrar coordenada pulsada
@@ -24021,6 +24490,51 @@ void help_keyboard_start_generate_key_mouse_click(zxvision_window *ventana)
     //printf ("despues pulsar raton: %d\n",contador_segundo_infinito);
 
 }
+
+int menu_help_keyboard_last_visible_width=0;
+int menu_help_keyboard_last_visible_height=0;
+
+void menu_help_keyboard_recalculate_zoom_factor(zxvision_window *w)
+{
+
+//Factor de zoom exclusivo para esta ventana
+/*
+int menu_help_keyboard_zoom_factor=1;
+
+//Ultimo ancho y alto leido del bmp
+
+int menu_help_keyboard_bmp_last_ancho=0;
+int menu_help_keyboard_bmp_last_alto=0;
+*/
+    if (menu_help_keyboard_last_visible_width && menu_help_keyboard_last_visible_height && menu_help_keyboard_bmp_last_ancho && menu_help_keyboard_bmp_last_alto) {
+        //tamanyo ventana en pixeles
+        int ancho=w->visible_width * menu_char_width * zoom_x * menu_gui_zoom;
+        int alto=w->visible_height * menu_char_height * zoom_y * menu_gui_zoom;
+
+        int possible_zoom_x,possible_zoom_y,possible_zoom;
+
+        possible_zoom_x=ancho/menu_help_keyboard_bmp_last_ancho;
+        possible_zoom_y=alto/menu_help_keyboard_bmp_last_alto;
+
+
+        //elegimos el menor
+        //printf("possible zoom_x: %d possible zoom_y: %d\n",possible_zoom_x,possible_zoom_y);
+        if (possible_zoom_x<possible_zoom_y) possible_zoom=possible_zoom_x;
+        else possible_zoom=possible_zoom_y;
+
+        //printf("final zoom: %d\n",possible_zoom);
+
+        if (possible_zoom==0) possible_zoom=1;
+
+        if (possible_zoom>0) menu_help_keyboard_zoom_factor=possible_zoom;
+    }
+
+
+    menu_help_keyboard_last_visible_width=w->visible_width;
+    menu_help_keyboard_last_visible_height=w->visible_height;
+
+}
+
 
 void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 {
@@ -24054,14 +24568,13 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
 
 
             //540x201 es lo que ocupa el bmp de spectrum 48k
 
-            ancho=1+1+540/menu_char_width/zoom_x;
+            ancho=1+1+540/menu_char_width; // /zoom_x;
 
-            alto=1+2+201/8/zoom_y;
+            alto=1+2+201/menu_char_height; // /zoom_y;
 
             //printf ("ancho %d alto %d\n",ancho,alto);
 
@@ -24147,6 +24660,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         //No se puede empezar pulsando tecla en el teclado y luego con raton, que querriamos que usase este "if" de abajo,
         //porque cuando se deja de pulsar el tecla se liberan todos los puertos y entonces se pararia de enviar pulsaciones de raton
 
+
+        menu_help_keyboard_recalculate_zoom_factor(ventana);
+
         if ((tecla || todos_puertos_teclado_acumulado!=255) && !mouse_left && !mouse_right) {
             //printf("generar tecla en condicion de tecla pulsada. tecla=%d mouse_left: %d mouse_right: %d todos_puertos_teclado_acumulado=%d\n",
             //    tecla,mouse_left,mouse_right,todos_puertos_teclado_acumulado);
@@ -24200,10 +24716,10 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         if (mouse_right && si_menu_mouse_en_ventana_no_en_scrolls() ) {
 
             int pulsado_x,pulsado_y;
-            zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+            zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
 
-            pulsado_x *=zoom_x;
-            pulsado_y *=zoom_y;
+            pulsado_x /=menu_help_keyboard_zoom_factor;
+            pulsado_y /=menu_help_keyboard_zoom_factor;
 
             menu_help_keyboard_overlay_force_draw=1;
 
@@ -24228,10 +24744,11 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         {
             //printf("ver si iluminar\n");
             int pulsado_x,pulsado_y;
-            zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+            zxvision_get_mouse_in_window_no_zooms(ventana,&pulsado_x,&pulsado_y);
+            //printf("x %d y %d\n",pulsado_x,pulsado_y);
 
-            pulsado_x *=zoom_x;
-            pulsado_y *=zoom_y;
+            pulsado_x /=menu_help_keyboard_zoom_factor;
+            pulsado_y /=menu_help_keyboard_zoom_factor;
             menu_help_keyboard_highlight_key_mouse(pulsado_x,pulsado_y);
         }
 
@@ -24267,7 +24784,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     else {
         zxvision_destroy_window(ventana);
         free(help_keyboard_bmp_file_mem);
-     }
+    }
 
 
 }
@@ -24449,8 +24966,6 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=0;
             ancho=DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH; //32;
             alto=18;
 
@@ -24849,8 +25364,6 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=33;
             alto=22;
 
@@ -25056,8 +25569,6 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            //x=menu_origin_x();
-            //y=1;
             ancho=33;
             alto=22;
 
@@ -29123,17 +29634,6 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-
-
-
-
-
-
-//#define VISUALREALTAPE_X (menu_origin_x())
-//#define VISUALREALTAPE_Y 4
 #define VISUALREALTAPE_ANCHO 32
 #define VISUALREALTAPE_ALTO 20
 
@@ -30472,7 +30972,7 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
         break;
 
         case 5:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X;
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_POR;
         break;
 
         case 6:
@@ -30480,14 +30980,22 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
         break;
 
         case 7:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95;
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR;
         break;
 
         case 8:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95_SPA;
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA;
         break;
 
         case 9:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95_POR;
+        break;
+
+        case 10:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95_SPA;
+        break;
+
+        case 11:
             current_machine_type=MACHINE_ID_TIMEX_TC2048;
         break;
 
@@ -30613,16 +31121,20 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,3);
             menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
-            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Portuguese)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
             menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,6);
-            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Ferranti Portuguese)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,7);
-            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95 (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Ferranti Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,8);
-            menu_add_item_menu(array_menu_machine_selection,"Timex Computer 2048",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95 (Portuguese)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,9);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95 (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,10);
+            menu_add_item_menu(array_menu_machine_selection,"Timex Computer 2048",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,11);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128",MENU_OPCION_NORMAL,hotswap_1648_to_128k,NULL);
 
         }
@@ -32268,10 +32780,10 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 
             "\n"
 
-            "On ZX Desktop:\n"
+            "On DAVID Desktop:\n"
             "- Left mouse button click on an icon to open it or trigger an action\n"
             "- Right mouse button click on an icon to get properties or actions of that icon; "
-            "right click on the ZX Desktop for icon actions or desktop properties\n"
+            "right click on the DAVID Desktop for icon actions or desktop properties\n"
 
             "\n"
 
@@ -32316,7 +32828,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
 
         zxvision_generic_message("Background Windows Help",
             "When you enable Background Windows (from Settings-> ZX Vision), "
-            "some features are added to the ZX Desktop and some behaviour is modified. \n"
+            "some features are added to the DAVID Desktop and some behaviour is modified. \n"
             "\n"
             "First, we will refer to 'menu' to all the menu windows and all the windows in background. "
             "When we say that the 'menu is open' or the 'menu is closed', we refer to all the menu windows and all the windows "
@@ -32335,7 +32847,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
             "If it's not allowed, the current window will be closed. \n"
             "Some background windows don't refresh their contents when they are in background, like Debug CPU. \n"
             "\n"
-            "Pressing F5 when on menu or pressing the ZEsarUX logo button (on the top left of ZX Desktop) will send you back to the main menu.\n"
+            "Pressing F5 when on menu or pressing the ZEsarUX logo button (on the top left of DAVID Desktop) will send you back to the main menu.\n"
             "Pressing Shift+Cursor Right will switch to another background window.\n"
             "\n"
 
@@ -32701,12 +33213,12 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     //Nota: estoy habilitando aqui algunas opciones que en ZEsarUX no vienen activadas por defecto (como visibilidad de tooltips por ejemplo)
 
     //Textos en los diferentes idiomas
-    char *mensaje_zxdesktop_english="ZX Desktop allows you to enlarge the main window by adding a Desktop area "
-        "so you can have icons and menus located there. Do you want to enable ZX Desktop?";
-    char *mensaje_zxdesktop_spanish="ZX Desktop permite agrandar la ventana principal añadiendo una zona de escritorio "
-        "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar ZX Desktop?";
-    char *mensaje_zxdesktop_catalan="ZX Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
-        "de tal manera que pots tenir icones i menús localizats allà. Vols activar ZX Desktop?";
+    char *mensaje_zxdesktop_english="DAVID Desktop allows you to enlarge the main window by adding a Desktop area "
+        "so you can have icons and menus located there. Do you want to enable DAVID Desktop?";
+    char *mensaje_zxdesktop_spanish="DAVID Desktop permite agrandar la ventana principal añadiendo una zona de escritorio "
+        "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar DAVID Desktop?";
+    char *mensaje_zxdesktop_catalan="DAVID Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
+        "de tal manera que pots tenir icones i menús localizats allà. Vols activar DAVID Desktop?";
 
     char *mensaje_autosnapshot_spanish="Quieres autograbar el estado de la máquina emulada (snapshot) al salir? "
         "Y se restaura automáticamente al inicio";
@@ -32741,19 +33253,19 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     char *mensaje_fin_spanish="Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
         "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
-        "superiores si has habilitado ZX Desktop.\n"
+        "superiores si has habilitado DAVID Desktop.\n"
         "Puedes ahora cerrar esta ventana pulsando ESC, ENTER o haciendo click izquierdo con el ratón "
         "en el botón superior izquierdo de la ventana. Que lo disfrutes!";
 
     char *mensaje_fin_catalan="Finalitzat l'assistent inicial, pots començar a utilitzar ZEsarUX.\n"
         "Per obrir el menú, pots fer servir F5, prémer el botó esquerre del ratolí sobre el fons, o prémer alguna de les icones de menú "
-        "superiors si has habilitat ZX Desktop.\n"
+        "superiors si has habilitat DAVID Desktop.\n"
         "Pots ara tancar aquesta finestra prement ESC, ENTER o fent clic esquerre amb el ratolí "
         "al botó superior esquerre de la finestra. Que ho gaudeixis!";
 
     char *mensaje_fin_english="After completing the initial wizard, you can start using ZEsarUX.\n"
         "To open the menu, you can use F5, left-click on the background, or click on one of the menu icons at the top "
-        "if you have enabled ZX Desktop.\n"
+        "if you have enabled DAVID Desktop.\n"
         "You can now close this window by pressing ESC, ENTER, or left-clicking the mouse "
         "on the top left button of the window. Enjoy!";
 
@@ -35739,7 +36251,7 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
                 }
                 else {
                     zxvision_create_configurable_icon(F_FUNCION_SEND_KEYS_MENU,"Send keys",&zxvision_helper_shorcuts_accumulated[5]);
-                    menu_generic_message_splash("Create link","Ok created link on ZX Desktop");
+                    menu_generic_message_splash("Create link","Ok created link on DAVID Desktop");
                 }
             break;
 
@@ -36623,13 +37135,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
         }
 
-        if (MACHINE_IS_Z88 || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM || MACHINE_IS_TBBLUE || superupgrade_enabled.v || MACHINE_IS_TSCONF || MACHINE_IS_BASECONF) {
+        if (MACHINE_IS_Z88 || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM || MACHINE_IS_TBBLUE || superupgrade_enabled.v || MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX) {
             menu_add_item_menu(array_menu_debug,"~~Hard Reset",MENU_OPCION_NORMAL,menu_debug_hard_reset,NULL);
             menu_add_item_menu_shortcut(array_menu_debug,'h');
             menu_add_item_menu_tooltip(array_menu_debug,"Hard resets the machine");
             menu_add_item_menu_ayuda(array_menu_debug,"Hard resets the machine.\n"
                 "On Z88, it's the same as opening flap and pressing reset button.\n"
-                "On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine"
+                "On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine.\n"
+                "On Scorpion GMX, returns to the GMX boot loader from the selected hardware scheme."
                 );
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_se_cerrara(array_menu_debug);
@@ -36786,7 +37299,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
 
-        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
+        if (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX || MACHINE_IS_TBBLUE || MACHINE_IS_CPC || MACHINE_IS_ATM_TURBO) {
             if (MACHINE_IS_TSCONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"~~TSConf");
                 menu_add_item_menu_shortcut(array_menu_debug,'t');
@@ -36794,6 +37307,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             }
             if (MACHINE_IS_BASECONF) {
                 menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"BaseConf");
+                menu_add_item_menu_tiene_submenu(array_menu_debug);
+            }
+            if (MACHINE_IS_SCORPION_GMX) {
+                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"Scorpion GMX");
+                menu_add_item_menu_tiene_submenu(array_menu_debug);
+            }
+            if (MACHINE_IS_ATM_TURBO) {
+                menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_tsconf_tbblue_msx,NULL,"ATM Turbo");
                 menu_add_item_menu_tiene_submenu(array_menu_debug);
             }
             if (MACHINE_IS_TBBLUE) {
@@ -43168,7 +43689,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
+        if (MACHINE_HAS_CF2_FLOPPY) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" CF2 F~~loppy");
             menu_add_item_menu_shortcut(array_menu_storage,'l');
             menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_COMPACT_FLOPPY));
@@ -47220,7 +47741,7 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
             int respuesta=menu_simple_six_choices("Action","Do you want to",
                 (ventana_pulsada->is_minimized ? "Unminimize" : "Minimize"),
                 (ventana_pulsada->is_maximized ? "Unmaximize" : "Maximize"),
-                "Switch always visible","Information","Close","Create link on ZX Desktop");
+                "Switch always visible","Information","Close","Create link on DAVID Desktop");
 
             ventana->always_visible=antes_always_visible;
             zxvision_reset_set_next_menu_position();
@@ -51320,7 +51841,7 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
 
 //
-// Fin funciones de dispositivos especificos en el ZX Desktop
+// Fin funciones de dispositivos especificos en el DAVID Desktop
 //
 
 
@@ -51391,6 +51912,9 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
             "templatewindowname",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+
+        //Si se quiere definir funcion de cierre de ventana
+        //ventana->close_window_function=menu_template_window_can_be_backgrounded_close_window_function;
 
     }
 
@@ -51467,6 +51991,9 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
     }
 
     else {
+        if (ventana->close_window_function!=NULL) {
+            ventana->close_window_function();
+        }
         zxvision_destroy_window(ventana);
     }
 

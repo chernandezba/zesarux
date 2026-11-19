@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "z80 tests. errores de flags normalmente en: BIT n,(HL). errores de memptr en ninguno"
+echo "z80 tests. van todos"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus extras/media/spectrum/tests/z80tests.tap
 
@@ -8,13 +8,13 @@ echo "z80doc tests. van todos"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus ./extras/media/spectrum/tests/z80doc.tap
 
-echo "fusetest. en 48k, 128k. falla Floating bus. skipped read 3ffd, 7ffd. en +2a falla ademas LDIR, Floating bus skipped, bffd read failed. en 128k dado que lee puerto
-paginacion, se pone pantalla en negro"
+echo "fusetest. en 48k, 128k. skipped read 3ffd, 7ffd en 48k. en 128k todo ok. en +2a Floating bus skipped, skipped read 3ffd, 7ffd"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus ./extras/media/spectrum/tests/fusetest.tap
 ./zesarux --noconfigfile --advancedmenus --machine 128k ./extras/media/spectrum/tests/fusetest.tap
+./zesarux --noconfigfile --advancedmenus --machine p2as ./extras/media/spectrum/tests/fusetest.tap
 
-echo "Timing_Tests-48k_v1.0.sna. errores normalmente en test 36 in a etc, test 37 in a etc"
+echo "Timing_Tests-48k_v1.0.sna. van todos"
 sleep 4
 ./zesarux --noconfigfile --advancedmenus ./extras/media/spectrum/tests/Timing_Tests-48k_v1.0.sna
 

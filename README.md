@@ -16,18 +16,21 @@ It's a ZX Machines Emulator for UNIX based operating systems (and Windows), incl
 
 And also:
 
-* Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
+* Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portuguese and Spanish, Ferranti and Microdigital ULA), TK95 (Portuguese and Spanish)
 * Czerweny CZ 1000, CZ 1500, CZ 2000, CZ 1000 Plus, CZ 1500 Plus, CZ Spectrum, CZ Spectrum Plus
 * Timex Sinclair 1000, 1500, 2068
 * Timex Computer 2048, 2068
 * Inves Spectrum +
 * Sam Coupe
 * Pentagon 
+* Scorpion ZS-256, Scorpion ZS-256 Turbo+, Scorpion GMX
+* ATM Turbo 1, ATM Turbo 2, ATM Turbo 2+, ATM Turbo 3
+* Didaktik Gama
 * Chloe 140 SE, 280 SE
 * Chrome
 * Prism
 * ZX-Uno
-* ZX-Evolution BaseConf (beta)
+* ZX-Evolution BaseConf
 * ZX-Evolution TS-Conf
 * ZX Spectrum Next
 * Jupiter Ace
@@ -116,13 +119,16 @@ __FEATURES__
     * Sinclair ZX Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish)
     * Sinclair QL
     * Cambridge Z88
-    * Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
+    * Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portuguese and Spanish, Ferranti and Microdigital ULA), TK95 (Portuguese and Spanish)
     * Czerweny CZ 1000, CZ 1500, CZ 1000 Plus, CZ 1500 Plus, CZ 2000, CZ Spectrum, CZ Spectrum Plus
     * Timex Sinclair 1000, 1500, 2068
     * Timex Computer 2048, 2068
     * Inves Spectrum +
     * Sam Coupe
     * Pentagon
+    * Scorpion ZS-256, Scorpion ZS-256 Turbo+, Scorpion GMX
+    * ATM Turbo 1, ATM Turbo 2, ATM Turbo 2+, ATM Turbo 3
+    * Didaktik Gama
     * Chloe 140 SE, 280 SE
     * Chrome
     * Prism

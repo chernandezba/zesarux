@@ -121,6 +121,9 @@
 #include "qsound.h"
 #include "menu_bitmaps.h"
 #include "baseconf.h"
+#include "scorpion.h"
+#include "atmturbo.h"
+#include "didaktikgama.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -837,7 +840,7 @@ void cpu_panic(char *mensaje)
             cpu_panic_xmax=screen_get_emulated_display_width_zoom_border_en();
             cpu_panic_ymax=screen_get_emulated_display_height_zoom_border_en();
 
-            //Extenderlo al zx desktop
+            //Extenderlo al DAVID desktop
             if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() ) {
                 cpu_panic_xmax +=screen_get_ext_desktop_width_zoom();
                 cpu_panic_ymax +=screen_get_ext_desktop_height_zoom();
@@ -3798,6 +3801,27 @@ void cpu_history_regs_bin_restore(int indice)
     }
   }
 
+  if (MACHINE_IS_SCORPION) {
+    if (puerto_32765!=nuevo_puerto_32765) {
+        //printf("Hay cambio de ram y/o rom en %04XH. puerto 32765=%02XH. indice=%d\n",reg_pc,nuevo_puerto_32765,indice);
+
+        //Quitar el bit de bloqueo de paginacion si es que hay alguno ahora mismo, o no podriamos paginar
+        puerto_32765 &= (255-32);
+
+
+        puerto_32765=nuevo_puerto_32765;
+
+        //asignar ram
+        scorpion_mem_page_ram();
+
+        //asignar rom
+        scorpion_mem_page_rom();
+
+
+
+    }
+  }
+
 
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
@@ -5845,7 +5869,7 @@ void debug_get_ioports(char *stats_buffer)
 
 
           //margen suficiente para que quepan lineas largas
-          char buf_linea[100];
+          char buf_linea[200];
 
           index_buffer=0;
 
@@ -6068,7 +6092,8 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
                   sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
           }
 
-      if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_128_P2 || TBBLUE_MACHINE_P2A) {
+      if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || MACHINE_IS_CHLOE ||
+        superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_128_P2 || TBBLUE_MACHINE_P2A || MACHINE_IS_SCORPION) {
 
         //En el caso de zxuno, no mostrar si paginacion desactivada por DI7FFD
         int mostrar=1;
@@ -6081,7 +6106,8 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         }
     }
 
-      if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_P2A) {
+      if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || superupgrade_enabled.v ||
+        MACHINE_IS_CHROME || TBBLUE_MACHINE_P2A || MACHINE_IS_SCORPION) {
         //En el caso de zxuno, no mostrar si paginacion desactivada por DI1FFD
         int mostrar=1;
 
@@ -6092,6 +6118,74 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
               sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
       }
+
+      if (MACHINE_IS_SCORPION_GMX) {
+            sprintf (buf_linea,"Scorpion GMX Registers\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," DFFD port: %02X\n",scorpion_gmx_port_dffd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," 78FD port: %02X\n",scorpion_gmx_port_78fd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," 7EFD port: %02X\n",scorpion_gmx_port_7efd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," XX00 port: %02X\n",scorpion_gmx_port_00);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," FLEX8000 active scheme: %02X\n",scorpion_gmx_active_scheme);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," Magic shift: %02X\n",scorpion_gmx_magic_shift);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            if (zcontroller_enabled.v) {
+                sprintf (buf_linea," ZController control: %02X\n",scorpion_gmx_zcontroller_control);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+
+
+      }
+
+        if ((MACHINE_IS_TSCONF || MACHINE_IS_SCORPION_GMX) && ide_smuc_enabled.v) {
+            sprintf (buf_linea,"IDE SMUC Registers\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC control: %02X\n",ide_smuc_control);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC config: %02X\n",ide_smuc_config);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC ATA data high: %02X\n",ide_smuc_data_high);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC IDENTIFY first word pending: %d\n",ide_smuc_identify_first_word);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM initialized: %d\n",ide_smuc_eeprom_initialized);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM state: %d\n",ide_smuc_eeprom_state);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM address: %03X\n",ide_smuc_eeprom_address);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM input: %02X (%d bits)\n",ide_smuc_eeprom_input,ide_smuc_eeprom_input_bits);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM output: %02X (%d bits)\n",ide_smuc_eeprom_output,ide_smuc_eeprom_output_bits);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM SDA released: %d\n",ide_smuc_eeprom_release);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," SMUC EEPROM bus: %02X\n",ide_smuc_eeprom_bus);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
 
     if (MACHINE_IS_PCW) {
         int i;
@@ -6269,6 +6363,90 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
       sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        sprintf (buf_linea,"\nATM Turbo ports:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," 7FFD: %02XH (RAM/ROM paging)\n",puerto_32765);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," XXFE: %02XH (ULA/border), address: %04XH\n",out_254_original_value,atmturbo_port_fe);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," Video mode: %d; border index: %02XH\n",
+            atmturbo_get_video_mode(),atmturbo_border_colour);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," TR-DOS: %s\n",atmturbo_trdos_active ? "active" : "inactive");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        {
+            int segmento;
+            for (segmento=0;segmento<4;segmento++) {
+                int pagina=debug_paginas_memoria_mapeadas[segmento];
+                sprintf (buf_linea," %04X: %s %d\n",segmento*0x4000,
+                    (pagina & DEBUG_PAGINA_MAP_ES_ROM) ? "ROM" : "RAM",
+                    pagina & DEBUG_PAGINA_MAP_MASK);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+        }
+
+        if (MACHINE_IS_ATM_TURBO1) {
+            sprintf (buf_linea," CP/M ROM: %s\n",atmturbo_cpsys ? "active" : "inactive");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," FDFD: %02XH (RAM bank)\n",puerto_fdfd);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," 7DFD: palette write (no register)\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," FDC selected: %s\n",atmturbo_fdc_selected ? "yes" : "no");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+        else {
+            int i;
+            sprintf (buf_linea," XX77 address: %04XH (PEN/CP/M/shadow)\n",atmturbo2_port_77);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," PEN: %s; CP/M: %s\n",
+                (atmturbo2_port_77 & 0x100) ? "enabled" : "disabled",
+                (atmturbo2_port_77 & 0x200) ? "disabled" : "enabled");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," Shadow ports: %s; palette port: %s\n",
+                atmturbo2_shadow_ports_enabled() ? "enabled" : "disabled",
+                atmturbo2_palette_port_enabled() ? "enabled" : "disabled");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            sprintf (buf_linea," XXF7: MMU entries (ROM/RAM and page)\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            for (i=0;i<8;i++) {
+                sprintf (buf_linea,"  MMU%d: %03XH\n",i,atmturbo2_mmu[i]);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+
+            sprintf (buf_linea," XXFF: palette write (no register)\n");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+            if (MACHINE_IS_ATM_TURBO2PLUS_TURBO3) {
+                sprintf (buf_linea," XT keyboard: mode %d, %s; frame IRQ: %s\n",
+                    atmturbo2plus_keyboard_mode,
+                    atmturbo2plus_keyboard_disabled ? "disabled" : "enabled",
+                    atmturbo2plus_int_enabled ? "enabled" : "disabled");
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+
+            if (MACHINE_IS_ATM_TURBO3) {
+                sprintf (buf_linea," XXBF: %02XH (shadow ports/MMU/RGB444)\n",atmturbo3_port_bf);
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+                sprintf (buf_linea," XXE7: extended MMU (no register)\n");
+                sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+        }
+    }
+
     if (MACHINE_IS_BASECONF) {
         sprintf (buf_linea,"\nBaseConf ports:\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -6358,16 +6536,52 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
       }
 
     if (MACHINE_IS_TSCONF) {
+        sprintf (buf_linea,"TSConf CPU Cache:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                                  sprintf (buf_linea,"TSConf Registers:\n");
-                                  sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        const char *cache_cpu_mhz=(cpu_turbo_speed==4) ? "14" :
+                                  (cpu_turbo_speed==2) ? "7" : "3.5";
+        sprintf (buf_linea," CPU: %s MHz, CacheConfig: %02XH\n",
+                  cache_cpu_mhz,tsconf_af_ports[0x2b]&15);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-                                  int index_ioport;
-                                  for (index_ioport=0;index_ioport<256;index_ioport++) {
-                                      sprintf (buf_linea,"%02X : %02X \n",index_ioport,tsconf_af_ports[index_ioport] );
-                                      sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
-                                      index_buffer +=strlen(buf_linea);
-                                  }
+        int cache_window;
+        for (cache_window=0;cache_window<4;cache_window++) {
+            struct tsconf_cache_debug_info info;
+            tsconf_get_cache_debug_info(cache_window,&info);
+            unsigned long long total=info.hits+info.misses;
+            int hit_percent=total ? (int)((info.hits*100)/total) : 0;
+            int miss_percent=total ? (int)((info.misses*100)/total) : 0;
+
+            sprintf (buf_linea," %04X-%04X: %s #%02X cache %s\n",
+                      cache_window<<14,(cache_window<<14)+0x3fff,
+                      info.is_ram ? "RAM" : "ROM",info.page,info.enabled ? "ON" : "OFF");
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea,"  Hits: %llu (%d%%), misses: %llu (%d%%)\n",
+                      info.hits,hit_percent,info.misses,miss_percent);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+        unsigned long long total_hits;
+        unsigned long long total_misses;
+        tsconf_get_cache_debug_totals(&total_hits,&total_misses);
+        unsigned long long total_accesos=total_hits+total_misses;
+        int total_hit_percent=total_accesos ? (int)((total_hits*100)/total_accesos) : 0;
+        int total_miss_percent=total_accesos ? (int)((total_misses*100)/total_accesos) : 0;
+        sprintf (buf_linea," Total hits: %llu (%d%%), misses: %llu (%d%%)\n",
+                  total_hits,total_hit_percent,total_misses,total_miss_percent);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea," Window counters: since page change; total: since reset/cache/speed change\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"\nTSConf Registers:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        int index_ioport;
+        for (index_ioport=0;index_ioport<256;index_ioport++) {
+            sprintf (buf_linea,"%02X : %02X \n",index_ioport,tsconf_af_ports[index_ioport] );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
+            index_buffer +=strlen(buf_linea);
+        }
       }
 
       //Registros ULA2 de Prism, paginacion, etc
@@ -7713,7 +7927,75 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         strcpy (segmentos[1].longname,"RAM (1 KB)");
     }
 
-            //TODO SMS
+    //TODO SMS
+
+    if (MACHINE_IS_SCORPION) {
+        int pagina;
+        segmentos_totales=4;
+
+        for (pagina=0;pagina<segmentos_totales;pagina++) {
+            int mapped_page=debug_paginas_memoria_mapeadas[pagina];
+            int page=mapped_page & DEBUG_PAGINA_MAP_MASK;
+
+            segmentos[pagina].start=pagina*16384;
+            segmentos[pagina].length=16384;
+
+            if (mapped_page & DEBUG_PAGINA_MAP_ES_ROM) {
+                sprintf(segmentos[pagina].shortname,"O%02d",page);
+                sprintf(segmentos[pagina].longname,"ROM %d",page);
+            }
+            else {
+                sprintf(segmentos[pagina].shortname,"A%02d",page);
+                sprintf(segmentos[pagina].longname,"RAM %d",page);
+            }
+        }
+    }
+
+    if (MACHINE_IS_ATM_TURBO) {
+        int pagina;
+        segmentos_totales=4;
+
+        for (pagina=0;pagina<segmentos_totales;pagina++) {
+            int mapped_page=debug_paginas_memoria_mapeadas[pagina];
+            int page=mapped_page & DEBUG_PAGINA_MAP_MASK;
+
+            //En ATM1 el registro de depuración solo guarda los tres bits bajos de la página C000.
+            if (MACHINE_IS_ATM_TURBO1 && pagina==3)
+                page=((puerto_fdfd&3)*8)+(puerto_32765&7);
+
+            segmentos[pagina].start=pagina*16384;
+            segmentos[pagina].length=16384;
+
+            if (mapped_page & DEBUG_PAGINA_MAP_ES_ROM) {
+                sprintf(segmentos[pagina].shortname,"O%02d",page);
+                sprintf(segmentos[pagina].longname,"ROM %d",page);
+            }
+            else {
+                sprintf(segmentos[pagina].shortname,"A%02d",page);
+                sprintf(segmentos[pagina].longname,"RAM %d",page);
+            }
+        }
+    }
+
+    if (MACHINE_IS_DIDAKTIKGAMA) {
+
+        segmentos_totales=3;
+
+        segmentos[0].length=16384;
+        segmentos[0].start=0;
+        strcpy (segmentos[0].shortname,"ROM");
+        strcpy (segmentos[0].longname,"ROM");
+
+        segmentos[1].length=16384;
+        segmentos[1].start=16384;
+        strcpy (segmentos[1].shortname,"VRAM");
+        strcpy (segmentos[1].longname,"VRAM");
+
+        segmentos[2].length=32768;
+        segmentos[2].start=32768;
+        sprintf (segmentos[2].shortname,"BANK%c",'A'+didaktikgama_get_current_ram_page() );
+        sprintf (segmentos[2].longname,"BANK%c",'A'+didaktikgama_get_current_ram_page() );
+    }
 
 
     //Paginas RAM en CHLOE
@@ -7950,14 +8232,19 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         segmentos_totales=4;
         int pagina;
         for (pagina=0;pagina<4;pagina++) {
-            if (sam_memory_paged_type[pagina]==0) {
-                sprintf (segmentos[pagina].shortname,"RAM%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_RAM) {
+                sprintf (segmentos[pagina].shortname,"RA%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
                 sprintf (segmentos[pagina].longname,"RAM %02d",debug_sam_paginas_memoria_mapeadas[pagina]);
             }
 
-            if (sam_memory_paged_type[pagina]) {
-                sprintf (segmentos[pagina].shortname,"ROM%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_ROM) {
+                sprintf (segmentos[pagina].shortname,"RO%02d",debug_sam_paginas_memoria_mapeadas[pagina]);
                 sprintf (segmentos[pagina].longname,"ROM %02d",debug_sam_paginas_memoria_mapeadas[pagina]);
+            }
+
+            if (sam_memory_paged_type[pagina]==SAM_MEMORY_PAGE_UNMAPPED) {
+                sprintf (segmentos[pagina].shortname,"N/A");
+                sprintf (segmentos[pagina].longname,"Unmapped RAM");
             }
 
             segmentos[pagina].length=16384;

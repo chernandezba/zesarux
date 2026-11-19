@@ -1,0 +1,112 @@
+/*
+    ZEsarUX  ZX Second-Emulator And Released for UniX
+    Copyright (C) 2013 Cesar Hernandez Bano
+
+    This file is part of ZEsarUX.
+
+    ZEsarUX is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+#ifndef SCORPION_H
+#define SCORPION_H
+
+#include "cpu.h"
+
+#define SCORPION_ROM_SIZE 64
+#define SCORPION_RAM_SIZE 256
+#define SCORPION_TOTAL_RAM_PAGES (SCORPION_RAM_SIZE/16)
+#define SCORPION_TOTAL_ROM_PAGES (SCORPION_ROM_SIZE/16)
+
+
+#define SCORPIONGMX_DISPLAY_WIDTH 640
+#define SCORPIONGMX_DISPLAY_HEIGHT 400
+
+#define SCORPIONGMX_LEFT_BORDER_NO_ZOOM 40
+#define SCORPIONGMX_RIGHT_BORDER_NO_ZOOM 40
+#define SCORPIONGMX_TOP_BORDER_NO_ZOOM 88
+#define SCORPIONGMX_BOTTOM_BORDER_NO_ZOOM 88
+
+#define SCORPIONGMX_LEFT_BORDER SCORPIONGMX_LEFT_BORDER_NO_ZOOM*zoom_x
+#define SCORPIONGMX_RIGHT_BORDER SCORPIONGMX_RIGHT_BORDER_NO_ZOOM*zoom_x
+#define SCORPIONGMX_TOP_BORDER SCORPIONGMX_TOP_BORDER_NO_ZOOM*zoom_y
+#define SCORPIONGMX_BOTTOM_BORDER SCORPIONGMX_BOTTOM_BORDER_NO_ZOOM*zoom_y
+
+
+#define SCORPIONGMX_ROM_SIZE 512
+#define SCORPIONGMX_RAM_SIZE 2048
+
+#define SCORPIONGMX_TOTAL_ROM_PAGES (SCORPIONGMX_ROM_SIZE/16)
+#define SCORPIONGMX_TOTAL_RAM_PAGES (SCORPIONGMX_RAM_SIZE/16)
+
+
+extern void scorpion_malloc_mem_machine(void);
+
+extern void scorpion_mem_page_rom(void);
+extern void scorpion_trdos_update(z80_int dir);
+extern int scorpion_trdos_is_active(void);
+extern int scorpion_gmx_kempston_port_enabled(z80_int port);
+extern int scorpion_gmx_zcontroller_read(z80_int port,z80_byte *value);
+extern int scorpion_gmx_zcontroller_write(z80_int port,z80_byte value);
+extern z80_bit zcontroller_enabled;
+extern void scorpion_mem_page_ram(void);
+extern void scorpion_write_port_1ffd(z80_byte value);
+extern void scorpion_gmx_write_port(z80_int port,z80_byte value);
+extern z80_byte scorpion_gmx_read_port(z80_int port);
+extern int scorpion_gmx_uses_pentagon_timing(void);
+extern int scorpion_gmx_is_pentagon_scheme(void);
+extern void scorpion_gmx_power_on(void);
+extern void scorpion_nmi(void);
+extern int scorpion_nmi_ram_fetch_seen(void);
+extern int scorpion_gmx_magic_enabled(void);
+extern int scorpion_gmx_7ffd_paging_enabled(void);
+extern z80_byte scorpion_read_ay_port_a(z80_byte ay_value);
+
+extern z80_bit scorpion_trdos_active;
+
+extern z80_byte *scorpion_ram_mem_table[];
+extern z80_byte *scorpion_rom_mem_table[];
+extern z80_byte *scorpion_memory_paged[];
+extern z80_byte scorpion_gmx_active_scheme;
+extern z80_byte scorpion_gmx_magic_shift;
+extern z80_byte scorpion_gmx_port_00;
+extern z80_byte scorpion_gmx_port_7efd;
+extern z80_byte scorpion_gmx_port_dffd;
+extern z80_byte scorpion_gmx_port_78fd;
+extern z80_byte scorpion_gmx_zcontroller_control;
+extern void scorpion_set_normal_pages(void);
+
+
+extern void scorpion_set_cpu_speed(int turbo);
+extern void scorpion_gmx_set_normal_speed(void);
+extern void scorpion_gmx_set_turbo_speed(void);
+
+extern z80_byte fetch_opcode_scorpion(void);
+extern void poke_byte_scorpion(z80_int dir,z80_byte valor);
+extern void poke_byte_no_time_scorpion(z80_int dir,z80_byte valor);
+extern z80_byte peek_byte_scorpion(z80_int dir);
+extern z80_byte peek_byte_no_time_scorpion(z80_int dir);
+
+extern void scorpiongmx_refresca_pantalla(void);
+extern void scorpiongmx_store_scanline_rainbow_display(void);
+extern void scorpiongmx_store_scanline_rainbow_border(void);
+
+extern int if_scorpiongmx_mode_640_200(void);
+extern int scorpion_gmx_get_scroll_lines(void);
+extern z80_int scorpion_gmx_get_scroll_register(void);
+extern void scorpion_gmx_set_scroll_register(z80_int value);
+
+extern void scorpion_reset(void);
+
+#endif

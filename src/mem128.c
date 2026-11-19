@@ -44,6 +44,9 @@
 #include "sms.h"
 #include "svi.h"
 #include "if1.h"
+#include "scorpion.h"
+#include "didaktikgama.h"
+#include "atmturbo.h"
 
 //Direcciones donde estan cada pagina de ram
 //Antes habian 8 solo (8 paginas de 16kb cada una)
@@ -55,6 +58,7 @@ z80_byte *ram_mem_table[64];
 //array para +2a usamos 4 elementos
 //para 128, +2 usamos 2 elementos
 z80_byte *rom_mem_table[4];
+z80_byte *pentagon_trdos_rom;
 
 //Direcciones actuales mapeadas
 z80_byte *memory_paged[4];
@@ -191,6 +195,24 @@ z80_byte *get_base_mem_pantalla_continue(void)
 	if (superupgrade_enabled.v) return superupgrade_ram_memory_table[5];
 
 	if (MACHINE_IS_SPECTRUM_16_48) return &memoria_spectrum[16384];
+
+    if (MACHINE_IS_DIDAKTIKGAMA) return didaktikgama_memory_paged[1];
+
+	if (MACHINE_IS_SCORPION) {
+
+		if (puerto_32765 & 8) {
+			return scorpion_ram_mem_table[7];
+		}
+		else return scorpion_ram_mem_table[5];
+	}
+
+	if (MACHINE_IS_ATM_TURBO) {
+
+		if (puerto_32765 & 8) {
+			return atmturbo_ram_mem_table[7];
+		}
+		else return atmturbo_ram_mem_table[5];
+	}
 
 	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
 
@@ -624,7 +646,16 @@ void mem_page_ram_128k(void)
         //asignar ram
 	memory_paged[3]=ram_mem_table[ramentra];
 
-	contend_pages_actual[3]=contend_pages_128k_p2a[ramentra];
+    if (ramentra>7) {
+        //Sin contienda con paginas mas alla de la 7
+        contend_pages_actual[3]=0;
+    }
+
+    else {
+	    contend_pages_actual[3]=contend_pages_128k_p2a[ramentra];
+    }
+
+
 	debug_paginas_memoria_mapeadas[3]=ramentra;
 
 
@@ -739,6 +770,9 @@ void mem_init_memory_tables_128k(void)
                         puntero +=16384;
                 }
 
+                //Para la rom de trdos, ponerla al final de rom+ram
+                if (MACHINE_IS_PENTAGON) pentagon_trdos_rom=&memoria_spectrum[(32+1024)*1024];
+
 				//1 MB
                 for (i=0;i<64;i++) {
                         ram_mem_table[i]=&memoria_spectrum[puntero];
@@ -801,6 +835,18 @@ int if_spectrum_basic_rom_paged_in(void)
 
         //maquina 16k, inves ,48k o tk
         return 1;
+    }
+
+    if (MACHINE_IS_DIDAKTIKGAMA) return 1;
+
+    if (MACHINE_IS_SCORPION)  {
+
+        //maquina 128k. rom 1 mapeada
+        if ((puerto_32765 & 16) ==16) {
+
+            return 1;
+        }
+        else return 0;
     }
 
     if (MACHINE_IS_SPECTRUM_128_P2)  {

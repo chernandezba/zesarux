@@ -80,6 +80,7 @@
 #include "tbblue.h"
 #include "remote.h"
 #include "tsconf.h"
+#include "baseconf.h"
 #include "settings.h"
 #include "stats.h"
 #include "network.h"
@@ -445,7 +446,9 @@ int zxdesktop_configurable_icons_current_executing=-1;
 //Dice si una posicion para un icono es valida, evitando salirse de ventana, en zonas de botones, o en zona de pantalla emulada
 //x,y en coordenadas de iconos (o sea sin zoom)
 //Retorna no 0 si es valido
-int zxvision_if_configurable_icon_on_valid_position(int x,int y)
+//forzar_emulated_display_abierta se pone a 1 para decirle que ventana de emulated display esta abierta, aunque no este fisicamente la ventana,
+//eso se usa al inicio de ZEsarUX
+int zxvision_if_configurable_icon_on_valid_position(int x,int y,int forzar_emulated_display_abierta)
 {
     //Ver si posicion no se sale del rango de ventana total (sin footer)
     int total_width=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
@@ -499,7 +502,11 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     int ancho_maquina=screen_get_emulated_display_width_no_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_no_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina) {
+    int abierta_ventana_emulated_display=ventana_video_output_esta_abierta();
+
+    if (forzar_emulated_display_abierta) abierta_ventana_emulated_display=1;
+
+    if (x<ancho_maquina && y<alto_maquina && !abierta_ventana_emulated_display ) {
         //printf("Check icon position: %d,%d on emulated machine display\n",x,y);
         return 0;
     }
@@ -512,7 +519,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 void zxvision_set_configurable_icon_position(int icon,int x,int y)
 {
 
-    if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+    if (!zxvision_if_configurable_icon_on_valid_position(x,y,0)) {
         //printf("Trying to set icon %d to invalid position %d,%d\n",icon,x,y);
         return;
     }
@@ -523,13 +530,13 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
 }
 
 //Si un icono no está en papelera y no tiene posición valida, le asigna la primera disponible
-void zxvision_if_configurable_icon_not_on_valid_position_set(int icon)
+void zxvision_if_configurable_icon_not_on_valid_position_set(int icon,int forzar_emulated_display_abierta)
 {
 
     if (zxdesktop_configurable_icons_list[icon].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
         int x=zxdesktop_configurable_icons_list[icon].pos_x;
         int y=zxdesktop_configurable_icons_list[icon].pos_y;
-        if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+        if (!zxvision_if_configurable_icon_on_valid_position(x,y,forzar_emulated_display_abierta)) {
             debug_printf(VERBOSE_DEBUG,"Relocate icon %d (%s) because it is on an invalid position %d,%d",icon,zxdesktop_configurable_icons_list[icon].text_icon,x,y);
             zxvision_get_next_free_icon_position(&x,&y);
             debug_printf(VERBOSE_DEBUG,"Relocate icon %d to %d,%d",icon,x,y);
@@ -628,7 +635,7 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
                 //printf("%d %d iconos cerca %d\n",x,y,total_iconos_cerca);
 
                 //Si hay menos iconos cerca de los que esperamos y si esa posicion es valida
-                if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y) ) {
+                if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y,0) ) {
                     *p_x=x;
                     *p_y=y;
                     return;
@@ -728,6 +735,32 @@ void zxvision_reorder_configurable_icons(void)
 }
 
 
+void zxvision_align_to_grid_configurable_icons(void)
+{
+
+
+    int i;
+
+
+    int separacion_iconos=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+
+            //Redondeamos al multiplo mas cercano
+            int x=(zxdesktop_configurable_icons_list[i].pos_x + separacion_iconos/2) / separacion_iconos;
+            x *=separacion_iconos;
+
+            int y=(zxdesktop_configurable_icons_list[i].pos_y + separacion_iconos/2) / separacion_iconos;
+            y *=separacion_iconos;
+
+            zxvision_set_configurable_icon_position(i,x,y);
+
+        }
+    }
+}
+
+
 void zxvision_reorder_configurable_icons_if_auto(void)
 {
     //Si desactivado zx desktop
@@ -736,11 +769,15 @@ void zxvision_reorder_configurable_icons_if_auto(void)
     if (zxdesktop_automatic_reorder_icons.v) {
         zxvision_reorder_configurable_icons();
     }
+
+    if (david_desktop_align_to_grid_icons.v) {
+        zxvision_align_to_grid_configurable_icons();
+    }
 }
 
 //Comprobar y reajustar posiciones (si conviene) en caso de por ejemplo cambios de maquina (de spectrum a tbblue por ejemplo)
 //donde iconos pueden ir a parar a debajo de pantalla emulada
-void zxvision_check_all_configurable_icons_positions(void)
+void zxvision_check_all_configurable_icons_positions(int forzar_emulated_display_abierta)
 {
 
     //Si desactivado
@@ -751,7 +788,7 @@ void zxvision_check_all_configurable_icons_positions(void)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        zxvision_if_configurable_icon_not_on_valid_position_set(i);
+        zxvision_if_configurable_icon_not_on_valid_position_set(i,forzar_emulated_display_abierta);
     }
 
     zxvision_reorder_configurable_icons_if_auto();
@@ -969,7 +1006,7 @@ void create_default_zxdesktop_configurable_icons(void)
 {
 
     if (!zxdesktop_configurable_icons_enabled_and_visible()) {
-        debug_printf(VERBOSE_INFO,"Do not create default icons because icons on zx desktop are disabled or zx desktop disabled");
+        debug_printf(VERBOSE_INFO,"Do not create default icons because icons on DAVID desktop are disabled or DAVID desktop disabled");
         return;
     }
 
@@ -1049,7 +1086,7 @@ void zxvision_recover_configurable_icon_from_trash(int indice_icono)
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
 
     //comprobar que posicion sea valida. Igualmente si es válida vuelve a asignar misma posición (es redundante) pero lo que interesa es que le ponga posición válida si no la tiene
-    zxvision_if_configurable_icon_not_on_valid_position_set(indice_icono);
+    zxvision_if_configurable_icon_not_on_valid_position_set(indice_icono,0);
 
 }
 
@@ -4253,7 +4290,7 @@ void menu_put_switch_zxdesktop_footer(void)
 
         //printf("xorigen: %d (*8=%d) yorigen: %d\n",xorigen,xorigen*8,yorigen);
 
-        debug_printf(VERBOSE_PARANOID,"Drawing ZX Desktop switch button");
+        debug_printf(VERBOSE_PARANOID,"Drawing DAVID Desktop switch button");
 
 
         if (caracter_ampliar_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_ancho,xorigen,yorigen,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
@@ -4545,6 +4582,11 @@ void menu_footer_zesarux_emulator(void)
             if (zeng_online_connected.v) {
                 //printf("Mostrando footer con estado conexion ZENG online\n");
                 sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " %s",zoc_return_connected_status() );
+            }
+
+            else if (paused_cpu_emulation.v) {
+                //printf("Mostrando footer SIN estado conexion ZENG online\n");
+                sprintf(buffer_footer,"ZEsarUX "EMULATOR_VERSION " - PAUSED");
             }
 
             else {
@@ -5021,7 +5063,7 @@ void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int
     int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina) {
+    if (x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) {
         //printf("Retorno %d %d\n",x,y);
         return;
     }
@@ -5042,7 +5084,7 @@ void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED
     int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
 
-    if (x<ancho_maquina && y<alto_maquina) {
+    if (x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) {
         //printf("Retorno %d %d\n",x,y);
         return;
     }
@@ -6169,7 +6211,7 @@ void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yini
 
     for (y=yinicio;y<yinicio+alto_boton+2;y++) {
         for (x=xinicio;x<xinicio+ancho_boton+2;x++) {
-            if (x>=0 && x<total_width && y>=0 && y<total_height && !(x<ancho_maquina && y<alto_maquina) ) {
+            if (x>=0 && x<total_width && y>=0 && y<total_height && !(x<ancho_maquina && y<alto_maquina && !ventana_video_output_esta_abierta() ) ) {
                 scr_putpixel(x,y,color_relleno);
             }
         }
@@ -6670,232 +6712,7 @@ void menu_draw_ext_desktop_footer(void)
 
 }
 
-/*
-void old_menu_draw_ext_desktop(void)
-{
 
-    //Si no escritorio extendido, salir
-    if (!screen_ext_desktop_enabled || !scr_driver_can_ext_desktop() ) return;
-
-
-        //Los putpixel que hacemos aqui son sin zoom. Se podrian hacer con zoom, pero habria que
-        //usar scr_putpixel_zoom_rainbow y scr_putpixel_zoom dependiendo del caso, y sumar margenes en el caso de rainbow,
-        //pero no vale la pena, con una sola funcion scr_putpixel vale para todos los casos
-        //Con zoom se habria hecho asi:
-        //
-        //	int margenx_izq;
-        //	int margeny_arr;
-        //	scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
-        //	if (rainbow_enabled.v==1) scr_putpixel_zoom_rainbow(x+margenx_izq,y+margenx_der,color);
-        //	else scr_putpixel_zoom(x,y,color);
-        //
-        //	Y considerando el espacio de coordenadas x e y con zoom
-
-
-        int xinicio=screen_get_ext_desktop_start_x();
-        int yinicio=0;
-
-        int ancho=screen_get_ext_desktop_width_zoom();
-        int alto=screen_get_emulated_display_height_zoom_border_en();
-
-        int x,y;
-
-
-
-        //Color solido
-        if (menu_ext_desktop_fill==0) {
-
-            int color=menu_ext_desktop_fill_first_color;
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-                for (x=xinicio;x<xinicio+ancho;x++) {
-                    scr_putpixel(x,y,color);
-                }
-            }
-
-        }
-
-        //Rayas diagonales de colores, fijas o movibles
-        if (menu_ext_desktop_fill==1 || menu_ext_desktop_fill==2) {
-
-            int grueso_lineas=8*zoom_x*menu_gui_zoom; //Para que coincida el color con rainbow de titulo de ventanas
-             int total_colores=5;
-
-            int contador_color;
-
-            //En el caso de barras fijas, offset es 0
-            if (menu_ext_desktop_fill==1) menu_ext_desktop_fill_rainbow_counter=0;
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-                contador_color=y; //Para dar un aspecto de rayado
-
-                for (x=xinicio;x<xinicio+ancho;x++) {
-                    int indice_color=((contador_color/grueso_lineas)+menu_ext_desktop_fill_rainbow_counter) % total_colores;
-                    int color=screen_colores_rainbow_nobrillo[indice_color];
-                    scr_putpixel(x,y,color);
-
-                    contador_color++;
-                }
-            }
-
-            menu_ext_desktop_fill_rainbow_counter++;
-
-        }
-
-        //punteado
-        if (menu_ext_desktop_fill==3) {
-
-            int color;
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-                for (x=xinicio;x<xinicio+ancho;x++) {
-
-                    int suma=x+y;
-                    color=(suma & 1 ? menu_ext_desktop_fill_first_color : menu_ext_desktop_fill_second_color);
-
-                    scr_putpixel(x,y,color);
-                }
-            }
-
-        }
-
-        //ajedrez
-        if (menu_ext_desktop_fill==4) {
-
-            int color;
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-                for (x=xinicio;x<xinicio+ancho;x++) {
-
-                    //Tamaño de 32x32 cada cuadrado
-                    int suma=(x/32)+(y/32);
-
-                    //Blanco 7 para que no sea tan brillante
-                    color=(suma & 1 ? menu_ext_desktop_fill_first_color : menu_ext_desktop_fill_second_color);
-
-                    scr_putpixel(x,y,color);
-                }
-            }
-
-        }
-
-        //grid
-        if (menu_ext_desktop_fill==5) {
-
-            int color;
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-                for (x=xinicio;x<xinicio+ancho;x++) {
-
-                    //Tamaño de 32x32 cada cuadrado
-                    int suma=(x/32)*(y/32);
-
-                    //Blanco 7 para que no sea tan brillante
-                    color=(suma & 1 ? menu_ext_desktop_fill_first_color : menu_ext_desktop_fill_second_color);
-
-                    scr_putpixel(x,y,color);
-                }
-            }
-
-        }
-
-        //Random
-        if (menu_ext_desktop_fill==6) {
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-
-
-                for (x=xinicio;x<xinicio+ancho;x++) {
-
-                    ay_randomize(0);
-
-                    //randomize_noise es valor de 16 bits. sacar uno de 8 bits
-                    int color=value_16_to_8h(randomize_noise[0]) % EMULATOR_TOTAL_PALETTE_COLOURS;
-
-                    scr_putpixel(x,y,color);
-
-                }
-            }
-
-        }
-
-        //Degraded
-        if (menu_ext_desktop_fill==7) {
-
-            for (y=yinicio;y<yinicio+alto;y++) {
-
-
-                //usamos esa paleta de colores de 5 bits por componente, por tanto, 32 colores maximo por componente
-                int offset_y=y-yinicio;
-                //dividir alto total en 32 segmentos
-                int divisor=alto/32;
-
-                int posicion_color=offset_y/divisor; //ahi tenemos un valor entre 0 y 31
-
-
-                //multiplicar por el color deseado. pillar color primario del setting menu_ext_desktop_fill_first_color
-                //de la lista de 8 colores del spectrum (paleta grb), ignorando brillos
-
-                int color_basico=menu_ext_desktop_fill_first_color & 7;
-
-                //en el caso particular del color 0 negro, hacemos que se comporte como 7 blanco... si no, que degradado habria de negro??
-                if (color_basico==0) color_basico=7;
-
-                int componente_r=(color_basico>>1)&1;
-                int componente_g=(color_basico>>2)&1;
-                int componente_b=color_basico&1;
-
-                componente_r *=posicion_color;
-                componente_g *=posicion_color;
-                componente_b *=posicion_color;
-
-                //cada componente maximo 5 bits (valor 31). sucede que con el calculo anterior, puede llegar a ser mayor que 31,
-                //por ejemplo con maquina jupiter ace (debido al tamaño de ventana de dicha máquina)
-                if (componente_r>31) componente_r=31;
-                if (componente_g>31) componente_g=31;
-                if (componente_b>31) componente_b=31;
-
-                //poner cada componente en su posicion final
-                int color_tsconf=(componente_b)|(componente_g<<5)|(componente_r<<10);
-
-                int color=TSCONF_INDEX_FIRST_COLOR+color_tsconf;
-
-                for (x=xinicio;x<xinicio+ancho;x++) {
-
-                    scr_putpixel(x,y,color);
-
-                }
-            }
-
-        }
-
-
-    //Agregamos logo ZEsarUX en esquina inferior derecha, con margen, solo si menu esta abierto
-
-    //if (menu_abierto) {
-    //	int xfinal;
-    //	int yfinal;
-    //	//xfinal=xinicio+ancho-ZESARUX_ASCII_LOGO_ANCHO-ZESARUX_WATERMARK_LOGO_MARGIN;
-    //	//yfinal=alto-ZESARUX_ASCII_LOGO_ALTO-ZESARUX_WATERMARK_LOGO_MARGIN;
-    //
-    //	menu_ext_desktop_get_logo_coords(&xfinal,&yfinal);
-    //
-    //	//El ancho y el puntero dan igual, no los vamos a usar
-    //	screen_put_watermark_generic(NULL,xfinal,yfinal,0, menu_draw_ext_desktop_putpixel_bitmap);
-    //}
-
-
-    //Dibujar botones si están activados (por defecto)
-    if (menu_zxdesktop_buttons_enabled.v) {
-        menu_draw_ext_desktop_buttons(xinicio);
-    }
-
-    //Dibujar footer del zxdesktop
-    menu_draw_ext_desktop_footer();
-
-}
-
-*/
 
 //si habilitado fondo scr
 int zxdesktop_draw_scrfile_enabled=0;
@@ -6953,7 +6770,7 @@ void zxdesktop_draw_scrfile_load(void)
 
     //printf("Loading ZX Desktop background SCR file %s\n",nombre_scr);
 
-    debug_printf(VERBOSE_DEBUG,"Loading ZX Desktop background SCR file %s",nombre_scr);
+    debug_printf(VERBOSE_DEBUG,"Loading DAVID Desktop background SCR file %s",nombre_scr);
 
     //Si se extrae de un tap, snapshot o similar, indicar aqui siempre que scr archivo es realmente
     char final_scrfile_name[PATH_MAX]="";
@@ -7017,7 +6834,7 @@ void zxdesktop_draw_scrfile_load(void)
     }
 
     if (!si_existe_archivo(final_scrfile_name)) {
-        debug_printf(VERBOSE_ERR,"Can not load ZX Desktop background SCR file %s",nombre_scr);
+        debug_printf(VERBOSE_ERR,"Can not load DAVID Desktop background SCR file %s",nombre_scr);
         //Aunque el archivo no exista, igualmente leer a cache (aun con datos random de zxdesktop_draw_scrfile_pointer),
         //asi la cache estará inicializada con datos de colores dentro de rango
         //Si no, correriamos el riesgo de tener en cache valores de colores fuera de rango y generar un segfault
@@ -7298,7 +7115,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
         //Si estamos en zona por arriba de donde empieza el zxdesktop vertical, "saltar" toda esa zona, para que
         //el contador parezca que ha recorrido esa zona. Esto da continuidad en las franjas en cuanto vamos a la zona de zxdesktop vertical
 
-        if (y<alto_no_zxdesktop) {
+        if (y<alto_no_zxdesktop && !ventana_video_output_esta_abierta() ) {
             contador_color_rainbow +=ancho_no_zxdesktop;
 
             //Y el modo random igual, esa zona de la izquierda generamos color random tantas veces como ancho tenga
@@ -7329,7 +7146,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
         //Si estamos en la zona de arriba (aun no llega a zxdesktop vertical) saltar posicion x para no dibujar encima de la pantalla emulada
         int xinicio;
-        if (y<alto_no_zxdesktop) {
+        if (y<alto_no_zxdesktop && !ventana_video_output_esta_abierta() ) {
             xinicio=xstart_zxdesktop;
         }
         else {
@@ -7338,8 +7155,16 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
         for (x=xinicio;x<xfinal;x++) {
 
+            int restar_inicio_x_scr=xstart_zxdesktop;
+            int ancho_disponible_scr=ancho_zxdesktop;
+
+            if (ventana_video_output_esta_abierta()) {
+                restar_inicio_x_scr=0;
+                ancho_disponible_scr=ancho_no_zxdesktop+ancho_zxdesktop;
+            }
+
             //Si mostrar en esa posicion un scrfile
-            int xrelative=x-xstart_zxdesktop;
+            int xrelative=x-restar_inicio_x_scr;
             int yrelative=y-yinicio;
 
             int mostrar_scrfile=0;
@@ -7347,7 +7172,8 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
             int color_scrfile;
 
             if (xrelative>=0) {
-                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto,filesel_ejecutandose_preview_en_zxdesktop);
+
+                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_disponible_scr,alto,filesel_ejecutandose_preview_en_zxdesktop);
 
 
                 //temporal game of life
@@ -7472,7 +7298,9 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
     menu_ext_desktop_fill_rainbow_counter++;
 
-    menu_draw_ext_desktop_border_emulated_machine(ancho_no_zxdesktop,alto_zxdesktop,alto_no_zxdesktop);
+    if (!ventana_video_output_esta_abierta()) {
+        menu_draw_ext_desktop_border_emulated_machine(ancho_no_zxdesktop,alto_zxdesktop,alto_no_zxdesktop);
+    }
 
 
 }
@@ -10938,6 +10766,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"debugdma",            "debug dma",menu_debug_dma,bitmap_button_ext_desktop_debugdma},
     {"debugioports",        "debug i/o",    menu_debug_ioports,bitmap_button_ext_desktop_ioports},
     {"displaypalettes",     "dis palett",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
+    {"emulateddisplay",     "emul disp",   menu_video_output,bitmap_button_ext_desktop_videooutput},
     {"externalaudiosource", "ext audio",    menu_realtape_record_input,bitmap_button_ext_desktop_record_input},
     {"audiogensound",       "gen sound",    menu_audio_general_sound,bitmap_button_ext_desktop_geneneralsoundregisters},
     {"helpshowkeyboard",    "helpkeybrd",   menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
@@ -10964,7 +10793,6 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"timemachine",         "timemachine", menu_snapshot_in_ram_browse,bitmap_button_ext_desktop_snapinrambrowse},
     {"videoinfo",           "videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
     {"videolayers",         "videolayer",   menu_video_layers,bitmap_button_ext_desktop_videolayers},
-    {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_videooutput},
     {"viewbasiclisting",    "view basic",   menu_view_basic_listing,bitmap_button_ext_desktop_view_basic},
     {"viewbasicvariables",  "view varia",   menu_view_basic_variables,bitmap_button_ext_desktop_view_basic_variables},
     {"viewgosubstack",      "view gosub",   menu_view_gosub_stack,bitmap_button_ext_desktop_view_gosub_stack},
@@ -12030,6 +11858,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     //Funcion de overlay inicializada a NULL
     w->overlay_function=NULL;
 
+    w->close_window_function=NULL;
+
     w->send_message_function=NULL;
     w->help_send_message=NULL;
 
@@ -12087,6 +11917,11 @@ void zxvision_window_delete_this_window_no_free_mem(zxvision_window *ventana)
 //Elimina la ventana de la lista y libera su memoria usada
 void zxvision_window_delete_this_window(zxvision_window *ventana)
 {
+
+    if (ventana->close_window_function!=NULL) {
+        ventana->close_window_function();
+    }
+
 
     zxvision_window_delete_this_window_no_free_mem(ventana);
 
@@ -13109,6 +12944,10 @@ int menu_origin_x(void)
 
     if (screen_ext_desktop_place_menu && screen_ext_desktop_enabled*scr_driver_can_ext_desktop()) {
         //Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
+
+        //Si esta ventana de emulated display, este origen es x=0 o sea toda la ventana de ZEsarUX disponible
+        if (ventana_video_output_esta_abierta()) return 0;
+
         return menu_get_origin_x_zxdesktop_aux(1);
     }
 
@@ -13127,8 +12966,13 @@ int menu_center_x(void)
 
 
     //if (screen_ext_desktop_place_menu && screen_ext_desktop_enabled*scr_driver_can_ext_desktop()) {
-    if (menu_ext_desktop_enabled_place_menu()) {
+    //zx desktop y su opcion pero sin ventana emulated display abierta
+    if (menu_ext_desktop_enabled_place_menu() && !ventana_video_output_esta_abierta()) {
         //Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
+
+        //Si esta ventana de emulated display, tenemos en cuenta toda la ventana de ZEsarUX disponible
+        if (ventana_video_output_esta_abierta()) return scr_get_menu_width()/2;
+
         return menu_get_origin_x_zxdesktop_aux(2);
     }
 
@@ -15249,7 +15093,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
     //Si esta ventana tiene flag always_visible, siempre escribe
     if (w->always_visible) return 0;
 
-    //if (!menu_allow_background_windows) return 0;
+
 
     zxvision_window *orig_w;
 
@@ -15257,7 +15101,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
     if (w==NULL) return 0;
 
-    //if (zxvision_current_window==w) return 0;
+
 
     do {
         zxvision_window *superior_window;
@@ -15275,7 +15119,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
     } while (w!=zxvision_current_window && w!=NULL);
 
-    //return 0;
+
 
     //O si hay alguna ventana por debajo que tenga el flag de siempre por encima
     w=orig_w;
@@ -15560,8 +15404,6 @@ void zxvision_draw_window_contents(zxvision_window *w)
             //Ver si caracter final tiene ventana por encima
             int ventana_encima=zxvision_coords_in_superior_windows(w,xdestination,ydestination);
 
-            //if (ventana_encima) printf("ventana encima x %d y %d\n",xdestination,ydestination);
-
 
             //obtener caracter
             int out_of_bonds=0;
@@ -15624,7 +15466,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
                 //Chapucilla para evitar que las ventanas en background sobreescriban a cualquiera que haya encima
                 if (!ventana_encima) {
-                //if (!zxvision_coords_in_superior_windows(w,xdestination,ydestination)) {
+
 
                 //printf ("antes de putchar\n");
                 putchar_menu_overlay_parpadeo_cache_or_not(xdestination,ydestination,
@@ -15772,7 +15614,7 @@ void zxvision_get_character_at_mouse(zxvision_window *w,int x,int y,overlay_scre
 
                 //Chapucilla para evitar que las ventanas en background sobreescriban a cualquiera que haya encima
                 if (!ventana_encima) {
-                //if (!zxvision_coords_in_superior_windows(w,xdestination,ydestination)) {
+
 
                 //printf ("antes de putchar\n");
 
@@ -16231,6 +16073,73 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
     else {
         //printf ("pixel out of window %d %d\n",x,y);
         zxvision_check_print_beyond_limits(w,x_con_offset/menu_char_width,y_con_offset/menu_char_height);
+    }
+}
+
+//Dibuja un único píxel en la capa de menú sin ampliar por menu_gui_zoom, zoom_x ni zoom_y.
+//Las coordenadas relativas al contenido son píxeles físicos consecutivos.
+void zxvision_putpixel_no_menu_gui_zoom_no_zoom(zxvision_window *w,int x,int y,int color)
+{
+    int ancho_caracter=menu_char_width*menu_gui_zoom*zoom_x;
+    int alto_caracter=menu_char_height*menu_gui_zoom*zoom_y;
+
+    int inicio_x=w->x*ancho_caracter;
+    int inicio_y=(w->y+1)*alto_caracter;
+    int final_x=inicio_x+(w->visible_width-zxvision_get_minus_width_byscrollvbar(w))*ancho_caracter;
+    int final_y=inicio_y+(w->visible_height-2)*alto_caracter;
+
+    int x_con_offset=x-w->offset_x*ancho_caracter;
+    int y_con_offset=y-w->offset_y*alto_caracter;
+    int xfinal=inicio_x+x_con_offset;
+    int yfinal=inicio_y+y_con_offset;
+
+    if (xfinal>=inicio_x && xfinal<final_x && yfinal>=inicio_y && yfinal<final_y) {
+        if (!zxvision_coords_in_superior_windows(w,xfinal/ancho_caracter,yfinal/alto_caracter)) {
+            // La posición relativa x,y ya está en píxeles físicos: no ampliarla.
+            scr_putpixel_gui_no_zoom(xfinal,yfinal,color,1);
+        }
+    }
+    else {
+        zxvision_check_print_beyond_limits(w,x_con_offset/ancho_caracter,y_con_offset/alto_caracter);
+    }
+}
+
+//Dibuja un pixel en la capa de menu sin ampliar el pixel por menu_gui_zoom.
+//w es la ventana; x e y son pixeles relativos a su contenido, ya expresados
+//en la escala de menu_gui_zoom; color es el indice de la paleta. El zoom
+//general zoom_x/zoom_y se aplica al escribir en la capa de menu.
+void zxvision_putpixel_no_menu_gui_zoom(zxvision_window *w,int x,int y,int color)
+{
+    //Tamanyo fisico de cada celda de texto de la interfaz, antes de zoom_x/zoom_y.
+    int ancho_caracter=menu_char_width*menu_gui_zoom;
+    int alto_caracter=menu_char_height*menu_gui_zoom;
+
+    //Esquina superior izquierda del contenido; la fila del titulo queda arriba.
+    int inicio_x=w->x*ancho_caracter;
+    int inicio_y=(w->y+1)*alto_caracter;
+
+    //Limites exclusivos del contenido visible: se excluyen la barra de scroll
+    //derecha, cuando existe, y las filas del titulo y del margen inferior.
+    int final_x=inicio_x+(w->visible_width-zxvision_get_minus_width_byscrollvbar(w))*ancho_caracter;
+    int final_y=inicio_y+(w->visible_height-2)*alto_caracter;
+
+    //Posicion relativa tras descontar el desplazamiento de scroll de la ventana.
+    int x_con_offset=x-w->offset_x*ancho_caracter;
+    int y_con_offset=y-w->offset_y*alto_caracter;
+
+    //Coordenadas absolutas del pixel en la capa de menu, antes de zoom_x/zoom_y.
+    int xfinal=inicio_x+x_con_offset;
+    int yfinal=inicio_y+y_con_offset;
+
+    if (xfinal>=inicio_x && xfinal<final_x && yfinal>=inicio_y && yfinal<final_y) {
+        //La comprobacion de ventanas superiores usa celdas de texto, no pixeles.
+        if (!zxvision_coords_in_superior_windows(w,xfinal/ancho_caracter,yfinal/alto_caracter)) {
+            //El factor 1 evita ampliar otra vez por menu_gui_zoom.
+            scr_putpixel_gui_zoom(xfinal,yfinal,color,1);
+        }
+    }
+    else {
+        zxvision_check_print_beyond_limits(w,x_con_offset/ancho_caracter,y_con_offset/alto_caracter);
     }
 }
 
@@ -17609,7 +17518,10 @@ void zxvision_handle_maximize_maximize(zxvision_window *w)
         xinicial=menu_origin_x();
         yinicial=0;
 
-        max_width=menu_get_width_characters_ext_desktop();
+        if (ventana_video_output_esta_abierta()) max_width=scr_get_menu_width();
+
+        else max_width=menu_get_width_characters_ext_desktop();
+
         max_height=scr_get_menu_height();
 
 
@@ -18124,7 +18036,7 @@ int zxvision_if_mouse_in_background(void)
     int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
     int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
 
-    if (mouse_pixel_x<ancho_maquina && mouse_pixel_y<alto_maquina) {
+    if (mouse_pixel_x<ancho_maquina && mouse_pixel_y<alto_maquina && !ventana_video_output_esta_abierta()) {
         return 0;
     }
 
@@ -20090,6 +20002,8 @@ z80_byte zxvision_common_getkey_refresh_noesperatecla(void)
 //En cambio retorna 0 (la tecla se va a enviar a la maquina emulada), cuando el menu esta cerrado o la ventana no tiene el foco
 int zxvision_key_not_sent_emulated_mach(void)
 {
+    if (ventana_video_output_esta_activa()) return 0;
+
     if (menu_abierto==1 && zxvision_keys_event_not_send_to_machine) return 1;
     else return 0;
 }
@@ -20145,7 +20059,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
     int ancho;
 
     //Si ZX Desktop habilitado y si los menús se abren en el ZX Desktop
-    if (menu_ext_desktop_enabled_place_menu() ) {
+    if (menu_ext_desktop_enabled_place_menu() && !ventana_video_output_esta_abierta()) {
 
         ancho=menu_get_width_characters_ext_desktop();
 
@@ -20154,7 +20068,9 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
         ancho--;
     }
 
-    else ancho=scr_get_menu_width();
+    else {
+        ancho=scr_get_menu_width();
+    }
 
     //printf ("ancho: %d\n",ancho);
 
@@ -20735,6 +20651,43 @@ void zxvision_get_mouse_in_window(zxvision_window *ventana,int *posx,int *posy)
     //else {
     //    return -1;
     //}
+}
+
+
+//Obtiene la posición física sin la división y multiplicación de la ruta habitual.
+//Conserva la actualización del movimiento del ratón que hace esa ruta.
+static void menu_calculate_mouse_xy_absolute_interface_no_zooms(int *resultado_x,int *resultado_y)
+{
+    int ancho=screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
+    int alto=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
+    int mouse_en_emulador=mouse_x>=0 && mouse_y>=0 && mouse_x<=ancho && mouse_y<=alto;
+
+    mouse_movido=(mouse_x!=last_mouse_x || mouse_y!=last_mouse_y) && mouse_en_emulador;
+    last_mouse_x=mouse_x;
+    last_mouse_y=mouse_y;
+
+    *resultado_x=mouse_x;
+    *resultado_y=mouse_y;
+}
+
+//Devuelve la distancia al contenido en píxeles físicos, como los del BMP sin zoom.
+//zxvision_get_mouse_in_window divide esa distancia por zoom_x/y y menu_gui_zoom
+//para devolver coordenadas lógicas. El origen de la ventana sí usa esos factores
+//porque debe expresarse en los mismos píxeles físicos que el ratón.
+void zxvision_get_mouse_in_window_no_zooms(zxvision_window *ventana,int *posx,int *posy)
+{
+    int cursor_mouse_x;
+    int cursor_mouse_y;
+    menu_calculate_mouse_xy_absolute_interface_no_zooms(&cursor_mouse_x,&cursor_mouse_y);
+
+    int this_win_x=zxvision_window_get_pixel_x_position(ventana);
+    int this_win_y=zxvision_window_get_pixel_y_position(ventana);
+
+    //Saltar la línea del título en píxeles físicos.
+    this_win_y +=menu_char_height*zoom_y*menu_gui_zoom;
+
+    *posx=cursor_mouse_x-this_win_x;
+    *posy=cursor_mouse_y-this_win_y;
 }
 
 //Si el ratón está en la ventana indicada
@@ -24533,7 +24486,7 @@ struct s_strings_language_list strings_language_list[]={
     {"New icon","Nuevo icono","Nova icona"},
     {"New file link","Nuevo enlace a archivo","Nou enllaç a arxiu"},
     {"Customize icons","Personalizar iconos","Personalitzar icones"},
-    {"ZX Desktop settings","Opciones ZX Desktop","Opcions ZX Desktop"},
+    {"DAVID Desktop settings","Opciones DAVID Desktop","Opcions DAVID Desktop"},
     {"Change Bitmap","Cambiar Bitmap","Canviar Bitmap"}
 };
 
@@ -28610,8 +28563,8 @@ void menu_inicio_handle_right_button_background(void)
         zxvision_set_next_menu_position_from_current_mouse();
 
         //propiedades zx desktop
-        int opcion=menu_simple_seven_choices("ZX Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
-            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons alphabetically"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
+        int opcion=menu_simple_seven_choices("DAVID Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
+            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons alphabetically"),menu_get_string_language("DAVID Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
 
         zxvision_reset_set_next_menu_position();
 
@@ -29392,6 +29345,11 @@ void menu_inicio_reset_emulated_keys(void)
 
     reset_keyboard_ports();
 
+    //TODO: realmente aqui se entrara tambien
+    //aunque por ejemplo F5 no esté mapeado a abrir el menu y por tanto
+    //F5 nunca lo leera baseconf o tsconf
+    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) baseconf_ps2_clear_fifo();
+
     //Restaurar estado teclas especiales, para poder esperar a liberar dichas teclas, por ejemplo
     puerto_especial1=p_puerto_especial1;
     puerto_especial2=p_puerto_especial2;
@@ -29406,6 +29364,8 @@ void menu_inicio_reset_emulated_keys(void)
 
     menu_espera_no_tecla_no_mouse_movido();
     //menu_espera_no_tecla();
+
+    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) baseconf_ps2_clear_fifo();
 
     //printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
 }
@@ -31411,12 +31371,12 @@ char *first_aid_string_backgroundwindows="You can enable background windows and 
         "Go to Settings-> ZX Vision settings-> Background windows to enable it";
 
 int first_aid_no_zxdesktop=0;
-char *first_aid_string_zxdesktop="Have you enabled ZX Desktop? It allows you to have a space on the right and on the bottom to place "
-                "zxvision windows, menus or other widgets. Go to Settings-> ZX Desktop settings to enable it";
+char *first_aid_string_zxdesktop="Have you enabled DAVID Desktop? It allows you to have a space on the right and on the bottom to place "
+                "zxvision windows, menus or other widgets. Go to Settings-> DAVID Desktop settings to enable it";
 
 int first_aid_no_zxdesktop_custombuttons=0;
-char *first_aid_string_zxdesktop_custombuttons="You can customize upper ZX Desktop buttons to trigger different actions. "
-                "Go to Settings-> ZX Desktop-> Customize buttons";
+char *first_aid_string_zxdesktop_custombuttons="You can customize upper DAVID Desktop buttons to trigger different actions. "
+                "Go to Settings-> DAVID Desktop-> Customize buttons";
 
 int first_aid_no_snapshot_save_zsf=0;
 char *first_aid_string_snapshot_save_zsf="When saving snapshots, the recommended extension is ZSF, as this is the native "
@@ -31722,7 +31682,7 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
         zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
     }
 
     zxvision_reorder_configurable_icons_if_auto();
@@ -31818,7 +31778,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
         zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
 
     }
 
@@ -32388,7 +32348,8 @@ void set_menu_gui_zoom(void)
     //antes de iniciar el driver de video, por tanto el driver de video no existe aun y no retornaria que es completo
     //esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2
     //if (si_complete_video_driver() ) {
-        if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE || MACHINE_IS_BASECONF) menu_gui_zoom=2;
+    if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM ||
+        MACHINE_IS_SAM || MACHINE_IS_TBBLUE || MACHINE_IS_BASECONF || MACHINE_IS_SCORPION_GMX || MACHINE_IS_ATM_TURBO) menu_gui_zoom=2;
     //}
 
     debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);

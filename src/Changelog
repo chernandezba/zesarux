@@ -1,11 +1,17 @@
-ZEsarUX 13.1 - Zorro edition. 06 October 2026
+ZEsarUX 13.1 Beta 1 - Zorro edition. 17 November 2026
 
 * New things added:
 
-Added (fixed actually) ZX Evo Baseconf
+Added machine ZX Evo Baseconf (fixed actually)
+Added machines Scorpion ZS-256, Scorpion ZS-256 Turbo+, Scorpion GMX
+Added machines ATM Turbo 1, ATM Turbo 2, ATM Turbo 2+, ATM Turbo 3
+Added machine Didaktik Gama
+Added machines Microdigital TK90X ULA Ferranti (Spanish and Portuguese)
+Allow to render emulated display on a separate window
 Added configuration file setting for enabling to use numeric keys on Azerty keyboard, without having to press Shift
 Added more different joystick support for Mac (Dpad, different axis)
 Added 60 hz support for machines: Master System, SG1000, MSX, Colecovision, Spectravideo, Timex Sinclair 2068
+Added real video rendering for PCW, Jupiter Ace and Sam Coupe
 Allow to send private messages to users on ZENG Online
 Allow to smartload a SCL file
 Added device icons: esxdos handler, kartusho, iFrom, lec memory, superupgrade
@@ -49,6 +55,7 @@ Improved ZX Vision:
 - Added Calculator window
 - Improved menu organization, wording and consistency across the user interface
 - Improved window movement when moving with mouse
+- Handle function keys while top menu is open
 - Process switcher now shows one row of processes by default
 - Draw window frame on background windows
 - Main menus when top menu is enabled do not have window title
@@ -57,12 +64,16 @@ Improved ZX Vision:
 - Add to recent files/folders list when selecting a folder (for example esxdos handler directory or ql mdv)
 - Allow to click on a previous submenu
 
-Improved ZX Desktop:
+Improved DAVID Desktop (formerly called ZX Desktop):
 - Allow to sort icons alphabetically
+- Allow to align icons to grid
 - Allow to change bitmap of an icon
-- Allow to close a open window by right-click on its ZX Desktop icon
+- Allow to close a open window by right-click on its DAVID Desktop icon
 - Check if item is on an invalid position when recovering it from Trash
 
+Improved TR-DOS integration on Pentagon
+Improved Virtual Keyboard: allow to scale keyboard
+Add casing views to Visual Floppy (disk, clear case, opaque case)
 Special effects for video output are applied dynamically when moving cursor
 Moved search index file (zesarux_index_menu.idx) to user home directory
 Added General Sound registers to View Sensors window
@@ -73,8 +84,47 @@ Audio Chip Registers: when a channel has enabled envelope, show current volumen 
 Fixed ZX Vision:
 - Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 - Fixed clicking on previous menu and menu was closed randomly
+- Fixed clicking mouse on file selector while cursor is on Name field
 
+Fixed ZX Evo TSConf:
+- Added SD/MMC card (SD Z-Controller) emulation
+- Added IDE Nemo emulation
+- Added IDE Smuc emulation
+- Updated to last ROM
+- Improved TSConf CPU timing: added 14 MHz RAM wait states and cache emulation, and corrected raster interrupt timing in turbo modes
+- Fixed DMA emulation timing
+- Fixed scroll counter, raster interrupt
+- Fixed DMA burst alignment, burst wrapping
+- Fixed tile zero transparency
+- Fixed border color behind transparent layers
+- Fixed bright black palette entry
+- Fixed reset CRAM color palette when loading SPG snapshots
+- Fixed accessing TR-DOS and .trd files
+- Fixed accessing .trd, .scl and .tap selected from the machine (for example on Wild commander)
+- Fixed selecting different boot roms on TS Bios
+- Fixed reading keyboard on PS/2 mode (for Wild Commander for example)
+
+Fixed floppy disk 3" CF2 emulation (used on +3, CPC, PCW):
+- Most disks now load, including protected discs.
+- Fixed PD765 end-of-cylinder status after EOT read (Alkatraz protected games now load)
+- Fixed PD765 read timeout
+- Fixed Speedlock weak sector reads (CRC error) in +3 EDSK images
+- Fixed Speedlock protected disk loading on Spectrum +3
+
+Fixed Sam Coupe emulation:
+- Added line interrupts and corrected line and frame interrupt status pulses
+- Added HPEN vertical scanline reads
+- Corrected the 128-colour palette intensity levels
+- Fixed 256K RAM configuration: absent pages 16-31 no longer mirror pages 0-15
+
+Fixed timings for TK90X and TK95 for 50 hz and 60 hz models
+Fixed MEMPTR after Z80 return instructions
+Fixed Spectrum floating bus reads on 48K and 128K
+Fixed no-MREQ contention on Spectrum +2A and +3
+Fixed CPC rendering without border
+Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
+Fixed Master System scrolling and raster timing
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
 Fixed disabling Search menu
@@ -88,6 +138,8 @@ Fixed drawing last line of waveform on window View Waveform
 Fixed pressing redefined top button with extra parameters
 Fixed ULA+ palette decoding on TBBlue. Thanks Ignacio Monge
 Fixed copy-paste and ZRCP commands send-ascii* for Amstrad CPC
+Fixed possible segfault on Spectrum machines when setting more than 128KB of RAM
+Fixed behaviour on nested NMI on Spectrum + DivMMC/DivIDE
 
 ----
 

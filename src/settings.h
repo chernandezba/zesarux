@@ -103,6 +103,10 @@ extern z80_bit msx_loading_stripes;
 
 extern z80_bit msx_loading_noise_reduction;
 
+extern z80_bit setting_emulated_display_win_zoom_fit;
+extern z80_bit setting_emulated_display_win_zoom_fit_keep_proportion;
+extern z80_bit setting_emulated_display_win_autoresize;
+
 #define MACHINE_SELECTION_TYPE_BY_MANUFACTURER 0
 #define MACHINE_SELECTION_TYPE_BY_NAME 1
 #define MACHINE_SELECTION_TYPE_BY_FAMILY 2
@@ -155,6 +159,8 @@ extern z80_bit zxdesktop_configurable_icons_enabled;
 extern z80_bit zxdesktop_empty_trash_on_exit;
 
 extern z80_bit zxdesktop_automatic_reorder_icons;
+
+extern z80_bit david_desktop_align_to_grid_icons;
 
 extern z80_bit zxdesktop_icon_show_app_open;
 

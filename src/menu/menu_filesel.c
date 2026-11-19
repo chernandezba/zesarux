@@ -120,7 +120,7 @@ z80_bit menu_filesel_show_previews={1};
 //Si reducir previews a la mitad
 z80_bit menu_filesel_show_previews_reduce={0};
 
-//Si mostrar previews en el fondo del ZX Desktop
+//Si mostrar previews en el fondo del DAVID Desktop
 z80_bit menu_filesel_show_previews_on_zxdesktop={0};
 
 //Si no caben todos los archivos en pantalla y por tanto se muestra "*" a la derecha
@@ -6371,8 +6371,18 @@ int menu_filesel_all_parameters(char *titulo,char *filtros[],char *archivo,int s
                 else {
 
 
-                tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0,0,forzar_cursor);
+                tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,1,0,forzar_cursor);
                 //); //6 ocupa el texto "File: "
+
+                if (tecla==13 && mouse_left) {
+                    //El clic fuera del campo cambia de zona sin confirmar el nombre del archivo.
+                    if (menu_filesel_change_zone_if_clicked(ventana,&filesel_zona_pantalla,&tecla) &&
+                        filesel_zona_pantalla==1) {
+                        menu_filesel_set_cursor_at_mouse(ventana);
+                    }
+                    tecla=0;
+                    menu_espera_no_tecla_con_repeticion();
+                }
 
                 if (tecla==15) {
                     //printf ("TAB. siguiente seccion\n");
@@ -6989,11 +6999,11 @@ int menu_filesel_all_parameters(char *titulo,char *filtros[],char *archivo,int s
                                         file_utils_file_mem_load(file_utils_file_selected);
                                     }
 
-                                    //Link to ZX Desktop
+                                    //Link to DAVID Desktop
                                     if (tecla=='L') {
                                         //Creamos enlace directo en escritorio
                                         zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,file_utils_file_selected);
-                                        menu_generic_message_splash("Create link","Ok created link on ZX Desktop");
+                                        menu_generic_message_splash("Create link","Ok created link on DAVID Desktop");
                                     }
 
                                     //Convert

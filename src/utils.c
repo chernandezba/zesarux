@@ -173,6 +173,9 @@
 #include "ql_extract_img.h"
 #include "ql_extract_win.h"
 #include "qsound.h"
+#include "scorpion.h"
+#include "didaktikgama.h"
+#include "atmturbo.h"
 
 //Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
 //tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
@@ -644,10 +647,14 @@ char *string_machines_list_description=
     " TK82C    Microdigital TK82C\n"
     " TK83     Microdigital TK83\n"
     " TK85     Microdigital TK85\n"
-    " TK90X    Microdigital TK90X\n"
+    " TK90X    Microdigital TK90X (Portuguese)\n"
     " TK90XS   Microdigital TK90X (Spanish)\n"
-    " TK95     Microdigital TK95\n"
+    " TK90XF   Microdigital TK90X (Ferranti ULA, Portuguese)\n"
+    " TK90XFS  Microdigital TK90X (Ferranti ULA, Spanish)\n"
+    " TK95     Microdigital TK95 (Portuguese)\n"
     " TK95S    Microdigital TK95 (Spanish)\n"
+
+    " Didaktik Didaktik Gama\n"
 
     //Czerweny CZ 1000, CZ 1500, CZ 2000, CZ 1000 Plus, CZ 1500 Plus, CZ Spectrum, CZ Spectrum Plus
 
@@ -664,6 +671,15 @@ char *string_machines_list_description=
     " Sam      Sam Coupe\n"
 
     " Pentagon Pentagon\n"
+
+    " Scorpion    Scorpion ZS-256\n"
+    " Scorpiontp  Scorpion ZS-256 Turbo+\n"
+    " Scorpiongmx Scorpion GMX\n"
+
+    " ATM1        ATM Turbo 1\n"
+    " ATM2        ATM Turbo 2\n"
+    " ATM2p       ATM Turbo 2+\n"
+    " ATM3        ATM Turbo 3\n"
 
     " Chloe140 Chloe 140 SE\n"
     " Chloe280 Chloe 280 SE\n"
@@ -744,10 +760,14 @@ struct s_machines_info machines_info[]={
     {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
 
     {"Inves Spectrum+",			        MACHINE_ID_INVES,                   MACHINE_FAMILY_SPECTRUM,FABRICANTE_INVESTRONICA},
-    {"TK90X",		                    MACHINE_ID_MICRODIGITAL_TK90X,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X (Portuguese)",		        MACHINE_ID_MICRODIGITAL_TK90X_POR,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK90X (Spanish)",	                MACHINE_ID_MICRODIGITAL_TK90X_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
-    {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X (Ferranti Portuguese)",		MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X (Ferranti Spanish)",	    MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK95 (Portuguese)",		        MACHINE_ID_MICRODIGITAL_TK95_POR,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
     {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+
+    {"Didaktik Gama",		            MACHINE_ID_DIDAKTIKGAMA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_DIDAKTIK},
 
     {"TS2068",   			            MACHINE_ID_TIMEX_TS2068,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_SINCLAIR},
     {"TC2048",   			            MACHINE_ID_TIMEX_TC2048,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_COMPUTERS},
@@ -759,7 +779,17 @@ struct s_machines_info machines_info[]={
 
     {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM,FABRICANTE_MILES_GORDON},
 
-    {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
+    {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
+    {"Scorpion ZS-256",		            MACHINE_ID_SCORPION_ZS_256,                 MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion ZS-256 Turbo+",		    MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+    {"Scorpion GMX",		            MACHINE_ID_SCORPION_GMX,                    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SCORPION},
+
+    {"ATM Turbo 1",		                MACHINE_ID_ATM_TURBO1,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
+    {"ATM Turbo 2",		                MACHINE_ID_ATM_TURBO2,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ATM_MICROART},
+    {"ATM Turbo 2+",		            MACHINE_ID_ATM_TURBO2_PLUS,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICROART},
+    {"ATM Turbo 3",		                MACHINE_ID_ATM_TURBO3,              MACHINE_FAMILY_SPECTRUM,FABRICANTE_ZOREL},
+
+
     {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
     {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_TSLABS},
     {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
@@ -818,34 +848,39 @@ struct s_machines_info machines_info[]={
 };
 
 
-char *array_fabricantes_hotkey[]={
+
+char *array_fabricantes_hotkey[TOTAL_FABRICANTES]={
         "~~Amstrad",
         "Ascii C~~orp",
+        "ATM & MicroART",
         "Cam~~bridge Computers",
         "~~Chloe Corporation",
         "Coleco In~~dustries",
         "Czerweny Electronica",
+        "Dida~~ktik",
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
+        "MicroART",
         "~~Microdigital Eletronica",
         "Miles Gordon Technolog~~y",
         "N~~edoPC",
         "Ne~~w Horizons",
         "Ne~~xt Team",
-        "~~Pentagon",
         "Scie~~nce of Cambridge",
+        "Scorpion",
         "Se~~ga",
         "~~Sinclair Research",
         "Spectravideo Intl",
         "Timex Computer",
         "~~Timex Sinclair",
         "TS ~~Labs",
+        "Zorel",
         "~~ZXUno Team"
 };
 
-//Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
-char array_fabricantes_hotkey_letra[]="aobcd iurmyewxpngs  tlz";
+//Si letra es espacio->no hay letra. spectravideo o timex computer o scorpion no hay letras libres
+char array_fabricantes_hotkey_letra[TOTAL_FABRICANTES+1]="ao bcd kiur myewxn gs  tl z";
 
 
 //Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
@@ -4097,6 +4132,14 @@ int get_rom_size(int machine)
 
     if (MACHINE_IS_SPECTRUM_16_48) rom_size=16384;
 
+    else if (MACHINE_IS_SCORPION_GMX) rom_size=SCORPIONGMX_ROM_SIZE*1024;
+
+    else if (MACHINE_IS_SCORPION) rom_size=65536;
+
+    else if (MACHINE_IS_ATM_TURBO2PLUS_TURBO3) rom_size=131072;
+
+    else if (MACHINE_IS_ATM_TURBO) rom_size=65536;
+
     else if (MACHINE_IS_SPECTRUM_128_P2) rom_size=32768;
 
     else if (MACHINE_IS_SPECTRUM_P2A_P3) rom_size=65536;
@@ -4187,8 +4230,32 @@ int get_ram_size(void)
         total_ram=16*1024;
     }
 
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        total_ram=80*1024;
+    }
+
     else if (MACHINE_IS_CPC_HAS_64K) {
         total_ram=64*1024;
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        total_ram=256*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO1) {
+        total_ram=ATM_TURBO1_RAM_SIZE*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO2) {
+        total_ram=ATM_TURBO2_RAM_SIZE*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO2_PLUS) {
+        total_ram=ATM_TURBO2_PLUS_RAM_SIZE*1024;
+    }
+
+    else if (MACHINE_IS_ATM_TURBO3) {
+        total_ram=ATM_TURBO3_RAM_SIZE*1024;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
@@ -4751,6 +4818,9 @@ int util_write_configfile(void)
     if (zxdesktop_configurable_icons_enabled.v==0)  ADD_STRING_CONFIG,"--zxdesktop-disable-configurable-icons");
 
     if (zxdesktop_automatic_reorder_icons.v)        ADD_STRING_CONFIG,"--zxdesktop-auto-order-icons");
+
+    if (david_desktop_align_to_grid_icons.v)        ADD_STRING_CONFIG,"--david-desktop-align-grid-icons");
+
 
     if (zxdesktop_empty_trash_on_exit.v)            ADD_STRING_CONFIG,"--zxdesktop-empty-trash-on-exit");
 
@@ -5413,6 +5483,12 @@ int util_write_configfile(void)
 
     if (setting_process_switcher_only_one_row.v==0)       ADD_STRING_CONFIG,"--process-switcher-no-one-row");
 
+    if (setting_emulated_display_win_zoom_fit.v)               ADD_STRING_CONFIG,"--emulated-display-win-fit-image");
+
+    if (setting_emulated_display_win_zoom_fit_keep_proportion.v==0)    ADD_STRING_CONFIG,"--emulated-display-win-no-proportion");
+
+    if (setting_emulated_display_win_autoresize.v)      ADD_STRING_CONFIG,"--emulated-display-win-autoresize");
+
 
     if (menu_allow_background_windows)              ADD_STRING_CONFIG,"--allow-background-windows");
 
@@ -5481,6 +5557,8 @@ int util_write_configfile(void)
 
     if (audiodac_enabled.v)                         ADD_STRING_CONFIG,"--enableaudiodac");
                                                     ADD_STRING_CONFIG,"--audiodactype \"%s\"",audiodac_types[audiodac_selected_type].name);
+
+    if (tsconf_vdac_with_pwm.v)                     ADD_STRING_CONFIG,"--tsconf-vdac-with-pwm");
 
     if (snow_effect_enabled.v)                      ADD_STRING_CONFIG,"--snoweffect");
     if (audiovolume!=100)                           ADD_STRING_CONFIG,"--audiovolume %d",audiovolume);
@@ -7079,10 +7157,12 @@ int quickload_continue(char *nombre) {
 
         }
 
-        //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadis
-        if (!MACHINE_IS_BASECONF) betadisk_enable();
+        //En baseconf no queremos activar betadisk porque el propio sistema de baseconf ya intercepta las llamadas a betadisk
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON && !MACHINE_IS_ATM_TURBO) betadisk_enable();
 
         //Si es scl, extraer el trd que se obtiene del scl e insertar el trd
+        //Esto ya no hace falta pues ya permite insertar scl
+        /*
         if (!util_compare_file_extension(nombre,"scl")) {
             char nombre_sin_dir[PATH_MAX];
             util_get_file_no_directory(nombre,nombre_sin_dir);
@@ -7102,6 +7182,10 @@ int quickload_continue(char *nombre) {
         else {
             trd_insert_disk(nombre);
         }
+
+        */
+
+        trd_insert_disk(nombre);
 
 
         return 0;
@@ -9446,12 +9530,22 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
 
     /* Las flechas de ZEsarUX mueven el joystick sin modificar la matriz ZX.
-       BaseConf también debe entregarlas al FIFO PS/2 del AVR. */
-    if (MACHINE_IS_BASECONF) {
+       BaseConf y TSConf también deben entregarlas al FIFO PS/2 del AVR. */
+    if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
         if (tecla==UTIL_KEY_LEFT) baseconf_ps2_cursor_event(0,pressrelease);
         if (tecla==UTIL_KEY_RIGHT) baseconf_ps2_cursor_event(1,pressrelease);
         if (tecla==UTIL_KEY_DOWN) baseconf_ps2_cursor_event(2,pressrelease);
         if (tecla==UTIL_KEY_UP) baseconf_ps2_cursor_event(3,pressrelease);
+        if (tecla>=UTIL_KEY_F1 && tecla<=UTIL_KEY_F10)
+            baseconf_ps2_function_event(tecla-UTIL_KEY_F1+1,pressrelease);
+    }
+
+    /* ATM recibe las flechas como teclas XT independientes de la matriz ZX. */
+    if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+        if (tecla==UTIL_KEY_LEFT) atmturbo2_cursor_event(0,pressrelease);
+        if (tecla==UTIL_KEY_RIGHT) atmturbo2_cursor_event(1,pressrelease);
+        if (tecla==UTIL_KEY_DOWN) atmturbo2_cursor_event(2,pressrelease);
+        if (tecla==UTIL_KEY_UP) atmturbo2_cursor_event(3,pressrelease);
     }
 
     switch (tecla) {
@@ -14236,9 +14330,11 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG,bitmap_button_ext_desktop_my_machine_spectrum_48_spa},
    {"48ks",20,bitmap_button_ext_desktop_my_machine_spectrum_48_spa},
    {"Inves",2,bitmap_button_ext_desktop_my_machine_inves},
-   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X,bitmap_button_ext_desktop_my_machine_tk90x},
+   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X_POR,bitmap_button_ext_desktop_my_machine_tk90x},
    {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
-   {"TK95",MACHINE_ID_MICRODIGITAL_TK95,bitmap_button_ext_desktop_my_machine_tk95},
+   {"TK90XF",MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR,bitmap_button_ext_desktop_my_machine_tk90x},
+   {"TK90XFS",MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA,bitmap_button_ext_desktop_my_machine_tk90x},
+   {"TK95",MACHINE_ID_MICRODIGITAL_TK95_POR,bitmap_button_ext_desktop_my_machine_tk95},
    {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA,bitmap_button_ext_desktop_my_machine_tk95},
    {"128k",6,bitmap_button_ext_desktop_my_machine_spectrum_128_eng},
    {"128ks",7,bitmap_button_ext_desktop_my_machine_spectrum_128_spa},
@@ -14259,6 +14355,16 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"TBBlue",19,bitmap_button_ext_desktop_my_machine_spectrum_next},
 
    {"Pentagon",21,bitmap_button_ext_desktop_my_machine_pentagon},
+   {"Scorpion",MACHINE_ID_SCORPION_ZS_256,bitmap_button_ext_desktop_my_machine_scorpion},
+   {"Scorpiontp",MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS,bitmap_button_ext_desktop_my_machine_scorpion},
+   {"Scorpiongmx",MACHINE_ID_SCORPION_GMX,bitmap_button_ext_desktop_my_machine_scorpion},
+
+   {"ATM1",MACHINE_ID_ATM_TURBO1,bitmap_button_ext_desktop_my_machine_atmturbo1},
+   {"ATM2",MACHINE_ID_ATM_TURBO2,bitmap_button_ext_desktop_my_machine_atmturbo1},
+   {"ATM2p",MACHINE_ID_ATM_TURBO2_PLUS,bitmap_button_ext_desktop_my_machine_atmturbo2p},
+   {"ATM3",MACHINE_ID_ATM_TURBO3,bitmap_button_ext_desktop_my_machine_atmturbo2p},
+
+   {"Didaktik",MACHINE_ID_DIDAKTIKGAMA,bitmap_button_ext_desktop_my_machine_didaktikgama},
    {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_generic},
    {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_baseconf},
    {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_tsconf},
@@ -15072,7 +15178,7 @@ int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
 int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
 {
     //Si estamos en maquina 48k
-    if (MACHINE_IS_SPECTRUM_16_48) {
+    if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_DIDAKTIKGAMA) {
         if (banco<8) {
             debug_printf (VERBOSE_ERR,"This poke is for a 128k machine and we are not in 128k machine (poke bank: %d)",banco);
             return -1;
@@ -15096,6 +15202,40 @@ int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
             direccion = direccion & 16383;
             z80_byte *puntero;
             puntero=ram_mem_table[banco]+direccion;
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
+            *puntero=valor;
+        }
+    }
+
+    else if (MACHINE_IS_SCORPION) {
+        //ram_mem_table
+        //Si banco >7, hacer poke normal
+        if (banco>7) {
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+            poke_byte_no_time(direccion,valor);
+        }
+        else {
+            //Poke con banco de memoria
+            direccion = direccion & 16383;
+            z80_byte *puntero;
+            puntero=scorpion_ram_mem_table[banco]+direccion;
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
+            *puntero=valor;
+        }
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        //ram_mem_table
+        //Si banco >7, hacer poke normal
+        if (banco>7) {
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+            poke_byte_no_time(direccion,valor);
+        }
+        else {
+            //Poke con banco de memoria
+            direccion = direccion & 16383;
+            z80_byte *puntero;
+            puntero=atmturbo_ram_mem_table[banco]+direccion;
             debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
             *puntero=valor;
         }
@@ -15213,6 +15353,7 @@ void poke_byte_writerom_exec(z80_int dir,z80_byte value)
         }
 
     else if (MACHINE_IS_SAM) {
+		if (sam_memory_paged_type[dir/16384]==SAM_MEMORY_PAGE_UNMAPPED) return;
 
                 z80_byte *puntero;
                 puntero=sam_return_segment_memory(dir);
@@ -15935,6 +16076,36 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       //como fallback, por defecto en spectrum 48kb ram
       size=49152;
 
+      if (MACHINE_IS_SCORPION) {
+        if (MACHINE_IS_SCORPION_GMX) {
+            size=SCORPIONGMX_RAM_SIZE*1024;
+        }
+        else {
+            size=256*1024;
+        }
+      }
+
+        if (MACHINE_IS_ATM_TURBO1) {
+            size=ATM_TURBO1_RAM_SIZE*1024;
+        }
+
+        if (MACHINE_IS_ATM_TURBO2) {
+            size=ATM_TURBO2_RAM_SIZE*1024;
+        }
+
+        if (MACHINE_IS_ATM_TURBO2_PLUS) {
+            size=ATM_TURBO2_PLUS_RAM_SIZE*1024;
+        }
+
+        if (MACHINE_IS_ATM_TURBO3) {
+            size=ATM_TURBO3_RAM_SIZE*1024;
+        }
+
+
+      if (MACHINE_IS_DIDAKTIKGAMA) {
+        size=80*1024;
+      }
+
       if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
         size=131072*mem128_multiplicador;
       }
@@ -16010,6 +16181,32 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       *readwrite=1; //1 read, 2 write
       //como fallback por defecto en spectrum 16kb rom
       size=16384;
+
+      if (MACHINE_IS_SCORPION) {
+        if (MACHINE_IS_SCORPION_GMX) {
+            size=SCORPIONGMX_ROM_SIZE*1024;
+        }
+        else {
+            size=65536;
+        }
+      }
+
+    if (MACHINE_IS_ATM_TURBO1) {
+        size=ATM_TURBO1_ROM_SIZE*1024;
+    }
+
+    if (MACHINE_IS_ATM_TURBO2) {
+        size=ATM_TURBO2_ROM_SIZE*1024;
+    }
+
+    if (MACHINE_IS_ATM_TURBO2_PLUS) {
+        size=ATM_TURBO2_PLUS_ROM_SIZE*1024;
+    }
+
+    if (MACHINE_IS_ATM_TURBO3) {
+        size=ATM_TURBO3_ROM_SIZE*1024;
+    }
+
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
         size=32768;
@@ -16552,6 +16749,23 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
           p=&memoria_spectrum[address+16384];
 
 
+      if (MACHINE_IS_SCORPION) {
+        //Saltar la rom
+        if (MACHINE_IS_SCORPION_GMX) {
+            p=scorpion_ram_mem_table[0];
+            p +=address;
+        }
+
+        else {
+            p=&memoria_spectrum[address+65536];
+        }
+      }
+
+    if (MACHINE_IS_ATM_TURBO) {
+        //Saltar la rom
+        p=atmturbo_ram_mem_table[0];
+        p +=address;
+    }
 
 
       if (MACHINE_IS_SPECTRUM_128_P2) {
@@ -20836,6 +21050,11 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 }
             break;
 
+            case ZSF_DIDAKTIKGAMA_CONF:
+                // La pantalla de la Gama está siempre en el bloque RAM fijo 0.
+                pagina_pantalla=0;
+            break;
+
             case ZSF_QL_RAMBLOCK:
                 /*
                 A ram binary block for a QL, of 16kb
@@ -21000,7 +21219,12 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
             case ZSF_ZXUNO_RAMBLOCK:
             case ZSF_TSCONF_RAMBLOCK:
             case ZSF_CHROME_RAMBLOCK:
-                //Codigo compatible tanto para 128k, zxuno, tsconf o chrome, los bloques con iguales excepto por el id
+            case ZSF_DIDAKTIKGAMA_RAMBLOCK:
+            case ZSF_BASECONF_RAMBLOCK:
+            case ZSF_SCORPION_RAMBLOCK:
+            case ZSF_SCORPIONGMX_RAMBLOCK:
+            case ZSF_ATM_TURBO_RAMBLOCK:
+                // Formato de bloque compatible para 128K, ZXUno, TSConf, Chrome y Didaktik.
                 /*
                 -Block ID 6: ZSF_SPEC128_RAMBLOCK
                 A ram binary block for a spectrum 128, p2 or p2a machine
@@ -21065,7 +21289,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 ram_page=block_data[i];
                 i++;
 
-                //Paginas 5 o 7 de RAM
+                // Página de pantalla seleccionada por la configuración de la máquina.
                 if (ram_page==pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;

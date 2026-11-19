@@ -358,6 +358,9 @@ z80_bit command_line_snapshots_in_ram={0};
 
 z80_bit command_line_keystrokes_turbo={0};
 
+
+int se_abre_emulated_display=0;
+
 //z80_bit parameter_disable_allbetawarningsleep={0};
 
 //Fin command_line flags
@@ -1129,7 +1132,7 @@ printf (
         "--fileviewer-hex                   File viewer always shows file contents in hexadecimal+ascii\n"
         "--no-file-previews                 Do not show file previews on file selector menus\n"
         "--reduce-file-previews             Reduce file previews to half size\n"
-        "--file-previews-on-zxdesktop       Show previews also on ZX Desktop\n"
+        "--file-previews-on-zxdesktop       Show previews also on DAVID Desktop\n"
 
 
         "\n"
@@ -1338,7 +1341,7 @@ printf (
         "\n"
 
         "--fullscreen                                   Enable full screen\n"
-        "--zxdesktop-disable-on-fullscreen              Disable ZX Desktop when going to full screen\n"
+        "--zxdesktop-disable-on-fullscreen              Disable DAVID Desktop when going to full screen\n"
         "--zxdesktop-no-restore-win-after-fullscreen    Do not restore windows after disabling full screen, when --zxdesktop-disable-on-fullscreen setting is set\n"
         "--disable-border-on-fullscreen                 Disable Border when going to full screen\n"
         "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"
@@ -1346,7 +1349,7 @@ printf (
 
         "--disableborder                                Disable Border\n"
         "--frameskip n                                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
-        "--no-frameskip-zxdesktop-back                  Disable apply frameskip drawing ZX Desktop Background\n"
+        "--no-frameskip-zxdesktop-back                  Disable apply frameskip drawing DAVID Desktop Background\n"
         "--disable-autoframeskip                        Disable autoframeskip\n"
         "--no-autoframeskip-moving-win                  Disable autoframeskip even when moving objects\n"
 
@@ -1795,6 +1798,7 @@ screen_effect_print_names();
 
         //"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
 
+        "--tsconf-vdac-with-pwm                  Enable TSConf vdac with pwm\n"
         "--snoweffect                            Enable snow effect support for Spectrum\n"
         "--enablegigascreen                      Enable Gigascreen video support\n"
         "--enableinterlaced                      Enable Interlaced video support\n"
@@ -1908,49 +1912,50 @@ printf("\n"
 
         "\n"
         "\n"
-        "ZX Desktop Settings\n"
-        "-------------------\n"
+        "DAVID Desktop Settings (formerly ZX Desktop)\n"
+        "--------------------------------------------\n"
         "\n"
 
 
-        "--enable-zxdesktop                             Enable ZX Desktop space\n"
-        "--forbid-zxdesktop                             Do not allow to enable ZX Desktop\n"
-        "--zxdesktop-width n                            ZX Desktop width\n"
-        "--zxdesktop-height n                           ZX Desktop height\n"
-        "--zxdesktop-fill-type n                        ZX Desktop fill type (0,1,2,3,4 or 5)\n"
-        "--zxdesktop-fill-primary-color n               ZX Desktop primary fill color (0-15)\n"
-        "--zxdesktop-fill-secondary-color n             ZX Desktop secondary fill color (0-15)\n"
-        "--zxdesktop-fill-degraded-inverted             ZX Desktop inverted colours on degraded fill type\n"
-        "--zxdesktop-new-items                          Try to place new menu items on the ZX Desktop space\n"
-        "--zxdesktop-disable-upper-buttons              Disable ZX Desktop direct access upper buttons\n"
-        "--zxdesktop-disable-lower-buttons              Disable ZX Desktop direct access lower buttons\n"
-        "--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent or force background color\n"
+        "--enable-zxdesktop                             Enable DAVID Desktop space\n"
+        "--forbid-zxdesktop                             Do not allow to enable DAVID Desktop\n"
+        "--zxdesktop-width n                            DAVID Desktop width\n"
+        "--zxdesktop-height n                           DAVID Desktop height\n"
+        "--zxdesktop-fill-type n                        DAVID Desktop fill type (0,1,2,3,4 or 5)\n"
+        "--zxdesktop-fill-primary-color n               DAVID Desktop primary fill color (0-15)\n"
+        "--zxdesktop-fill-secondary-color n             DAVID Desktop secondary fill color (0-15)\n"
+        "--zxdesktop-fill-degraded-inverted             DAVID Desktop inverted colours on degraded fill type\n"
+        "--zxdesktop-new-items                          Try to place new menu items on the DAVID Desktop space\n"
+        "--zxdesktop-disable-upper-buttons              Disable DAVID Desktop direct access upper buttons\n"
+        "--zxdesktop-disable-lower-buttons              Disable DAVID Desktop direct access lower buttons\n"
+        "--zxdesktop-transparent-upper-buttons          Make DAVID Desktop upper buttons transparent or force background color\n"
         "--zxdesktop-upper-buttons-bg-follow-gui        Background color for upper buttons follows GUI style\n"
         "--zxdesktop-upper-buttons-bg-color n           Background color for upper buttons when no follow GUI style\n"
-        "--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent or force background color\n"
+        "--zxdesktop-transparent-lower-buttons          Make DAVID Desktop lower buttons transparent or force background color\n"
         "--zxdesktop-lower-buttons-bg-follow-gui        Background color for lower buttons follows GUI style\n"
         "--zxdesktop-lower-buttons-bg-color n           Background color for lower buttons when no follow GUI style\n"
-        "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
-        "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"
-        "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"
+        "--zxdesktop-disable-box-upper-buttons          Disable box around DAVID Desktop upper buttons\n"
+        "--zxdesktop-disable-box-lower-buttons          Disable box around DAVID Desktop lower buttons\n"
+        "--zxdesktop-disable-footer-switch              Disable DAVID Desktop footer enlarge/reduce buttons\n"
         "--zxdesktop-disable-frame-emulated-display     Disable showing a frame around the emulated machine display\n"
-        "--zxdesktop-scr-file f                         Set ZX Desktop SCR background file\n"
-        "--zxdesktop-scr-enable                         Enable ZX Desktop SCR background file\n"
-        "--zxdesktop-scr-centered                       Center ZX Desktop SCR background\n"
-        "--zxdesktop-scr-fillscale                      Scale automatic for ZX Desktop SCR background\n"
+        "--zxdesktop-scr-file f                         Set DAVID Desktop SCR background file\n"
+        "--zxdesktop-scr-enable                         Enable DAVID Desktop SCR background file\n"
+        "--zxdesktop-scr-centered                       Center DAVID Desktop SCR background\n"
+        "--zxdesktop-scr-fillscale                      Scale automatic for DAVID Desktop SCR background\n"
         "--zxdesktop-scr-mixbackground                  Mix SCR image with background\n"
-        "--zxdesktop-scr-scalefactor n                  Scale manually for ZX Desktop SCR background\n"
-        "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
-        "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"
-        "--zxdesktop-auto-order-icons                   Automatic order icons on ZX Desktop\n"
+        "--zxdesktop-scr-scalefactor n                  Scale manually for DAVID Desktop SCR background\n"
+        "--zxdesktop-scr-disable-flash                  Disable flash for DAVID Desktop SCR background\n"
+        "--zxdesktop-disable-configurable-icons         Disable configurable icons on DAVID Desktop\n"
+        "--zxdesktop-auto-order-icons                   Automatic order icons on DAVID Desktop\n"
+        "--david-desktop-align-grid-icons               Align icons to grid on DAVID Desktop\n"
         "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
         "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
-        "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent or force background color\n"
+        "--zxdesktop-no-transparent-configurable-icons  Make DAVID Desktop configurable icons non transparent or force background color\n"
         "--zxdesktop-configurable-icons-bg-follow-gui   Background color for configurable icons follows GUI style\n"
         "--zxdesktop-configurable-icons-bg-color n      Background color for configurable icons when no follow GUI style\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
         "--zxdesktop-configurable-icons-short-text      Show short text on configurable icons\n"
-        "--zxdesktop-enable-icons-stroke                Sets a stroke on icons, useful to avoid blending with ZX Desktop\n"
+        "--zxdesktop-enable-icons-stroke                Sets a stroke on icons, useful to avoid blending with DAVID Desktop\n"
         "--zxdesktop-icons-stroke-color n               Define color icons stroke (0-15)\n"
 
         "--zxdesktop-append-icon x y a n e s b          Add icon to position x,y, to action a, icon name n, extra parameters e, status s, alternate bitmap b. "
@@ -1995,7 +2000,7 @@ printf("\n"
 
         "--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
         "--disablemenumouse                       Disable mouse on emulator menu\n"
-        "--ignoremouseclickopenmenu               Ignore mouse clicking to open menu or ZX Desktop buttons\n"
+        "--ignoremouseclickopenmenu               Ignore mouse clicking to open menu or DAVID Desktop buttons\n"
         "--limitopenmenu                          Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
 
         "--enable-top-menu                        Enable Top Menu\n"
@@ -2026,6 +2031,9 @@ printf("\n"
         "--process-switcher-always-visible        Process switcher is always visible (on top of all windows)\n"
         "--process-switcher-no-left-bottom        Do not force process switcher to be located at left-bottom part of the display\n"
         "--process-switcher-no-one-row            Do not limit process switcher to only one row of icons\n"
+        "--emulated-display-win-fit-image         Scale the emulated display (when windowed mode) to fill its window\n"
+        "--emulated-display-win-no-proportion     Do not keep proportions on the emulated display (when windowed mode) when fit image to window\n"
+        "--emulated-display-win-autoresize        Autoresize the emulated display when changing machine\n"
         "--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
         );
@@ -3607,7 +3615,7 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--enable-zxdesktop")) {
                 if (screen_forbid_zxdesktop) {
-                    debug_printf(VERBOSE_ERR,"Enabling ZX Desktop is forbidden");
+                    debug_printf(VERBOSE_ERR,"Enabling DAVID Desktop is forbidden");
                 }
                 else screen_ext_desktop_enabled=1;
             }
@@ -3617,7 +3625,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>9999) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop width");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop width");
                 }
                 else {
                     zxdesktop_width=valor;
@@ -3629,7 +3637,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>9999) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop height");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop height");
                 }
                 else {
                     zxdesktop_height=valor;
@@ -3641,7 +3649,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>MENU_MAX_EXT_DESKTOP_FILL_NUMBER) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop fill type\n");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop fill type\n");
                 }
                 else {
                     menu_ext_desktop_fill=valor;
@@ -3657,7 +3665,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop primary fill solid color\n");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop primary fill solid color\n");
                 }
                 else {
                     menu_ext_desktop_fill_first_color=valor;
@@ -3669,7 +3677,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop seconday fill solid color\n");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop seconday fill solid color\n");
                 }
                 else menu_ext_desktop_fill_second_color=valor;
             }
@@ -3709,7 +3717,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop upper buttons background color");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop upper buttons background color");
                 }
                 else {
                     menu_ext_desktop_upper_buttons_background_color=valor;
@@ -3730,7 +3738,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop lower buttons background color");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop lower buttons background color");
                 }
                 else {
                     menu_ext_desktop_lower_buttons_background_color=valor;
@@ -3752,7 +3760,7 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop icon background color");
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop icon background color");
                 }
                 else {
                     menu_ext_desktop_configurable_icons_background_color=valor;
@@ -3831,8 +3839,8 @@ int parse_cmdline_options(int desde_commandline)
 
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
-                if (valor<1 || valor>5) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop SCR scale factor\n");
+                if (valor<1 || valor>10) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for DAVID Desktop SCR scale factor\n");
 
                 }
                 else zxdesktop_draw_scrfile_scale_factor=valor;
@@ -3852,6 +3860,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-auto-order-icons")) {
                 zxdesktop_automatic_reorder_icons.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--david-desktop-align-grid-icons")) {
+                david_desktop_align_to_grid_icons.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-show-indicators-open-apps")) {
@@ -6583,6 +6595,18 @@ int parse_cmdline_options(int desde_commandline)
                 setting_process_switcher_force_left_bottom.v=0;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-fit-image")) {
+                setting_emulated_display_win_zoom_fit.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-no-proportion")) {
+                setting_emulated_display_win_zoom_fit_keep_proportion.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--emulated-display-win-autoresize")) {
+                setting_emulated_display_win_autoresize.v=1;
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-no-one-row")) {
                 setting_process_switcher_only_one_row.v=0;
             }
@@ -6823,6 +6847,10 @@ int parse_cmdline_options(int desde_commandline)
 
                     }
 
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--tsconf-vdac-with-pwm")) {
+                tsconf_vdac_with_pwm.v=1;
             }
 
 
@@ -8225,6 +8253,9 @@ int parse_cmdline_options(int desde_commandline)
                 //strcpy(restore_window_array[total_restore_window_array_elements++],argv[puntero_parametro]);
                 add_window_to_restore(argv[puntero_parametro]);
 
+                //Si se ha restaurado "emulateddisplay", decimos que los iconos pueden ubicarse donde esta normalmente la pantalla emulada
+                if (!strcmp(argv[puntero_parametro],"emulateddisplay")) se_abre_emulated_display=1;
+
             }
 
             else if (!strcmp(argv[puntero_parametro],"--restore-all-known-windows")) {
@@ -9210,7 +9241,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     create_default_zxdesktop_configurable_icons();
 
     //despues de leer los iconos de la config, e inicializar pantalla, ver si algun icono esta en alguna posicion que no debe y reasignar
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(se_abre_emulated_display);
 
     set_last_dimensiones_ventana();
 

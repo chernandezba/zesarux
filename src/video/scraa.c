@@ -47,6 +47,8 @@
 #include "svi.h"
 #include "pcw.h"
 #include "baseconf.h"
+#include "scorpion.h"
+#include "atmturbo.h"
 
 
 aa_context *context;
@@ -262,6 +264,14 @@ void scraa_refresca_pantalla(void)
 
         else if (MACHINE_IS_BASECONF)	{
             baseconf_refresca_pantalla();
+        }
+
+        else if (MACHINE_IS_SCORPION_GMX)	{
+            scorpiongmx_refresca_pantalla();
+        }
+
+        else if (MACHINE_IS_ATM_TURBO)	{
+            atmturbo_refresca_pantalla();
         }
 
 

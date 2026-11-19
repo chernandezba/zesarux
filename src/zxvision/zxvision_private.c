@@ -201,6 +201,8 @@ void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int 
     //Empezar a ubicarlos con algo de margen
     int xinicial=inicio_x_zxdesktop+24;
 
+    if (ventana_video_output_esta_abierta()) xinicial=0;
+
     int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
 
     int yinicial=zxvision_get_minimum_y_icon_position();
@@ -292,7 +294,7 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(int amplia
         //Boton abajo: ampliar alto
         if (ampliar_reducir_alto) {
             if (x==xboton && y==yboton+1) {
-                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop enlarge height button");
+                debug_printf(VERBOSE_INFO,"Pressed on DAVID Desktop enlarge height button");
                 return 1;
             }
         }
@@ -300,7 +302,7 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(int amplia
         //Boton arriba: reducir alto
         else {
             if (x==xboton && y==yboton) {
-                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop reduce height button");
+                debug_printf(VERBOSE_INFO,"Pressed on DAVID Desktop reduce height button");
                 return 1;
             }
         }
@@ -388,7 +390,7 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(int ampliar
         //Boton arriba: ampliar ancho
         if (ampliar_reducir_ancho) {
             if (x==xboton && y==yboton) {
-                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop enlarge width button");
+                debug_printf(VERBOSE_INFO,"Pressed on DAVID Desktop enlarge width button");
                 return 1;
             }
         }
@@ -396,7 +398,7 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(int ampliar
         //Boton abajo: reducir ancho
         else {
             if (x==xboton && y==yboton+1) {
-                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop reduce width button");
+                debug_printf(VERBOSE_INFO,"Pressed on DAVID Desktop reduce width button");
                 return 1;
             }
         }

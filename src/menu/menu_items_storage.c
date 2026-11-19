@@ -156,6 +156,10 @@
 #include "zesarux.h"
 #include "zxmmcplus.h"
 #include "enhanced_zx81_read.h"
+#include "scorpion.h"
+#include "baseconf.h"
+#include "zxevo.h"
+#include "atmturbo.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -9577,6 +9581,291 @@ int menu_visualfloppy_header_visible=1;
 
 int menu_visualfloppy_coloured_effects=1;
 
+//0: disco, 1: carcasa transparente, 2: carcasa opaca
+int menu_visualfloppy_case_mode=1;
+int last_menu_visualfloppy_case_mode=-1;
+int last_menu_visualfloppy_write_protection=-1;
+
+int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco);
+
+int menu_visual_floppy_hole_pattern_color(int x,int y)
+{
+    //0xAAA es gris claro en la paleta Prism; 7 es el blanco habitual del menú.
+    return (((x/3)+(y/3))&1) ? PRISM_INDEX_FIRST_COLOR+0xAAA : 7;
+}
+
+void menu_visual_floppy_draw_clear_hole(int cx,int cy,int radius,int border_color,int filled)
+{
+    if (filled) {
+        int x,y;
+        int radius_squared=radius*radius;
+        for (y=cy-radius;y<=cy+radius;y++) {
+            for (x=cx-radius;x<=cx+radius;x++) {
+                int dx=x-cx, dy=y-cy;
+                if (dx*dx+dy*dy<radius_squared) {
+                    zxvision_putpixel(menu_visual_floppy_window,x,y,
+                        menu_visual_floppy_hole_pattern_color(x,y));
+                }
+            }
+        }
+    }
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,radius,radius,
+        border_color,zxvision_putpixel,360);
+}
+
+void menu_visual_floppy_draw_case(int cx,int cy,int radius,int opaque)
+{
+    int half_width=radius+8;
+    int half_height=radius+14;
+    int left=cx-half_width, right=cx+half_width;
+    int top=cy-half_height, bottom=cy+half_height;
+    int y, line;
+    int case_color=opaque ? 5 : 6;
+    int border_color=opaque ? 0 : 7;
+
+    //La carcasa opaca tapa la superficie magnética y sus marcas.
+    if (opaque) {
+        for (y=top;y<=bottom;y++) {
+            int inset=0;
+            if (y<top+5) inset=top+5-y;
+            if (y>bottom-5) inset=y-(bottom-5);
+            zxvision_draw_line(menu_visual_floppy_window,left+inset,y,right-inset,y,case_color,zxvision_putpixel);
+            if (inset) {
+                //Limpiar los triángulos exteriores: el relleno no debe formar esquinas rectas.
+                zxvision_draw_line(menu_visual_floppy_window,left,y,left+inset-1,y,
+                    HEATMAP_INDEX_FIRST_COLOR,zxvision_putpixel);
+                zxvision_draw_line(menu_visual_floppy_window,right-inset+1,y,right,y,
+                    HEATMAP_INDEX_FIRST_COLOR,zxvision_putpixel);
+            }
+        }
+    }
+
+    //Carcasa rectangular con esquinas recortadas, más alta que ancha.
+    zxvision_draw_line(menu_visual_floppy_window,left+5,top,right-5,top,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left,top+5,left,bottom-5,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,right,top+5,right,bottom-5,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left+5,bottom,right-5,bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left,top+5,left+5,top,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,right-5,top,right,top+5,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,left,bottom-5,left+5,bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,right,bottom-5,right-5,bottom,border_color,zxvision_putpixel);
+
+    //La abertura de lectura queda centrada y muestra la superficie magnética.
+    int slot_half=radius/9;
+    if (slot_half<3) slot_half=3;
+    int slot_left=cx-slot_half, slot_right=cx+slot_half;
+    //Situar la cápsula por encima del cabezal en la pista 0, con margen proporcional.
+    int top_head=cy-menu_visual_floppy_get_radio_pista(0,radius,(radius/6)*2);
+    int head_gap=radius/40;
+    if (head_gap<1) head_gap=1;
+    int slot_top=top_head-head_gap;
+    //El borde de la cápsula nunca debe sobresalir del disco al reducir la ventana.
+    if (slot_top<cy-radius+1) slot_top=cy-radius+1;
+    int slot_bottom=cy-radius/3;
+    //Extremos semicirculares: el radio alcanza la mitad del ancho.
+    int corner=slot_half;
+    if (corner>(slot_bottom-slot_top)/2) corner=(slot_bottom-slot_top)/2;
+    if (opaque) {
+        //Rellenar la abertura negra con una línea horizontal por cada fila.
+        for (y=slot_top;y<=slot_bottom;y++) {
+            int inset=0;
+            int dy=0;
+            //En los extremos, dy mide la distancia vertical al centro del semicírculo.
+            //En la zona recta queda a cero y la línea utiliza todo el ancho.
+            if (y<slot_top+corner) dy=slot_top+corner-y;
+            if (y>slot_bottom-corner) dy=y-(slot_bottom-corner);
+            //Buscar el primer punto que cae dentro del círculo: x²+y² <= radio².
+            //inset recorta por igual ambos lados de la línea para formar la curva.
+            while (inset<corner &&
+                (corner-inset)*(corner-inset)+dy*dy>corner*corner) inset++;
+            //Dejar un píxel a cada lado para el contorno que se dibuja después.
+            if (slot_left+inset+1<=slot_right-inset-1) {
+                zxvision_draw_line(menu_visual_floppy_window,slot_left+inset+1,y,
+                    slot_right-inset-1,y,0,zxvision_putpixel);
+            }
+        }
+    }
+    //Unir los lados rectos con cuatro arcos redondeados.
+    zxvision_draw_line(menu_visual_floppy_window,slot_left+corner,slot_top,
+        slot_right-corner,slot_top,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,slot_left+corner,slot_bottom,
+        slot_right-corner,slot_bottom,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,slot_left,slot_top+corner,
+        slot_left,slot_bottom-corner,border_color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,slot_right,slot_top+corner,
+        slot_right,slot_bottom-corner,border_color,zxvision_putpixel);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_left+corner,slot_top+corner,
+        corner,corner,border_color,zxvision_putpixel,90,181);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_right-corner,slot_top+corner,
+        corner,corner,border_color,zxvision_putpixel,0,91);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_left+corner,slot_bottom-corner,
+        corner,corner,border_color,zxvision_putpixel,180,271);
+    zxvision_draw_arc(menu_visual_floppy_window,slot_right-corner,slot_bottom-corner,
+        corner,corner,border_color,zxvision_putpixel,270,360);
+
+    //Dos orificios transparentes, simétricos a los lados de la abertura superior.
+    int clear_hole_radius=radius/20;
+    if (clear_hole_radius<2) clear_hole_radius=2;
+    int clear_hole_offset=half_width*3/5;
+    int clear_hole_y=top+radius/5;
+    menu_visual_floppy_draw_clear_hole(cx-clear_hole_offset,clear_hole_y,
+        clear_hole_radius,border_color,opaque);
+    menu_visual_floppy_draw_clear_hole(cx+clear_hole_offset,clear_hole_y,
+        clear_hole_radius,border_color,opaque);
+
+    //En la carcasa transparente sólo se superpone el nombre del disco.
+    int label_left=left+8, label_right=right-8;
+    int label_top=cy+radius/2, label_bottom=bottom-5;
+    if (label_bottom>label_top+6) {
+        int label_height=label_bottom-label_top;
+        int text_zoom=label_height/28;
+        if (text_zoom<1) text_zoom=1;
+        while (text_zoom>1 && label_top+2+16*text_zoom>label_bottom-4) text_zoom--;
+        if (opaque) {
+            for (y=label_top;y<=label_bottom;y++) {
+                zxvision_draw_line(menu_visual_floppy_window,label_left,y,label_right,y,7,zxvision_putpixel);
+            }
+            zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_right,label_top,0,zxvision_putpixel);
+            zxvision_draw_line(menu_visual_floppy_window,label_left,label_bottom,label_right,label_bottom,0,zxvision_putpixel);
+            zxvision_draw_line(menu_visual_floppy_window,label_left,label_top,label_left,label_bottom,0,zxvision_putpixel);
+            zxvision_draw_line(menu_visual_floppy_window,label_right,label_top,label_right,label_bottom,0,zxvision_putpixel);
+            //Cuatro renglones repartidos en el espacio libre debajo del título.
+            int lines_top=label_top+2+16*text_zoom+3;
+            int lines_height=label_bottom-lines_top-2;
+            if (lines_height<4) {
+                lines_top=label_top+1;
+                lines_height=label_height-2;
+            }
+            for (line=1;line<=4;line++) {
+                int line_y=lines_top+(lines_height*line)/5;
+                zxvision_draw_line(menu_visual_floppy_window,label_left+4,line_y,label_right-4,line_y,0,zxvision_putpixel);
+            }
+        }
+
+        //Mostrar el nombre del DSK insertado o TRD
+        //Si es maquina con floppy +3: Mostrar DSK
+        char *nombre_etiqueta;
+        if (MACHINE_HAS_CF2_FLOPPY) nombre_etiqueta=dskplusthree_file_name;
+        else nombre_etiqueta=trd_file_name;
+
+        if (nombre_etiqueta[0]) {
+            char file_no_dir[PATH_MAX];
+            char title[PATH_MAX];
+            util_get_file_no_directory(nombre_etiqueta,file_no_dir);
+            util_get_file_without_extension(file_no_dir,title);
+            size_t title_length=strlen(title);
+
+            //La fuente mide siete unidades de alto y ocho de avance por carácter.
+            int max_chars=(label_right-label_left-8)/(8*text_zoom);
+            if (max_chars>(int)sizeof(title)-1) max_chars=sizeof(title)-1;
+            if (max_chars>0) {
+                int split=title_length;
+                if (split>max_chars) {
+                    split=max_chars;
+                    //Si hay un espacio próximo al final, partir entre palabras.
+                    int word_end=split;
+                    while (word_end>max_chars/2 && title[word_end]!=' ') word_end--;
+                    if (word_end>max_chars/2) split=word_end;
+                }
+                char *second_line=title+split;
+                while (*second_line==' ') second_line++;
+                char split_char=title[split];
+                title[split]=0;
+                zxvision_print_vectorial_text(menu_visual_floppy_window,label_left+4,label_top+2,
+                    text_zoom,opaque ? 1 : 7,title,zxvision_putpixel);
+                title[split]=split_char;
+                if (*second_line && label_top+2+16*text_zoom<=label_bottom-4) {
+                    size_t second_length=strlen(second_line);
+                    if (second_length>(size_t)max_chars) {
+                        second_length=max_chars;
+                        second_line[second_length]=0;
+                        if (second_length>=3) {
+                            second_line[second_length-3]='.';
+                            second_line[second_length-2]='.';
+                            second_line[second_length-1]='.';
+                        }
+                    }
+                    zxvision_print_vectorial_text(menu_visual_floppy_window,label_left+4,
+                        label_top+2+9*text_zoom,text_zoom,opaque ? 1 : 7,
+                        second_line,zxvision_putpixel);
+                }
+            }
+        }
+    }
+
+    //El orificio queda abierto solamente cuando el disco está protegido.
+    if (dskplusthree_write_protection.v) {
+        if (opaque) {
+            int x;
+            //Desplazar el patrón para que los dos tonos se vean dentro del cuadrado pequeño.
+            for (y=top+8;y<=top+10;y++) {
+                for (x=left+6;x<=left+8;x++) {
+                    zxvision_putpixel(menu_visual_floppy_window,x,y,
+                        menu_visual_floppy_hole_pattern_color(x-left-4,y-top-6));
+                }
+            }
+        }
+        for (y=top+7;y<=top+11;y++) {
+            zxvision_putpixel(menu_visual_floppy_window,left+5,y,border_color);
+            zxvision_putpixel(menu_visual_floppy_window,left+9,y,border_color);
+        }
+        zxvision_draw_line(menu_visual_floppy_window,left+5,top+7,left+9,top+7,border_color,zxvision_putpixel);
+        zxvision_draw_line(menu_visual_floppy_window,left+5,top+11,left+9,top+11,border_color,zxvision_putpixel);
+    }
+}
+
+void menu_visual_floppy_draw_case_hub(int cx,int cy,int radius)
+{
+    int hub_radius=radius/6;
+    int r;
+    if (hub_radius<3) hub_radius=3;
+
+    //El centro blanco deja visibles el eje y cuatro radios giratorios negros.
+    for (r=0;r<hub_radius;r++) {
+        zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,r,r,7,zxvision_putpixel,360);
+    }
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius,hub_radius,0,zxvision_putpixel,360);
+    zxvision_draw_ellipse(menu_visual_floppy_window,cx,cy,hub_radius/3,hub_radius/3,0,zxvision_putpixel,360);
+    int spoke;
+    for (spoke=0;spoke<4;spoke++) {
+        int angle=(menu_visualfloppy_rotacion_disco+spoke*90)%360;
+        int inner=hub_radius/3;
+        int outer=hub_radius*3/4;
+        int start_x=cx+(inner*util_get_cosine(angle))/10000;
+        int start_y=cy-(inner*util_get_sine(angle))/10000;
+        int end_x=cx+(outer*util_get_cosine(angle))/10000;
+        int end_y=cy-(outer*util_get_sine(angle))/10000;
+        zxvision_draw_line(menu_visual_floppy_window,start_x,start_y,end_x,end_y,0,zxvision_putpixel);
+    }
+}
+
+void menu_visual_floppy_draw_case_index(int cx,int cy,int radius,int inner_radius,int data_radius)
+{
+    int distance=data_radius-inner_radius/2;
+    int aperture_radius=radius/20;
+    if (aperture_radius<2) aperture_radius=2;
+    int x=cx;
+    int y=cy+distance;
+    int moving_x=cx+(distance*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000;
+    int moving_y=cy-(distance*util_get_sine(menu_visualfloppy_rotacion_disco))/10000;
+    int px,py;
+    int radius_squared=aperture_radius*aperture_radius;
+
+    //La abertura es negra; la intersección alterna bloques de 3x3 grises claros y blancos.
+    for (py=y-aperture_radius;py<=y+aperture_radius;py++) {
+        for (px=x-aperture_radius;px<=x+aperture_radius;px++) {
+            int fixed_dx=px-x, fixed_dy=py-y;
+            if (fixed_dx*fixed_dx+fixed_dy*fixed_dy<=radius_squared) {
+                int moving_dx=px-moving_x, moving_dy=py-moving_y;
+                int visible=moving_dx*moving_dx+moving_dy*moving_dy<=radius_squared;
+                int color=visible ? menu_visual_floppy_hole_pattern_color(px,py) : 0;
+                zxvision_putpixel(menu_visual_floppy_window,px,py,color);
+            }
+        }
+    }
+    zxvision_draw_ellipse(menu_visual_floppy_window,x,y,aperture_radius,aperture_radius,0,zxvision_putpixel,360);
+}
+
 //Retorna en que radio está una pista concreta
 int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco)
 {
@@ -9946,6 +10235,16 @@ void menu_visual_floppy_overlay(void)
         //quitarle 2 caracter de radio. Fijo a 8 pixeles que es el maximo de un caracter en ancho o alto
         radio_exterior_disco -=(8*2);
 
+        if (menu_visualfloppy_case_mode) {
+            //Reservar las dos filas de opciones y un margen para la carcasa.
+            int area_top=2*menu_char_height+8;
+            int area_bottom=alto_ventana_pixeles-8;
+            int radio_maximo_alto=(area_bottom-area_top)/2-14;
+            centro_disco_y=(area_top+area_bottom)/2;
+            radio_exterior_disco -=9;
+            if (radio_exterior_disco>radio_maximo_alto) radio_exterior_disco=radio_maximo_alto;
+        }
+
         int radio_interior_disco=radio_exterior_disco/6;
 
         //Resto de dimensiones van relativas a radio_exterior_disco
@@ -9977,6 +10276,8 @@ void menu_visual_floppy_overlay(void)
             last_menu_visual_floppy_buffer_length==menu_visual_floppy_buffer_length &&
             last_menu_visualfloppy_rotacion_disco==menu_visualfloppy_rotacion_disco &&
             last_pd765_motor_status==pd765_motor_status
+            && last_menu_visualfloppy_case_mode==menu_visualfloppy_case_mode
+            && last_menu_visualfloppy_write_protection==dskplusthree_write_protection.v
             ) {
             //printf("no hay cambios\n");
             hay_cambios=0;
@@ -9985,6 +10286,8 @@ void menu_visual_floppy_overlay(void)
         last_menu_visualfloppy_rotacion_disco=menu_visualfloppy_rotacion_disco;
         last_menu_visual_floppy_buffer_length=menu_visual_floppy_buffer_length;
         last_pd765_motor_status=pd765_motor_status;
+        last_menu_visualfloppy_case_mode=menu_visualfloppy_case_mode;
+        last_menu_visualfloppy_write_protection=dskplusthree_write_protection.v;
 
         //Si motor moviendose
         //if (pd765_motor_status) {
@@ -9995,6 +10298,15 @@ void menu_visual_floppy_overlay(void)
 
 
         if (hay_cambios) {
+
+            if (menu_visualfloppy_case_mode) {
+                int half_width=radio_exterior_disco+9;
+                int half_height=radio_exterior_disco+15;
+                for (r=centro_disco_y-half_height;r<=centro_disco_y+half_height;r++) {
+                    zxvision_draw_line(menu_visual_floppy_window,centro_disco_x-half_width,r,
+                        centro_disco_x+half_width,r,HEATMAP_INDEX_FIRST_COLOR,zxvision_putpixel);
+                }
+            }
 
             //borrar todo el contenido de los circulos
             //alternativa mediante circulos desde interior hasta exterior
@@ -10056,8 +10368,10 @@ void menu_visual_floppy_overlay(void)
 
             //printf("%d %d,%d,%d\n",i,pista,sector,byte_en_sector);
 
-            menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
-            pista,sector,byte_en_sector,color);
+            if (menu_visualfloppy_case_mode!=2) {
+                menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
+                pista,sector,byte_en_sector,color);
+            }
 
             //Y decrementar intensidad, si no esta persistente
             if (!persistent && intensidad>0) intensidad--;
@@ -10072,6 +10386,7 @@ void menu_visual_floppy_overlay(void)
 
         //printf("\n");
 
+        if (menu_visualfloppy_case_mode!=2) {
         //Exterior
         zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
             radio_exterior_disco,radio_exterior_disco,color_contorno_disco,
@@ -10138,6 +10453,17 @@ void menu_visual_floppy_overlay(void)
             menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,6);
 
         }
+        }
+
+        if (menu_visualfloppy_case_mode) {
+            menu_visual_floppy_draw_case(centro_disco_x,centro_disco_y,radio_exterior_disco,
+                menu_visualfloppy_case_mode==2);
+            if (menu_visualfloppy_case_mode==2) {
+                menu_visual_floppy_draw_case_hub(centro_disco_x,centro_disco_y,radio_exterior_disco);
+                menu_visual_floppy_draw_case_index(centro_disco_x,centro_disco_y,
+                    radio_exterior_disco,radio_interior_disco,radio_fin_datos);
+            }
+        }
 
 
             //esto de momento no menu_visual_floppy_buffer_reset();
@@ -10194,6 +10520,12 @@ void menu_visualfloppy_switch_coloured_effects(MENU_ITEM_PARAMETERS)
     menu_visualfloppy_coloured_effects ^=1;
 }
 
+void menu_visual_floppy_switch_case(MENU_ITEM_PARAMETERS)
+{
+    menu_visualfloppy_case_mode=(menu_visualfloppy_case_mode+1)%3;
+    zxvision_cls(menu_visual_floppy_window);
+}
+
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -10215,7 +10547,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
+            ancho_ventana=35;
             alto_ventana=20;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -10286,21 +10618,29 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
                 ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
             menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
-            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);
+            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,14,0);
         }
+
+        menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_case,NULL
+            ,"~~View: %s",menu_visualfloppy_case_mode==0 ? "Disk" :
+                (menu_visualfloppy_case_mode==1 ? "Clear" : "Opaque"));
+        menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'v');
+        menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Cycle between disk, transparent case and opaque case");
+        //menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,34,0);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
             ,"[%c] He~~ad",(menu_visualfloppy_header_visible ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,14,1);
 
 
         menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_effects,NULL
             ,"[%c] ~~Color effects",(menu_visualfloppy_coloured_effects ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
         menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
-        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,23,1);
 
 
 
@@ -10381,59 +10721,69 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
     trd_disable();
 
-        char *filtros[2];
+    char *filtros[3];
 
-        filtros[0]="trd";
-        filtros[1]=0;
+    filtros[0]="trd";
+    filtros[1]="scl";
+    filtros[2]=0;
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-              //Obtenemos directorio de trd
-        //si no hay directorio, vamos a rutas predefinidas
-        if (trd_file_name[0]==0) menu_chdir_sharedfiles();
+    //Obtenemos directorio de trd
+    //si no hay directorio, vamos a rutas predefinidas
+    if (trd_file_name[0]==0) menu_chdir_sharedfiles();
 
-        else {
-                char directorio[PATH_MAX];
-                util_get_dir(trd_file_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(trd_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
         }
+    }
 
 
-        int ret=menu_filesel("Select TRD File",filtros,trd_file_name);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    int ret=menu_filesel("Select TRD/SCL File",filtros,trd_file_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-        if (ret==1) {
+    if (ret==1) {
         if (!si_existe_archivo(trd_file_name)) {
+
             if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-                                trd_file_name[0]=0;
-                                return;
-                        }
+                trd_file_name[0]=0;
+                return;
+            }
+
+            if (!util_compare_file_extension(trd_file_name,"scl")) {
+                menu_error_message("Can not create new SCL file");
+                trd_file_name[0]=0;
+                return;
+            }
 
 
             //Crear archivo vacio
-                FILE *ptr_trdfile;
+            FILE *ptr_trdfile;
             ptr_trdfile=fopen(trd_file_name,"wb");
 
-                long long int totalsize=640*1024;
+            long long int totalsize=640*1024;
 
             z80_byte valor_grabar=0;
 
-                if (ptr_trdfile!=NULL) {
+            if (ptr_trdfile!=NULL) {
                 while (totalsize) {
                     fwrite(&valor_grabar,1,1,ptr_trdfile);
                     totalsize--;
                 }
-                        fclose(ptr_trdfile);
-                }
+                fclose(ptr_trdfile);
+            }
+
+            menu_generic_message_splash("Create new TRD","TRD file created");
 
         }
 
@@ -10441,14 +10791,15 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
 
 
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                trd_file_name[0]=0;
+    }
+
+    //Sale con ESC
+    else {
+            //Quitar nombre
+            trd_file_name[0]=0;
 
 
-        }
+    }
 }
 
 
@@ -10479,12 +10830,12 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
         menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,
-            "~~TRD File","Archivo ~~TRD","Arxiu ~~TRD");
+            "~~TRD/SCL File","Archivo ~~TRD/SCL","Arxiu ~~TRD/SCL");
         menu_add_item_menu_sufijo_format(array_menu_betadisk," [%s]",string_trd_file_shown);
         menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_shortcut(array_menu_betadisk,'t');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
+        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD/SCL Emulation file");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD/SCL Emulation file");
         menu_add_item_menu_add_flags(array_menu_betadisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
@@ -10510,30 +10861,35 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_betadisk,"Tells if TRD writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Tells if TRD writes are saved to disk. "
         "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
-        "tells if these changes are written to disk or not."
+        "tells if these changes are written to disk or not. Saving to SCL is not supported yet"
         );
 
 
 
         menu_add_item_menu_separator(array_menu_betadisk);
 
+        //Estas maquinas gestionan TR-DOS sin activar el modulo Betadisk externo.
+        if (!MACHINE_IS_BASECONF && !MACHINE_IS_TSCONF && !MACHINE_IS_SCORPION && !MACHINE_IS_PENTAGON && !MACHINE_IS_ATM_TURBO) {
 
-        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
-            "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
-        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'k');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
+            menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
+                "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
+            menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_betadisk,'k');
+            menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
+            menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
 
 
-        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
-            "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
-        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'b');
-        menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
+            menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
+                "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
+            menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_betadisk,'b');
+            menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
+            menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
 
-        menu_add_item_menu_separator(array_menu_betadisk);
+            menu_add_item_menu_separator(array_menu_betadisk);
+        }
+
+
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
             "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
@@ -12156,7 +12512,16 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_zcontroller_emulation(MENU_ITEM_PARAMETERS)
+{
+    zcontroller_enabled.v ^=1;
+    if (MACHINE_IS_TSCONF) tsconf_zcontroller_enabled_changed();
+}
 
+void menu_storage_baseconf_sd_interface(MENU_ITEM_PARAMETERS)
+{
+    baseconf_sd_interface_enabled.v ^=1;
+}
 
 //menu MMC/Divmmc
 void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
@@ -12353,6 +12718,25 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
+
+            if (MACHINE_IS_SCORPION_GMX || MACHINE_IS_TSCONF) {
+                menu_add_item_menu_separator(array_menu_mmc_divmmc);
+
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zcontroller_emulation,NULL,
+                    "Z-Controller Enabled","Z-Controller Activado","Z-Controller Activat");
+                menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zcontroller_enabled.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX and TSConf");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Access MMC using Z-Controller, for Scorpion GMX and TSConf. MMC Emulation controls whether a card is inserted");
+            }
+            if (MACHINE_IS_BASECONF) {
+                menu_add_item_menu_separator(array_menu_mmc_divmmc);
+
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_baseconf_sd_interface,NULL,
+                    "BaseConf SD Enabled","SD BaseConf Activada","SD BaseConf Activada");
+                menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(baseconf_sd_interface_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Connect the built-in SD interface of BaseConf");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Connect the built-in SD interface of BaseConf. MMC Emulation controls whether a card is inserted");
+            }
         //}
 
 
@@ -12395,6 +12779,21 @@ void menu_storage_ide_emulation(MENU_ITEM_PARAMETERS)
 {
         if (ide_enabled.v) ide_disable();
         else ide_enable();
+}
+
+void menu_storage_smuc_emulation(MENU_ITEM_PARAMETERS)
+{
+        ide_smuc_enabled.v ^=1;
+}
+
+void menu_storage_zxevo_nemo_ide(MENU_ITEM_PARAMETERS)
+{
+        zxevo_nemo_ide_enabled.v ^=1;
+}
+
+void menu_storage_ide_atm(MENU_ITEM_PARAMETERS)
+{
+    ide_atm_enabled.v ^=1;
 }
 
 
@@ -12605,6 +13004,19 @@ void menu_storage_ide_browser(MENU_ITEM_PARAMETERS)
     menu_storage_mmc_ide_browser(ide_file_name);
 }
 
+void menu_storage_ide_set_sectors_per_track(MENU_ITEM_PARAMETERS)
+{
+
+    int valor_actual=ide_get_sectors_per_track();
+
+    menu_ventana_scanf_numero_enhanced_default("Sectors per track",&valor_actual,4,+1,0,255,0,0);
+
+    //0 le quita el override de sectores
+    ide_set_sectors_per_track(valor_actual);
+
+
+}
+
 //menu IDE/Divide
 void menu_ide_divide(MENU_ITEM_PARAMETERS)
 {
@@ -12635,7 +13047,6 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation");
 
-
         menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_write_protect,NULL,
             "Wr~~ite protect","Protección Escr~~itura","Protecció Escr~~iptura");
         menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ", (ide_write_protection.v ? 'X' : ' '));
@@ -12665,7 +13076,13 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                                     "outside the emulator, and reload its contents without having to disable and enable IDE");
         }
 
-
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_set_sectors_per_track,NULL,
+            "Sectors per track","Sectores por pista","Sectors per pista");
+        menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%d]",ide_get_sectors_per_track());
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"Sets sectors per track");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"Sets sectors per track");
+        menu_add_item_menu_es_avanzado(array_menu_ide_divide);
 
 
         if (MACHINE_IS_SPECTRUM) {
@@ -12717,6 +13134,35 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_ide_divide,'p');
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE access ports");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
+
+            if (MACHINE_IS_SCORPION_GMX || MACHINE_IS_TSCONF) {
+                menu_add_item_menu_separator(array_menu_ide_divide);
+
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_smuc_emulation,NULL,
+                    "SMUC Enabled","SMUC Activado","SMUC Activat");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_smuc_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX or TSConf");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the SMUC expansion card in Scorpion GMX or TSConf. IDE Emulation above controls whether a hard disk is connected to it");
+            }
+            if (MACHINE_IS_BASECONF || MACHINE_IS_TSCONF) {
+                menu_add_item_menu_separator(array_menu_ide_divide);
+
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_zxevo_nemo_ide,NULL,
+                    "Nemo IDE Enabled","Nemo IDE Activado","Nemo IDE Activat");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(zxevo_nemo_ide_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the Nemo IDE interface in BaseConf and TSConf. IDE Emulation above controls whether a hard disk is connected to it");
+            }
+
+            if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+                menu_add_item_menu_separator(array_menu_ide_divide);
+
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_atm,NULL,
+                    "ATM IDE Enabled","ATM IDE Activado","ATM IDE Activat");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_atm_enabled.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Emulate the IDE interface in ATM");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Emulate the IDE interface in ATM. IDE Emulation above controls whether a hard disk is connected to it");
+            }
 
 
             menu_add_item_menu_separator(array_menu_ide_divide);

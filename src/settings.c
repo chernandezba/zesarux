@@ -383,6 +383,16 @@ z80_bit setting_process_switcher_force_left_bottom={1};
 //Si process switcher solo muestra una unica fila de procesos
 z80_bit setting_process_switcher_only_one_row={1};
 
+//Si se permite render que encaje la pantalla dentro de la ventana, por tanto escalado zoom total
+z80_bit setting_emulated_display_win_zoom_fit={0};
+
+//Y si se mantienen las proporciones ancho/alto
+z80_bit setting_emulated_display_win_zoom_fit_keep_proportion={1};
+
+//autoredimensionar esa ventana al cambiar de maquina
+z80_bit setting_emulated_display_win_autoresize={0};
+
+
 //Logo de decimo aniversario.
 //En version X (10.10) estaba habilitado por defecto
 z80_bit xanniversary_logo={0};
@@ -391,10 +401,10 @@ z80_bit xanniversary_logo={0};
 z80_bit do_no_show_david_in_memoriam={0};
 
 //
-// ZX Desktop Settings
+// DAVID Desktop Settings
 //
 
-//Desactivar zx desktop al pasar a full screen
+//Desactivar DAVID desktop al pasar a full screen
 int zxdesktop_disable_on_full_screen=0;
 
 //Desactivar border al pasar a full screen
@@ -414,6 +424,8 @@ z80_bit zxdesktop_configurable_icons_enabled={1};
 z80_bit zxdesktop_empty_trash_on_exit={0};
 
 z80_bit zxdesktop_automatic_reorder_icons={0};
+
+z80_bit david_desktop_align_to_grid_icons={0};
 
 z80_bit zxdesktop_icon_show_app_open={1};
 

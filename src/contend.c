@@ -32,6 +32,8 @@
 #include "zxuno.h"
 #include "ula.h"
 #include "tbblue.h"
+#include "baseconf.h"
+#include "tsconf.h"
 
 
 int contend_patron_65432100[] = { 5, 4, 3, 2, 1, 0, 0, 6 };
@@ -144,6 +146,67 @@ void ula_contend_port_late_zx8081( z80_int port GCC_UNUSED )
 {
         t_estados += 2;
 
+}
+
+/* Scorpion no espera por el acceso a RAM. Entrada: dirección y duración
+   normal del acceso. Salida: ninguna; avanza el reloj de la CPU. */
+void contend_read_scorpion(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+/* Cuenta los ciclos sin MREQ del Scorpion sin añadir contención.
+   Entrada: dirección y duración. Salida: ninguna. */
+void contend_read_no_mreq_scorpion(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+/* Cuenta una escritura sin MREQ del Scorpion sin añadir contención.
+   Entrada: dirección y duración. Salida: ninguna. */
+void contend_write_no_mreq_scorpion(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+/* Cuenta el primer ciclo de acceso a puerto del Scorpion.
+   Entrada: dirección del puerto. Salida: ninguna. */
+void ula_contend_port_early_scorpion(z80_int port GCC_UNUSED)
+{
+    t_estados++;
+}
+
+/* Cuenta los dos ciclos restantes de acceso a puerto del Scorpion.
+   Entrada: dirección del puerto. Salida: ninguna. */
+void ula_contend_port_late_scorpion(z80_int port GCC_UNUSED)
+{
+    t_estados+=2;
+}
+
+/* Contención de ATM Turbo: contabiliza los ciclos sin esperas adicionales. */
+void contend_read_atmturbo(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+void contend_read_no_mreq_atmturbo(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+void contend_write_no_mreq_atmturbo(z80_int direccion GCC_UNUSED,int time)
+{
+    t_estados+=time;
+}
+
+void ula_contend_port_early_atmturbo(z80_int port GCC_UNUSED)
+{
+    t_estados++;
+}
+
+void ula_contend_port_late_atmturbo(z80_int port GCC_UNUSED)
+{
+    t_estados+=2;
 }
 
 
@@ -578,6 +641,17 @@ void contend_write_no_mreq_128k(z80_int direccion,int time)
 
 }
 
+// En +2A/+3 los ciclos sin MREQ no tienen contención.
+void contend_read_no_mreq_p2a(z80_int direccion GCC_UNUSED,int time)
+{
+	t_estados += time;
+}
+
+void contend_write_no_mreq_p2a(z80_int direccion GCC_UNUSED,int time)
+{
+	t_estados += time;
+}
+
 
 void ula_contend_port_early_128k( z80_int port )
 {
@@ -840,46 +914,84 @@ z80_int segmento;
 
 }
 
-//baseconf
-
-void contend_read_baseconf(z80_int direccion GCC_UNUSED,int time)
+#ifdef EMULATE_CONTEND
+// Indica si la página RAM mapeada comparte el acceso con el vídeo de BaseConf.
+static int baseconf_address_is_contended(z80_int direccion)
 {
-        //Y sumamos estados normales
-        t_estados += time;
+    int segmento=direccion>>14;
+    int raster=(baseconf_avr_modes_register>>4)&3;
+    int pagina=baseconf_memory_segments[segmento];
+
+    if (!contend_enabled.v || cpu_turbo_speed!=1 ||
+        !baseconf_memory_segments_type[segmento]) return 0;
+    if (raster==2) return pagina==5;
+    if (raster==3) return pagina<8 && (pagina&1);
+    return 0;
+}
+#endif
+
+// Suma la espera del acceso a RAM contendida y los ciclos de lectura.
+void contend_read_baseconf(z80_int direccion,int time)
+{
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(direccion))
+        t_estados+=contend_table[t_estados];
+#endif
+    t_estados+=time;
 
 }
 
-void contend_read_no_mreq_baseconf(z80_int direccion GCC_UNUSED,int time)
+// Suma la espera de un ciclo sin MREQ sobre una dirección contendida.
+void contend_read_no_mreq_baseconf(z80_int direccion,int time)
 {
-
-        //Y sumamos estados normales
-        t_estados += time;
-
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(direccion))
+        t_estados+=((baseconf_avr_modes_register&0x30)==0x30 ?
+            contend_table : contend_table_no_mreq)[t_estados];
+#endif
+    t_estados+=time;
 }
 
-void contend_write_no_mreq_baseconf(z80_int direccion GCC_UNUSED,int time)
+// Suma la espera de escritura sin MREQ sobre una dirección contendida.
+void contend_write_no_mreq_baseconf(z80_int direccion,int time)
 {
-
-        //Y sumamos estados normales
-        t_estados += time;
-
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(direccion))
+        t_estados+=((baseconf_avr_modes_register&0x30)==0x30 ?
+            contend_table : contend_table_no_mreq)[t_estados];
+#endif
+    t_estados+=time;
 }
 
 
-void ula_contend_port_early_baseconf( z80_int port GCC_UNUSED)
+// Aplica la primera espera del ciclo de puerto según su dirección.
+void ula_contend_port_early_baseconf(z80_int port)
 {
-
-
-  t_estados++;
+#ifdef EMULATE_CONTEND
+    if (baseconf_address_is_contended(port))
+        t_estados+=contend_table_no_mreq[t_estados];
+#endif
+    t_estados++;
 }
 
-void ula_contend_port_late_baseconf( z80_int port GCC_UNUSED)
+// Aplica las esperas restantes de un ciclo de puerto BaseConf.
+void ula_contend_port_late_baseconf(z80_int port)
 {
-
-
-        t_estados += 2;
-
-
+#ifdef EMULATE_CONTEND
+    if ((baseconf_avr_modes_register&0x30)>=0x20 &&
+        cpu_turbo_speed==1 && contend_enabled.v && port_from_ula(port)) {
+        t_estados+=contend_table_no_mreq[t_estados];
+        t_estados+=2;
+        return;
+    }
+    if (baseconf_address_is_contended(port)) {
+        t_estados+=contend_table_no_mreq[t_estados]; t_estados++;
+        t_estados+=contend_table_no_mreq[t_estados]; t_estados++;
+        t_estados+=contend_table_no_mreq[t_estados];
+        return;
+    }
+#endif
+    t_estados+=2;
 }
 
 
@@ -888,9 +1000,9 @@ void ula_contend_port_late_baseconf( z80_int port GCC_UNUSED)
 
 //tsconf
 
-void contend_read_tsconf(z80_int direccion GCC_UNUSED,int time)
+void contend_read_tsconf(z80_int direccion,int time)
 {
-        //Y sumamos estados normales
+        if (time==4) t_estados += tsconf_cache_read_wait(direccion,1);
         t_estados += time;
 
 }
@@ -1472,6 +1584,32 @@ z80_byte *contend_table_no_mreq;
 		offset_time=1;
 		offset_patron=-1;
 		//Empieza en 14335 con 65432100 Segun http://www.worldofspectrum.org/faq/reference/48kreference.htm
+		if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
+			// La pantalla Microdigital empieza a 95 T de la línea 64 (50 Hz) o 38 (60 Hz).
+			offset_time=-95;
+		}
+	}
+
+	if (MACHINE_IS_DIDAKTIKGAMA) {
+		// La Gama usa la ULA de 48K: 6,5,4,3,2,1,0,0 desde el T 14335
+		// y durante los 128 T de pantalla de cada una de las 192 líneas visibles.
+		timings=contend_patron_65432100;
+		offset_time=1;
+		offset_patron=-1;
+	}
+
+	if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+		// Scorpion no añade esperas de RAM ni de puertos.
+		timings=contend_patron_no_contend;
+		offset_time=0;
+		offset_patron=0;
+	}
+
+	if (MACHINE_IS_SCORPION_GMX) {
+		// La selección Scorpion/Pentagon cambia el barrido, no añade contención.
+		timings=contend_patron_no_contend;
+		offset_time=0;
+		offset_patron=0;
 	}
 
 	if (MACHINE_IS_SPECTRUM_128_P2) {
@@ -1509,8 +1647,22 @@ z80_byte *contend_table_no_mreq;
   }
 
     if (MACHINE_IS_BASECONF) {
-                //no tiene memoria contended
-                return;
+        int raster=(baseconf_avr_modes_register>>4)&3;
+        if (raster==2) {
+            timings=contend_patron_65432100;
+            offset_time=1;
+            offset_patron=-1;
+        }
+        else if (raster==3) {
+            timings=contend_patron_65432100;
+            offset_time=3;
+            offset_patron=-1;
+        }
+        else {
+            timings=contend_patron_no_contend;
+            offset_time=0;
+            offset_patron=0;
+        }
     }
 
     if (MACHINE_IS_MK14) {

@@ -44,6 +44,7 @@
 #include "sg1000.h"
 #include "svi.h"
 #include "textspeech.h"
+#include "atmturbo.h"
 
 void scrsimpletext_repinta_pantalla(void);
 

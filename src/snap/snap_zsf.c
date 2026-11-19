@@ -38,6 +38,8 @@
 
 #include "snap_zsf.h"
 
+#define DIDAKTIKGAMA_SNAPSHOT_STATE_SIZE 13
+
 #include "zx8081.h"
 #include "mem128.h"
 #include "ay38912.h"
@@ -86,11 +88,14 @@
 #include "scmp.h"
 #include "mk14.h"
 #include "chrome.h"
+#include "didaktikgama.h"
 #include "sam.h"
 #include "pcw.h"
 #include "zeng_online_client.h"
 #include "datagear.h"
 #include "qsound.h"
+#include "scorpion.h"
+#include "atmturbo.h"
 
 
 #include "autoselectoptions.h"
@@ -904,6 +909,80 @@ Byte fields:
 
 0-3: seconds since 00:00 1 January 1961, stored as 4 bytes, lsb first
 
+-Block ID 77: ZSF_DIDAKTIKGAMA_CONF
+Estado de paginación y del MHB8255 de Didaktik Gama, 13 bytes:
+0: bancada visible en 8000h-FFFFh (0 o 1)
+1-4: registros A, B, C y última escritura al registro de control
+5: palabra de modo del 8255
+6-8: niveles de entrada A, B y C
+9-10: latches de entrada A y B
+11: bits 0-7: IBF_A, IBF_B, OBF_A, OBF_B, ACK_A, ACK_B, INTE_A_IN, INTE_A_OUT
+12: bit 0: INTE_B
+
+-Block ID 78: ZSF_DIDAKTIKGAMA_RAMBLOCK
+Cinco bloques de RAM física de 16 KiB. Cabecera de 6 bytes y datos:
+0: flags, bit 0 indica compresión por repeticiones
+1-2: dirección de referencia (4000h; no se usa al cargar)
+3-4: longitud descomprimida (4000h)
+5: bloques 0-4 en orden físico: RAM fija, dos mitades de cada bancada
+6...: datos
+
+-Block ID 79: ZSF_BASECONF_RAMBLOCK
+A ram binary block for a zx evo baseconf
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
+-Block ID 80: ZSF_BASECONF_CONF
+See functions store_zsf_baseconf_conf() y load_zsf_baseconf_conf to get info about this block
+
+
+
+-Block ID 81: ZSF_SCORPION_RAMBLOCK
+A ram binary block for a scorpion
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
+-Block ID 82: ZSF_SCORPION_CONF
+See functions store_zsf_scorpion_conf() y load_zsf_scorpion_conf to get info about this block
+
+
+-Block ID 83: ZSF_SCORPIONGMX_RAMBLOCK
+A ram binary block for a scorpion gmx
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
+-Block ID 84: ZSF_SCORPIONGMX_CONF
+See functions store_zsf_scorpiongmx_conf() y load_zsf_scorpiongmx_conf to get info about this block
+
+
+-Block ID 85: ZSF_ATM_TURBO_RAMBLOCK
+A ram binary block for a atm turbo
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+
+-Block ID 86: ZSF_ATM_TURBO_CONF
+See functions store_zsf_atm_turbo_conf() y load_zsf_atm_turbo_conf to get info about this block
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -995,6 +1074,17 @@ char *zsf_block_id_names[]={
   "ZSF_DATAGEAR_DMA",
   "ZSF_TEXT_NOTE",
   "ZSF_QL_RTC",
+  "ZSF_DIDAKTIKGAMA_CONF",
+  "ZSF_DIDAKTIKGAMA_RAMBLOCK",
+  "ZSF_BASECONF_RAMBLOCK",
+  "ZSF_BASECONF_CONF",  //80
+  "ZSF_SCORPION_RAMBLOCK",
+  "ZSF_SCORPION_CONF",
+  "ZSF_SCORPIONGMX_RAMBLOCK",
+  "ZSF_SCORPIONGMX_CONF",
+  "ZSF_ATM_TURBO_RAMBLOCK",
+  "ZSF_ATM_TURBO_CONF",
+
 
   "Unknown"  //Este siempre al final
 };
@@ -1346,6 +1436,66 @@ void load_zsf_spec128_snapshot_block_data(z80_byte *block_data,int longitud_orig
 
   load_zsf_snapshot_block_data_addr(&block_data[i],ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
 
+}
+
+// El primer byte conserva la bancada visible; los bits de handshake no dependen
+// del tamaño interno de z80_bit ni del orden de sus campos.
+void save_zsf_didaktikgama_conf(z80_byte *state)
+{
+  state[0]=(didaktikgama_memory_paged[2]==didaktikgama_ram_mem_table[1]);
+  state[1]=didaktikgama_8255_port_a;
+  state[2]=didaktikgama_8255_port_b;
+  state[3]=didaktikgama_8255_port_c;
+  state[4]=didaktikgama_8255_port_d;
+  state[5]=didaktikgama_8255_mode;
+  state[6]=didaktikgama_8255_input_a;
+  state[7]=didaktikgama_8255_input_b;
+  state[8]=didaktikgama_8255_input_c;
+  state[9]=didaktikgama_8255_latch_a;
+  state[10]=didaktikgama_8255_latch_b;
+  state[11]=(didaktikgama_8255_ibf_a.v ? 1 : 0) |
+            (didaktikgama_8255_ibf_b.v ? 2 : 0) |
+            (didaktikgama_8255_obf_a.v ? 4 : 0) |
+            (didaktikgama_8255_obf_b.v ? 8 : 0) |
+            (didaktikgama_8255_ack_a.v ? 16 : 0) |
+            (didaktikgama_8255_ack_b.v ? 32 : 0) |
+            (didaktikgama_8255_inte_a_in.v ? 64 : 0) |
+            (didaktikgama_8255_inte_a_out.v ? 128 : 0);
+  state[12]=didaktikgama_8255_inte_b.v ? 1 : 0;
+}
+
+void load_zsf_didaktikgama_conf(z80_byte *block_data)
+{
+  z80_byte page=block_data[0];
+  didaktikgama_8255_port_a=block_data[1];
+  didaktikgama_8255_port_b=block_data[2];
+  didaktikgama_8255_port_c=block_data[3];
+  didaktikgama_8255_port_d=block_data[4];
+  didaktikgama_8255_mode=block_data[5];
+  didaktikgama_8255_input_a=block_data[6];
+  didaktikgama_8255_input_b=block_data[7];
+  didaktikgama_8255_input_c=block_data[8];
+  didaktikgama_8255_latch_a=block_data[9];
+  didaktikgama_8255_latch_b=block_data[10];
+  didaktikgama_8255_ibf_a.v=(block_data[11] & 1)!=0;
+  didaktikgama_8255_ibf_b.v=(block_data[11] & 2)!=0;
+  didaktikgama_8255_obf_a.v=(block_data[11] & 4)!=0;
+  didaktikgama_8255_obf_b.v=(block_data[11] & 8)!=0;
+  didaktikgama_8255_ack_a.v=(block_data[11] & 16)!=0;
+  didaktikgama_8255_ack_b.v=(block_data[11] & 32)!=0;
+  didaktikgama_8255_inte_a_in.v=(block_data[11] & 64)!=0;
+  didaktikgama_8255_inte_a_out.v=(block_data[11] & 128)!=0;
+  didaktikgama_8255_inte_b.v=(block_data[12] & 1)!=0;
+  didaktikgama_memory_paged[2]=didaktikgama_ram_mem_table[page];
+  didaktikgama_memory_paged[3]=didaktikgama_ram_mem_table[page]+16384;
+}
+
+void load_zsf_didaktikgama_ramblock(z80_byte *block_data,int longitud_bloque)
+{
+  int bloque=block_data[5];
+  int longitud=value_8_to_16(block_data[4],block_data[3]);
+  z80_byte *destino=&memoria_spectrum[(bloque+1)*16384];
+  load_zsf_snapshot_block_data_addr(&block_data[6],destino,longitud,longitud_bloque-6,block_data[0] & 1);
 }
 
 void load_zsf_zxuno_snapshot_block_data(z80_byte *block_data,int longitud_original)
@@ -1955,6 +2105,95 @@ void load_zsf_pcw_snapshot_block_data(z80_byte *block_data,int longitud_original
 
 
   load_zsf_snapshot_block_data_addr(&block_data[i],pcw_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+void load_zsf_baseconf_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],baseconf_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+//comun para scorpion 256 y gmx
+void load_zsf_scorpion_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],scorpion_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+
+void load_zsf_atm_turbo_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],atmturbo_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
 
 }
 
@@ -3193,6 +3432,276 @@ Byte fields:
 
 }
 
+#define ZSF_BASECONF_CONF_BLOCK_LENGTH 64
+
+void store_zsf_baseconf_conf(z80_byte *baseconfconfblock)
+{
+
+    int i;
+    for (i=0;i<8;i++) {
+        baseconfconfblock[i]=baseconf_mmu_pages[i];
+    }
+
+    for (i=0;i<8;i++) {
+        baseconfconfblock[8+i]=baseconf_mmu_flags[i];
+    }
+
+    baseconfconfblock[16]=baseconf_last_port_ff7;
+    baseconfconfblock[17]=baseconf_last_port_7f7;
+    baseconfconfblock[18]=baseconf_last_port_bf7;
+    baseconfconfblock[19]=baseconf_dos_signal;
+    baseconfconfblock[20]=baseconf_last_port_77;
+    baseconfconfblock[21]=baseconf_shadow_mode_port_77;
+    baseconfconfblock[22]=baseconf_last_port_bf;
+    baseconfconfblock[23]=baseconf_last_port_eff7;
+
+
+    for (i=0;i<16;i++) {
+        baseconfconfblock[24+i*2]=value_16_to_8l(baseconf_palette[i]);
+        baseconfconfblock[24+i*2+1]=value_16_to_8h(baseconf_palette[i]);
+    }
+
+    baseconfconfblock[56]=baseconf_extended_dos_ports[0];
+    baseconfconfblock[57]=baseconf_extended_dos_ports[1];
+    baseconfconfblock[58]=baseconf_extended_dos_ports[2];
+    baseconfconfblock[59]=baseconf_extended_dos_ports[3];
+
+    baseconfconfblock[60]=baseconf_beta_drive_virtual;
+    baseconfconfblock[61]=baseconf_beta_drive_selected;
+    baseconfconfblock[62]=baseconf_trdos_emulation_active;
+    baseconfconfblock[63]=baseconf_border_colour;
+
+    //printf("border color %d\n",baseconf_border_colour);
+
+}
+
+void load_zsf_baseconf_conf(z80_byte *header)
+{
+
+
+    int i;
+    for (i=0;i<8;i++) {
+        baseconf_mmu_pages[i]=header[i];
+    }
+
+    for (i=0;i<8;i++) {
+        baseconf_mmu_flags[i]=header[8+i];
+    }
+
+    baseconf_last_port_ff7=header[16];
+    baseconf_last_port_7f7=header[17];
+    baseconf_last_port_bf7=header[18];
+
+    baseconf_dos_signal=header[19];
+    baseconf_last_port_77=header[20];
+    baseconf_shadow_mode_port_77=header[21];
+    baseconf_last_port_bf=header[22];
+    baseconf_last_port_eff7=header[23];
+
+    for (i=0;i<16;i++) {
+        z80_int color=header[24+i*2]+256*header[24+i*2+1];
+        baseconf_palette[i]=color;
+    }
+
+    baseconf_extended_dos_ports[0]=header[56];
+    baseconf_extended_dos_ports[1]=header[57];
+    baseconf_extended_dos_ports[2]=header[58];
+    baseconf_extended_dos_ports[3]=header[59];
+
+
+    baseconf_beta_drive_virtual=header[60];
+    baseconf_beta_drive_selected=header[61];
+    baseconf_trdos_emulation_active=header[62];
+    baseconf_border_colour=header[63];
+
+
+    //Necesario screen_border_last_color y t_scanline_next_fullborder() para el
+    //refresco de border en baseconf con realvideo, quiza el render de border
+    //se hace ligeramente diferente que otras maquinas y por eso es necesario
+    screen_border_last_color=baseconf_border_colour;
+    t_scanline_next_fullborder();
+
+
+
+    baseconf_set_memory_pages();
+
+    baseconf_set_cpu_speed();
+
+
+}
+
+
+
+#define ZSF_SCORPION_CONF_BLOCK_LENGTH 2
+
+void store_zsf_scorpion_conf(z80_byte *confblock)
+{
+
+
+    confblock[0]=scorpion_trdos_active.v;
+    confblock[1]=cpu_turbo_speed;
+
+
+}
+
+void load_zsf_scorpion_conf(z80_byte *header)
+{
+
+
+    scorpion_trdos_active.v=header[0];
+    int turbo=header[1];
+
+    scorpion_mem_page_ram();
+    scorpion_mem_page_rom();
+
+    scorpion_set_cpu_speed(turbo);
+
+
+}
+
+
+
+// TR-DOS, velocidad, xx00, esquema, 7EFD, DFFD, 78FD y scroll bajo/alto.
+#define ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH 9
+
+void store_zsf_scorpiongmx_conf(z80_byte *confblock)
+{
+
+
+    confblock[0]=scorpion_trdos_active.v;
+    confblock[1]=cpu_turbo_speed;
+    confblock[2]=scorpion_gmx_port_00;
+    confblock[3]=scorpion_gmx_active_scheme;
+    confblock[4]=scorpion_gmx_port_7efd;
+    confblock[5]=scorpion_gmx_port_dffd;
+    confblock[6]=scorpion_gmx_port_78fd;
+    z80_int scroll=scorpion_gmx_get_scroll_register();
+    confblock[7]=value_16_to_8l(scroll);
+    confblock[8]=value_16_to_8h(scroll);
+
+
+}
+
+void load_zsf_scorpiongmx_conf(z80_byte *header)
+{
+
+
+    scorpion_trdos_active.v=header[0];
+    int turbo=header[1];
+
+    scorpion_gmx_port_00=header[2];
+    scorpion_gmx_active_scheme=header[3];
+    scorpion_gmx_port_7efd=header[4];
+    scorpion_gmx_port_dffd=header[5];
+    scorpion_gmx_port_78fd=header[6];
+    scorpion_gmx_set_scroll_register(value_8_to_16(header[8],header[7]));
+
+    scorpion_mem_page_ram();
+    scorpion_mem_page_rom();
+
+    scorpion_set_cpu_speed(turbo);
+
+
+}
+
+
+#define ZSF_ATM_TURBO_CONF_BLOCK_LENGTH 63
+
+/* Configuración ATM común a los cuatro modelos:
+   0: TR-DOS activo; 1: turbo; 2: #FDFD; 3: CPSYS;
+   4-5: dirección del último OUT #FE;
+   6: modo de vídeo; 7: índice del borde; 8: selección del FDC;
+   9-10: dirección de #77; 11: #BF de ATM3;
+   12-27: ocho entradas MMU de 16 bits;
+   28-59: dieciséis colores de paleta de 16 bits;
+   60: modo del teclado 8031; 61: teclado deshabilitado; 62: interrupciones habilitadas.
+   Los valores de 16 bits se guardan en orden bajo, alto.
+   #7FFD ya se conserva en ZSF_SPEC128_MEMCONF. */
+void store_zsf_atm_turbo_conf(z80_byte *confblock)
+{
+    confblock[0]=atmturbo_trdos_active;
+    confblock[1]=cpu_turbo_speed;
+    confblock[2]=puerto_fdfd;
+    confblock[3]=atmturbo_cpsys;
+    confblock[4]=value_16_to_8l(atmturbo_port_fe);
+    confblock[5]=value_16_to_8h(atmturbo_port_fe);
+    confblock[6]=atmturbo_video_mode;
+    confblock[7]=atmturbo_border_colour;
+    confblock[8]=atmturbo_fdc_selected;
+    confblock[9]=value_16_to_8l(atmturbo2_port_77);
+    confblock[10]=value_16_to_8h(atmturbo2_port_77);
+    confblock[11]=atmturbo3_port_bf;
+
+    for (int i=0;i<8;i++) {
+        // ATM1 no tiene esta MMU; conserva los campos del bloque a cero.
+        unsigned int entry=MACHINE_IS_ATM_TURBO2_FAMILY ? atmturbo2_mmu[i] : 0;
+        confblock[12+2*i]=value_16_to_8l(entry);
+        confblock[13+2*i]=value_16_to_8h(entry);
+    }
+
+    for (int i=0;i<16;i++) {
+        confblock[28+2*i]=value_16_to_8l(atmturbo_palette[i]);
+        confblock[29+2*i]=value_16_to_8h(atmturbo_palette[i]);
+    }
+
+    confblock[60]=atmturbo2plus_keyboard_mode;
+    confblock[61]=atmturbo2plus_keyboard_disabled;
+    confblock[62]=atmturbo2plus_int_enabled;
+}
+
+/* Reconstruye el estado derivado tras cargar la configuración de un snapshot. */
+static void atmturbo_restore_snapshot_config(void)
+{
+    // ATM2, ATM2+ y ATM3: #FE controla el borde; los timings dependen del modo de vídeo.
+    if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+        atmturbo2_out_port_fe(atmturbo_port_fe,atmturbo_border_colour&7);
+        atmturbo2_update_timing();
+    }
+    // ATM1: #FE controla el borde, el modo de vídeo y el paginado de ROM/RAM.
+    else atmturbo_out_port_fe(atmturbo_port_fe,atmturbo_border_colour&7);
+
+    atmturbo_mem_page_ram();
+    atmturbo_mem_page_rom();
+
+    // El vídeo real debe empezar con el borde restaurado, sin cambios del cuadro anterior.
+    screen_border_last_color=atmturbo_border_colour;
+    t_scanline_next_fullborder();
+    atmturbo_border_left_next_valid=0;
+    modificado_border.v=1;
+}
+
+void load_zsf_atm_turbo_conf(z80_byte *header)
+{
+    atmturbo_trdos_active=header[0];
+    int turbo=header[1];
+    puerto_fdfd=header[2];
+    atmturbo_cpsys=header[3];
+    atmturbo_port_fe=value_8_to_16(header[5],header[4]);
+    atmturbo_video_mode=header[6];
+    atmturbo_border_colour=header[7];
+    atmturbo_fdc_selected=header[8];
+    atmturbo2_port_77=value_8_to_16(header[10],header[9]);
+    atmturbo3_port_bf=header[11];
+
+    // Solo ATM2, ATM2+ y ATM3 utilizan las ocho entradas de la MMU.
+    if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+        for (int i=0;i<8;i++)
+            atmturbo2_mmu[i]=value_8_to_16(header[13+2*i],header[12+2*i]);
+    }
+
+    for (int i=0;i<16;i++)
+        atmturbo_palette[i]=value_8_to_16(header[29+2*i],header[28+2*i]);
+
+    atmturbo2plus_keyboard_mode=header[60];
+    atmturbo2plus_keyboard_disabled=header[61];
+    atmturbo2plus_int_enabled=header[62];
+
+    atmturbo_restore_snapshot_config();
+    cpu_turbo_speed=turbo;
+    cpu_set_turbo_speed();
+}
+
+
 void load_zsf_tsconf_conf(z80_byte *header)
 {
 /*
@@ -3703,6 +4212,38 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_pcw_snapshot_block_data(block_data,block_lenght);
       break;
 
+      case ZSF_BASECONF_RAMBLOCK:
+        load_zsf_baseconf_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_BASECONF_CONF:
+        load_zsf_baseconf_conf(block_data);
+      break;
+
+      case ZSF_SCORPION_RAMBLOCK:
+        load_zsf_scorpion_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_SCORPION_CONF:
+        load_zsf_scorpion_conf(block_data);
+      break;
+
+      case ZSF_SCORPIONGMX_RAMBLOCK:
+        load_zsf_scorpion_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_SCORPIONGMX_CONF:
+        load_zsf_scorpiongmx_conf(block_data);
+      break;
+
+      case ZSF_ATM_TURBO_RAMBLOCK:
+        load_zsf_atm_turbo_snapshot_block_data(block_data,block_lenght);
+      break;
+
+      case ZSF_ATM_TURBO_CONF:
+        load_zsf_atm_turbo_conf(block_data);
+      break;
+
       case ZSF_COMMON_ROMBLOCK:
         load_zsf_common_rom_snapshot_block_data(block_data,block_lenght);
       break;
@@ -3761,6 +4302,14 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
     case ZSF_TEXT_NOTE:
         load_zsf_text_note(block_data);
+    break;
+
+    case ZSF_DIDAKTIKGAMA_CONF:
+        load_zsf_didaktikgama_conf(block_data);
+    break;
+
+    case ZSF_DIDAKTIKGAMA_RAMBLOCK:
+        load_zsf_didaktikgama_ramblock(block_data,block_lenght);
     break;
 
       default:
@@ -4471,6 +5020,39 @@ Byte Fields:
 
   }
 
+  if (MACHINE_IS_DIDAKTIKGAMA) {
+    z80_byte conf[DIDAKTIKGAMA_SNAPSHOT_STATE_SIZE];
+    save_zsf_didaktikgama_conf(conf);
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,conf,ZSF_DIDAKTIKGAMA_CONF,sizeof(conf));
+
+    // Cinco bloques consecutivos de 16 KiB: RAM fija y ambas bancadas.
+    int longitud_ram=16384;
+    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+    if (compressed_ramblock==NULL) {
+      debug_printf(VERBOSE_ERR,"Error allocating Didaktik Gama ZSF RAM block");
+      return;
+    }
+
+    int bloque;
+    for (bloque=0;bloque<5;bloque++) {
+      z80_byte *origen=&memoria_spectrum[(bloque+1)*16384];
+
+      compressed_ramblock[0]=0;
+      compressed_ramblock[1]=value_16_to_8l(16384);
+      compressed_ramblock[2]=value_16_to_8h(16384);
+      compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+      compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+      compressed_ramblock[5]=bloque;
+
+      int si_comprimido;
+      int longitud_bloque=save_zsf_copyblock_compress_uncompres(origen,&compressed_ramblock[6],longitud_ram,&si_comprimido);
+      if (si_comprimido) compressed_ramblock[0]=1;
+      zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,compressed_ramblock,
+                      ZSF_DIDAKTIKGAMA_RAMBLOCK,longitud_bloque+6);
+    }
+    free(compressed_ramblock);
+  }
+
 
   if (MACHINE_IS_MK14) {
 
@@ -4588,7 +5170,7 @@ Byte Fields:
 
 */
   if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO || MACHINE_IS_CHLOE || MACHINE_IS_PRISM ||
-  MACHINE_IS_TBBLUE || MACHINE_IS_PENTAGON || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
+  MACHINE_IS_TBBLUE || MACHINE_IS_PENTAGON || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO || MACHINE_IS_SCORPION || MACHINE_IS_ATM_TURBO) {
 /*
 -Block ID 5: ZSF_SPEC128_MEMCONF
 Byte Fields:
@@ -6378,6 +6960,251 @@ Byte Fields:
 
 }
 
+
+if (MACHINE_IS_BASECONF) {
+  //Configuracion
+
+  z80_byte baseconfconfblock[ZSF_BASECONF_CONF_BLOCK_LENGTH];
+
+
+    store_zsf_baseconf_conf(baseconfconfblock);
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, baseconfconfblock,ZSF_BASECONF_CONF, ZSF_BASECONF_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+  /*
+
+-Block ID 79: ZSF_BASECONF_RAMBLOCK
+A ram binary block for a zxevo baseconf
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id
+6 and next bytes: data bytes
+  */
+
+  int paginas=BASECONF_RAM_PAGES;
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(baseconf_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_BASECONF_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_BASECONF_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
+
+
+if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+  //Configuracion
+
+  z80_byte scorpionconfblock[ZSF_SCORPION_CONF_BLOCK_LENGTH];
+
+
+   store_zsf_scorpion_conf(scorpionconfblock);
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, scorpionconfblock,ZSF_SCORPION_CONF, ZSF_SCORPION_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+
+
+  int paginas=SCORPION_TOTAL_RAM_PAGES;
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(scorpion_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_SCORPION_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SCORPION_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
+
+
+if (MACHINE_IS_SCORPION_GMX) {
+  //Configuracion
+
+  z80_byte scorpionconfblock[ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH];
+
+
+   store_zsf_scorpiongmx_conf(scorpionconfblock);
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, scorpionconfblock,ZSF_SCORPIONGMX_CONF, ZSF_SCORPIONGMX_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+
+
+  int paginas=SCORPIONGMX_TOTAL_RAM_PAGES;
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(scorpion_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_SCORPIONGMX_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SCORPIONGMX_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
+
+
+if (MACHINE_IS_ATM_TURBO) {
+  //Configuracion
+
+  z80_byte atmturboconfblock[ZSF_ATM_TURBO_CONF_BLOCK_LENGTH];
+
+
+   store_zsf_atm_turbo_conf(atmturboconfblock);
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, atmturboconfblock,ZSF_ATM_TURBO_CONF, ZSF_ATM_TURBO_CONF_BLOCK_LENGTH);
+
+
+  //Paginas de memoria
+  int longitud_ram=16384;
+
+
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+
+
+  int paginas;
+
+  if (MACHINE_IS_ATM_TURBO1) paginas=ATM_TURBO1_TOTAL_RAM_PAGES;
+  else if (MACHINE_IS_ATM_TURBO2) paginas=ATM_TURBO2_TOTAL_RAM_PAGES;
+  else if (MACHINE_IS_ATM_TURBO2_PLUS) paginas=ATM_TURBO2_PLUS_TOTAL_RAM_PAGES;
+  paginas=ATM_TURBO3_TOTAL_RAM_PAGES;
+
+
+
+  int ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(atmturbo_ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_ATM_TURBO_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_ATM_TURBO_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
 
 
 if (MACHINE_IS_TSCONF) {

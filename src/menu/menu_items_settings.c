@@ -144,6 +144,7 @@
 #include "tv.h"
 #include "qsound.h"
 #include "baseconf.h"
+#include "scorpion.h"
 
 
 
@@ -573,11 +574,24 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 
 }
 
-int menu_interface_border_cond(void)
+int menu_interface_fullscreen_cond(void)
 {
     if (ventana_fullscreen) return 0;
     return 1;
 }
+
+int menu_interface_border_cond(void)
+{
+    if (!menu_interface_fullscreen_cond()) return 0;
+
+    if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_PCW) {
+        return 1;
+    }
+
+    else return 0;
+
+}
+
 
 int menu_interface_zoom_cond(void)
 {
@@ -646,7 +660,7 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
     debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing border settings");
     zxvision_rearrange_background_windows(0,1);
 
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(0);
 
 }
 
@@ -690,7 +704,7 @@ void menu_interface_ql_display_proportion(MENU_ITEM_PARAMETERS)
     debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing ql display proportion settings");
     zxvision_rearrange_background_windows(0,1);
 
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(0);
 
 }
 
@@ -808,7 +822,7 @@ int zxdesktop_estado_antes_fullscreen=0;
 
 void menu_interface_fullscreen_enable(void)
 {
-    //Desactivar ZX Desktop al pasar a full screen
+    //Desactivar DAVID Desktop al pasar a full screen
     zxdesktop_estado_antes_fullscreen=screen_ext_desktop_enabled;
     if (zxdesktop_disable_on_full_screen) {
         if (screen_ext_desktop_enabled) {
@@ -856,7 +870,7 @@ void menu_interface_fullscreen_disable(void)
         scr_refresca_pantalla_solo_driver();
     }
 
-    //Retornar ZX Desktop estado al volver de full screen
+    //Retornar DAVID Desktop estado al volver de full screen
     if (zxdesktop_disable_on_full_screen && zxdesktop_estado_antes_fullscreen) {
         if (!screen_ext_desktop_enabled) {
             menu_ext_desk_settings_enable(0);
@@ -2792,7 +2806,22 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_main_window_setting_emulated_display(MENU_ITEM_PARAMETERS)
+{
+    zxvision_window *ventana_buscada=zxvision_find_window_in_background("emulateddisplay");
 
+    if (ventana_buscada!=NULL) {
+        zxvision_window_delete_this_window(ventana_buscada);
+
+        //Esto hacerlo al finalizar porque zxvision_window_delete_this_window no lo hace
+        //ventana_video_output_abierta=0;
+        //ventana_video_output_activa=0;
+
+    }
+    else {
+        menu_video_output(0);
+    }
+}
 
 void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 {
@@ -2810,16 +2839,16 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         //necesario para que al salir de fullscreen se puedan restaurar correctamente las ventanas
         menu_add_item_menu_se_cerrara(array_menu_window_settings);
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,menu_interface_border_cond,
-            "Show ZX Desktop in Full Screen","Mostrar ZX Desktop en pantalla completa","Mostrar ZX Desktop a pantalla completa");
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,menu_interface_fullscreen_cond,
+            "Show DAVID Desktop in Full Screen","Mostrar DAVID Desktop en pantalla completa","Mostrar DAVID Desktop a pantalla completa");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? ' ' : 'X' ));
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Disable ZX Desktop when going to full screen");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Disable ZX Desktop when going to full screen. "
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Disable DAVID Desktop when going to full screen");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Disable DAVID Desktop when going to full screen. "
             "It will be enabled again going back from full screen. Windows will be closed on full screen if this setting is enabled");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         if (zxdesktop_disable_on_full_screen) {
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,menu_interface_border_cond,
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,menu_interface_fullscreen_cond,
                 " Restore windows after leaving Full Screen"," Restaurar ventanas al volver"," Restaurar finestres al tornar");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Restore windows after going from full screen");
@@ -2827,14 +2856,14 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,menu_interface_border_cond,
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,menu_interface_fullscreen_cond,
             "Show Border in Full Screen","Mostrar Border en pantalla completa","Mostrar Border a pantalla completa");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? ' ' : 'X' ));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Border when going to full screen");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Border when going to full screen");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,menu_interface_border_cond,
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,menu_interface_fullscreen_cond,
             "Show Footer in Full Screen","Mostrar Footer en pantalla completa","Mostrar Footer a pantalla completa");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? ' ' : 'X' ));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
@@ -2905,16 +2934,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
-                "--- Border ---","--- Border ---","--- Border ---");
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
-                "~~Border","~~Border","~~Border");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
-            menu_add_item_menu_shortcut(array_menu_window_settings,'b');
 
-            menu_add_item_menu_separator(array_menu_window_settings);
-        }
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Frameskip ---","--- Saltar Frames ---","--- Saltar Frames ---");
@@ -2940,10 +2960,10 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip_draw_zxdesktop_background,NULL,
-            "Frameskip on ZX Desktop background","Frameskip en fondo ZX Desktop","Frameskip al fons del ZX Desktop");
+            "Frameskip on DAVID Desktop background","Frameskip en fondo DAVID Desktop","Frameskip al fons del DAVID Desktop");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')  );
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Apply frameskip when drawing DAVID Desktop background");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Apply frameskip when drawing DAVID Desktop background");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
@@ -2987,7 +3007,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             "--- Footer ---","--- Footer ---","--- Footer ---");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_border_cond,"[%c] F~~ooter",(menu_footer ? 'X' : ' ') );
+        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_fullscreen_cond,"[%c] F~~ooter",(menu_footer ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_window_settings,'o');
         menu_add_item_menu_tooltip(array_menu_window_settings,"Show on footer some machine information");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Show on footer some machine information, like tape loading");
@@ -3051,22 +3071,91 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_window_settings);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
-            "Colour settings","Opciones de colores","Opcions de colors");
-        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--- Emulated Display ---","--- Pantalla Emulada ---","--- Pantalla Emulada ---");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
+            "~~Border","~~Border","~~Border");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_window_settings,'b');
+
+
+
+        //Buscamos la ventana asi en vez de usar ventana_video_output_esta_abierta() porque si se ha cerrado la ventana
+        //desde process switch por ejemplo, la variable de cierre ventana_video_output_abierta no se ha actualizado
+        int ventana_abierta=0;
+
+        zxvision_window *ventana_buscada=zxvision_find_window_in_background("emulateddisplay");
+
+        if (ventana_buscada!=NULL) ventana_abierta=1;
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_setting_emulated_display,NULL,
+            "Position","Posición","Posició");
+        menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
+        if (ventana_abierta) {
+            menu_add_item_menu_sufijo_format(array_menu_window_settings," [Windowed]");
+            menu_add_item_menu_genera_ventana(array_menu_window_settings);
+            menu_add_item_menu_se_cerrara(array_menu_window_settings);
+        }
+        else {
+            menu_add_item_menu_sufijo_format(array_menu_window_settings," [Docked]");
+            menu_add_item_menu_genera_ventana(array_menu_window_settings);
+            menu_add_item_menu_se_cerrara(array_menu_window_settings);
+        }
+        menu_add_item_menu_tooltip(array_menu_window_settings,"If the emulated display is docked to top-left corner or is rendered on a window");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"If the emulated display is docked to top-left corner or is rendered on a window");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
+        if (ventana_abierta) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Fit image to window","Ajustar imagen a la ventana","Ajustar la imatge a la finestra");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(setting_emulated_display_win_zoom_fit.v ? 'X' : ' '));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&setting_emulated_display_win_zoom_fit);
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Scale the emulated display to fill its window");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Scale the emulated display to fit the available area of its window. The image is resized when the window size changes.");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+            if (setting_emulated_display_win_zoom_fit.v) {
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                    "Keep proportions","Mantener proporciones","Mantenir proporcions");
+                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(setting_emulated_display_win_zoom_fit_keep_proportion.v ? 'X' : ' '));
+                menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&setting_emulated_display_win_zoom_fit_keep_proportion);
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Keep proportions on the emulated display when fit image to window");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Keep proportions on the emulated display when fit image to window");
+                menu_add_item_menu_es_avanzado(array_menu_window_settings);
+            }
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Autoresize","Autoredimensionar","Autoredimensionar");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(setting_emulated_display_win_autoresize.v ? 'X' : ' '));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&setting_emulated_display_win_autoresize);
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autoresize the emulated display when changing machine");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autoresize the emulated display when changing machine");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        }
+
+
+
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,
-            "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
+            "FX","FX","FX");
+        menu_add_item_menu_prefijo(array_menu_window_settings,"    ");
         menu_add_item_menu_shortcut(array_menu_window_settings,'x');
         //menu_add_item_menu_tiene_submenu(array_menu_window_settings);
         menu_add_item_menu_genera_ventana(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
+        menu_add_item_menu_separator(array_menu_window_settings);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
+            "Colour settings","Opciones de colores","Opcions de colors");
+        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_separator(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
-
 
 
         menu_add_ESC_item(array_menu_window_settings);
@@ -3867,7 +3956,7 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
     zxvision_topbar_menu_enabled.v ^=1;
 
     if (zxvision_topbar_menu_enabled.v) {
-        //Cambiar nombres cortos/largos de menus en topbar segun si zx desktop activado o no
+        //Cambiar nombres cortos/largos de menus en topbar segun si DAVID desktop activado o no
         topbar_guess_show_short_menu_names_variable();
 
         //hacerla visible momentaneamente para que el usuario la vea
@@ -3876,7 +3965,7 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
 
     //Comprobar posiciones iconos y reajustar
     //Debido a que con topbar dejamos que los iconos empiecen mas arriba que cuando hay botones superiores
-    zxvision_check_all_configurable_icons_positions();
+    zxvision_check_all_configurable_icons_positions(0);
 
     zxvision_reorder_configurable_icons_if_auto();
 }
@@ -4074,6 +4163,10 @@ void menu_settings_windows_features(MENU_ITEM_PARAMETERS)
                 "Reopen windows on start","Reabrir ventanas al inicio","Reobrir finestres al inici");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_reopen_background_windows_on_start.v ? 'X' : ' ') );
         }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_windows_geometry,NULL,
             "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
@@ -4369,7 +4462,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "Pressing F5 one opens the Top Menu, pressing F5 twice opens the Main Menu"
             );
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_menu_enabled.v ? 'X' : ' ') );
-        menu_add_item_menu_es_avanzado(array_menu_common);
+        //menu_add_item_menu_es_avanzado(array_menu_common);
 
         if (zxvision_topbar_menu_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_items_visibility,NULL,
@@ -4412,10 +4505,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_ignore_click_open_menu,NULL,
                 "Mouse Cl~~ick opens menu","Cl~~ick raton abre menú","Cl~~ick ratolí obre menú");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_common,"Ignore mouse clicking to open menu or ZX Desktop buttons");
+            menu_add_item_menu_tooltip(array_menu_common,"Ignore mouse clicking to open menu or DAVID Desktop buttons");
             menu_add_item_menu_shortcut(array_menu_common,'i');
             menu_add_item_menu_ayuda(array_menu_common,"Disabling this will make mouse be ignored when clicking on "
-                "the window to open menu or pressing ZX Desktop buttons. The mouse can still be used when the menu is open");
+                "the window to open menu or pressing DAVID Desktop buttons. The mouse can still be used when the menu is open");
             menu_add_item_menu_es_avanzado(array_menu_common);
         }
 
@@ -7236,6 +7329,7 @@ void menu_hardware_sam_ram(MENU_ITEM_PARAMETERS)
 {
     if (sam_memoria_total_mascara==15) sam_memoria_total_mascara=31;
     else sam_memoria_total_mascara=15;
+    sam_set_memory_pages();
 }
 
 
@@ -8771,16 +8865,12 @@ void menu_settings_hardware_baseconf_modes_register_audio(MENU_ITEM_PARAMETERS)
     baseconf_avr_modes_register ^=0x02;
 }
 
+// Recorre los raster de BaseConf implementados; sin parámetros ni retorno.
 void menu_settings_hardware_baseconf_modes_register_video_timings(MENU_ITEM_PARAMETERS)
 {
     int modo=(baseconf_avr_modes_register>>4) & 3;
-    modo++;
-
-    modo=modo & 3;
-    modo=modo <<4;
-
-    baseconf_avr_modes_register &= (0xFF-0x30);
-    baseconf_avr_modes_register |=modo;
+    modo=(modo==0) ? 2 : (modo==2 ? 3 : 0);
+    baseconf_avr_modes_register=(baseconf_avr_modes_register&~0x30)|(modo<<4);
 
     //printf("baseconf_avr_modes_register: %02XH\n",baseconf_avr_modes_register);
 }
@@ -8817,13 +8907,13 @@ void menu_settings_hardware_baseconf(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
         menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
 
-        char *video_timings[]={"Pentagon","60 Hz","Spectrum 48K","Spectrum 128K"};
+        char *video_timings[]={"Pentagon","60 Hz (unsupported)","Spectrum 48K","Spectrum 128K"};
 
         int modo=(baseconf_avr_modes_register>>4) & 3;
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_hardware_baseconf_modes_register_video_timings,NULL,
             "Video timings: [%s]",video_timings[modo]);
-        menu_add_item_menu_tooltip(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
-        menu_add_item_menu_ayuda(array_menu_common,"Changing this register does not alter anything on emulation, is just informative for the ZX Evo Reset Service menu");
+        menu_add_item_menu_tooltip(array_menu_common,"Select Pentagon, Spectrum 48K or Spectrum 128K raster timing");
+        menu_add_item_menu_ayuda(array_menu_common,"Select Pentagon, Spectrum 48K or Spectrum 128K raster timing. The AVR 60 Hz mode is not emulated");
 
 
         menu_add_item_menu_separator(array_menu_common);
@@ -9045,7 +9135,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_SVI) {
+        if (MACHINE_IS_SMS || MACHINE_IS_SG1000 || MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_TIMEX_TS2068 ||
+            MACHINE_IS_SVI || MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_50_60hz,NULL,
                 "Machine refresh rate [%d Hz]",get_frequency_refresh_video() );
@@ -11450,7 +11541,7 @@ void menu_accessibility_menu_zxdesktop_clean(MENU_ITEM_PARAMETERS)
     zxdesktop_draw_scrfile_enabled=0;
 
 
-    menu_generic_message_splash("ZX Desktop clean fill","OK. Clean ZX Desktop applied");
+    menu_generic_message_splash("DAVID Desktop clean fill","OK. Clean DAVID Desktop applied");
 }
 
 
@@ -11465,7 +11556,7 @@ void menu_accessibility_menu_zxdesktop_button_boxes(MENU_ITEM_PARAMETERS)
     menu_ext_desktop_transparent_configurable_icons.v=0;
 
 
-    menu_generic_message_splash("ZX Desktop buttons","OK. Enabled boxes and disable transparency on ZX Desktop buttons and icons");
+    menu_generic_message_splash("DAVID Desktop buttons","OK. Enabled boxes and disable transparency on DAVID Desktop buttons and icons");
 }
 
 void menu_accessibility_menu_hotkeys(MENU_ITEM_PARAMETERS)
@@ -11534,16 +11625,16 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
 
         if (screen_ext_desktop_enabled) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_clean,NULL,
-                "Set ZX Desktop p~~lain background","Definir fondo ~~limpio ZX Desktop","Definir fons c~~lar ZX Desktop");
+                "Set DAVID Desktop p~~lain background","Definir fondo ~~limpio DAVID Desktop","Definir fons c~~lar DAVID Desktop");
             menu_add_item_menu_shortcut(array_menu_common,'l');
-            menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
-            menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
+            menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> DAVID Desktop menu");
+            menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> DAVID Desktop menu");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_button_boxes,NULL,
-                "Improve ZX Desktop ~~object visibility","Mejorar visibilidad ~~objetos ZX Desktop ","Millorar visibilitat ~~objectes ZX Desktop");
+                "Improve DAVID Desktop ~~object visibility","Mejorar visibilidad ~~objetos DAVID Desktop ","Millorar visibilitat ~~objectes DAVID Desktop");
             menu_add_item_menu_shortcut(array_menu_common,'o');
-            menu_add_item_menu_tooltip(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
-            menu_add_item_menu_ayuda(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
+            menu_add_item_menu_tooltip(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> DAVID Desktop menu");
+            menu_add_item_menu_ayuda(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> DAVID Desktop menu");
         }
 
         menu_add_item_menu_separator(array_menu_common);
@@ -12335,11 +12426,13 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         */
 
         if (scr_driver_can_ext_desktop() ) {
-            menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"ZX Des~~ktop");
+            menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"DAVID Des~~ktop");
             menu_add_item_menu_shortcut(array_menu_settings,'k');
-            menu_add_item_menu_tooltip(array_menu_settings,"Expand the program window having a ZX Desktop space to the right and on the bottom");
-            menu_add_item_menu_ayuda(array_menu_settings,"ZX Desktop enables you to have a space on the right and on the bottom to place "
-                "zxvision windows, menus or other widgets");
+            menu_add_item_menu_tooltip(array_menu_settings, "Extend the emulator window with additional desktop space "
+                "to the right and below the emulated screen");
+            menu_add_item_menu_ayuda(array_menu_settings,"DAVID Desktop (Display Augmentation for Visual Icons and Dialogs) extends "
+                "the emulator's display area beyond the emulated machine's screen, providing additional space for ZX Vision windows, "
+                "menus, widgets and desktop icons.");
             menu_add_item_menu_tiene_submenu(array_menu_settings);
         }
 
@@ -14855,7 +14948,7 @@ void zxdesktop_add_extra_parameters_element_action(enum defined_f_function_ids a
 }
 
 
-//Definir boton de zx desktop a accion
+//Definir boton de DAVID desktop a accion
 void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_zxdesktop_set_userdef_buttons_functions;
@@ -15104,7 +15197,7 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
     screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
 
 
-    //Cerrar ventamas y olvidar geometria ventanas, cuando quitamos zx desktop
+    //Cerrar ventamas y olvidar geometria ventanas, cuando quitamos DAVID desktop
     if (!screen_ext_desktop_enabled) {
         zxvision_window_delete_all_windows_and_clear_geometry();
     }
@@ -15114,7 +15207,7 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
         //zxvision_reorder_configurable_icons();
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
 
         //Crear iconos por defecto si hace falta
         create_default_zxdesktop_configurable_icons();
@@ -15122,7 +15215,7 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
 
     zxvision_reorder_configurable_icons_if_auto();
 
-    //Cambiar nombres cortos/largos de menus en topbar segun si zx desktop activado o no
+    //Cambiar nombres cortos/largos de menus en topbar segun si DAVID desktop activado o no
     topbar_guess_show_short_menu_names_variable();
 
     cls_menu_overlay();
@@ -15159,7 +15252,7 @@ void menu_ext_desk_settings_custom_width_height(int reorganize_windows)
         zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
     }
 
     zxvision_reorder_configurable_icons_if_auto();
@@ -15415,7 +15508,7 @@ void menu_zxdesktop_scrfile_mix_background(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_scrfile_scalefactor(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced_dynamic("Scale factor",&zxdesktop_draw_scrfile_scale_factor,2,+1,1,5,0);
+    menu_ventana_scanf_numero_enhanced_dynamic("Scale factor",&zxdesktop_draw_scrfile_scale_factor,3,+1,1,10,0);
 }
 
 
@@ -16078,8 +16171,9 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
                 "S~~torage","Almacenamien~~to","Emmagatzemamen~~t");
             menu_add_item_menu_shortcut(array_menu_common,'t');
 
-            menu_add_item_menu(array_menu_common,"~~Keyboard Help",MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'k');
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_help_show_keyboard,NULL,
+                "~~Virtual Keyboard","Teclado ~~Virtual","Teclat ~~Virtual");
+            menu_add_item_menu_shortcut(array_menu_common,'v');
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_settings,NULL,
                 "~~Hardware settings","Opciones ~~Hardware","Opcions ~~Hardware");
@@ -16099,7 +16193,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_create_link_to_machine,
-                NULL,"Create Icon on ZX Desktop","Crear Icono en ZX Desktop","Crear Icona a ZX Desktop");
+                NULL,"Create Icon on DAVID Desktop","Crear Icono en DAVID Desktop","Crear Icona a DAVID Desktop");
 
         }
 
@@ -16143,7 +16237,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
 }
 
-//Definir icono de zx desktop a accion
+//Definir icono de DAVID desktop a accion
 void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -16248,6 +16342,14 @@ void menu_ext_desk_settings_automatic_reorder_icons(MENU_ITEM_PARAMETERS)
     zxvision_reorder_configurable_icons_if_auto();
 }
 
+void menu_ext_desk_settings_align_grid_icons(MENU_ITEM_PARAMETERS)
+{
+    david_desktop_align_to_grid_icons.v ^=1;
+
+    zxvision_reorder_configurable_icons_if_auto();
+}
+
+
 void menu_zxdesktop_set_stroke_color(MENU_ITEM_PARAMETERS)
 {
     menu_ext_desktop_color_contorno_iconos++;
@@ -16306,7 +16408,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%4d]",zxdesktop_width);
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
-            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the DAVID Desktop space");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
@@ -16323,7 +16425,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%4d]",zxdesktop_height);
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
-            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the DAVID Desktop space");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
@@ -16341,17 +16443,17 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
-                "Open Menu on ZX Desktop","Abrir menú en ZX Desktop","Obrir menú al ZX Desktop");
+                "Open Menu on DAVID Desktop","Abrir menú en DAVID Desktop","Obrir menú al DAVID Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
-            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
-            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the DAVID Desktop space");
+            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the DAVID Desktop space");
         }
 
         menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,
             "Footer +/- buttons","Botones +/- en pie de pagina","Botons +/- al peu de pagina");
         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_switch_button_enabled.v ? 'X' : ' ' ) );
-        menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
-        menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
+        menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce DAVID Desktop (visible when menu closed)");
+        menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce DAVID Desktop (visible when menu closed)");
         menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
@@ -16465,7 +16567,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
-                "--- Icons on ZX Desktop ---","--- Iconos en ZX Desktop ---","--- Icones al ZX Desktop ---");
+                "--- Icons on DAVID Desktop ---","--- Iconos en DAVID Desktop ---","--- Icones al DAVID Desktop ---");
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_enabled,NULL,
                 "Enable","Activar","Activar");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_configurable_icons_enabled.v ? 'X' : ' ' ) );
@@ -16510,6 +16612,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_automatic_reorder_icons.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_align_grid_icons,NULL,
+                    "Align icons to grid","Alinear iconos a rejilla","Alinear icones a reixeta");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(david_desktop_align_to_grid_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_show_app_open,NULL,
                     "Show indicators for open apps","Mostrar indicadores en apps abiertas","Mostrar indicadors en apps obertes");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_icon_show_app_open.v ? 'X' : ' ' ) );
@@ -16537,7 +16644,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 "Stroke on icons","Contorno en iconos","Contorn en icones");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_contorno_iconos.v ? 'X' : ' ' ) );
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a stroke on icons");
-            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a stroke on icons, useful to avoid blending with ZX Desktop");
+            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a stroke on icons, useful to avoid blending with DAVID Desktop");
             menu_add_item_menu_opcion_conmuta(array_menu_ext_desktop_settings,&menu_ext_desktop_contorno_iconos);
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
@@ -16643,8 +16750,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",string_back_scr_shown);
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'s');
-            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a SCR file for ZX Desktop background. Flash attributes are not used");
-            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a SCR file for ZX Desktop background. Flash attributes are not used");
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a SCR file for DAVID Desktop background.");
+            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a SCR file for DAVID Desktop background.");
 
             if (zxdesktop_draw_scrfile_name[0]!=0) {
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_enable,NULL,
@@ -16694,7 +16801,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_ext_desktop_settings);
 
         retorno_menu=menu_dibuja_menu(&ext_desktop_settings_opcion_seleccionada,&item_seleccionado,array_menu_ext_desktop_settings,
-            "ZX Desktop Settings","Opciones ZX Desktop","Opcions ZX Desktop");
+            "DAVID Desktop Settings","Opciones DAVID Desktop","Opcions DAVID Desktop");
 
 
 
@@ -16788,6 +16895,16 @@ void menu_ql_cpu_turbo(MENU_ITEM_PARAMETERS)
     ql_extension_cpu_turbo_enabled ^=1;
 }
 
+void menu_cpu_gmx_set_turbo_cpu_speed(MENU_ITEM_PARAMETERS)
+{
+    scorpion_gmx_set_turbo_speed();
+}
+
+void menu_cpu_gmx_set_normal_cpu_speed(MENU_ITEM_PARAMETERS)
+{
+    scorpion_gmx_set_normal_speed();
+}
+
 
 //menu cpu settings
 void menu_cpu_settings(MENU_ITEM_PARAMETERS)
@@ -16811,7 +16928,18 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
                     "Some machines, like ZX-Uno or Chloe, change this setting");
 
 
-
+        if (MACHINE_IS_SCORPION_GMX) {
+            if (cpu_turbo_speed==1) {
+                menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_gmx_set_turbo_cpu_speed,NULL,
+                    "Set GMX Turbo CPU speed","Activar GMX Velocidad Turbo CPU","Activar GMX Velocitat Turbo CPU");
+                menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
+            }
+            else {
+                menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_gmx_set_normal_cpu_speed,NULL,
+                    "Set GMX Normal CPU speed","Activar GMX Velocidad Normal CPU","Activar GMX Velocitat Normal CPU");
+                menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"    ");
+            }
+        }
 
 
         if (MACHINE_IS_ZXUNO) {
@@ -17026,11 +17154,11 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Reduce previews to half size instead of full size");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_on_zxdesktop,NULL,
-                "Show previews also on ~~ZX Desktop","Mostrar previews también en ~~ZX Desktop","Mostrar previews també al ~~ZX Desktop");
+                "Show previews also on DAVID Des~~ktop","Mostrar previews también en DAVID Des~~ktop","Mostrar previews també al DAVID Des~~ktop");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_show_previews_on_zxdesktop.v ? 'X' : ' ') );
-            menu_add_item_menu_shortcut(array_menu_common,'z');
-            menu_add_item_menu_tooltip(array_menu_common,"Show previews also on ZX Desktop");
-            menu_add_item_menu_ayuda(array_menu_common,"Show previews also on ZX Desktop");
+            menu_add_item_menu_shortcut(array_menu_common,'k');
+            menu_add_item_menu_tooltip(array_menu_common,"Show previews also on DAVID Desktop");
+            menu_add_item_menu_ayuda(array_menu_common,"Show previews also on DAVID Desktop");
         }
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,

@@ -114,6 +114,7 @@
 #include "pd765.h"
 #include "core_reduced_spectrum.h"
 #include "baseconf.h"
+#include "zxevo.h"
 #include "settings.h"
 #include "datagear.h"
 #include "network.h"
@@ -152,6 +153,9 @@
 #include "tv.h"
 #include "qsound.h"
 #include "core_ql.h"
+#include "scorpion.h"
+#include "didaktikgama.h"
+#include "atmturbo.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1020,6 +1024,13 @@ void hard_reset_cpu(void)
 
     }
 
+    else if (MACHINE_IS_SCORPION_GMX) {
+        /* El apagado virtual borra el esquema elegido en xx00.
+           RESET por sí solo conserva Pentagon u otra configuración. */
+        scorpion_gmx_power_on();
+        reset_cpu();
+    }
+
 }
 
 void reset_cpu(void)
@@ -1039,6 +1050,9 @@ void reset_cpu(void)
     if (rzx_reproduciendo) {
         eject_rzx_file();
     }
+
+    //Quitar la pausa de cpu si estaba
+    paused_cpu_emulation.v=0;
 
     reg_pc=0;
     reg_i=0;
@@ -1103,7 +1117,19 @@ void reset_cpu(void)
 
 
     if (MACHINE_IS_SPECTRUM_128_P2) {
+
         mem_set_normal_pages_128k();
+
+    }
+
+    if (MACHINE_IS_SCORPION) {
+        scorpion_set_normal_pages();
+        scorpion_reset();
+        if (MACHINE_IS_SCORPION_GMX) scorpion_set_cpu_speed(1);
+    }
+
+    if (MACHINE_IS_DIDAKTIKGAMA) {
+        didaktikgama_reset();
     }
 
     if (MACHINE_IS_SPECTRUM_P2A_P3) {
@@ -1252,6 +1278,10 @@ util_stats_init();
         baseconf_reset_cpu();
     }
 
+    if (MACHINE_IS_ATM_TURBO) {
+        atmturbo_reset();
+    }
+
     if (MACHINE_IS_TBBLUE) {
         tbblue_reset();
         tbblue_set_memory_pages();
@@ -1270,6 +1300,9 @@ util_stats_init();
 
     if (MACHINE_IS_SAM) {
         sam_vmpr=sam_hmpr=sam_lmpr=0;
+        sam_line_interrupt_register=255;
+        sam_line_interrupt_active_until=0;
+        sam_frame_interrupt_active_until=0;
 
         sam_set_memory_pages();
     }
@@ -1292,6 +1325,7 @@ util_stats_init();
     }
 
     if (MACHINE_IS_SPECTRUM && betadisk_enabled.v) betadisk_reset();
+    if (MACHINE_IS_PENTAGON) pentagon_trdos_reset();
 
     if (MACHINE_IS_QL) {
         m68k_init();
@@ -1519,10 +1553,23 @@ void malloc_mem_machine(void) {
 
         }
 
+        else if (MACHINE_IS_DIDAKTIKGAMA) {
+            didaktikgama_malloc_mem_machine();
+        }
+
+        else if (MACHINE_IS_SCORPION) {
+            scorpion_malloc_mem_machine();
+        }
+
+        else if (MACHINE_IS_ATM_TURBO) {
+            atmturbo_malloc_mem_machine();
+        }
+
         else if (MACHINE_IS_SPECTRUM_128_P2) {
 
                 //32 kb rom, 128-1024 ram
-                malloc_machine((32+1024)*1024);
+                //16kb mas en caso de pentagon para la rom de tr-dos
+                malloc_machine(((MACHINE_IS_PENTAGON ? 48 : 32)+1024)*1024);
                 random_ram(memoria_spectrum+32768,1024*1024);
 
         mem_init_memory_tables_128k();
@@ -1844,8 +1891,8 @@ void set_machine_params(void)
 0=Sinclair 16k
 1=Sinclair 48k
 2=Inves Spectrum+
-3=tk90x
-4=tk90xs
+3=tk90x portuguese rom
+4=tk90xs spanish rom
 5=tk95
 6=Sinclair 128k
 7=Sinclair 128k Español
@@ -1876,7 +1923,17 @@ void set_machine_params(void)
 32=CZ 2000
 33=CZ SPECTRUM
 34=CZ SPECTRUM_PLUS
-35-39=Reservadas otras Spectrum
+35=Scorpion ZS-256
+36=Scorpion ZS-256 Turbo+
+37=Scorpion GMX
+38=Didaktik Gama
+39=tk90x ula ferranti portuguese rom
+40=tk90xs ula ferranti spanish rom
+41=atm turbo 1
+42=atm turbo 2
+43=atm turbo 2+
+44=atm turbo 3
+45-49=Reservadas otras Spectrum
 
 100=colecovision
 101=sega sg1000
@@ -1990,7 +2047,6 @@ void set_machine_params(void)
 
     //en spectrum, 32. en pentagon, 36
     cpu_duracion_pulso_interrupcion=32;
-
 
     z80_cpu_current_type=Z80_TYPE_GENERIC;
 
@@ -2166,6 +2222,24 @@ void set_machine_params(void)
         ula_contend_port_early=ula_contend_port_early_48k;
         ula_contend_port_late=ula_contend_port_late_48k;
 
+        if (MACHINE_IS_MICRODIGITAL_TK90X_TK95_ULA_MICRODIGITAL) {
+            // La ULA Microdigital emplea 228 T por línea en ambos modos.
+            screen_testados_linea=228;
+            screen_invisible_borde_derecho=104;
+            if (machine_60hz.v) {
+                screen_invisible_borde_superior=22;
+                screen_borde_superior=16;
+                screen_total_borde_inferior=32;
+                original_timer_sleep_machine=16666;
+                set_emulator_speed();
+            }
+            else {
+                screen_invisible_borde_superior=24;
+                screen_borde_superior=40;
+                screen_total_borde_inferior=56;
+            }
+        }
+
         //Ajustes para Inves
         if (MACHINE_IS_INVES) {
             screen_testados_linea=228;
@@ -2173,6 +2247,73 @@ void set_machine_params(void)
             screen_invisible_borde_derecho=104;
             keyboard_issue2.v=0; //El puerto FEH de Inves se comporta como issue 3
         }
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        // La Gama usa los parámetros de vídeo e INT de 48K ya establecidos arriba.
+        contend_read=contend_read_48k;
+        contend_read_no_mreq=contend_read_no_mreq_48k;
+        contend_write_no_mreq=contend_write_no_mreq_48k;
+
+        ula_contend_port_early=ula_contend_port_early_48k;
+        ula_contend_port_late=ula_contend_port_late_48k;
+    }
+
+    else if (MACHINE_IS_SCORPION_ZS_256 || MACHINE_IS_SCORPION_ZS_256_TURBO_PLUS) {
+        /* Scorpion tiene 224 T por línea y 312 líneas por cuadro.
+           El área visible usa el mismo borde que el renderizado normal. */
+        screen_testados_linea=224;
+        screen_invisible_borde_superior=8;
+        screen_borde_superior=56;
+        screen_total_borde_inferior=56;
+        screen_total_borde_izquierdo=48;
+        screen_total_borde_derecho=48;
+        screen_invisible_borde_derecho=96;
+
+        /* La RAM del Scorpion no introduce esperas por contención. */
+        contend_read=contend_read_scorpion;
+        contend_read_no_mreq=contend_read_no_mreq_scorpion;
+        contend_write_no_mreq=contend_write_no_mreq_scorpion;
+        ula_contend_port_early=ula_contend_port_early_scorpion;
+        ula_contend_port_late=ula_contend_port_late_scorpion;
+        cpu_duracion_pulso_interrupcion=36;
+    }
+
+    else if (MACHINE_IS_SCORPION_GMX) {
+        /* Al cambiar de máquina se enciende GMX desde el esquema inicial.
+           Un RESET dentro de GMX conserva la configuración elegida en xx00. */
+        if (last_machine_type!=current_machine_type) scorpion_gmx_power_on();
+        /* xx00.D7 o el esquema 4 activan el cuadro y la INT Pentagon.
+           Los bordes Scorpion coinciden con el renderizado normal. */
+        screen_testados_linea=224;
+        screen_invisible_borde_superior=scorpion_gmx_uses_pentagon_timing() ? 16 : 8;
+        screen_borde_superior=scorpion_gmx_uses_pentagon_timing() ? 64 : 56;
+        screen_total_borde_inferior=scorpion_gmx_uses_pentagon_timing() ? 48 : 56;
+        screen_total_borde_izquierdo=48;
+        screen_total_borde_derecho=48;
+        screen_invisible_borde_derecho=96;
+
+        /* GMX no añade esperas de RAM ni de puertos en estos modos. */
+        contend_read=contend_read_scorpion;
+        contend_read_no_mreq=contend_read_no_mreq_scorpion;
+        contend_write_no_mreq=contend_write_no_mreq_scorpion;
+        ula_contend_port_early=ula_contend_port_early_scorpion;
+        ula_contend_port_late=ula_contend_port_late_scorpion;
+        cpu_duracion_pulso_interrupcion=36;
+
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        /* ATM Turbo necesita funciones de contención antes del primer fetch. */
+        contend_read=contend_read_atmturbo;
+        contend_read_no_mreq=contend_read_no_mreq_atmturbo;
+        contend_write_no_mreq=contend_write_no_mreq_atmturbo;
+        ula_contend_port_early=ula_contend_port_early_atmturbo;
+        ula_contend_port_late=ula_contend_port_late_atmturbo;
+        if (MACHINE_IS_ATM_TURBO2_FAMILY) atmturbo2_update_timing();
+
+        audiodac_selected_type=AUDIODAC_TYPE_COVOX_PENTAGON;
+        audiodac_enabled.v=1;
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
@@ -2193,6 +2334,8 @@ void set_machine_params(void)
         if (MACHINE_IS_SPECTRUM_P2A_P3) {
             port_from_ula=port_from_ula_p2a;
             contend_pages_128k_p2a=contend_pages_p2a;
+            contend_read_no_mreq=contend_read_no_mreq_p2a;
+            contend_write_no_mreq=contend_write_no_mreq_p2a;
         }
 
         if (MACHINE_IS_PENTAGON) {
@@ -2365,10 +2508,10 @@ void set_machine_params(void)
 
         z80_cpu_current_type=Z80_TYPE_CMOS;
 
-        //Temp timings 128k
-        screen_testados_linea=228;
-        screen_invisible_borde_superior=7;
-        screen_invisible_borde_derecho=104;
+        baseconf_update_timing(1);
+
+        audiodac_selected_type=AUDIODAC_TYPE_COVOX_PENTAGON;
+        audiodac_enabled.v=1;
 
     }
 
@@ -2620,9 +2763,11 @@ void set_machine_params(void)
             lee_puerto=lee_puerto_spectrum;
         break;
 
-        case MACHINE_ID_MICRODIGITAL_TK90X:
+        case MACHINE_ID_MICRODIGITAL_TK90X_POR:
         case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
-        case MACHINE_ID_MICRODIGITAL_TK95:
+        case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR:
+        case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA:
+        case MACHINE_ID_MICRODIGITAL_TK95_POR:
         case MACHINE_ID_MICRODIGITAL_TK95_SPA:
             poke_byte=poke_byte_spectrum_48k;
             peek_byte=peek_byte_spectrum_48k;
@@ -2773,8 +2918,9 @@ void set_machine_params(void)
 
             //Pentagon
             poke_byte=poke_byte_spectrum_128k;
-            peek_byte=peek_byte_spectrum_128k;
-            peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+            peek_byte=peek_byte_pentagon;
+            peek_byte_no_time=peek_byte_no_time_pentagon;
+            fetch_opcode=fetch_opcode_pentagon;
             poke_byte_no_time=poke_byte_no_time_spectrum_128k;
             lee_puerto=lee_puerto_spectrum;
             ay_chip_present.v=1;
@@ -2784,6 +2930,63 @@ void set_machine_params(void)
             cpu_duracion_pulso_interrupcion=36;
         break;
 
+
+        case MACHINE_ID_SCORPION_ZS_256:
+        case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
+        case MACHINE_ID_SCORPION_GMX:
+
+            poke_byte=poke_byte_scorpion;
+            peek_byte=peek_byte_scorpion;
+            peek_byte_no_time=peek_byte_no_time_scorpion;
+            poke_byte_no_time=poke_byte_no_time_scorpion;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+
+            fetch_opcode=fetch_opcode_scorpion;
+
+            /* Al cambiar a GMX se conecta por defecto; recalcular la velocidad
+             * no debe deshacer la elección posterior del usuario en el menú. */
+            if (MACHINE_IS_SCORPION_GMX && last_machine_type!=current_machine_type) {
+                zcontroller_enabled.v=1;
+                ide_smuc_enabled.v=1;
+            }
+
+        break;
+
+        case MACHINE_ID_ATM_TURBO1:
+        case MACHINE_ID_ATM_TURBO2:
+        case MACHINE_ID_ATM_TURBO2_PLUS:
+        case MACHINE_ID_ATM_TURBO3:
+
+            fetch_opcode=fetch_opcode_atmturbo;
+            poke_byte=poke_byte_atmturbo;
+            peek_byte=peek_byte_atmturbo;
+            peek_byte_no_time=peek_byte_no_time_atmturbo;
+            poke_byte_no_time=poke_byte_no_time_atmturbo;
+            lee_puerto=lee_puerto_spectrum;
+            ay_chip_present.v=1;
+
+            //ABC Stereo
+            //2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
+            ay3_stereo_mode=2;
+
+            if (MACHINE_IS_ATM_TURBO2_FAMILY) {
+                if (last_machine_type!=current_machine_type) {
+                    ide_atm_enabled.v=1;
+                }
+            }
+
+        break;
+
+        case MACHINE_ID_DIDAKTIKGAMA:
+
+            poke_byte=poke_byte_didaktikgama;
+            peek_byte=peek_byte_didaktikgama;
+            peek_byte_no_time=peek_byte_no_time_didaktikgama;
+            poke_byte_no_time=poke_byte_no_time_didaktikgama;
+            lee_puerto=lee_puerto_spectrum;
+
+        break;
 
         case MACHINE_ID_CHROME:
             poke_byte=poke_byte_chrome;
@@ -2796,12 +2999,20 @@ void set_machine_params(void)
 
 
         case MACHINE_ID_TSCONF:
+            fetch_opcode=fetch_opcode_tsconf;
             poke_byte=poke_byte_tsconf;
             peek_byte=peek_byte_tsconf;
             peek_byte_no_time=peek_byte_no_time_tsconf;
             poke_byte_no_time=poke_byte_no_time_tsconf;
             lee_puerto=lee_puerto_spectrum;
             ay_chip_present.v=1;
+
+            // La SD de ZX Evolution usa la interfaz Z-Controller en TSConf.
+            if (last_machine_type!=current_machine_type) {
+                zcontroller_enabled.v=1;
+                zxevo_nemo_ide_enabled.v=1;
+                ide_smuc_enabled.v=1;
+            }
 
             //TSConf hacemos que active siempre realvideo (siempre que setting de autoactivar este yes)
             //por conveniencia, dado que se verá todo mejor asi que no con real video off
@@ -2817,6 +3028,13 @@ void set_machine_params(void)
             lee_puerto=lee_puerto_spectrum;
             fetch_opcode=fetch_opcode_baseconf;
             ay_chip_present.v=1;
+
+            /* Al cambiar a BaseConf se conectan por defecto SD y Nemo IDE;
+             * recalcular la velocidad no debe deshacer su ajuste en el menú. */
+            if (last_machine_type!=current_machine_type) {
+                baseconf_sd_interface_enabled.v=1;
+                zxevo_nemo_ide_enabled.v=1;
+            }
 
         break;
 
@@ -3207,7 +3425,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
             zxvision_rearrange_background_windows(0,1);
         }
 
-        zxvision_check_all_configurable_icons_positions();
+        zxvision_check_all_configurable_icons_positions(0);
 
     }
 
@@ -3314,7 +3532,11 @@ void rom_load(char *romfilename)
             romfilename="inves.rom";
             break;
 
-            case MACHINE_ID_MICRODIGITAL_TK90X:
+            case MACHINE_ID_MICRODIGITAL_TK90X_POR:
+            romfilename="tk90x.rom";
+            break;
+
+            case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR:
             romfilename="tk90x.rom";
             break;
 
@@ -3322,7 +3544,11 @@ void rom_load(char *romfilename)
             romfilename="tk90xs.rom";
             break;
 
-            case MACHINE_ID_MICRODIGITAL_TK95:
+            case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA:
+            romfilename="tk90xs.rom";
+            break;
+
+            case MACHINE_ID_MICRODIGITAL_TK95_POR:
             romfilename="tk95.rom";
             break;
 
@@ -3401,8 +3627,44 @@ void rom_load(char *romfilename)
             romfilename="48es.rom";
             break;
 
-            case 21:
+            case MACHINE_ID_PENTAGON:
             romfilename="pentagon.rom";
+            break;
+
+            //TODO: no está claro las versiones de la rom a usar
+            //Esta ZS_256 puede usar sin problemas la 2.95 pero al ser el primer modelo de scorpion,
+            //creo que es logico usar una de las primeras roms
+            case MACHINE_ID_SCORPION_ZS_256:
+            romfilename="scorpion_2.3j.rom";
+            break;
+
+            case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
+            romfilename="scorpion_2.95.rom";
+            break;
+
+            case MACHINE_ID_SCORPION_GMX:
+            //romfilename="gmx13500.rom";
+            romfilename="profgmx6xx043.9226se.rom";
+            break;
+
+            case MACHINE_ID_ATM_TURBO1:
+            romfilename="atm103.rom";
+            break;
+
+            case MACHINE_ID_ATM_TURBO2:
+            romfilename="atm106.rom";
+            break;
+
+            case MACHINE_ID_ATM_TURBO2_PLUS:
+            romfilename="xbios135.rom";
+            break;
+
+            case MACHINE_ID_ATM_TURBO3:
+            romfilename="xbios135.rom";
+            break;
+
+            case MACHINE_ID_DIDAKTIKGAMA:
+            romfilename="didaktikgama.rom";
             break;
 
             case MACHINE_ID_COLECO:
@@ -3588,12 +3850,42 @@ void rom_load(char *romfilename)
         }
     }
 
+    else if (MACHINE_IS_SCORPION) {
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+    }
+
+    else if (MACHINE_IS_ATM_TURBO) {
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+    }
+
+    else if (MACHINE_IS_DIDAKTIKGAMA) {
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+    }
+
     else if (MACHINE_IS_SPECTRUM_128_P2) {
         //Spectrum 32k rom
 
         leidos=fread(rom_mem_table[0],1,expected_rom_size,ptr_romfile);
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
+
+        //Rom de tr-dos para pentagon
+        if (MACHINE_IS_PENTAGON) {
+            FILE *trdos_rom;
+            open_sharedfile(BETADISK_ROM_FILENAME,&trdos_rom);
+            if (trdos_rom==NULL || fread(pentagon_trdos_rom,1,16384,trdos_rom)!=16384)
+                debug_printf(VERBOSE_ERR,"Error loading Pentagon TR-DOS ROM");
+            if (trdos_rom!=NULL) fclose(trdos_rom);
         }
 
     }

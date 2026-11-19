@@ -317,12 +317,20 @@ void pd765_sc_set(pd765_signal_counter *s)
     s->value=1;
 }
 
-//Incrementar si esta running y cambiar a 1 si llega al limite
+//Avanza una señal temporizada. En esta controladora se usa con signal_se para
+//simular la duración de SEEK y RECALIBRATE (signal_se.max vale 80 t-estados).
+//El core llama a esta función con los t-estados transcurridos desde la última
+//actualización, incluso si el contador de t-estados cambió de fotograma.
 void pd765_sc_handle_running(pd765_signal_counter *s,int incremento)
 {
+    //Si no hay movimiento en curso, conservar el contador y el valor de SE.
     if (s->running) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: handle signal running. Current counter: %d max: %d",s->current_counter,s->max);
         (s->current_counter)+=incremento;
+        //Al alcanzar el tiempo previsto, poner la señal a 1 y detener el
+        //contador. Como running pasa a 0, el callback solo se ejecuta una vez.
+        //Ese callback actualiza el cilindro, limpia el estado de búsqueda y
+        //deja una interrupción pendiente.
         if ((s->current_counter)>=(s->max)) {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trigger signal SE");
             pd765_sc_set(s);
@@ -441,10 +449,13 @@ pd765_signal_counter signal_se={
 
 //TODO: todos los comandos que devuelvan resultado deberian usar este buffer
 
-//Maximo sector es de 8kb, esto hay mas que suficiente
-#define PD765_MAX_RESULT_BUFFER 9000
+//El búfer guarda hasta un sector N=8 de 32 KiB y los siete bytes del resultado.
+#define PD765_MAX_RESULT_BUFFER (32768+7)
 //El buffer de resultado
 z80_byte pd765_result_buffer[PD765_MAX_RESULT_BUFFER];
+//Número de lecturas por pista y posición física del sector. Permite alternar
+//las copias o el byte simulado sin mezclar lecturas de sectores distintos.
+static z80_byte pd765_sector_read_count[256][256];
 //Y cuantos datos hay en el buffer para retornarlos
 int pd765_result_buffer_length=0;
 
@@ -492,6 +503,7 @@ void pd765_put_buffer(z80_byte value)
 
 void pd765_reset(void)
 {
+    memset(pd765_sector_read_count,0,sizeof(pd765_sector_read_count));
     pd765_main_status_register=PD765_MAIN_STATUS_REGISTER_ON_BOOT;
     pd765_phase=PD765_PHASE_ON_BOOT;
     pd765_input_parameters_index=0;
@@ -543,6 +555,7 @@ void pd765_motor_off(void)
 }
 
 int pd765_ultimo_t_estados=-1;
+static void pd765_handle_read_data_timeout(int t_estados_transcurridos);
 
 void pd765_next_event_from_core(void)
 {
@@ -574,6 +587,7 @@ void pd765_next_event_from_core(void)
         if (signal_se.running) DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: STATES: diference: %d last: %d now: %d",diferencia,pd765_ultimo_t_estados,t_estados);
 
         pd765_sc_handle_running(&signal_se,diferencia);
+        pd765_handle_read_data_timeout(diferencia);
 
         pd765_ultimo_t_estados=t_estados;
     }
@@ -1268,7 +1282,13 @@ int pd765_read_command_must_stop_anormal_termination=0;
 //Lo mismo pero para write
 int pd765_write_command_must_stop_anormal_termination=0;
 
-void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector)
+//Un dato débil puede devolver bits distintos en lecturas sucesivas del disco.
+//Si el EDSK solo guarda una copia, no sabemos qué bits eran débiles realmente.
+//speedlock_mode=1 altera los bytes 29 y 58; speedlock_mode=2 continúa cada
+//29 bytes hasta el final del sector. La primera lectura queda intacta y las
+//siguientes cambian para simular las lecturas de un sector débil.
+void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector,
+    int speedlock_mode,unsigned int sector_read_number)
 {
     int indice;
 
@@ -1276,6 +1296,10 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
 
         z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
+        if (speedlock_mode && sector_read_number>0 && (indice+1)%29==0 &&
+            (speedlock_mode==2 || indice<64)) {
+            return_value ^=(indice+1);
+        }
         pd765_put_buffer(return_value);
 
     }
@@ -1319,7 +1343,10 @@ void old_pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
     pd765_put_buffer(return_value);
 }
-void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus)
+//end_of_cylinder vale 1 si la lectura terminó al completar el sector EOT,
+//sin que la señal TC la detuviera antes. Si no hubo otro error, la respuesta
+//llevará ST0=40H y ST1=80H (fin de cilindro).
+void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus,int end_of_cylinder)
 {
 
 
@@ -1540,6 +1567,12 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         //sleep(1);
     }
 
+    //Esto necesario para que funcionen algunos discos protegidos con Alkatraz, como Artura.dsk
+    if (end_of_cylinder && leido_st0==0 && leido_id_st1==0) {
+        leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT;
+        leido_id_st1 |=PD765_STATUS_REGISTER_ONE_EN_MASK;
+    }
+
     if (put_values_in_bus) {
         pd765_read_chrn_put_return_in_bus(leido_st0,leido_id_st1,leido_id_st2);
     }
@@ -1563,6 +1596,39 @@ int pd765_last_sector_size_write_data=0;
 #define PD765_READ_COMMAND_STATE_ENDING_READING_DATA 2
 int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
 
+static int pd765_read_data_idle_tstates=0;
+
+static void pd765_handle_read_data_timeout(int t_estados_transcurridos)
+{
+    if (pd765_read_command_state!=PD765_READ_COMMAND_STATE_READING_DATA ||
+        !(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) ||
+        pd765_result_buffer_length==0) return;
+
+    pd765_read_data_idle_tstates+=t_estados_transcurridos;
+    //El FDC no puede mantener una lectura pendiente indefinidamente. Tras
+    //20 fotogramas sin que la CPU recoja otro byte (unas dos vueltas a 300 rpm),
+    //termina con ST1.OR. Italia 1990 deja ocho bytes pendientes y espera a
+    //que EXM se desactive antes de consultar el resultado.
+    if (pd765_read_data_idle_tstates<screen_testados_total*20) return;
+
+    DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Read data timeout with %d bytes pending",
+        pd765_result_buffer_length-pd765_result_bufer_read_pointer);
+    pd765_read_data_idle_tstates=0;
+    pd765_reset_buffer();
+    pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
+    pd765_main_status_register &=~PD765_MAIN_STATUS_REGISTER_EXM_MASK;
+    pd765_phase=PD765_PHASE_RESULT;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+    pd765_set_interrupt_pending();
+    pd765_put_buffer(pd765_get_st0()|PD765_STATUS_REGISTER_ZERO_AT);
+    pd765_put_buffer(PD765_STATUS_REGISTER_ONE_OR_MASK);
+    pd765_put_buffer(0);
+    pd765_put_buffer(pd765_input_parameter_c);
+    pd765_put_buffer(pd765_input_parameter_h);
+    pd765_put_buffer(pd765_read_command_searching_parameter_r);
+    pd765_put_buffer(pd765_input_parameter_n);
+}
+
 //Los dos posibles estados al escribir datos
 //Leyendo valores sector
 #define PD765_WRITE_COMMAND_STATE_WRITING_DATA 1
@@ -1571,6 +1637,29 @@ int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
 int pd765_write_command_state=PD765_WRITE_COMMAND_STATE_WRITING_DATA;
 
 
+
+//Caso 1: los EDSK de Mot y Guillermo Tell conservan el ID y el error de CRC
+//del sector 8 (N=8, pista 40), pero guardan cero bytes de sus datos. La
+//protección compara 255 bytes del sector 7 con los bytes situados desde el
+//desplazamiento 1298 del sector 8. Copiamos esos 255 bytes del propio DSK.
+//Para que el cargador pueda efectuar la lectura de 32 KiB, rellenamos con
+//4EH los demás bytes: son inventados, no una recuperación del disco original.
+//La reconstrucción solo se aplica cuando se reconoció la firma Opera Soft.
+static int pd765_reconstruct_operasoft_missing_sector(int sector_fisico,int iniciosector)
+{
+    if (dsk_detected_protection_scheme_id!=DSK_PROTECTION_SCHEME_OPERASOFT_32K ||
+        pd765_pcn!=40 || sector_fisico!=8 || iniciosector<256) return 0;
+
+    int inicio_sector_7=dsk_get_sector_fisico(40,0,sector_fisico-1);
+    if (inicio_sector_7<0 || inicio_sector_7+256!=iniciosector) return 0;
+
+    //Los primeros 1298 bytes y los posteriores a la comparación son relleno.
+    //Los 255 bytes intermedios proceden del sector 7 de esta misma imagen.
+    for (int i=0;i<1298;i++) pd765_put_buffer(0x4E);
+    for (int i=0;i<255;i++) pd765_put_buffer(plus3dsk_get_byte_disk(inicio_sector_7+i));
+    for (int i=1298+255;i<32768;i++) pd765_put_buffer(0x4E);
+    return 32768;
+}
 
 void pd765_handle_command_read_data(void)
 {
@@ -1586,6 +1675,7 @@ field are not checked when SK = 1.
 */
 
     pd765_read_command_must_stop_anormal_termination=0;
+    pd765_read_data_idle_tstates=0;
 
     //Inicializar buffer retorno
     pd765_reset_buffer();
@@ -1682,6 +1772,9 @@ field are not checked when SK = 1.
     timer_storage_common_accelerate_loading();
 
     z80_byte sector_fisico;
+    int sector_with_wrong_n=0;
+    int sector_with_wrong_c=0;
+    int sector_with_bad_c=0;
 
 
     //primero intentar obtener sector siguiente dentro de la pista
@@ -1715,6 +1808,38 @@ field are not checked when SK = 1.
             iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
+    }
+
+    if (iniciosector>=0 && pd765_command_received!=PD765_COMMAND_READ_TRACK) {
+        //En READ DATA y READ DELETED DATA el ID debe coincidir en C, R y N.
+        //Mega Apocalypse y Nigel Mansell's Grand Prix, protegidos con Speedlock,
+        //piden R=79H y N=2, pero el disco solo tiene R=79H con N=0. Si se
+        //compara solo R, se entregan los 128 bytes del sector equivocado y
+        //fallan sus cargadores; debe responderse que no existe el ID pedido.
+        //READ TRACK recorre los sectores físicos y no usa esta búsqueda por ID.
+        //Si hay varios sectores con el mismo R, probarlos hasta volver al
+        //primero antes de concluir que ninguno tiene el N solicitado.
+        z80_byte primer_sector_fisico=sector_fisico;
+        while (iniciosector>=0) {
+            z80_byte c,h,r,n;
+            dsk_get_chrn(pd765_pcn,0,sector_fisico,&c,&h,&r,&n);
+            if (c!=pd765_input_parameter_c) {
+                //Un ID de otro cilindro no entrega datos. C=FFH indica
+                //cilindro defectuoso; Football Manager 2 usa este patrón.
+                sector_with_wrong_c=1;
+                if (c==0xFF) sector_with_bad_c=1;
+            }
+            else if (n==pd765_input_parameter_n) break;
+            else sector_with_wrong_n=1;
+            z80_byte anterior=sector_fisico;
+            iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,
+                &sector_fisico,anterior,search_deleted,pd765_input_parameter_sk,1);
+            if (iniciosector<0) {
+                iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,
+                    &sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
+            }
+            if (iniciosector>=0 && sector_fisico==primer_sector_fisico) iniciosector=-1;
+        }
     }
 
     //gestionar error si sector no encontrado
@@ -1756,16 +1881,42 @@ field are not checked when SK = 1.
         pd765_put_buffer(return_value);
 
 
-        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
+        //Con R existente pero N distinto, devolver ST1.ND sin ST1.MA ni
+        //ST2.MD. Si C es distinto, devolver ST2.WC (y BC para C=FFH),
+        //sin transferir el sector ni señalar fin de cilindro en ST1.
+        if (sector_with_wrong_c) {
+            return_value=0;
+        }
+        else {
+            return_value=PD765_STATUS_REGISTER_ONE_ND_MASK;
+            if (!sector_with_wrong_n) return_value |=PD765_STATUS_REGISTER_ONE_MA_MASK;
+        }
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
-        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;
+        if (sector_with_wrong_c) {
+            return_value=PD765_STATUS_REGISTER_TWO_WC_MASK;
+            if (sector_with_bad_c) return_value |=PD765_STATUS_REGISTER_TWO_BC_MASK;
+        }
+        else if (sector_with_wrong_n) {
+            return_value=0;
+        }
+        else {
+            return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;
+        }
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
-        pd765_read_put_chrn_in_bus();
+        if (sector_with_wrong_n || sector_with_wrong_c) {
+            //No se transfirieron datos: CHRN identifica el sector solicitado,
+            //no el ID con otro C o N que apareció durante la búsqueda.
+            pd765_put_buffer(pd765_input_parameter_c);
+            pd765_put_buffer(pd765_input_parameter_h);
+            pd765_put_buffer(pd765_read_command_searching_parameter_r);
+            pd765_put_buffer(pd765_input_parameter_n);
+        }
+        else pd765_read_put_chrn_in_bus();
 
         /*
 
@@ -1808,27 +1959,76 @@ field are not checked when SK = 1.
 
     //anormal_termination=0;
 
+    //Contar cada lectura por pista y sector físico. Solo se usa el contador
+    //si hay varias copias guardadas o si reconocemos el patrón Speedlock.
+    unsigned int sector_read_number=pd765_sector_read_count[pd765_pcn][sector_fisico]++;
+    int speedlock_mode=0;
+
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size before: %d",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
-        //sector_size es el tamaño que decia del sector en la info de pista
+        //N en el ID indica cuánto ocupa una lectura normal. El tamaño EDSK
+        //indica cuántos bytes se guardaron en total para este sector.
+        z80_byte sector_c,sector_h,sector_r,sector_n;
+        dsk_get_chrn(pd765_pcn,0,sector_fisico,&sector_c,&sector_h,&sector_r,&sector_n);
+        int nominal_sector_size=dsk_get_sector_size_from_n_value(sector_n);
+        //Caso 2: Mutan Zone sí conserva 8192 bytes del sector 8, incluida
+        //la zona de 255 bytes que comprueba la protección. Su ID lleva N=8:
+        //el tamaño nominal es 32 KiB y esos 8192 bytes son un único sector
+        //parcial con CRC erróneo. La función general reduce N=8 a N=0 y
+        //haría creer que hay 64 copias de 128 bytes; entonces el cargador
+        //nunca recibiría los datos situados desde el desplazamiento 1298.
+        if (sector_n==8) nominal_sector_size=32768;
+        if (nominal_sector_size>0) sector_size=nominal_sector_size;
 
-        //TODO: esto tambien pasa cuando es mayor?
-        //cuando es mayor lo que sucede es que es un sector escrito varias veces con diferentes datos,
-        //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
-        //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
-        if (real_sector_size<sector_size) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading less data than the track size says. Setting abnormal termination flag");
-            //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
+        //Si el tamaño guardado contiene varias lecturas completas, seleccionar
+        //una por lectura. Todas ocupan sector_size bytes y están consecutivas.
+        //Al avanzar el contador se recorre cada copia antes de repetir la primera.
+        if (sector_size>0 && real_sector_size>sector_size && real_sector_size%sector_size==0) {
+            iniciosector +=(sector_read_number % (real_sector_size/sector_size))*sector_size;
+        }
+        else {
+            sector_size=real_sector_size;
+
+            //Solo el sector 2 de Speedlock usa esta simulación de datos débiles.
+            if (pd765_pcn==0 && sector_r==2 && sector_n==2 &&
+                sector_size==512 && pd765_input_parameter_eot==sector_r &&
+                (dsk_detected_protection_scheme_id==DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988 ||
+                 dsk_detected_protection_scheme_id==DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989 ||
+                 dsk_detected_protection_scheme_id==DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2)) {
+                z80_byte st1,st2;
+                dsk_get_st12(pd765_pcn,0,sector_fisico,&st1,&st2);
+                int error_crc=(st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) &&
+                    (st2 & PD765_STATUS_REGISTER_TWO_DD_MASK);
+                //Wanderer (MCM) guarda el sector entero relleno de E5H, sin
+                //error de CRC en el EDSK, pero repite su lectura para comprobar
+                //que los datos varían. Comprobar el relleno completo evita
+                //alterar otros sectores sin error.
+                int sector_relleno_e5=1;
+                if (!error_crc) {
+                    for (int i=0;i<sector_size && sector_relleno_e5;i++) {
+                        if (plus3dsk_get_byte_disk(iniciosector+i)!=0xE5) sector_relleno_e5=0;
+                    }
+                }
+                if (error_crc || sector_relleno_e5) {
+                    //Con 64 bytes iniciales E5H solo varían los bytes 29
+                    //y 58 (modo 1). Si aparece otro valor, la variación
+                    //continúa cada 29 bytes hasta el final (modo 2).
+                    speedlock_mode=1;
+                    for (int i=0;i<64;i++) {
+                        if (plus3dsk_get_byte_disk(iniciosector+i)!=0xE5) {
+                            speedlock_mode=2;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
-        sector_size=real_sector_size;
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size after: %d",sector_size);
-
-        //se van a leer menos datos
     }
 
 
@@ -1837,12 +2037,49 @@ field are not checked when SK = 1.
 
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: REAL sector size: %d",pd765_last_sector_size_read_data);
 
+    if (sector_size==0) {
+        //Solo en el caso 1 se construyen datos para el sector ausente.
+        int reconstructed_size=pd765_reconstruct_operasoft_missing_sector(sector_fisico,iniciosector);
+        if (reconstructed_size) {
+            pd765_last_sector_size_read_data=reconstructed_size;
+            pd765_handle_command_read_data_read_chrn_etc(sector_fisico,0,0);
+            return;
+        }
+    }
 
-    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
+    //Si otro EDSK conserva el ID y el estado de error, pero ningún dato,
+    //no hay fase de transferencia. Devolver ST0, ST1, ST2 y CHRN evita
+    //intentar leer el búfer vacío.
+    if (sector_size==0) {
+        z80_byte c,h,r,n,st1,st2;
+        dsk_get_chrn(pd765_pcn,0,sector_fisico,&c,&h,&r,&n);
+        dsk_get_st12(pd765_pcn,0,sector_fisico,&st1,&st2);
+        //La respuesta identifica el ID encontrado. No se avanzó al sector
+        //siguiente porque no se transfirió ningún byte de este sector.
+        pd765_put_buffer(pd765_get_st0()|PD765_STATUS_REGISTER_ZERO_AT);
+        pd765_put_buffer(st1);
+        pd765_put_buffer(st2);
+        pd765_put_buffer(c);
+        pd765_put_buffer(h);
+        pd765_put_buffer(r);
+        pd765_put_buffer(n);
+        pd765_main_status_register &=~PD765_MAIN_STATUS_REGISTER_EXM_MASK;
+        pd765_set_interrupt_pending();
+        pd765_phase=PD765_PHASE_RESULT;
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
+        return;
+    }
+
+
+    //Si se reconoció Speedlock, la primera lectura devuelve la copia del EDSK
+    //y las siguientes varían según el modo. El DSK original no se modifica.
+    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size,iniciosector,
+        speedlock_mode,sector_read_number);
 
 
     //Evaluar condiciones que hacen abortar el comando
-    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,0);
+    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,0,0);
 
 
 }
@@ -3415,7 +3652,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
         pd765_reset_buffer();
 
-        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,0);
 
 
         //E indicar fase ejecucion ha finalizado
@@ -3445,6 +3682,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+        pd765_read_data_idle_tstates=0;
         //notificar buffer de visual floppy
         menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
 
@@ -3503,7 +3741,26 @@ z80_byte pd765_read_result_command_read_data(void)
                 //pd765_input_parameter_r++;
                 //pd765_read_command_searching_parameter_r++;
 
-                pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+                // Completar EOT no implica por sí solo fin de cilindro.
+                // Algunos discos protegidos usan un C distinto del cilindro físico
+                // y comprueban EN cuando no existe el ID lógico siguiente.
+                int end_of_cylinder=condition_end_sector && !pd765_input_parameter_mt &&
+                    pd765_command_received!=PD765_COMMAND_READ_TRACK &&
+                    pd765_input_parameter_c!=pd765_pcn;
+                if (end_of_cylinder) {
+                    int total=dsk_get_total_sectors_track(pd765_pcn,0);
+                    for (int sector=0;sector<total;sector++) {
+                        z80_byte c,h,r,n;
+                        dsk_get_chrn(pd765_pcn,0,sector,&c,&h,&r,&n);
+                        if (pd765_input_parameter_eot!=255 &&
+                            c==pd765_input_parameter_c && h==pd765_input_parameter_h &&
+                            r==pd765_input_parameter_eot+1) {
+                            end_of_cylinder=0;
+                            break;
+                        }
+                    }
+                }
+                pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,end_of_cylinder);
 
 
                 //E indicar fase ejecucion ha finalizado
@@ -3759,7 +4016,7 @@ void pd765_set_terminal_count_signal(void)
 
         pd765_reset_buffer();
 
-        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1,0);
 
 
         //E indicar fase ejecucion ha finalizado
@@ -3790,7 +4047,7 @@ void pd765_set_terminal_count_signal(void)
         pd765_reset_buffer();
 
         //TODO: no estoy seguro de esto
-        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_write,1);
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_write,1,0);
 
 
         //E indicar fase ejecucion ha finalizado

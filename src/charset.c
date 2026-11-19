@@ -1154,13 +1154,13 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 //ü u con dieresis 162
 0x44,0x00,0x44,0x44,0x44,0x44,0x38,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -1351,13 +1351,13 @@ unsigned char char_set_cpc[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x66,0x00,0x66,0x66,0x66,0x66,0x3e,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -1600,13 +1600,13 @@ unsigned char char_set_z88[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x1b,0x00,0x1b,0x1b,0x1b,0x1b,0x0f,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x0C,0x0C,0x0C,0x0C,0x3F,0x1E,0x0C,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x0C,0x1E,0x3F,0x0C,0x0C,0x0C,0x0C,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x08,0x0C,0x3E,0x3E,0x0C,0x08,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x04,0x0C,0x1F,0x1F,0x0C,0x04,0x00,
 
 //ï i con dieresis - 167
@@ -1858,13 +1858,13 @@ unsigned char char_set_sam[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x22,0x00,0x22,0x22,0x22,0x22,0x1e,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x08,0x0C,0x7E,0x7E,0x0C,0x08,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x08,0x18,0x3F,0x3F,0x18,0x08,0x00,
 
 //ï i con dieresis - 167
@@ -2061,13 +2061,13 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x00,0x42,0x00,0x42,0x42,0x42,0x42,0x3c,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -2266,13 +2266,13 @@ unsigned char char_set_mansoftware_west[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x00,0x42,0x00,0x42,0x42,0x42,0x42,0x3c,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -2517,13 +2517,13 @@ unsigned char char_set_ql[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x44,0x00,0x44,0x44,0x44,0x44,0x3c,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0x7C,0x7C,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7C,0x7C,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -2764,13 +2764,13 @@ unsigned char char_set_retromac[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x6C,0x00,0x6C,0x6C,0x6C,0x6C,0x3C,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -3014,13 +3014,13 @@ unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x66,0x00,0x66,0x66,0x66,0x66,0x3B,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -3271,13 +3271,13 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x66,0x00,0x66,0x66,0x66,0x66,0x3E,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -3519,13 +3519,13 @@ unsigned char char_set_msx[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x90,0x00,0x90,0x90,0x90,0x90,0x68,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x30,0x30,0x30,0x30,0xFC,0x78,0x30,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x30,0x78,0xFC,0x30,0x30,0x30,0x30,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x20,0x30,0xF8,0xF8,0x30,0x20,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x20,0x60,0xF8,0xF8,0x60,0x20,0x00,
 
 //ï i con dieresis - 167
@@ -3765,13 +3765,13 @@ unsigned char char_set_beos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x00, 0x44, 0x00, 0x44, 0x44, 0x44, 0x4C, 0x34,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -4018,13 +4018,13 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0xcc,0x00,0xcc,0xcc,0xcc,0xcc,0x76,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x18,0x18,0x18,0x18,0x7E,0x3C,0x18,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x18,0x3C,0x7E,0x18,0x18,0x18,0x18,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x10,0x18,0xFC,0xFC,0x18,0x10,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x10,0x30,0x7E,0x7E,0x30,0x10,0x00,
 
 //ï i con dieresis - 167
@@ -4267,13 +4267,13 @@ unsigned char char_set_templeos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //ü u con dieresis 162
 0x1b,0x00,0x1b,0x1b,0x1b,0x1b,0x0f,0x00,
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 0x00,0x0C,0x0C,0x0C,0x0C,0x3F,0x1E,0x0C,
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 0x00,0x0C,0x1E,0x3F,0x0C,0x0C,0x0C,0x0C,
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 0x00,0x08,0x0C,0x3E,0x3E,0x0C,0x08,0x00,
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 0x00,0x04,0x0C,0x1F,0x1F,0x0C,0x04,0x00,
 
 //ï i con dieresis - 167
@@ -5452,7 +5452,7 @@ char *charset_icons_text[]={
 "xxx ",
 "    ",
 
-//flecha abajo, para botones extender zx desktop - 163
+//flecha abajo, para botones extender DAVID Desktop - 163
 " x  ",
 " x  ",
 " x  ",
@@ -5460,7 +5460,7 @@ char *charset_icons_text[]={
 " x  ",
 "    ",
 
-//flecha arriba, para botones extender zx desktop - 164
+//flecha arriba, para botones extender DAVID Desktop - 164
 " x  ",
 "xxx ",
 " x  ",
@@ -5469,7 +5469,7 @@ char *charset_icons_text[]={
 "    ",
 
 
-//flecha derecha, para botones extender zx desktop - 165
+//flecha derecha, para botones extender DAVID Desktop - 165
 "x   ",
 " x  ",
 "xxx ",
@@ -5477,7 +5477,7 @@ char *charset_icons_text[]={
 "x   ",
 "    ",
 
-//flecha izquierda, para botones extender zx desktop - 166
+//flecha izquierda, para botones extender DAVID Desktop - 166
 "  x ",
 " x  ",
 "xxx ",

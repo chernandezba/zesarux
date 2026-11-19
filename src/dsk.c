@@ -57,6 +57,9 @@ z80_bit dskplusthree_persistent_writes={0};
 
 z80_byte p3dsk_buffer_disco[DSK_MAX_BUFFER_DISCO];
 int p3dsk_buffer_disco_size=DSK_MAX_BUFFER_DISCO; //Tamanyo del dsk leido. De momento establecemos en maximo
+//Protección detectada al insertar el DSK; se consulta durante las lecturas.
+char dsk_detected_protection_scheme[DSK_MAX_PROTECTION_SCHEME+1]="None";
+dsk_protection_scheme_id_t dsk_detected_protection_scheme_id=DSK_PROTECTION_SCHEME_NONE;
 
 void dsk_insert_disk(char *nombre)
 {
@@ -316,6 +319,8 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
 
 void dskplusthree_disable(void)
 {
+	strcpy(dsk_detected_protection_scheme,"None");
+	dsk_detected_protection_scheme_id=DSK_PROTECTION_SCHEME_NONE;
 
 	if (dskplusthree_emulation.v==0) return;
 
@@ -365,6 +370,8 @@ void dskplusthree_enable(void)
 {
 
 	if (dskplusthree_emulation.v) return;
+	strcpy(dsk_detected_protection_scheme,"None");
+	dsk_detected_protection_scheme_id=DSK_PROTECTION_SCHEME_NONE;
 
 	DBG_PRINT_DSK VERBOSE_INFO,"Enabling DSK emulation");
 	DBG_PRINT_DSK VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
@@ -408,6 +415,9 @@ void dskplusthree_enable(void)
         return;
     }
 
+    //La detección debe recorrer solo los bytes del disco recién cargado.
+    p3dsk_buffer_disco_size=tamanyo;
+
     //Mostrar firma ocultando caracteres no validos
     char buffer_signature[DSK_SIGNATURE_LENGTH+1];
     dsk_get_signature(buffer_signature);
@@ -419,15 +429,12 @@ void dskplusthree_enable(void)
 
     DBG_PRINT_DSK VERBOSE_INFO,"DSK total tracks: %d total sides: %d",dsk_get_total_tracks(),dsk_get_total_sides());
 
-    char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
-    int protegido_no_soportado=dsk_get_protection_scheme(buffer_esquema_proteccion);
+    int protegido_no_soportado=dsk_get_protection_scheme(dsk_detected_protection_scheme);
     if (protegido_no_soportado) {
-        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with method: %s. It's not fully supported and might be not readable",buffer_esquema_proteccion);
+        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with method: %s. It's not fully supported and might be not readable",dsk_detected_protection_scheme);
     }
 
-    DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",buffer_esquema_proteccion);
-
-	p3dsk_buffer_disco_size=tamanyo;
+    DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",dsk_detected_protection_scheme);
 
         dskplusthree_emulation.v=1;
 
@@ -488,60 +495,100 @@ char *dsk_protection_scheme_new_frontier="NEW DISK PROTECTION SYSTEM. (C) 1990 B
 //Este sistema de proteccion consiste en pista 1, sector size 8192 pero solo 1 sector con size 6144, CRHN=1 0 1 6
 //Bonanza Bros - Side B (Spectrum).dsk , X-Out.dsk
 //Los bytes corresponden al track-info de pista 1, sector 0,1
-char *dsk_protection_scheme_unknown1="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x01\x06\x20\x60\x00\x18";
+char *dsk_protection_scheme_timeout_read="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x01\x06\x20\x60\x00\x18";
 
 //Este carga un bloque corto, luego una secuencia de colores en el border
 //Esto es speedlock tambien
 //Tai-Pan.dsk, Action Force.dsk
 //Los bytes corresponden a track-info de pista 3, sectores 8,9
-char *dsk_protection_scheme_unknown2="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
+char *dsk_protection_scheme_speedlock_disc_plus3="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
+
+//Descriptores contiguos de los sectores 7 y 8 de la pista 40. No se incluye
+//la longitud EDSK del sector 8 porque puede ser 0, 8192 o 32768 bytes.
+//Mot, Guillermo Tell y Mutan Zone comparten esta firma.
+char *dsk_protection_scheme_operasoft_32k="\x28\x00\x07\x01\x00\x00\x00\x01\x28\x00\x08\x08\x20\x20";
+
+//Actualizar juntos el nombre legible y el identificador de la protección.
+static int dsk_set_protection_scheme(char *buffer,const char *nombre,
+    dsk_protection_scheme_id_t id,int no_soportado)
+{
+    dsk_detected_protection_scheme_id=id;
+    strcpy(dsk_detected_protection_scheme,nombre);
+    if (buffer!=dsk_detected_protection_scheme) strcpy(buffer,nombre);
+    return no_soportado;
+}
 
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
+//Ya están todos soportados
 int dsk_get_protection_scheme(char *buffer)
 {
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
-        strcpy(buffer,"SPEEDLOCK +3 DISC 1988");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988",
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_disc)) {
-        strcpy(buffer,"SPEEDLOCK DISC 1989");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"SPEEDLOCK DISC 1989",
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_DISC_1989,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
-        strcpy(buffer,"Ocean Paul Owens");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"Ocean Paul Owens",
+            DSK_PROTECTION_SCHEME_OCEAN_PAUL_OWENS,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_alkatraz)) {
-        strcpy(buffer,"ALKATRAZ 1987");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"ALKATRAZ 1987",
+            DSK_PROTECTION_SCHEME_ALKATRAZ_1987,0);
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_three_inch)) {
-        strcpy(buffer,"Three Inch");
-        return 1;
+        return dsk_set_protection_scheme(buffer,"Three Inch",
+            DSK_PROTECTION_SCHEME_THREE_INCH,0);
     }
 
     //Este si que esta soportado
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_new_frontier)) {
-        strcpy(buffer,"New Frontier");
-        return 0;
+        return dsk_set_protection_scheme(buffer,"New Frontier",
+            DSK_PROTECTION_SCHEME_NEW_FRONTIER,0);
     }
 
-    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown1,16)) {
-        strcpy(buffer,"Unknown 1");
-        return 1;
+    //Esto no se si l
+    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_timeout_read,16)) {
+        return dsk_set_protection_scheme(buffer,"Timeout read",
+            DSK_PROTECTION_SCHEME_TIMEOUT_READ,0);
     }
 
-    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
-        strcpy(buffer,"SPEEDLOCK +3 DISC 1988-2");
-        return 1;
+    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_speedlock_disc_plus3,16)) {
+        return dsk_set_protection_scheme(buffer,"SPEEDLOCK +3 DISC 1988-2",
+            DSK_PROTECTION_SCHEME_SPEEDLOCK_PLUS3_1988_2,0);
     }
 
-    strcpy(buffer,"None");
-    return 0;
+    //Comprobar la firma en la tabla de sectores de la pista 40, no en
+    //cualquier zona de datos donde pudiera aparecer por casualidad.
+    //Durante la inserción todavía no está activa la emulación, por lo que
+    //se lee directamente el búfer en vez de usar plus3dsk_get_byte_disk.
+    if (dsk_file_type_extended && dsk_get_total_tracks()>40) {
+        int caras=p3dsk_buffer_disco[0x31];
+        int indice_pista=40*caras;
+        if (caras>0 && caras<=2 && 0x34+indice_pista<0x100 &&
+            p3dsk_buffer_disco_size>=0x100) {
+            int inicio_pista=0x100;
+            for (int i=0;i<indice_pista;i++) {
+                inicio_pista +=p3dsk_buffer_disco[0x34+i]*256;
+            }
+            int offset_firma=inicio_pista+0x18+7*8;
+            if (inicio_pista+0x100<=p3dsk_buffer_disco_size &&
+                p3dsk_buffer_disco[inicio_pista+0x15]==9 &&
+                offset_firma+14<=p3dsk_buffer_disco_size &&
+                !memcmp(&p3dsk_buffer_disco[offset_firma],dsk_protection_scheme_operasoft_32k,14)) {
+                return dsk_set_protection_scheme(buffer,"Opera Soft 32K sector",
+                    DSK_PROTECTION_SCHEME_OPERASOFT_32K,0);
+            }
+        }
+    }
+
+    return dsk_set_protection_scheme(buffer,"None",DSK_PROTECTION_SCHEME_NONE,0);
 }
 
 z80_byte plus3dsk_get_byte_disk(int offset)
@@ -908,7 +955,15 @@ int dsk_get_physical_sector(int pista,int sector)
             }
 
             //int iniciopista=traps_plus3dos_getoff_start_track(pista);
-            int offset_retorno=offset+sector_size*sector;
+            int offset_retorno=offset;
+            if (dsk_file_type_extended) {
+                //El tamaño EDSK incluye todos los datos guardados para cada sector,
+                //incluso varias copias. Sumarlos sitúa el inicio del sector buscado.
+                for (int anterior=0;anterior<sector;anterior++) {
+                    offset_retorno +=dsk_get_real_sector_size_extended(pista,0,anterior);
+                }
+            }
+            else offset_retorno +=sector_size*sector;
             //printf("Offset sector: %XH\n",offset_retorno);
 
             //*sector_fisico=sector;
@@ -1021,7 +1076,15 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
             }
 
             //int iniciopista=traps_plus3dos_getoff_start_track(pista);
-            int offset_retorno=offset+sector_size*sector;
+            int offset_retorno=offset;
+            if (dsk_file_type_extended) {
+                //El tamaño EDSK incluye todos los datos guardados para cada sector,
+                //incluso varias copias. Sumarlos sitúa el inicio del sector buscado.
+                for (int anterior=0;anterior<sector;anterior++) {
+                    offset_retorno +=dsk_get_real_sector_size_extended(pista,0,anterior);
+                }
+            }
+            else offset_retorno +=sector_size*sector;
             //printf("Offset sector: %XH\n",offset_retorno);
 
             *sector_fisico=sector;
@@ -1068,7 +1131,15 @@ int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
     }
 
     //int iniciopista=traps_plus3dos_getoff_start_track(pista);
-    int offset_retorno=offset+sector_size*sector_fisico;
+    int offset_retorno=offset;
+    if (dsk_file_type_extended) {
+        //El tamaño EDSK incluye todos los datos guardados para cada sector,
+        //incluso varias copias. Sumarlos sitúa el inicio del sector buscado.
+        for (int anterior=0;anterior<sector_fisico;anterior++) {
+            offset_retorno +=dsk_get_real_sector_size_extended(pista,cara,anterior);
+        }
+    }
+    else offset_retorno +=sector_size*sector_fisico;
     //printf("Offset sector: %XH\n",offset_retorno);
 
 

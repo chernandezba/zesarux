@@ -26,6 +26,7 @@
 
 extern z80_byte *ram_mem_table[];
 extern z80_byte *rom_mem_table[];
+extern z80_byte *pentagon_trdos_rom;
 extern z80_byte *memory_paged[];
 extern z80_byte *get_base_mem_pantalla(void);
 

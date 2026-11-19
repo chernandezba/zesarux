@@ -14,11 +14,21 @@ Así además en todos esos se podrá usar el zoom 0.75, 0.5, 0.25
 http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Computer&lang=en
 
 
+QL-Emulación CST Thor, Q40, Q60, Q68
 
 -ql_return_full_path: gestionar retorno valor 1 en todos los casos?
 -gestionar if (hacer_trap) { aunque device no sea valido?
 -ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
 
+
+
+
+
+QL-poder crear alias de dispositivos : por ejemplo win1_launchpad que apunte a mdv1_
+-> tiene sentido?
+
+
+QL-si mdv1_ no esta activado y hago dir mdv1_ se pone inverso mdv1_ y flp1_
 
 
 QL -soporte joystick ql? joystick  1 es cursores+space, joystick 2 es
@@ -254,6 +264,14 @@ Esto es tal cual tenia el soporte de TAP, al no guardar el flag, eso no se puede
 
 --- Chrome ---
 
+-La opción «2 Load DOS from ROM» del menú de inicio no parece hacer nada en ZEsarUX.
+ Debería iniciar desde la ROM interna el DOS de la interfaz de disquete +D
+ (G+DOS o UniDOS, según la ROM seleccionada) y permitir después el acceso a disquetes.
+ Investigar la ruta de arranque con ZRCP y emular el hardware +D integrado en Chrome:
+ paginado de su ROM y RAM, controladora de disquete y puertos asociados, además de
+ la conexión con imágenes de disco. +D y DISCiPLE comparten formato de disco, pero
+ son interfaces distintas y requieren sus respectivos DOS.
+
 
 
 -----------------------
@@ -263,16 +281,25 @@ Esto es tal cual tenia el soporte de TAP, al no guardar el flag, eso no se puede
 
 --- TSConf ---
 
--Puerto 57 tsconf es mmc?? usado en zifi demo
+
+-TSConf: revisar emulación de colores, PWM y VDAC:
+
+La tabla RGB555 de 32768 colores es compartida con ZX-Uno Prism y partes del menú y del vídeo.
+Al generarla, ZEsarUX aplica los ajustes «TSConf palette depth» (2–5 bits) y «TSConf VDAC PWM»,
+por lo que cambiar opciones de TSConf altera colores de otras máquinas.
+
+Cada entrada de la paleta CRAM de TSConf tiene un bit 15 que selecciona su conversión: 0 = PWM, 1 = VDAC.
+ZEsarUX descarta ese bit y aplica un único modo a todos los colores. Por defecto usa VDAC (componente × 8);
+al activar la opción usa una escala PWM de 0–24, saturada a 255 desde 24. Esto puede mejorar unas demos y empeorar otras.
+La conversión PWM actual tampoco reproduce la curva gamma usada por el código de referencia de TS-Labs.
+
+Pendiente: mantener fija la tabla compartida y hacer la conversión exclusivamente para TSConf, respetando
+el bit 15 de cada color y sin perder los cambios de CRAM durante efectos de raster. Se puede aproximar PWM
+con el color más cercano de la tabla RGB555, o añadir una tabla exclusiva para reproducir sus intensidades exactas.
+Revisar también el valor VDVER del registro 00AF: actualmente anuncia VDAC2/FT812 por defecto.
 
 
-http://speccy.info/Pentagon
 
-Misma wiki para info de cosas de TSConf, como el z controller ide
-
--sonic: fondo se ve negro, se deberia ver azul?
-
--Quiza algunas demos no se ven bien efectos de linea debidos al turbo? se ven mas arriba: ejemplos chess, 200,
 
 -Render modo spectrum compatible debería leer de buffer atributos y pixeles ; para que demos como overscan se vean bien
 
@@ -280,18 +307,29 @@ Misma wiki para info de cosas de TSConf, como el z controller ide
 
 -sin real video no borra border. al menos en demo carousel.spg
 
--mmc. Esto tambien para baseconf. Parece que envia un comando FF invalido y luego se queda en un bucle
 
 con gigascreen activo, al pulsar teclas en el menu (cursores?) las demos se alteran! :(
 gestion interrupciones (dma, linea, frame) a la vez. cosa poco probable?
 truco para que las demos vayan mas fluidas: poner turbo x1, en algunas no se ralentiza el cambio de turbo y van perfectas a 50 fps
 
--ideas por que tsconf va lento algunas demos: porque basicamente usan modo turbo X4
-hay rutinas, como gestion de sprites y tiles, que se podrian mejorar ligeramente, cacheando algunas cosas.... pero aun asi, aunque desactive los sprites o tiles del todo, el uso de cpu no baja significativamente, apenas 1 o 2 % en un uso total de 75%..... la solución seria que el core de Z80 usase menos cpu fisica, asi el modo turbo x4 funcionaria mas ligero
 
 -factor compresion tsconf a texto en drivers curses, stdout, simpletext que sea configurable
 
 -Tsconf: escritura dma en fmaps. No he encontrado ningun juego que lo haga
+
+-TSConf: falta el arbitraje exacto de memoria entre CPU, vídeo, TSU y DMA. La DMA avanza
+con una temporización simplificada; para reproducir la contención real habría que asignar
+los turnos del bus de RAM en el instante preciso de cada acceso, también en modos turbo.
+
+-TSConf DMA: implementar RAM a SPI (modo 5) y probarlo con un programa que lo utilice.
+
+-TSConf DMA: probar IDE por SMUC en ambos sentidos con una demo o juego real; el código
+existe, pero aún no se ha validado así.
+
+-TSConf DMA: FDD a RAM queda pendiente de emular la controladora floppy de TSConf.
+
+-TSConf DMA: revisar los casos límite de los modos implementados (alineación, ráfagas,
+cruces de página y finalización de la interrupción) con pruebas funcionales.
 
 -tsconf:
 *tsconf:
@@ -831,7 +869,6 @@ https://www.zxuno.com/forum/viewtopic.php?t=4091
 
 --- SAM coupe ---
 
--real video
 -Alt derecha en PC es altgr?
 -refresco en curses:
 *al pulsar esc en curses en sam se queda pulsado??
@@ -855,13 +892,12 @@ http://velesoft.speccy.cz/sam_zx128.htm
 -Emulacion de floppy
 -Beeper con real beeper no suena bien. Sin real beeper si
 -beeper con chip sonido suena mal a veces. sin beeper suena bien
--Parece que si ponemos 256 KB de memoria no lo detecta el basic
+
 -memoria contended. toda esta contenida?
 -velocidad es correcta? t-estados por linea, mhz...
 
 -rutina ascii_to_keyboard_port. la que permite enviar texto por spool o leer texto de drivers curses, stdout. Agregar simbolos?
 -emulacion real del chip de sonido (no simulacion contra el AY como hay ahora)
-
 
 
 -------------
@@ -1267,23 +1303,16 @@ O quizá esa rom es del 328 en vez del 318
 
 -mostar paginas memoria mapeadas en debug cpu
 
--Modo 50Hz o 60Hz para Master system?
 
 -fallos en varios juegos sms:
 
-outrun, F1: pista se desplaza raro al moverse izquierda/derecho
-creo que falla por esto ???:
- After each column is drawn, the starting column value is incremented by
- one. It wraps at 32. When bit 7 of register #1 is set, it is the column
- counter, not the starting column value, that is checked to see when the
- vertical scroll value will be set to zero on columns 24 to 31.
+
 
 terminator: se ven mal la mayoria de tiles
 
 road rash: se ralentiza mucho en juego y en intro
 pitufos: fase dos en rio se ve raro
 micromachines: se ve mal (pero esto creo que es debido a que usa mas de 192 lineas)
-bank panic: scroll mal, parece que se corrige con setting scroll hack
 space harrier: no va con line interrupt. hay que desactivarla para poder iniciar el juego y luego activarla para que se escuche musica,
 y haga efecto de cambio de colores en scanline concreto
 missile defense 3d: saltos de pantalla continuos
@@ -1292,16 +1321,17 @@ wonder boy: parece que se corrige con setting scroll hack
 
 -scroll incorrecto "parpadeo" con varios planos (algunos se corrige con setting wonder boy hack):
 aladdin
-astro flash
+
 missile defense 3d
 gp rider
 F1
 
 -scroll incorrecto "tipo juego carreras"
 out Run
-hang on
+
 road rash
-chase hq
+
+-hang on algun parpadeo raro en las curvas
 
 -juegos sms que directamente no inician:
 cosmic spacehead

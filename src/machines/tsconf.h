@@ -45,6 +45,7 @@ extern z80_byte tsconf_last_port_dff7;
 //extern z80_byte tsconf_nvram[];
 
 extern void tsconf_write_af_port(z80_byte puerto_h,z80_byte value);
+extern void tsconf_write_7ffd_port(z80_byte value,int short_addressing);
 extern z80_byte tsconf_get_af_port(z80_byte index);
 extern void tsconf_init_memory_tables(void);
 extern void tsconf_set_memory_pages(void);
@@ -58,6 +59,12 @@ extern z80_byte tsconf_fmaps[];
 extern int temp_tsconf_in_system_rom_flag;
 
 extern void tsconf_reset_cpu(void);
+extern void tsconf_update_dos_signal(z80_int address);
+extern int tsconf_vdos_is_active(void);
+extern int tsconf_vdos_interrupt_blocked(void);
+extern int tsconf_beta_read_port(z80_byte port);
+extern void tsconf_beta_write_port(z80_byte port,z80_byte value);
+extern void tsconf_zcontroller_enabled_changed(void);
 extern void tsconf_hard_reset(void);
 
 extern z80_byte tsconf_get_text_font_page(void);
@@ -114,6 +121,20 @@ extern z80_byte debug_tsconf_dma_rw;
 extern char *tsconf_dma_types[];
 
 extern z80_bit tsconf_dma_disabled;
+extern void tsconf_dma_advance(int cycles);
+
+typedef struct {
+    int active;
+    int source;
+    int destination;
+    int words_left;
+    int bursts_left;
+    int smuc_selected;
+    int used_recently;
+} tsconf_dma_debug_state_t;
+
+extern void tsconf_dma_get_debug_state(tsconf_dma_debug_state_t *state);
+extern void tsconf_dma_decrease_info_timer(void);
 
 
 extern int tsconf_if_ula_enabled(void);
@@ -164,6 +185,20 @@ extern void tsconf_handle_frame_interrupts(void);
 
 extern void tsconf_handle_line_interrupts(void);
 
+extern int tsconf_cache_read_wait(z80_int address,int m1);
+extern z80_byte tsconf_cache_read(z80_int address);
+extern void tsconf_cache_invalidate(z80_int address);
+
+struct tsconf_cache_debug_info {
+    int enabled;
+    int is_ram;
+    z80_byte page;
+    unsigned long long hits;
+    unsigned long long misses;
+};
+extern void tsconf_get_cache_debug_info(int window,struct tsconf_cache_debug_info *info);
+extern void tsconf_get_cache_debug_totals(unsigned long long *hits,unsigned long long *misses);
+
 extern void tsconf_set_default_basic_palette(void);
 
 extern void tsconf_set_emulador_settings(void);
@@ -190,6 +225,7 @@ extern z80_byte tsconf_zifi_read_error_reg(void);
 extern void tsconf_zifi_write_command_reg(z80_byte value);
 extern z80_byte tsconf_zifi_read_input_fifo_status(void);
 extern z80_byte tsconf_zifi_read_output_fifo_status(void);
-extern z80_byte tsconf_read_port_57(void);
+extern z80_byte tsconf_sd_read_buffer;
+extern z80_byte tsconf_sd_read_byte(void);
 
 #endif
