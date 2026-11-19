@@ -139,9 +139,6 @@ Pendientes ahora
 ***QL*****
 
 
-
-
-
 QL-Qsound AY
 *hacer resto de funciones de rom traps de qsound no solo write all: dado que no hay juegos, que yo sepa, que las usen, no puedo validarlo
 *oldtower_m a veces se cuelga al iniciar
@@ -156,16 +153,6 @@ outrun: corregido dibujado pista y tablero y nubes
 chasehq: tambien bien
 bank panic ok
 astro flash ok
-
-
-----
-
--pcw16
-
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
-
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
-
 
 
 ------
@@ -266,9 +253,6 @@ insertar trd habilita el modo max turbo speed si accelerate load
 ok en faq * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 * cd boot: que hace??
 
-- captura pantalla de baseconf en la home de proyecto en github
-
-
 ------
 
 
@@ -319,12 +303,9 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 -software cpm http://atmturbo.nedopc.com/load_cpm.htm
 -software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm
 
-------
 
--en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
+---------------
 
-
------
 ---- ventana video output como sustituto del render normal de maquina:
 
 
@@ -353,7 +334,7 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 *mk14: no tiene render real video
 
 
----
+---------------------
 
 -en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
 
@@ -361,11 +342,10 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 
 -Mensajes directos en ZRCP con una ventana de chat, como mensajería
 
--Sonido de floppy 3”, simulado, de los bytes leidos
+
 
 -implementar máquinas de 60 Hz (timex, master system etc)
 * pendientes 60 hz: next modo 60hz
-
 
 
 -modo 60 hz en atic atac, para next.
@@ -373,8 +353,11 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 creo que por la condicion especial en: scr_get_offset_putpixel_no_rainbow
 ->de momento haremos que al conmutar a 60hz, active real video
 
-----
 
+-en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
 - demos para spectrums extendidos: https://www.pouet.net/prodlist.php?platform%5B%5D=ZX+Enhanced&page=1
+
+
+
 
