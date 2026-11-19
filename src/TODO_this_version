@@ -407,3 +407,5 @@ Quiza habria que hacer una ventana de render de teclado que el usuario pueda red
 
 ok -boton reducir alto zx desktop sale incluso con alto=0
 
+-color palettes no tiene que refrescar continuamente, solo cuando esta dirty
+->ah pero los colores mapeados pueden cambiar continuamente

@@ -10584,17 +10584,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
         menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
-        //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
-        //No es necesario, pero es mas bonito... asi se recrea la ventana, si era muy pequeña, hacerla mas grande
-        //garantiza que se podra leer todo el texto
-        //int alto_anterior=alto_ventana;
-        //int ancho_anterior=ancho_ventana;
-        //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
 
-        //int alto_anterior;
-        //int ancho_anterior;
-
-        //zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
     }
 
