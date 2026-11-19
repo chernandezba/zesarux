@@ -753,7 +753,14 @@ void instruccion_ed_77 ()
 //RETI
 	//iff1.v=iff2.v; Reti no hace esto
 	reg_pc=pop_valor();
-	set_memptr(reg_pc);
+  set_memptr(reg_pc);
+  
+
+
+	if (MACHINE_IS_TBBLUE) {
+		tbblue_reti();
+	}
+
 }
 
 void instruccion_ed_78 ()
