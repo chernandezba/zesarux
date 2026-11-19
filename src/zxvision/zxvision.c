@@ -4279,6 +4279,10 @@ void menu_put_switch_zxdesktop_footer(void)
             caracter_ampliar_alto=' ';
         }
 
+        if (zxdesktop_height==0) {
+            caracter_reducir_alto=' ';
+        }
+
         //int yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
 
         int yorigen=0;
@@ -29717,15 +29721,8 @@ void menu_inicio(void)
                 mouse_movido=0;
                 menu_espera_no_tecla();
 
-                //Si esta por debajo del limite, ponerlo a 0
-                if (zxdesktop_height<=ZXDESKTOP_MINIMUM_HEIGHT_BY_BUTTON) {
-                    zxdesktop_height=0;
-                }
 
-                //Si esta en el limite, reducir ancho
-                else {
-                    menu_ext_desk_settings_height_enlarge_reduce(0);
-                }
+                menu_ext_desk_settings_height_enlarge_reduce(0);
 
 
                 set_menu_overlay_function(normal_overlay_texto_menu);

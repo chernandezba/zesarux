@@ -301,7 +301,7 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(int amplia
 
         //Boton arriba: reducir alto
         else {
-            if (x==xboton && y==yboton) {
+            if (x==xboton && y==yboton && zxdesktop_height) {
                 debug_printf(VERBOSE_INFO,"Pressed on DAVID Desktop reduce height button");
                 return 1;
             }
