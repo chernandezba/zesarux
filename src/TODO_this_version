@@ -295,10 +295,6 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 -Scorpion
 
 
-*snapshots zsf. falta restaurar modo turbo en scorpion turbo
-
-*de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
-
 -scorpion gmx:
 acabar de probarlo **modos de video ampliado
 *gigascreen. visor de imagenes gmxpv. imagen 0139.mcx
