@@ -458,6 +458,16 @@ ZX-Evolution BaseConf
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_baseconf.png "ZX-Evolution BaseConf")
 
 
+Scorpion GMX
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_scorpion_gmx.png "Scorpion GMX")
+
+
+ATM Turbo 3
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_atm_turbo3.png "ATM Turbo 3")
+
+
 ZX Spectrum Next
 
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_tbblue.png "TBBlue/ZX Spectrum Next")

@@ -139,6 +139,16 @@ ZX-Evolution BaseConf
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_baseconf.png "ZX-Evolution BaseConf")
 
 
+Scorpion GMX
+
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_scorpion_gmx.png "Scorpion GMX")
+
+
+ATM Turbo 3
+
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_atm_turbo3.png "ATM Turbo 3")
+
+
 ZX Spectrum Next
 
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_tbblue.png "TBBlue/ZX Spectrum Next")
