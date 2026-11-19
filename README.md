@@ -193,7 +193,7 @@ __FEATURES__
 
 * Can generate Anaglyph images for 3D glasses (red-blue glasses)
 
-* Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (ZX Desktop)
+* Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (DAVID Desktop)
 
 * Partial support for Spanish and Catalan language on menus
 
@@ -451,6 +451,11 @@ ZX-Uno
 ZX-Evolution TSConf
 
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_tsconf.jpeg "ZX-Evolution TSConf")
+
+
+ZX-Evolution BaseConf
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_baseconf.png "ZX-Evolution BaseConf")
 
 
 ZX Spectrum Next
