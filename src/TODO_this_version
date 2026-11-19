@@ -405,6 +405,5 @@ Pero luego el problema será que si queremos tener el teclado mas grande, no se 
 Quiza habria que hacer una ventana de render de teclado que el usuario pueda redimensionar como quiera, que se amplie de manera parecida a ventana de emulated display
 
 
--boton reducir alto zx desktop sale incluso con alto=0
+ok -boton reducir alto zx desktop sale incluso con alto=0
 
--Soporte dsk doble cara
