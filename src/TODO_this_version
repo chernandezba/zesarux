@@ -245,7 +245,7 @@ http://atmturbo.nedopc.com/load_trdos.htm
 https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 
 
--baseconf: insertar trd habilita el modo max turbo speed si accelerate load
+insertar trd habilita el modo max turbo speed si accelerate load
 ->corregido?
 
 
@@ -268,7 +268,6 @@ ok en faq * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 
 - captura pantalla de baseconf en la home de proyecto en github
 
--habilitar covox pentagon?
 
 ------
 
@@ -316,17 +315,6 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 --- ATM Turbo
 
-- entradas en changelog, features y readme de las nuevas maquinas atm
-ok - tamaño pantalla real
-ok - render realvideo
-ok - covox activado?
-- timings correctos?
-ok - icono máquinas.
-ok - keyboard help
-ok - soporte snapshot zsf
-ok - memory zones
-ok - puertos en debug i/o ports ventana
-ok - paginas en segmentos de debug cpu
 
 -software cpm http://atmturbo.nedopc.com/load_cpm.htm
 -software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm
