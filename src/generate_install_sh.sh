@@ -37,6 +37,9 @@ chmod 666 $INSTALLPREFIX/share/zesarux/tbblue.mmc
 # Speech filters can be run
 chmod +x $INSTALLPREFIX/share/zesarux/speech_filters/*
 
+# avoid zesarux: error while loading shared libraries: libSDL-1.2.so.0: cannot open shared object file: No such file or directory
+apt install libsdl1.2debian
+
 echo "Install done"
 
 _EOF
