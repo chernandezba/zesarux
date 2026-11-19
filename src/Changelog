@@ -126,6 +126,7 @@ Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
 Fixed Master System scrolling and raster timing
 Fixed NextZXOS 2.09 boot on Spectrum Next
+Fixed Next hardware IM 2 ULA interrupt vector
 Fixed Spectrum multicolor effects (Nirvana, etc). Thanks to noentiendo
 Fixed disabling Search menu
 Fixed BMP saving for widths not divisible by 4
