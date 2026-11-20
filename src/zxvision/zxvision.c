@@ -744,6 +744,8 @@ void zxvision_align_to_grid_configurable_icons(void)
 
     int separacion_iconos=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR;
 
+    int minima_y=zxvision_get_minimum_y_icon_position();
+
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
 
@@ -753,6 +755,10 @@ void zxvision_align_to_grid_configurable_icons(void)
 
             int y=(zxdesktop_configurable_icons_list[i].pos_y + separacion_iconos/2) / separacion_iconos;
             y *=separacion_iconos;
+
+            //Para evitar que al recalcular a rejilla se vaya a posicion Y=0 y zxvision_set_configurable_icon_position lo diera como invalida y no cambiase posicion
+            //TODO: esta posicion queda queda muy pegada respecto a la segunda fila de iconos, habria que reajustar minimos y tamaños rejilla y tamaños de organizacion de iconos automáticamente
+            if (y<minima_y) y=minima_y;
 
             zxvision_set_configurable_icon_position(i,x,y);
 
@@ -771,6 +777,7 @@ void zxvision_reorder_configurable_icons_if_auto(void)
     }
 
     if (david_desktop_align_to_grid_icons.v) {
+        //printf("Alinear a rejilla\n");
         zxvision_align_to_grid_configurable_icons();
     }
 }

@@ -179,7 +179,7 @@ int zxvision_get_minimum_y_icon_position(void)
         yinicial=menu_char_height*2;
     }
 
-    //printf("yinicial: %d\n",yinicial);
+    //printf("zxvision_get_minimum_y_icon_position. yinicial: %d\n",yinicial);
 
     return yinicial;
 }
