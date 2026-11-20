@@ -1394,6 +1394,7 @@ if (free_handle==-1) {
 		esxdos_fopen_files[free_handle].open_file.v=1;
 		esxdos_fopen_files[free_handle].is_a_directory.v=1;
 		esxdos_fopen_files[free_handle].contador_directorio=0;
+		esxdos_fopen_files[free_handle].dir_access_mode=reg_b;
 		reg_a=free_handle;
 		esxdos_handler_no_error_uncarry();
 	}
@@ -1402,9 +1403,24 @@ if (free_handle==-1) {
 	esxdos_handler_old_return_call();
 }
 
-//comprobaciones de nombre de archivos en directorio
-int esxdos_handler_readdir_no_valido(char *s)
+//Bit 4 del modo de acceso de F_OPENDIR en NextZXOS: devolver nombres largos (LFN)
+#define ESXDOS_DIR_USE_LFN 0x10
+
+//Longitud maxima de un nombre largo, sin el 0 final
+#define ESXDOS_LFN_MAX 260
+
+//Si el directorio se abrio pidiendo nombres largos
+int esxdos_handler_dir_use_lfn(int file_handler)
 {
+	return (MACHINE_IS_TBBLUE && (esxdos_fopen_files[file_handler].dir_access_mode & ESXDOS_DIR_USE_LFN));
+}
+
+//comprobaciones de nombre de archivos en directorio
+int esxdos_handler_readdir_no_valido(char *s,int lfn)
+{
+
+	//Con nombres largos, cualquier nombre que quepa es valido
+	if (lfn) return (strlen(s)<=ESXDOS_LFN_MAX);
 
 	//Si longitud mayor que 12 (8 nombre, punto, 3 extension)
 	//if (strlen(s)>12) return 0;
@@ -1437,13 +1453,16 @@ int esxdos_handler_readdir_no_valido(char *s)
 
 }
 
-int esxdos_handler_string_to_msdos(char *fullname,z80_int puntero)
+int esxdos_handler_string_to_msdos(char *fullname,z80_int puntero,int lfn)
 {
 	z80_int i;
 
+	//Con nombres largos, el nombre entero; si no, 8.3
+	z80_int maximo=(lfn ? ESXDOS_LFN_MAX : 12);
+
 	//for (i=0;i<12;i++) poke_byte_no_time(puntero+i,' ');
 
-	for (i=0;i<12 && fullname[i];i++) {
+	for (i=0;i<maximo && fullname[i];i++) {
 		poke_byte_no_time(puntero+i,fullname[i]);
 	}
 
@@ -1512,7 +1531,7 @@ int esxdos_aux_readdir(int file_handler)
 	}
 
 
-	} while(!esxdos_handler_readdir_no_valido(esxdos_fopen_files[file_handler].esxdos_handler_dp->d_name));
+	} while(!esxdos_handler_readdir_no_valido(esxdos_fopen_files[file_handler].esxdos_handler_dp->d_name,esxdos_handler_dir_use_lfn(file_handler)));
 
 	return 1;
 }
@@ -1596,7 +1615,7 @@ z80_int puntero=(*registro_parametros_hl_ix);
 //Saltamos byte Atributos de momento. Se rellena despues
 puntero++;
 
-int retornado_nombre=esxdos_handler_string_to_msdos(esxdos_fopen_files[file_handler].esxdos_handler_dp->d_name,puntero);
+int retornado_nombre=esxdos_handler_string_to_msdos(esxdos_fopen_files[file_handler].esxdos_handler_dp->d_name,puntero,esxdos_handler_dir_use_lfn(file_handler));
 
 
 puntero+=retornado_nombre;

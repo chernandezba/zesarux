@@ -212,6 +212,9 @@ struct s_esxdos_fopen {
 	//para telldir
 	unsigned int contador_directorio;
 
+	//Modo de acceso de F_OPENDIR (registro B). Bit 4 (ESXDOS_DIR_USE_LFN): nombres largos
+	z80_byte dir_access_mode;
+
 
 	z80_byte buffer_plus3dos_header[8];
 	z80_bit tiene_plus3dos_header;
