@@ -217,15 +217,14 @@ void timex_init_memory_tables(void)
 		puntero +=8192;
 	}
 
-	//Parece que los 8 kb de rom que se cargan en ex rom[0] tambien estan presentes en rom[1]
-	timex_ex_rom_mem_table[1]=timex_ex_rom_mem_table[0];
-	//temp
-	//timex_ex_rom_mem_table[2]=timex_ex_rom_mem_table[0];
-	//timex_ex_rom_mem_table[3]=timex_ex_rom_mem_table[0];
-	//timex_ex_rom_mem_table[4]=timex_ex_rom_mem_table[0];
-	//timex_ex_rom_mem_table[5]=timex_ex_rom_mem_table[0];
-	//timex_ex_rom_mem_table[6]=timex_ex_rom_mem_table[0];
-	//timex_ex_rom_mem_table[7]=timex_ex_rom_mem_table[0];
+	/* The standard TS/TC2068 has one physical 8 KB EXROM. Its A13-A15
+	   address lines are not decoded, so the same ROM contents appear in
+	   every 8 KB chunk selected through port F4. Keep the separately
+	   allocated EXROM space available for future expanded-bank support,
+	   but model the built-in ROM by mirroring page zero in every chunk. */
+	for (i=1;i<8;i++) {
+		timex_ex_rom_mem_table[i]=timex_ex_rom_mem_table[0];
+	}
 
 	//prueba
 	//timex_dock_rom_mem_table[0]=timex_ex_rom_mem_table[0];
