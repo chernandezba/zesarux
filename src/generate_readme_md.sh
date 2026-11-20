@@ -207,7 +207,7 @@ ZEsarUX on Sortix
 
 
 Do you want to know how ZEsarUX looked like in the past? See this:
-[PREVIOUS_SCREENSHOTS](https://github.com/chernandezba/zesarux/blob/master/PREVIOUS_SCREENSHOTS.md)
+[PREVIOUS_SCREENSHOTS](https://github.com/chernandezba/zesarux/blob/main/PREVIOUS_SCREENSHOTS.md)
 
 
 You can find some ZEsarUX videos on my [Youtube channel](https://www.youtube.com/user/chernandezba)
