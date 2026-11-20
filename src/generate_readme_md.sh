@@ -69,9 +69,9 @@ echo
 cat << _EOF
 __Some screenshots__
 
-ZX Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX Spectrum OverScan demo
+DAVID Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX Spectrum OverScan demo
 
-![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_multitask.png "ZX Desktop")
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_multitask.png "DAVID Desktop")
 
 
 ZEsarUX 11.0, running multitask windows, ZEsarUX Plus GUI Style, running Sound Tracker 20th anniversary demo, some Multitask windows
@@ -79,14 +79,14 @@ ZEsarUX 11.0, running multitask windows, ZEsarUX Plus GUI Style, running Sound T
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zesarux_11_0.png "ZEsarUX 11.0")
 
 
-Default clean ZX Desktop starting from ZEsarUX version 10.2
+Default clean DAVID Desktop starting from ZEsarUX version 10.2
 
-![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_default.png "ZX Desktop default")
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_default.png "DAVID Desktop default")
 
 
-ZX Desktop, running demo ny17 from TSConf, showing some windows opened
+DAVID Desktop, running demo ny17 from TSConf, showing some windows opened
 
-![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_example_windows.png "ZX Desktop example several windows")
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_example_windows.png "DAVID Desktop example several windows")
 
 
 ZX Spectrum Overscan demo
