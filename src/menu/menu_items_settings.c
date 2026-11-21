@@ -14643,6 +14643,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
 
 
 //Seleccionar accion para un boton o para una tecla F, funcion comun a las dos
+//Retorna indice a accion
 int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionada)
 {
 
@@ -16080,6 +16081,25 @@ void menu_zxdesktop_set_configurable_icons_close_window(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zxdesktop_set_configurable_icons_duplicate_icon(MENU_ITEM_PARAMETERS)
+{
+    int indice_icono=valor_opcion;
+
+    int indice_funcion=zxdesktop_configurable_icons_list[indice_icono].indice_funcion;
+
+    int indice_icono_nuevo=zxvision_add_configurable_icon(indice_funcion);
+
+    if (indice_icono_nuevo>=0) {
+        strcpy(zxdesktop_configurable_icons_list[indice_icono_nuevo].text_icon,zxdesktop_configurable_icons_list[indice_icono].text_icon);
+        strcpy(zxdesktop_configurable_icons_list[indice_icono_nuevo].extra_info,zxdesktop_configurable_icons_list[indice_icono].extra_info);
+        strcpy(zxdesktop_configurable_icons_list[indice_icono_nuevo].alternate_bitmap,zxdesktop_configurable_icons_list[indice_icono].alternate_bitmap);
+
+        zxdesktop_configurable_icons_clear_cache_bitmap(indice_icono_nuevo);
+
+    }
+
+}
+
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
@@ -16115,6 +16135,11 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
             "Change ~~Bitmap","Cambiar ~~Bitmap","Canviar ~~Bitmap");
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
         menu_add_item_menu_shortcut(array_menu_common,'b');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_duplicate_icon,NULL,
+            "~~Duplicate icon","~~Duplicar icono","~~Duplicar icona");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'d');
 
         //Si icono es de ventana y es una ventana abierta, permitir cerrar
         if (id_funcion==F_FUNCION_OPEN_WINDOW) {

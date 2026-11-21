@@ -68,6 +68,7 @@ Improved DAVID Desktop (formerly called ZX Desktop):
 - Allow to sort icons alphabetically
 - Allow to align icons to grid
 - Allow to change bitmap of an icon
+- Allow to duplicate an icon
 - Allow to close a open window by right-click on its DAVID Desktop icon
 - Check if item is on an invalid position when recovering it from Trash
 
