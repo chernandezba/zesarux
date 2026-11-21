@@ -16115,16 +16115,21 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     //No estar en bucle
     //do {
 
-        menu_add_item_menu_inicial(&array_menu_common,"Change type",MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL);
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Cambiar tipo","Canviar tipus");
-        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
-        //menu_add_item_menu_shortcut(array_menu_common,'t');
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_rename,NULL,
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_rename,NULL,
             "R~~ename","R~~enombrar","R~~enombrar");
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
         menu_add_item_menu_shortcut(array_menu_common,'e');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_duplicate_icon,NULL,
+            "~~Duplicate icon","~~Duplicar icono","~~Duplicar icona");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL,
+            "Change type","Cambiar tipo","Canviar tipus");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        //menu_add_item_menu_shortcut(array_menu_common,'t');
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_change_parameters,NULL,
             "~~Parameters","~~Parámetros","~~Paràmetres");
@@ -16136,10 +16141,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
         menu_add_item_menu_shortcut(array_menu_common,'b');
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_duplicate_icon,NULL,
-            "~~Duplicate icon","~~Duplicar icono","~~Duplicar icona");
-        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
-        menu_add_item_menu_shortcut(array_menu_common,'d');
+
 
         //Si icono es de ventana y es una ventana abierta, permitir cerrar
         if (id_funcion==F_FUNCION_OPEN_WINDOW) {
