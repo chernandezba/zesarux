@@ -358,5 +358,7 @@ Debug:    ZENG Online: Error returning data from command streaming-get-audio-con
 Deberia detectar la salida correcta
 
 
--display palettes: ver si tiene sentido el uso de window_colour_palette_left_mouse
-Parece que si lo deshabilito, dibuja bien la ventana
+
+-en checklist Test cargar juegos PCW
+
+ok -Teclas de Cursores en ventana de pantalla emulada que no hagan scroll de ventana
