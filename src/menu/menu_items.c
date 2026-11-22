@@ -20301,6 +20301,20 @@ zxvision_window zxvision_window_video_output;
 int ventana_video_output_activa=0;
 int ventana_video_output_abierta=0;
 
+//Coordenadas donde está la ventana para saberlo rapidamente, usado en lightgun por ejemplo
+int ventana_video_output_x=0;
+int ventana_video_output_y=0;
+
+void ventana_video_output_sync_coords_variables(void)
+{
+
+    if (!ventana_video_output_abierta) return;
+
+    ventana_video_output_x=menu_video_output_window->x;
+    ventana_video_output_y=menu_video_output_window->y;
+
+}
+
 int ventana_video_output_esta_activa(void)
 {
     return ventana_video_output_activa;
@@ -20385,6 +20399,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
 
     ventana_video_output_abierta=1;
 
+    ventana_video_output_sync_coords_variables();
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20428,6 +20444,8 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             //Y no atendemos a cursores, pgup, dn, shift+opqa etc porque se usan dentro de maquina emulada
             //y no queremos que actue en la ventana
         }
+
+        ventana_video_output_sync_coords_variables();
 
 
     } while (salir==0);

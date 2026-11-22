@@ -289,7 +289,7 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 ---- ventana video output como sustituto del render normal de maquina:
 
 
--que las pulsaciones sobre zx desktop en zona de maquina emulada, con ventana video output, se consideren zx desktop
+ok -que las pulsaciones sobre zx desktop en zona de maquina emulada, con ventana video output, se consideren zx desktop
 
 Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
 No hay ZX desktop
@@ -301,19 +301,11 @@ No hay ZX desktop
 
 -si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
 
-
--- propuesta para incremento de cpu cuando hay muchas ventanas abiertas: que en memoria_overlay (cada caracter) diga si esta visible o no, cacheado,
-eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dirty_user_must_draw_contents
-->creo que eso no reduce mucho el uso de cpu
-
--gestion pulsaciones con el raton en la zona donde se ubica Docked display
-
--maquinas no soportadas:
-
-ok *mk14: no tiene render real video
-MK14 que renderice en real video reusando lo que hay ahora y simplemente haciendo que escriba en rainbow buffer (creo que es parecido a lo que hay con Z88)
-
-
+-lectura de kempston mouse, lightgun validar que se hace bien en ventana emulated display
+->ok kempston mouse porque no depende de posicion, sino de incremento de posicion
+-mirilla lightgun desaparece si la ventana de pantalla emulada tiene el foco (realmente con que se abra el menu)
+-corregida posicion
+->acabar de probarlo bien con diferentes tipos de optical device y ventana de emulated display abierta o cerrada
 
 ---------------------
 

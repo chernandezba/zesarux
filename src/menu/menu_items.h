@@ -65,6 +65,9 @@ extern void menu_debug_assemble(MENU_ITEM_PARAMETERS);
 extern int ventana_video_output_esta_activa(void);
 extern int ventana_video_output_esta_abierta(void);
 
+extern int ventana_video_output_x;
+extern int ventana_video_output_y;
+
 extern int ventana_video_output_abierta;
 extern int ventana_video_output_activa;
 
