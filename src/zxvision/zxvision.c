@@ -744,6 +744,8 @@ void zxvision_align_to_grid_configurable_icons(void)
 
     int separacion_iconos=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR;
 
+    int minima_y=zxvision_get_minimum_y_icon_position();
+
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
 
@@ -753,6 +755,10 @@ void zxvision_align_to_grid_configurable_icons(void)
 
             int y=(zxdesktop_configurable_icons_list[i].pos_y + separacion_iconos/2) / separacion_iconos;
             y *=separacion_iconos;
+
+            //Para evitar que al recalcular a rejilla se vaya a posicion Y=0 y zxvision_set_configurable_icon_position lo diera como invalida y no cambiase posicion
+            //TODO: esta posicion queda queda muy pegada respecto a la segunda fila de iconos, habria que reajustar minimos y tamaños rejilla y tamaños de organizacion de iconos automáticamente
+            if (y<minima_y) y=minima_y;
 
             zxvision_set_configurable_icon_position(i,x,y);
 
@@ -771,6 +777,7 @@ void zxvision_reorder_configurable_icons_if_auto(void)
     }
 
     if (david_desktop_align_to_grid_icons.v) {
+        //printf("Alinear a rejilla\n");
         zxvision_align_to_grid_configurable_icons();
     }
 }
@@ -16521,25 +16528,32 @@ void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int rad
 //si caracter es un digito, indica hacer linea desde posicion anterior a posicion indicada en siguientes caracteres, y moverse a dicha posicion
 //cualquier otro caracter no es admitido
 //Nota: están obtenidos desde The Liner 75, donde el 0,0 está abajo
-//TODO: FALTAN todos los que van a continuacion de la Z. La rutina convierte minusculas a mayusculas, esos quedan solventados,
-//pero no hay [ \ ] ^ ... { | } ... etc
+//TODO: FALTAN las minusculas
 char *zxvision_vectorial_characters[]={
 
- "","P3236P3030","P2526P4546","P0565P0161P1016P5056","P551513535111P3036","66P0516P1506P5061P6051","P5014253401103052","P3546","P40313546","P20313526", //: REM )
+ "","P3236P3030","P2526P4546","P0565P0161P1016P5056","P551513535111P3036","66P0516P1506P5061P6051","P5014253401103052","P3546","P40313546","P20313526", //: REM )  (41)
 
- "66P0660P0363P3036","P0363P3036","P304142","P0363","P1010","66","66P0006666000","P143630","P066663030060","P06666000P0363", // REM 3
+ "66P0660P0363P3036","P0363P3036","P304142","P0363","P1010","66","66P0006666000","P143630","P066663030060","P06666000P0363", // REM 3  (51)
 
- "P060363P6066","P660603636000","P660600606303","P30336606","06666000P0363","6066060363","P3131P3535","P203132P3434", // REM ;
+ "P060363P6066","P660603636000","P660600606303","P30336606","06666000P0363","6066060363","P3131P3535","P203132P3434", // REM ;  (59)
 
- "P502356","P0161P0565","P104316","P141526365432P3030","P40100104154554534222233332","066660P0363","P5000065665645303P53626150", // REM B
+ "P502356","P0161P0565","P104316","P141526365432P3030","P40100104154554534222233332","066660P0363","P5000065665645303P53626150", // REM B  (66)
 
- "P60000666","P300006366330","P60000666P0343","0666P0343","P660600606333","06P6066P0363", // REM H
+ "P60000666","P300006366330","P60000666P0343","0666P0343","P660600606333","06P6066P0363", // REM H  (72)
 
- "60P0666P3036","P03006066","06P0336P0330","P060060","06336660","066066","06666000","06666303", // REM P
+ "60P0666P3036","P03006066","06P0336P0330","P060060","06336660","066066","06666000","06666303", // REM P  (80)
 
- "06666000P6033","06666303P5023","P660603636000","P3036P0666","P06006066","P0603306366", // REM V
+ "06666000P6033","06666303P5023","P660603636000","P3036P0666","P06006066","P0603306366", // REM V  (86)
 
- "P0600336066","66P0660","P063366P3033","P06660060" // REM Z
+ "P0600336066","66P0660","P063366P3033","P06660060", // REM Z   (90)
+
+ "P40202646","P6006","P20404626","P143654","60","P4426", // [\]^_`  (96)
+
+//Aqui faltarian la minusculas. Se pasan siempre a mayusculas
+
+//Estos son los caracteres ascii 123 a 126, para el calculo seria como si fuesen los caracteres 97 a 100
+
+ "P40202213242646","P3036","P20404253444626","P02244264" // {|}~    (100)
 };
 
 
@@ -16558,9 +16572,13 @@ void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int text_zoom,
         char caracter=*texto;
         texto++;
 
+        //Pasar a minusculas
         if (caracter>='a' && caracter<='z') caracter -=32;
 
-        if (caracter<32 || caracter>'Z') caracter='?';
+        //esos 4 ultimos se ubican los ultimos en los caracteres vectoriales
+        if (caracter>=123 && caracter<=126) caracter=caracter-123+97;
+
+        if (caracter<32 || caracter>100) caracter='?';
 
         int indice_caracter_vectorial=caracter-32;
 

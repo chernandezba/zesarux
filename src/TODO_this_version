@@ -139,9 +139,6 @@ Pendientes ahora
 ***QL*****
 
 
-
-
-
 QL-Qsound AY
 *hacer resto de funciones de rom traps de qsound no solo write all: dado que no hay juegos, que yo sepa, que las usen, no puedo validarlo
 *oldtower_m a veces se cuelga al iniciar
@@ -156,16 +153,6 @@ outrun: corregido dibujado pista y tablero y nubes
 chasehq: tambien bien
 bank panic ok
 astro flash ok
-
-
-----
-
--pcw16
-
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/anneasic.zip
-
-https://www.freetimeweb.nl/home/computer/alt/lawsons-amstrad-computer_site/web.ukonline.co.uk/cliff.lawson/files/rosandoc.zip
-
 
 
 ------
@@ -206,26 +193,6 @@ necesita core 3.2.0 o inferior!
 
 --------
 
--zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
-
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 6 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 7 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 8 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 9 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 10 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 11 Source IP=127.0.0.1
-Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 12 Source IP=127.0.0.1
-
-Deberia detectar la salida correcta
-
-
-------
 
 
 ***Baseconf*****
@@ -245,7 +212,7 @@ http://atmturbo.nedopc.com/load_trdos.htm
 https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
 
 
--baseconf: insertar trd habilita el modo max turbo speed si accelerate load
+insertar trd habilita el modo max turbo speed si accelerate load
 ->corregido?
 
 
@@ -265,10 +232,6 @@ https://zxaaa.net/view_demos.php?t=%2F&s=Base&title=Title&vers=35
    puerto feh o emulada por ZEsarUX
 ok en faq * hdd boot: para iniciar sistemas como iS-DOS/TASiS
 * cd boot: que hace??
-
-- captura pantalla de baseconf en la home de proyecto en github
-
--habilitar covox pentagon?
 
 ------
 
@@ -295,10 +258,6 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior machines/tsconf.c:1251:2
 -Scorpion
 
 
-*snapshots zsf. falta restaurar modo turbo en scorpion turbo
-
-*de DEVELOPMENT, pendiente desde keyboard_48p.bmp en adelante
-
 -scorpion gmx:
 acabar de probarlo **modos de video ampliado
 *gigascreen. visor de imagenes gmxpv. imagen 0139.mcx
@@ -320,27 +279,13 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 --- ATM Turbo
 
-- entradas en changelog, features y readme de las nuevas maquinas atm
-ok - tamaño pantalla real
-ok - render realvideo
-ok - covox activado?
-- timings correctos?
-ok - icono máquinas.
-ok - keyboard help
-ok - soporte snapshot zsf
-ok - memory zones
-ok - puertos en debug i/o ports ventana
-ok - paginas en segmentos de debug cpu
 
 -software cpm http://atmturbo.nedopc.com/load_cpm.htm
 -software (en general atm):  http://atmturbo.nedopc.com/load_trdos.htm
 
-------
 
--en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
+---------------
 
-
------
 ---- ventana video output como sustituto del render normal de maquina:
 
 
@@ -352,7 +297,6 @@ No hay ZX desktop
 
 -sin zxdesktop y con ventana emulated display activa, que ponemos en el fondo ? o no permitimos emulated display window si el zx desktop no esta activado?
 
-ok-al iniciar ZEsarUX, que de por validos iconos en zona de pantalla emulada si ventana emulated display esta abierta
 -al iniciar ZEsarUX, autoordenar iconos, que empiece por esquina sup-izq si ventana emulated display se ha restaurado al inicio
 
 -si emulated display window abierta, que al maximizar ventanas considere posicion arriba izquierda como inicial
@@ -366,10 +310,12 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 
 -maquinas no soportadas:
 
-*mk14: no tiene render real video
+ok *mk14: no tiene render real video
+MK14 que renderice en real video reusando lo que hay ahora y simplemente haciendo que escriba en rainbow buffer (creo que es parecido a lo que hay con Z88)
 
 
----
+
+---------------------
 
 -en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
 
@@ -377,11 +323,10 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 
 -Mensajes directos en ZRCP con una ventana de chat, como mensajería
 
--Sonido de floppy 3”, simulado, de los bytes leidos
+-No valida máximo alto indicado para ZX desktop: puede generar segfault
 
 -implementar máquinas de 60 Hz (timex, master system etc)
 * pendientes 60 hz: next modo 60hz
-
 
 
 -modo 60 hz en atic atac, para next.
@@ -389,10 +334,29 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 creo que por la condicion especial en: scr_get_offset_putpixel_no_rainbow
 ->de momento haremos que al conmutar a 60hz, active real video
 
--visual floppy : pestaña de proteccion de escritura no sale en sitio correcto
 
-----
-
+-en features agregar nuevos accesos ide, sd en tsconf, baseconf, gmx
 
 - demos para spectrums extendidos: https://www.pouet.net/prodlist.php?platform%5B%5D=ZX+Enhanced&page=1
 
+-zeng: cuando un usuario sale correctamente con leave room, en el servidor se ven mensajes de:
+
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 0 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 1 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 2 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 3 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 4 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 5 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 6 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 7 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 8 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 9 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 10 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 11 Source IP=127.0.0.1
+Debug:    ZENG Online: Error returning data from command streaming-get-audio-cont. Retries: 12 Source IP=127.0.0.1
+
+Deberia detectar la salida correcta
+
+
+-display palettes: ver si tiene sentido el uso de window_colour_palette_left_mouse
+Parece que si lo deshabilito, dibuja bien la ventana

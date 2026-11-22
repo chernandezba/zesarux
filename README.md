@@ -193,7 +193,7 @@ __FEATURES__
 
 * Can generate Anaglyph images for 3D glasses (red-blue glasses)
 
-* Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (ZX Desktop)
+* Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (DAVID Desktop)
 
 * Partial support for Spanish and Catalan language on menus
 
@@ -388,9 +388,9 @@ __FEATURES__
 
 __Some screenshots__
 
-ZX Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX Spectrum OverScan demo
+DAVID Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX Spectrum OverScan demo
 
-![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_multitask.png "ZX Desktop")
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_multitask.png "DAVID Desktop")
 
 
 ZEsarUX 11.0, running multitask windows, ZEsarUX Plus GUI Style, running Sound Tracker 20th anniversary demo, some Multitask windows
@@ -398,14 +398,14 @@ ZEsarUX 11.0, running multitask windows, ZEsarUX Plus GUI Style, running Sound T
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zesarux_11_0.png "ZEsarUX 11.0")
 
 
-Default clean ZX Desktop starting from ZEsarUX version 10.2
+Default clean DAVID Desktop starting from ZEsarUX version 10.2
 
-![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_default.png "ZX Desktop default")
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_default.png "DAVID Desktop default")
 
 
-ZX Desktop, running demo ny17 from TSConf, showing some windows opened
+DAVID Desktop, running demo ny17 from TSConf, showing some windows opened
 
-![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_example_windows.png "ZX Desktop example several windows")
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_example_windows.png "DAVID Desktop example several windows")
 
 
 ZX Spectrum Overscan demo
@@ -451,6 +451,21 @@ ZX-Uno
 ZX-Evolution TSConf
 
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_tsconf.jpeg "ZX-Evolution TSConf")
+
+
+ZX-Evolution BaseConf
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_baseconf.png "ZX-Evolution BaseConf")
+
+
+Scorpion GMX
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_scorpion_gmx.png "Scorpion GMX")
+
+
+ATM Turbo 3
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_atm_turbo3.png "ATM Turbo 3")
 
 
 ZX Spectrum Next
@@ -511,7 +526,7 @@ ZEsarUX on Sortix
 
 
 Do you want to know how ZEsarUX looked like in the past? See this:
-[PREVIOUS_SCREENSHOTS](https://github.com/chernandezba/zesarux/blob/master/PREVIOUS_SCREENSHOTS.md)
+[PREVIOUS_SCREENSHOTS](https://github.com/chernandezba/zesarux/blob/main/PREVIOUS_SCREENSHOTS.md)
 
 
 You can find some ZEsarUX videos on my [Youtube channel](https://www.youtube.com/user/chernandezba)

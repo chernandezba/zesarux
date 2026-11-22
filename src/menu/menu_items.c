@@ -10456,7 +10456,6 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
                     }
 
                      else {
-                        //menu_escribe_linea_opcion(linea++,-1,1,dumpmemoria);
                         zxvision_print_string_defaults_fillspc(menu_display_total_palette_draw_barras_window,1,linea++,dumpmemoria);
                     }
         }
@@ -10540,7 +10539,11 @@ void menu_display_total_palette_crea_ventana(zxvision_window *ventana,int xventa
     //decimos que tiene que borrar fondo cada vez al redibujar
     //por tanto es como decirle que no use cache de putchar
     //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;
+
+    //Esto ya NO. se borra la cache al pulsar una tecla o evento raton,
+    //que es cuando hay que borrar fondos
+    //Asi ahorramos mucho uso de cpu
+    //ventana->must_clear_cache_on_draw=1;
 }
 
 zxvision_window zxvision_window_display_palettes;
@@ -10708,6 +10711,10 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 
 
         tecla=zxvision_common_getkey_refresh();
+
+        //vaciar la cache para poder limpiar los pixeles que metemos con overlay del frame anterior,
+        //por si cambiamos de tabla de colores, donde queden restos de pixeles anteriores
+        ventana->must_clear_cache_on_draw_once=1;
 
         //printf("lee tecla %d\n",contador_segundo);
 

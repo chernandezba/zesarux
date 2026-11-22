@@ -864,6 +864,26 @@ extension externa.
 
 https://www.zxuno.com/forum/viewtopic.php?t=4091
 
+-Validar los timings por modelo y revision de placa, especialmente en ATM3:
+confirmar si corresponde aplicar los cuadros de 312/316 lineas segun RG0
+que describen las ecuaciones de CP6N.SRC para ATM2.
+
+-Investigar y emular los WAIT adicionales de CPU, especialmente en turbo
+de 7 MHz, determinando a que modelos y accesos afectan. Actualmente las
+rutinas de contencion ATM solo cuentan los ciclos normales, sin esperas.
+
+-Emular la espera por WAIT durante las lecturas de #FE atendidas por el
+controlador 8031 de ATM2+/ATM3, descrita en el manual de programacion.
+
+-Validar la fase de INT respecto al barrido y la duracion del pulso en
+ATM1, ATM2, ATM2+ y ATM3. Actualmente se utiliza el pulso generico de 32 T.
+
+-Reproducir la señal Z a partir de las ecuaciones de las PLM. Actualmente
+se aproxima mediante ventanas temporales ajustadas al funcionamiento de
+las ROM, sin emular toda la logica de la señal.
+
+
+
 -------------
 
 
