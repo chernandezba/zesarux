@@ -10456,7 +10456,6 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
                     }
 
                      else {
-                        //menu_escribe_linea_opcion(linea++,-1,1,dumpmemoria);
                         zxvision_print_string_defaults_fillspc(menu_display_total_palette_draw_barras_window,1,linea++,dumpmemoria);
                     }
         }
