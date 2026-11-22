@@ -358,3 +358,5 @@ Debug:    ZENG Online: Error returning data from command streaming-get-audio-con
 Deberia detectar la salida correcta
 
 
+-display palettes: mucho uso de cpu
+en menu_display_total_palette_crea_ventana quita la cache en draw.

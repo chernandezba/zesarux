@@ -74,6 +74,7 @@ Mejorado DAVID Desktop (anteriormente llamado ZX Desktop):
 
 Mejorado integración de TR-DOS en Pentagon
 Mejorado Teclado Virtual: permitir escalar el teclado
+Mejorado uso de cpu en ventana de Colour Palettes
 Agregada vistas a Visual Floppy (disco, transparente, opaco)
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
