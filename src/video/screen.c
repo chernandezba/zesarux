@@ -5461,7 +5461,39 @@ void scr_refresca_pantalla_comun(void)
 
 
 
+//Funcion usada para putpixel en mk14. apunta a funcion de rainbow o no rainbow
+//no esta inicializada con nada, pues antes que se vaya a usar (en refresca_pantalla o draw_lower_screen) se inicializara
+void (*scr_putpixel_zoom_mk14) (int x,int y,unsigned color);
 
+//offsets para el putpixel rainbow, porque al dibujar los digitos o la zona de 256x192, se asume inicio de coordenadas en 0,0, teniendo que sumar offset del border,
+//tal y como hacen las funciones de putpixel no rainbow. Pero luego al dibujar el border en modo rainbow no se suma el offset del border
+int screen_mk14_putpixel_zoom_rainbow_offset_x=0;
+int screen_mk14_putpixel_zoom_rainbow_offset_y=0;
+
+void screen_mk14_putpixel_zoom_rainbow(int x,int y,unsigned int color)
+{
+    //Metemos en buffer rainbow putpixel de pantalla mk14
+    z80_int *puntero_buf_rainbow;
+
+    puntero_buf_rainbow=&rainbow_buffer[ (y+screen_mk14_putpixel_zoom_rainbow_offset_y)*get_total_ancho_rainbow()+x+screen_mk14_putpixel_zoom_rainbow_offset_x ];
+
+    *puntero_buf_rainbow=color;
+}
+
+
+
+void set_mk14_putpixel_zoom_function(void)
+{
+
+    if (rainbow_enabled.v==0) {
+        scr_putpixel_zoom_mk14=scr_putpixel_zoom;
+    }
+
+    else {
+        scr_putpixel_zoom_mk14=screen_mk14_putpixel_zoom_rainbow;
+    }
+
+}
 
 
 
@@ -5470,7 +5502,7 @@ void scr_mk14_linea(int x,int y,int longitud,int incx,int incy,int color)
 {
     while (longitud) {
 
-        scr_putpixel_zoom(x,y,color);
+        scr_putpixel_zoom_mk14(x,y,color);
 
         x +=incx;
         y +=incy;
@@ -5561,21 +5593,72 @@ void scr_mk14_draw_led(z80_byte valor,int x,int y,int color)
     }
 }
 
+
+void scr_refresca_border_mk14_rainbow(int color)
+{
+
+    int x,y;
+
+
+    int topborder=TOP_BORDER_NO_ZOOM;
+
+    int bottomborder=BOTTOM_BORDER_NO_ZOOM;
+
+
+    //parte superior
+    for (y=0;y<topborder;y++) {
+        for (x=0;x<ANCHO_PANTALLA+LEFT_BORDER_NO_ZOOM*2;x++) {
+            screen_mk14_putpixel_zoom_rainbow(x,y,color);
+        }
+    }
+
+    //parte inferior
+    for (y=0;y<bottomborder;y++) {
+        for (x=0;x<ANCHO_PANTALLA+LEFT_BORDER_NO_ZOOM*2;x++) {
+            screen_mk14_putpixel_zoom_rainbow(x,topborder+y+ALTO_PANTALLA,color);
+        }
+    }
+
+    //laterales
+    for (y=0;y<ALTO_PANTALLA;y++) {
+        for (x=0;x<LEFT_BORDER_NO_ZOOM;x++) {
+            screen_mk14_putpixel_zoom_rainbow(x,topborder+y,color);
+            screen_mk14_putpixel_zoom_rainbow(LEFT_BORDER_NO_ZOOM+ANCHO_PANTALLA+x,topborder+y,color);
+        }
+    }
+
+
+}
+
+
+
 //Refresco pantalla Para mk14. De momento solo poner la pantalla en blanco
-void scr_refresca_pantalla_y_border_mk14(void)
+void scr_refresca_pantalla_y_border_mk14_comun(void)
 {
 
     if (border_enabled.v) {
         //ver si hay que refrescar border
         if (modificado_border.v)
         {
+            int color_border=7;
 
-            scr_refresca_border_comun_spectrumzx8081(7);
+            if (rainbow_enabled.v) {
+                screen_mk14_putpixel_zoom_rainbow_offset_x=0;
+                screen_mk14_putpixel_zoom_rainbow_offset_y=0;
+                scr_refresca_border_mk14_rainbow(color_border);
+            }
+            else {
+                scr_refresca_border_comun_spectrumzx8081(color_border);
+            }
+
             modificado_border.v=0;
 
         }
 
     }
+
+    screen_mk14_putpixel_zoom_rainbow_offset_x=LEFT_BORDER_NO_ZOOM;
+    screen_mk14_putpixel_zoom_rainbow_offset_y=TOP_BORDER_NO_ZOOM;
 
 
     int x,y;
@@ -5583,7 +5666,7 @@ void scr_refresca_pantalla_y_border_mk14(void)
 
     for (y=0;y<192;y++) {
         for (x=0;x<256;x++) {
-            scr_putpixel_zoom(x,y,7);
+            scr_putpixel_zoom_mk14(x,y,7);
         }
     }
 
@@ -5596,6 +5679,29 @@ void scr_refresca_pantalla_y_border_mk14(void)
         scr_mk14_draw_led(mk14_ledstat[i],x,y,2);
 
         x += 14;
+    }
+
+}
+
+
+void scr_refresca_pantalla_y_border_mk14(void)
+{
+
+    //Realmente MK14 no hace modo realvideo, es decir, no dibujamos linea a linea a cada final de scanline de la pantalla
+    //sino que cada vez que se va a refrescar pantalla, primero se dibuja toda la pantalla del MK14 pero dentro del buffer rainbow
+    //luego se dibuja el buffer rainbow en pantalla como cualquier otra maquina
+    //Esto permite tener grabacion de video a archivo, ya que requiere modo realvideo para grabar a archivo
+
+    //Para que las funciones de dibujado de mk14 sean comunes para no-rainbow y rainbow,
+    //las llamadas a putpixel seran las que establecemos ahora
+
+    set_mk14_putpixel_zoom_function();
+
+    //Primero render "inteligente" que sabe que tiene que enviarlo al rainbow buffer o a pantalla como pixeles
+    scr_refresca_pantalla_y_border_mk14_comun();
+
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_rainbow_comun();
     }
 
 }

@@ -310,7 +310,9 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 
 -maquinas no soportadas:
 
-*mk14: no tiene render real video
+ok *mk14: no tiene render real video
+MK14 que renderice en real video reusando lo que hay ahora y simplemente haciendo que escriba en rainbow buffer (creo que es parecido a lo que hay con Z88)
+
 
 
 ---------------------
@@ -321,7 +323,7 @@ eso deberia aplica tambien a pixeles. se invalide esa cache cuando se activa dir
 
 -Mensajes directos en ZRCP con una ventana de chat, como mensajería
 
-
+-No valida máximo alto indicado para ZX desktop: puede generar segfault
 
 -implementar máquinas de 60 Hz (timex, master system etc)
 * pendientes 60 hz: next modo 60hz
@@ -355,5 +357,4 @@ Debug:    ZENG Online: Error returning data from command streaming-get-audio-con
 
 Deberia detectar la salida correcta
 
-ok-poder duplicar icono
 
