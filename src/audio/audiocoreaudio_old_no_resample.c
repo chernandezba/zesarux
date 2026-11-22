@@ -504,7 +504,9 @@ int audiocoreaudio_fifo_read_position=0;
 void audiocoreaudio_empty_buffer(void)
 {
   debug_printf(VERBOSE_DEBUG,"Emptying audio buffer");
-  audiocoreaudio_fifo_write_position=0;
+  //Vaciar de verdad: la escritura se pone donde esta la lectura. Antes solo se ponia la escritura a 0,
+  //con lo que la fifo parecia llena de audio antiguo, y se volvia a reproducir (eco con retardo)
+  audiocoreaudio_fifo_write_position=audiocoreaudio_fifo_read_position;
 }
 
 
