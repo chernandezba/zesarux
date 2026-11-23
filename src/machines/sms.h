@@ -35,6 +35,11 @@ extern z80_bit sms_cartridge_inserted;
 extern z80_byte *sms_return_segment_address(z80_int direccion,int *tipo);
 
 #define SMS_MAX_ROM_SIZE (1024*1024)
+#define SMS_SYSTEM_RAM_SIZE 8192
+#define SMS_CARTRIDGE_RAM_SIZE 8192
+#define SMS_CARTRIDGE_RAM_OFFSET (SMS_MAX_ROM_SIZE+SMS_SYSTEM_RAM_SIZE)
+#define SMS_TOTAL_MEMORY_SIZE (SMS_CARTRIDGE_RAM_OFFSET+SMS_CARTRIDGE_RAM_SIZE)
+#define SMS_MAPPER_CARTRIDGE_RAM_ENABLE 0x08
 
 #define SMS_SLOT_MEMORY_TYPE_ROM 0
 #define SMS_SLOT_MEMORY_TYPE_RAM 1

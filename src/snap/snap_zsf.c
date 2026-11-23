@@ -474,13 +474,13 @@ Byte Fields:
 5: memory segment(0=0000-3fff, 1=4000-7fff, 2=8000-bfff, 3=c000-ffff, ...)
 
 -Block ID 37: ZSF_SMS_RAMBLOCK
-A rom binary block for a SMS
+A RAM binary block for a SMS
 Byte Fields:
 0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: memory segment(0=0000-3fff, 1=4000-7fff, 2=8000-bfff, 3=c000-ffff, ...)
+5: memory segment(0=RAM de la consola, 1=RAM del cartucho)
 
 -Block ID 38: ZSF_SMS_CONF
 Ports and internal registers of SMS machine
@@ -1925,7 +1925,7 @@ void load_zsf_sms_ramblock_snapshot_block_data(z80_byte *block_data,int longitud
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: memory segment(0=0000-3fff, 1=4000-7fff, 2=8000-bfff, 3=c000-ffff, ....)
+5: memory segment(0=RAM de la consola, 1=RAM del cartucho)
 */
 
 
@@ -1958,7 +1958,11 @@ void load_zsf_sms_ramblock_snapshot_block_data(z80_byte *block_data,int longitud
   //return &memoria_spectrum[SMS_MAX_ROM_SIZE + (direccion & 8191)];
 
 
-  load_zsf_snapshot_block_data_addr(&block_data[i],&memoria_spectrum[SMS_MAX_ROM_SIZE],block_lenght,longitud_original,block_flags&1);
+  // El segmento cero es RAM de la consola; el uno, RAM del cartucho.
+  if (segment<=1 && block_lenght<=SMS_SYSTEM_RAM_SIZE) {
+    int offset=(segment==0 ? SMS_MAX_ROM_SIZE : SMS_CARTRIDGE_RAM_OFFSET);
+    load_zsf_snapshot_block_data_addr(&block_data[i],&memoria_spectrum[offset],block_lenght,longitud_original,block_flags&1);
+  }
 
 
 
@@ -6511,7 +6515,7 @@ Byte Fields:
 
     //Y bloque RAM
 
-    longitud_ram=8192;
+    longitud_ram=SMS_SYSTEM_RAM_SIZE;
     compressed_ramblock[0]=0;
     compressed_ramblock[1]=value_16_to_8l(16384);
     compressed_ramblock[2]=value_16_to_8h(16384);
@@ -6528,6 +6532,13 @@ Byte Fields:
 
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SMS_RAMBLOCK, longitud_bloque+6);
+
+    // Guardar también la RAM que el paginador del cartucho muestra en el tercer slot.
+    compressed_ramblock[0]=0;
+    compressed_ramblock[5]=1;
+    longitud_bloque=save_zsf_copyblock_compress_uncompres(&memoria_spectrum[SMS_CARTRIDGE_RAM_OFFSET],&compressed_ramblock[6],SMS_CARTRIDGE_RAM_SIZE,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,compressed_ramblock,ZSF_SMS_RAMBLOCK,longitud_bloque+6);
 
 
 

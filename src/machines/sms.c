@@ -117,6 +117,11 @@ z80_byte *sms_return_segment_address(z80_int direccion,int *tipo)
 
         //ROM
         if (direccion<=0xbfff) {
+            // El bit 3 de $FFFC sustituye la ROM del tercer slot por RAM del cartucho.
+            if (direccion>=0x8000 && (sms_mapper_FFFC & SMS_MAPPER_CARTRIDGE_RAM_ENABLE)) {
+                *tipo=SMS_SLOT_MEMORY_TYPE_RAM;
+                return &memoria_spectrum[SMS_CARTRIDGE_RAM_OFFSET+(direccion & (SMS_CARTRIDGE_RAM_SIZE-1))];
+            }
             *tipo=SMS_SLOT_MEMORY_TYPE_ROM;
 
             if (direccion<=0x3fff) {
@@ -144,7 +149,7 @@ z80_byte *sms_return_segment_address(z80_int direccion,int *tipo)
             return &memoria_spectrum[offset+(direccion & 16383)];
         }
 
-        //TODO registro FFFC
+        // Los otros bits de $FFFC no intervienen en el mapeo usado aquí.
         /*
         Address $fffc: RAM mapping and miscellaneous functions
 Bit	Function

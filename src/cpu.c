@@ -1839,9 +1839,10 @@ void malloc_mem_machine(void) {
         }
 
         else if (MACHINE_IS_SMS) {
-                //total 1 MByte ROM + 8 kb RAM
-                malloc_machine(SMS_MAX_ROM_SIZE+8192);
-                random_ram(memoria_spectrum,SMS_MAX_ROM_SIZE+8192);
+                // Un MiB de ROM, 8 KiB de RAM de la consola y 8 KiB de RAM del cartucho,
+                // necesarios para juegos como The Terminator.
+                malloc_machine(SMS_TOTAL_MEMORY_SIZE);
+                random_ram(memoria_spectrum,SMS_TOTAL_MEMORY_SIZE);
 
 
                 //y 16kb para vram
