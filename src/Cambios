@@ -126,7 +126,7 @@ Corregido contención no-MREQ en Spectrum +2A and +3
 Corregido renderizado de CPC sin border
 Corregido Cocoa (macOS) cambio de máquina en pantalla completa
 Corregidas consultas usando el Speccy Online Browser
-Corregido en Master System scrolling y temporización raster
+Corregido en Master System scrolling, temporización raster y RAM de cartuchos
 Corregido arranque de Spectrum Next con NextZXOS 2.09
 Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo
 Corregido Next hardware IM 2 ULA interrupt vector

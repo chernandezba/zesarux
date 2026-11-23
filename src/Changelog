@@ -126,7 +126,7 @@ Fixed no-MREQ contention on Spectrum +2A and +3
 Fixed CPC rendering without border
 Fixed Cocoa (macOS) fullscreen machine switching
 Fixed queries using Speccy Online Browser
-Fixed Master System scrolling and raster timing
+Fixed Master System scrolling, raster timing and RAM from cartridges
 Fixed NextZXOS 2.09 boot on Spectrum Next
 Fixed Next hardware IM 2 ULA interrupt vector
 Fixed Next Layer 2 clip window right edge in 320x256 and 640x256 modes

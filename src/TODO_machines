@@ -1327,9 +1327,6 @@ O quizá esa rom es del 328 en vez del 318
 -fallos en varios juegos sms:
 
 
-
-terminator: se ven mal la mayoria de tiles
-
 road rash: se ralentiza mucho en juego y en intro
 pitufos: fase dos en rio se ve raro
 micromachines: se ve mal (pero esto creo que es debido a que usa mas de 192 lineas)
@@ -1347,7 +1344,6 @@ gp rider
 F1
 
 -scroll incorrecto "tipo juego carreras"
-out Run
 
 road rash
 
