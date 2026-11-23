@@ -7422,7 +7422,11 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     if (puerto_l==0x7f && lightgun_emulation_enabled.v && lightgun_emulation_type==SPECTRUM_DOODLER) {
 
             if (zxvision_key_not_sent_emulated_mach() ) return 0;
-            int pos_y=lightgun_y-screen_borde_superior;
+
+            int lx,ly;
+            lightgun_get_xy(&lx,&ly);
+
+            int pos_y=ly-screen_borde_superior;
             pos_y /=2;
             pos_y +=29;
             if (pos_y<0) pos_y=0;
@@ -7441,7 +7445,11 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     //Spectrum Doodler Lightpen
     if (puerto_l==191 && lightgun_emulation_enabled.v && lightgun_emulation_type==SPECTRUM_DOODLER) {
             if (zxvision_key_not_sent_emulated_mach() ) return 0;
-            int pos_x=lightgun_x-screen_testados_total_borde_izquierdo*2;
+
+            int lx,ly;
+            lightgun_get_xy(&lx,&ly);
+
+            int pos_x=lx-screen_testados_total_borde_izquierdo*2;
             pos_x /=2;
             pos_x +=64;
             if (pos_x<0) pos_x=0;

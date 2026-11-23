@@ -96,6 +96,8 @@ extern void lightgun_print_types(void);
 
 extern int lightgun_set_type(char *tipo);
 
+extern void lightgun_get_xy(int *x,int *y);
+
 
 extern int lightgun_x;
 extern int lightgun_y;
