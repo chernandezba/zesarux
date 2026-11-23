@@ -20070,6 +20070,36 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_video_output_window;
 
+void ventana_video_output_get_image_size(int *p_ancho, int *p_alto)
+{
+    int ancho_original=get_total_ancho_rainbow();
+    int alto_original=get_total_alto_rainbow();
+    int ancho=ancho_original;
+    int alto=alto_original;
+
+    if (setting_emulated_display_win_zoom_fit.v && menu_video_output_window) {
+        ancho=(menu_video_output_window->visible_width-2)*menu_char_width*menu_gui_zoom;
+        alto=(menu_video_output_window->visible_height-2)*menu_char_height*menu_gui_zoom;
+
+        if (setting_emulated_display_win_zoom_fit_keep_proportion.v && ancho>0 && alto>0 && ancho_original>0 && alto_original>0) {
+            //Ejemplo: una imagen de 400x200 pasa a 300 de alto. Para conservar su forma,
+            //el ancho también crece en la misma medida: 400*300/200=600.
+            //El if comprueba si ese ancho de 600 cabe en el ancho disponible (ancho).
+            //Con división sería: ancho > (alto * ancho_original) / alto_original.
+            //Para evitar perder decimales, comparamos ambos lados multiplicados
+            //por alto_original: (ancho * alto_original) > (alto * ancho_original).
+            if (ancho*alto_original>alto*ancho_original) ancho=alto*ancho_original/alto_original;
+            else alto=ancho*alto_original/ancho_original;
+
+            if (ancho<1) ancho=1;
+            if (alto<1) alto=1;
+        }
+    }
+
+    *p_ancho=ancho;
+    *p_alto=alto;
+}
+
 
 //sin putpixel cache: render normal: 40% cpu. render ventana: 56% cpu
 
@@ -20192,30 +20222,8 @@ void menu_video_output_overlay(void)
 
 
         if (setting_emulated_display_win_zoom_fit.v) {
-            int ancho_ventana=(menu_video_output_window->visible_width-1)*menu_char_width*menu_gui_zoom-offset_x;
-            int alto_ventana=(menu_video_output_window->visible_height-2)*menu_char_height*menu_gui_zoom;
-
-            if (setting_emulated_display_win_zoom_fit_keep_proportion.v && ancho_ventana>0 && alto_ventana>0 && ancho>0 && alto>0) {
-                int ancho_disponible=ancho_ventana;
-                int alto_disponible=alto_ventana;
-
-                //Ejemplo: una imagen de 400x200 pasa a 300 de alto. Para conservar su forma,
-                //el ancho también crece en la misma medida: 400*300/200=600.
-                //El if comprueba si ese ancho de 600 cabe en la ventana. Con división sería:
-                //ancho_disponible > alto_disponible*ancho/alto.
-                //La división entre enteros pierde los decimales; por eso multiplicamos ambos
-                //lados por alto y comparamos ancho_disponible*alto > alto_disponible*ancho.
-                if (ancho_disponible*alto>alto_disponible*ancho) {
-                    ancho_ventana=alto_disponible*ancho/alto;
-                }
-                else {
-                    alto_ventana=ancho_disponible*alto/ancho;
-                }
-
-                if (ancho_ventana<1) ancho_ventana=1;
-                if (alto_ventana<1) alto_ventana=1;
-
-            }
+            int ancho_ventana,alto_ventana;
+            ventana_video_output_get_image_size(&ancho_ventana,&alto_ventana);
 
 
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);

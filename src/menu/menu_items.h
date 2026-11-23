@@ -64,6 +64,7 @@ extern void menu_debug_assemble(MENU_ITEM_PARAMETERS);
 
 extern int ventana_video_output_esta_activa(void);
 extern int ventana_video_output_esta_abierta(void);
+extern void ventana_video_output_get_image_size(int *p_ancho, int *p_alto);
 
 extern int ventana_video_output_x;
 extern int ventana_video_output_y;

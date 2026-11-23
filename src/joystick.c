@@ -175,6 +175,12 @@ void lightgun_get_xy(int *x,int *y)
         //printf("Compensar pos. antes:   %d,%d. pos ventana: %d,%d\n",*x,*y,ventana_video_output_x,ventana_video_output_y);
         *x -=(ventana_video_output_x+1)*menu_char_width*menu_gui_zoom;
         *y -=(ventana_video_output_y+1)*menu_char_height*menu_gui_zoom;
+        int ancho_imagen,alto_imagen;
+        ventana_video_output_get_image_size(&ancho_imagen,&alto_imagen);
+        if (ancho_imagen>0 && alto_imagen>0) {
+            *x=(*x)*get_total_ancho_rainbow()/ancho_imagen;
+            *y=(*y)*get_total_alto_rainbow()/alto_imagen;
+        }
         //printf("Compensar pos. despues: %d,%d\n",*x,*y);
     }
 
