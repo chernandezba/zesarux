@@ -343,7 +343,5 @@ Deberia detectar la salida correcta
 
 -en checklist Test cargar juegos PCW
 
-ok -Teclas de Cursores en ventana de pantalla emulada que no hagan scroll de ventana
-
 
 -mk14 no renderiza bien con real video o sin , si desactivamos el border

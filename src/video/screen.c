@@ -5632,7 +5632,7 @@ void scr_refresca_border_mk14_rainbow(int color)
 
 
 
-//Refresco pantalla Para mk14. De momento solo poner la pantalla en blanco
+//Refresco pantalla Para mk14.
 void scr_refresca_pantalla_y_border_mk14_comun(void)
 {
 
@@ -5655,10 +5655,15 @@ void scr_refresca_pantalla_y_border_mk14_comun(void)
 
         }
 
+        screen_mk14_putpixel_zoom_rainbow_offset_x=LEFT_BORDER_NO_ZOOM;
+        screen_mk14_putpixel_zoom_rainbow_offset_y=TOP_BORDER_NO_ZOOM;
+
     }
 
-    screen_mk14_putpixel_zoom_rainbow_offset_x=LEFT_BORDER_NO_ZOOM;
-    screen_mk14_putpixel_zoom_rainbow_offset_y=TOP_BORDER_NO_ZOOM;
+    else {
+        screen_mk14_putpixel_zoom_rainbow_offset_x=0;
+        screen_mk14_putpixel_zoom_rainbow_offset_y=0;
+    }
 
 
     int x,y;
