@@ -20189,6 +20189,8 @@ void menu_video_output_overlay(void)
         z80_int *puntero;
         puntero=rainbow_buffer;
 
+        int renderizar_fondo=0;
+
         if (menu_video_output_last_machine!=-1) {
 
             if (setting_emulated_display_win_autoresize.v) {
@@ -20229,6 +20231,7 @@ void menu_video_output_overlay(void)
             menu_video_output_alloc_putpixel_cache(ancho_ventana,alto_ventana);
 
             if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
+                renderizar_fondo=1;
                 //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
@@ -20266,6 +20269,7 @@ void menu_video_output_overlay(void)
             menu_video_output_alloc_putpixel_cache(ancho,alto);
 
             if (menu_video_output_window->dirty_user_must_draw_contents || menu_video_output_forzar_redibujado_frames) {
+                renderizar_fondo=1;
                 //printf("limpiando putpixel cache de ventana %d\n",contador_segundo);
                 menu_video_output_clear_putpixel_cache();
                 menu_video_output_window->dirty_user_must_draw_contents=0;
@@ -20287,6 +20291,23 @@ void menu_video_output_overlay(void)
             }
         }
 
+
+        //Si no esta ZX Desktop, alguien tiene que dibujar algo en la zona de la pantalla docked
+        //TODO: si esta ventana de Emulated Display esta minimizada, aqui no se llegara y por tanto no se dibujara el color de fondo
+        if (!screen_ext_desktop_enabled && renderizar_fondo) {
+            //parte superior
+            int total_ancho=screen_get_emulated_display_width_zoom_border_en();
+            int total_alto=screen_get_emulated_display_height_zoom_border_en();
+
+            //dibujar el fondo con el color del tema
+            int color_fondo_docked=ESTILO_GUI_PAPEL_NORMAL;
+
+            for (y=0;y<total_alto;y++) {
+                for (x=0;x<total_ancho;x++) {
+                    scr_putpixel(x,y,color_fondo_docked);
+                }
+            }
+        }
 
 
     }
