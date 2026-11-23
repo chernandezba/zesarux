@@ -286,20 +286,9 @@ soft? https://zxaaa.net/view_demos.php?t=&s=scorpion&title=Title&vers=35
 
 ---------------
 
----- ventana video output como sustituto del render normal de maquina:
 
-
-
-Que pasa sin ZX desktop? Quizá no se debería hacer este cambio a ventana si
-No hay ZX desktop
-
-ok -sin zxdesktop y con ventana emulated display activa, que ponemos en el fondo ? o no permitimos emulated display window si el zx desktop no esta activado?
-
-
-
----------------------
-
--en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen", se verán mal, ejemplo tbblue
+-en teoria en las máquinas que no se puede quitar border, si me voy a fullscreen con opcion de "no border en full screen",
+åse verán mal, ejemplo tbblue
 
 -snapshot zsf que guarde rainbow buffer? quiza es demasiado espacio
 
@@ -343,5 +332,3 @@ Deberia detectar la salida correcta
 
 -en checklist Test cargar juegos PCW
 
-
--mk14 no renderiza bien con real video o sin , si desactivamos el border
