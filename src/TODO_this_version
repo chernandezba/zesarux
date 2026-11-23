@@ -306,14 +306,7 @@ No hay ZX desktop
 -mirilla lightgun desaparece si la ventana de pantalla emulada tiene el foco (realmente con que se abra el menu)
 -corregida posicion
 ->acabar de probarlo bien con diferentes tipos de optical device y ventana de emulated display abierta o cerrada
-->corregir estos casos:
-Posición incorrecta con menu_gui_zoom=2. [lightgun_get_xy (line 168)]
-(/Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/joystick.c:168) resta (x+1)*menu_char_width y su equivalente vertical.
-Sin embargo, [zxvision_putpixel_no_menu_gui_zoom (line 16122)]
-(/Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/zxvision/zxvision.c:16122)
-sitúa el contenido usando también menu_gui_zoom. En máquinas donde vale 2, la posición
-leída queda desplazada respecto a la imagen.
-
+->corregir estes caso:
 Posición incorrecta con Zoom Fit. El [overlay de Emulated Display (line 20194)]
 (/Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/menu/menu_items.c:20194) puede
 escalar la imagen para ajustarla a la ventana. lightgun_get_xy solo resta el origen:

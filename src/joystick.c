@@ -173,8 +173,8 @@ void lightgun_get_xy(int *x,int *y)
     //Si esta ventana de emulated display, ajustar coordenadas
     if (ventana_video_output_esta_abierta()) {
         //printf("Compensar pos. antes:   %d,%d. pos ventana: %d,%d\n",*x,*y,ventana_video_output_x,ventana_video_output_y);
-        *x -=(ventana_video_output_x+1)*menu_char_width;
-        *y -=(ventana_video_output_y+1)*menu_char_height;
+        *x -=(ventana_video_output_x+1)*menu_char_width*menu_gui_zoom;
+        *y -=(ventana_video_output_y+1)*menu_char_height*menu_gui_zoom;
         //printf("Compensar pos. despues: %d,%d\n",*x,*y);
     }
 
