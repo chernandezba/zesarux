@@ -584,7 +584,7 @@ int menu_interface_border_cond(void)
 {
     if (!menu_interface_fullscreen_cond()) return 0;
 
-    if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_PCW) {
+    if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE) {
         return 1;
     }
 
@@ -835,9 +835,10 @@ void menu_interface_fullscreen_enable(void)
 
     }
 
-    //desactivar border
-    if (border_enabled.v && disable_border_on_full_screen) {
-        border_state_before_full_screen=border_enabled.v;
+    // desactivar border en las maquinas que es posible
+    border_state_before_full_screen=border_enabled.v;
+
+    if (border_enabled.v && disable_border_on_full_screen && menu_interface_border_cond() ) {
         menu_interface_border(0);
         //Estos scr_refresca_pantalla_solo_driver son necesarios en Mac por ejemplo, si no, no cambia bien cuando
         //desactiva footer y border... por que? a saber... esto es un poco buggy...
