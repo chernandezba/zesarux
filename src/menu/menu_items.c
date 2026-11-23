@@ -20294,8 +20294,10 @@ void menu_video_output_overlay(void)
 
         //Si no esta ZX Desktop, alguien tiene que dibujar algo en la zona de la pantalla docked
         //TODO: si esta ventana de Emulated Display esta minimizada, aqui no se llegara y por tanto no se dibujara el color de fondo
+        //TODO: quiza en un futuro se debe tener siempre zx desktop activado (aunque se pueda tener con tamaño ancho=alto=0) y por tanto esto ya no hara falta
         if (!screen_ext_desktop_enabled && renderizar_fondo) {
-            //parte superior
+            //printf("Renderizar zona docked %d\n",contador_segundo_infinito);
+
             int total_ancho=screen_get_emulated_display_width_zoom_border_en();
             int total_alto=screen_get_emulated_display_height_zoom_border_en();
 
