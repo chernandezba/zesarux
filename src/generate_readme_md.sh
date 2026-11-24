@@ -119,14 +119,14 @@ ZX Spectrum The Great Escape running on curses (text) driver + utf8 extensions
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_greatescape_curses.png "The Great Escape curses")
 
 
-ZX Spectrum Chase H.Q. + three ZEsarUX windows on Pico-8 GUI style. The whole window is 256x192
-
-![alt text](${URLIMAGES_BASE}/screenshots/screenshot_small.png "Chase H.Q. small")
-
-
 ZX81 Mazogs running on curses (text) driver + utf8 extensions
 
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_mazogs_curses.png "Mazogs curses")
+
+
+ZX Spectrum Chase H.Q. + three ZEsarUX windows on Pico-8 GUI style. The whole window is 256x192
+
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_small.png "Chase H.Q. small")
 
 
 ZX-Uno
