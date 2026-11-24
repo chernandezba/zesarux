@@ -12607,6 +12607,13 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not");
         menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not");
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,NULL,NULL,
+            "ZSF save Screen","ZSF grabar Pantalla","ZSF gravar Pantalla");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_snap_save_scr.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Add SCR image file for non Spectrum machines in saved ZSF snapshot");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Add SCR image file for non Spectrum machines in saved ZSF snapshot");
+        menu_add_item_menu_opcion_conmuta(array_menu_settings_snapshot,&zsf_snap_save_scr);
+
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_settings_rom_zsf,NULL,
             "ZSF save R~~OM","ZSF grabar R~~OM","ZSF gravar R~~OM");
         menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_snap_save_rom.v ? 'X' : ' ') );

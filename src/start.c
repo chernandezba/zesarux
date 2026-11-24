@@ -1476,6 +1476,7 @@ screen_effect_print_names();
         "--nex-no-automount-esxdos   Do not mount esxdos folder when opening .nex/.snx files\n"
         "--zsf-uncompressed          Save uncompressed ZSF snapshots\n"
         "--zsf-save-rom              Include ROM contents in saved ZSF snapshot. Useful when running custom roms. Only available for Spectrum/Clones models 16k/48k/128k/+2/+2A/+3\n"
+        "--zsf-no-save-scr           Do not add SCR image file for non Spectrum machines in saved ZSF snapshot\n"
         "--no-close-after-smartload  Do not close menu after SmartLoad\n"
         "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
         "--snapram-enable            Enable snapshots in ram\n"
@@ -5238,6 +5239,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--zsf-save-rom")) {
                 zsf_snap_save_rom.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zsf-no-save-scr")) {
+                zsf_snap_save_scr.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--no-close-after-smartload")) {

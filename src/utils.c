@@ -5129,6 +5129,7 @@ int util_write_configfile(void)
 
     if (zsf_force_uncompressed)                     ADD_STRING_CONFIG,"--zsf-uncompressed");
     if (zsf_snap_save_rom.v)                        ADD_STRING_CONFIG,"--zsf-save-rom");
+    if (zsf_snap_save_scr.v==0)                     ADD_STRING_CONFIG,"--zsf-no-save-scr");
 
     if (no_close_menu_after_smartload.v)            ADD_STRING_CONFIG,"--no-close-after-smartload");
 

@@ -7575,7 +7575,7 @@ bit 1: ql_audio_output_bit
 
 
 
-  if (!MACHINE_IS_SPECTRUM && !MACHINE_IS_ZX8081 && !MACHINE_IS_QL && rainbow_enabled.v) {
+  if (!MACHINE_IS_SPECTRUM && !MACHINE_IS_ZX8081 && !MACHINE_IS_QL && rainbow_enabled.v && zsf_snap_save_scr.v) {
     z80_byte *scrmem=util_malloc(6912,"Can not allocate memory for ZSF SCR preview");
     z80_byte *compressed_scrblock=util_malloc(6912*2+5,"Can not allocate memory for compressed ZSF SCR preview");
 

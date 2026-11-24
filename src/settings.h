@@ -178,6 +178,8 @@ extern z80_bit keyboard_swap_enter_return;
 
 extern z80_bit zsf_snap_save_rom;
 
+extern z80_bit zsf_snap_save_scr;
+
 extern z80_bit xanniversary_logo;
 
 extern z80_bit setting_process_switcher_immutable;

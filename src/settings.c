@@ -203,6 +203,9 @@ z80_bit sync_clock_to_z88={1};
 //que el snapshot la restaure
 z80_bit zsf_snap_save_rom={0};
 
+//Incluir SCR adicional para no maquinas Spectrum
+z80_bit zsf_snap_save_scr={1};
+
 
 //Automontar ruta con el esxdos handler al cargar snapshots de Next .nex y .snx
 z80_bit automount_esxdos_nex={1};
