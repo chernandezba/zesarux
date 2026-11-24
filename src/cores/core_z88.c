@@ -51,6 +51,7 @@
 #include "snap_zsf.h"
 #include "zeng.h"
 #include "zeng_online_client.h"
+#include "snap_ram.h"
 
 z80_byte byte_leido_core_z88;
 
@@ -478,6 +479,9 @@ void cpu_core_loop_z88(void)
                 //50*0.3=15
                 if (contador_parpadeo>=15) estado_parpadeo_cursor.v=0;
                 else estado_parpadeo_cursor.v=1;
+
+                //snapshot en ram
+                snapshot_add_in_ram();
 
                 //printf ("contador: %d parpadeo_cursor: %d\n",contador_parpadeo,estado_parpadeo_cursor.v);
             }

@@ -51,6 +51,7 @@
 #include "snap_zsf.h"
 #include "zeng.h"
 #include "zeng_online_client.h"
+#include "snap_ram.h"
 
 
 
@@ -209,6 +210,9 @@ else printf ("   ");
 				}
 
                 core_end_frame_check_zrcp_zeng_snap.v=1;
+
+                //snapshot en ram
+                snapshot_add_in_ram();
 
 
         //Final de instrucciones ejecutadas en un frame de pantalla
