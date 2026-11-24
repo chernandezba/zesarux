@@ -24994,7 +24994,8 @@ z80_byte *util_bmp_new(int ancho,int alto)
 
         z80_byte *puntero;
 
-        puntero=malloc(memoria_necesaria);
+        //Inicializar también los bytes de relleno de cada fila.
+        puntero=calloc(1,memoria_necesaria);
 
         if (puntero==NULL) cpu_panic("Can not allocate memory for bmp file");
 
@@ -25063,10 +25064,8 @@ z80_byte *util_bmp_new(int ancho,int alto)
         puntero[43]=value_16_to_8h(2835);
         puntero[44]=puntero[45]=0;
 
-        //Number of actually used colors. For a 8-bit / pixel bitmap this will be 100h or 256.
-        //-> 1 ^24
-        puntero[46]=puntero[47]=puntero[48]=0;
-        puntero[49]=1;
+        //Un BMP de 24 bits sin paleta debe indicar cero colores de tabla.
+        puntero[46]=puntero[47]=puntero[48]=puntero[49]=0;
 
         //Number of important colors  0 = all
         puntero[50]=puntero[51]=puntero[52]=puntero[53]=0;
