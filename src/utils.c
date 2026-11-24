@@ -25123,91 +25123,93 @@ void util_bmp_putpixel(z80_byte *puntero,int x,int y,int r,int g,int b)
 
 void convert_rainbow_to_scr(z80_byte *scrmem)
 {
-        int ancho=get_total_ancho_rainbow();
-        int offset_x,offset_y,ancho_visible,alto_visible;
-        int celda_x,celda_y,x,y,brillo,papel,tinta;
+    int ancho=get_total_ancho_rainbow();
+    int offset_x,offset_y,ancho_visible,alto_visible;
+    int celda_x,celda_y,x,y,brillo,papel,tinta;
 
-        scr_return_margenxy_rainbow(&offset_x,&offset_y);
-        scr_return_dimensions_rainbow(&ancho_visible,&alto_visible);
+    scr_return_margenxy_rainbow(&offset_x,&offset_y);
+    scr_return_dimensions_rainbow(&ancho_visible,&alto_visible);
 
-        //Cada celda SCR solo admite dos colores con un brillo compartido.
-        for (celda_y=0;celda_y<24;celda_y++) {
-                for (celda_x=0;celda_x<32;celda_x++) {
-                        int errores[64][16];
-                        int mejor_error=0x7fffffff;
-                        int mejor_papel=0,mejor_tinta=0,mejor_brillo=0;
-                        int pixel=0;
+    //Cada celda SCR solo admite dos colores con un brillo compartido.
+    for (celda_y=0;celda_y<24;celda_y++) {
+        for (celda_x=0;celda_x<32;celda_x++) {
+            int errores[64][16];
+            int mejor_error=0x7fffffff;
+            int mejor_papel=0,mejor_tinta=0,mejor_brillo=0;
+            int pixel=0;
 
-                        for (y=0;y<8;y++) {
-                                for (x=0;x<8;x++) {
-                                        int destino_x=celda_x*8+x;
-                                        int destino_y=celda_y*8+y;
-                                        int inicio_x=destino_x*ancho_visible/256;
-                                        int fin_x=(destino_x+1)*ancho_visible/256;
-                                        int inicio_y=destino_y*alto_visible/192;
-                                        int fin_y=(destino_y+1)*alto_visible/192;
-                                        int suma_r=0,suma_g=0,suma_b=0,muestras=0;
-                                        int origen_x,origen_y,r,g,b,color;
+            for (y=0;y<8;y++) {
+                for (x=0;x<8;x++) {
+                    int destino_x=celda_x*8+x;
+                    int destino_y=celda_y*8+y;
+                    int inicio_x=destino_x*ancho_visible/256;
+                    int fin_x=(destino_x+1)*ancho_visible/256;
+                    int inicio_y=destino_y*alto_visible/192;
+                    int fin_y=(destino_y+1)*alto_visible/192;
+                    int suma_r=0,suma_g=0,suma_b=0,muestras=0;
+                    int origen_x,origen_y,r,g,b,color;
 
-                                        if (fin_x<=inicio_x) fin_x=inicio_x+1;
-                                        if (fin_y<=inicio_y) fin_y=inicio_y+1;
-                                        for (origen_y=inicio_y;origen_y<fin_y;origen_y++) {
-                                                for (origen_x=inicio_x;origen_x<fin_x;origen_x++) {
-                                                        z80_int indice=rainbow_buffer[(offset_y+origen_y)*ancho+offset_x+origen_x];
-                                                        convertir_color_spectrum_paleta_to_rgb(indice,&r,&g,&b);
-                                                        suma_r+=r;
-                                                        suma_g+=g;
-                                                        suma_b+=b;
-                                                        muestras++;
-                                                }
-                                        }
-                                        r=suma_r/muestras;
-                                        g=suma_g/muestras;
-                                        b=suma_b/muestras;
-                                        for (color=0;color<16;color++) {
-                                                int destino=spectrum_colortable_original_new[color];
-                                                int dr=r-((destino>>16)&255);
-                                                int dg=g-((destino>>8)&255);
-                                                int db=b-(destino&255);
-                                                errores[pixel][color]=dr*dr+dg*dg+db*db;
-                                        }
-                                        pixel++;
-                                }
+                    if (fin_x<=inicio_x) fin_x=inicio_x+1;
+                    if (fin_y<=inicio_y) fin_y=inicio_y+1;
+                    for (origen_y=inicio_y;origen_y<fin_y;origen_y++) {
+                        for (origen_x=inicio_x;origen_x<fin_x;origen_x++) {
+                            z80_int indice=rainbow_buffer[(offset_y+origen_y)*ancho+offset_x+origen_x];
+                            convertir_color_spectrum_paleta_to_rgb(indice,&r,&g,&b);
+                            suma_r+=r;
+                            suma_g+=g;
+                            suma_b+=b;
+                            muestras++;
                         }
-
-                        for (brillo=0;brillo<2;brillo++) {
-                                for (papel=0;papel<8;papel++) {
-                                        for (tinta=papel;tinta<8;tinta++) {
-                                                int error=0;
-                                                for (pixel=0;pixel<64;pixel++) {
-                                                        int error_papel=errores[pixel][papel+brillo*8];
-                                                        int error_tinta=errores[pixel][tinta+brillo*8];
-                                                        error+=error_papel<error_tinta ? error_papel : error_tinta;
-                                                }
-                                                if (error<mejor_error) {
-                                                        mejor_error=error;
-                                                        mejor_papel=papel;
-                                                        mejor_tinta=tinta;
-                                                        mejor_brillo=brillo;
-                                                }
-                                        }
-                                }
-                        }
-
-                        scrmem[6144+celda_y*32+celda_x]=mejor_tinta | (mejor_papel<<3) | (mejor_brillo<<6);
-                        for (y=0;y<8;y++) {
-                                z80_byte bits=0;
-                                for (x=0;x<8;x++) {
-                                        pixel=y*8+x;
-                                        if (errores[pixel][mejor_tinta+mejor_brillo*8] <
-                                            errores[pixel][mejor_papel+mejor_brillo*8]) bits|=128>>x;
-                                }
-                                int linea=celda_y*8+y;
-                                int direccion=((linea&0xC0)<<5) | ((linea&7)<<8) | ((linea&0x38)<<2) | celda_x;
-                                scrmem[direccion]=bits;
-                        }
+                    }
+                    r=suma_r/muestras;
+                    g=suma_g/muestras;
+                    b=suma_b/muestras;
+                    for (color=0;color<16;color++) {
+                        int destino=spectrum_colortable_original_new[color];
+                        int dr=r-((destino>>16)&255);
+                        int dg=g-((destino>>8)&255);
+                        int db=b-(destino&255);
+                        errores[pixel][color]=dr*dr+dg*dg+db*db;
+                    }
+                    pixel++;
                 }
+            }
+
+            for (brillo=0;brillo<2;brillo++) {
+                for (papel=0;papel<8;papel++) {
+                    for (tinta=papel;tinta<8;tinta++) {
+                        int error=0;
+
+                        for (pixel=0;pixel<64;pixel++) {
+                            int error_papel=errores[pixel][papel+brillo*8];
+                            int error_tinta=errores[pixel][tinta+brillo*8];
+                            error+=error_papel<error_tinta ? error_papel : error_tinta;
+                        }
+
+                        if (error<mejor_error) {
+                            mejor_error=error;
+                            mejor_papel=papel;
+                            mejor_tinta=tinta;
+                            mejor_brillo=brillo;
+                        }
+                    }
+                }
+            }
+
+            scrmem[6144+celda_y*32+celda_x]=mejor_tinta | (mejor_papel<<3) | (mejor_brillo<<6);
+            for (y=0;y<8;y++) {
+                z80_byte bits=0;
+                for (x=0;x<8;x++) {
+                    pixel=y*8+x;
+                    if (errores[pixel][mejor_tinta+mejor_brillo*8] <
+                        errores[pixel][mejor_papel+mejor_brillo*8]) bits|=128>>x;
+                }
+                int linea=celda_y*8+y;
+                int direccion=((linea&0xC0)<<5) | ((linea&7)<<8) | ((linea&0x38)<<2) | celda_x;
+                scrmem[direccion]=bits;
+            }
         }
+    }
 }
 
 void util_write_screen_bmp(char *archivo)
