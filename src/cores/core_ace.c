@@ -67,8 +67,6 @@ void core_ace_handle_interrupts(void)
     //ver si esta en HALT
     if (z80_halt_signal.v) {
         z80_halt_signal.v=0;
-        //reg_pc++;
-
     }
 
 
@@ -316,19 +314,6 @@ void cpu_core_loop_ace(void)
 
 
 
-            /*
-            if (iff1.v==1) {
-
-                //solo cuando cambia de 1 a 0
-                if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
-
-                    interrupcion_maskable_generada.v=1;
-
-                }
-            }
-            */
-
-
         }
     }
 
@@ -348,7 +333,7 @@ void cpu_core_loop_ace(void)
                     //digamos que de esos 31200 hz, 1 de cada dos samples no lo escuchamos, aunque por el puerto EAR se interpretan los dos
                     audio_read_sample_audio_input();
                     realtape_last_value=audio_last_record_input_sample;
-                    //return;
+
                 }
             }
         }
