@@ -983,6 +983,15 @@ Byte Fields:
 -Block ID 86: ZSF_ATM_TURBO_CONF
 See functions store_zsf_atm_turbo_conf() y load_zsf_atm_turbo_conf to get info about this block
 
+-Block ID 87: ZSF_RAINBOW_SCR
+Vista previa de la pantalla sin borde, en formato SCR de Spectrum (6912 bytes).
+Byte Fields:
+0: Flags. Bit 0: datos comprimidos con repeticiones DD DD YY ZZ
+1,2: Direccion inicial (0)
+3,4: Longitud sin comprimir (6912)
+5 y siguientes: datos de pantalla
+No se utiliza para restaurar el estado de la maquina.
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -1084,6 +1093,7 @@ char *zsf_block_id_names[]={
   "ZSF_SCORPIONGMX_CONF",
   "ZSF_ATM_TURBO_RAMBLOCK",
   "ZSF_ATM_TURBO_CONF",
+  "ZSF_RAINBOW_SCR",
 
 
   "Unknown"  //Este siempre al final
@@ -4314,6 +4324,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
     case ZSF_DIDAKTIKGAMA_RAMBLOCK:
         load_zsf_didaktikgama_ramblock(block_data,block_lenght);
+    break;
+
+    case ZSF_RAINBOW_SCR:
+        //La pantalla de vista previa no modifica el estado de la maquina.
     break;
 
       default:
@@ -7560,6 +7574,25 @@ bit 1: ql_audio_output_bit
   }
 
 
+
+  if (!MACHINE_IS_SPECTRUM && !MACHINE_IS_ZX8081 && !MACHINE_IS_QL && rainbow_enabled.v) {
+    z80_byte *scrmem=util_malloc(6912,"Can not allocate memory for ZSF SCR preview");
+    z80_byte *compressed_scrblock=util_malloc(6912*2+5,"Can not allocate memory for compressed ZSF SCR preview");
+
+    convert_rainbow_to_scr(scrmem);
+    compressed_scrblock[1]=compressed_scrblock[2]=0;
+    compressed_scrblock[3]=value_16_to_8l(6912);
+    compressed_scrblock[4]=value_16_to_8h(6912);
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(scrmem,&compressed_scrblock[5],6912,&si_comprimido);
+    compressed_scrblock[0]=si_comprimido;
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total,compressed_scrblock,ZSF_RAINBOW_SCR,longitud_bloque+5);
+
+    free(compressed_scrblock);
+    free(scrmem);
+  }
 
   //test meter un NOOP
   //zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, NULL,0, 0);

@@ -20958,6 +20958,9 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
     //Ultimo machine id leido
     z80_byte last_machine_id_read=0;
 
+    //Vista previa opcional para maquinas sin pantalla SCR en su RAM.
+    z80_byte *rainbow_scr=NULL;
+
 
     //De momento generamos ese archivo de pantalla en negro, por si no puede sacar la pantalla,
     //al menos que el archivo se cree pero en negro
@@ -20976,6 +20979,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
         if (leidos!=6) {
             debug_printf(VERBOSE_DEBUG,"Error reading snapshot file. Read: %u Expected: 6",leidos);
+            if (rainbow_scr!=NULL) free(rainbow_scr);
+            zvfs_fclose(in_fatfs,ptr_zsf_file,&fil);
             return 1;
         }
 
@@ -21007,6 +21012,9 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
             if (leidos!=block_lenght_zsf) {
                 debug_printf(VERBOSE_DEBUG,"Error reading snapshot file. Read: %u Expected: %u",leidos,block_lenght_zsf);
+                free(block_data);
+                if (rainbow_scr!=NULL) free(rainbow_scr);
+                zvfs_fclose(in_fatfs,ptr_zsf_file,&fil);
                 return 1;
             }
         }
@@ -21029,6 +21037,11 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
         z80_byte *buffer_memoria;
 
         switch(block_id) {
+
+            case ZSF_RAINBOW_SCR:
+                if (rainbow_scr==NULL) rainbow_scr=util_malloc(6912,"Can not allocate memory for ZSF SCR preview");
+                load_zsf_snapshot_block_data_addr(&block_data[5],rainbow_scr,6912,block_lenght_zsf-5,block_data[0]&1);
+            break;
 
             case ZSF_MACHINEID:
                 last_machine_id_read=block_data[0];
@@ -21135,6 +21148,9 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 3,4: Block lenght (if 0, means 65536. Value 0 only used on Inves)
                 5 and next bytes: data bytes
                 */
+
+                //La RAM del Jupiter Ace no contiene una pantalla SCR.
+                if (last_machine_id_read==MACHINE_ID_ACE) break;
 
                 //Ya tenemos pantalla
                 salir=1;
@@ -21448,6 +21464,12 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
     zvfs_fclose(in_fatfs,ptr_zsf_file,&fil);
     //fclose(ptr_zsf_file);
+
+    if (!salir && rainbow_scr!=NULL) {
+        util_save_file(rainbow_scr,6912,archivo_destino);
+    }
+
+    if (rainbow_scr!=NULL) free(rainbow_scr);
 
     return 0;
 

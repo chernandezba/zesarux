@@ -14,6 +14,7 @@ Agregado soporte de 60 hz para las máquinas: Master System, SG1000, MSX, Coleco
 Agregado renderizado en real video para PCW, Jupiter Ace y Sam Coupe
 Permitir enviar mensages privados a usuarios en ZENG Online
 Permitir smartload de archivo SCL
+Agregada vista previa SCR previews en todos los snapshots ZSF
 Permitir grabar cualquier pantalla de máquina a archivo SCR (archivo de pantalla Spectrum)
 Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 Agregado soporte para disparar acciones de tipo Tecla-F desde el joystick (Reset CPU, Abrir ventana, NMI, etc). También, los eventos de joystick "Quicksave", "Rewind", "FForward" han sido eliminados y pueden ser disparados ahora como acciones
