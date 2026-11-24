@@ -1051,6 +1051,7 @@ extern z80_int util_get_value_little_endian(z80_byte *origin);
 extern void util_get_home_dir(char *homedir);
 
 extern void util_write_screen_bmp(char *archivo);
+extern void convert_rainbow_to_scr(z80_byte *scrmem);
 
 extern void util_bmp_load_palette(z80_byte *mem,int indice_inicio_color);
 

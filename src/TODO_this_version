@@ -191,9 +191,6 @@ necesita core 3.2.0 o inferior!
 ***Baseconf*****
 
 
--modo video que aparezca en debug->baseconf->video info
-->mas info adicional?
-->mas ventanas en debug->baseconf?
 
 -probado con mmc pruebabaseconf.mmc
 -probado con ide con baseconf-fat32.ide

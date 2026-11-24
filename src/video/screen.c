@@ -3432,6 +3432,58 @@ if (MACHINE_IS_Z88) {
 
 }
 
+void scr_return_dimensions_rainbow(int *ancho,int *alto)
+{
+        if (MACHINE_IS_Z88) {
+                *ancho=SCREEN_Z88_WIDTH;
+                *alto=SCREEN_Z88_HEIGHT;
+        }
+        else if (MACHINE_IS_CPC) {
+                *ancho=CPC_DISPLAY_WIDTH;
+                *alto=CPC_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_PCW) {
+                *ancho=PCW_DISPLAY_WIDTH;
+                *alto=PCW_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_PRISM) {
+                *ancho=PRISM_DISPLAY_WIDTH;
+                *alto=PRISM_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_TSCONF) {
+                *ancho=TSCONF_DISPLAY_WIDTH;
+                *alto=TSCONF_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_BASECONF) {
+                *ancho=BASECONF_DISPLAY_WIDTH;
+                *alto=BASECONF_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_ATM_TURBO) {
+                *ancho=ATM_TURBO_DISPLAY_WIDTH;
+                *alto=ATM_TURBO_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_SCORPION_GMX) {
+                *ancho=SCORPIONGMX_DISPLAY_WIDTH;
+                *alto=SCORPIONGMX_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_TBBLUE) {
+                *ancho=TBBLUE_DISPLAY_WIDTH;
+                *alto=TBBLUE_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_SAM) {
+                *ancho=SAM_DISPLAY_WIDTH;
+                *alto=SAM_DISPLAY_HEIGHT;
+        }
+        else if (MACHINE_IS_QL) {
+                *ancho=ql_get_display_width_with_proportion();
+                *alto=QL_DISPLAY_HEIGHT;
+        }
+        else {
+                *ancho=ANCHO_PANTALLA;
+                *alto=ALTO_PANTALLA;
+        }
+}
+
 //Retorna 0 si ese pixel no se debe mostrar debido a tamaño de caracter < 8
 int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 {
@@ -6008,6 +6060,29 @@ void load_screen(char *scrfile)
     else {
         debug_printf (VERBOSE_ERR,"Screen loading only allowed on Spectrum or QL models");
     }
+
+}
+
+void save_rainbow_to_scr(char *scrfile)
+{
+
+    if (rainbow_enabled.v==0) {
+        debug_printf(VERBOSE_ERR,"Need real video enabled");
+        return;
+    }
+
+
+    debug_printf (VERBOSE_INFO,"Saving Screen File");
+
+
+
+    z80_byte *scrmem=util_malloc(6912,"Can not allocate memory for SCR save");
+
+    convert_rainbow_to_scr(scrmem);
+
+    util_save_file(scrmem,6912,scrfile);
+
+    free(scrmem);
 
 }
 

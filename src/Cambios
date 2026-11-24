@@ -14,6 +14,7 @@ Agregado soporte de 60 hz para las máquinas: Master System, SG1000, MSX, Coleco
 Agregado renderizado en real video para PCW, Jupiter Ace y Sam Coupe
 Permitir enviar mensages privados a usuarios en ZENG Online
 Permitir smartload de archivo SCL
+Permitir grabar cualquier pantalla de máquina a archivo SCR (archivo de pantalla Spectrum)
 Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 Agregado soporte para disparar acciones de tipo Tecla-F desde el joystick (Reset CPU, Abrir ventana, NMI, etc). También, los eventos de joystick "Quicksave", "Rewind", "FForward" han sido eliminados y pueden ser disparados ahora como acciones
 Permitir seleccionar archivo de salida desde la ventana de Fuente de sonido Externa
@@ -132,7 +133,7 @@ Corregido efectos multicolor en Spectrum (Nirvana, etc). Gracias a noentiendo
 Corregido Next hardware IM 2 ULA interrupt vector
 Corregido Layer 2 clip window limite derecho en modos 320x256 y 640x256
 Corregido el desactivado del menú de Búsqueda
-Corregido al salvar archivos bmp que no tienen ancho multiple de 4
+Corregido al salvar archivos bmp que no tienen ancho multiple de 4, corregida cabecera
 Corregido al generar archivos pzx agregando pausa de un segundo entre bloques
 Corregido al mostrar forma de onda de cinta en Cinta Real Visual
 Corregido efecto de video Fade Out

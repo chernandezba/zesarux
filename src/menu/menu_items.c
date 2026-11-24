@@ -18367,6 +18367,8 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 
     char *filtros[6];
 
+    int salvar_rainbow_to_scr=0;
+
 
     if (MACHINE_IS_SPECTRUM) {
         filtros[0]="scr";
@@ -18391,9 +18393,20 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
     }
 
     else {
-        filtros[0]="bmp";
-        filtros[1]="txt";
-        filtros[2]=0;
+        if (rainbow_enabled.v) {
+            filtros[0]="scr";
+            filtros[1]="bmp";
+            filtros[2]="txt";
+            filtros[3]=0;
+            salvar_rainbow_to_scr=1;
+        }
+
+        else {
+            filtros[0]="bmp";
+            filtros[1]="txt";
+            filtros[2]=0;
+        }
+
     }
 
 
@@ -18408,7 +18421,13 @@ void menu_display_save_screen(MENU_ITEM_PARAMETERS)
 
         }
 
-        save_screen(screen_save_file);
+        if (!util_compare_file_extension(screen_save_file,"scr") && salvar_rainbow_to_scr) {
+            save_rainbow_to_scr(screen_save_file);
+        }
+
+        else {
+            save_screen(screen_save_file);
+        }
 
         //Si ha ido bien la grabacion
         if (!if_pending_error_message) menu_generic_message_splash("Save Screen","OK. Screen saved");
