@@ -1369,11 +1369,24 @@ int find_sharedfile(char *archivo,char *ruta_final)
                         debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
                         existe=si_existe_archivo(buffer_nombre);
 
-                        //sino, en ruta donde está el binario de ZEsarUX que se ha ejecutado
-                        if (!existe && zesarux_path_location[0]) {
-                            sprintf(buffer_nombre,"%s/%s",zesarux_path_location,archivo);
-                            debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                            existe=si_existe_archivo(buffer_nombre);
+                        //sino, en AppImage
+                        if (!existe) {
+                            const char *appdir=getenv("APPDIR");
+
+                            if (appdir!=NULL && appdir[0]) {
+                                snprintf(buffer_nombre,sizeof(buffer_nombre),
+                                    "%s/usr/share/zesarux/%s",appdir,archivo);
+                                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+                                existe=si_existe_archivo(buffer_nombre);
+                            }
+
+
+                            //sino, en ruta donde está el binario de ZEsarUX que se ha ejecutado
+                            if (!existe && zesarux_path_location[0]) {
+                                sprintf(buffer_nombre,"%s/%s",zesarux_path_location,archivo);
+                                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+                                existe=si_existe_archivo(buffer_nombre);
+                            }
                         }
                 }
         }

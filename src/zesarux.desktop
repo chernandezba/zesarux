@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ZEsarUX
+GenericName=Retro Computer Emulator
+Comment=ZX Spectrum and other retro computers emulator
+Comment[es]=Emulador de ZX Spectrum y otros ordenadores clásicos
+Comment[ca]=Emulador de ZX Spectrum i altres ordinadors clàssics
+Exec=zesarux %F
+Icon=zesarux_48
+Terminal=false
+Categories=Game;Emulator;
+Keywords=ZX;Spectrum;Sinclair;Retro;Emulator;Z80;
+StartupNotify=true

@@ -396,6 +396,54 @@ make
 make rpi
 
 
+** AppImage
+
+
+con root:
+apt install \
+    wget \
+    file \
+    binutils \
+    patchelf \
+    squashfs-tools \
+    desktop-file-utils \
+    libfuse2t64
+
+no root:
+
+cd ~
+
+
+wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+
+chmod +x linuxdeploy-x86_64.AppImage
+
+usuario@debian64:~$ ./linuxdeploy-x86_64.AppImage --version
+
+usuario@debian64:~$ ./linuxdeploy-x86_64.AppImage --list-plugins
+
+
+
+cd zesarux/src/
+
+
+
+mkdir -p ZEsarUX.AppDir/usr/share/zesarux
+
+cp -a *.rom ZEsarUX.AppDir/usr/share/zesarux/
+
+./linuxdeploy-x86_64.AppImage \
+    --appdir ZEsarUX.AppDir \
+    --executable ./zesarux \
+    --desktop-file ./zesarux.desktop \
+    --icon-file ./zesarux.png \
+    --output appimage
+
+
+
+
+
+
 ** Mac Arm ("Silicon")
 
 ZEsarUX-version-macos-silicon.dmg
