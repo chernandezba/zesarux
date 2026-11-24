@@ -320,14 +320,3 @@ Deberia detectar la salida correcta
 
 
 -en checklist Test cargar juegos PCW
-
-----
-
--master system:
-outrun: corregido dibujado pista y tablero y nubes
-chasehq: tambien bien
-bank panic ok
-astro flash ok
-
-
-ok terminator: se ven mal la mayoria de tiles
