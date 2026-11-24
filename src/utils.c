@@ -1416,44 +1416,7 @@ void open_sharedfile_write_open(char *archivo,FILE **f)
 
 }
 
-//Abre un archivo en escritura buscandolo en las rutas:
-//1) ruta actual
-//2) ../Resources/
-//3) INSTALLPREFIX/
-//modifica puntero FILE adecuadamente
-//Primero mira que el archivo exista y luego intenta abrirlo para escritura
-void old_open_sharedfile_write(char *archivo,FILE **f)
-{
-        char buffer_nombre[1024];
 
-        //ruta actual
-        debug_printf(VERBOSE_INFO,"Looking for file %s at current dir",archivo);
-        open_sharedfile_write_open(archivo,f);
-
-        //sino, en ../Resources
-        if (!(*f)) {
-                sprintf(buffer_nombre,"../Resources/%s",archivo);
-                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                open_sharedfile_write_open(buffer_nombre,f);
-
-                //sino, en INSTALLPREFIX/share/zesarux
-                if (!(*f)) {
-                        sprintf(buffer_nombre,"%s/%s/%s",INSTALL_PREFIX,"/share/zesarux/",archivo);
-                        debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                        open_sharedfile_write_open(buffer_nombre,f);
-
-                        //sino, en ruta donde está el binario de ZEsarUX que se ha ejecutado
-                        if (!(*f)) {
-                                sprintf(buffer_nombre,"%s/%s",zesarux_path_location,archivo);
-                                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                                open_sharedfile_write_open(buffer_nombre,f);
-                        }
-                }
-        }
-
-    //printf ("file: %d\n",*f);
-
-}
 
 //Abre un archivo en escritura buscandolo en las rutas habituales
 //modifica puntero FILE adecuadamente
