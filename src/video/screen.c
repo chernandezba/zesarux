@@ -6003,24 +6003,13 @@ void load_screen(char *scrfile)
 
         else {
 
-            /*if (MACHINE_IS_SPECTRUM_16_48) fread(memoria_spectrum+16384,1,6912,ptr_scrfile);
 
-            else {
-
-                //modo 128k. cargar en pagina 5 o 7
-                int pagina=5;
-                if ( (puerto_32765&8) ) pagina=7;
-
-                fread(ram_mem_table[pagina],1,6912,ptr_scrfile);
-            }
-            */
             z80_byte leido;
             int i;
             for (i=0;i<6912;i++) {
                 fread(&leido,1,1,ptr_scrfile);
                 poke_byte_no_time(16384+i,leido);
             }
-
 
 
             fclose(ptr_scrfile);
