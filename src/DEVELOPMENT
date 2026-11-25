@@ -401,13 +401,15 @@ make rpi
 
 docker build --tag=zesarux.appimage --progress plain -f Dockerfile.appimage .
 
+# por si ya se estaba ejecutando
+docker container rm run-zesarux-appimage
+
 docker run --name run-zesarux-appimage -it zesarux.appimage --vo stdout --ao null --disable-first-start-wizard --exit-after 1
 
+#para dar tiempo a arrancar
 sleep 1
 
-docker cp run-zesarux-appimage/zesarux/src/ZEsarUX-x86_64.AppImage zesarux.appimage
-
-
+docker cp run-zesarux-appimage:/zesarux/src/ZEsarUX-x86_64.AppImage ZEsarUX_linux-13.1-x86_64.AppImage
 
 
 
