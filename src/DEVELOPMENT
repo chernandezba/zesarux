@@ -281,6 +281,7 @@ ZEsarUX_linux-13.0-debian13_i686.tar.gz                 43 MB
 ZEsarUX_linux-13.0-debian13_x86_64.tar.gz               43 MB
 ZEsarUX_linux-13.0-fedora42_x86_64.tar.gz               43 MB
 ZEsarUX_linux-13.0-ubuntu24_x86_64.tar.gz               43 MB
+ZEsarUX_linux-13.0_x86_64.AppImage                      47 MB
 ZEsarUX_macos-intel-13.0.dmg                            41 MB
 ZEsarUX_macos-silicon-13.0.dmg                          41 MB
 ZEsarUX_raspberrypios-framebuffer-13.0_armv6l.tar.gz    42 MB
@@ -397,7 +398,6 @@ make rpi
 
 
 ** AppImage
-
 
 docker build --tag=zesarux.appimage --progress plain -f Dockerfile.appimage .
 
