@@ -1353,43 +1353,43 @@ int find_sharedfile(char *archivo,char *ruta_final)
 
     int existe;
 
-        //ruta actual
-        debug_printf(VERBOSE_INFO,"Looking for file %s from current dir",buffer_nombre);
-        existe=si_existe_archivo(buffer_nombre);
+    //ruta actual
+    debug_printf(VERBOSE_INFO,"Looking for file %s from current dir",buffer_nombre);
+    existe=si_existe_archivo(buffer_nombre);
 
-        //si no, en ../Resources (ruta de MacOS)
-        if (!existe) {
-                sprintf(buffer_nombre,"../Resources/%s",archivo);
-                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                existe=si_existe_archivo(buffer_nombre);
+    //si no, en ../Resources (ruta de MacOS)
+    if (!existe) {
+            sprintf(buffer_nombre,"../Resources/%s",archivo);
+            debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+            existe=si_existe_archivo(buffer_nombre);
 
-                //si no, en INSTALLPREFIX/share/zesarux (ruta habitualmente de Unix)
-                if (!existe) {
-                        sprintf(buffer_nombre,"%s/%s/%s",INSTALL_PREFIX,"/share/zesarux/",archivo);
-                        debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                        existe=si_existe_archivo(buffer_nombre);
+            //si no, en INSTALLPREFIX/share/zesarux (ruta habitualmente de Unix)
+            if (!existe) {
+                    sprintf(buffer_nombre,"%s/%s/%s",INSTALL_PREFIX,"/share/zesarux/",archivo);
+                    debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+                    existe=si_existe_archivo(buffer_nombre);
 
-                        //si no, ruta para AppImage de Linux
-                        if (!existe) {
-                            const char *appdir=getenv("APPDIR");
+                    //si no, ruta para AppImage de Linux
+                    if (!existe) {
+                        const char *appdir=getenv("APPDIR");
 
-                            if (appdir!=NULL && appdir[0]) {
-                                snprintf(buffer_nombre,sizeof(buffer_nombre),
-                                    "%s/usr/share/zesarux/%s",appdir,archivo);
-                                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                                existe=si_existe_archivo(buffer_nombre);
-                            }
-
-
-                            //si no, en ruta donde está el binario de ZEsarUX que se ha ejecutado (Windows, Unix)
-                            if (!existe && zesarux_path_location[0]) {
-                                sprintf(buffer_nombre,"%s/%s",zesarux_path_location,archivo);
-                                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                                existe=si_existe_archivo(buffer_nombre);
-                            }
+                        if (appdir!=NULL && appdir[0]) {
+                            snprintf(buffer_nombre,sizeof(buffer_nombre),
+                                "%s/usr/share/zesarux/%s",appdir,archivo);
+                            debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+                            existe=si_existe_archivo(buffer_nombre);
                         }
-                }
-        }
+
+
+                        //si no, en ruta donde está el binario de ZEsarUX que se ha ejecutado (Windows, Unix)
+                        if (!existe && zesarux_path_location[0]) {
+                            sprintf(buffer_nombre,"%s/%s",zesarux_path_location,archivo);
+                            debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+                            existe=si_existe_archivo(buffer_nombre);
+                        }
+                    }
+            }
+    }
 
     if (existe) {
         if (ruta_final!=NULL) strcpy(ruta_final,buffer_nombre);
