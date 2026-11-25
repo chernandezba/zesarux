@@ -2027,6 +2027,15 @@ ubuntu:
 	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu24_x86_64.tar.gz"
 
 
+appimage:
+	rm -fR ZEsarUX.AppDir
+	mkdir -p ZEsarUX.AppDir/usr/share/zesarux
+	cp -a \$(COMMONFILES) ZEsarUX.AppDir/usr/share/zesarux/
+	~/linuxdeploy-x86_64.AppImage --appdir ZEsarUX.AppDir --executable ./zesarux --desktop-file ./zesarux.desktop --icon-file ./zesarux_48.png --output appimage
+	echo
+	echo "Generated file is : ZEsarUX.AppDirXXXXX"
+
+
 fedora:
 	./docker-zesarux.sh build-version-and-get-binary fedora
 	mv zesarux.fedora zesarux
