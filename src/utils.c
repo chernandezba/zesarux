@@ -1348,7 +1348,7 @@ void clear_shift_z88(void)
 //Retorna ruta archivo en ruta_final (siempre que no sea NULL), valor retorno no 0. Si no existe, valor retorno 0
 int find_sharedfile(char *archivo,char *ruta_final)
 {
-        char buffer_nombre[PATH_MAX];
+    char buffer_nombre[PATH_MAX];
     strcpy(buffer_nombre,archivo);
 
     int existe;
@@ -1357,19 +1357,19 @@ int find_sharedfile(char *archivo,char *ruta_final)
         debug_printf(VERBOSE_INFO,"Looking for file %s from current dir",buffer_nombre);
         existe=si_existe_archivo(buffer_nombre);
 
-        //sino, en ../Resources
+        //si no, en ../Resources (ruta de MacOS)
         if (!existe) {
                 sprintf(buffer_nombre,"../Resources/%s",archivo);
                 debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
                 existe=si_existe_archivo(buffer_nombre);
 
-                //sino, en INSTALLPREFIX/share/zesarux
+                //si no, en INSTALLPREFIX/share/zesarux (ruta habitualmente de Unix)
                 if (!existe) {
                         sprintf(buffer_nombre,"%s/%s/%s",INSTALL_PREFIX,"/share/zesarux/",archivo);
                         debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
                         existe=si_existe_archivo(buffer_nombre);
 
-                        //sino, en AppImage
+                        //si no, ruta para AppImage de Linux
                         if (!existe) {
                             const char *appdir=getenv("APPDIR");
 
@@ -1381,7 +1381,7 @@ int find_sharedfile(char *archivo,char *ruta_final)
                             }
 
 
-                            //sino, en ruta donde está el binario de ZEsarUX que se ha ejecutado
+                            //si no, en ruta donde está el binario de ZEsarUX que se ha ejecutado (Windows, Unix)
                             if (!existe && zesarux_path_location[0]) {
                                 sprintf(buffer_nombre,"%s/%s",zesarux_path_location,archivo);
                                 debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
