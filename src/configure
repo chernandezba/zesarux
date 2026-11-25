@@ -26,6 +26,7 @@
 # A=`find . -name "*.c"|sort|cut -d '/' -f2|grep -v "\.c"|uniq` ; echo $A
 
 APPIMAGE_BUILD=""
+DOCKER_BUILD=""
 
 CCOMPILER=gcc
 
@@ -79,6 +80,7 @@ show_help()
 	echo "--disable-putpixel-cache     Disable putpixel cache. Test feature"
 	echo "--spectrum-reduced-core      Use reduced Spectrum core by default, recommended for slow devices like Raspberry Pi 1 and Zero. You can also switch it from command line or menu"
 	echo "--enable-appimage            Some settings to indicate AppImage build"
+	echo "--enable-docker              Some settings to indicate Docker build"
 	echo
 	echo "Installation directories:"
 	echo "--prefix PREFIX              Install program files in PREFIX [/usr/local]"
@@ -353,6 +355,10 @@ while [ $# -gt 0 ]; do
 	APPIMAGE_BUILD=" (AppImage)"
 	;;
 
+	--enable-docker)
+	DOCKER_BUILD=" (Docker)"
+	;;
+
         --other-unix)
 	OPTIONOTHER_UNIX="yes"
 	;;
@@ -481,8 +487,8 @@ if [ -e /etc/os-release ]; then
 	SISTEMA_RELEASE=`cat /etc/os-release |grep PRETTY_NAME| head -n1 |cut -d '"' -f2`
 fi
 
-# Agregar sufijo para indicar que esta generado como AppImage
-SISTEMA_RELEASE="${SISTEMA_RELEASE}${APPIMAGE_BUILD}"
+# Agregar sufijo para indicar que esta generado como AppImage y/o con Docker
+SISTEMA_RELEASE="${SISTEMA_RELEASE}${APPIMAGE_BUILD}${DOCKER_BUILD}"
 
 
 if [ "$CHECK_CCOMPILER" = "yes" ] && [ "$OPTIONOTHER_UNIX" = "" ]; then
