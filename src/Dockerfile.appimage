@@ -1,11 +1,16 @@
 FROM debian:bookworm
 
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev libsdl1.2-dev libpulse-dev libsndfile1-dev libasound2-dev
+
+# Nota: en debian 12 es libfuse2, en debian 13 seria libfuse2t64
 RUN apt-get -y install wget file binutils patchelf squashfs-tools desktop-file-utils libfuse2
 
 RUN wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 
 # Workaround for AppImage ELF header incompatibility with Docker emulation
+# Esto pasa por usar Docker en Mac silicon, con contenedor x86_64
+# El kernel de docker realmente es arm64 y hay un problema con esos bytes, porque son para identificar el ejecutable de appimage,
+# pero el cargador del kernel (que es arm64) lo rechaza
 RUN dd if=/dev/zero bs=1 count=3 seek=8 conv=notrunc \
     of=/linuxdeploy-x86_64.AppImage
 
@@ -21,7 +26,6 @@ RUN cd /zesarux/src && APPIMAGE_EXTRACT_AND_RUN=1 make appimage
 
 # Nota: el binario generado no va en docker por la misma razon que linuxdeploy. Si se quiere probar hacer:
 # cp ZEsarUX-x86_64.AppImage ZEsarUX-test.AppImage
-
 # dd if=/dev/zero bs=1 count=3 seek=8 conv=notrunc of=ZEsarUX-test.AppImage
 # APPIMAGE_EXTRACT_AND_RUN=1 ./ZEsarUX-test.AppImage
 

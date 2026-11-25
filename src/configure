@@ -2033,7 +2033,7 @@ appimage:
 	cp -a \$(COMMONFILES) ZEsarUX.AppDir/usr/share/zesarux/
 	/linuxdeploy-x86_64.AppImage --appdir ZEsarUX.AppDir --executable ./zesarux --desktop-file ./zesarux.desktop --icon-file ./zesarux_48.png --output appimage
 	echo
-	echo "Generated file is : ZEsarUX.AppDirXXXXX"
+	echo "Generated file is : ZEsarUX-x86_64.AppImage"
 
 
 fedora:
