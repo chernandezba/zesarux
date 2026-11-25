@@ -1373,11 +1373,13 @@ int find_sharedfile(char *archivo,char *ruta_final)
                     if (!existe) {
                         const char *appdir=getenv("APPDIR");
 
-                        if (appdir!=NULL && appdir[0]) {
-                            snprintf(buffer_nombre,sizeof(buffer_nombre),
-                                "%s/usr/share/zesarux/%s",appdir,archivo);
-                            debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
-                            existe=si_existe_archivo(buffer_nombre);
+                        if (appdir!=NULL) {
+                            if (appdir[0]) {
+                                snprintf(buffer_nombre,sizeof(buffer_nombre),
+                                    "%s/usr/share/zesarux/%s",appdir,archivo);
+                                debug_printf(VERBOSE_INFO,"Looking for file %s",buffer_nombre);
+                                existe=si_existe_archivo(buffer_nombre);
+                            }
                         }
 
 
