@@ -319,4 +319,4 @@ Deberia detectar la salida correcta
 -en checklist Test cargar juegos PCW
 
 
--generar AppImage desde un docker debian 13
+ok -generar AppImage desde un docker debian 12
