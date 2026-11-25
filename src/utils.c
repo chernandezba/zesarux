@@ -25099,39 +25099,52 @@ void util_bmp_putpixel(z80_byte *puntero,int x,int y,int r,int g,int b)
 
 
 
+//Convierte la zona visible del rainbow buffer en los 6912 bytes de un SCR de Spectrum.
+//Los primeros 6144 bytes son pixeles y los ultimos 768 son atributos de celdas 8x8.
+//scrmem apunta al buffer de salida, que debe tener espacio para esos 6912 bytes.
 void convert_rainbow_to_scr(z80_byte *scrmem)
 {
-    int ancho=get_total_ancho_rainbow();
-    int offset_x,offset_y,ancho_visible,alto_visible;
-    int celda_x,celda_y,x,y,brillo,papel,tinta;
+    int ancho=get_total_ancho_rainbow(); //Pixeles por fila del rainbow buffer, incluidos los bordes.
+    int offset_x,offset_y;                //Origen horizontal y vertical de la zona visible en el buffer.
+    int ancho_visible,alto_visible;       //Dimensiones de la zona visible antes de reducirla.
+    int celda_x,celda_y;                  //Columna y fila de la celda de atributos en el SCR.
+    int x,y;                              //Coordenadas del pixel dentro de la celda 8x8.
+    int brillo,papel,tinta;               //Atributos candidatos que se prueban para cada celda.
 
+    //Localizar la pantalla real dentro del buffer, excluyendo el borde de la maquina.
     scr_return_margenxy_rainbow(&offset_x,&offset_y);
     scr_return_dimensions_rainbow(&ancho_visible,&alto_visible);
 
-    //Cada celda SCR solo admite dos colores con un brillo compartido.
+    //El SCR tiene 32x24 celdas; cada una admite tinta, papel y un brillo compartido.
     for (celda_y=0;celda_y<24;celda_y++) {
         for (celda_x=0;celda_x<32;celda_x++) {
-            int errores[64][16];
-            int mejor_error=0x7fffffff;
-            int mejor_papel=0,mejor_tinta=0,mejor_brillo=0;
-            int pixel=0;
+            int errores[64][16];         //Error de cada pixel de la celda frente a los 16 colores Spectrum.
+            int mejor_error=0x7fffffff;  //Menor error total encontrado para esta celda.
+            int mejor_papel=0,mejor_tinta=0,mejor_brillo=0; //Atributos de la mejor combinacion.
+            int pixel=0;                 //Indice lineal del pixel dentro de la celda, de 0 a 63.
 
+            //Reducir la imagen visible a 256x192 y medir el error frente a cada color Spectrum.
             for (y=0;y<8;y++) {
                 for (x=0;x<8;x++) {
-                    int destino_x=celda_x*8+x;
-                    int destino_y=celda_y*8+y;
-                    int inicio_x=destino_x*ancho_visible/256;
-                    int fin_x=(destino_x+1)*ancho_visible/256;
-                    int inicio_y=destino_y*alto_visible/192;
-                    int fin_y=(destino_y+1)*alto_visible/192;
-                    int suma_r=0,suma_g=0,suma_b=0,muestras=0;
-                    int origen_x,origen_y,r,g,b,color;
+                    int destino_x=celda_x*8+x; //Coordenada horizontal en el SCR de 256x192.
+                    int destino_y=celda_y*8+y; //Coordenada vertical en el SCR de 256x192.
+                    int inicio_x=destino_x*ancho_visible/256;     //Primera columna de origen incluida.
+                    int fin_x=(destino_x+1)*ancho_visible/256;   //Primera columna de origen excluida.
+                    int inicio_y=destino_y*alto_visible/192;     //Primera fila de origen incluida.
+                    int fin_y=(destino_y+1)*alto_visible/192;    //Primera fila de origen excluida.
+                    int suma_r=0,suma_g=0,suma_b=0; //Acumuladores RGB del area de origen.
+                    int muestras=0;                 //Numero de pixeles de origen promediados.
+                    int origen_x,origen_y;           //Coordenadas recorridas dentro del area de origen.
+                    int r,g,b;                      //Color RGB del pixel leido y despues su promedio.
+                    int color;                      //Indice del color Spectrum con el que se compara.
 
+                    //Cada pixel destino representa al menos un pixel de origen.
                     if (fin_x<=inicio_x) fin_x=inicio_x+1;
                     if (fin_y<=inicio_y) fin_y=inicio_y+1;
+                    //Promediar los colores del area de origen que corresponde a este pixel.
                     for (origen_y=inicio_y;origen_y<fin_y;origen_y++) {
                         for (origen_x=inicio_x;origen_x<fin_x;origen_x++) {
-                            z80_int indice=rainbow_buffer[(offset_y+origen_y)*ancho+offset_x+origen_x];
+                            z80_int indice=rainbow_buffer[(offset_y+origen_y)*ancho+offset_x+origen_x]; //Indice en la paleta activa.
                             convertir_color_spectrum_paleta_to_rgb(indice,&r,&g,&b);
                             suma_r+=r;
                             suma_g+=g;
@@ -25142,25 +25155,27 @@ void convert_rainbow_to_scr(z80_byte *scrmem)
                     r=suma_r/muestras;
                     g=suma_g/muestras;
                     b=suma_b/muestras;
+                    //Guardar la distancia RGB al cuadrado para reutilizarla al elegir atributos.
                     for (color=0;color<16;color++) {
-                        int destino=spectrum_colortable_original_new[color];
-                        int dr=r-((destino>>16)&255);
-                        int dg=g-((destino>>8)&255);
-                        int db=b-(destino&255);
+                        int destino=spectrum_colortable_original_new[color]; //RGB del color Spectrum candidato.
+                        int dr=r-((destino>>16)&255); //Diferencia en rojo.
+                        int dg=g-((destino>>8)&255);  //Diferencia en verde.
+                        int db=b-(destino&255);       //Diferencia en azul.
                         errores[pixel][color]=dr*dr+dg*dg+db*db;
                     }
                     pixel++;
                 }
             }
 
+            //Elegir la pareja tinta/papel y el brillo con menor error total en la celda.
             for (brillo=0;brillo<2;brillo++) {
                 for (papel=0;papel<8;papel++) {
                     for (tinta=papel;tinta<8;tinta++) {
-                        int error=0;
+                        int error=0; //Suma de los errores de los 64 pixeles para esta pareja de colores.
 
                         for (pixel=0;pixel<64;pixel++) {
-                            int error_papel=errores[pixel][papel+brillo*8];
-                            int error_tinta=errores[pixel][tinta+brillo*8];
+                            int error_papel=errores[pixel][papel+brillo*8]; //Error si el pixel usa papel.
+                            int error_tinta=errores[pixel][tinta+brillo*8]; //Error si el pixel usa tinta.
                             error+=error_papel<error_tinta ? error_papel : error_tinta;
                         }
 
@@ -25174,16 +25189,18 @@ void convert_rainbow_to_scr(z80_byte *scrmem)
                 }
             }
 
+            //Escribir el atributo y decidir para cada pixel si usa tinta o papel.
             scrmem[6144+celda_y*32+celda_x]=mejor_tinta | (mejor_papel<<3) | (mejor_brillo<<6);
             for (y=0;y<8;y++) {
-                z80_byte bits=0;
+                z80_byte bits=0; //Ocho pixeles de una linea: bit a 1 para tinta, a 0 para papel.
                 for (x=0;x<8;x++) {
                     pixel=y*8+x;
                     if (errores[pixel][mejor_tinta+mejor_brillo*8] <
                         errores[pixel][mejor_papel+mejor_brillo*8]) bits|=128>>x;
                 }
-                int linea=celda_y*8+y;
-                int direccion=((linea&0xC0)<<5) | ((linea&7)<<8) | ((linea&0x38)<<2) | celda_x;
+                int linea=celda_y*8+y; //Fila absoluta del SCR, de 0 a 191.
+                //Las lineas de bitmap siguen el orden entrelazado propio del Spectrum.
+                int direccion=((linea&0xC0)<<5) | ((linea&7)<<8) | ((linea&0x38)<<2) | celda_x; //Desplazamiento del byte de bitmap.
                 scrmem[direccion]=bits;
             }
         }
