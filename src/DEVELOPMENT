@@ -409,9 +409,7 @@ docker run --name run-zesarux-appimage -it zesarux.appimage --vo stdout --ao nul
 #para dar tiempo a arrancar
 sleep 1
 
-docker cp run-zesarux-appimage:/zesarux/src/ZEsarUX-x86_64.AppImage ZEsarUX_linux-13.1-x86_64.AppImage
-
-
+docker cp run-zesarux-appimage:/zesarux/src/ZEsarUX-x86_64.AppImage ZEsarUX_linux-13.1_x86_64.AppImage
 
 
 ** Mac Arm ("Silicon")

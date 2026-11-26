@@ -21,6 +21,14 @@ ENV LDFLAGS "-O3"
 
 RUN git clone https://github.com/chernandezba/zesarux.git && cd zesarux/src && ./configure --enable-ssl --enable-appimage --enable-docker --disable-caca --disable-aa --disable-cursesw --prefix /usr && make clean && make -j2
 
+RUN apt-get install -y pv
+
+# La ejecucion de estos tests llega al limite de "ancho de banda" de la consola de BuildKit de docker de Mac (##13 0.140 [output clipped, log limit 200KiB/s reached]), y deja de salir texto
+# lo lanzamos con pv para corregir esto
+RUN bash -o pipefail -c 'cd /zesarux/src && ./automatic_tests.sh 2>&1 | pv -q -L 100k'
+
+# RUN cd /zesarux/src && ./automatic_tests.sh
+
 # Se usa APPIMAGE_EXTRACT_AND_RUN porque necesitariamos Fuse pero no está disponible en docker
 RUN cd /zesarux/src && APPIMAGE_EXTRACT_AND_RUN=1 make appimage
 
