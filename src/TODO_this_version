@@ -319,3 +319,18 @@ void trd_insert_disk(char *nombre)
 	}
 
 Por que??
+
+
+-smartload de trd o scl en baseconf, pone turbo 1x. esto viene por quickload continue:
+
+    //Poner modo turbo a 1. En Z88 no hacer esto, pues desasigna los slots , porque llama a set_machine_params y este a init_z88_memory_slots
+    if (!MACHINE_IS_Z88 && cpu_turbo_speed!=1) {
+        cpu_turbo_speed=1;
+        cpu_set_turbo_speed();
+    }
+
+
+supongo que esto esta asi porque asume que reseteara y por tanto se pone cpu speed a normal
+
+Pero en baseconf si por ejemplo esta ejecutandose una demo (a 2x) al insertar un trd con F9, pues se cambia velocidad de cpu a 1x y la demo va lenta
+(recuerda que no hace reset)
