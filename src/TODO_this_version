@@ -301,6 +301,21 @@ Deberia detectar la salida correcta
 
 -FX effects que siguen raton, que lo haga bien cuando Emulated display en ventana
 
+-Smartload de un trd o scl en baseconf, no hace reset? Aunque sí que reconfigura la máquina
 
+Porque hay esto:
 
-./zesarux --configfile tbblue210.cfg
+void trd_insert_disk(char *nombre)
+{
+
+  if (!MACHINE_IS_SPECTRUM) {
+    debug_printf(VERBOSE_INFO,"Can not enable insert trd betadisk on non Spectrum machine");
+    return;
+  }
+
+    //Al insertar trd en baseconf no quiero que haga reset
+	if (noautoload.v==0 && !MACHINE_IS_BASECONF) {
+		reset_cpu();
+	}
+
+Por que??
