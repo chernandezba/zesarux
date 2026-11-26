@@ -166,8 +166,6 @@ equivalente:
 Y con snapshot de pogie (asi no parece que funcione!):
 ./zesarux --configfile codex_additional/configfile_tbblue_pruebas codex_additional/testpogie.zsf
 
--El changelog oficial aporta la pieza que faltaba: .SNX deja el archivo abierto con handle 0 para que el snapshot cargue datos adicionales
->revisar que al cargar .snx desde quickload tambien soporte lo del file handle
 
 -actualizar tbblue.mmc con ultimo NextZXOS
 
@@ -320,4 +318,8 @@ Deberia detectar la salida correcta
 -en checklist Test cargar juegos PCW
 
 
-ok -generar AppImage desde un docker debian 12
+-FX effects que siguen raton, que lo haga bien cuando Emulated display en ventana
+
+
+
+./zesarux --configfile tbblue210.cfg
