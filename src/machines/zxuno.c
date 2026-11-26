@@ -1463,7 +1463,7 @@ void zxuno_flush_flash_to_disk(void)
 	//printf ("escritos: %d\n",escritos);
 
 	if (escritos!=size || ptr_spiflashfile==NULL) {
-		debug_printf (VERBOSE_ERR,"Error writing to SPI Flash file. Disabling write file operations");
+		debug_printf (VERBOSE_ERR,"Error writing to SPI Flash file. Disabling persistent write");
 		zxuno_flash_persistent_writes.v=0;
 	}
 

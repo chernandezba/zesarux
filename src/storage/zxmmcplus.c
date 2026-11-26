@@ -113,7 +113,7 @@ void zxmmcplus_flashrom_flush_contents_to_disk(void)
 	//printf ("escritos: %d\n",escritos);
 
 	if (escritos!=size || ptr_zxmmcplus_flashromfile==NULL) {
-		debug_printf (VERBOSE_ERR,"Error writing to zxmmcplus_flashrom file. Disabling write file operations");
+		debug_printf (VERBOSE_ERR,"Error writing to zxmmcplus_flashrom file. Disabling persistent write");
 		zxmmcplus_flashrom_persistent_writes.v=0;
 	}
 

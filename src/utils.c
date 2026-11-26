@@ -1344,6 +1344,8 @@ void clear_shift_z88(void)
 //1) ruta actual
 //2) ../Resources/
 //3) INSTALLPREFIX/
+//4) variable de entorno APPDIR: Ruta de AppImage
+//5) ruta de donde está el ejecutable
 //normalmente usado para cargar roms
 //Retorna ruta archivo en ruta_final (siempre que no sea NULL), valor retorno no 0. Si no existe, valor retorno 0
 int find_sharedfile(char *archivo,char *ruta_final)

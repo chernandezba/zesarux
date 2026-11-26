@@ -295,7 +295,7 @@ void hilow_flush_contents_to_disk(void)
     //printf ("escritos: %d\n",escritos);
 
     if (escritos!=size || ptr_hilowfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error writing to HiLow file. Disabling write file operations");
+        debug_printf (VERBOSE_ERR,"Error writing to HiLow file. Disabling persistent write");
         hilow_persistent_writes.v=0;
     }
 

@@ -331,7 +331,7 @@ void mmc_flush_flash_to_disk_una_tarjeta(int tarjeta)
         //printf ("escritos: %lld\n",escritos);
 
         if (escritos!=size || ptr_mmcfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to MMC file. Disabling write file operations");
+                debug_printf (VERBOSE_ERR,"Error writing to MMC file. Disabling persistent write");
 		        mmc_persistent_writes[tarjeta].v=0;
         }
 

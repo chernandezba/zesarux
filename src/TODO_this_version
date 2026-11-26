@@ -150,28 +150,9 @@ QL-Qsound AY
 
 ------
 
-***Spectrum Next*****
-
--tbblue funciona:
-
-NextZXOS: 2.06H
-./zesarux --noconfigfile --mmc-file codex_additional/tbblue-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
-
--tbblue no funciona (ya si! :) :
-
-NextZXOS: 2.09
-./zesarux --noconfigfile --mmc-file codex_additional/tbblue-no-ok.mmc --enable-mmc --machine tbblue --enable-divmmc-ports --mmc-no-persistent-writes
-equivalente:
-./zesarux --configfile codex_additional/configfile_tbblue_pruebas
-Y con snapshot de pogie (asi no parece que funcione!):
-./zesarux --configfile codex_additional/configfile_tbblue_pruebas codex_additional/testpogie.zsf
 
 
--actualizar tbblue.mmc con ultimo NextZXOS
-
----
-
--Exploding fist:
+-Exploding fist Next:
 
 ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit.sfx] String at BD21H return to 748EH
 ESXDOS handler: ESXDOS_RST8_F_OPEN. Mode: 01H File: [SFX/bigHit2.sfx] String at BD30H return to 748EH
