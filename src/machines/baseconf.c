@@ -76,7 +76,7 @@ z80_byte baseconf_mmu_pages[8];   //OK ZSF
 // Banderas de tipo y sustitución de página de cada registro MMU.
 z80_byte baseconf_mmu_flags[8];  //OK ZSF
 // Fuente de 2 KiB escribible por la CPU para los modos de texto.
-static z80_byte baseconf_text_font[2048];
+z80_byte baseconf_text_font[BASECONF_TEXT_FONT_SIZE];
 // Señal que activa la ROM TR-DOS y sus puertos shadow.
 int baseconf_dos_signal;  //OK ZSF
 /* Estado del Beta Disk virtual de PentEvo. El firmware guarda el servicio

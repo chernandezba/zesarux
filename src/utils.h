@@ -1001,7 +1001,7 @@ extern int util_get_time_milliseconds(void);
 #define MEMORY_ZONE_LEC_MEMORY 53
 #define MEMORY_ZONE_ZXMMCPLUS_FLASHROM 54
 #define MEMORY_ZONE_ZXMMCPLUS_RAM 55
-
+#define MEMORY_ZONE_BASECONF_TEXT_FONT 56
 
 
 extern void util_str_add_char(char *texto,int posicion,char letra);

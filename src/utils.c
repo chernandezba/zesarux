@@ -16670,6 +16670,13 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;
 
+    case MEMORY_ZONE_BASECONF_TEXT_FONT:
+        if (MACHINE_IS_BASECONF) {
+            *readwrite=1;
+            size=BASECONF_TEXT_FONT_SIZE;
+        }
+    break;
+
     case MEMORY_ZONE_MDV1:
         if (microdrive_status[0].microdrive_enabled) {
             *readwrite=1;
@@ -17233,6 +17240,12 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     case MEMORY_ZONE_ZXMMCPLUS_RAM:
         if (zxmmcplus_enabled.v) {
             p=&zxmmcplus_memory_pointer[ZXMMCPLUS_FLASHROM_SIZE+address];
+        }
+    break;
+
+    case MEMORY_ZONE_BASECONF_TEXT_FONT:
+        if (MACHINE_IS_BASECONF) {
+            p=&baseconf_text_font[address];
         }
     break;
 
@@ -17805,6 +17818,13 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (zxmmcplus_enabled.v) {
                        //123456789012345678901234567890
             strcpy(name,"ZXMMC+ RAM");
+        }
+    break;
+
+    case MEMORY_ZONE_BASECONF_TEXT_FONT:
+        if (MACHINE_IS_BASECONF) {
+                       //123456789012345678901234567890
+            strcpy(name,"Baseconf Text Font");
         }
     break;
 

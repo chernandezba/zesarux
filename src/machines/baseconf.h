@@ -27,7 +27,7 @@
 #define BASECONF_DISPLAY_WIDTH 640
 #define BASECONF_DISPLAY_HEIGHT 400
 
-
+#define BASECONF_TEXT_FONT_SIZE 2048
 
 #define BASECONF_LEFT_BORDER_NO_ZOOM 40
 #define BASECONF_RIGHT_BORDER_NO_ZOOM 40
@@ -45,6 +45,8 @@
 #define BASECONF_RAM_PAGES 256
 
 //#define BASECONF_MAX_SPRITES 85
+
+extern z80_byte baseconf_text_font[];
 
 extern z80_byte baseconf_last_port_eff7;
 extern z80_byte baseconf_last_port_77;
