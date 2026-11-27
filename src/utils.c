@@ -973,155 +973,305 @@ char *get_machine_name(z80_byte machine)
 }
 
 const char *machine_description_spectrum_16="The original 16 KB ZX Spectrum uses a Z80 CPU, rubber keyboard and Sinclair's colour "
-    "display. Its limited RAM makes it the smallest standard Spectrum configuration.";
+    "display. Its limited RAM makes it the smallest standard Spectrum configuration. Its "
+    "16 KB RAM restricts larger programs, but it shares the 48K model's BASIC and cassette "
+    "workflow. The display uses a 256 by 192 pixel bitmap with colour attributes.";
 const char *machine_description_spectrum_48="The classic 48 KB ZX Spectrum uses a Z80 CPU, rubber keyboard, cassette storage and "
-    "Sinclair's familiar colour display and beeper. It is the baseline for much Spectrum software.";
-const char *machine_description_inves="The Inves Spectrum+ is a Spanish Spectrum-compatible computer with a revised case and "
-    "keyboard. It retains the familiar 48 KB software environment, with some hardware differences.";
+    "Sinclair's familiar colour display and beeper. It is the baseline for much Spectrum software. "
+    "Programs commonly load from cassette and use the built-in Sinclair BASIC. Its 256 by "
+    "192 pixel screen stores colour in attribute cells, a defining Spectrum characteristic.";
+const char *machine_description_inves="The Inves Spectrum+ is a Spanish Spectrum-compatible computer with a revised case and keyboard. "
+    "It retains the familiar 48 KB software environment, with some hardware differences. Its "
+    "appearance follows the Spectrum+ rather than the rubber-key original. Software compatibility "
+    "is broad, although its ROM and electrical details can expose differences in some programs.";
 const char *machine_description_microdigital_tk90x_por="The Brazilian Microdigital TK90X is a Spectrum-compatible computer with its Portuguese "
-    "ROM. It adds local keyboard and firmware changes to the familiar 48 KB system.";
-const char *machine_description_microdigital_tk90x_spa="The Microdigital TK90X is a Brazilian Spectrum-compatible computer. This "
-    "configuration uses its Spanish ROM, with localized firmware and keyboard behaviour.";
+    "ROM. It adds local keyboard and firmware changes to the familiar 48 KB system. It is "
+    "part of Microdigital's transition from ZX81-derived machines to colour Spectrum-compatible "
+    "computers. Tape loading and BASIC remain central to its software environment.";
+const char *machine_description_microdigital_tk90x_spa="The Microdigital TK90X is a Brazilian Spectrum-compatible computer. This configuration "
+    "uses its Spanish ROM, with localized firmware and keyboard behaviour. The machine "
+    "belongs to Microdigital's colour, Spectrum-compatible TK range. The selected ROM "
+    "matters for keyboard mapping, BASIC messages and programs that call firmware routines.";
 const char *machine_description_microdigital_tk95_por="The Microdigital TK95 is a Brazilian Spectrum-compatible successor to the TK90X, "
-    "with a redesigned case and keyboard. This configuration uses the Portuguese ROM.";
+    "with a redesigned case and keyboard. This configuration uses the Portuguese ROM. It "
+    "keeps the colour screen and cassette-oriented Spectrum software environment of the "
+    "earlier TK90X. The selected ROM determines the language of its BASIC interface.";
 const char *machine_description_spectrum_128="The ZX Spectrum 128 adds bank-switched 128 KB RAM, AY sound and an improved editor "
-    "to the Spectrum line. This configuration uses the original English-language ROM.";
-const char *machine_description_spectrum_128_spa="The Spanish ZX Spectrum 128 combines bank-switched 128 KB RAM and AY sound "
-    "with a localized ROM and keyboard. Its firmware differs from the English model.";
+    "to the Spectrum line. This configuration uses the original English-language ROM. Its "
+    "memory is paged in 16 KB banks, allowing software to use more than the Z80 can "
+    "address at once. AY music and the 128 BASIC menu distinguish it from the 48K model.";
+const char *machine_description_spectrum_128_spa="The Spanish ZX Spectrum 128 combines bank-switched 128 KB RAM and AY sound with "
+    "a localized ROM and keyboard. Its firmware differs from the English model. This "
+    "was the original 128K Spectrum variant developed with Spanish market requirements "
+    "in mind. Paging, AY music and the menu-based editor support 128K software.";
 const char *machine_description_spectrum_p2="The ZX Spectrum +2 is Amstrad's 128 KB Spectrum with an integrated cassette deck, "
-    "improved keyboard and AY sound. This configuration uses the standard English ROM.";
-const char *machine_description_spectrum_p2_fre="The French ZX Spectrum +2 is Amstrad's 128 KB Spectrum with an integrated "
-    "cassette deck and AY sound. Its ROM and keyboard are localized for France.";
+    "improved keyboard and AY sound. This configuration uses the standard English ROM. Its "
+    "built-in Datacorder replaces the external cassette recorder of earlier Spectrums. "
+    "It retains 48K compatibility while giving 128K programs paged memory and AY music.";
+const char *machine_description_spectrum_p2_fre="The French ZX Spectrum +2 is Amstrad's 128 KB Spectrum with an integrated cassette "
+    "deck and AY sound. Its ROM and keyboard are localized for France. The integrated "
+    "Datacorder makes tape loading part of the computer itself. Its regional ROM "
+    "can affect BASIC prompts and software that depends on exact firmware bytes.";
 const char *machine_description_spectrum_p2_spa="The Spanish ZX Spectrum +2 combines 128 KB RAM, AY sound and an integrated "
-    "cassette deck. This configuration uses the Spanish ROM and keyboard layout.";
+    "cassette deck. This configuration uses the Spanish ROM and keyboard layout. "
+    "The built-in Datacorder avoids a separate tape recorder. Regional firmware "
+    "and keys are useful when testing software made for the Spanish market.";
 const char *machine_description_spectrum_p2a_40="The ZX Spectrum +2A is a 128 KB Amstrad model with an integrated cassette deck "
-    "and the later +3-style architecture. This configuration uses ROM version 4.0.";
+    "and the later +3-style architecture. This configuration uses ROM version 4.0. "
+    "The +2A uses the later Amstrad memory and ROM paging design, unlike the grey "
+    "+2. The specific ROM revision can matter to software using system routines.";
 const char *machine_description_spectrum_p2a_41="The ZX Spectrum +2A is a 128 KB Amstrad model with an integrated cassette deck "
-    "and the later +3-style architecture. This configuration uses ROM version 4.1.";
+    "and the later +3-style architecture. This configuration uses ROM version 4.1. "
+    "Its black case and integrated Datacorder accompany the +3-family paging design. "
+    "ROM 4.1 is a separate firmware target from the otherwise similar 4.0 model.";
 const char *machine_description_spectrum_p2a_spa="The Spanish ZX Spectrum +2A is a 128 KB Amstrad model with an integrated cassette "
-    "deck and +3-style architecture. This configuration uses localized firmware.";
+    "deck and +3-style architecture. This configuration uses localized firmware. It "
+    "shares much of the +3 hardware design but uses cassette storage instead of the "
+    "+3 floppy drive. Its Spanish ROM is important for firmware-sensitive software.";
 const char *machine_description_zxuno="ZX-Uno is an FPGA-based Spectrum-compatible computer with configurable hardware, expanded "
-    "memory and modern storage options. It can reproduce several Spectrum configurations.";
-const char *machine_description_chloe_140se="The Chloe 140 SE is an enhanced Spectrum-compatible design with extended memory and "
-    "graphics capabilities. It keeps a Spectrum software environment while adding new features.";
-const char *machine_description_chloe_280se="The Chloe 280 SE extends the Spectrum-compatible Chloe design with more memory and enhanced "
-    "display facilities. It supports classic software alongside its own hardware features.";
+    "memory and modern storage options. It can reproduce several Spectrum configurations. "
+    "The FPGA can implement Spectrum timing and peripherals while offering flash-based firmware "
+    "and storage. Its configurable cores and options make the exact setup significant.";
+const char *machine_description_chloe_140se="The Chloe 140 SE is an enhanced Spectrum-compatible design with extended memory and graphics "
+    "capabilities. It keeps a Spectrum software environment while adding new features. This "
+    "is one of the Chloe machines supported as a separate target by ZEsarUX. Programs can use "
+    "its extended facilities, while ordinary Spectrum titles can use its compatible mode.";
+const char *machine_description_chloe_280se="The Chloe 280 SE extends the Spectrum-compatible Chloe design with more memory and "
+    "enhanced display facilities. It supports classic software alongside its own hardware "
+    "features. It is the larger Chloe configuration emulated by ZEsarUX. The enhanced "
+    "hardware lets software target facilities unavailable on an unexpanded Sinclair Spectrum.";
 const char *machine_description_timex_ts2068="The Timex Sinclair 2068 is a North American Spectrum relative with 48 KB RAM, AY sound, "
-    "cartridge support and additional display modes. Its ROM differs from Sinclair's Spectrum.";
+    "cartridge support and additional display modes. Its ROM differs from Sinclair's Spectrum. "
+    "It uses Timex-specific video modes, including a higher-resolution monochrome mode. "
+    "The cartridge port and ROM differences mean some Spectrum software needs adaptation.";
 const char *machine_description_prism="The Prism 512 is an enhanced Spectrum-compatible design with expanded memory and advanced "
-    "colour and display capabilities, while retaining support for traditional Spectrum software.";
-const char *machine_description_tbblue="The ZX Spectrum Next, based on TBBlue hardware, extends Spectrum compatibility with "
-    "a faster Z80, expanded memory, sprites, enhanced graphics, sound and modern storage.";
-const char *machine_description_spectrum_48_plus_spa="The Spanish ZX Spectrum+ repackages the 48 KB Spectrum with a full-travel "
-    "keyboard. This configuration uses the Spanish ROM and localized keyboard layout.";
+    "colour and display capabilities, while retaining support for traditional Spectrum software. "
+    "Prism 512 is a distinct enhanced machine target in ZEsarUX, with display modes beyond "
+    "the original Spectrum. Its expanded hardware is intended for dedicated Prism software.";
+const char *machine_description_tbblue="The ZX Spectrum Next, based on TBBlue hardware, extends Spectrum compatibility with a "
+    "faster Z80, expanded memory, sprites, enhanced graphics, sound and modern storage. "
+    "NextReg control registers configure paging and peripherals, and the machine can run at "
+    "several CPU speeds. Layered video modes coexist with classic Spectrum display support.";
+const char *machine_description_spectrum_48_plus_spa="The Spanish ZX Spectrum+ repackages the 48 KB Spectrum with a full-travel keyboard. "
+    "This configuration uses the Spanish ROM and localized keyboard layout. It retains "
+    "the 48K Spectrum memory map and cassette-based workflow. The regional ROM and "
+    "keyboard make this variant useful for Spanish firmware-specific software.";
 const char *machine_description_pentagon="The Pentagon is a Soviet Spectrum-compatible family known for 128 KB memory, disk "
-    "interfaces and timing distinct from Sinclair machines. It became a popular demoscene target.";
-const char *machine_description_chrome="Chrome is an enhanced Spectrum-compatible computer with extended memory and "
-    "display features. It preserves the core Spectrum environment for existing software.";
+    "interfaces and timing distinct from Sinclair machines. It became a popular demoscene "
+    "target. The machine is especially associated with TR-DOS and Beta Disk software. Different "
+    "screen timing from Sinclair hardware affects programs that synchronize to the display.";
+const char *machine_description_chrome="Chrome is an enhanced Spectrum-compatible computer with extended memory and display "
+    "features. It preserves the core Spectrum environment for existing software. ZEsarUX "
+    "treats Chrome as its own enhanced machine, with hardware beyond a standard Sinclair "
+    "Spectrum. Programs may use its extensions while keeping classic compatibility.";
 const char *machine_description_tsconf="TS-Conf is an advanced configuration for the ZX Evolution, adding expanded graphics, "
-    "memory and storage features beyond a conventional Spectrum-compatible system.";
+    "memory and storage features beyond a conventional Spectrum-compatible system. Its "
+    "hardware supports dedicated video modes and memory control for software written "
+    "specifically for TS-Conf. It is a separate ZX Evolution configuration from BaseConf.";
 const char *machine_description_baseconf="BaseConf is a ZX Evolution configuration compatible with ATM Turbo-style hardware. "
-    "It provides an expanded Spectrum environment with additional memory and disk support.";
-const char *machine_description_spectrum_p3_40="The ZX Spectrum +3 is Amstrad's 128 KB model with a built-in 3-inch "
-    "floppy drive, AY sound and +3DOS. This configuration uses ROM version 4.0.";
-const char *machine_description_spectrum_p3_41="The ZX Spectrum +3 is Amstrad's 128 KB model with a built-in 3-inch "
-    "floppy drive, AY sound and +3DOS. This configuration uses ROM version 4.1.";
-const char *machine_description_spectrum_p3_spa="The Spanish ZX Spectrum +3 combines 128 KB RAM, AY sound and a built-in "
-    "3-inch floppy drive. This configuration uses its localized ROM and keyboard.";
-const char *machine_description_spectrum_48_plus_eng="The ZX Spectrum+ repackages the 48 KB Spectrum with a full-travel keyboard and "
-    "reset button. This configuration uses the English ROM and standard Spectrum display.";
+    "It provides an expanded Spectrum environment with additional memory and disk support. "
+    "It uses ZX Evolution hardware in a configuration aimed at established Spectrum and "
+    "ATM software. Paging and storage behavior differ from the TS-Conf configuration.";
+const char *machine_description_spectrum_p3_40="The ZX Spectrum +3 is Amstrad's 128 KB model with a built-in 3-inch floppy drive, "
+    "AY sound and +3DOS. This configuration uses ROM version 4.0. The floppy drive "
+    "uses +3DOS disk services, while the cassette interface remains available. ROM "
+    "4.0 is kept separate because firmware revisions can affect compatibility.";
+const char *machine_description_spectrum_p3_41="The ZX Spectrum +3 is Amstrad's 128 KB model with a built-in 3-inch floppy "
+    "drive, AY sound and +3DOS. This configuration uses ROM version 4.1. Its 3-inch "
+    "disk drive and +3DOS expand storage beyond tape-only Spectrums. The 4.1 "
+    "firmware is the later ROM revision and can change behavior at ROM entry points.";
+const char *machine_description_spectrum_p3_spa="The Spanish ZX Spectrum +3 combines 128 KB RAM, AY sound and a built-in 3-inch "
+    "floppy drive. This configuration uses its localized ROM and keyboard. It can "
+    "use +3DOS disk software as well as cassette titles. Localized firmware makes "
+    "ROM calls and keyboard handling relevant when comparing regional releases.";
+const char *machine_description_spectrum_48_plus_eng="The ZX Spectrum+ repackages the 48 KB Spectrum with a full-travel keyboard and reset "
+    "button. This configuration uses the English ROM and standard Spectrum display. "
+    "The new keyboard changes everyday use without changing the core 48K memory layout. "
+    "Tape software and BASIC remain broadly the same as on the rubber-key Spectrum.";
 const char *machine_description_timex_tc2048="The Timex Computer 2048 is a Portuguese Spectrum relative with 48 KB RAM and additional "
-    "video modes. Its keyboard and hardware distinguish it from Sinclair's 48 KB model.";
+    "video modes. Its keyboard and hardware distinguish it from Sinclair's 48 KB model. "
+    "Its extra screen modes give software display options beyond the original Spectrum "
+    "bitmap. This Timex model remains part of the Portuguese Spectrum-compatible family.";
 const char *machine_description_timex_tc2068="The Portuguese Timex Computer 2068 combines Spectrum heritage with AY sound, "
-    "cartridge support and additional display modes. It has its own ROM and keyboard layout.";
+    "cartridge support and additional display modes. It has its own ROM and keyboard "
+    "layout. Its Timex display modes and cartridge interface distinguish it from the "
+    "TC2048 and Sinclair models. Firmware-sensitive titles may need the correct Timex ROM.";
 const char *machine_description_microdigital_tk95_spa="The Microdigital TK95 is a Brazilian Spectrum-compatible successor to the TK90X, "
-    "with a redesigned case and keyboard. This configuration uses the Spanish ROM.";
-const char *machine_description_cz_2000="The Czerweny CZ 2000 is an Argentine Sinclair-compatible computer from the CZ "
-    "line. Its local ROM and keyboard distinguish it from the original British machines.";
-const char *machine_description_cz_spectrum="The Czerweny CZ Spectrum is an Argentine ZX Spectrum-compatible computer. It "
-    "follows the 48 KB Spectrum design with locally produced hardware and firmware.";
+    "with a redesigned case and keyboard. This configuration uses the Spanish ROM. Like "
+    "the Portuguese variant, it targets Spectrum colour software and cassette loading. "
+    "The Spanish firmware is the key distinction for BASIC and ROM-dependent programs.";
+const char *machine_description_cz_2000="The Czerweny CZ 2000 is an Argentine Sinclair-compatible computer from the CZ line. "
+    "Its local ROM and keyboard distinguish it from the original British machines. It "
+    "sits alongside the CZ Spectrum machines in Czerweny's locally produced range. Its "
+    "distinct machine ID preserves differences in firmware and hardware configuration.";
+const char *machine_description_cz_spectrum="The Czerweny CZ Spectrum is an Argentine ZX Spectrum-compatible computer. It follows "
+    "the 48 KB Spectrum design with locally produced hardware and firmware. Its "
+    "Spectrum-style colour display and cassette software set it apart from the earlier "
+    "monochrome CZ computers. The local ROM is relevant to keyboard and BASIC behavior.";
 const char *machine_description_cz_spectrum_plus="The Czerweny CZ Spectrum Plus is an Argentine Spectrum-compatible model with a "
-    "revised keyboard and case. It retains the familiar 48 KB Spectrum software environment.";
+    "revised keyboard and case. It retains the familiar 48 KB Spectrum software environment. "
+    "It follows the Spectrum+ style while preserving Spectrum software compatibility. "
+    "The revised enclosure and firmware distinguish it from the earlier CZ Spectrum.";
 const char *machine_description_scorpion_zs_256="The Scorpion ZS-256 is a Russian Spectrum-compatible computer with 256 KB RAM and "
-    "disk-oriented extensions. Its memory paging and firmware go beyond a standard Spectrum 128.";
-const char *machine_description_scorpion_zs_256_turbo_plus="The Scorpion ZS-256 Turbo+ extends the Russian Scorpion Spectrum-compatible "
-    "design with 256 KB RAM, disk support and a faster operating mode.";
-const char *machine_description_scorpion_gmx="The Scorpion GMX is an enhanced Russian Spectrum-compatible computer with "
-    "expanded memory and additional hardware features built on the Scorpion family.";
-const char *machine_description_didaktikgama="The Didaktik Gama is a Czechoslovak Spectrum-compatible computer. It adapts the "
-    "48 KB Spectrum design with its own keyboard, ROM and additional memory arrangement.";
-const char *machine_description_microdigital_tk90x_ferranti_por="The Brazilian Microdigital TK90X uses a Ferranti ULA in this configuration. "
-    "Its Portuguese ROM and hardware timing distinguish it from other TK90X variants.";
+    "disk-oriented extensions. Its memory paging and firmware go beyond a standard Spectrum "
+    "128. It can page memory beyond the 128K Spectrum limit and supports a disk-oriented "
+    "software environment. These extensions are significant for Russian software and demos.";
+const char *machine_description_scorpion_zs_256_turbo_plus="The Scorpion ZS-256 Turbo+ extends the Russian Scorpion Spectrum-compatible design "
+    "with 256 KB RAM, disk support and a faster operating mode. Its turbo capability "
+    "changes CPU speed for software designed to use it. It remains compatible with "
+    "much Spectrum software but adds Scorpion-specific memory and disk features.";
+const char *machine_description_scorpion_gmx="The Scorpion GMX is an enhanced Russian Spectrum-compatible computer with expanded "
+    "memory and additional hardware features built on the Scorpion family. GMX belongs "
+    "to the later Scorpion line rather than Sinclair's original machines. Software can "
+    "address its expanded resources through Scorpion-specific hardware conventions.";
+const char *machine_description_didaktikgama="The Didaktik Gama is a Czechoslovak Spectrum-compatible computer. It adapts the 48 KB "
+    "Spectrum design with its own keyboard, ROM and additional memory arrangement. A "
+    "switchable RAM bank occupies the upper half of the address space while screen RAM stays "
+    "fixed. This gives the machine its own memory behavior beyond a plain 48K Spectrum.";
+const char *machine_description_microdigital_tk90x_ferranti_por="The Brazilian Microdigital TK90X uses a Ferranti ULA in this configuration. Its "
+    "Portuguese ROM and hardware timing distinguish it from other TK90X variants. The "
+    "alternate ULA changes details of the display and timing, which can matter to software "
+    "synchronized with video. The Portuguese ROM keeps the regional BASIC interface.";
 const char *machine_description_microdigital_tk90x_ferranti_spa="This Microdigital TK90X configuration uses a Ferranti ULA and Spanish ROM. It "
-    "retains Spectrum compatibility while differing in video timing and localized firmware.";
-const char *machine_description_atm_turbo1="ATM Turbo 1 is a Russian Spectrum-compatible computer with extended memory, "
-    "graphics and disk capabilities. It is an early member of the ATM Turbo family.";
+    "retains Spectrum compatibility while differing in video timing and localized "
+    "firmware. The Ferranti chip is modeled separately from Microdigital's ULA variants. "
+    "The selected Spanish firmware also affects keyboard and ROM-dependent programs.";
+const char *machine_description_atm_turbo1="ATM Turbo 1 is a Russian Spectrum-compatible computer with extended memory, graphics "
+    "and disk capabilities. It is an early member of the ATM Turbo family. This model "
+    "can page up to 512 KB of RAM and provides ROM pages for several operating modes. "
+    "Its hardware is aimed at both Spectrum compatibility and expanded software.";
 const char *machine_description_atm_turbo2="ATM Turbo 2 expands the Russian Spectrum-compatible ATM design with more capable "
-    "memory, graphics and disk hardware, while retaining a Spectrum operating mode.";
-const char *machine_description_atm_turbo2_plus="ATM Turbo 2+ is an enhanced ATM Spectrum-compatible configuration with "
-    "expanded memory, display modes and disk support beyond the earlier Turbo models.";
-const char *machine_description_atm_turbo3="ATM Turbo 3 continues the Russian ATM Spectrum-compatible line with expanded "
-    "memory, graphics and storage features for its own software and Spectrum programs.";
-const char *machine_description_coleco="ColecoVision is a cartridge-based home console with a Z80 CPU, dedicated video "
-    "hardware and sound. Its arcade-style games are distinct from the Spectrum family.";
-const char *machine_description_sg1000="The Sega SG-1000 is an early cartridge-based game console using a Z80 CPU, "
-    "tile graphics and programmable sound. It preceded Sega's Master System.";
-const char *machine_description_svi_318="The Spectravideo SVI-318 is an 8-bit Z80 home computer with a compact keyboard and "
-    "a smaller RAM configuration than the SVI-328. It shares software with its sibling.";
+    "memory, graphics and disk hardware, while retaining a Spectrum operating mode. "
+    "The ATM line supports software that uses its own memory map and peripherals. "
+    "Disk-oriented systems such as CP/M and TASiS can use the expanded hardware.";
+const char *machine_description_atm_turbo2_plus="ATM Turbo 2+ is an enhanced ATM Spectrum-compatible configuration with expanded "
+    "memory, display modes and disk support beyond the earlier Turbo models. It remains "
+    "a distinct hardware target because paging and peripherals can differ among ATM "
+    "revisions. Expanded software can use the extra facilities beyond Spectrum mode.";
+const char *machine_description_atm_turbo3="ATM Turbo 3 continues the Russian ATM Spectrum-compatible line with expanded memory, "
+    "graphics and storage features for its own software and Spectrum programs. Its extended "
+    "hardware supports disk-oriented environments as well as Spectrum-compatible operation. "
+    "The selected ATM generation matters for programs using model-specific ports.";
+const char *machine_description_coleco="ColecoVision is a cartridge-based home console with a Z80 CPU, dedicated video hardware "
+    "and sound. Its arcade-style games are distinct from the Spectrum family. It uses "
+    "cartridges rather than a built-in BASIC environment, and games are designed for its "
+    "tile and sprite display hardware. Controllers include a keypad as well as a joystick.";
+const char *machine_description_sg1000="The Sega SG-1000 is an early cartridge-based game console using a Z80 CPU, tile "
+    "graphics and programmable sound. It preceded Sega's Master System. It shares some "
+    "architectural ideas with other early Z80 game systems, but has its own cartridge "
+    "library. Games use hardware graphics and controller input rather than BASIC.";
+const char *machine_description_svi_318="The Spectravideo SVI-318 is an 8-bit Z80 home computer with a compact keyboard "
+    "and a smaller RAM configuration than the SVI-328. It shares software with its "
+    "sibling. The smaller keyboard and lower memory distinguish it from the SVI-328. "
+    "Both machines predate MSX and use related video, audio and cartridge hardware.";
 const char *machine_description_svi_328="The Spectravideo SVI-328 is a Z80 home computer with a full keyboard, "
-    "cassette support and hardware related to the later MSX standard.";
-const char *machine_description_sms="The Sega Master System is an 8-bit cartridge console with a Z80 CPU, "
-    "tile and sprite graphics and programmable sound. It succeeded the SG-1000.";
-const char *machine_description_msx1="MSX1 is the first generation of the MSX 8-bit computer standard, combining a "
-    "Z80 CPU with common video, sound and cartridge interfaces across manufacturers.";
-const char *machine_description_zx80="The Sinclair ZX80 is an early low-cost Z80 home computer with 1 KB RAM, "
-    "monochrome display and a membrane keyboard. It preceded the ZX81 and Spectrum.";
+    "cassette support and hardware related to the later MSX standard. Its larger "
+    "memory and full keyboard make it the more capable SVI sibling. Shared "
+    "hardware concepts later appeared in MSX, but SVI software is its own target.";
+const char *machine_description_sms="The Sega Master System is an 8-bit cartridge console with a Z80 CPU, tile and "
+    "sprite graphics and programmable sound. It succeeded the SG-1000. Games rely on "
+    "cartridges, controllers and dedicated video hardware rather than a computer "
+    "keyboard. Regional timing and later hardware revisions can affect software behavior.";
+const char *machine_description_msx1="MSX1 is the first generation of the MSX 8-bit computer standard, combining a Z80 "
+    "CPU with common video, sound and cartridge interfaces across manufacturers. The "
+    "standard defines common firmware and expansion behavior, making software portable "
+    "among many brands. MSX1 programs commonly use cassette or cartridges for storage.";
+const char *machine_description_zx80="The Sinclair ZX80 is an early low-cost Z80 home computer with 1 KB RAM, monochrome "
+    "display and a membrane keyboard. It preceded the ZX81 and Spectrum. Its video "
+    "circuitry and BASIC are more limited than later Sinclair machines. Programs often "
+    "need to manage a very small amount of memory, with expansion available externally.";
 const char *machine_description_zx81="The Sinclair ZX81 is a compact Z80 home computer with 1 KB RAM, monochrome display "
-    "and cassette storage. RAM packs and peripherals extend its basic configuration.";
-const char *machine_description_ace="The Jupiter Ace is a British Z80 home computer with a monochrome display and "
-    "the Forth language built into ROM, unlike the BASIC used by many contemporaries.";
-const char *machine_description_timex_ts1000="The Timex Sinclair 1000 is the North American version of the ZX81, with "
-    "a monochrome display, cassette storage and a compact membrane keyboard.";
+    "and cassette storage. RAM packs and peripherals extend its basic configuration. "
+    "FAST and SLOW modes trade display continuity for computing speed. Its simple "
+    "hardware encouraged a large ecosystem of RAM packs, games and educational software.";
+const char *machine_description_ace="The Jupiter Ace is a British Z80 home computer with a monochrome display and the "
+    "Forth language built into ROM, unlike the BASIC used by many contemporaries. Forth "
+    "is interactive and stack-based, shaping how users write and run programs. Its "
+    "software environment and memory map differ substantially from a ZX81 or Spectrum.";
+const char *machine_description_timex_ts1000="The Timex Sinclair 1000 is the North American version of the ZX81, with a "
+    "monochrome display, cassette storage and a compact membrane keyboard. It "
+    "normally starts with more internal RAM than the original ZX81. ZX81-family "
+    "software, RAM packs and cassette programs remain central to its use.";
 const char *machine_description_timex_ts1500="The Timex Sinclair 1500 is a North American ZX81-derived computer with a "
-    "redesigned case, improved keyboard and more built-in RAM than the TS1000.";
-const char *machine_description_microdigital_tk80="The Microdigital TK80 is a Brazilian Sinclair-compatible home computer from "
-    "the early TK range, using a monochrome display and BASIC-oriented environment.";
+    "redesigned case, improved keyboard and more built-in RAM than the TS1000. "
+    "It uses a Spectrum-like case while keeping the ZX81 software lineage. "
+    "Extra built-in RAM reduces the immediate need for an external memory pack.";
+const char *machine_description_microdigital_tk80="The Microdigital TK80 is a Brazilian Sinclair-compatible home computer from the "
+    "early TK range, using a monochrome display and BASIC-oriented environment. It "
+    "belongs to the Brazilian line of Sinclair-derived machines. Its early monochrome "
+    "architecture should be distinguished from the later colour TK90X and TK95.";
 const char *machine_description_microdigital_tk82="The Brazilian Microdigital TK82 is a ZX81-compatible computer in the early TK "
-    "series. It uses a monochrome display, cassette storage and a compact keyboard.";
+    "series. It uses a monochrome display, cassette storage and a compact keyboard. "
+    "Like the ZX81, it uses a compact memory map and loads programs from cassette. "
+    "Brazilian ROM and keyboard details distinguish it from the Sinclair original.";
 const char *machine_description_microdigital_tk82c="The Microdigital TK82C is a Brazilian ZX81-compatible computer. This revised TK82 "
-    "variant offers its own keyboard and ROM while retaining the monochrome platform.";
-const char *machine_description_microdigital_tk83="The Brazilian Microdigital TK83 belongs to the ZX81-compatible TK series, "
-    "combining a monochrome display and BASIC environment with local hardware revisions.";
-const char *machine_description_microdigital_tk85="The Microdigital TK85 is a Brazilian ZX81-compatible computer with a revised "
-    "case, keyboard and firmware. It remains part of the monochrome TK line.";
+    "variant offers its own keyboard and ROM while retaining the monochrome platform. The "
+    "C revision remains in the ZX81 software family, with cassette-based programs and "
+    "limited monochrome graphics. Its ROM variant deserves a separate emulator setting.";
+const char *machine_description_microdigital_tk83="The Brazilian Microdigital TK83 belongs to the ZX81-compatible TK series, combining "
+    "a monochrome display and BASIC environment with local hardware revisions. It sits "
+    "between earlier TK82 machines and the later TK85 in Microdigital's monochrome "
+    "line. Its own ROM and memory details can matter for machine-specific software.";
+const char *machine_description_microdigital_tk85="The Microdigital TK85 is a Brazilian ZX81-compatible computer with a "
+    "revised case, keyboard and firmware. It remains part of the monochrome TK "
+    "line. It presents ZX81-family software through Microdigital's later hardware "
+    "design. Cassette programs and BASIC remain its main software route.";
 const char *machine_description_z88="The Cambridge Z88 is a portable Z80 computer with an LCD screen, built-in applications, "
-    "battery power and card-based expansion, designed by Sinclair's Cambridge Computer.";
-const char *machine_description_cpc_464="The Amstrad CPC 464 is a Z80 home computer with 64 KB RAM, colour graphics, "
-    "AY sound and an integrated cassette deck. It runs CPC software from tape.";
-const char *machine_description_cpc_4128="The Amstrad CPC 4128 is a 128 KB CPC configuration with colour graphics, AY "
-    "sound and cassette-based storage. Its extra memory extends the CPC 464 design.";
-const char *machine_description_cpc_664="The Amstrad CPC 664 combines 64 KB RAM, colour graphics and AY sound with "
-    "an integrated 3-inch floppy drive, replacing the CPC 464's cassette deck.";
-const char *machine_description_cpc_6128="The Amstrad CPC 6128 combines 128 KB RAM, colour graphics and AY "
-    "sound with a built-in 3-inch floppy drive and disk-oriented firmware.";
-const char *machine_description_sam="The SAM Coupe is a British Z80-derived home computer with 256 KB RAM, advanced "
-    "colour graphics and sound. It has its own software library and Spectrum compatibility.";
+    "battery power and card-based expansion, designed by Sinclair's Cambridge Computer. Its "
+    "wide LCD, quiet keyboard and long battery life suit portable writing and data work. "
+    "Expansion cards carry memory and applications instead of conventional floppy disks.";
+const char *machine_description_cpc_464="The Amstrad CPC 464 is a Z80 home computer with 64 KB RAM, colour graphics, AY "
+    "sound and an integrated cassette deck. It runs CPC software from tape. The "
+    "monitor and computer were sold as a matched system. Its hardware supports multiple "
+    "video modes, and the built-in tape deck provides the standard loading path.";
+const char *machine_description_cpc_4128="The Amstrad CPC 4128 is a fictional ZEsarUX configuration with 128 KB "
+    "RAM, CPC colour graphics and AY sound, combined with cassette-based loading. "
+    "It helps exercise 128K CPC games that can load without disk support. "
+    "It should not be confused with a commercially released Amstrad model.";
+const char *machine_description_cpc_664="The Amstrad CPC 664 combines 64 KB RAM, colour graphics and AY sound with an "
+    "integrated 3-inch floppy drive, replacing the CPC 464's cassette deck. It "
+    "uses the CPC family's multiple screen modes and built-in BASIC. The disk "
+    "drive makes it a different software target from tape-only CPC configurations.";
+const char *machine_description_cpc_6128="The Amstrad CPC 6128 combines 128 KB RAM, colour graphics and AY sound "
+    "with a built-in 3-inch floppy drive and disk-oriented firmware. Bank "
+    "switching makes its extra memory available to software beyond the Z80's 64 "
+    "KB address space. Disk software and 128K games can use the expanded system.";
+const char *machine_description_sam="The SAM Coupe is a British Z80-derived home computer with 256 KB RAM, advanced colour "
+    "graphics and sound. It has its own software library and Spectrum compatibility. Its "
+    "memory paging and custom display modes are specific to the SAM, even when it runs "
+    "Spectrum software. Programs written for it can exploit its larger memory and sound.";
 const char *machine_description_ql_standard="The Sinclair QL is a 68008-based computer aimed at business users, with a "
-    "multitasking operating system, built-in productivity software and Microdrive storage.";
-const char *machine_description_mk14_standard="The Science of Cambridge MK14 is a single-board microcomputer built around "
-    "the INS8060 SC/MP processor, with a hexadecimal keypad and LED display.";
-const char *machine_description_pcw_8256="The Amstrad PCW 8256 is a Z80-based word-processing computer with 256 KB RAM, "
-    "monochrome display, floppy storage and the Locoscript software environment.";
-const char *machine_description_pcw_8512="The Amstrad PCW 8512 is a Z80-based word-processing computer with 512 "
-    "KB RAM, monochrome display, floppy storage and Locoscript software.";
+    "multitasking operating system, built-in productivity software and Microdrive "
+    "storage. Its QDOS operating system supports multitasking, and SuperBASIC is built "
+    "in. The 68008 CPU makes it architecturally separate from Sinclair's Z80 computers.";
+const char *machine_description_mk14_standard="The Science of Cambridge MK14 is a single-board microcomputer built around the "
+    "INS8060 SC/MP processor, with a hexadecimal keypad and LED display. Users enter "
+    "machine code through the keypad and inspect results on the LED readout. It "
+    "predates Sinclair's home computers and has no conventional screen or BASIC ROM.";
+const char *machine_description_pcw_8256="The Amstrad PCW 8256 is a Z80-based word-processing computer with 256 KB "
+    "RAM, monochrome display, floppy storage and the Locoscript software environment. "
+    "It was sold as an integrated computer, monitor and printer package for "
+    "document work. CP/M software could also run alongside its word processor.";
+const char *machine_description_pcw_8512="The Amstrad PCW 8512 is a Z80-based word-processing computer with 512 KB "
+    "RAM, monochrome display, floppy storage and Locoscript software. The larger "
+    "RAM configuration supports longer documents and more demanding CP/M "
+    "applications. Its integrated display and printer focus it on office work.";
 const char *machine_description_cz_1000="The Czerweny CZ 1000 is an Argentine ZX81-compatible computer with a monochrome "
-    "display and cassette storage, produced for the local home-computer market.";
-const char *machine_description_cz_1500="The Czerweny CZ 1500 is an Argentine ZX81-compatible computer in the CZ "
-    "series, using a monochrome display, cassette storage and localized hardware.";
-const char *machine_description_cz_1000_plus="The Czerweny CZ 1000 Plus is an updated Argentine ZX81-compatible computer with "
-    "a revised keyboard and case, retaining the monochrome CZ software environment.";
+    "display and cassette storage, produced for the local home-computer market. "
+    "It belongs to the ZX81-derived part of the Czerweny range, before the colour "
+    "CZ Spectrum models. Programs typically use BASIC and cassette storage.";
+const char *machine_description_cz_1500="The Czerweny CZ 1500 is an Argentine ZX81-compatible computer in the CZ series, "
+    "using a monochrome display, cassette storage and localized hardware. It retains "
+    "the simple monochrome, keyboard-driven software environment of its Sinclair "
+    "relatives. The CZ ROM and case identify it as a separate local variant.";
+const char *machine_description_cz_1000_plus="The Czerweny CZ 1000 Plus is an updated Argentine ZX81-compatible computer with a "
+    "revised keyboard and case, retaining the monochrome CZ software environment. The "
+    "Plus revision updates the user-facing hardware while keeping ZX81-family software "
+    "in reach. Its firmware remains relevant to keyboard and BASIC compatibility.";
 const char *machine_description_cz_1500_plus="The Czerweny CZ 1500 Plus is an updated Argentine ZX81-compatible model with "
-    "revised packaging and keyboard, retaining its monochrome BASIC environment.";
+    "revised packaging and keyboard, retaining its monochrome BASIC environment. It "
+    "is the Plus revision of the CZ 1500 in Czerweny's Argentine range. Its distinct "
+    "case and firmware warrant a separate machine choice for accurate emulation.";
 const char *machine_description_unknown="No description for this machine.";
 
 //Devuelve una descripcion breve e inmutable de cada maquina emulada.
