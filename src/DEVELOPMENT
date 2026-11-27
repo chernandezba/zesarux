@@ -954,7 +954,9 @@ index 7771e2a..0bc9509 100644
                  romfilename="48.rom";
                  break;
 
+## Agregar descripción de máquina
 
+función get_machine_description de utils.c
 
 
 diff --git a/src/keyboard_48p.bmp b/src/keyboard_48p.bmp

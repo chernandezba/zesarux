@@ -972,6 +972,468 @@ char *get_machine_name(z80_byte machine)
     return NULL;
 }
 
+const char *machine_description_spectrum_16="The original 16 KB ZX Spectrum uses a Z80 CPU, rubber keyboard and Sinclair's colour "
+    "display. Its limited RAM makes it the smallest standard Spectrum configuration.";
+const char *machine_description_spectrum_48="The classic 48 KB ZX Spectrum uses a Z80 CPU, rubber keyboard, cassette storage and "
+    "Sinclair's familiar colour display and beeper. It is the baseline for much Spectrum software.";
+const char *machine_description_inves="The Inves Spectrum+ is a Spanish Spectrum-compatible computer with a revised case and "
+    "keyboard. It retains the familiar 48 KB software environment, with some hardware differences.";
+const char *machine_description_microdigital_tk90x_por="The Brazilian Microdigital TK90X is a Spectrum-compatible computer with its Portuguese "
+    "ROM. It adds local keyboard and firmware changes to the familiar 48 KB system.";
+const char *machine_description_microdigital_tk90x_spa="The Microdigital TK90X is a Brazilian Spectrum-compatible computer. This "
+    "configuration uses its Spanish ROM, with localized firmware and keyboard behaviour.";
+const char *machine_description_microdigital_tk95_por="The Microdigital TK95 is a Brazilian Spectrum-compatible successor to the TK90X, "
+    "with a redesigned case and keyboard. This configuration uses the Portuguese ROM.";
+const char *machine_description_spectrum_128="The ZX Spectrum 128 adds bank-switched 128 KB RAM, AY sound and an improved editor "
+    "to the Spectrum line. This configuration uses the original English-language ROM.";
+const char *machine_description_spectrum_128_spa="The Spanish ZX Spectrum 128 combines bank-switched 128 KB RAM and AY sound "
+    "with a localized ROM and keyboard. Its firmware differs from the English model.";
+const char *machine_description_spectrum_p2="The ZX Spectrum +2 is Amstrad's 128 KB Spectrum with an integrated cassette deck, "
+    "improved keyboard and AY sound. This configuration uses the standard English ROM.";
+const char *machine_description_spectrum_p2_fre="The French ZX Spectrum +2 is Amstrad's 128 KB Spectrum with an integrated "
+    "cassette deck and AY sound. Its ROM and keyboard are localized for France.";
+const char *machine_description_spectrum_p2_spa="The Spanish ZX Spectrum +2 combines 128 KB RAM, AY sound and an integrated "
+    "cassette deck. This configuration uses the Spanish ROM and keyboard layout.";
+const char *machine_description_spectrum_p2a_40="The ZX Spectrum +2A is a 128 KB Amstrad model with an integrated cassette deck "
+    "and the later +3-style architecture. This configuration uses ROM version 4.0.";
+const char *machine_description_spectrum_p2a_41="The ZX Spectrum +2A is a 128 KB Amstrad model with an integrated cassette deck "
+    "and the later +3-style architecture. This configuration uses ROM version 4.1.";
+const char *machine_description_spectrum_p2a_spa="The Spanish ZX Spectrum +2A is a 128 KB Amstrad model with an integrated cassette "
+    "deck and +3-style architecture. This configuration uses localized firmware.";
+const char *machine_description_zxuno="ZX-Uno is an FPGA-based Spectrum-compatible computer with configurable hardware, expanded "
+    "memory and modern storage options. It can reproduce several Spectrum configurations.";
+const char *machine_description_chloe_140se="The Chloe 140 SE is an enhanced Spectrum-compatible design with extended memory and "
+    "graphics capabilities. It keeps a Spectrum software environment while adding new features.";
+const char *machine_description_chloe_280se="The Chloe 280 SE extends the Spectrum-compatible Chloe design with more memory and enhanced "
+    "display facilities. It supports classic software alongside its own hardware features.";
+const char *machine_description_timex_ts2068="The Timex Sinclair 2068 is a North American Spectrum relative with 48 KB RAM, AY sound, "
+    "cartridge support and additional display modes. Its ROM differs from Sinclair's Spectrum.";
+const char *machine_description_prism="The Prism 512 is an enhanced Spectrum-compatible design with expanded memory and advanced "
+    "colour and display capabilities, while retaining support for traditional Spectrum software.";
+const char *machine_description_tbblue="The ZX Spectrum Next, based on TBBlue hardware, extends Spectrum compatibility with "
+    "a faster Z80, expanded memory, sprites, enhanced graphics, sound and modern storage.";
+const char *machine_description_spectrum_48_plus_spa="The Spanish ZX Spectrum+ repackages the 48 KB Spectrum with a full-travel "
+    "keyboard. This configuration uses the Spanish ROM and localized keyboard layout.";
+const char *machine_description_pentagon="The Pentagon is a Soviet Spectrum-compatible family known for 128 KB memory, disk "
+    "interfaces and timing distinct from Sinclair machines. It became a popular demoscene target.";
+const char *machine_description_chrome="Chrome is an enhanced Spectrum-compatible computer with extended memory and "
+    "display features. It preserves the core Spectrum environment for existing software.";
+const char *machine_description_tsconf="TS-Conf is an advanced configuration for the ZX Evolution, adding expanded graphics, "
+    "memory and storage features beyond a conventional Spectrum-compatible system.";
+const char *machine_description_baseconf="BaseConf is a ZX Evolution configuration compatible with ATM Turbo-style hardware. "
+    "It provides an expanded Spectrum environment with additional memory and disk support.";
+const char *machine_description_spectrum_p3_40="The ZX Spectrum +3 is Amstrad's 128 KB model with a built-in 3-inch "
+    "floppy drive, AY sound and +3DOS. This configuration uses ROM version 4.0.";
+const char *machine_description_spectrum_p3_41="The ZX Spectrum +3 is Amstrad's 128 KB model with a built-in 3-inch "
+    "floppy drive, AY sound and +3DOS. This configuration uses ROM version 4.1.";
+const char *machine_description_spectrum_p3_spa="The Spanish ZX Spectrum +3 combines 128 KB RAM, AY sound and a built-in "
+    "3-inch floppy drive. This configuration uses its localized ROM and keyboard.";
+const char *machine_description_spectrum_48_plus_eng="The ZX Spectrum+ repackages the 48 KB Spectrum with a full-travel keyboard and "
+    "reset button. This configuration uses the English ROM and standard Spectrum display.";
+const char *machine_description_timex_tc2048="The Timex Computer 2048 is a Portuguese Spectrum relative with 48 KB RAM and additional "
+    "video modes. Its keyboard and hardware distinguish it from Sinclair's 48 KB model.";
+const char *machine_description_timex_tc2068="The Portuguese Timex Computer 2068 combines Spectrum heritage with AY sound, "
+    "cartridge support and additional display modes. It has its own ROM and keyboard layout.";
+const char *machine_description_microdigital_tk95_spa="The Microdigital TK95 is a Brazilian Spectrum-compatible successor to the TK90X, "
+    "with a redesigned case and keyboard. This configuration uses the Spanish ROM.";
+const char *machine_description_cz_2000="The Czerweny CZ 2000 is an Argentine Sinclair-compatible computer from the CZ "
+    "line. Its local ROM and keyboard distinguish it from the original British machines.";
+const char *machine_description_cz_spectrum="The Czerweny CZ Spectrum is an Argentine ZX Spectrum-compatible computer. It "
+    "follows the 48 KB Spectrum design with locally produced hardware and firmware.";
+const char *machine_description_cz_spectrum_plus="The Czerweny CZ Spectrum Plus is an Argentine Spectrum-compatible model with a "
+    "revised keyboard and case. It retains the familiar 48 KB Spectrum software environment.";
+const char *machine_description_scorpion_zs_256="The Scorpion ZS-256 is a Russian Spectrum-compatible computer with 256 KB RAM and "
+    "disk-oriented extensions. Its memory paging and firmware go beyond a standard Spectrum 128.";
+const char *machine_description_scorpion_zs_256_turbo_plus="The Scorpion ZS-256 Turbo+ extends the Russian Scorpion Spectrum-compatible "
+    "design with 256 KB RAM, disk support and a faster operating mode.";
+const char *machine_description_scorpion_gmx="The Scorpion GMX is an enhanced Russian Spectrum-compatible computer with "
+    "expanded memory and additional hardware features built on the Scorpion family.";
+const char *machine_description_didaktikgama="The Didaktik Gama is a Czechoslovak Spectrum-compatible computer. It adapts the "
+    "48 KB Spectrum design with its own keyboard, ROM and additional memory arrangement.";
+const char *machine_description_microdigital_tk90x_ferranti_por="The Brazilian Microdigital TK90X uses a Ferranti ULA in this configuration. "
+    "Its Portuguese ROM and hardware timing distinguish it from other TK90X variants.";
+const char *machine_description_microdigital_tk90x_ferranti_spa="This Microdigital TK90X configuration uses a Ferranti ULA and Spanish ROM. It "
+    "retains Spectrum compatibility while differing in video timing and localized firmware.";
+const char *machine_description_atm_turbo1="ATM Turbo 1 is a Russian Spectrum-compatible computer with extended memory, "
+    "graphics and disk capabilities. It is an early member of the ATM Turbo family.";
+const char *machine_description_atm_turbo2="ATM Turbo 2 expands the Russian Spectrum-compatible ATM design with more capable "
+    "memory, graphics and disk hardware, while retaining a Spectrum operating mode.";
+const char *machine_description_atm_turbo2_plus="ATM Turbo 2+ is an enhanced ATM Spectrum-compatible configuration with "
+    "expanded memory, display modes and disk support beyond the earlier Turbo models.";
+const char *machine_description_atm_turbo3="ATM Turbo 3 continues the Russian ATM Spectrum-compatible line with expanded "
+    "memory, graphics and storage features for its own software and Spectrum programs.";
+const char *machine_description_coleco="ColecoVision is a cartridge-based home console with a Z80 CPU, dedicated video "
+    "hardware and sound. Its arcade-style games are distinct from the Spectrum family.";
+const char *machine_description_sg1000="The Sega SG-1000 is an early cartridge-based game console using a Z80 CPU, "
+    "tile graphics and programmable sound. It preceded Sega's Master System.";
+const char *machine_description_svi_318="The Spectravideo SVI-318 is an 8-bit Z80 home computer with a compact keyboard and "
+    "a smaller RAM configuration than the SVI-328. It shares software with its sibling.";
+const char *machine_description_svi_328="The Spectravideo SVI-328 is a Z80 home computer with a full keyboard, "
+    "cassette support and hardware related to the later MSX standard.";
+const char *machine_description_sms="The Sega Master System is an 8-bit cartridge console with a Z80 CPU, "
+    "tile and sprite graphics and programmable sound. It succeeded the SG-1000.";
+const char *machine_description_msx1="MSX1 is the first generation of the MSX 8-bit computer standard, combining a "
+    "Z80 CPU with common video, sound and cartridge interfaces across manufacturers.";
+const char *machine_description_zx80="The Sinclair ZX80 is an early low-cost Z80 home computer with 1 KB RAM, "
+    "monochrome display and a membrane keyboard. It preceded the ZX81 and Spectrum.";
+const char *machine_description_zx81="The Sinclair ZX81 is a compact Z80 home computer with 1 KB RAM, monochrome display "
+    "and cassette storage. RAM packs and peripherals extend its basic configuration.";
+const char *machine_description_ace="The Jupiter Ace is a British Z80 home computer with a monochrome display and "
+    "the Forth language built into ROM, unlike the BASIC used by many contemporaries.";
+const char *machine_description_timex_ts1000="The Timex Sinclair 1000 is the North American version of the ZX81, with "
+    "a monochrome display, cassette storage and a compact membrane keyboard.";
+const char *machine_description_timex_ts1500="The Timex Sinclair 1500 is a North American ZX81-derived computer with a "
+    "redesigned case, improved keyboard and more built-in RAM than the TS1000.";
+const char *machine_description_microdigital_tk80="The Microdigital TK80 is a Brazilian Sinclair-compatible home computer from "
+    "the early TK range, using a monochrome display and BASIC-oriented environment.";
+const char *machine_description_microdigital_tk82="The Brazilian Microdigital TK82 is a ZX81-compatible computer in the early TK "
+    "series. It uses a monochrome display, cassette storage and a compact keyboard.";
+const char *machine_description_microdigital_tk82c="The Microdigital TK82C is a Brazilian ZX81-compatible computer. This revised TK82 "
+    "variant offers its own keyboard and ROM while retaining the monochrome platform.";
+const char *machine_description_microdigital_tk83="The Brazilian Microdigital TK83 belongs to the ZX81-compatible TK series, "
+    "combining a monochrome display and BASIC environment with local hardware revisions.";
+const char *machine_description_microdigital_tk85="The Microdigital TK85 is a Brazilian ZX81-compatible computer with a revised "
+    "case, keyboard and firmware. It remains part of the monochrome TK line.";
+const char *machine_description_z88="The Cambridge Z88 is a portable Z80 computer with an LCD screen, built-in applications, "
+    "battery power and card-based expansion, designed by Sinclair's Cambridge Computer.";
+const char *machine_description_cpc_464="The Amstrad CPC 464 is a Z80 home computer with 64 KB RAM, colour graphics, "
+    "AY sound and an integrated cassette deck. It runs CPC software from tape.";
+const char *machine_description_cpc_4128="The Amstrad CPC 4128 is a 128 KB CPC configuration with colour graphics, AY "
+    "sound and cassette-based storage. Its extra memory extends the CPC 464 design.";
+const char *machine_description_cpc_664="The Amstrad CPC 664 combines 64 KB RAM, colour graphics and AY sound with "
+    "an integrated 3-inch floppy drive, replacing the CPC 464's cassette deck.";
+const char *machine_description_cpc_6128="The Amstrad CPC 6128 combines 128 KB RAM, colour graphics and AY "
+    "sound with a built-in 3-inch floppy drive and disk-oriented firmware.";
+const char *machine_description_sam="The SAM Coupe is a British Z80-derived home computer with 256 KB RAM, advanced "
+    "colour graphics and sound. It has its own software library and Spectrum compatibility.";
+const char *machine_description_ql_standard="The Sinclair QL is a 68008-based computer aimed at business users, with a "
+    "multitasking operating system, built-in productivity software and Microdrive storage.";
+const char *machine_description_mk14_standard="The Science of Cambridge MK14 is a single-board microcomputer built around "
+    "the INS8060 SC/MP processor, with a hexadecimal keypad and LED display.";
+const char *machine_description_pcw_8256="The Amstrad PCW 8256 is a Z80-based word-processing computer with 256 KB RAM, "
+    "monochrome display, floppy storage and the Locoscript software environment.";
+const char *machine_description_pcw_8512="The Amstrad PCW 8512 is a Z80-based word-processing computer with 512 "
+    "KB RAM, monochrome display, floppy storage and Locoscript software.";
+const char *machine_description_cz_1000="The Czerweny CZ 1000 is an Argentine ZX81-compatible computer with a monochrome "
+    "display and cassette storage, produced for the local home-computer market.";
+const char *machine_description_cz_1500="The Czerweny CZ 1500 is an Argentine ZX81-compatible computer in the CZ "
+    "series, using a monochrome display, cassette storage and localized hardware.";
+const char *machine_description_cz_1000_plus="The Czerweny CZ 1000 Plus is an updated Argentine ZX81-compatible computer with "
+    "a revised keyboard and case, retaining the monochrome CZ software environment.";
+const char *machine_description_cz_1500_plus="The Czerweny CZ 1500 Plus is an updated Argentine ZX81-compatible model with "
+    "revised packaging and keyboard, retaining its monochrome BASIC environment.";
+const char *machine_description_unknown="No description for this machine.";
+
+//Devuelve una descripcion breve e inmutable de cada maquina emulada.
+const char *get_machine_description(int machine_id)
+{
+    switch (machine_id) {
+        case MACHINE_ID_SPECTRUM_16:
+            return machine_description_spectrum_16;
+        break;
+
+        case MACHINE_ID_SPECTRUM_48:
+            return machine_description_spectrum_48;
+        break;
+
+        case MACHINE_ID_INVES:
+            return machine_description_inves;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK90X_POR:
+            return machine_description_microdigital_tk90x_por;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+            return machine_description_microdigital_tk90x_spa;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK95_POR:
+            return machine_description_microdigital_tk95_por;
+        break;
+
+        case MACHINE_ID_SPECTRUM_128:
+            return machine_description_spectrum_128;
+        break;
+
+        case MACHINE_ID_SPECTRUM_128_SPA:
+            return machine_description_spectrum_128_spa;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P2:
+            return machine_description_spectrum_p2;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P2_FRE:
+            return machine_description_spectrum_p2_fre;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P2_SPA:
+            return machine_description_spectrum_p2_spa;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P2A_40:
+            return machine_description_spectrum_p2a_40;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P2A_41:
+            return machine_description_spectrum_p2a_41;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P2A_SPA:
+            return machine_description_spectrum_p2a_spa;
+        break;
+
+        case MACHINE_ID_ZXUNO:
+            return machine_description_zxuno;
+        break;
+
+        case MACHINE_ID_CHLOE_140SE:
+            return machine_description_chloe_140se;
+        break;
+
+        case MACHINE_ID_CHLOE_280SE:
+            return machine_description_chloe_280se;
+        break;
+
+        case MACHINE_ID_TIMEX_TS2068:
+            return machine_description_timex_ts2068;
+        break;
+
+        case MACHINE_ID_PRISM:
+            return machine_description_prism;
+        break;
+
+        case MACHINE_ID_TBBLUE:
+            return machine_description_tbblue;
+        break;
+
+        case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
+            return machine_description_spectrum_48_plus_spa;
+        break;
+
+        case MACHINE_ID_PENTAGON:
+            return machine_description_pentagon;
+        break;
+
+        case MACHINE_ID_CHROME:
+            return machine_description_chrome;
+        break;
+
+        case MACHINE_ID_TSCONF:
+            return machine_description_tsconf;
+        break;
+
+        case MACHINE_ID_BASECONF:
+            return machine_description_baseconf;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P3_40:
+            return machine_description_spectrum_p3_40;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P3_41:
+            return machine_description_spectrum_p3_41;
+        break;
+
+        case MACHINE_ID_SPECTRUM_P3_SPA:
+            return machine_description_spectrum_p3_spa;
+        break;
+
+        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
+            return machine_description_spectrum_48_plus_eng;
+        break;
+
+        case MACHINE_ID_TIMEX_TC2048:
+            return machine_description_timex_tc2048;
+        break;
+
+        case MACHINE_ID_TIMEX_TC2068:
+            return machine_description_timex_tc2068;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK95_SPA:
+            return machine_description_microdigital_tk95_spa;
+        break;
+
+        case MACHINE_ID_CZ_2000:
+            return machine_description_cz_2000;
+        break;
+
+        case MACHINE_ID_CZ_SPECTRUM:
+            return machine_description_cz_spectrum;
+        break;
+
+        case MACHINE_ID_CZ_SPECTRUM_PLUS:
+            return machine_description_cz_spectrum_plus;
+        break;
+
+        case MACHINE_ID_SCORPION_ZS_256:
+            return machine_description_scorpion_zs_256;
+        break;
+
+        case MACHINE_ID_SCORPION_ZS_256_TURBO_PLUS:
+            return machine_description_scorpion_zs_256_turbo_plus;
+        break;
+
+        case MACHINE_ID_SCORPION_GMX:
+            return machine_description_scorpion_gmx;
+        break;
+
+        case MACHINE_ID_DIDAKTIKGAMA:
+            return machine_description_didaktikgama;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_POR:
+            return machine_description_microdigital_tk90x_ferranti_por;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK90X_FERRANTI_SPA:
+            return machine_description_microdigital_tk90x_ferranti_spa;
+        break;
+
+        case MACHINE_ID_ATM_TURBO1:
+            return machine_description_atm_turbo1;
+        break;
+
+        case MACHINE_ID_ATM_TURBO2:
+            return machine_description_atm_turbo2;
+        break;
+
+        case MACHINE_ID_ATM_TURBO2_PLUS:
+            return machine_description_atm_turbo2_plus;
+        break;
+
+        case MACHINE_ID_ATM_TURBO3:
+            return machine_description_atm_turbo3;
+        break;
+
+        case MACHINE_ID_COLECO:
+            return machine_description_coleco;
+        break;
+
+        case MACHINE_ID_SG1000:
+            return machine_description_sg1000;
+        break;
+
+        case MACHINE_ID_SVI_318:
+            return machine_description_svi_318;
+        break;
+
+        case MACHINE_ID_SVI_328:
+            return machine_description_svi_328;
+        break;
+
+        case MACHINE_ID_SMS:
+            return machine_description_sms;
+        break;
+
+        case MACHINE_ID_MSX1:
+            return machine_description_msx1;
+        break;
+
+        case MACHINE_ID_ZX80:
+            return machine_description_zx80;
+        break;
+
+        case MACHINE_ID_ZX81:
+            return machine_description_zx81;
+        break;
+
+        case MACHINE_ID_ACE:
+            return machine_description_ace;
+        break;
+
+        case MACHINE_ID_TIMEX_TS1000:
+            return machine_description_timex_ts1000;
+        break;
+
+        case MACHINE_ID_TIMEX_TS1500:
+            return machine_description_timex_ts1500;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK80:
+            return machine_description_microdigital_tk80;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK82:
+            return machine_description_microdigital_tk82;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK82C:
+            return machine_description_microdigital_tk82c;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK83:
+            return machine_description_microdigital_tk83;
+        break;
+
+        case MACHINE_ID_MICRODIGITAL_TK85:
+            return machine_description_microdigital_tk85;
+        break;
+
+        case MACHINE_ID_Z88:
+            return machine_description_z88;
+        break;
+
+        case MACHINE_ID_CPC_464:
+            return machine_description_cpc_464;
+        break;
+
+        case MACHINE_ID_CPC_4128:
+            return machine_description_cpc_4128;
+        break;
+
+        case MACHINE_ID_CPC_664:
+            return machine_description_cpc_664;
+        break;
+
+        case MACHINE_ID_CPC_6128:
+            return machine_description_cpc_6128;
+        break;
+
+        case MACHINE_ID_SAM:
+            return machine_description_sam;
+        break;
+
+        case MACHINE_ID_QL_STANDARD:
+            return machine_description_ql_standard;
+        break;
+
+        case MACHINE_ID_MK14_STANDARD:
+            return machine_description_mk14_standard;
+        break;
+
+        case MACHINE_ID_PCW_8256:
+            return machine_description_pcw_8256;
+        break;
+
+        case MACHINE_ID_PCW_8512:
+            return machine_description_pcw_8512;
+        break;
+
+        case MACHINE_ID_CZ_1000:
+            return machine_description_cz_1000;
+        break;
+
+        case MACHINE_ID_CZ_1500:
+            return machine_description_cz_1500;
+        break;
+
+        case MACHINE_ID_CZ_1000_PLUS:
+            return machine_description_cz_1000_plus;
+        break;
+
+        case MACHINE_ID_CZ_1500_PLUS:
+            return machine_description_cz_1500_plus;
+        break;
+
+        default:
+            return machine_description_unknown;
+        break;
+    }
+}
+
 
 
 

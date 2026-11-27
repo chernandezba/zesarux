@@ -16079,6 +16079,11 @@ void menu_zxdesktop_set_configurable_icons_modify_help_sendkeys(MENU_ITEM_PARAME
 
 }
 
+void menu_machine_description(MENU_ITEM_PARAMETERS)
+{
+    zxvision_generic_message("Machine description",get_machine_description(current_machine_type));
+}
+
 void menu_zxdesktop_set_configurable_icons_close_window(MENU_ITEM_PARAMETERS)
 {
     //printf("ventana: %s\n",zxdesktop_configurable_icons_list[valor_opcion].extra_info);
@@ -16197,6 +16202,9 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
         if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
 
             menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_machine_description,NULL,
+                "Machine description","Descripción máquina","Descripció màquina");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_machine_selection,NULL,
                 "Select ~~Machine","Elige ~~Máquina","Escull ~~Màquina");

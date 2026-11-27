@@ -37356,6 +37356,10 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_info,NULL,"CPU Info");
         menu_add_item_menu_add_flags(array_menu_debug,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_machine_description,NULL,
+            "Machine description","Descripción máquina","Descripció màquina");
+        menu_add_item_menu_add_flags(array_menu_debug,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
             "Debug console","Consola Depuración","Consola Depuració");

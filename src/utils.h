@@ -176,6 +176,7 @@ struct s_machines_info {
 extern struct s_machines_info machines_info[];
 
 extern char *get_machine_name(z80_byte m);
+extern const char *get_machine_description(int machine_id);
 
 extern char *debug_machine_info_family_get_family(enum machine_families_list family_id);
 extern char *debug_machine_info_family(int machine_id);
