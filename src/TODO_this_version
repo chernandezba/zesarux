@@ -185,6 +185,7 @@ insertar trd habilita el modo max turbo speed si accelerate load
 -baseconf tiene timex video? demo 2048hrcdevo parece que usa puerto FF
 -> parece que baseconf no. quiza eso es de atm
 
+-hypnotoad cargado desde la imagen ide se ve un trozo de la pantalla mal
 
 -indicar como:
 * cargar un trd desde la SD: R Service, Image to ramdisk. ...
